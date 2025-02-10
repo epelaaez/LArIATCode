@@ -42,15 +42,19 @@ void RecoAnalysis() {
 
     std::vector<double>* truthProtonsEnergy = nullptr;
     std::vector<double>* truthProtonsKEnergy = nullptr;
+    std::vector<double>* truthProtonsLength = nullptr;
     tree->SetBranchAddress("truthProtonsEnergy", &truthProtonsEnergy);
     tree->SetBranchAddress("truthProtonsKEnergy", &truthProtonsKEnergy);
+    tree->SetBranchAddress("truthProtonsLength", &truthProtonsLength);
 
     // Reco data
     std::vector<int>* matchedIdentity = nullptr;
     tree->SetBranchAddress("matchedIdentity", &matchedIdentity);
 
     std::vector<double>* matchedKEnergy = nullptr;
+    std::vector<double>* matchedLength = nullptr;
     tree->SetBranchAddress("matchedKEnergy", &matchedKEnergy);
+    tree->SetBranchAddress("matchedLength", &matchedLength);
 
     std::vector<double>* recoMeanDEDX = nullptr;
     tree->SetBranchAddress("recoMeanDEDX", &recoMeanDEDX);
@@ -66,6 +70,9 @@ void RecoAnalysis() {
     TH1D *hTrueInitialKEnergyAllProtons = new TH1D("hTrueInitialKEnergyAllProtons", "hTrueInitialKEnergyAllProtons;;", 33, 0, 0.7);
     TH1D *hTrueInitialKEnergyRecoProtons = new TH1D("hTrueInitialKEnergyRecoProtons", "hTrueInitialKEnergyRecoProtons;;", 33, 0, 0.7);
 
+    TH1D *hTrueLengthAllProtons = new TH1D("hTrueLengthAllProtons", "hTrueLengthAllProtons;;", 20, 0, 40);
+    TH1D *hTrueLengthRecoProtons = new TH1D("hTrueLengthRecoProtons", "hTrueLengthRecoProtons;;", 20, 0, 40);
+
     // Loop over events
     Int_t NumEntries = (Int_t) tree->GetEntries();
     for (Int_t i = 0; i < NumEntries; ++i) {
@@ -75,6 +82,7 @@ void RecoAnalysis() {
         int numTruthProtons = truthProtonsKEnergy->size();
         for (int iTrueProton = 0; iTrueProton < numTruthProtons; ++iTrueProton) {
             hTrueInitialKEnergyAllProtons->Fill(truthProtonsKEnergy->at(iTrueProton));
+            hTrueLengthAllProtons->Fill(truthProtonsLength->at(iTrueProton));
         }
 
         // Loop over reco particles
@@ -88,6 +96,7 @@ void RecoAnalysis() {
             else if (matchedIdentity->at(iParticle) == 2212) {
                 hProtonMeanDEDX->Fill(recoMeanDEDX->at(iParticle));
                 hTrueInitialKEnergyRecoProtons->Fill(matchedKEnergy->at(iParticle));
+                hTrueLengthRecoProtons->Fill(matchedLength->at(iParticle));
             }
         }
     }
@@ -99,22 +108,26 @@ void RecoAnalysis() {
 
     std::vector<std::vector<TH1*>> PlotGroups = {
         {hPionMeanDEDX, hProtonMeanDEDX},
-        {hTrueInitialKEnergyAllProtons, hTrueInitialKEnergyRecoProtons}
+        {hTrueInitialKEnergyAllProtons, hTrueInitialKEnergyRecoProtons},
+        {hTrueLengthAllProtons, hTrueLengthRecoProtons}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         {"Pion", "Proton"}, 
+        {"True protons", "Reco protons"},
         {"True protons", "Reco protons"}
     };
 
     std::vector<TString> PlotTitles = {
         "MeanDEDX",
-        "ProtonKE"
+        "ProtonKE",
+        "ProtonLength"
     };
     
     std::vector<TString> XLabels = {
         "dE/dx (MeV/cm)",
-        "Kinetic energy (GeV)"
+        "Kinetic energy (GeV)",
+        "Track length (cm)"
     };
 
     int numPlots = PlotGroups.size();
@@ -168,14 +181,17 @@ void RecoAnalysis() {
 
     // Set up efficiency plots
     std::vector<std::tuple<TH1*, TH1*>> EfficiencyHistoPairs = {
-        {hTrueInitialKEnergyAllProtons, hTrueInitialKEnergyRecoProtons}
+        {hTrueInitialKEnergyAllProtons, hTrueInitialKEnergyRecoProtons},
+        {hTrueLengthAllProtons, hTrueLengthRecoProtons}
     };
 
     std::vector<TString> EfficiencyTitles = {
-        "ProtonKEEfficiency"
+        "ProtonKEEfficiency",
+        "ProtonLengthEfficiency"
     };
 
     std::vector<TString> EfficiencyYLabels = {
+        "Truth-matched to true protons",
         "Truth-matched to true protons"
     };
 
