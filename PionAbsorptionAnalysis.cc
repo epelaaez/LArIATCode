@@ -170,7 +170,7 @@ void PionAbsorptionAnalysis() {
     // TODO: Reweight needed? (Maybe ask Afro)
 
     // Set up canvas for drawing
-    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/";
+    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/SignalAnalysis/";
     TCanvas* PlotCanvas = new TCanvas("Canvas","Canvas",205,34,1024,768);
     PlotCanvas->cd();
     PlotCanvas->SetLeftMargin(0.15);
