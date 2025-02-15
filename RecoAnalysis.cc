@@ -64,8 +64,8 @@ void RecoAnalysis() {
     std::vector<TString> PartNames = {"Pion", "Proton"};
 
     // Declare histograms
-    TH1D *hPionMeanDEDX = new TH1D("hPionMeanDEDX", "PionMeanDEDX;;", 100, 0, 20);
-    TH1D *hProtonMeanDEDX = new TH1D("hProtonnMeanDEDX", "ProtonMeanDEDX;;", 100, 0, 20);
+    TH1D *hPionMeanDEDX = new TH1D("hPionMeanDEDX", "PionMeanDEDX;;", 100, 0, 10);
+    TH1D *hProtonMeanDEDX = new TH1D("hProtonnMeanDEDX", "ProtonMeanDEDX;;", 100, 0, 10);
 
     TH1D *hTrueInitialKEnergyAllProtons = new TH1D("hTrueInitialKEnergyAllProtons", "hTrueInitialKEnergyAllProtons;;", 33, 0, 0.7);
     TH1D *hTrueInitialKEnergyRecoProtons = new TH1D("hTrueInitialKEnergyRecoProtons", "hTrueInitialKEnergyRecoProtons;;", 33, 0, 0.7);

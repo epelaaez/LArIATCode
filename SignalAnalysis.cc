@@ -6,7 +6,7 @@
 
 #include <vector>
 
-void PionAbsorptionAnalysis() {
+void SignalAnalysis() {
     // Set defaults
     TH1D::SetDefaultSumw2();
     TH2D::SetDefaultSumw2();
@@ -16,9 +16,10 @@ void PionAbsorptionAnalysis() {
     double TextSize = 0.06;
 
     // Load root file
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/test_dev/srcs/lariatsoft/LArIATFilterModule/SelectPionAbsorption_histo.root"; 
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/SignalPionAbsorption_histo.root"; 
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
-    TDirectory* Directory = (TDirectory*)File->Get("SelectPionAbsorption");
+
+    TDirectory* Directory = (TDirectory*)File->Get("SignalPionAbsorption");
 
     // Load tree and set branch addresses
     TTree* tree = (TTree*) Directory->Get<TTree>("PionAbsorptionTree");
