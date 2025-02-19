@@ -6,6 +6,7 @@
 #include <TEfficiency.h>
 
 #include <vector>
+#include <map>
 
 void SelectionAnalysis() {
     // Set defaults
@@ -41,11 +42,21 @@ void SelectionAnalysis() {
     tree->SetBranchAddress("Subrun", &subrun); 
     tree->SetBranchAddress("Event", &event);
 
+    std::string* pionTruthProcess = new std::string();
+    std::vector<int>* pionDaughtersPDG = nullptr;
+    std::vector<std::string>* pionDaughtersProcess = nullptr;
+    tree->SetBranchAddress("pionTruthProcess", &pionTruthProcess);
+    tree->SetBranchAddress("pionDaughtersPDG", &pionDaughtersPDG);
+    tree->SetBranchAddress("pionDaughtersProcess", &pionDaughtersProcess);
+
     int protonCount;
     tree->SetBranchAddress("protonCount", &protonCount);
 
     std::vector<double>* protonLength = nullptr;
     tree->SetBranchAddress("protonLength", &protonLength);
+
+    std::vector<std::string>* protonTrueProcess = nullptr;
+    tree->SetBranchAddress("protonTrueProcess", &protonTrueProcess);
 
     // Load true reco branches
     int trueRecoRun, trueRecoSubrun, trueRecoEvent;
@@ -60,6 +71,10 @@ void SelectionAnalysis() {
     TH1I* hRecoNumProtonTracks = new TH1I("hRecoNumProtonTracks", "NumProtonTracks;;", 5, 0, 5);
     TH1I* hTrueNumProtonTracks = new TH1I("hTrueNumProtonTracks", "NumProtonTracks;;", 5, 0, 5);
 
+    // Dictionary to keep track of non pi-Inelastic protons
+    std::map<std::string, int> processCount; 
+    std::map<std::string, int> pionDaughterProcessCount;
+
     // Loop over reco events
     Int_t NumEntries = (Int_t) tree->GetEntries();
     for (Int_t i = 0; i < NumEntries; ++i) {
@@ -67,7 +82,41 @@ void SelectionAnalysis() {
 
         // Fill histograms
         hRecoNumProtonTracks->Fill(protonCount);
+
+        // std::cout << pionTruthProcess->c_str() << std::endl;
+        int numPionDaughters = pionDaughtersPDG->size();
+        // std::cout << "Num pion true daughters: " << numPionDaughters << std::endl;
+        for (int iDaughter = 0; iDaughter < numPionDaughters; ++iDaughter) {
+            int daughterPDG = pionDaughtersPDG->at(iDaughter);
+            std::string daughterProcess = pionDaughtersProcess->at(iDaughter);
+            if (daughterProcess != "pi-Inelastic") {
+                // std::cout << "    PDG: " << daughterPDG << " Process: " << daughterProcess << std::endl;
+                pionDaughterProcessCount[daughterProcess]++;
+            }
+        }
+
+        int numProtons = protonTrueProcess->size();
+        for (int iProton = 0; iProton < numProtons; ++iProton) {
+            std::string protonProcess = protonTrueProcess->at(iProton);
+            if (protonProcess != "pi-Inelastic") {
+                // std::cout << protonProcess << std::endl;
+                processCount[protonProcess]++;
+                break;
+            }
+        }
     }
+
+    std::cout << "Truth-matched proton processes:" << std::endl;
+    for (const auto &entry : processCount) {
+        std::cout << "Process: " << entry.first << ", Count: " << entry.second << std::endl;
+    }
+    std::cout << std::endl;
+
+    std::cout << "Truth pion daughters processes:" << std::endl;
+    for (const auto &entry : pionDaughterProcessCount) {
+        std::cout << "Process: " << entry.first << ", Count: " << entry.second << std::endl;
+    }
+    std::cout << std::endl;
 
     // Loop over true events
     Int_t NumTrueRecoEntries = (Int_t) trueRecoTree->GetEntries();
