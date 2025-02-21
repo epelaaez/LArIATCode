@@ -13,6 +13,7 @@ struct EventInfo {
     std::string pionTrueProcess;
     std::vector<int> trueDaughtersPDG;
     std::vector<std::string> trueDaughterProcess;
+    int run; int subrun; int event;
 };
 
 void SelectionAnalysis() {
@@ -112,12 +113,15 @@ void SelectionAnalysis() {
         }
 
         if (flagEvent) {
-            EventInfo event;
-            event.pionTruePDG = pionTruthPDG;
-            event.pionTrueProcess = *pionTruthProcess;
-            event.trueDaughtersPDG = *pionDaughtersPDG;
-            event.trueDaughterProcess = *pionDaughtersProcess;
-            FlaggedEvents.push_back(event);
+            EventInfo flaggedEvent;
+            flaggedEvent.run = run; 
+            flaggedEvent.subrun = subrun;
+            flaggedEvent.event = event;
+            flaggedEvent.pionTruePDG = pionTruthPDG;
+            flaggedEvent.pionTrueProcess = *pionTruthProcess;
+            flaggedEvent.trueDaughtersPDG = *pionDaughtersPDG;
+            flaggedEvent.trueDaughterProcess = *pionDaughtersProcess;
+            FlaggedEvents.push_back(flaggedEvent);
 
             pionPDGCount[pionTruthPDG]++;
         }
@@ -130,14 +134,15 @@ void SelectionAnalysis() {
     }
     outFile << std::endl;
 
-    for (const auto &event : FlaggedEvents) {
-        outFile << "Pion truth matched PDG: " << event.pionTruePDG << std::endl;
-        outFile << "Pion truth matched process: " << event.pionTrueProcess << std::endl;
+    for (const auto &flaggedEvent : FlaggedEvents) {
+        outFile << "Run: " << flaggedEvent.run << " subrun: " << flaggedEvent.subrun << " event: " << flaggedEvent.event << std::endl;
+        outFile << "Pion truth matched PDG: " << flaggedEvent.pionTruePDG << std::endl;
+        outFile << "Pion truth matched process: " << flaggedEvent.pionTrueProcess << std::endl;
         outFile << "Daughters: " << std::endl;
-        for (int n = 0; n < event.trueDaughterProcess.size(); ++n) {
-            if (event.trueDaughtersPDG[n] == 11) continue;
-            outFile << "    PDG: " << event.trueDaughtersPDG[n];
-            outFile << " Process: " << event.trueDaughterProcess[n];
+        for (int n = 0; n < flaggedEvent.trueDaughterProcess.size(); ++n) {
+            if (flaggedEvent.trueDaughtersPDG[n] == 11) continue;
+            outFile << "    PDG: " << flaggedEvent.trueDaughtersPDG[n];
+            outFile << " Process: " << flaggedEvent.trueDaughterProcess[n];
             outFile << std::endl;
         }
         outFile << std::endl;
