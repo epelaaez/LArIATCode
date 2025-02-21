@@ -8,6 +8,13 @@
 #include <vector>
 #include <map>
 
+struct EventInfo {
+    int pionTruePDG;
+    std::string pionTrueProcess;
+    std::vector<int> trueDaughtersPDG;
+    std::vector<std::string> trueDaughterProcess;
+};
+
 void SelectionAnalysis() {
     // Set defaults
     TH1D::SetDefaultSumw2();
@@ -42,9 +49,11 @@ void SelectionAnalysis() {
     tree->SetBranchAddress("Subrun", &subrun); 
     tree->SetBranchAddress("Event", &event);
 
+    int pionTruthPDG;
     std::string* pionTruthProcess = new std::string();
     std::vector<int>* pionDaughtersPDG = nullptr;
     std::vector<std::string>* pionDaughtersProcess = nullptr;
+    tree->SetBranchAddress("pionTruthPDG", &pionTruthPDG);
     tree->SetBranchAddress("pionTruthProcess", &pionTruthProcess);
     tree->SetBranchAddress("pionDaughtersPDG", &pionDaughtersPDG);
     tree->SetBranchAddress("pionDaughtersProcess", &pionDaughtersProcess);
@@ -71,9 +80,9 @@ void SelectionAnalysis() {
     TH1I* hRecoNumProtonTracks = new TH1I("hRecoNumProtonTracks", "NumProtonTracks;;", 5, 0, 5);
     TH1I* hTrueNumProtonTracks = new TH1I("hTrueNumProtonTracks", "NumProtonTracks;;", 5, 0, 5);
 
-    // Dictionary to keep track of non pi-Inelastic protons
-    std::map<std::string, int> processCount; 
-    std::map<std::string, int> pionDaughterProcessCount;
+    // We will keep track of weird events
+    std::vector<EventInfo> FlaggedEvents;
+    std::map<int, int> pionPDGCount;
 
     // Loop over reco events
     Int_t NumEntries = (Int_t) tree->GetEntries();
@@ -82,41 +91,57 @@ void SelectionAnalysis() {
 
         // Fill histograms
         hRecoNumProtonTracks->Fill(protonCount);
+ 
+        // Flag events
+        bool flagEvent = false;
 
-        // std::cout << pionTruthProcess->c_str() << std::endl;
+        if (pionTruthPDG != -211) flagEvent = true;
+        if (*pionTruthProcess != "primary") flagEvent = true;
+
         int numPionDaughters = pionDaughtersPDG->size();
-        // std::cout << "Num pion true daughters: " << numPionDaughters << std::endl;
-        for (int iDaughter = 0; iDaughter < numPionDaughters; ++iDaughter) {
-            int daughterPDG = pionDaughtersPDG->at(iDaughter);
-            std::string daughterProcess = pionDaughtersProcess->at(iDaughter);
-            if (daughterProcess != "pi-Inelastic") {
-                // std::cout << "    PDG: " << daughterPDG << " Process: " << daughterProcess << std::endl;
-                pionDaughterProcessCount[daughterProcess]++;
+        if (!flagEvent) {
+            for (int iDaughter = 0; iDaughter < numPionDaughters; ++iDaughter) {
+                int daughterPDG = pionDaughtersPDG->at(iDaughter);
+                std::string daughterProcess = pionDaughtersProcess->at(iDaughter);
+
+                if ((daughterPDG == 11) && (daughterProcess == "hIoni")) continue;
+                if ((daughterPDG == 111) || (daughterPDG == 211) || (daughterPDG == -211)) { flagEvent = true; break; }
+                if ((daughterProcess == "Decay") || (daughterProcess == "hBertiniCaptureAtRest")) { flagEvent = true; break; }
+                if ((daughterPDG == 2212) && (daughterProcess != "pi-Inelastic")) {flagEvent = true; break; }
             }
         }
 
-        int numProtons = protonTrueProcess->size();
-        for (int iProton = 0; iProton < numProtons; ++iProton) {
-            std::string protonProcess = protonTrueProcess->at(iProton);
-            if (protonProcess != "pi-Inelastic") {
-                // std::cout << protonProcess << std::endl;
-                processCount[protonProcess]++;
-                break;
-            }
+        if (flagEvent) {
+            EventInfo event;
+            event.pionTruePDG = pionTruthPDG;
+            event.pionTrueProcess = *pionTruthProcess;
+            event.trueDaughtersPDG = *pionDaughtersPDG;
+            event.trueDaughterProcess = *pionDaughtersProcess;
+            FlaggedEvents.push_back(event);
+
+            pionPDGCount[pionTruthPDG]++;
         }
     }
 
-    std::cout << "Truth-matched proton processes:" << std::endl;
-    for (const auto &entry : processCount) {
-        std::cout << "Process: " << entry.first << ", Count: " << entry.second << std::endl;
+    std::ofstream outFile("FlaggedEventsOutput.txt");
+    outFile << "Num of flagged events: " << FlaggedEvents.size() << std::endl;
+    for (const auto &entry : pionPDGCount) {
+        outFile << "   Pion truth matched PDG: " << entry.first << " Count: " << entry.second << std::endl;
     }
-    std::cout << std::endl;
+    outFile << std::endl;
 
-    std::cout << "Truth pion daughters processes:" << std::endl;
-    for (const auto &entry : pionDaughterProcessCount) {
-        std::cout << "Process: " << entry.first << ", Count: " << entry.second << std::endl;
+    for (const auto &event : FlaggedEvents) {
+        outFile << "Pion truth matched PDG: " << event.pionTruePDG << std::endl;
+        outFile << "Pion truth matched process: " << event.pionTrueProcess << std::endl;
+        outFile << "Daughters: " << std::endl;
+        for (int n = 0; n < event.trueDaughterProcess.size(); ++n) {
+            if (event.trueDaughtersPDG[n] == 11) continue;
+            outFile << "    PDG: " << event.trueDaughtersPDG[n];
+            outFile << " Process: " << event.trueDaughterProcess[n];
+            outFile << std::endl;
+        }
+        outFile << std::endl;
     }
-    std::cout << std::endl;
 
     // Loop over true events
     Int_t NumTrueRecoEntries = (Int_t) trueRecoTree->GetEntries();
@@ -201,6 +226,7 @@ void SelectionAnalysis() {
     Int_t NumTrueEntries = (Int_t) trueTree->GetEntries();
     std::cout << "Number of reco events that pass selection criteria: " << NumEntries << std::endl;
     std::cout << "Number of reco events that pass selection criteria that are true events: " << NumTrueRecoEntries << std::endl;
+    std::cout << "Number of background events: " << NumEntries - NumTrueRecoEntries << std::endl;
     std::cout << "Number of true events: " << NumTrueEntries << std::endl;
     std::cout << "Efficiency: " << 100 * ((float)NumTrueRecoEntries / (float)NumTrueEntries) << "%" << std::endl; 
     std::cout << "Purity: " << 100 * ((float)NumTrueRecoEntries / (float)NumEntries) << "%" << std::endl;
