@@ -140,7 +140,7 @@ void SelectionAnalysis() {
         outFile << "Pion truth matched process: " << flaggedEvent.pionTrueProcess << std::endl;
         outFile << "Daughters: " << std::endl;
         for (int n = 0; n < flaggedEvent.trueDaughterProcess.size(); ++n) {
-            if (flaggedEvent.trueDaughtersPDG[n] == 11) continue;
+            if (flaggedEvent.trueDaughtersPDG[n] == 11 && flaggedEvent.trueDaughterProcess[n] == "hIoni") continue;
             outFile << "    PDG: " << flaggedEvent.trueDaughtersPDG[n];
             outFile << " Process: " << flaggedEvent.trueDaughterProcess[n];
             outFile << std::endl;
