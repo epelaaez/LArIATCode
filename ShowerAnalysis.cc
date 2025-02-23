@@ -49,21 +49,29 @@ void ShowerAnalysis() {
     TH1D *hShowerRecoLengths = new TH1D("hShowerRecoLengths", "hShowerRecoLengths;;", 20, -1,-1);
     TH1D *hNoShowerRecoLengths = new TH1D("hNoShowerRecoLengths", "hNoShowerRecoLengths;;", 20, -1,-1);
 
+    TH1D* hShowerSmallTracksCount = new TH1D("hShowerSmallTracksCount", "hShowerSmallTracksCount", 20, 0, 20);
+    TH1D* hNoShowerSmallTracksCount = new TH1D("hNoShowerSmallTracksCount", "hNoShowerSmallTracksCount", 20, 0, 20);
+
+    double TRACK_THRESHOLD = 15;
+
     // Loop over events
     Int_t NumEntries = (Int_t) tree->GetEntries();
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
+        bool isShower = false;
+        if ((numEmmitedElectrons + numEmmitedPhotons) > 1) isShower = true;
+
         int numTrks = recoLength->size();
-        if ((numEmmitedElectrons + numEmmitedPhotons) > 1) {
-            for (int j = 0; j < numTrks; ++j) {
-                hShowerRecoLengths->Fill(recoLength->at(j));
-            }   
-        } else {
-            for (int j = 0; j < numTrks; ++j) {
-                hNoShowerRecoLengths->Fill(recoLength->at(j));
-            }
+        int smallTrackCount = 0;
+        for (int j = 0; j < numTrks; ++j) {
+            if (isShower) hShowerRecoLengths->Fill(recoLength->at(j));
+            if (!isShower) hNoShowerRecoLengths->Fill(recoLength->at(j));
+            if (recoLength->at(j) < TRACK_THRESHOLD) smallTrackCount++;
         }
+
+        if (isShower) hShowerSmallTracksCount->Fill(smallTrackCount);
+        if (!isShower) hNoShowerSmallTracksCount->Fill(smallTrackCount);
     }
 
     // Setup for drawing plots
@@ -73,18 +81,22 @@ void ShowerAnalysis() {
 
     std::vector<std::vector<TH1*>> PlotGroups = {
         {hShowerRecoLengths, hNoShowerRecoLengths},
+        {hShowerSmallTracksCount, hNoShowerSmallTracksCount}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         {"Shower", "No shower"}, 
+        {"Shower", "No shower"}
     };
 
     std::vector<TString> PlotTitles = {
         "TrackLenghts",
+        "SmallTrackCounts"
     };
     
     std::vector<TString> XLabels = {
         "Track length (cm)",
+        "# of small tracks",
     };
 
     int numPlots = PlotGroups.size();
@@ -125,6 +137,10 @@ void ShowerAnalysis() {
         Plots[0]->GetYaxis()->CenterTitle();	
 
         for (int iSubPlot = 0; iSubPlot < Plots.size(); ++iSubPlot) {
+            double iMax = TMath::Max(Plots[iSubPlot]->GetMaximum(), Plots[0]->GetMaximum());
+            Plots[iSubPlot]->GetYaxis()->SetRangeUser(0., 1.1 * iMax);
+            Plots[0]->GetYaxis()->SetRangeUser(0., 1.1 * iMax);
+
             leg->AddEntry(Plots[iSubPlot], Labels[iSubPlot], "l");
             Plots[iSubPlot]->SetLineWidth(2);
             Plots[iSubPlot]->SetLineColor(Colors.at(iSubPlot));

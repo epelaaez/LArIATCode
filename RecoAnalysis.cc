@@ -65,7 +65,7 @@ void RecoAnalysis() {
 
     // Declare histograms
     TH1D *hPionMeanDEDX = new TH1D("hPionMeanDEDX", "PionMeanDEDX;;", 100, 0, 10);
-    TH1D *hProtonMeanDEDX = new TH1D("hProtonnMeanDEDX", "ProtonMeanDEDX;;", 100, 0, 10);
+    TH1D *hProtonMeanDEDX = new TH1D("hProtonMeanDEDX", "ProtonMeanDEDX;;", 100, 0, 10);
 
     TH1D *hTrueInitialKEnergyAllProtons = new TH1D("hTrueInitialKEnergyAllProtons", "hTrueInitialKEnergyAllProtons;;", 33, 0, 0.7);
     TH1D *hTrueInitialKEnergyRecoProtons = new TH1D("hTrueInitialKEnergyRecoProtons", "hTrueInitialKEnergyRecoProtons;;", 33, 0, 0.7);
@@ -75,6 +75,7 @@ void RecoAnalysis() {
 
     // Loop over events
     Int_t NumEntries = (Int_t) tree->GetEntries();
+    std::cout << "Num entries: " << NumEntries << std::endl;
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
@@ -130,6 +131,12 @@ void RecoAnalysis() {
         "Track length (cm)"
     };
 
+    std::vector<TString> YLabels = {
+        "Particle counts",
+        "Particle counts",
+        "Particle counts"
+    };
+
     int numPlots = PlotGroups.size();
     for (int iPlot = 0; iPlot < numPlots; ++iPlot) {
         // Set up canvas
@@ -163,7 +170,7 @@ void RecoAnalysis() {
         Plots[0]->GetYaxis()->SetNdivisions(6);
         Plots[0]->GetYaxis()->SetLabelSize(TextSize);
         Plots[0]->GetYaxis()->SetTitleSize(TextSize);
-        Plots[0]->GetYaxis()->SetTitle("Event counts");
+        Plots[0]->GetYaxis()->SetTitle(YLabels.at(iPlot));
         Plots[0]->GetYaxis()->SetTitleOffset(1.1);
         Plots[0]->GetYaxis()->CenterTitle();	
 
@@ -172,6 +179,14 @@ void RecoAnalysis() {
             Plots[iSubPlot]->SetLineWidth(2);
             Plots[iSubPlot]->SetLineColor(Colors.at(iSubPlot));
             Plots[iSubPlot]->Draw("hist same");
+        }
+
+        if (PlotTitles[iPlot] == "MeanDEDX") {
+            TLine *v_line= new TLine(3.4,-10,3.4,480);
+            v_line->SetLineColor(kRed);
+            v_line->SetLineWidth(2);
+            v_line->SetLineStyle(kDashed);
+            v_line->Draw("same");
         }
 
         leg->Draw();
@@ -218,8 +233,8 @@ void RecoAnalysis() {
         Eff->Draw("AP");
 
         gPad->Update();
-        double max = Eff->GetPaintedGraph()->GetYaxis()->GetBinUpEdge(Eff->GetPaintedGraph()->GetYaxis()->GetNbins());
-        Eff->GetPaintedGraph()->GetYaxis()->SetRangeUser(0., max*1.2);
+        // double max = Eff->GetPaintedGraph()->GetYaxis()->GetBinUpEdge(Eff->GetPaintedGraph()->GetYaxis()->GetNbins());
+        // Eff->GetPaintedGraph()->GetYaxis()->SetRangeUser(0., max*1.1);
 
         Eff->GetPaintedGraph()->GetXaxis()->CenterTitle();
         Eff->GetPaintedGraph()->GetXaxis()->SetTitleFont(FontStyle);

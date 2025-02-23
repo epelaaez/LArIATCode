@@ -79,7 +79,8 @@ void SelectionAnalysis() {
 
     // Declare histograms
     TH1I* hRecoNumProtonTracks = new TH1I("hRecoNumProtonTracks", "NumProtonTracks;;", 5, 0, 5);
-    TH1I* hTrueNumProtonTracks = new TH1I("hTrueNumProtonTracks", "NumProtonTracks;;", 5, 0, 5);
+    TH1I* hRecoTrueNumProtons = new TH1I("hRecoTrueNumProtons", "NumProtonTracks;;", 5, 0, 5);
+    TH1I* hTruthRecoTrueNumProtons = new TH1I("hTruthRecoTrueNumProtons", "NumProtonTracks;;", 5, 0, 5);
 
     // We will keep track of weird events
     std::vector<EventInfo> FlaggedEvents;
@@ -89,9 +90,6 @@ void SelectionAnalysis() {
     Int_t NumEntries = (Int_t) tree->GetEntries();
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
-
-        // Fill histograms
-        hRecoNumProtonTracks->Fill(protonCount);
  
         // Flag events
         bool flagEvent = false;
@@ -99,11 +97,14 @@ void SelectionAnalysis() {
         if (pionTruthPDG != -211) flagEvent = true;
         if (*pionTruthProcess != "primary") flagEvent = true;
 
+        int numProtonDaughters = 0;
         int numPionDaughters = pionDaughtersPDG->size();
         if (!flagEvent) {
             for (int iDaughter = 0; iDaughter < numPionDaughters; ++iDaughter) {
                 int daughterPDG = pionDaughtersPDG->at(iDaughter);
                 std::string daughterProcess = pionDaughtersProcess->at(iDaughter);
+
+                if (daughterPDG == 2212) numProtonDaughters++;
 
                 if ((daughterPDG == 11) && (daughterProcess == "hIoni")) continue;
                 if ((daughterPDG == 111) || (daughterPDG == 211) || (daughterPDG == -211)) { flagEvent = true; break; }
@@ -125,6 +126,10 @@ void SelectionAnalysis() {
 
             pionPDGCount[pionTruthPDG]++;
         }
+
+        // Fill histograms
+        hRecoTrueNumProtons->Fill(numProtonDaughters);
+        hRecoNumProtonTracks->Fill(protonCount);
     }
 
     std::ofstream outFile("FlaggedEventsOutput.txt");
@@ -154,7 +159,7 @@ void SelectionAnalysis() {
         trueRecoTree->GetEntry(i);
 
         // Fill histograms
-        hTrueNumProtonTracks->Fill(trueRecoProtonCount);
+        hTruthRecoTrueNumProtons->Fill(trueRecoProtonCount);
     }
 
     // Setup for drawing plots
@@ -163,19 +168,23 @@ void SelectionAnalysis() {
     };
 
     std::vector<std::vector<TH1*>> PlotGroups = {
-        {hRecoNumProtonTracks, hTrueNumProtonTracks}
+        {hRecoTrueNumProtons, hTruthRecoTrueNumProtons},
+        {hRecoNumProtonTracks, hRecoTrueNumProtons}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         {"Reco", "True reco"}, 
+        {"Reco tracks", "True protons"}
     };
 
     std::vector<TString> PlotTitles = {
-        "NumProtons",
+        "TrueNumProtons",
+        "RecoProtons"
     };
 
     std::vector<TString> XLabels = {
-        "# of protons",
+        "# of true protons",
+        "# of protons"
     };
 
     int numPlots = PlotGroups.size();
