@@ -30,8 +30,8 @@ void ShowerAnalysis() {
     tree->SetBranchAddress("subrun", &subrun); 
     tree->SetBranchAddress("event", &event);
 
-    int primaryParticleTrackID, numEmmitedElectrons, numEmmitedPhotons;
-    tree->SetBranchAddress("primaryParticleTrackID", &primaryParticleTrackID);
+    int primaryParticlePDG, numEmmitedElectrons, numEmmitedPhotons;
+    tree->SetBranchAddress("primaryParticlePDG", &primaryParticlePDG);
     tree->SetBranchAddress("numEmmitedElectrons", &numEmmitedElectrons);
     tree->SetBranchAddress("numEmmitedPhotons", &numEmmitedPhotons);
 
@@ -52,7 +52,7 @@ void ShowerAnalysis() {
     TH1D* hShowerSmallTracksCount = new TH1D("hShowerSmallTracksCount", "hShowerSmallTracksCount", 20, 0, 20);
     TH1D* hNoShowerSmallTracksCount = new TH1D("hNoShowerSmallTracksCount", "hNoShowerSmallTracksCount", 20, 0, 20);
 
-    double TRACK_THRESHOLD = 15;
+    double TRACK_THRESHOLD = 35;
 
     // Loop over events
     Int_t NumEntries = (Int_t) tree->GetEntries();
@@ -151,4 +151,63 @@ void ShowerAnalysis() {
         PlotCanvas->SaveAs(SaveDir + PlotTitles.at(iPlot) + ".png");
         delete PlotCanvas;
     }
+
+    gStyle->SetOptStat(0);
+
+    // Declare 2D histogram
+    double TRACK_THRESHOLD_MIN  = 5;
+    double TRACK_THRESHOLD_MAX  = 50;
+    double TRACK_THRESHOLD_STEP = 1;
+
+    int NUMBER_TRACKS_MIN  = 1;
+    int NUMBER_TRACKS_MAX  = 10;
+    int NUMBER_TRACKS_STEP = 1;
+
+    TH2D* hShowerMisIDs = new TH2D(
+        "hShowerMisIDs", 
+        ";Small Track Threshold;Number of Small Tracks", 
+        (TRACK_THRESHOLD_MAX - TRACK_THRESHOLD_MIN) / TRACK_THRESHOLD_STEP, TRACK_THRESHOLD_MIN, TRACK_THRESHOLD_MAX,
+        (NUMBER_TRACKS_MAX - NUMBER_TRACKS_MIN) / NUMBER_TRACKS_STEP, NUMBER_TRACKS_MIN, NUMBER_TRACKS_MAX
+    );
+
+    TH2D& hAbsMisIDs = new TH2D(
+        "hAbsMisIDs",
+        ";Small Track Threshold;Number of Small Tracks",
+        (TRACK_THRESHOLD_MAX - TRACK_THRESHOLD_MIN) / TRACK_THRESHOLD_STEP, TRACK_THRESHOLD_MIN, TRACK_THRESHOLD_MAX,
+        (NUMBER_TRACKS_MAX - NUMBER_TRACKS_MIN) / NUMBER_TRACKS_STEP, NUMBER_TRACKS_MIN, NUMBER_TRACKS_MAX
+    );
+
+    // Loop over threshold values
+    for (double threshold = TRACK_THRESHOLD_MIN; threshold <= TRACK_THRESHOLD_MAX; threshold += TRACK_THRESHOLD_STEP) {
+        // Loop over events
+        for (Int_t i = 0; i < NumEntries; ++i) {
+            tree->GetEntry(i);
+
+            bool isShower = (numEmmitedElectrons + numEmmitedPhotons) > 1;
+            int numTrks = recoLength->size();
+            int smallTrackCount = 0;
+
+            for (int j = 0; j < numTrks; ++j) {
+                if (recoLength->at(j) < threshold) smallTrackCount++;
+            }
+
+            for (int numTrksBound = NUMBER_TRACKS_MIN; numTrksBound <= NUMBER_TRACKS_MAX; numTrksBound += NUMBER_TRACKS_STEP) {
+                // Look for misidentifications
+                if (((smallTrackCount > numTrksBound) && (!isShower)) || ((smallTrackCount <= numTrksBound) && isShower)) {
+                    hShowerMisIDs->Fill(threshold, numTrksBound, 1. / NumEntries);
+                }
+
+                // Look at when we kill absorption events
+                // TODO: add is signal flag to reco module
+                // if ((smallTrackCount > numTrksBound) && (!isShower)) {
+
+                // }
+            }
+        }
+    }
+    TCanvas* c1 = new TCanvas("c1", "MisID Plot", 800, 600);
+    hShowerMisIDs->SetMinimum(0);
+    hShowerMisIDs->SetMaximum(hShowerMisIDs->GetMaximum());
+    hShowerMisIDs->Draw("COLZ");
+    c1->SaveAs(SaveDir + "MisIDPlot.png");
 }
