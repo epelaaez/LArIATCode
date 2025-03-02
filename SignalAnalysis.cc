@@ -69,7 +69,7 @@ void SignalAnalysis() {
     // Declare histograms
     TH1I *hNumNucleons = new TH1I("hNumNucleons", "NumNucleons;# of nucleons;", 20, 0, 20);
     TH1I *hNumNeutrons = new TH1I("hNumNeutrons", "NumNeutrons;# of neutrons", 15, 0, 15);
-    TH1I *hNumProtons = new TH1I("hNumProtons", "NumProtons;# of protons", 10, 0, 10);
+    TH1I *hNumProtons = new TH1I("hNumProtons", "NumProtons;# of protons", 5, 0, 5);
 
     TH1F *hPionInitialEnergy = new TH1F("hPionInitialEnergy", "PionInitialEnergy;[GeV];", 20, -1, -1);
     TH1F *hPionInitialKEnergy = new TH1F("hPionInitialKEnergy", "PionInitialKEnergy;[GeV];", 20, -1, -1);
