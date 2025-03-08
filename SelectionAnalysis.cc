@@ -9,11 +9,16 @@
 #include <map>
 
 struct EventInfo {
-    int pionTruePDG;
-    std::string pionTrueProcess;
-    std::vector<int> trueDaughtersPDG;
-    std::vector<std::string> trueDaughterProcess;
     int run; int subrun; int event;
+
+    int                      wcMatchPDG;
+    std::string              wcMatchProcess;
+    std::vector<int>         wcMatchDaughtersPDG;
+    std::vector<std::string> wcMatchDaughtersProcess;
+
+    int                      truthPrimaryPDG;
+    std::vector<int>         truthPrimaryDaughtersPDG;
+    std::vector<std::string> truthPrimaryDaughtersProcess;
 };
 
 void SelectionAnalysis() {
@@ -50,22 +55,30 @@ void SelectionAnalysis() {
     tree->SetBranchAddress("Subrun", &subrun); 
     tree->SetBranchAddress("Event", &event);
 
-    int pionTruthPDG;
-    std::string* pionTruthProcess = new std::string();
-    std::vector<int>* pionDaughtersPDG = nullptr;
-    std::vector<std::string>* pionDaughtersProcess = nullptr;
-    tree->SetBranchAddress("pionTruthPDG", &pionTruthPDG);
-    tree->SetBranchAddress("pionTruthProcess", &pionTruthProcess);
-    tree->SetBranchAddress("pionDaughtersPDG", &pionDaughtersPDG);
-    tree->SetBranchAddress("pionDaughtersProcess", &pionDaughtersProcess);
+    // Truth information about the particle the wire chamber track matched to
+    int                       wcMatchPDG;
+    std::string*              wcMatchProcess = new std::string();
+    std::vector<int>*         wcMatchDaughtersPDG = nullptr;
+    std::vector<std::string>* wcMatchDaughtersProcess = nullptr;
+    tree->SetBranchAddress("wcMatchPDG", &wcMatchPDG);
+    tree->SetBranchAddress("wcMatchProcess", &wcMatchProcess);
+    tree->SetBranchAddress("wcMatchDaughtersPDG", &wcMatchDaughtersPDG);
+    tree->SetBranchAddress("wcMatchDaughtersProcess", &wcMatchDaughtersProcess);
 
-    int protonCount;
-    tree->SetBranchAddress("protonCount", &protonCount);
+    // Truth information about the truth primary particle
+    int                       truthPrimaryPDG;
+    std::vector<int>*         truthPrimaryDaughtersPDG = nullptr;
+    std::vector<std::string>* truthPrimaryDaughtersProcess = nullptr;
+    tree->SetBranchAddress("truthPrimaryPDG", &truthPrimaryPDG);
+    tree->SetBranchAddress("truthPrimaryDaughtersPDG", &truthPrimaryDaughtersPDG);
+    tree->SetBranchAddress("truthPrimaryDaughtersProcess", &truthPrimaryDaughtersProcess);
 
-    std::vector<double>* protonLength = nullptr;
-    tree->SetBranchAddress("protonLength", &protonLength);
-
+    // Information about reco'ed protons
+    int                       protonCount;
+    std::vector<double>*      protonLength = nullptr;
     std::vector<std::string>* protonTrueProcess = nullptr;
+    tree->SetBranchAddress("protonCount", &protonCount);
+    tree->SetBranchAddress("protonLength", &protonLength);
     tree->SetBranchAddress("protonTrueProcess", &protonTrueProcess);
 
     // Load true reco branches
@@ -77,34 +90,54 @@ void SelectionAnalysis() {
     int trueRecoProtonCount;
     trueRecoTree->SetBranchAddress("iNumProtons", &trueRecoProtonCount);
 
+    // Load true branches
+    int trueProtonCount;
+    trueTree->SetBranchAddress("iNumProtons", &trueProtonCount);
+
     // Declare histograms
     TH1I* hRecoNumProtonTracks = new TH1I("hRecoNumProtonTracks", "NumProtonTracks;;", 5, 0, 5);
     TH1I* hRecoTrueNumProtons = new TH1I("hRecoTrueNumProtons", "NumProtonTracks;;", 5, 0, 5);
     TH1I* hTruthRecoTrueNumProtons = new TH1I("hTruthRecoTrueNumProtons", "NumProtonTracks;;", 5, 0, 5);
 
+    /////////////////
+    // Selection tree
+    /////////////////
+    
+    // Keep track of events in 0p and Np bins
+    int numSelectedEvents0Protons = 0;
+    int numSelectedEventsNProtons = 0;
+
     // We will keep track of weird events
     std::vector<EventInfo> FlaggedEvents;
-    std::map<int, int> pionPDGCount;
+    std::map<int, std::map<std::string, int>> pionBackground;
+    std::map<int, int> wcMatchPDGCount;
+    std::map<int, int> primaryPDGCount;
 
     // Loop over reco events
     Int_t NumEntries = (Int_t) tree->GetEntries();
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
  
+        if (protonCount >= 1) {
+            numSelectedEventsNProtons++;
+        } else {
+            numSelectedEvents0Protons++;
+        }
+
         // Flag events
         bool flagEvent = false;
 
-        if (pionTruthPDG != -211) flagEvent = true;
-        if (*pionTruthProcess != "primary") flagEvent = true;
+        if (wcMatchPDG != -211) flagEvent = true;
+        if (*wcMatchProcess != "primary") flagEvent = true;
 
-        int numProtonDaughters = 0;
-        int numPionDaughters = pionDaughtersPDG->size();
+        int numWCMatchProtonDaughters = 0;
+        int numWCMatchDaughters = wcMatchDaughtersPDG->size();
         if (!flagEvent) {
-            for (int iDaughter = 0; iDaughter < numPionDaughters; ++iDaughter) {
-                int daughterPDG = pionDaughtersPDG->at(iDaughter);
-                std::string daughterProcess = pionDaughtersProcess->at(iDaughter);
+            for (int iDaughter = 0; iDaughter < numWCMatchDaughters; ++iDaughter) {
+                int daughterPDG = wcMatchDaughtersPDG->at(iDaughter);
+                std::string daughterProcess = wcMatchDaughtersProcess->at(iDaughter);
 
-                if (daughterPDG == 2212) numProtonDaughters++;
+                if (daughterPDG == 2212) numWCMatchProtonDaughters++;
 
                 if ((daughterPDG == 11) && (daughterProcess == "hIoni")) continue;
                 if ((daughterPDG == 111) || (daughterPDG == 211) || (daughterPDG == -211)) { flagEvent = true; break; }
@@ -115,52 +148,135 @@ void SelectionAnalysis() {
 
         if (flagEvent) {
             EventInfo flaggedEvent;
-            flaggedEvent.run = run; 
-            flaggedEvent.subrun = subrun;
-            flaggedEvent.event = event;
-            flaggedEvent.pionTruePDG = pionTruthPDG;
-            flaggedEvent.pionTrueProcess = *pionTruthProcess;
-            flaggedEvent.trueDaughtersPDG = *pionDaughtersPDG;
-            flaggedEvent.trueDaughterProcess = *pionDaughtersProcess;
-            FlaggedEvents.push_back(flaggedEvent);
 
-            pionPDGCount[pionTruthPDG]++;
+            flaggedEvent.run    = run; 
+            flaggedEvent.subrun = subrun;
+            flaggedEvent.event  = event;
+
+            flaggedEvent.wcMatchPDG              = wcMatchPDG;
+            flaggedEvent.wcMatchProcess          = *wcMatchProcess;
+            flaggedEvent.wcMatchDaughtersPDG     = *wcMatchDaughtersPDG;
+            flaggedEvent.wcMatchDaughtersProcess = *wcMatchDaughtersProcess;
+
+            flaggedEvent.truthPrimaryPDG              = truthPrimaryPDG;
+            flaggedEvent.truthPrimaryDaughtersPDG     = *truthPrimaryDaughtersPDG;
+            flaggedEvent.truthPrimaryDaughtersProcess = *truthPrimaryDaughtersProcess;
+
+            FlaggedEvents.push_back(flaggedEvent);
+            
+            int numTruthPrimaryDaughters = truthPrimaryDaughtersPDG->size();
+            if (truthPrimaryPDG == -211) {
+                for (int iDaughter = 0; iDaughter < numTruthPrimaryDaughters; ++iDaughter) {
+                    int daughterPDG = truthPrimaryDaughtersPDG->at(iDaughter);
+                    std::string daughterProcess = truthPrimaryDaughtersProcess->at(iDaughter);
+                    if (!((daughterPDG == 111) || (daughterPDG == 211) || (daughterPDG == -211))) continue;
+                    pionBackground[daughterPDG][daughterProcess]++;
+                }
+            }
+
+            wcMatchPDGCount[wcMatchPDG]++;
+            primaryPDGCount[truthPrimaryPDG]++;
         }
 
         // Fill histograms
-        hRecoTrueNumProtons->Fill(numProtonDaughters);
+        hRecoTrueNumProtons->Fill(numWCMatchProtonDaughters);
         hRecoNumProtonTracks->Fill(protonCount);
     }
 
     std::ofstream outFile("FlaggedEventsOutput.txt");
     outFile << "Num of flagged events: " << FlaggedEvents.size() << std::endl;
-    for (const auto &entry : pionPDGCount) {
-        outFile << "   Pion truth matched PDG: " << entry.first << " Count: " << entry.second << std::endl;
+    outFile << std::endl;
+
+    outFile << "WC match PDG count: " << std::endl;
+    for (const auto &entry : wcMatchPDGCount) {
+        outFile << "    WC match PDG: " << entry.first << " Count: " << entry.second << std::endl;
+    }
+    outFile << std::endl;
+
+    outFile << "Primary PDG count: " << std::endl;
+    for (const auto &entry : primaryPDGCount) {
+        outFile << "    True primary PDG: " << entry.first << " Count: " << entry.second << std::endl;
+    }
+    outFile << std::endl;
+
+    outFile << "Detailed info about primary -211 events:" << std::endl;
+    for (const auto& outerPair : pionBackground) {
+        outFile << "    Daughter pion: " << outerPair.first << ":\n";
+        for (const auto& innerPair : outerPair.second) {
+            outFile << "        " << innerPair.first << " -> " << innerPair.second << "\n";
+        }
     }
     outFile << std::endl;
 
     for (const auto &flaggedEvent : FlaggedEvents) {
         outFile << "Run: " << flaggedEvent.run << " subrun: " << flaggedEvent.subrun << " event: " << flaggedEvent.event << std::endl;
-        outFile << "Pion truth matched PDG: " << flaggedEvent.pionTruePDG << std::endl;
-        outFile << "Pion truth matched process: " << flaggedEvent.pionTrueProcess << std::endl;
-        outFile << "Daughters: " << std::endl;
-        for (int n = 0; n < flaggedEvent.trueDaughterProcess.size(); ++n) {
-            if (flaggedEvent.trueDaughtersPDG[n] == 11 && flaggedEvent.trueDaughterProcess[n] == "hIoni") continue;
-            outFile << "    PDG: " << flaggedEvent.trueDaughtersPDG[n];
-            outFile << " Process: " << flaggedEvent.trueDaughterProcess[n];
+        outFile << "WC match PDG: " << flaggedEvent.wcMatchPDG << std::endl;
+        outFile << "WC match process: " << flaggedEvent.wcMatchProcess << std::endl;
+        outFile << "WC match daughters: " << std::endl;
+        for (int n = 0; n < flaggedEvent.wcMatchDaughtersPDG.size(); ++n) {
+            if (flaggedEvent.wcMatchDaughtersPDG[n] == 11 && flaggedEvent.wcMatchDaughtersProcess[n] == "hIoni") continue;
+            outFile << "    PDG: " << flaggedEvent.wcMatchDaughtersPDG[n];
+            outFile << " Process: " << flaggedEvent.wcMatchDaughtersProcess[n];
             outFile << std::endl;
         }
+        outFile << "Primary PDG: " << flaggedEvent.truthPrimaryPDG << std::endl;
+        outFile << "Primary daughters: " << std::endl;
+        for (int n = 0; n < flaggedEvent.truthPrimaryDaughtersPDG.size(); ++n) {
+            if (flaggedEvent.truthPrimaryDaughtersPDG[n] == 11 && flaggedEvent.truthPrimaryDaughtersProcess[n] == "hIoni") continue;
+            outFile << "    PDG: " << flaggedEvent.truthPrimaryDaughtersPDG[n];
+            outFile << " Process: " << flaggedEvent.truthPrimaryDaughtersProcess[n];
+            outFile << std::endl;
+        }
+        outFile << "Tracks reco'ed as protons: " << protonCount << std::endl;
         outFile << std::endl;
     }
 
-    // Loop over true events
+    ///////////////////
+    // True reco tree
+    ///////////////////
+
+    // Keep track of 0p and Np true reco events
+    int numSelectionTrueEvents0Protons = 0;
+    int numSelectionTrueEventsNProtons = 0;
+
+    // Loop over true reco events
     Int_t NumTrueRecoEntries = (Int_t) trueRecoTree->GetEntries();
     for (Int_t i = 0; i < NumTrueRecoEntries; ++i) {
         trueRecoTree->GetEntry(i);
 
+        if (trueRecoProtonCount >= 1) {
+            numSelectionTrueEventsNProtons++;
+        } else {
+            numSelectionTrueEvents0Protons++;
+        }
+
         // Fill histograms
         hTruthRecoTrueNumProtons->Fill(trueRecoProtonCount);
     }
+
+    ///////////////////
+    // True signal tree
+    ///////////////////
+
+    // Keep track of 0p and Np true events
+    int numSignalEvents0Protons = 0;
+    int numSignalEventsNProtons = 0;
+
+    // Loop over true events
+    Int_t NumTrueEntries = (Int_t) trueTree->GetEntries();
+    for (Int_t i = 0; i < NumTrueEntries; ++i) {
+        trueTree->GetEntry(i);
+
+        if (trueProtonCount >= 1) {
+            numSignalEventsNProtons++;   
+        } else {
+            numSignalEvents0Protons++;
+        }
+    }
+
+    /////////////////////
+    // Drawing histograms
+    /////////////////////
 
     // Setup for drawing plots
     std::vector<int> Colors = {
@@ -237,11 +353,24 @@ void SelectionAnalysis() {
     }
 
     // Compute purity and efficiency
-    Int_t NumTrueEntries = (Int_t) trueTree->GetEntries();
+    std::cout << std::endl;
     std::cout << "Number of reco events that pass selection criteria: " << NumEntries << std::endl;
     std::cout << "Number of reco events that pass selection criteria that are true events: " << NumTrueRecoEntries << std::endl;
     std::cout << "Number of background events: " << NumEntries - NumTrueRecoEntries << std::endl;
     std::cout << "Number of true events: " << NumTrueEntries << std::endl;
     std::cout << "Efficiency: " << 100 * ((float)NumTrueRecoEntries / (float)NumTrueEntries) << "%" << std::endl; 
-    std::cout << "Purity: " << 100 * ((float)NumTrueRecoEntries / (float)NumEntries) << "%" << std::endl;
+    std::cout << "Purity:     " << 100 * ((float)NumTrueRecoEntries / (float)NumEntries) << "%" << std::endl;
+    std::cout << std::endl;
+    // TODO: fix this, currently naively doing it
+    std::cout << "Selected 0p events: " << numSelectedEvents0Protons << std::endl;
+    std::cout << "Selected 0p events that are true 0p events: " << numSelectionTrueEvents0Protons << std::endl;
+    std::cout << "Signal 0p events: " << numSignalEvents0Protons << std::endl;
+    std::cout << "Efficiency 0p: " << 100 * ((float) numSelectionTrueEvents0Protons / (float) numSignalEvents0Protons) << "%" << std::endl; 
+    std::cout << "Purity 0p:     " << 100 * ((float) numSelectionTrueEvents0Protons / (float) numSelectedEvents0Protons) << "%" << std::endl; 
+    std::cout << std::endl;
+    std::cout << "Selected Np events: " << numSelectedEventsNProtons << std::endl;
+    std::cout << "Selected Np events that are true Np events: " << numSelectionTrueEventsNProtons << std::endl;
+    std::cout << "Signal Np events: " << numSignalEventsNProtons << std::endl;
+    std::cout << "Efficiency Np: " << 100 * ((float) numSelectionTrueEventsNProtons / (float) numSignalEventsNProtons) << "%" << std::endl; 
+    std::cout << "Purity Np:     " << 100 * ((float) numSelectionTrueEventsNProtons / (float) numSelectedEventsNProtons) << "%" << std::endl; 
 }
