@@ -69,9 +69,15 @@ void SelectionAnalysis() {
     int                       truthPrimaryPDG;
     std::vector<int>*         truthPrimaryDaughtersPDG = nullptr;
     std::vector<std::string>* truthPrimaryDaughtersProcess = nullptr;
+    std::vector<float>*       truthPrimaryDaughtersKE = nullptr;
+    bool                      isPionAbsorptionSignal;
+    int                       numVisibleProtons;
     tree->SetBranchAddress("truthPrimaryPDG", &truthPrimaryPDG);
     tree->SetBranchAddress("truthPrimaryDaughtersPDG", &truthPrimaryDaughtersPDG);
     tree->SetBranchAddress("truthPrimaryDaughtersProcess", &truthPrimaryDaughtersProcess);
+    tree->SetBranchAddress("truthPrimaryDaughtersKE", &truthPrimaryDaughtersKE);
+    tree->SetBranchAddress("isPionAbsorptionSignal", &isPionAbsorptionSignal);
+    tree->SetBranchAddress("numVisibleProtons", &numVisibleProtons);
 
     // Information about reco'ed protons
     int                       protonCount;
@@ -106,6 +112,8 @@ void SelectionAnalysis() {
     // Keep track of events in 0p and Np bins
     int numSelectedEvents0Protons = 0;
     int numSelectedEventsNProtons = 0;
+    int numSelectedTrueEvents0Protons = 0;
+    int numSelectedTrueEventsNProtons = 0;
 
     // We will keep track of weird events
     std::vector<EventInfo> FlaggedEvents;
@@ -120,33 +128,23 @@ void SelectionAnalysis() {
  
         if (protonCount >= 1) {
             numSelectedEventsNProtons++;
+            if (isPionAbsorptionSignal && (numVisibleProtons >= 1)) numSelectedTrueEventsNProtons++;
         } else {
             numSelectedEvents0Protons++;
+            if (isPionAbsorptionSignal && (numVisibleProtons == 0)) numSelectedTrueEvents0Protons++;
         }
-
-        // Flag events
-        bool flagEvent = false;
-
-        if (wcMatchPDG != -211) flagEvent = true;
-        if (*wcMatchProcess != "primary") flagEvent = true;
 
         int numWCMatchProtonDaughters = 0;
         int numWCMatchDaughters = wcMatchDaughtersPDG->size();
-        if (!flagEvent) {
-            for (int iDaughter = 0; iDaughter < numWCMatchDaughters; ++iDaughter) {
-                int daughterPDG = wcMatchDaughtersPDG->at(iDaughter);
-                std::string daughterProcess = wcMatchDaughtersProcess->at(iDaughter);
+        for (int iDaughter = 0; iDaughter < numWCMatchDaughters; ++iDaughter) {
+            int daughterPDG = wcMatchDaughtersPDG->at(iDaughter);
+            std::string daughterProcess = wcMatchDaughtersProcess->at(iDaughter);
 
-                if (daughterPDG == 2212) numWCMatchProtonDaughters++;
-
-                if ((daughterPDG == 11) && (daughterProcess == "hIoni")) continue;
-                if ((daughterPDG == 111) || (daughterPDG == 211) || (daughterPDG == -211)) { flagEvent = true; break; }
-                if ((daughterProcess == "Decay") || (daughterProcess == "hBertiniCaptureAtRest")) { flagEvent = true; break; }
-                if ((daughterPDG == 2212) && (daughterProcess != "pi-Inelastic")) {flagEvent = true; break; }
-            }
+            if (daughterPDG == 2212) numWCMatchProtonDaughters++;
         }
-
-        if (flagEvent) {
+        
+        // Flag events
+        if (!isPionAbsorptionSignal) {
             EventInfo flaggedEvent;
 
             flaggedEvent.run    = run; 
@@ -235,20 +233,10 @@ void SelectionAnalysis() {
     // True reco tree
     ///////////////////
 
-    // Keep track of 0p and Np true reco events
-    int numSelectionTrueEvents0Protons = 0;
-    int numSelectionTrueEventsNProtons = 0;
-
     // Loop over true reco events
     Int_t NumTrueRecoEntries = (Int_t) trueRecoTree->GetEntries();
     for (Int_t i = 0; i < NumTrueRecoEntries; ++i) {
         trueRecoTree->GetEntry(i);
-
-        if (trueRecoProtonCount >= 1) {
-            numSelectionTrueEventsNProtons++;
-        } else {
-            numSelectionTrueEvents0Protons++;
-        }
 
         // Fill histograms
         hTruthRecoTrueNumProtons->Fill(trueRecoProtonCount);
@@ -361,16 +349,15 @@ void SelectionAnalysis() {
     std::cout << "Efficiency: " << 100 * ((float)NumTrueRecoEntries / (float)NumTrueEntries) << "%" << std::endl; 
     std::cout << "Purity:     " << 100 * ((float)NumTrueRecoEntries / (float)NumEntries) << "%" << std::endl;
     std::cout << std::endl;
-    // TODO: fix this, currently naively doing it
     std::cout << "Selected 0p events: " << numSelectedEvents0Protons << std::endl;
-    std::cout << "Selected 0p events that are true 0p events: " << numSelectionTrueEvents0Protons << std::endl;
+    std::cout << "Selected 0p events that are true 0p events: " << numSelectedTrueEvents0Protons << std::endl;
     std::cout << "Signal 0p events: " << numSignalEvents0Protons << std::endl;
-    std::cout << "Efficiency 0p: " << 100 * ((float) numSelectionTrueEvents0Protons / (float) numSignalEvents0Protons) << "%" << std::endl; 
-    std::cout << "Purity 0p:     " << 100 * ((float) numSelectionTrueEvents0Protons / (float) numSelectedEvents0Protons) << "%" << std::endl; 
+    std::cout << "Efficiency 0p: " << 100 * ((float) numSelectedTrueEvents0Protons / (float) numSignalEvents0Protons) << "%" << std::endl; 
+    std::cout << "Purity 0p:     " << 100 * ((float) numSelectedTrueEvents0Protons / (float) numSelectedEvents0Protons) << "%" << std::endl; 
     std::cout << std::endl;
     std::cout << "Selected Np events: " << numSelectedEventsNProtons << std::endl;
-    std::cout << "Selected Np events that are true Np events: " << numSelectionTrueEventsNProtons << std::endl;
+    std::cout << "Selected Np events that are true Np events: " << numSelectedTrueEventsNProtons << std::endl;
     std::cout << "Signal Np events: " << numSignalEventsNProtons << std::endl;
-    std::cout << "Efficiency Np: " << 100 * ((float) numSelectionTrueEventsNProtons / (float) numSignalEventsNProtons) << "%" << std::endl; 
-    std::cout << "Purity Np:     " << 100 * ((float) numSelectionTrueEventsNProtons / (float) numSelectedEventsNProtons) << "%" << std::endl; 
+    std::cout << "Efficiency Np: " << 100 * ((float) numSelectedTrueEventsNProtons / (float) numSignalEventsNProtons) << "%" << std::endl; 
+    std::cout << "Purity Np:     " << 100 * ((float) numSelectedTrueEventsNProtons / (float) numSelectedEventsNProtons) << "%" << std::endl; 
 }

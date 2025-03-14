@@ -1,14 +1,13 @@
-Num of flagged events: 806
+Num of flagged events: 762
 
 WC match PDG count: 
-    WC match PDG: -211 Count: 549
+    WC match PDG: -211 Count: 534
     WC match PDG: 11 Count: 114
     WC match PDG: 13 Count: 97
-    WC match PDG: 2212 Count: 45
-    WC match PDG: 1000010020 Count: 1
+    WC match PDG: 2212 Count: 17
 
 Primary PDG count: 
-    True primary PDG: -211 Count: 630
+    True primary PDG: -211 Count: 586
     True primary PDG: 11 Count: 112
     True primary PDG: 13 Count: 64
 
@@ -183,34 +182,6 @@ Primary daughters:
     PDG: 1000160370 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 19850
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160350 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160350 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 19858
 WC match PDG: 13
 WC match process: primary
@@ -307,40 +278,6 @@ Primary daughters:
     PDG: 2112 Process: muMinusCaptureAtRest
     PDG: 22 Process: muMinusCaptureAtRest
     PDG: 1000170370 Process: muMinusCaptureAtRest
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 19872
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160330 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160330 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 19882
@@ -847,6 +784,40 @@ Primary daughters:
     PDG: 13 Process: Decay
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 199817
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000150310 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000150310 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 199821
 WC match PDG: -211
 WC match process: primary
@@ -863,40 +834,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170390 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 199832
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150350 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150350 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 199870
@@ -923,29 +860,6 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000160350 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 199871
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-    PDG: 2212 Process: protonInelastic
-    PDG: 2112 Process: protonInelastic
-    PDG: 22 Process: protonInelastic
-    PDG: 2112 Process: protonInelastic
-    PDG: 22 Process: protonInelastic
-    PDG: 2112 Process: protonInelastic
-    PDG: 22 Process: protonInelastic
-    PDG: 1000180370 Process: protonInelastic
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160340 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 199889
@@ -1070,25 +984,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180390 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 199917
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000020040 Process: pi-Inelastic
-    PDG: 1000140300 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 199927
@@ -2119,21 +2014,6 @@ Primary daughters:
     PDG: 1000170370 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 200061
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000150370 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 200081
 WC match PDG: 13
 WC match process: primary
@@ -2562,36 +2442,6 @@ Primary daughters:
     PDG: 1000160360 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 200245
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160350 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160350 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 200274
 WC match PDG: 11
 WC match process: primary
@@ -2664,36 +2514,6 @@ Primary daughters:
     PDG: 22 Process: hBertiniCaptureAtRest
     PDG: 22 Process: hBertiniCaptureAtRest
     PDG: 1000160380 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 200303
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160350 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160350 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 200314
@@ -2797,6 +2617,42 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180380 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 200351
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160320 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160320 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 200363
@@ -2959,6 +2815,34 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 2112 Process: pi-Inelastic
     PDG: 1000160340 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 200382
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160350 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160350 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 200383
@@ -3621,23 +3505,6 @@ Primary daughters:
     PDG: 1000180390 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 200674
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 1000160340 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 200682
 WC match PDG: 13
 WC match process: primary
@@ -3819,46 +3686,6 @@ Primary daughters:
     PDG: 13 Process: Decay
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 200713
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000120250 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000120250 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 200732
 WC match PDG: -211
 WC match process: primary
@@ -3991,38 +3818,14 @@ Primary daughters:
     PDG: 1000160340 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 200778
+Run: 1 subrun: 0 event: 200792
 WC match PDG: -211
 WC match process: primary
 WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000140290 Process: hBertiniCaptureAtRest
+    PDG: 1000180380 Process: hadElastic
 Primary PDG: -211
 Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000140290 Process: hBertiniCaptureAtRest
+    PDG: 1000180380 Process: hadElastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 200809
@@ -4373,24 +4176,6 @@ Primary daughters:
     PDG: 1000180390 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 200920
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160340 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 200932
 WC match PDG: 11
 WC match process: primary
@@ -4527,6 +4312,18 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170340 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 200958
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 200967
@@ -4771,39 +4568,6 @@ Primary daughters:
     PDG: 1000170400 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 200997
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000150330 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 201003
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000140370 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 201014
 WC match PDG: 11
 WC match process: primary
@@ -4928,6 +4692,18 @@ Primary daughters:
     PDG: 22 Process: eBrem
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 201053
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 201061
 WC match PDG: -211
 WC match process: primary
@@ -4948,6 +4724,16 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170360 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 201062
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 201069
@@ -5892,6 +5678,30 @@ Primary daughters:
     PDG: 13 Process: Decay
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 201236
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 1000160340 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 1000160340 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 201261
 WC match PDG: -211
 WC match process: primary
@@ -6130,6 +5940,30 @@ Primary daughters:
     PDG: 22 Process: eBrem
     PDG: 22 Process: eBrem
     PDG: 22 Process: eBrem
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 201284
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000230530 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000230530 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 201306
@@ -6442,26 +6276,6 @@ Primary daughters:
     PDG: 1000160320 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 201431
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160320 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 201444
 WC match PDG: -211
 WC match process: primary
@@ -6502,38 +6316,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 1000020040 Process: pi-Inelastic
     PDG: 1000150330 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 201448
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160380 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160380 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 201455
@@ -6580,34 +6362,6 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170360 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 201492
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160380 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160380 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 201499
@@ -7509,6 +7263,16 @@ Primary daughters:
     PDG: 1000150310 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 201773
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 201774
 WC match PDG: 11
 WC match process: primary
@@ -7615,32 +7379,6 @@ Primary daughters:
     PDG: 1000140340 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 201823
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150380 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150380 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 201853
 WC match PDG: -211
 WC match process: primary
@@ -7697,44 +7435,6 @@ Primary daughters:
     PDG: 1000180390 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 201899
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150310 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150310 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 201914
 WC match PDG: -211
 WC match process: primary
@@ -7767,27 +7467,50 @@ Primary daughters:
     PDG: 1000150320 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 201930
-WC match PDG: 2212
-WC match process: pi-Inelastic
+Run: 1 subrun: 0 event: 201915
+WC match PDG: -211
+WC match process: primary
 WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000260560 Process: hadElastic
 Primary PDG: -211
 Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000260560 Process: hadElastic
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 201923
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000140280 Process: hadElastic
     PDG: 2112 Process: pi-Inelastic
     PDG: 2212 Process: pi-Inelastic
     PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
     PDG: 2112 Process: pi-Inelastic
     PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160340 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000140280 Process: hadElastic
     PDG: 2112 Process: pi-Inelastic
     PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 2112 Process: pi-Inelastic
     PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000010030 Process: pi-Inelastic
-    PDG: 1000130270 Process: pi-Inelastic
+    PDG: 1000160340 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 201934
@@ -9135,40 +8858,6 @@ Primary daughters:
     PDG: 11 Process: eIoni
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 202206
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160360 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160360 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 202210
 WC match PDG: -211
 WC match process: primary
@@ -9439,32 +9128,6 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000160340 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 202238
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160370 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160370 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 202267
@@ -10076,26 +9739,6 @@ Primary daughters:
     PDG: 1000160340 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 202391
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160380 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160380 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 202395
 WC match PDG: -211
 WC match process: primary
@@ -10144,6 +9787,34 @@ Primary daughters:
     PDG: 1000170370 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 202416
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000150340 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000150340 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 202438
 WC match PDG: -211
 WC match process: primary
@@ -10162,36 +9833,36 @@ Primary daughters:
     PDG: 1000180400 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 202446
+Run: 1 subrun: 0 event: 202472
 WC match PDG: -211
 WC match process: primary
 WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000130280 Process: hBertiniCaptureAtRest
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000060120 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000030090 Process: pi-Inelastic
 Primary PDG: -211
 Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000130280 Process: hBertiniCaptureAtRest
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000060120 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000030090 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 202489
@@ -10380,6 +10051,42 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180390 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 202546
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 1000020040 Process: pi-Inelastic
+    PDG: 1000140280 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 1000020040 Process: pi-Inelastic
+    PDG: 1000140280 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 202555
@@ -10666,73 +10373,6 @@ Primary daughters:
     PDG: 1000180370 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 202605
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160330 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 202623
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000150340 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 202636
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000130280 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000130280 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 202656
 WC match PDG: -211
 WC match process: primary
@@ -10779,78 +10419,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180380 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 202668
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150340 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150340 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 202680
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160330 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160330 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 202689
@@ -11016,24 +10584,6 @@ Primary daughters:
     PDG: 1000160360 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 202781
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 1000160330 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 202795
 WC match PDG: -211
 WC match process: primary
@@ -11058,72 +10608,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180360 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 5015
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000130270 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 5026
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150330 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150330 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 5053
@@ -11924,6 +11408,16 @@ Primary daughters:
     PDG: 1000180380 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 5285
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 5288
 WC match PDG: -211
 WC match process: pi-Inelastic
@@ -12505,6 +11999,14 @@ Primary daughters:
     PDG: 1000160330 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 52850
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+Primary PDG: -211
+Primary daughters: 
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 52866
 WC match PDG: -211
 WC match process: primary
@@ -12637,30 +12139,6 @@ Primary daughters:
     PDG: 22 Process: eBrem
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 52897
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160380 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160380 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 52928
 WC match PDG: -211
 WC match process: primary
@@ -12775,44 +12253,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 1000020040 Process: pi-Inelastic
     PDG: 1000160360 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 52940
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000140290 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000140290 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 52943
@@ -13651,30 +13091,16 @@ Primary daughters:
     PDG: 1000160320 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 53234
+Run: 1 subrun: 0 event: 53230
 WC match PDG: -211
 WC match process: primary
 WC match daughters: 
     PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160380 Process: hBertiniCaptureAtRest
+    PDG: 1000180400 Process: hadElastic
 Primary PDG: -211
 Primary daughters: 
     PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160380 Process: hBertiniCaptureAtRest
+    PDG: 1000180400 Process: hadElastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 53245
@@ -14032,40 +13458,6 @@ Primary daughters:
     PDG: 1000170390 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 53379
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150360 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150360 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 53394
 WC match PDG: 11
 WC match process: primary
@@ -14340,74 +13732,6 @@ Primary daughters:
     PDG: 1000180390 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 53435
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150320 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150320 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 53448
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150300 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150300 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 53452
 WC match PDG: 11
 WC match process: primary
@@ -14576,6 +13900,40 @@ Primary daughters:
     PDG: 14 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 53481
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000150330 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000150330 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 53485
 WC match PDG: -211
 WC match process: primary
@@ -14650,32 +14008,6 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000140310 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 53509
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150380 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150380 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 53524
@@ -14962,6 +14294,32 @@ Primary PDG: -211
 Primary daughters: 
     PDG: -14 Process: Decay
     PDG: 13 Process: Decay
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 53661
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160350 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160350 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 53696
@@ -15652,6 +15010,48 @@ Primary daughters:
     PDG: 13 Process: Decay
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 53916
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000010020 Process: pi-Inelastic
+    PDG: 1000130270 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000010020 Process: pi-Inelastic
+    PDG: 1000130270 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 53946
 WC match PDG: -211
 WC match process: primary
@@ -16003,20 +15403,6 @@ Primary daughters:
     PDG: 22 Process: eBrem
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 54091
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000150370 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 54108
 WC match PDG: 13
 WC match process: primary
@@ -16125,34 +15511,6 @@ Primary daughters:
     PDG: 11 Process: muIoni
     PDG: 11 Process: muIoni
     PDG: 11 Process: muIoni
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 54111
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160340 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160340 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 54142
@@ -16795,6 +16153,16 @@ Primary daughters:
     PDG: 1000160350 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 54247
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 54249
 WC match PDG: -211
 WC match process: primary
@@ -17111,6 +16479,22 @@ Primary daughters:
     PDG: 1000180360 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 54373
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 54390
 WC match PDG: -211
 WC match process: primary
@@ -17127,21 +16511,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180390 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 54398
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160380 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 54400
@@ -17574,46 +16943,6 @@ Primary daughters:
     PDG: 1000160350 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 54538
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000140320 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000140320 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 54541
 WC match PDG: -211
 WC match process: primary
@@ -17666,24 +16995,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180400 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 54574
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000150340 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 54576
@@ -18669,48 +17980,6 @@ Primary daughters:
     PDG: 11 Process: muIoni
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 54924
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150310 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150310 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 54932
 WC match PDG: 11
 WC match process: primary
@@ -18857,23 +18126,6 @@ Primary daughters:
     PDG: 1000010020 Process: pi-Inelastic
     PDG: 1000020040 Process: pi-Inelastic
     PDG: 1000140280 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 54956
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160350 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 55000
@@ -19610,44 +18862,6 @@ Primary daughters:
     PDG: 1000180390 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 55337
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150320 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150320 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 55347
 WC match PDG: 2212
 WC match process: neutronInelastic
@@ -19665,6 +18879,34 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000140320 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 55384
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160350 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160350 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 55394
@@ -19827,42 +19069,6 @@ Primary daughters:
     PDG: 1000180380 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 55418
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000140310 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000140310 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 55419
 WC match PDG: 11
 WC match process: primary
@@ -19971,24 +19177,6 @@ Primary daughters:
     PDG: 22 Process: eBrem
     PDG: 22 Process: eBrem
     PDG: 22 Process: eBrem
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 55435
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 1000150330 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 55486
@@ -20173,38 +19361,6 @@ Primary daughters:
     PDG: 11 Process: muMinusCaptureAtRest
     PDG: -12 Process: muMinusCaptureAtRest
     PDG: 14 Process: muMinusCaptureAtRest
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 55531
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160340 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160340 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 55558
@@ -20473,40 +19629,6 @@ Primary daughters:
     PDG: 1000170390 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 55654
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160370 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160370 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 55676
 WC match PDG: -211
 WC match process: primary
@@ -20623,27 +19745,6 @@ Primary daughters:
     PDG: 1000130290 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 55728
-WC match PDG: 1000010020
-WC match process: pi-Inelastic
-WC match daughters: 
-    PDG: 2112 Process: dInelastic
-    PDG: 22 Process: dInelastic
-    PDG: 22 Process: dInelastic
-    PDG: 22 Process: dInelastic
-    PDG: 1000190410 Process: dInelastic
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000010020 Process: pi-Inelastic
-    PDG: 1000020040 Process: pi-Inelastic
-    PDG: 1000140320 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 55745
 WC match PDG: -211
 WC match process: primary
@@ -20718,6 +19819,16 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000140300 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 55796
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 5806
@@ -21024,29 +20135,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170390 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 5899
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 2212 Process: protonInelastic
-    PDG: 22 Process: protonInelastic
-    PDG: 2112 Process: protonInelastic
-    PDG: 1000180390 Process: protonInelastic
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 1000140310 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 5906
@@ -21702,40 +20790,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 1000010030 Process: pi-Inelastic
     PDG: 1000160340 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 6051
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000140300 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000140300 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 6065
@@ -22625,6 +21679,18 @@ Primary daughters:
     PDG: 1000160360 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 61876
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 61883
 WC match PDG: -211
 WC match process: primary
@@ -22643,30 +21709,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 2112 Process: pi-Inelastic
     PDG: 1000180380 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 61902
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000010020 Process: pi-Inelastic
-    PDG: 1000120270 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 61936
@@ -22873,34 +21915,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180390 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 61987
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150370 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150370 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 61989
@@ -23141,6 +22155,74 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170350 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 62039
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000150350 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000150350 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 62071
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000260560 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000020040 Process: pi-Inelastic
+    PDG: 1000120260 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000260560 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000020040 Process: pi-Inelastic
+    PDG: 1000120260 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 62077
@@ -23445,31 +22527,6 @@ Primary daughters:
     PDG: 22 Process: eBrem
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 62128
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000140280 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 62138
 WC match PDG: -211
 WC match process: primary
@@ -23612,6 +22669,18 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180390 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 62181
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 62196
@@ -23943,42 +23012,6 @@ Primary daughters:
     PDG: 1000180390 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 62390
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160350 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160350 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 62422
 WC match PDG: -211
 WC match process: primary
@@ -24147,6 +23180,34 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 1000010030 Process: pi-Inelastic
     PDG: 1000140300 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 62465
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000150330 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000150330 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 62487
@@ -24601,42 +23662,6 @@ Primary daughters:
     PDG: 1000180380 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 62555
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150320 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150320 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 62567
 WC match PDG: 11
 WC match process: primary
@@ -24729,27 +23754,6 @@ Primary daughters:
     PDG: 22 Process: eBrem
     PDG: 22 Process: eBrem
     PDG: 11 Process: eIoni
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 62579
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-    PDG: 2212 Process: protonInelastic
-    PDG: 22 Process: protonInelastic
-    PDG: 2212 Process: protonInelastic
-    PDG: 22 Process: protonInelastic
-    PDG: 1000070150 Process: protonInelastic
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160350 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 62583
@@ -24938,29 +23942,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170360 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 62593
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000130290 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 62598
@@ -26056,6 +25037,42 @@ Primary daughters:
     PDG: 22 Process: eBrem
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 62817
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+Primary PDG: -211
+Primary daughters: 
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 62834
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000220500 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000220500 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 62835
 WC match PDG: -211
 WC match process: primary
@@ -26417,66 +25434,6 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 2112 Process: pi-Inelastic
     PDG: 1000180380 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 63000
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160330 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160330 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 63015
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160360 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160360 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 63016
@@ -27659,6 +26616,40 @@ Primary daughters:
     PDG: 13 Process: Decay
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 63295
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000010020 Process: pi-Inelastic
+    PDG: 1000010020 Process: pi-Inelastic
+    PDG: 1000140280 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000010020 Process: pi-Inelastic
+    PDG: 1000010020 Process: pi-Inelastic
+    PDG: 1000140280 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 63308
 WC match PDG: 2212
 WC match process: pi-Inelastic
@@ -27670,27 +26661,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180400 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 63366
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 1000140300 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 63379
@@ -27713,40 +26683,6 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170390 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 63382
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 1000130280 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 1000130280 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 63384
@@ -28092,42 +27028,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170380 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 63442
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150330 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 11 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150330 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 63444
@@ -28706,30 +27606,6 @@ Primary daughters:
     PDG: 1000170370 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 63636
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160380 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000160380 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 63656
 WC match PDG: 13
 WC match process: primary
@@ -28856,46 +27732,6 @@ Primary daughters:
     PDG: 1000180400 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 63675
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150310 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150310 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 63683
 WC match PDG: -211
 WC match process: primary
@@ -28912,42 +27748,6 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170380 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 63687
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000020030 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000140310 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000020030 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000140310 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 63691
@@ -29134,34 +27934,6 @@ Primary daughters:
     PDG: 11 Process: eIoni
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 63717
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160350 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160350 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 63722
 WC match PDG: -211
 WC match process: primary
@@ -29232,6 +28004,34 @@ Primary daughters:
     PDG: 1000180380 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
+Run: 1 subrun: 0 event: 63770
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000010030 Process: pi-Inelastic
+    PDG: 1000020040 Process: pi-Inelastic
+    PDG: 1000080160 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000010030 Process: pi-Inelastic
+    PDG: 1000020040 Process: pi-Inelastic
+    PDG: 1000080160 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+
 Run: 1 subrun: 0 event: 63805
 WC match PDG: -211
 WC match process: primary
@@ -29289,38 +28089,6 @@ Primary PDG: -211
 Primary daughters: 
     PDG: -14 Process: Decay
     PDG: 13 Process: Decay
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 63818
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150320 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010030 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000150320 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 63825
@@ -29387,6 +28155,42 @@ Primary daughters:
     PDG: 22 Process: eBrem
     PDG: 11 Process: eIoni
     PDG: 11 Process: eIoni
+Tracks reco'ed as protons: 0
+
+Run: 1 subrun: 0 event: 63878
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160320 Process: pi-Inelastic
+Primary PDG: -211
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160320 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 63886
@@ -29542,24 +28346,6 @@ Primary daughters:
     PDG: 22 Process: muMinusCaptureAtRest
     PDG: 2112 Process: muMinusCaptureAtRest
     PDG: 1000170370 Process: muMinusCaptureAtRest
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 63913
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000020040 Process: pi-Inelastic
-    PDG: 1000140290 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 63935
@@ -30029,21 +28815,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 2112 Process: pi-Inelastic
     PDG: 1000150320 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 64038
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160360 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 64039
@@ -31374,72 +30145,6 @@ Primary daughters:
     PDG: 1000180400 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 64466
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160340 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160340 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 64476
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000120250 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000010020 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 1000120250 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 64478
 WC match PDG: -211
 WC match process: primary
@@ -31866,52 +30571,6 @@ Primary daughters:
     PDG: 1000170360 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 64535
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000140320 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 1000020040 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000140320 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 64541
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000010030 Process: pi-Inelastic
-    PDG: 1000140290 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 64547
 WC match PDG: -211
 WC match process: pi-Inelastic
@@ -31966,26 +30625,6 @@ Primary daughters:
     PDG: 1000160340 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 
-Run: 1 subrun: 0 event: 64574
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-Primary PDG: -211
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 1000160320 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
 Run: 1 subrun: 0 event: 64580
 WC match PDG: -211
 WC match process: primary
@@ -32026,34 +30665,6 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180380 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-
-Run: 1 subrun: 0 event: 64612
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160370 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000160370 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 
 Run: 1 subrun: 0 event: 64617
