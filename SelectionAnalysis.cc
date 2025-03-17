@@ -10,6 +10,7 @@
 
 struct EventInfo {
     int run; int subrun; int event;
+    float vertexX; float vertexY; float vertexZ;
 
     int                      wcMatchPDG;
     std::string              wcMatchProcess;
@@ -19,6 +20,8 @@ struct EventInfo {
     int                      truthPrimaryPDG;
     std::vector<int>         truthPrimaryDaughtersPDG;
     std::vector<std::string> truthPrimaryDaughtersProcess;
+
+    int                      visibleProtons;
 };
 
 void SelectionAnalysis() {
@@ -70,6 +73,9 @@ void SelectionAnalysis() {
     std::vector<int>*         truthPrimaryDaughtersPDG = nullptr;
     std::vector<std::string>* truthPrimaryDaughtersProcess = nullptr;
     std::vector<float>*       truthPrimaryDaughtersKE = nullptr;
+    float                     truthPrimaryVertexX;
+    float                     truthPrimaryVertexY;
+    float                     truthPrimaryVertexZ;
     bool                      isPionAbsorptionSignal;
     int                       numVisibleProtons;
     tree->SetBranchAddress("truthPrimaryPDG", &truthPrimaryPDG);
@@ -78,6 +84,9 @@ void SelectionAnalysis() {
     tree->SetBranchAddress("truthPrimaryDaughtersKE", &truthPrimaryDaughtersKE);
     tree->SetBranchAddress("isPionAbsorptionSignal", &isPionAbsorptionSignal);
     tree->SetBranchAddress("numVisibleProtons", &numVisibleProtons);
+    tree->SetBranchAddress("truthPrimaryVertexX", &truthPrimaryVertexX);
+    tree->SetBranchAddress("truthPrimaryVertexY", &truthPrimaryVertexY);
+    tree->SetBranchAddress("truthPrimaryVertexZ", &truthPrimaryVertexZ);
 
     // Information about reco'ed protons
     int                       protonCount;
@@ -151,6 +160,10 @@ void SelectionAnalysis() {
             flaggedEvent.subrun = subrun;
             flaggedEvent.event  = event;
 
+            flaggedEvent.vertexX = truthPrimaryVertexX;
+            flaggedEvent.vertexY = truthPrimaryVertexY;
+            flaggedEvent.vertexZ = truthPrimaryVertexZ;
+
             flaggedEvent.wcMatchPDG              = wcMatchPDG;
             flaggedEvent.wcMatchProcess          = *wcMatchProcess;
             flaggedEvent.wcMatchDaughtersPDG     = *wcMatchDaughtersPDG;
@@ -159,6 +172,8 @@ void SelectionAnalysis() {
             flaggedEvent.truthPrimaryPDG              = truthPrimaryPDG;
             flaggedEvent.truthPrimaryDaughtersPDG     = *truthPrimaryDaughtersPDG;
             flaggedEvent.truthPrimaryDaughtersProcess = *truthPrimaryDaughtersProcess;
+
+            flaggedEvent.visibleProtons = numVisibleProtons;
 
             FlaggedEvents.push_back(flaggedEvent);
             
@@ -218,6 +233,7 @@ void SelectionAnalysis() {
             outFile << std::endl;
         }
         outFile << "Primary PDG: " << flaggedEvent.truthPrimaryPDG << std::endl;
+        outFile << "Primary vertex: " << flaggedEvent.vertexX << ", " << flaggedEvent.vertexY << ", " << flaggedEvent.vertexZ << std::endl; 
         outFile << "Primary daughters: " << std::endl;
         for (int n = 0; n < flaggedEvent.truthPrimaryDaughtersPDG.size(); ++n) {
             if (flaggedEvent.truthPrimaryDaughtersPDG[n] == 11 && flaggedEvent.truthPrimaryDaughtersProcess[n] == "hIoni") continue;
@@ -226,6 +242,7 @@ void SelectionAnalysis() {
             outFile << std::endl;
         }
         outFile << "Tracks reco'ed as protons: " << protonCount << std::endl;
+        outFile << "True visible protons: " << flaggedEvent.visibleProtons << std::endl;
         outFile << std::endl;
     }
 
