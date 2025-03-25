@@ -45,12 +45,19 @@ void ShowerAnalysis() {
     tree->SetBranchAddress("matchedIdentity", &matchedIdentity);
     tree->SetBranchAddress("matchedLength", &matchedLength);
 
+    double WCMatchCurvature;
+    tree->SetBranchAddress("WCMatchCurvature", &WCMatchCurvature);
+
     // Declare histograms
     TH1D *hShowerRecoLengths = new TH1D("hShowerRecoLengths", "hShowerRecoLengths;;", 20, -1,-1);
     TH1D *hNoShowerRecoLengths = new TH1D("hNoShowerRecoLengths", "hNoShowerRecoLengths;;", 20, -1,-1);
 
     TH1D* hShowerSmallTracksCount = new TH1D("hShowerSmallTracksCount", "hShowerSmallTracksCount", 20, 0, 20);
     TH1D* hNoShowerSmallTracksCount = new TH1D("hNoShowerSmallTracksCount", "hNoShowerSmallTracksCount", 20, 0, 20);
+
+    TH1D* hCurvatureElectron = new TH1D("hCurvatureElectron", "hCurvatureElectron;;", 20, 0, 10);
+    TH1D* hCurvatureNegativePion = new TH1D("hCurvatureNegativePion", "hCurvatureNegativePion;;", 20, 0, 10);
+    TH1D* hCurvatureMuon = new TH1D("hCurvatureMuon", "hCurvatureMuon;;", 20, 0, 10);
 
     double TRACK_THRESHOLD = 35;
 
@@ -59,6 +66,7 @@ void ShowerAnalysis() {
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
+        // Shower cut based on track lenghts
         bool isShower = false;
         if ((numEmmitedElectrons + numEmmitedPhotons) > 1) isShower = true;
 
@@ -72,6 +80,15 @@ void ShowerAnalysis() {
 
         if (isShower) hShowerSmallTracksCount->Fill(smallTrackCount);
         if (!isShower) hNoShowerSmallTracksCount->Fill(smallTrackCount);
+
+        // Shower cut based on track curvature
+        if (primaryParticlePDG == 11) { // electron
+            hCurvatureElectron->Fill(WCMatchCurvature);
+        } else if (primaryParticlePDG == -211) { // negative pion
+            hCurvatureNegativePion->Fill(WCMatchCurvature);
+        } else if (primaryParticlePDG == 13) { // muon
+            hCurvatureMuon->Fill(WCMatchCurvature);
+        }
     }
 
     // Setup for drawing plots
@@ -81,22 +98,26 @@ void ShowerAnalysis() {
 
     std::vector<std::vector<TH1*>> PlotGroups = {
         {hShowerRecoLengths, hNoShowerRecoLengths},
-        {hShowerSmallTracksCount, hNoShowerSmallTracksCount}
+        {hShowerSmallTracksCount, hNoShowerSmallTracksCount},
+        {hCurvatureElectron, hCurvatureNegativePion, hCurvatureMuon}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         {"Shower", "No shower"}, 
-        {"Shower", "No shower"}
+        {"Shower", "No shower"},
+        {"Electron", "Negative pion", "Muon"}
     };
 
     std::vector<TString> PlotTitles = {
         "TrackLenghts",
-        "SmallTrackCounts"
+        "SmallTrackCounts",
+        "TrackCurvature"
     };
     
     std::vector<TString> XLabels = {
         "Track length (cm)",
         "# of small tracks",
+        "Curvature proxy"
     };
 
     int numPlots = PlotGroups.size();
@@ -170,7 +191,7 @@ void ShowerAnalysis() {
         (NUMBER_TRACKS_MAX - NUMBER_TRACKS_MIN) / NUMBER_TRACKS_STEP, NUMBER_TRACKS_MIN, NUMBER_TRACKS_MAX
     );
 
-    TH2D& hAbsMisIDs = new TH2D(
+    TH2D* hAbsMisIDs = new TH2D(
         "hAbsMisIDs",
         ";Small Track Threshold;Number of Small Tracks",
         (TRACK_THRESHOLD_MAX - TRACK_THRESHOLD_MIN) / TRACK_THRESHOLD_STEP, TRACK_THRESHOLD_MIN, TRACK_THRESHOLD_MAX,
