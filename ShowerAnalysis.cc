@@ -45,8 +45,14 @@ void ShowerAnalysis() {
     tree->SetBranchAddress("matchedIdentity", &matchedIdentity);
     tree->SetBranchAddress("matchedLength", &matchedLength);
 
-    double WCMatchCurvature;
-    tree->SetBranchAddress("WCMatchCurvature", &WCMatchCurvature);
+    double WCMeanCurvature, WCMaxCurvature;
+    tree->SetBranchAddress("WCMeanCurvature", &WCMeanCurvature);
+    tree->SetBranchAddress("WCMaxCurvature", &WCMaxCurvature);
+
+    bool isPionAbsorptionSignal;
+    int  numVisibleProtons;
+    tree->SetBranchAddress("isPionAbsorptionSignal", &isPionAbsorptionSignal);
+    tree->SetBranchAddress("numVisibleProtons", &numVisibleProtons);
 
     // Declare histograms
     TH1D *hShowerRecoLengths = new TH1D("hShowerRecoLengths", "hShowerRecoLengths;;", 20, -1,-1);
@@ -55,9 +61,15 @@ void ShowerAnalysis() {
     TH1D* hShowerSmallTracksCount = new TH1D("hShowerSmallTracksCount", "hShowerSmallTracksCount", 20, 0, 20);
     TH1D* hNoShowerSmallTracksCount = new TH1D("hNoShowerSmallTracksCount", "hNoShowerSmallTracksCount", 20, 0, 20);
 
-    TH1D* hCurvatureElectron = new TH1D("hCurvatureElectron", "hCurvatureElectron;;", 20, 0, 10);
-    TH1D* hCurvatureNegativePion = new TH1D("hCurvatureNegativePion", "hCurvatureNegativePion;;", 20, 0, 10);
-    TH1D* hCurvatureMuon = new TH1D("hCurvatureMuon", "hCurvatureMuon;;", 20, 0, 10);
+    TH1D* hMeanCurvatureElectron = new TH1D("hMeanCurvatureElectron", "hMeanCurvatureElectron;;", 20, 0, 0.03);
+    TH1D* hMeanCurvatureNegativePionBkg = new TH1D("hMeanCurvatureNegativePionBkg", "hMeanCurvatureNegativePionBkg;;", 20, 0, 0.03);
+    TH1D* hMeanCurvatureNegativePionSig = new TH1D("hMeanCurvatureNegativePionSig", "hMeanCurvatureNegativePionSig;;", 20, 0, 0.03);
+    TH1D* hMeanCurvatureMuon = new TH1D("hMeanCurvatureMuon", "hMeanCurvatureMuon;;", 20, 0, 0.03);
+
+    TH1D* hMaxCurvatureElectron = new TH1D("hMaxCurvatureElectron", "hMaxCurvatureElectron;;", 20, 0, 1);
+    TH1D* hMaxCurvatureNegativePionBkg = new TH1D("hMaxCurvatureNegativePionBkg", "hMaxCurvatureNegativePionBkg;;", 20, 0, 1);
+    TH1D* hMaxCurvatureNegativePionSig = new TH1D("hMaxCurvatureNegativePionSig", "hMaxCurvatureNegativePionSig;;", 20, 0, 1);
+    TH1D* hMaxCurvatureMuon = new TH1D("hMaxCurvatureMuon", "hMaxCurvatureMuon;;", 20, 0, 1);
 
     double TRACK_THRESHOLD = 35;
 
@@ -83,41 +95,53 @@ void ShowerAnalysis() {
 
         // Shower cut based on track curvature
         if (primaryParticlePDG == 11) { // electron
-            hCurvatureElectron->Fill(WCMatchCurvature);
+            hMeanCurvatureElectron->Fill(WCMeanCurvature);
+            hMaxCurvatureElectron->Fill(WCMaxCurvature);
         } else if (primaryParticlePDG == -211) { // negative pion
-            hCurvatureNegativePion->Fill(WCMatchCurvature);
+            if (isPionAbsorptionSignal) {
+                hMeanCurvatureNegativePionSig->Fill(WCMeanCurvature);
+                hMaxCurvatureNegativePionSig->Fill(WCMaxCurvature);
+            } else {
+                hMeanCurvatureNegativePionBkg->Fill(WCMeanCurvature);
+                hMaxCurvatureNegativePionBkg->Fill(WCMaxCurvature);
+            }
         } else if (primaryParticlePDG == 13) { // muon
-            hCurvatureMuon->Fill(WCMatchCurvature);
+            hMeanCurvatureMuon->Fill(WCMeanCurvature);
+            hMaxCurvatureMuon->Fill(WCMaxCurvature);
         }
     }
 
     // Setup for drawing plots
     std::vector<int> Colors = {
-        kBlack, kBlue, kRed, kGreen
+        kBlack, kBlue, kRed, kGreen + 2
     };
 
     std::vector<std::vector<TH1*>> PlotGroups = {
         {hShowerRecoLengths, hNoShowerRecoLengths},
         {hShowerSmallTracksCount, hNoShowerSmallTracksCount},
-        {hCurvatureElectron, hCurvatureNegativePion, hCurvatureMuon}
+        {hMeanCurvatureNegativePionSig, hMeanCurvatureNegativePionBkg, hMeanCurvatureElectron, hMeanCurvatureMuon},
+        {hMaxCurvatureNegativePionSig, hMaxCurvatureNegativePionBkg, hMaxCurvatureElectron, hMaxCurvatureMuon}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         {"Shower", "No shower"}, 
         {"Shower", "No shower"},
-        {"Electron", "Negative pion", "Muon"}
+        {"Negative pion sig", "Negative pion bkg", "Electron", "Muon"},
+        {"Negative pion sig", "Negative pion bkg", "Electron", "Muon"}
     };
 
     std::vector<TString> PlotTitles = {
         "TrackLenghts",
         "SmallTrackCounts",
-        "TrackCurvature"
+        "MeanTrackCurvature",
+        "MaxTrackCurvature"
     };
     
     std::vector<TString> XLabels = {
         "Track length (cm)",
         "# of small tracks",
-        "Curvature proxy"
+        "Mean curvature",
+        "Max curvature"
     };
 
     int numPlots = PlotGroups.size();
@@ -128,7 +152,7 @@ void ShowerAnalysis() {
         PlotCanvas->SetLeftMargin(0.15);
         PlotCanvas->SetBottomMargin(0.15);
 
-        TLegend* leg = new TLegend(0.65,0.65,0.85,0.75);
+        TLegend* leg = new TLegend(0.55,0.55,0.85,0.75);
         leg->SetBorderSize(0);
         leg->SetTextSize(TextSize * 0.8);
         leg->SetTextFont(FontStyle);
