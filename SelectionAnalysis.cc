@@ -40,6 +40,20 @@ void SelectionAnalysis() {
     TDirectory* Directory = (TDirectory*)File->Get("PionAbsorptionSelection");
     TTree* tree = (TTree*) Directory->Get<TTree>("PionAbsorptionSelectionTree");
 
+    // Histgrams for event counting
+    TH1D* hTotalEvents           = (TH1D*) Directory->Get<TH1D>("hTotalEvents");
+    TH1D* hTotalEventsSignal     = (TH1D*) Directory->Get<TH1D>("hTotalEventsSignal");
+    TH1D* hWCExists              = (TH1D*) Directory->Get<TH1D>("hWCExists");
+    TH1D* hWCExistsSignal        = (TH1D*) Directory->Get<TH1D>("hWCExistsSignal");
+    TH1D* hPionInRedVolume       = (TH1D*) Directory->Get<TH1D>("hPionInRedVolume");
+    TH1D* hPionInRedVolumeSignal = (TH1D*) Directory->Get<TH1D>("hPionInRedVolumeSignal");
+    TH1D* hNoOutgoingPion        = (TH1D*) Directory->Get<TH1D>("hNoOutgoingPion");
+    TH1D* hNoOutgoingPionSignal  = (TH1D*) Directory->Get<TH1D>("hNoOutgoingPionSignal");
+    TH1D* hSmallTracks           = (TH1D*) Directory->Get<TH1D>("hSmallTracks");
+    TH1D* hSmallTracksSignal     = (TH1D*) Directory->Get<TH1D>("hSmallTracksSignal");
+    TH1D* hMeanCurvature         = (TH1D*) Directory->Get<TH1D>("hMeanCurvature");
+    TH1D* hMeanCurvatureSignal   = (TH1D*) Directory->Get<TH1D>("hMeanCurvatureSignal");
+
     // Grab file with true selected events
     TString TrueSelectedPath = "/exp/lariat/app/users/epelaez/files/SignalPionAbsorptionOnSelectedEvents_histo.root";
     std::unique_ptr<TFile> TrueSelectedFile(TFile::Open(TrueSelectedPath));
@@ -377,4 +391,30 @@ void SelectionAnalysis() {
     std::cout << "Signal Np events: " << numSignalEventsNProtons << std::endl;
     std::cout << "Efficiency Np: " << 100 * ((float) numSelectedTrueEventsNProtons / (float) numSignalEventsNProtons) << "%" << std::endl; 
     std::cout << "Purity Np:     " << 100 * ((float) numSelectedTrueEventsNProtons / (float) numSelectedEventsNProtons) << "%" << std::endl; 
+
+    int totalSignalEvents = hTotalEventsSignal->Integral();
+    std::cout << std::endl;
+    std::cout << "Cut statistics:" << std::endl;
+    std::cout << "  Total events: " << hTotalEvents->Integral() << std::endl;
+    std::cout << "  Total signal events: " << totalSignalEvents << std::endl;
+    std::cout << std::endl;
+    std::cout << "  WC to TPC match exists total events: " << hWCExists->Integral() << std::endl;
+    std::cout << "  WC to TPC match exists signal events: " << hWCExistsSignal->Integral() << std::endl;
+    std::cout << "  WC cut purity: " << hWCExistsSignal->Integral() / hWCExists->Integral() << " and efficiency: " << hWCExistsSignal->Integral() / totalSignalEvents << std::endl;
+    std::cout << std::endl;
+    std::cout << "  Pion in red. volume total events: " << hPionInRedVolume->Integral() << std::endl;
+    std::cout << "  Pion in red. volume signal events: " << hPionInRedVolumeSignal->Integral() << std::endl;
+    std::cout << "  Pion in red. volume cut purity: " << hPionInRedVolumeSignal->Integral() / hPionInRedVolume->Integral() << " and efficiency: " << hPionInRedVolumeSignal->Integral() / totalSignalEvents << std::endl;
+    std::cout << std::endl;
+    std::cout << "  No outgoing pion total events: " << hNoOutgoingPion->Integral() << std::endl;
+    std::cout << "  No outgoing pion signal events: " << hNoOutgoingPionSignal->Integral() << std::endl;
+    std::cout << "  No outgoing pion cut purity: " << hNoOutgoingPionSignal->Integral() / hNoOutgoingPion->Integral() << " and efficiency: " << hNoOutgoingPionSignal->Integral() / totalSignalEvents << std::endl;
+    std::cout << std::endl;
+    std::cout << "  No small tracks total events: " << hSmallTracks->Integral() << std::endl;
+    std::cout << "  No small tracks signal events: " << hSmallTracksSignal->Integral() << std::endl;
+    std::cout << "  No small tracks cut purity: " << hSmallTracksSignal->Integral() / hSmallTracks->Integral() << " and efficiency: " << hSmallTracksSignal->Integral() / totalSignalEvents << std::endl;
+    std::cout << std::endl;
+    std::cout << "  Small track curvature total events: " << hMeanCurvature->Integral() << std::endl;
+    std::cout << "  Small track curvature signal events: " << hMeanCurvatureSignal->Integral() << std::endl;
+    std::cout << "  Small track curvature cut purity: " << hMeanCurvatureSignal->Integral() / hMeanCurvature->Integral() << " and efficiency: " << hMeanCurvatureSignal->Integral() / totalSignalEvents << std::endl;
 }
