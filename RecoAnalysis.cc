@@ -64,8 +64,8 @@ void RecoAnalysis() {
     std::vector<TString> PartNames = {"Pion", "Proton"};
 
     // Declare histograms
-    TH1D *hPionMeanDEDX = new TH1D("hPionMeanDEDX", "PionMeanDEDX;;", 100, 0, 10);
-    TH1D *hProtonMeanDEDX = new TH1D("hProtonMeanDEDX", "ProtonMeanDEDX;;", 100, 0, 10);
+    TH1D *hPionMeanDEDX = new TH1D("hPionMeanDEDX", "PionMeanDEDX;;", 40, 1, 4.5);
+    TH1D *hProtonMeanDEDX = new TH1D("hProtonMeanDEDX", "ProtonMeanDEDX;;", 40, 1, 4.5);
 
     TH1D *hTrueInitialKEnergyAllProtons = new TH1D("hTrueInitialKEnergyAllProtons", "hTrueInitialKEnergyAllProtons;;", 50, 0, 0.2);
     TH1D *hTrueInitialKEnergyRecoProtons = new TH1D("hTrueInitialKEnergyRecoProtons", "hTrueInitialKEnergyRecoProtons;;", 50, 0, 0.2);
@@ -182,7 +182,7 @@ void RecoAnalysis() {
         }
 
         if (PlotTitles[iPlot] == "MeanDEDX") {
-            TLine *v_line= new TLine(3.4,-10,3.4,480);
+            TLine *v_line= new TLine(4,-10,4,180);
             v_line->SetLineColor(kRed);
             v_line->SetLineWidth(2);
             v_line->SetLineStyle(kDashed);
