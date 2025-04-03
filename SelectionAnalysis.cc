@@ -59,6 +59,9 @@ void SelectionAnalysis() {
     TH1D* hMeanCurvature           = (TH1D*) Directory->Get<TH1D>("hMeanCurvature");
     TH1D* hMeanCurvature0pSignal   = (TH1D*) Directory->Get<TH1D>("hMeanCurvature0pSignal");
     TH1D* hMeanCurvatureNpSignal   = (TH1D*) Directory->Get<TH1D>("hMeanCurvatureNpSignal");
+    TH1D* hFinalRecoEvents         = (TH1D*) Directory->Get<TH1D>("hFinalRecoEvents");
+    TH1D* hFinalRecoEvents0pSignal = (TH1D*) Directory->Get<TH1D>("hFinalRecoEvents0pSignal");
+    TH1D* hFinalRecoEventsNpSignal = (TH1D*) Directory->Get<TH1D>("hFinalRecoEventsNpSignal");
 
     // Grab file with true selected events
     TString TrueSelectedPath = "/exp/lariat/app/users/epelaez/files/SignalPionAbsorptionOnSelectedEvents_histo.root";
@@ -279,26 +282,6 @@ void SelectionAnalysis() {
         hTruthRecoTrueNumProtons->Fill(trueRecoProtonCount);
     }
 
-    ///////////////////
-    // True signal tree
-    ///////////////////
-
-    // Keep track of 0p and Np true events
-    int numSignalEvents0Protons = 0;
-    int numSignalEventsNProtons = 0;
-
-    // Loop over true events
-    Int_t NumTrueEntries = (Int_t) trueTree->GetEntries();
-    for (Int_t i = 0; i < NumTrueEntries; ++i) {
-        trueTree->GetEntry(i);
-
-        if (trueProtonCount >= 1) {
-            numSignalEventsNProtons++;   
-        } else {
-            numSignalEvents0Protons++;
-        }
-    }
-
     /////////////////////
     // Drawing histograms
     /////////////////////
@@ -379,65 +362,79 @@ void SelectionAnalysis() {
 
     // Compute purity and efficiency
     std::cout << std::endl;
-    std::cout << "Number of reco events that pass selection criteria: " << NumEntries << std::endl;
-    std::cout << "Number of reco events that pass selection criteria that are true events: " << NumTrueRecoEntries << std::endl;
-    std::cout << "Number of background events: " << NumEntries - NumTrueRecoEntries << std::endl;
-    std::cout << "Number of true events: " << NumTrueEntries << std::endl;
-    std::cout << "Efficiency: " << 100 * ((float)NumTrueRecoEntries / (float)NumTrueEntries) << "%" << std::endl; 
-    std::cout << "Purity:     " << 100 * ((float)NumTrueRecoEntries / (float)NumEntries) << "%" << std::endl;
-    std::cout << std::endl;
-    std::cout << "Selected 0p events: " << numSelectedEvents0Protons << std::endl;
-    std::cout << "Selected 0p events that are true 0p events: " << numSelectedTrueEvents0Protons << std::endl;
-    std::cout << "Signal 0p events: " << numSignalEvents0Protons << std::endl;
-    std::cout << "Efficiency 0p: " << 100 * ((float) numSelectedTrueEvents0Protons / (float) numSignalEvents0Protons) << "%" << std::endl; 
-    std::cout << "Purity 0p:     " << 100 * ((float) numSelectedTrueEvents0Protons / (float) numSelectedEvents0Protons) << "%" << std::endl; 
-    std::cout << std::endl;
-    std::cout << "Selected Np events: " << numSelectedEventsNProtons << std::endl;
-    std::cout << "Selected Np events that are true Np events: " << numSelectedTrueEventsNProtons << std::endl;
-    std::cout << "Signal Np events: " << numSignalEventsNProtons << std::endl;
-    std::cout << "Efficiency Np: " << 100 * ((float) numSelectedTrueEventsNProtons / (float) numSignalEventsNProtons) << "%" << std::endl; 
-    std::cout << "Purity Np:     " << 100 * ((float) numSelectedTrueEventsNProtons / (float) numSelectedEventsNProtons) << "%" << std::endl; 
-
     int total0pSignalEvents = hTotalEvents0pSignal->Integral();
     int totalNpSignalEvents = hTotalEventsNpSignal->Integral();
     int totalSignalEvents   = total0pSignalEvents + totalNpSignalEvents;
+    std::cout << "Total events: " << hTotalEvents->Integral() << std::endl;
+    std::cout << "Total signal events: " << totalSignalEvents << std::endl;
+    std::cout << "Total 0p signal events: " << total0pSignalEvents << std::endl;
+    std::cout << "Total Np signal events: " << totalNpSignalEvents << std::endl;
+    std::cout << std::endl;
     std::cout << "Cut statistics:" << std::endl;
-    std::cout << "  Total events: " << hTotalEvents->Integral() << std::endl;
-    std::cout << "  Total 0p signal events: " << total0pSignalEvents << std::endl;
-    std::cout << "  Total Np signal events: " << totalNpSignalEvents << std::endl;
+    std::cout << "  WC to TPC match: " << std::endl;
+    std::cout << "    Total reco events: " << hWCExists->Integral() << std::endl;
+    std::cout << "    0p reco signal events: " << hWCExists0pSignal->Integral() << std::endl;
+    std::cout << "    Np reco signal events: " << hWCExistsNpSignal->Integral() << std::endl;
+    std::cout << "    Overall purity: " << (hWCExists0pSignal->Integral() + hWCExistsNpSignal->Integral()) / hWCExists->Integral() << " and efficiency: " << (hWCExists0pSignal->Integral() + hWCExistsNpSignal->Integral()) / totalSignalEvents << std::endl;
     std::cout << std::endl;
-    std::cout << "  WC to TPC match exists total events: " << hWCExists->Integral() << std::endl;
-    std::cout << "  WC to TPC match exists 0p signal events: " << hWCExists0pSignal->Integral() << std::endl;
-    std::cout << "  WC to TPC match exists Np signal events: " << hWCExistsNpSignal->Integral() << std::endl;
-    std::cout << "  WC cut overall purity: " << (hWCExists0pSignal->Integral() + hWCExistsNpSignal->Integral()) / hWCExists->Integral() << " and efficiency: " << (hWCExists0pSignal->Integral() + hWCExistsNpSignal->Integral()) / totalSignalEvents << std::endl;
+    std::cout << "  Pion vertex in reduced volume: " << std::endl;
+    std::cout << "    Total reco events: " << hPionInRedVolume->Integral() << std::endl;
+    std::cout << "    0p signal events: " << hPionInRedVolume0pSignal->Integral() << std::endl;
+    std::cout << "    Np signal events: " << hPionInRedVolumeNpSignal->Integral() << std::endl;
+    std::cout << "    Overall purity: " << (hPionInRedVolume0pSignal->Integral() + hPionInRedVolumeNpSignal->Integral()) / hPionInRedVolume->Integral() << " and efficiency: " << (hPionInRedVolume0pSignal->Integral() + hPionInRedVolumeNpSignal->Integral()) / totalSignalEvents << std::endl;
     std::cout << std::endl;
-    std::cout << "  Pion in red. volume total events: " << hPionInRedVolume->Integral() << std::endl;
-    std::cout << "  Pion in red. volume 0p signal events: " << hPionInRedVolume0pSignal->Integral() << std::endl;
-    std::cout << "  Pion in red. volume Np signal events: " << hPionInRedVolumeNpSignal->Integral() << std::endl;
-    std::cout << "  Pion in red. volume cut overall purity: " << (hPionInRedVolume0pSignal->Integral() + hPionInRedVolumeNpSignal->Integral()) / hPionInRedVolume->Integral() << " and efficiency: " << (hPionInRedVolume0pSignal->Integral() + hPionInRedVolumeNpSignal->Integral()) / totalSignalEvents << std::endl;
+    std::cout << "  No outgoing pion: " << std::endl;
+    std::cout << "    Total reco events: " << hNoOutgoingPion->Integral() << std::endl;
+    std::cout << "    0p signal events: " << hNoOutgoingPion0pSignal->Integral() << std::endl;
+    std::cout << "    Np signal events: " <<  hNoOutgoingPionNpSignal->Integral() << std::endl;
+    std::cout << "    Overall purity: " << (hNoOutgoingPion0pSignal->Integral() + hNoOutgoingPionNpSignal->Integral()) / hNoOutgoingPion->Integral() << " and efficiency: " << (hNoOutgoingPion0pSignal->Integral() + hNoOutgoingPionNpSignal->Integral()) / totalSignalEvents << std::endl;
     std::cout << std::endl;
-    std::cout << "  No outgoing pion total reco events: " << hNoOutgoingPion->Integral() << std::endl;
-    std::cout << "  No outgoing pion total reco 0p events: " << hNoOutgoingPion->Integral(0, 1) << std::endl;
-    std::cout << "  No outgoing pion 0p signal events: " << hNoOutgoingPion0pSignal->Integral() << std::endl;
-    std::cout << "  No outgoing pion cut 0p purity: " << hNoOutgoingPion0pSignal->Integral(0, 1) / hNoOutgoingPion->Integral(0,1) << " and efficiency: " << hNoOutgoingPion0pSignal->Integral(0, 1) / total0pSignalEvents << std::endl;
-    std::cout << "  No outgoing pion total reco Np events: " << hNoOutgoingPion->Integral(1, 2) << std::endl;
-    std::cout << "  No outgoing pion Np signal events: " << hNoOutgoingPionNpSignal->Integral(1, 2) << std::endl;
-    std::cout << "  No outgoing pion cut Np purity: " << hNoOutgoingPionNpSignal->Integral(1, 2) / hNoOutgoingPion->Integral(1,2) << " and efficiency: " << hNoOutgoingPionNpSignal->Integral(1, 2) / totalNpSignalEvents << std::endl;
+    std::cout << "    Reco 0p events: " << hNoOutgoingPion->Integral(1, 1) << std::endl;
+    std::cout << "    Reco 0p true signal events: " << hNoOutgoingPion0pSignal->Integral(1, 1) << std::endl;
+    std::cout << "    0p purity: " << hNoOutgoingPion0pSignal->Integral(1, 1) / hNoOutgoingPion->Integral(1,1) << " and efficiency: " << hNoOutgoingPion0pSignal->Integral(1, 1) / total0pSignalEvents << std::endl;
     std::cout << std::endl;
-    std::cout << "  No small tracks total reco events: " << hSmallTracks->Integral() << std::endl;
-    std::cout << "  No small tracks total reco 0p events: " << hSmallTracks->Integral(0, 1) << std::endl;
-    std::cout << "  No small tracks 0p signal events: " << hSmallTracks0pSignal->Integral() << std::endl;
-    std::cout << "  No small tracks cut 0p purity: " << hSmallTracks0pSignal->Integral(0, 1) / hSmallTracks->Integral(0, 1) << " and efficiency: " << hSmallTracks0pSignal->Integral(0, 1) / total0pSignalEvents << std::endl;
-    std::cout << "  No small tracks total reco Np events: " << hSmallTracks->Integral(1, 2) << std::endl;
-    std::cout << "  No small tracks Np signal events: " << hSmallTracksNpSignal->Integral() << std::endl;
-    std::cout << "  No small tracks cut Np purity: " << hSmallTracksNpSignal->Integral(1, 2) / hSmallTracks->Integral(1, 2) << " and efficiency: " << hSmallTracksNpSignal->Integral(1, 2) / totalNpSignalEvents << std::endl;
+    std::cout << "    Reco Np events: " << hNoOutgoingPion->Integral(2, 2) << std::endl;
+    std::cout << "    Reco Np true signal events: " << hNoOutgoingPionNpSignal->Integral(2, 2) << std::endl;
+    std::cout << "    Np purity: " << hNoOutgoingPionNpSignal->Integral(2, 2) / hNoOutgoingPion->Integral(2,2) << " and efficiency: " << hNoOutgoingPionNpSignal->Integral(2, 2) / totalNpSignalEvents << std::endl;
     std::cout << std::endl;
-    std::cout << "  Small track curvature total reco events: " << hMeanCurvature->Integral() << std::endl;
-    std::cout << "  Small track curvature total reco 0p events: " << hMeanCurvature->Integral(0, 1) << std::endl;
-    std::cout << "  Small track curvature 0p signal events: " << hMeanCurvature0pSignal->Integral() << std::endl;
-    std::cout << "  Small track curvature cut 0p purity: " << hMeanCurvature0pSignal->Integral(0, 1) / hMeanCurvature->Integral(0, 1) << " and efficiency: " << hMeanCurvature0pSignal->Integral(0, 1) / total0pSignalEvents << std::endl;
-    std::cout << "  Small track curvature total reco Np events: " << hMeanCurvature->Integral(1, 2) << std::endl;
-    std::cout << "  Small track curvature Np signal events: " << hMeanCurvatureNpSignal->Integral() << std::endl;
-    std::cout << "  Small track curvature cut Np purity: " << hMeanCurvatureNpSignal->Integral(1, 2) / hMeanCurvature->Integral(1, 2) << " and efficiency: " << hMeanCurvatureNpSignal->Integral(1, 2) / totalNpSignalEvents << std::endl;
+    std::cout << "  No small tracks: " << std::endl;
+    std::cout << "    Total reco events: " << hSmallTracks->Integral() << std::endl;
+    std::cout << "    0p signal events: " << hSmallTracks0pSignal->Integral() << std::endl;
+    std::cout << "    Np signal events: " <<  hSmallTracksNpSignal->Integral() << std::endl;
+    std::cout << "    Overall purity: " << (hSmallTracks0pSignal->Integral() + hSmallTracksNpSignal->Integral()) / hSmallTracks->Integral() << " and efficiency: " << (hSmallTracks0pSignal->Integral() + hSmallTracksNpSignal->Integral()) / totalSignalEvents << std::endl;
+    std::cout << std::endl;
+    std::cout << "    Reco 0p events: " << hSmallTracks->Integral(1, 1) << std::endl;
+    std::cout << "    Reco 0p true signal events: " << hSmallTracks0pSignal->Integral(1,1) << std::endl;
+    std::cout << "    0p purity: " << hSmallTracks0pSignal->Integral(1, 1) / hSmallTracks->Integral(1, 1) << " and efficiency: " << hSmallTracks0pSignal->Integral(1, 1) / total0pSignalEvents << std::endl;
+    std::cout << std::endl;
+    std::cout << "    Reco Np events: " << hSmallTracks->Integral(2, 2) << std::endl;
+    std::cout << "    Reco Np true signal events: " << hSmallTracksNpSignal->Integral(2,2) << std::endl;
+    std::cout << "    Np purity: " << hSmallTracksNpSignal->Integral(2, 2) / hSmallTracks->Integral(2, 2) << " and efficiency: " << hSmallTracksNpSignal->Integral(2, 2) / totalNpSignalEvents << std::endl;
+    std::cout << std::endl;
+    std::cout << "  Curvature: " << std::endl;
+    std::cout << "    Total reco events: " << hMeanCurvature->Integral() << std::endl;
+    std::cout << "    0p signal events: " << hMeanCurvature0pSignal->Integral() << std::endl;
+    std::cout << "    Np signal events: " <<  hMeanCurvatureNpSignal->Integral() << std::endl;
+    std::cout << "    Overall purity: " << (hMeanCurvature0pSignal->Integral() + hMeanCurvatureNpSignal->Integral()) / hMeanCurvature->Integral() << " and efficiency: " << (hMeanCurvature0pSignal->Integral() + hMeanCurvatureNpSignal->Integral()) / totalSignalEvents << std::endl;
+    std::cout << std::endl;
+    std::cout << "    Reco 0p events: " << hMeanCurvature->Integral(1, 1) << std::endl;
+    std::cout << "    Reco 0p true signal events: " << hMeanCurvature0pSignal->Integral(1,1) << std::endl;
+    std::cout << "    0p purity: " << hMeanCurvature0pSignal->Integral(1, 1) / hMeanCurvature->Integral(1, 1) << " and efficiency: " << hMeanCurvature0pSignal->Integral(1, 1) / total0pSignalEvents << std::endl;
+    std::cout << std::endl;
+    std::cout << "    Reco Np events: " << hMeanCurvature->Integral(2, 2) << std::endl;
+    std::cout << "    Reco Np true signal events: " << hMeanCurvatureNpSignal->Integral(2,2) << std::endl;
+    std::cout << "    Np purity: " << hMeanCurvatureNpSignal->Integral(2, 2) / hMeanCurvature->Integral(2, 2) << " and efficiency: " << hMeanCurvatureNpSignal->Integral(2, 2) / totalNpSignalEvents << std::endl;
+    std::cout << std::endl;
+
+    int totalFinalSignal0p = hFinalRecoEvents0pSignal->Integral();
+    int totalFinalSignalNp = hFinalRecoEventsNpSignal->Integral();
+    int totalFinalSignal   = totalFinalSignal0p + totalFinalSignalNp;
+    std::cout << "Final stats: " << std::endl;
+    std::cout << "  Reco events: " << hFinalRecoEvents->Integral() << std::endl;
+    std::cout << "  Overall purity: " << totalFinalSignal / hFinalRecoEvents->Integral() << " and efficiency: " << (double)totalFinalSignal / totalSignalEvents << std::endl;
+    std::cout << "  Reco 0p events: " << hFinalRecoEvents->Integral(1,1) << std::endl;
+    std::cout << "  0p channel purity: " << hFinalRecoEvents0pSignal->Integral(1,1) / hFinalRecoEvents->Integral(1,1) << " and efficiency: " << hFinalRecoEvents0pSignal->Integral(1,1) / total0pSignalEvents << std::endl;
+    std::cout << "  Reco Np events: " << hFinalRecoEvents->Integral(2,2) << std::endl;
+    std::cout << "  0p channel purity: " << hFinalRecoEventsNpSignal->Integral(2,2) / hFinalRecoEvents->Integral(2,2) << " and efficiency: " << hFinalRecoEventsNpSignal->Integral(2,2) / total0pSignalEvents << std::endl;
     std::cout << std::endl;
 }
