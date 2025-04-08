@@ -66,16 +66,16 @@ void RecoAnalysis() {
     std::vector<int>* matchedIdentity = nullptr;
     tree->SetBranchAddress("matchedIdentity", &matchedIdentity);
 
-    std::vector<double>* matchedKEnergy = nullptr;
-    std::vector<double>* matchedLength  = nullptr;
-    std::vector<double>* matchedEndX    = nullptr;
-    std::vector<double>* matchedEndY    = nullptr;
-    std::vector<double>* matchedEndZ    = nullptr;
+    std::vector<double>* matchedKEnergy  = nullptr;
+    std::vector<double>* matchedLength   = nullptr;
+    std::vector<double>* matchedRealEndX = nullptr;
+    std::vector<double>* matchedRealEndY = nullptr;
+    std::vector<double>* matchedRealEndZ = nullptr;
     tree->SetBranchAddress("matchedKEnergy", &matchedKEnergy);
     tree->SetBranchAddress("matchedLength", &matchedLength);
-    tree->SetBranchAddress("matchedEndX", &matchedEndX);
-    tree->SetBranchAddress("matchedEndY", &matchedEndY);
-    tree->SetBranchAddress("matchedEndZ", &matchedEndZ);
+    tree->SetBranchAddress("matchedRealEndX", &matchedRealEndX);
+    tree->SetBranchAddress("matchedRealEndY", &matchedRealEndY);
+    tree->SetBranchAddress("matchedRealEndZ", &matchedRealEndZ);
 
     std::vector<double>* recoMeanDEDX = nullptr;
     std::vector<double>* recoEndX     = nullptr;
@@ -97,7 +97,7 @@ void RecoAnalysis() {
 
     // Declare histograms
     TH1D *hPionMeanDEDX = new TH1D("hPionMeanDEDX", "PionMeanDEDX;;", 40, 1, 4.5);
-    TH1D *hProtonMeanDEDX = new TH1D("hProtonMeanDEDX", "ProtonMeanDEDX;;", 40, 0, 10);
+    TH1D *hProtonMeanDEDX = new TH1D("hProtonMeanDEDX", "ProtonMeanDEDX;;", 40, 1, 4.5);
 
     TH1D *hTrueInitialKEnergyAllProtons = new TH1D("hTrueInitialKEnergyAllProtons", "hTrueInitialKEnergyAllProtons;;", 50, 0, 0.2);
     TH1D *hTrueInitialKEnergyRecoProtons = new TH1D("hTrueInitialKEnergyRecoProtons", "hTrueInitialKEnergyRecoProtons;;", 50, 0, 0.2);
@@ -108,27 +108,29 @@ void RecoAnalysis() {
     TH2D *hEnergyLossAll = new TH2D(
         "hEnergyLossAll", 
         "hEnergyLossAll",
-        45, 0, 90, // 45 bins starting from 0 to 90 for residual range
-        45, 0, 50  // 45 bins starting from 0 to 50 for dE/dx
+        100, 0, 90, // 100 bins starting from 0 to 90 for residual range
+        100, 0, 25  // 100 bins starting from 0 to 25 for dE/dx
     );
 
     TH2D *hEnergyLossProtons = new TH2D(
         "hEnergyLossProtons", 
         "hEnergyLossProtons",
-        45, 0, 90, // 45 bins starting from 0 to 90 for residual range
-        45, 0, 50  // 45 bins starting from 0 to 50 for dE/dx
+        100, 0, 90, // 100 bins starting from 0 to 90 for residual range
+        100, 0, 25  // 100 bins starting from 0 to 25 for dE/dx
     );
 
     TH2D *hEnergyLossPions = new TH2D(
         "hEnergyLossPions", 
         "hEnergyLossPions",
-        45, 0, 90, // 45 bins starting from 0 to 90 for residual range
-        45, 0, 50  // 45 bins starting from 0 to 50 for dE/dx
+        100, 0, 90, // 100 bins starting from 0 to 90 for residual range
+        100, 0, 25  // 100 bins starting from 0 to 25 for dE/dx
     );
 
     int recoProtonsTrueUncontained = 0;
     int recoProtonsUncontained     = 0;
     int truthProtonsUncontained    = 0;
+    int recoProtons                = 0;
+    int truthProtons               = 0;
 
     // Loop over events
     Int_t NumEntries = (Int_t) tree->GetEntries();
@@ -139,6 +141,7 @@ void RecoAnalysis() {
         // Loop over true daughter protons
         int numTruthProtons = truthProtonsKEnergy->size();
         for (int iTrueProton = 0; iTrueProton < numTruthProtons; ++iTrueProton) {
+            truthProtons++;
             hTrueInitialKEnergyAllProtons->Fill(truthProtonsKEnergy->at(iTrueProton));
             hTrueLengthAllProtons->Fill(truthProtonsLength->at(iTrueProton));
 
@@ -167,6 +170,7 @@ void RecoAnalysis() {
             } 
             // Proton
             else if (matchedIdentity->at(iParticle) == 2212) {
+                recoProtons++;
                 hProtonMeanDEDX->Fill(recoMeanDEDX->at(iParticle));
                 hTrueInitialKEnergyRecoProtons->Fill(matchedKEnergy->at(iParticle));
                 hTrueLengthRecoProtons->Fill(matchedLength->at(iParticle));
@@ -183,10 +187,10 @@ void RecoAnalysis() {
                 ) { recoProtonsUncontained++; }
 
                 if (
-                    (matchedEndX->at(iParticle) < minX) || (matchedEndX->at(iParticle) > maxX) ||
-                    (matchedEndY->at(iParticle) < minY) || (matchedEndY->at(iParticle) > maxY) ||
-                    (matchedEndZ->at(iParticle) < minZ) || (matchedEndZ->at(iParticle) > maxZ) 
-                ) { recoProtonsUncontained++; }
+                    (matchedRealEndX->at(iParticle) < minX) || (matchedRealEndX->at(iParticle) > maxX) ||
+                    (matchedRealEndY->at(iParticle) < minY) || (matchedRealEndY->at(iParticle) > maxY) ||
+                    (matchedRealEndZ->at(iParticle) < minZ) || (matchedRealEndZ->at(iParticle) > maxZ) 
+                ) { recoProtonsTrueUncontained++; }
 
                 int caloPoints = thisTrackDEDX.size();
                 for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
@@ -203,9 +207,14 @@ void RecoAnalysis() {
         }
     }
 
+    std::cout << std::endl;
+    std::cout << "Number of truth protons: " << truthProtons << std::endl;
     std::cout << "Number of uncontained truth protons: " << truthProtonsUncontained << std::endl;
+    std::cout << std::endl;
+    std::cout << "Number of reconstructed protons: " << recoProtons << std::endl;
     std::cout << "Number of uncontained reco protons: " << recoProtonsUncontained << std::endl;
     std::cout << "Number of truly uncontained reco protons: " << recoProtonsTrueUncontained << std::endl;
+    std::cout << std::endl;
 
     // Setup for drawing plots
     std::vector<int> Colors = {
