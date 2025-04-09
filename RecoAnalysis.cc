@@ -113,7 +113,21 @@ void RecoAnalysis() {
     double startingZBoundary = 82.0; // start at usual reduced volume
     double stepZBoundary     = 1;    // at each step, decrease by this
     int    numStepsZBoundary = 60;   // how many steps to take
-    TH1D *hProtonsEscaping = new TH1D("hProtonsEscaping", "hProtonsEscaping", numStepsZBoundary, 0, numStepsZBoundary * stepZBoundary);
+    TH1D *hProtonsEscapingZReduction = new TH1D("hProtonsEscapingZReduction", "hProtonsEscapingZReduction", numStepsZBoundary, 0, numStepsZBoundary * stepZBoundary);
+
+    double startingXBoundary = 42.0;
+    double stepXBoundary     = 1;
+    int    numStepsXBoundary = 30;
+    TH1D *hProtonsEscapingXReduction = new TH1D("hProtonsEscapingXReduction", "hProtonsEscapingXReduction", numStepsXBoundary, 0, numStepsXBoundary * stepXBoundary);
+
+    double startingYBoundary = 15.0;
+    double stepYBoundary     = 1;
+    int    numStepsYBoundary = 10;
+    TH1D *hProtonsEscapingYReduction = new TH1D("hProtonsEscapingYReduction", "hProtonsEscapingYReduction", numStepsYBoundary, 0, numStepsYBoundary * stepYBoundary);
+
+    double stepBoundary     = 1;
+    int    numStepsBoundary = 10;
+    TH1D *hProtonsEscapingAllReduction = new TH1D("hProtonsEscapingAllReduction", "hProtonsEscapingAllReduction", numStepsBoundary, 0, numStepsBoundary * stepBoundary);
 
     TH2D *hEnergyLossAll = new TH2D(
         "hEnergyLossAll", 
@@ -218,11 +232,33 @@ void RecoAnalysis() {
         }
 
         // Find bin for protons escaping plot
-        int bin = ((startingZBoundary - truthPionEndZ) / stepZBoundary) + 1;
-        if (bin > numStepsZBoundary) bin = numStepsZBoundary;
-        if (bin < 1)                 bin = 1;
-        for (int b = 1; b <= bin; ++b) {
-            hProtonsEscaping->Fill(b, thisRecoProtonsTrueUncotained);
+        int binZ = (startingZBoundary - truthPionEndZ) / stepZBoundary;
+        if (binZ > numStepsZBoundary) binZ = numStepsZBoundary;
+        if (binZ < 1)                 binZ = 0;
+        for (int b = 0; b <= binZ; ++b) {
+            hProtonsEscapingZReduction->Fill(b * stepZBoundary, thisRecoProtonsTrueUncotained);
+        }
+
+        int binX = (startingXBoundary - truthPionEndX) / stepXBoundary;
+        if (binX > numStepsXBoundary) binX = numStepsXBoundary;
+        if (binX < 1)                 binX = 0;
+        for (int b = 0; b <= binX; ++b) {
+            hProtonsEscapingXReduction->Fill(b * stepXBoundary, thisRecoProtonsTrueUncotained);
+        }
+
+        int binY = (startingYBoundary - truthPionEndY) / stepYBoundary;
+        if (binY > numStepsYBoundary) binY = numStepsYBoundary;
+        if (binY < 1)                 binY = 0;
+        for (int b = 0; b <= binY; ++b) {
+            hProtonsEscapingYReduction->Fill(b * stepYBoundary, thisRecoProtonsTrueUncotained);
+        }
+
+        int overallBinX = (startingXBoundary - truthPionEndX) / stepBoundary;
+        int overallBinY = (startingYBoundary - truthPionEndY) / stepBoundary;
+        int overallBinZ = (startingZBoundary - truthPionEndZ) / stepBoundary;
+        int overallBin  = std::min({overallBinX, overallBinY, overallBinZ});
+        for (int b = 0; b <= overallBin; ++b) {
+            hProtonsEscapingAllReduction->Fill(b * stepBoundary, thisRecoProtonsTrueUncotained);
         }
     }
 
@@ -245,7 +281,10 @@ void RecoAnalysis() {
         {hProtonMeanDEDX},
         {hTrueInitialKEnergyAllProtons, hTrueInitialKEnergyRecoProtons},
         {hTrueLengthAllProtons, hTrueLengthRecoProtons},
-        {hProtonsEscaping}
+        {hProtonsEscapingZReduction},
+        {hProtonsEscapingYReduction},
+        {hProtonsEscapingXReduction},
+        {hProtonsEscapingAllReduction}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -253,6 +292,9 @@ void RecoAnalysis() {
         {"Proton"},
         {"True protons", "Reco protons"},
         {"True protons", "Reco protons"},
+        {"Protons escaping"},
+        {"Protons escaping"},
+        {"Protons escaping"},
         {"Protons escaping"}
     };
 
@@ -261,7 +303,10 @@ void RecoAnalysis() {
         "ProtonMeanDEDX",
         "ProtonKE",
         "ProtonLength",
-        "ProtonsEscaping"
+        "ProtonsEscapingZReduction",
+        "ProtonsEscapingYReduction",
+        "ProtonsEscapingXReduction",
+        "ProtonsEscapingAllReduction"
     };
     
     std::vector<TString> XLabels = {
@@ -269,7 +314,10 @@ void RecoAnalysis() {
         "dE/dx (MeV/cm)",
         "Kinetic energy (GeV)",
         "Track length (cm)",
-        "Reduced volume pushback (cm)"
+        "Reduced volume pushback (only z direction) (cm)",
+        "Reduced volume pushback (only y direction) (cm)",
+        "Reduced volume pushback (only x direction) (cm)",
+        "Reduced volume pushback (all directions) (cm)"
     };
 
     std::vector<TString> YLabels = {
@@ -277,7 +325,10 @@ void RecoAnalysis() {
         "Particle counts",
         "Particle counts",
         "Particle counts",
-        "Total protons"
+        "Protons escaping",
+        "Protons escaping",
+        "Protons escaping",
+        "Protons escaping"
     };
 
     int numPlots = PlotGroups.size();
