@@ -117,21 +117,21 @@ void RecoAnalysis() {
 
     TH2D *hEnergyLossAll = new TH2D(
         "hEnergyLossAll", 
-        "hEnergyLossAll",
+        ";Residual range (cm);dE/dx (MeV/cm)",
         100, 0, 90, // 100 bins starting from 0 to 90 for residual range
         100, 0, 25  // 100 bins starting from 0 to 25 for dE/dx
     );
 
     TH2D *hEnergyLossProtons = new TH2D(
         "hEnergyLossProtons", 
-        "hEnergyLossProtons",
+        ";Residual range (cm);dE/dx (MeV/cm)",
         100, 0, 90, // 100 bins starting from 0 to 90 for residual range
         100, 0, 25  // 100 bins starting from 0 to 25 for dE/dx
     );
 
     TH2D *hEnergyLossPions = new TH2D(
         "hEnergyLossPions", 
-        "hEnergyLossPions",
+        ";Residual range (cm);dE/dx (MeV/cm)",
         100, 0, 90, // 100 bins starting from 0 to 90 for residual range
         100, 0, 25  // 100 bins starting from 0 to 25 for dE/dx
     );
