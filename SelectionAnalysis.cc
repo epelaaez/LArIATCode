@@ -8,6 +8,22 @@
 #include <vector>
 #include <map>
 
+std::map<int, std::string> backgroundTypes = {
+    {-1, "Not flagged as background"},
+    {0, "Abs 0p"},
+    {1, "Abs Np"},
+    {2, "Primary muon"},
+    {3, "Primary electron"},
+    {4, "Other primary"},
+    {5, "Outside reduced volume"},
+    {6, "Inelastic scattering"},
+    {7, "Charge exchange"},
+    {8, "Double charge exchange"},
+    {9, "Capture at rest"},
+    {10, "Decay"},
+    {11, "Other"}
+};
+
 struct EventInfo {
     int run; int subrun; int event;
     float vertexX; float vertexY; float vertexZ;
@@ -22,7 +38,12 @@ struct EventInfo {
     std::vector<std::string> truthPrimaryDaughtersProcess;
 
     int                      visibleProtons;
+    int                      recoProtonCount;
+    int                      backgroundNum;
 };
+
+void printBackgroundInfo(TH1D* background_histo, std::ostream& os);
+void printEventInfo(EventInfo event, std::ostream& os);
 
 void SelectionAnalysis() {
     // Set defaults
@@ -41,27 +62,38 @@ void SelectionAnalysis() {
     TTree* tree = (TTree*) Directory->Get<TTree>("PionAbsorptionSelectionTree");
 
     // Histgrams for event counting
-    TH1D* hTotalEvents             = (TH1D*) Directory->Get<TH1D>("hTotalEvents");
-    TH1D* hTotalEvents0pSignal     = (TH1D*) Directory->Get<TH1D>("hTotalEvents0pSignal");
-    TH1D* hTotalEventsNpSignal     = (TH1D*) Directory->Get<TH1D>("hTotalEventsNpSignal");
-    TH1D* hWCExists                = (TH1D*) Directory->Get<TH1D>("hWCExists");
-    TH1D* hWCExists0pSignal        = (TH1D*) Directory->Get<TH1D>("hWCExists0pSignal");
-    TH1D* hWCExistsNpSignal        = (TH1D*) Directory->Get<TH1D>("hWCExistsNpSignal");
-    TH1D* hPionInRedVolume         = (TH1D*) Directory->Get<TH1D>("hPionInRedVolume");
-    TH1D* hPionInRedVolume0pSignal = (TH1D*) Directory->Get<TH1D>("hPionInRedVolume0pSignal");
-    TH1D* hPionInRedVolumeNpSignal = (TH1D*) Directory->Get<TH1D>("hPionInRedVolumeNpSignal");
-    TH1D* hNoOutgoingPion          = (TH1D*) Directory->Get<TH1D>("hNoOutgoingPion");
-    TH1D* hNoOutgoingPion0pSignal  = (TH1D*) Directory->Get<TH1D>("hNoOutgoingPion0pSignal");
-    TH1D* hNoOutgoingPionNpSignal  = (TH1D*) Directory->Get<TH1D>("hNoOutgoingPionNpSignal");
-    TH1D* hSmallTracks             = (TH1D*) Directory->Get<TH1D>("hSmallTracks");
-    TH1D* hSmallTracks0pSignal     = (TH1D*) Directory->Get<TH1D>("hSmallTracks0pSignal");
-    TH1D* hSmallTracksNpSignal     = (TH1D*) Directory->Get<TH1D>("hSmallTracksNpSignal");
-    TH1D* hMeanCurvature           = (TH1D*) Directory->Get<TH1D>("hMeanCurvature");
-    TH1D* hMeanCurvature0pSignal   = (TH1D*) Directory->Get<TH1D>("hMeanCurvature0pSignal");
-    TH1D* hMeanCurvatureNpSignal   = (TH1D*) Directory->Get<TH1D>("hMeanCurvatureNpSignal");
-    TH1D* hFinalRecoEvents         = (TH1D*) Directory->Get<TH1D>("hFinalRecoEvents");
-    TH1D* hFinalRecoEvents0pSignal = (TH1D*) Directory->Get<TH1D>("hFinalRecoEvents0pSignal");
-    TH1D* hFinalRecoEventsNpSignal = (TH1D*) Directory->Get<TH1D>("hFinalRecoEventsNpSignal");
+    TH1D* hTotalEvents                 = (TH1D*) Directory->Get<TH1D>("hTotalEvents");
+    TH1D* hTotalEvents0pSignal         = (TH1D*) Directory->Get<TH1D>("hTotalEvents0pSignal");
+    TH1D* hTotalEventsNpSignal         = (TH1D*) Directory->Get<TH1D>("hTotalEventsNpSignal");
+    TH1D* hTotalBackground             = (TH1D*) Directory->Get<TH1D>("hTotalBackground");
+    TH1D* hWCExists                    = (TH1D*) Directory->Get<TH1D>("hWCExists");
+    TH1D* hWCExists0pSignal            = (TH1D*) Directory->Get<TH1D>("hWCExists0pSignal");
+    TH1D* hWCExistsNpSignal            = (TH1D*) Directory->Get<TH1D>("hWCExistsNpSignal");
+    TH1D* hWCExistsBackground          = (TH1D*) Directory->Get<TH1D>("hWCExistsBackground");
+    TH1D* hPionInRedVolume             = (TH1D*) Directory->Get<TH1D>("hPionInRedVolume");
+    TH1D* hPionInRedVolume0pSignal     = (TH1D*) Directory->Get<TH1D>("hPionInRedVolume0pSignal");
+    TH1D* hPionInRedVolumeNpSignal     = (TH1D*) Directory->Get<TH1D>("hPionInRedVolumeNpSignal");
+    TH1D* hPionInRedVolumeBackground   = (TH1D*) Directory->Get<TH1D>("hPionInRedVolumeBackground");
+    TH1D* hNoOutgoingPion              = (TH1D*) Directory->Get<TH1D>("hNoOutgoingPion");
+    TH1D* hNoOutgoingPion0pSignal      = (TH1D*) Directory->Get<TH1D>("hNoOutgoingPion0pSignal");
+    TH1D* hNoOutgoingPionNpSignal      = (TH1D*) Directory->Get<TH1D>("hNoOutgoingPionNpSignal");
+    TH1D* hNoOutgoingPion0pBackground  = (TH1D*) Directory->Get<TH1D>("hNoOutgoingPion0pBackground");
+    TH1D* hNoOutgoingPionNpBackground  = (TH1D*) Directory->Get<TH1D>("hNoOutgoingPionNpBackground");
+    TH1D* hSmallTracks                 = (TH1D*) Directory->Get<TH1D>("hSmallTracks");
+    TH1D* hSmallTracks0pSignal         = (TH1D*) Directory->Get<TH1D>("hSmallTracks0pSignal");
+    TH1D* hSmallTracksNpSignal         = (TH1D*) Directory->Get<TH1D>("hSmallTracksNpSignal");
+    TH1D* hSmallTracks0pBackground     = (TH1D*) Directory->Get<TH1D>("hSmallTracks0pBackground");
+    TH1D* hSmallTracksNpBackground     = (TH1D*) Directory->Get<TH1D>("hSmallTracksNpBackground");
+    TH1D* hMeanCurvature               = (TH1D*) Directory->Get<TH1D>("hMeanCurvature");
+    TH1D* hMeanCurvature0pSignal       = (TH1D*) Directory->Get<TH1D>("hMeanCurvature0pSignal");
+    TH1D* hMeanCurvatureNpSignal       = (TH1D*) Directory->Get<TH1D>("hMeanCurvatureNpSignal");
+    TH1D* hMeanCurvature0pBackground   = (TH1D*) Directory->Get<TH1D>("hMeanCurvature0pBackground");
+    TH1D* hMeanCurvatureNpBackground   = (TH1D*) Directory->Get<TH1D>("hMeanCurvatureNpBackground");
+    TH1D* hFinalRecoEvents             = (TH1D*) Directory->Get<TH1D>("hFinalRecoEvents");
+    TH1D* hFinalRecoEvents0pSignal     = (TH1D*) Directory->Get<TH1D>("hFinalRecoEvents0pSignal");
+    TH1D* hFinalRecoEventsNpSignal     = (TH1D*) Directory->Get<TH1D>("hFinalRecoEventsNpSignal");
+    TH1D* hFinalRecoEvents0pBackground = (TH1D*) Directory->Get<TH1D>("hFinalRecoEvents0pBackground");
+    TH1D* hFinalRecoEventsNpBackground = (TH1D*) Directory->Get<TH1D>("hFinalRecoEventsNpBackground");
 
     // Grab file with true selected events
     TString TrueSelectedPath = "/exp/lariat/app/users/epelaez/files/SignalPionAbsorptionOnSelectedEvents_histo.root";
@@ -101,6 +133,7 @@ void SelectionAnalysis() {
     float                     truthPrimaryVertexZ;
     bool                      isPionAbsorptionSignal;
     int                       numVisibleProtons;
+    int                       backgroundType;
     tree->SetBranchAddress("truthPrimaryPDG", &truthPrimaryPDG);
     tree->SetBranchAddress("truthPrimaryDaughtersPDG", &truthPrimaryDaughtersPDG);
     tree->SetBranchAddress("truthPrimaryDaughtersProcess", &truthPrimaryDaughtersProcess);
@@ -110,6 +143,7 @@ void SelectionAnalysis() {
     tree->SetBranchAddress("truthPrimaryVertexX", &truthPrimaryVertexX);
     tree->SetBranchAddress("truthPrimaryVertexY", &truthPrimaryVertexY);
     tree->SetBranchAddress("truthPrimaryVertexZ", &truthPrimaryVertexZ);
+    tree->SetBranchAddress("backgroundType", &backgroundType);
 
     // Information about reco'ed protons
     int                       protonCount;
@@ -140,16 +174,11 @@ void SelectionAnalysis() {
     /////////////////
     // Selection tree
     /////////////////
-    
-    // Keep track of events in 0p and Np bins
-    int numSelectedEvents0Protons = 0;
-    int numSelectedEventsNProtons = 0;
-    int numSelectedTrueEvents0Protons = 0;
-    int numSelectedTrueEventsNProtons = 0;
 
     // We will keep track of weird events
     std::vector<EventInfo> FlaggedEvents;
-    std::map<int, std::map<std::string, int>> pionBackground;
+    std::vector<EventInfo> Reco0pBackgroundNp;
+    std::vector<EventInfo> RecoNpBackground0p;
     std::map<int, int> wcMatchPDGCount;
     std::map<int, int> primaryPDGCount;
 
@@ -157,14 +186,9 @@ void SelectionAnalysis() {
     Int_t NumEntries = (Int_t) tree->GetEntries();
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
- 
-        if (protonCount >= 1) {
-            numSelectedEventsNProtons++;
-            if (isPionAbsorptionSignal && (numVisibleProtons >= 1)) numSelectedTrueEventsNProtons++;
-        } else {
-            numSelectedEvents0Protons++;
-            if (isPionAbsorptionSignal && (numVisibleProtons == 0)) numSelectedTrueEvents0Protons++;
-        }
+
+        bool is0pRecoNpBackground = false;
+        bool isNpReco0pBackground = false;
 
         int numWCMatchProtonDaughters = 0;
         int numWCMatchDaughters = wcMatchDaughtersPDG->size();
@@ -174,9 +198,12 @@ void SelectionAnalysis() {
 
             if (daughterPDG == 2212) numWCMatchProtonDaughters++;
         }
+
+        if ((isPionAbsorptionSignal) && (numVisibleProtons == 0) && (protonCount > 0)) isNpReco0pBackground = true;
+        if ((isPionAbsorptionSignal) && (numVisibleProtons > 0) && (protonCount == 0)) is0pRecoNpBackground = true;
         
         // Flag events
-        if (!isPionAbsorptionSignal) {
+        if ((!isPionAbsorptionSignal) || isNpReco0pBackground || is0pRecoNpBackground) {
             EventInfo flaggedEvent;
 
             flaggedEvent.run    = run; 
@@ -196,17 +223,20 @@ void SelectionAnalysis() {
             flaggedEvent.truthPrimaryDaughtersPDG     = *truthPrimaryDaughtersPDG;
             flaggedEvent.truthPrimaryDaughtersProcess = *truthPrimaryDaughtersProcess;
 
-            flaggedEvent.visibleProtons = numVisibleProtons;
+            flaggedEvent.visibleProtons  = numVisibleProtons;
+            flaggedEvent.backgroundNum   = backgroundType;
+            flaggedEvent.recoProtonCount = protonCount;
 
-            FlaggedEvents.push_back(flaggedEvent);
-            
+            if (!isPionAbsorptionSignal) FlaggedEvents.push_back(flaggedEvent);
+            if (is0pRecoNpBackground)    Reco0pBackgroundNp.push_back(flaggedEvent);
+            if (isNpReco0pBackground)    RecoNpBackground0p.push_back(flaggedEvent);
+
             int numTruthPrimaryDaughters = truthPrimaryDaughtersPDG->size();
             if (truthPrimaryPDG == -211) {
                 for (int iDaughter = 0; iDaughter < numTruthPrimaryDaughters; ++iDaughter) {
                     int daughterPDG = truthPrimaryDaughtersPDG->at(iDaughter);
                     std::string daughterProcess = truthPrimaryDaughtersProcess->at(iDaughter);
                     if (!((daughterPDG == 111) || (daughterPDG == 211) || (daughterPDG == -211))) continue;
-                    pionBackground[daughterPDG][daughterProcess]++;
                 }
             }
 
@@ -235,38 +265,22 @@ void SelectionAnalysis() {
     }
     outFile << std::endl;
 
-    outFile << "Detailed info about primary -211 events:" << std::endl;
-    for (const auto& outerPair : pionBackground) {
-        outFile << "    Daughter pion: " << outerPair.first << ":\n";
-        for (const auto& innerPair : outerPair.second) {
-            outFile << "        " << innerPair.first << " -> " << innerPair.second << "\n";
-        }
-    }
-    outFile << std::endl;
-
     for (const auto &flaggedEvent : FlaggedEvents) {
-        outFile << "Run: " << flaggedEvent.run << " subrun: " << flaggedEvent.subrun << " event: " << flaggedEvent.event << std::endl;
-        outFile << "WC match PDG: " << flaggedEvent.wcMatchPDG << std::endl;
-        outFile << "WC match process: " << flaggedEvent.wcMatchProcess << std::endl;
-        outFile << "WC match daughters: " << std::endl;
-        for (int n = 0; n < flaggedEvent.wcMatchDaughtersPDG.size(); ++n) {
-            if (flaggedEvent.wcMatchDaughtersPDG[n] == 11 && flaggedEvent.wcMatchDaughtersProcess[n] == "hIoni") continue;
-            outFile << "    PDG: " << flaggedEvent.wcMatchDaughtersPDG[n];
-            outFile << " Process: " << flaggedEvent.wcMatchDaughtersProcess[n];
-            outFile << std::endl;
-        }
-        outFile << "Primary PDG: " << flaggedEvent.truthPrimaryPDG << std::endl;
-        outFile << "Primary vertex: " << flaggedEvent.vertexX << ", " << flaggedEvent.vertexY << ", " << flaggedEvent.vertexZ << std::endl; 
-        outFile << "Primary daughters: " << std::endl;
-        for (int n = 0; n < flaggedEvent.truthPrimaryDaughtersPDG.size(); ++n) {
-            if (flaggedEvent.truthPrimaryDaughtersPDG[n] == 11 && flaggedEvent.truthPrimaryDaughtersProcess[n] == "hIoni") continue;
-            outFile << "    PDG: " << flaggedEvent.truthPrimaryDaughtersPDG[n];
-            outFile << " Process: " << flaggedEvent.truthPrimaryDaughtersProcess[n];
-            outFile << std::endl;
-        }
-        outFile << "Tracks reco'ed as protons: " << protonCount << std::endl;
-        outFile << "True visible protons: " << flaggedEvent.visibleProtons << std::endl;
-        outFile << std::endl;
+        printEventInfo(flaggedEvent, outFile);
+    }
+
+    std::ofstream out0pFile("0pRecoNpBackground.txt");
+    out0pFile << "Events reconstructed as 0p absorption but Np absorption at truth level: " << Reco0pBackgroundNp.size() << std::endl;
+    out0pFile << std::endl;
+    for (const auto &flaggedEvent : Reco0pBackgroundNp) {
+        printEventInfo(flaggedEvent, out0pFile);
+    }
+
+    std::ofstream outNpFile("NpReco0pBackground.txt");
+    outNpFile << "Events reconstructed as Np absorption but 0p absorption at truth level: " << RecoNpBackground0p.size() << std::endl;
+    outNpFile << std::endl;
+    for (const auto &flaggedEvent : RecoNpBackground0p) {
+        printEventInfo(flaggedEvent, outNpFile);
     }
 
     ///////////////////
@@ -437,4 +451,96 @@ void SelectionAnalysis() {
     std::cout << "  Reco Np events: " << hFinalRecoEvents->Integral(2,2) << std::endl;
     std::cout << "  0p channel purity: " << hFinalRecoEventsNpSignal->Integral(2,2) / hFinalRecoEvents->Integral(2,2) << " and efficiency: " << hFinalRecoEventsNpSignal->Integral(2,2) / totalNpSignalEvents << std::endl;
     std::cout << std::endl;
+
+    std::cout << "Reco 0p background composition: " << std::endl;
+    printBackgroundInfo(hFinalRecoEvents0pBackground, std::cout);
+    std::cout << std::endl;
+
+    std::cout << "Reco Np background composition: " << std::endl;
+    printBackgroundInfo(hFinalRecoEventsNpBackground, std::cout);
+    std::cout << std::endl;
+
+    std::ofstream outFileBackgroundBreakdown("BackgroundBreakdown.txt");
+    outFileBackgroundBreakdown << "Overall background after WC existence cut:" << std::endl;
+    printBackgroundInfo(hWCExistsBackground, outFileBackgroundBreakdown);
+    outFileBackgroundBreakdown << std::endl;
+    
+    outFileBackgroundBreakdown << "Overall background after pion in reduced volume cut:" << std::endl;
+    printBackgroundInfo(hPionInRedVolumeBackground, outFileBackgroundBreakdown);
+    outFileBackgroundBreakdown << std::endl;
+
+    outFileBackgroundBreakdown << "Reco 0p background after no outgoing pion cut:" << std::endl;
+    printBackgroundInfo(hNoOutgoingPion0pBackground, outFileBackgroundBreakdown);
+    outFileBackgroundBreakdown << std::endl;
+    outFileBackgroundBreakdown << "Reco Np background after no outgoing pion cut:" << std::endl;
+    printBackgroundInfo(hNoOutgoingPionNpBackground, outFileBackgroundBreakdown);
+    outFileBackgroundBreakdown << std::endl;
+
+    outFileBackgroundBreakdown << "Reco 0p background after small tracks cut:" << std::endl;
+    printBackgroundInfo(hSmallTracks0pBackground, outFileBackgroundBreakdown);
+    outFileBackgroundBreakdown << std::endl;
+    outFileBackgroundBreakdown << "Reco Np background after small tracks cut:" << std::endl;
+    printBackgroundInfo(hSmallTracksNpBackground, outFileBackgroundBreakdown);
+    outFileBackgroundBreakdown << std::endl;
+
+    outFileBackgroundBreakdown << "Reco 0p background after mean curvature cut:" << std::endl;
+    printBackgroundInfo(hMeanCurvature0pBackground, outFileBackgroundBreakdown);
+    outFileBackgroundBreakdown << std::endl;
+    outFileBackgroundBreakdown << "Reco Np background after mean curvature cut:" << std::endl;
+    printBackgroundInfo(hMeanCurvatureNpBackground, outFileBackgroundBreakdown);
+    outFileBackgroundBreakdown << std::endl;
+}
+
+void printBackgroundInfo(TH1D* background_histo, std::ostream& os) {
+    int pionAbs0p            = background_histo->GetBinContent(1);
+    int pionAbsNp            = background_histo->GetBinContent(2);
+    int primaryMuon          = background_histo->GetBinContent(3);
+    int primaryElectron      = background_histo->GetBinContent(4);
+    int otherPrimary         = background_histo->GetBinContent(5);
+    int pionOutRedVol        = background_histo->GetBinContent(6);
+    int pionInelScatter      = background_histo->GetBinContent(7);
+    int chargeExchange       = background_histo->GetBinContent(8);
+    int doubleChargeExchange = background_histo->GetBinContent(9);
+    int captureAtRest        = background_histo->GetBinContent(10);
+    int pionDecay            = background_histo->GetBinContent(11);
+    int other                = background_histo->GetBinContent(12);
+
+    os << "  Abs 0p: " << pionAbs0p << std::endl;;
+    os << "  Abs Np: " << pionAbsNp << std::endl;;
+    os << "  Primary muon: " << primaryMuon << std::endl;;
+    os << "  Primary electron: " << primaryElectron << std::endl;;
+    os << "  Other primary: " << otherPrimary << std::endl;;
+    os << "  Outside reduced volume: " << pionOutRedVol << std::endl;;
+    os << "  Inelastic scattering: " << pionInelScatter << std::endl;;
+    os << "  Charge exchange: " << chargeExchange << std::endl;;
+    os << "  Double charge exchange: " << doubleChargeExchange << std::endl;;
+    os << "  Capture at rest: " << captureAtRest << std::endl;;
+    os << "  Decay: " << pionDecay << std::endl;;
+    os << "  Other: " << other << std::endl;
+}
+
+void printEventInfo(EventInfo event, std::ostream& os) {
+    os << "Run: " << event.run << " subrun: " << event.subrun << " event: " << event.event << std::endl;
+    os << "Background type: " << backgroundTypes[event.backgroundNum] << std::endl;
+    os << "WC match PDG: " << event.wcMatchPDG << std::endl;
+    os << "WC match process: " << event.wcMatchProcess << std::endl;
+    os << "WC match daughters: " << std::endl;
+    for (int n = 0; n < event.wcMatchDaughtersPDG.size(); ++n) {
+        if (event.wcMatchDaughtersPDG[n] == 11 && event.wcMatchDaughtersProcess[n] == "hIoni") continue;
+        os << "    PDG: " << event.wcMatchDaughtersPDG[n];
+        os << " Process: " << event.wcMatchDaughtersProcess[n];
+        os << std::endl;
+    }
+    os << "Primary PDG: " << event.truthPrimaryPDG << std::endl;
+    os << "Primary vertex: " << event.vertexX << ", " << event.vertexY << ", " << event.vertexZ << std::endl; 
+    os << "Primary daughters: " << std::endl;
+    for (int n = 0; n < event.truthPrimaryDaughtersPDG.size(); ++n) {
+        if (event.truthPrimaryDaughtersPDG[n] == 11 && event.truthPrimaryDaughtersProcess[n] == "hIoni") continue;
+        os << "    PDG: " << event.truthPrimaryDaughtersPDG[n];
+        os << " Process: " << event.truthPrimaryDaughtersProcess[n];
+        os << std::endl;
+    }
+    os << "Tracks reco'ed as protons: " << event.recoProtonCount << std::endl;
+    os << "True visible protons: " << event.visibleProtons << std::endl;
+    os << std::endl;
 }

@@ -1,0 +1,112 @@
+Overall background after WC existence cut:
+  Abs 0p: 0
+  Abs Np: 0
+  Primary muon: 2101
+  Primary electron: 1703
+  Other primary: 0
+  Outside reduced volume: 655
+  Inelastic scattering: 1368
+  Charge exchange: 314
+  Double charge exchange: 20
+  Capture at rest: 463
+  Decay: 570
+  Other: 6
+
+Overall background after pion in reduced volume cut:
+  Abs 0p: 0
+  Abs Np: 0
+  Primary muon: 148
+  Primary electron: 1647
+  Other primary: 0
+  Outside reduced volume: 147
+  Inelastic scattering: 1119
+  Charge exchange: 263
+  Double charge exchange: 17
+  Capture at rest: 196
+  Decay: 136
+  Other: 6
+
+Reco 0p background after no outgoing pion cut:
+  Abs 0p: 0
+  Abs Np: 411
+  Primary muon: 129
+  Primary electron: 932
+  Other primary: 0
+  Outside reduced volume: 78
+  Inelastic scattering: 460
+  Charge exchange: 214
+  Double charge exchange: 8
+  Capture at rest: 140
+  Decay: 97
+  Other: 2
+
+Reco Np background after no outgoing pion cut:
+  Abs 0p: 66
+  Abs Np: 0
+  Primary muon: 5
+  Primary electron: 169
+  Other primary: 0
+  Outside reduced volume: 6
+  Inelastic scattering: 177
+  Charge exchange: 18
+  Double charge exchange: 4
+  Capture at rest: 19
+  Decay: 7
+  Other: 3
+
+Reco 0p background after small tracks cut:
+  Abs 0p: 0
+  Abs Np: 403
+  Primary muon: 126
+  Primary electron: 177
+  Other primary: 0
+  Outside reduced volume: 75
+  Inelastic scattering: 455
+  Charge exchange: 194
+  Double charge exchange: 8
+  Capture at rest: 135
+  Decay: 96
+  Other: 2
+
+Reco Np background after small tracks cut:
+  Abs 0p: 66
+  Abs Np: 0
+  Primary muon: 5
+  Primary electron: 21
+  Other primary: 0
+  Outside reduced volume: 6
+  Inelastic scattering: 173
+  Charge exchange: 14
+  Double charge exchange: 4
+  Capture at rest: 19
+  Decay: 7
+  Other: 2
+
+Reco 0p background after mean curvature cut:
+  Abs 0p: 0
+  Abs Np: 295
+  Primary muon: 124
+  Primary electron: 24
+  Other primary: 0
+  Outside reduced volume: 58
+  Inelastic scattering: 362
+  Charge exchange: 174
+  Double charge exchange: 7
+  Capture at rest: 128
+  Decay: 83
+  Other: 1
+
+Reco Np background after mean curvature cut:
+  Abs 0p: 50
+  Abs Np: 0
+  Primary muon: 5
+  Primary electron: 4
+  Other primary: 0
+  Outside reduced volume: 5
+  Inelastic scattering: 123
+  Charge exchange: 9
+  Double charge exchange: 2
+  Capture at rest: 18
+  Decay: 7
+  Other: 2
+

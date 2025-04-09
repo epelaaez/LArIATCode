@@ -48,6 +48,11 @@ void RecoAnalysis() {
     tree->SetBranchAddress("truthPionVertexKEnergy", &truthPionVertexKEnergy);
     tree->SetBranchAddress("truthPionVertexMomentum", &truthPionVertexMomentum);
 
+    double truthPionEndX, truthPionEndY, truthPionEndZ;
+    tree->SetBranchAddress("truthPionEndX", &truthPionEndX);
+    tree->SetBranchAddress("truthPionEndY", &truthPionEndY);
+    tree->SetBranchAddress("truthPionEndZ", &truthPionEndZ);
+
     std::vector<double>* truthProtonsEnergy  = nullptr;
     std::vector<double>* truthProtonsKEnergy = nullptr;
     std::vector<double>* truthProtonsLength  = nullptr;
@@ -105,6 +110,11 @@ void RecoAnalysis() {
     TH1D *hTrueLengthAllProtons = new TH1D("hTrueLengthAllProtons", "hTrueLengthAllProtons;;", 20, 0, 40);
     TH1D *hTrueLengthRecoProtons = new TH1D("hTrueLengthRecoProtons", "hTrueLengthRecoProtons;;", 20, 0, 40);
 
+    double startingZBoundary = 82.0; // start at usual reduced volume
+    double stepZBoundary     = 1;    // at each step, decrease by this
+    int    numStepsZBoundary = 60;   // how many steps to take
+    TH1D *hProtonsEscaping = new TH1D("hProtonsEscaping", "hProtonsEscaping", numStepsZBoundary, 0, numStepsZBoundary * stepZBoundary);
+
     TH2D *hEnergyLossAll = new TH2D(
         "hEnergyLossAll", 
         "hEnergyLossAll",
@@ -154,6 +164,7 @@ void RecoAnalysis() {
 
         // Loop over reco particles
         int numRecoParticles = matchedIdentity->size();
+        int thisRecoProtonsTrueUncotained = 0;
         for (int iParticle = 0; iParticle < numRecoParticles; ++iParticle) {
             // Get calo information for this particle
             std::vector<double> thisTrackDEDX     = recoDEDX->at(iParticle);
@@ -190,7 +201,7 @@ void RecoAnalysis() {
                     (matchedRealEndX->at(iParticle) < minX) || (matchedRealEndX->at(iParticle) > maxX) ||
                     (matchedRealEndY->at(iParticle) < minY) || (matchedRealEndY->at(iParticle) > maxY) ||
                     (matchedRealEndZ->at(iParticle) < minZ) || (matchedRealEndZ->at(iParticle) > maxZ) 
-                ) { recoProtonsTrueUncontained++; }
+                ) { recoProtonsTrueUncontained++; thisRecoProtonsTrueUncotained++; }
 
                 int caloPoints = thisTrackDEDX.size();
                 for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
@@ -204,6 +215,14 @@ void RecoAnalysis() {
                     hEnergyLossAll->Fill(thisTrackRecoResR[iCalo], thisTrackDEDX[iCalo]);
                 }
             }
+        }
+
+        // Find bin for protons escaping plot
+        int bin = ((startingZBoundary - truthPionEndZ) / stepZBoundary) + 1;
+        if (bin > numStepsZBoundary) bin = numStepsZBoundary;
+        if (bin < 1)                 bin = 1;
+        for (int b = 1; b <= bin; ++b) {
+            hProtonsEscaping->Fill(b, thisRecoProtonsTrueUncotained);
         }
     }
 
@@ -225,35 +244,40 @@ void RecoAnalysis() {
         {hPionMeanDEDX, hProtonMeanDEDX},
         {hProtonMeanDEDX},
         {hTrueInitialKEnergyAllProtons, hTrueInitialKEnergyRecoProtons},
-        {hTrueLengthAllProtons, hTrueLengthRecoProtons}
+        {hTrueLengthAllProtons, hTrueLengthRecoProtons},
+        {hProtonsEscaping}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         {"Pion", "Proton"}, 
         {"Proton"},
         {"True protons", "Reco protons"},
-        {"True protons", "Reco protons"}
+        {"True protons", "Reco protons"},
+        {"Protons escaping"}
     };
 
     std::vector<TString> PlotTitles = {
         "MeanDEDX",
         "ProtonMeanDEDX",
         "ProtonKE",
-        "ProtonLength"
+        "ProtonLength",
+        "ProtonsEscaping"
     };
     
     std::vector<TString> XLabels = {
         "dE/dx (MeV/cm)",
         "dE/dx (MeV/cm)",
         "Kinetic energy (GeV)",
-        "Track length (cm)"
+        "Track length (cm)",
+        "Reduced volume pushback (cm)"
     };
 
     std::vector<TString> YLabels = {
         "Particle counts",
         "Particle counts",
         "Particle counts",
-        "Particle counts"
+        "Particle counts",
+        "Total protons"
     };
 
     int numPlots = PlotGroups.size();
