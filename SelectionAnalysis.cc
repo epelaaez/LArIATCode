@@ -177,8 +177,12 @@ void SelectionAnalysis() {
 
     // We will keep track of weird events
     std::vector<EventInfo> FlaggedEvents;
+    std::vector<EventInfo> Reco0pBackground;
     std::vector<EventInfo> Reco0pBackgroundNp;
+    std::vector<EventInfo> Reco0pTrue;
+    std::vector<EventInfo> RecoNpBackground;
     std::vector<EventInfo> RecoNpBackground0p;
+    std::vector<EventInfo> RecoNpTrue;
     std::map<int, int> wcMatchPDGCount;
     std::map<int, int> primaryPDGCount;
 
@@ -189,6 +193,8 @@ void SelectionAnalysis() {
 
         bool is0pRecoNpBackground = false;
         bool isNpReco0pBackground = false;
+        bool is0pRecoTrue         = false;
+        bool isNpRecoTrue         = false;
 
         int numWCMatchProtonDaughters = 0;
         int numWCMatchDaughters = wcMatchDaughtersPDG->size();
@@ -199,88 +205,114 @@ void SelectionAnalysis() {
             if (daughterPDG == 2212) numWCMatchProtonDaughters++;
         }
 
-        if ((isPionAbsorptionSignal) && (numVisibleProtons == 0) && (protonCount > 0)) isNpReco0pBackground = true;
-        if ((isPionAbsorptionSignal) && (numVisibleProtons > 0) && (protonCount == 0)) is0pRecoNpBackground = true;
+        if ((isPionAbsorptionSignal) && (numVisibleProtons > 0) && (protonCount == 0))  is0pRecoNpBackground = true;
+        if ((isPionAbsorptionSignal) && (numVisibleProtons == 0) && (protonCount > 0))  isNpReco0pBackground = true;
+        if ((isPionAbsorptionSignal) && (numVisibleProtons == 0) && (protonCount == 0)) is0pRecoTrue = true;
+        if ((isPionAbsorptionSignal) && (numVisibleProtons > 0) && (protonCount > 0))   isNpRecoTrue = true;
         
-        // Flag events
-        if ((!isPionAbsorptionSignal) || isNpReco0pBackground || is0pRecoNpBackground) {
-            EventInfo flaggedEvent;
+        // Save event information
+        EventInfo flaggedEvent;
 
-            flaggedEvent.run    = run; 
-            flaggedEvent.subrun = subrun;
-            flaggedEvent.event  = event;
+        flaggedEvent.run    = run; 
+        flaggedEvent.subrun = subrun;
+        flaggedEvent.event  = event;
 
-            flaggedEvent.vertexX = truthPrimaryVertexX;
-            flaggedEvent.vertexY = truthPrimaryVertexY;
-            flaggedEvent.vertexZ = truthPrimaryVertexZ;
+        flaggedEvent.vertexX = truthPrimaryVertexX;
+        flaggedEvent.vertexY = truthPrimaryVertexY;
+        flaggedEvent.vertexZ = truthPrimaryVertexZ;
 
-            flaggedEvent.wcMatchPDG              = wcMatchPDG;
-            flaggedEvent.wcMatchProcess          = *wcMatchProcess;
-            flaggedEvent.wcMatchDaughtersPDG     = *wcMatchDaughtersPDG;
-            flaggedEvent.wcMatchDaughtersProcess = *wcMatchDaughtersProcess;
+        flaggedEvent.wcMatchPDG              = wcMatchPDG;
+        flaggedEvent.wcMatchProcess          = *wcMatchProcess;
+        flaggedEvent.wcMatchDaughtersPDG     = *wcMatchDaughtersPDG;
+        flaggedEvent.wcMatchDaughtersProcess = *wcMatchDaughtersProcess;
 
-            flaggedEvent.truthPrimaryPDG              = truthPrimaryPDG;
-            flaggedEvent.truthPrimaryDaughtersPDG     = *truthPrimaryDaughtersPDG;
-            flaggedEvent.truthPrimaryDaughtersProcess = *truthPrimaryDaughtersProcess;
+        flaggedEvent.truthPrimaryPDG              = truthPrimaryPDG;
+        flaggedEvent.truthPrimaryDaughtersPDG     = *truthPrimaryDaughtersPDG;
+        flaggedEvent.truthPrimaryDaughtersProcess = *truthPrimaryDaughtersProcess;
 
-            flaggedEvent.visibleProtons  = numVisibleProtons;
-            flaggedEvent.backgroundNum   = backgroundType;
-            flaggedEvent.recoProtonCount = protonCount;
+        flaggedEvent.visibleProtons  = numVisibleProtons;
+        flaggedEvent.backgroundNum   = backgroundType;
+        flaggedEvent.recoProtonCount = protonCount;
 
-            if (!isPionAbsorptionSignal) FlaggedEvents.push_back(flaggedEvent);
-            if (is0pRecoNpBackground)    Reco0pBackgroundNp.push_back(flaggedEvent);
-            if (isNpReco0pBackground)    RecoNpBackground0p.push_back(flaggedEvent);
-
-            int numTruthPrimaryDaughters = truthPrimaryDaughtersPDG->size();
-            if (truthPrimaryPDG == -211) {
-                for (int iDaughter = 0; iDaughter < numTruthPrimaryDaughters; ++iDaughter) {
-                    int daughterPDG = truthPrimaryDaughtersPDG->at(iDaughter);
-                    std::string daughterProcess = truthPrimaryDaughtersProcess->at(iDaughter);
-                    if (!((daughterPDG == 111) || (daughterPDG == 211) || (daughterPDG == -211))) continue;
-                }
-            }
+        if (!isPionAbsorptionSignal) {
+            FlaggedEvents.push_back(flaggedEvent);
 
             wcMatchPDGCount[wcMatchPDG]++;
             primaryPDGCount[truthPrimaryPDG]++;
+
+            if (protonCount == 0) Reco0pBackground.push_back(flaggedEvent);
+            if (protonCount > 0)  RecoNpBackground.push_back(flaggedEvent);
         }
+        if (is0pRecoNpBackground) Reco0pBackgroundNp.push_back(flaggedEvent);
+        if (isNpReco0pBackground) RecoNpBackground0p.push_back(flaggedEvent);
+        if (is0pRecoTrue) Reco0pTrue.push_back(flaggedEvent);
+        if (isNpRecoTrue) RecoNpTrue.push_back(flaggedEvent);
 
         // Fill histograms
         hRecoTrueNumProtons->Fill(numWCMatchProtonDaughters);
         hRecoNumProtonTracks->Fill(protonCount);
     }
 
-    std::ofstream outFile("FlaggedEventsOutput.txt");
-    outFile << "Num of flagged events: " << FlaggedEvents.size() << std::endl;
-    outFile << std::endl;
+    std::ofstream outAllBackgroundFile("files/AllBackground.txt");
+    outAllBackgroundFile << "Num of flagged events: " << FlaggedEvents.size() << std::endl;
+    outAllBackgroundFile << std::endl;
 
-    outFile << "WC match PDG count: " << std::endl;
+    outAllBackgroundFile << "WC match PDG count: " << std::endl;
     for (const auto &entry : wcMatchPDGCount) {
-        outFile << "    WC match PDG: " << entry.first << " Count: " << entry.second << std::endl;
+        outAllBackgroundFile << "    WC match PDG: " << entry.first << " Count: " << entry.second << std::endl;
     }
-    outFile << std::endl;
+    outAllBackgroundFile << std::endl;
 
-    outFile << "Primary PDG count: " << std::endl;
+    outAllBackgroundFile << "Primary PDG count: " << std::endl;
     for (const auto &entry : primaryPDGCount) {
-        outFile << "    True primary PDG: " << entry.first << " Count: " << entry.second << std::endl;
+        outAllBackgroundFile << "    True primary PDG: " << entry.first << " Count: " << entry.second << std::endl;
     }
-    outFile << std::endl;
+    outAllBackgroundFile << std::endl;
 
     for (const auto &flaggedEvent : FlaggedEvents) {
-        printEventInfo(flaggedEvent, outFile);
+        printEventInfo(flaggedEvent, outAllBackgroundFile);
     }
 
-    std::ofstream out0pFile("0pRecoNpBackground.txt");
-    out0pFile << "Events reconstructed as 0p absorption but Np absorption at truth level: " << Reco0pBackgroundNp.size() << std::endl;
-    out0pFile << std::endl;
+    std::ofstream out0pBackground("files/0pRecoBackground.txt");
+    out0pBackground << "Events reconstructed as 0p absorption but not absorption at truth level: " << Reco0pBackground.size() << std::endl;
+    out0pBackground << std::endl;
+    for (const auto &flaggedEvent : Reco0pBackground) {
+        printEventInfo(flaggedEvent, out0pBackground);
+    }
+
+    std::ofstream out0pRecoNpBackgroundFile("files/0pRecoNpBackground.txt");
+    out0pRecoNpBackgroundFile << "Events reconstructed as 0p absorption but Np absorption at truth level: " << Reco0pBackgroundNp.size() << std::endl;
+    out0pRecoNpBackgroundFile << std::endl;
     for (const auto &flaggedEvent : Reco0pBackgroundNp) {
-        printEventInfo(flaggedEvent, out0pFile);
+        printEventInfo(flaggedEvent, out0pRecoNpBackgroundFile);
     }
 
-    std::ofstream outNpFile("NpReco0pBackground.txt");
-    outNpFile << "Events reconstructed as Np absorption but 0p absorption at truth level: " << RecoNpBackground0p.size() << std::endl;
-    outNpFile << std::endl;
+    std::ofstream out0pTrueFile("files/0pRecoTrue.txt");
+    out0pTrueFile << "Events reconstructed as 0p absorption that are true signal: " << Reco0pTrue.size() << std::endl;
+    out0pTrueFile << std::endl;
+    for (const auto &flaggedEvent : Reco0pTrue) {
+        printEventInfo(flaggedEvent, out0pTrueFile);
+    }
+
+    std::ofstream outNpBackground("files/NpRecoBackground.txt");
+    outNpBackground << "Events reconstructed as Np absorption but not absorption at truth level: " << RecoNpBackground.size() << std::endl;
+    outNpBackground << std::endl;
+    for (const auto &flaggedEvent : RecoNpBackground) {
+        printEventInfo(flaggedEvent, outNpBackground);
+    }
+
+    std::ofstream outNpReco0pBackgroundFile("files/NpReco0pBackground.txt");
+    outNpReco0pBackgroundFile << "Events reconstructed as Np absorption but 0p absorption at truth level: " << RecoNpBackground0p.size() << std::endl;
+    outNpReco0pBackgroundFile << std::endl;
     for (const auto &flaggedEvent : RecoNpBackground0p) {
-        printEventInfo(flaggedEvent, outNpFile);
+        printEventInfo(flaggedEvent, outNpReco0pBackgroundFile);
+    }
+
+    std::ofstream outNpTrueFile("files/NpRecoTrue.txt");
+    outNpTrueFile << "Events reconstructed as Np absorption that are true signal: " << RecoNpTrue.size() << std::endl;
+    outNpTrueFile << std::endl;
+    for (const auto &flaggedEvent : RecoNpTrue) {
+        printEventInfo(flaggedEvent, outNpTrueFile);
     }
 
     ///////////////////
@@ -460,7 +492,7 @@ void SelectionAnalysis() {
     printBackgroundInfo(hFinalRecoEventsNpBackground, std::cout);
     std::cout << std::endl;
 
-    std::ofstream outFileBackgroundBreakdown("BackgroundBreakdown.txt");
+    std::ofstream outFileBackgroundBreakdown("files/BackgroundBreakdown.txt");
     outFileBackgroundBreakdown << "Overall background after WC existence cut:" << std::endl;
     printBackgroundInfo(hWCExistsBackground, outFileBackgroundBreakdown);
     outFileBackgroundBreakdown << std::endl;

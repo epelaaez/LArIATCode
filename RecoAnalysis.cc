@@ -156,6 +156,8 @@ void RecoAnalysis() {
     int recoProtons                = 0;
     int truthProtons               = 0;
 
+    std::ofstream outUncontainedProtonsFile("files/UncontainedProtons.txt");
+
     // Loop over events
     Int_t NumEntries = (Int_t) tree->GetEntries();
     std::cout << "Num entries: " << NumEntries << std::endl;
@@ -215,7 +217,10 @@ void RecoAnalysis() {
                     (matchedRealEndX->at(iParticle) < minX) || (matchedRealEndX->at(iParticle) > maxX) ||
                     (matchedRealEndY->at(iParticle) < minY) || (matchedRealEndY->at(iParticle) > maxY) ||
                     (matchedRealEndZ->at(iParticle) < minZ) || (matchedRealEndZ->at(iParticle) > maxZ) 
-                ) { recoProtonsTrueUncontained++; thisRecoProtonsTrueUncotained++; }
+                ) { 
+                    recoProtonsTrueUncontained++; 
+                    thisRecoProtonsTrueUncotained++;  
+                }
 
                 int caloPoints = thisTrackDEDX.size();
                 for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
@@ -229,6 +234,10 @@ void RecoAnalysis() {
                     hEnergyLossAll->Fill(thisTrackRecoResR[iCalo], thisTrackDEDX[iCalo]);
                 }
             }
+        }
+
+        if (thisRecoProtonsTrueUncotained > 0) {
+            outUncontainedProtonsFile << "Event number: " << event << ". Uncontained protons: " << thisRecoProtonsTrueUncotained << std::endl;
         }
 
         // Find bin for protons escaping plot
