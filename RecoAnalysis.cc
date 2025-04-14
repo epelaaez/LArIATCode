@@ -13,6 +13,10 @@ void RecoAnalysis() {
     TH2D::SetDefaultSumw2();
     // gStyle->SetOptStat(0);
 
+    // Proton energy bounds
+    double PROTON_ENERGY_LOWER_BOUND = 0.075;
+    double PROTON_ENERGY_UPPER_BOUND = 1.0;
+
     // Detector dimensions
     const double minX =  0.0;
     const double maxX = 47.0;
@@ -167,15 +171,19 @@ void RecoAnalysis() {
         // Loop over true daughter protons
         int numTruthProtons = truthProtonsKEnergy->size();
         for (int iTrueProton = 0; iTrueProton < numTruthProtons; ++iTrueProton) {
-            truthProtons++;
             hTrueInitialKEnergyAllProtons->Fill(truthProtonsKEnergy->at(iTrueProton));
             hTrueLengthAllProtons->Fill(truthProtonsLength->at(iTrueProton));
+
+            double thisProtonTrueKE = truthProtonsKEnergy->at(iTrueProton);
+            if ((thisProtonTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisProtonTrueKE <= PROTON_ENERGY_UPPER_BOUND)) truthProtons++;
 
             if (
                 (truthProtonsEndX->at(iTrueProton) < minX) || (truthProtonsEndX->at(iTrueProton) > maxX) ||
                 (truthProtonsEndY->at(iTrueProton) < minY) || (truthProtonsEndY->at(iTrueProton) > maxY) ||
                 (truthProtonsEndZ->at(iTrueProton) < minZ) || (truthProtonsEndZ->at(iTrueProton) > maxZ) 
-            ) { truthProtonsUncontained++; }
+            ) { 
+                if ((thisProtonTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisProtonTrueKE <= PROTON_ENERGY_UPPER_BOUND)) truthProtonsUncontained++; 
+            }
         }
 
         // Loop over reco particles
@@ -185,6 +193,7 @@ void RecoAnalysis() {
             // Get calo information for this particle
             std::vector<double> thisTrackDEDX     = recoDEDX->at(iParticle);
             std::vector<double> thisTrackRecoResR = recoResR->at(iParticle);
+            double thisTrackTrueKE                = matchedKEnergy->at(iParticle);
 
             // Pion
             if (matchedIdentity->at(iParticle) == -211) {
@@ -197,7 +206,6 @@ void RecoAnalysis() {
             } 
             // Proton
             else if (matchedIdentity->at(iParticle) == 2212) {
-                recoProtons++;
                 hProtonMeanDEDX->Fill(recoMeanDEDX->at(iParticle));
                 hTrueInitialKEnergyRecoProtons->Fill(matchedKEnergy->at(iParticle));
                 hTrueLengthRecoProtons->Fill(matchedLength->at(iParticle));
@@ -207,19 +215,25 @@ void RecoAnalysis() {
                 // std::cout << recoEndY->at(iParticle) << "    " << matchedEndY->at(iParticle) << std::endl;
                 // std::cout << recoEndZ->at(iParticle) << "    " << matchedEndZ->at(iParticle) << std::endl;
 
+                if ((thisTrackTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisTrackTrueKE <= PROTON_ENERGY_UPPER_BOUND)) recoProtons++;
+
                 if (
                     (recoEndX->at(iParticle) < minX) || (recoEndX->at(iParticle) > maxX) ||
                     (recoEndY->at(iParticle) < minY) || (recoEndY->at(iParticle) > maxY) ||
                     (recoEndZ->at(iParticle) < minZ) || (recoEndZ->at(iParticle) > maxZ) 
-                ) { recoProtonsUncontained++; }
+                ) { 
+                    if ((thisTrackTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisTrackTrueKE <= PROTON_ENERGY_UPPER_BOUND)) recoProtonsUncontained++; 
+                }
 
                 if (
                     (matchedRealEndX->at(iParticle) < minX) || (matchedRealEndX->at(iParticle) > maxX) ||
                     (matchedRealEndY->at(iParticle) < minY) || (matchedRealEndY->at(iParticle) > maxY) ||
                     (matchedRealEndZ->at(iParticle) < minZ) || (matchedRealEndZ->at(iParticle) > maxZ) 
                 ) { 
-                    recoProtonsTrueUncontained++; 
-                    thisRecoProtonsTrueUncotained++;  
+                    if ((thisTrackTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisTrackTrueKE <= PROTON_ENERGY_UPPER_BOUND)) {
+                        recoProtonsTrueUncontained++; 
+                        thisRecoProtonsTrueUncotained++;  
+                    }
                 }
 
                 int caloPoints = thisTrackDEDX.size();

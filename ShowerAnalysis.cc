@@ -131,7 +131,7 @@ void ShowerAnalysis() {
     };
 
     std::vector<TString> PlotTitles = {
-        "TrackLenghts",
+        "TrackLengths",
         "SmallTrackCounts",
         "MeanTrackCurvature",
         "MaxTrackCurvature"

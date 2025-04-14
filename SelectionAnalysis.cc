@@ -493,6 +493,10 @@ void SelectionAnalysis() {
     std::cout << std::endl;
 
     std::ofstream outFileBackgroundBreakdown("files/BackgroundBreakdown.txt");
+    outFileBackgroundBreakdown << "Overall starting background:" << std::endl;
+    printBackgroundInfo(hTotalBackground, outFileBackgroundBreakdown);
+    outFileBackgroundBreakdown << std::endl;
+
     outFileBackgroundBreakdown << "Overall background after WC existence cut:" << std::endl;
     printBackgroundInfo(hWCExistsBackground, outFileBackgroundBreakdown);
     outFileBackgroundBreakdown << std::endl;

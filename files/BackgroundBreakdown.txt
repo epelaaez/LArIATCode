@@ -1,3 +1,17 @@
+Overall starting background:
+  Abs 0p: 0
+  Abs Np: 0
+  Primary muon: 2389
+  Primary electron: 6031
+  Other primary: 0
+  Outside reduced volume: 2629
+  Inelastic scattering: 3932
+  Charge exchange: 1028
+  Double charge exchange: 79
+  Capture at rest: 715
+  Decay: 969
+  Other: 9
+
 Overall background after WC existence cut:
   Abs 0p: 0
   Abs Np: 0
