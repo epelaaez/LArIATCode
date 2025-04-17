@@ -7,6 +7,8 @@
 
 #include <vector>
 
+void Overlay_dEdx_RR_Reference_PP(bool addLegend = true, TVirtualPad* pad = gPad);
+
 void RecoAnalysis() {
     // Set defaults
     TH1D::SetDefaultSumw2();
@@ -105,8 +107,11 @@ void RecoAnalysis() {
     std::vector<TString> PartNames = {"Pion", "Proton"};
 
     // Declare histograms
-    TH1D *hPionMeanDEDX = new TH1D("hPionMeanDEDX", "PionMeanDEDX;;", 40, 1, 4.5);
-    TH1D *hProtonMeanDEDX = new TH1D("hProtonMeanDEDX", "ProtonMeanDEDX;;", 40, 1, 4.5);
+    TH1D *hPionMeanDEDX = new TH1D("hPionMeanDEDX", "PionMeanDEDX;;", 40, 0, 4.5);
+    TH1D *hProtonMeanDEDX = new TH1D("hProtonMeanDEDX", "ProtonMeanDEDX;;", 40, 0, 4.5);
+
+    TH1D* hUncontainedProtonMeanDEDX = new TH1D("hUncontainedProtonMeanDEDX", "hUncontainedProtonMeanDEDX;;", 40, 0, 4.5);
+    TH1D* hContainedProtonMeanDEDX = new TH1D("hContainedProtonMeanDEDX", "hContainedProtonMeanDEDX;;", 40, 0, 4.5);
 
     TH1D *hTrueInitialKEnergyAllProtons = new TH1D("hTrueInitialKEnergyAllProtons", "hTrueInitialKEnergyAllProtons;;", 50, 0, 0.2);
     TH1D *hTrueInitialKEnergyRecoProtons = new TH1D("hTrueInitialKEnergyRecoProtons", "hTrueInitialKEnergyRecoProtons;;", 50, 0, 0.2);
@@ -135,23 +140,37 @@ void RecoAnalysis() {
 
     TH2D *hEnergyLossAll = new TH2D(
         "hEnergyLossAll", 
-        ";Residual range (cm);dE/dx (MeV/cm)",
-        100, 0, 90, // 100 bins starting from 0 to 90 for residual range
-        100, 0, 25  // 100 bins starting from 0 to 25 for dE/dx
+        "hEnergyLossAll;Residual range (cm);dE/dx (MeV/cm)",
+        100, 0, 35, // 100 bins starting from 0 to 90 for residual range
+        100, 0, 40  // 100 bins starting from 0 to 25 for dE/dx
     );
 
     TH2D *hEnergyLossProtons = new TH2D(
         "hEnergyLossProtons", 
-        ";Residual range (cm);dE/dx (MeV/cm)",
-        100, 0, 90, // 100 bins starting from 0 to 90 for residual range
-        100, 0, 25  // 100 bins starting from 0 to 25 for dE/dx
+        "hEnergyLossProtons;Residual range (cm);dE/dx (MeV/cm)",
+        100, 0, 35, // 100 bins starting from 0 to 90 for residual range
+        100, 0, 40  // 100 bins starting from 0 to 25 for dE/dx
+    );
+
+    TH2D *hEnergyLossUncontainedProtons = new TH2D(
+        "hEnergyLossUncontainedProtons", 
+        "hEnergyLossUncontainedProtons;Residual range (cm);dE/dx (MeV/cm)",
+        100, 0, 35, // 100 bins starting from 0 to 90 for residual range
+        100, 0, 40  // 100 bins starting from 0 to 25 for dE/dx
+    );
+
+    TH2D *hEnergyLossContainedProtons = new TH2D(
+        "hEnergyLossContainedProtons", 
+        "hEnergyLossContainedProtons;Residual range (cm);dE/dx (MeV/cm)",
+        100, 0, 35, // 100 bins starting from 0 to 90 for residual range
+        100, 0, 40  // 100 bins starting from 0 to 25 for dE/dx
     );
 
     TH2D *hEnergyLossPions = new TH2D(
         "hEnergyLossPions", 
-        ";Residual range (cm);dE/dx (MeV/cm)",
-        100, 0, 90, // 100 bins starting from 0 to 90 for residual range
-        100, 0, 25  // 100 bins starting from 0 to 25 for dE/dx
+        "hEnergyLossPions;Residual range (cm);dE/dx (MeV/cm)",
+        100, 0, 35, // 100 bins starting from 0 to 90 for residual range
+        100, 0, 40  // 100 bins starting from 0 to 25 for dE/dx
     );
 
     int recoProtonsTrueUncontained = 0;
@@ -175,15 +194,14 @@ void RecoAnalysis() {
             hTrueLengthAllProtons->Fill(truthProtonsLength->at(iTrueProton));
 
             double thisProtonTrueKE = truthProtonsKEnergy->at(iTrueProton);
-            if ((thisProtonTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisProtonTrueKE <= PROTON_ENERGY_UPPER_BOUND)) truthProtons++;
+            if ((thisProtonTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisProtonTrueKE <= PROTON_ENERGY_UPPER_BOUND)) { truthProtons++; }
+            else { continue; }
 
             if (
                 (truthProtonsEndX->at(iTrueProton) < minX) || (truthProtonsEndX->at(iTrueProton) > maxX) ||
                 (truthProtonsEndY->at(iTrueProton) < minY) || (truthProtonsEndY->at(iTrueProton) > maxY) ||
                 (truthProtonsEndZ->at(iTrueProton) < minZ) || (truthProtonsEndZ->at(iTrueProton) > maxZ) 
-            ) { 
-                if ((thisProtonTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisProtonTrueKE <= PROTON_ENERGY_UPPER_BOUND)) truthProtonsUncontained++; 
-            }
+            ) truthProtonsUncontained++;
         }
 
         // Loop over reco particles
@@ -206,33 +224,39 @@ void RecoAnalysis() {
             } 
             // Proton
             else if (matchedIdentity->at(iParticle) == 2212) {
-                hProtonMeanDEDX->Fill(recoMeanDEDX->at(iParticle));
                 hTrueInitialKEnergyRecoProtons->Fill(matchedKEnergy->at(iParticle));
                 hTrueLengthRecoProtons->Fill(matchedLength->at(iParticle));
 
-                // std::cout << "Comparison: " << std::endl;
-                // std::cout << recoEndX->at(iParticle) << "    " << matchedEndX->at(iParticle) << std::endl;
-                // std::cout << recoEndY->at(iParticle) << "    " << matchedEndY->at(iParticle) << std::endl;
-                // std::cout << recoEndZ->at(iParticle) << "    " << matchedEndZ->at(iParticle) << std::endl;
+                if ((thisTrackTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisTrackTrueKE <= PROTON_ENERGY_UPPER_BOUND)) { recoProtons++; }
+                else { continue; }
 
-                if ((thisTrackTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisTrackTrueKE <= PROTON_ENERGY_UPPER_BOUND)) recoProtons++;
+                hProtonMeanDEDX->Fill(recoMeanDEDX->at(iParticle));
 
                 if (
                     (recoEndX->at(iParticle) < minX) || (recoEndX->at(iParticle) > maxX) ||
                     (recoEndY->at(iParticle) < minY) || (recoEndY->at(iParticle) > maxY) ||
                     (recoEndZ->at(iParticle) < minZ) || (recoEndZ->at(iParticle) > maxZ) 
-                ) { 
-                    if ((thisTrackTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisTrackTrueKE <= PROTON_ENERGY_UPPER_BOUND)) recoProtonsUncontained++; 
-                }
+                ) recoProtonsUncontained++; 
 
                 if (
                     (matchedRealEndX->at(iParticle) < minX) || (matchedRealEndX->at(iParticle) > maxX) ||
                     (matchedRealEndY->at(iParticle) < minY) || (matchedRealEndY->at(iParticle) > maxY) ||
                     (matchedRealEndZ->at(iParticle) < minZ) || (matchedRealEndZ->at(iParticle) > maxZ) 
-                ) { 
-                    if ((thisTrackTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisTrackTrueKE <= PROTON_ENERGY_UPPER_BOUND)) {
-                        recoProtonsTrueUncontained++; 
-                        thisRecoProtonsTrueUncotained++;  
+                ) {
+                    recoProtonsTrueUncontained++; 
+                    thisRecoProtonsTrueUncotained++;
+                    hUncontainedProtonMeanDEDX->Fill(recoMeanDEDX->at(iParticle));
+                    
+                    int caloPoints = thisTrackDEDX.size();
+                    for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
+                        hEnergyLossUncontainedProtons->Fill(thisTrackRecoResR[iCalo], thisTrackDEDX[iCalo]);
+                    }
+                } else {
+                    hContainedProtonMeanDEDX->Fill(recoMeanDEDX->at(iParticle));
+
+                    int caloPoints = thisTrackDEDX.size();
+                    for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
+                        hEnergyLossContainedProtons->Fill(thisTrackRecoResR[iCalo], thisTrackDEDX[iCalo]);
                     }
                 }
 
@@ -285,6 +309,11 @@ void RecoAnalysis() {
         }
     }
 
+    hEnergyLossUncontainedProtons->Scale(1. / recoProtonsTrueUncontained);
+    hEnergyLossContainedProtons->Scale(1. / (recoProtons - recoProtonsTrueUncontained));
+    hUncontainedProtonMeanDEDX->Scale(1. / recoProtonsTrueUncontained);
+    hContainedProtonMeanDEDX->Scale(1. / (recoProtons - recoProtonsTrueUncontained));
+
     std::cout << std::endl;
     std::cout << "Number of truth protons: " << truthProtons << std::endl;
     std::cout << "Number of uncontained truth protons: " << truthProtonsUncontained << std::endl;
@@ -300,47 +329,51 @@ void RecoAnalysis() {
     };
 
     std::vector<std::vector<TH1*>> PlotGroups = {
-        {hPionMeanDEDX, hProtonMeanDEDX},
         {hProtonMeanDEDX},
+        {hPionMeanDEDX, hProtonMeanDEDX},
         {hTrueInitialKEnergyAllProtons, hTrueInitialKEnergyRecoProtons},
         {hTrueLengthAllProtons, hTrueLengthRecoProtons},
         {hProtonsEscapingZReduction},
         {hProtonsEscapingYReduction},
         {hProtonsEscapingXReduction},
-        {hProtonsEscapingAllReduction}
+        {hProtonsEscapingAllReduction},
+        {hContainedProtonMeanDEDX, hUncontainedProtonMeanDEDX}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
-        {"Pion", "Proton"}, 
         {"Proton"},
+        {"Pion", "Proton"}, 
         {"True protons", "Reco protons"},
         {"True protons", "Reco protons"},
         {"Protons escaping"},
         {"Protons escaping"},
         {"Protons escaping"},
-        {"Protons escaping"}
+        {"Protons escaping"},
+        {"Contained protons", "Uncontained protons"}
     };
 
     std::vector<TString> PlotTitles = {
-        "MeanDEDX",
         "ProtonMeanDEDX",
+        "MeanDEDX",
         "ProtonKE",
         "ProtonLength",
         "ProtonsEscapingZReduction",
         "ProtonsEscapingYReduction",
         "ProtonsEscapingXReduction",
-        "ProtonsEscapingAllReduction"
+        "ProtonsEscapingAllReduction",
+        "ProtonMeanDEDXUncontained"
     };
     
     std::vector<TString> XLabels = {
-        "dE/dx (MeV/cm)",
-        "dE/dx (MeV/cm)",
+        "Mean dE/dx (MeV/cm)",
+        "Mean dE/dx (MeV/cm)",
         "Kinetic energy (GeV)",
         "Track length (cm)",
         "Reduced volume pushback (only z direction) (cm)",
         "Reduced volume pushback (only y direction) (cm)",
         "Reduced volume pushback (only x direction) (cm)",
-        "Reduced volume pushback (all directions) (cm)"
+        "Reduced volume pushback (all directions) (cm)",
+        "Mean dE/dx (MeV/cm)"
     };
 
     std::vector<TString> YLabels = {
@@ -351,7 +384,8 @@ void RecoAnalysis() {
         "Protons escaping",
         "Protons escaping",
         "Protons escaping",
-        "Protons escaping"
+        "Protons escaping",
+        "Proton counts"
     };
 
     int numPlots = PlotGroups.size();
@@ -396,6 +430,12 @@ void RecoAnalysis() {
             Plots[iSubPlot]->SetLineWidth(2);
             Plots[iSubPlot]->SetLineColor(Colors.at(iSubPlot));
             Plots[iSubPlot]->Draw("hist same");
+
+            double imax = TMath::Max(Plots[iSubPlot]->GetMaximum(), Plots[0]->GetMaximum());
+
+            double YAxisRange = 1.15*imax;
+            Plots[iSubPlot]->GetYaxis()->SetRangeUser(0., YAxisRange);
+            Plots[0]->GetYaxis()->SetRangeUser(0., YAxisRange);	
         }
 
         if (PlotTitles[iPlot] == "MeanDEDX") {
@@ -479,15 +519,283 @@ void RecoAnalysis() {
     hEnergyLossAll->SetMinimum(0);
     hEnergyLossAll->SetMaximum(hEnergyLossAll->GetMaximum());
     hEnergyLossAll->Draw("COLZ");
+    Overlay_dEdx_RR_Reference_PP();
     c1->SaveAs(SaveDir + "EnergyLossAll.png");
 
     hEnergyLossProtons->SetMinimum(0);
     hEnergyLossProtons->SetMaximum(hEnergyLossProtons->GetMaximum());
     hEnergyLossProtons->Draw("COLZ");
+    Overlay_dEdx_RR_Reference_PP();
     c1->SaveAs(SaveDir + "EnergyLossProtons.png");
 
     hEnergyLossPions->SetMinimum(0);
     hEnergyLossPions->SetMaximum(hEnergyLossPions->GetMaximum());
     hEnergyLossPions->Draw("COLZ");
+    Overlay_dEdx_RR_Reference_PP();
     c1->SaveAs(SaveDir + "EnergyLossPions.png");
+
+    hEnergyLossUncontainedProtons->SetMinimum(0);
+    hEnergyLossUncontainedProtons->SetMaximum(hEnergyLossUncontainedProtons->GetMaximum());
+    hEnergyLossUncontainedProtons->Draw("COLZ");
+    Overlay_dEdx_RR_Reference_PP();
+    c1->SaveAs(SaveDir + "EnergyLossUncontainedProtons.png");
+
+    hEnergyLossContainedProtons->SetMinimum(0);
+    hEnergyLossContainedProtons->SetMaximum(hEnergyLossContainedProtons->GetMaximum());
+    hEnergyLossContainedProtons->Draw("COLZ");
+    Overlay_dEdx_RR_Reference_PP();
+    c1->SaveAs(SaveDir + "EnergyLossContainedProtons.png");
+}
+
+void Overlay_dEdx_RR_Reference_PP(bool addLegend = true, TVirtualPad* pad = gPad) {
+    const int N = 107;
+
+    static TGraph *gProton = nullptr;
+    static TGraph *gPion   = nullptr;
+
+    if (!gProton) {
+        /* ---------- Proton ---------- */
+        gProton = new TGraph(N);
+        gProton->SetLineColor(kRed+1);
+        gProton->SetLineWidth(3);
+        gProton->SetName("Proton");
+
+        gProton->SetPoint(0,   31.95, 4.14);
+        gProton->SetPoint(1,   31.65, 4.16);
+        gProton->SetPoint(2,   31.35, 4.17);
+        gProton->SetPoint(3,   31.05, 4.18);
+        gProton->SetPoint(4,   30.75, 4.20);
+        gProton->SetPoint(5,   30.45, 4.21);
+        gProton->SetPoint(6,   30.15, 4.23);
+        gProton->SetPoint(7,   29.85, 4.25);
+        gProton->SetPoint(8,   29.55, 4.26);
+        gProton->SetPoint(9,   29.25, 4.28);
+        gProton->SetPoint(10,  28.95, 4.29);
+        gProton->SetPoint(11,  28.65, 4.31);
+        gProton->SetPoint(12,  28.35, 4.33);
+        gProton->SetPoint(13,  28.05, 4.34);
+        gProton->SetPoint(14,  27.75, 4.36);
+        gProton->SetPoint(15,  27.45, 4.38);
+        gProton->SetPoint(16,  27.15, 4.40);
+        gProton->SetPoint(17,  26.85, 4.42);
+        gProton->SetPoint(18,  26.55, 4.43);
+        gProton->SetPoint(19,  26.25, 4.45);
+        gProton->SetPoint(20,  25.95, 4.47);
+        gProton->SetPoint(21,  25.65, 4.49);
+        gProton->SetPoint(22,  25.35, 4.51);
+        gProton->SetPoint(23,  25.05, 4.53);
+        gProton->SetPoint(24,  24.75, 4.55);
+        gProton->SetPoint(25,  24.45, 4.57);
+        gProton->SetPoint(26,  24.15, 4.60);
+        gProton->SetPoint(27,  23.85, 4.62);
+        gProton->SetPoint(28,  23.55, 4.64);
+        gProton->SetPoint(29,  23.25, 4.66);
+        gProton->SetPoint(30,  22.95, 4.69);
+        gProton->SetPoint(31,  22.65, 4.71);
+        gProton->SetPoint(32,  22.35, 4.73);
+        gProton->SetPoint(33,  22.05, 4.76);
+        gProton->SetPoint(34,  21.75, 4.78);
+        gProton->SetPoint(35,  21.45, 4.81);
+        gProton->SetPoint(36,  21.15, 4.83);
+        gProton->SetPoint(37,  20.85, 4.86);
+        gProton->SetPoint(38,  20.55, 4.89);
+        gProton->SetPoint(39,  20.25, 4.92);
+        gProton->SetPoint(40,  19.95, 4.94);
+        gProton->SetPoint(41,  19.65, 4.97);
+        gProton->SetPoint(42,  19.35, 5.00);
+        gProton->SetPoint(43,  19.05, 5.03);
+        gProton->SetPoint(44,  18.75, 5.07);
+        gProton->SetPoint(45,  18.45, 5.10);
+        gProton->SetPoint(46,  18.15, 5.13);
+        gProton->SetPoint(47,  17.85, 5.16);
+        gProton->SetPoint(48,  17.55, 5.20);
+        gProton->SetPoint(49,  17.25, 5.23);
+        gProton->SetPoint(50,  16.95, 5.27);
+        gProton->SetPoint(51,  16.65, 5.31);
+        gProton->SetPoint(52,  16.35, 5.35);
+        gProton->SetPoint(53,  16.05, 5.39);
+        gProton->SetPoint(54,  15.75, 5.43);
+        gProton->SetPoint(55,  15.45, 5.47);
+        gProton->SetPoint(56,  15.15, 5.51);
+        gProton->SetPoint(57,  14.85, 5.56);
+        gProton->SetPoint(58,  14.55, 5.60);
+        gProton->SetPoint(59,  14.25, 5.65);
+        gProton->SetPoint(60,  13.95, 5.70);
+        gProton->SetPoint(61,  13.65, 5.75);
+        gProton->SetPoint(62,  13.35, 5.80);
+        gProton->SetPoint(63,  13.05, 5.85);
+        gProton->SetPoint(64,  12.75, 5.91);
+        gProton->SetPoint(65,  12.45, 5.97);
+        gProton->SetPoint(66,  12.15, 6.03);
+        gProton->SetPoint(67,  11.85, 6.09);
+        gProton->SetPoint(68,  11.55, 6.15);
+        gProton->SetPoint(69,  11.25, 6.22);
+        gProton->SetPoint(70,  10.95, 6.29);
+        gProton->SetPoint(71,  10.65, 6.36);
+        gProton->SetPoint(72,  10.35, 6.44);
+        gProton->SetPoint(73,  10.05, 6.52);
+        gProton->SetPoint(74,   9.75, 6.60);
+        gProton->SetPoint(75,   9.45, 6.68);
+        gProton->SetPoint(76,   9.15, 6.77);
+        gProton->SetPoint(77,   8.85, 6.87);
+        gProton->SetPoint(78,   8.55, 6.97);
+        gProton->SetPoint(79,   8.25, 7.08);
+        gProton->SetPoint(80,   7.95, 7.19);
+        gProton->SetPoint(81,   7.65, 7.30);
+        gProton->SetPoint(82,   7.35, 7.43);
+        gProton->SetPoint(83,   7.05, 7.56);
+        gProton->SetPoint(84,   6.75, 7.70);
+        gProton->SetPoint(85,   6.45, 7.85);
+        gProton->SetPoint(86,   6.15, 8.02);
+        gProton->SetPoint(87,   5.85, 8.19);
+        gProton->SetPoint(88,   5.55, 8.38);
+        gProton->SetPoint(89,   5.25, 8.58);
+        gProton->SetPoint(90,   4.95, 8.81);
+        gProton->SetPoint(91,   4.65, 9.05);
+        gProton->SetPoint(92,   4.35, 9.32);
+        gProton->SetPoint(93,   4.05, 9.61);
+        gProton->SetPoint(94,   3.75, 9.94);
+        gProton->SetPoint(95,   3.45,10.32);
+        gProton->SetPoint(96,   3.15,10.74);
+        gProton->SetPoint(97,   2.85,11.23);
+        gProton->SetPoint(98,   2.55,11.80);
+        gProton->SetPoint(99,   2.25,12.48);
+        gProton->SetPoint(100,  1.95,13.31);
+        gProton->SetPoint(101,  1.65,14.35);
+        gProton->SetPoint(102,  1.35,15.71);
+        gProton->SetPoint(103,  1.05,17.59);
+        gProton->SetPoint(104,  0.75,20.44);
+        gProton->SetPoint(105,  0.45,25.48);
+        gProton->SetPoint(106,  0.15,38.12);
+
+        /* ---------- Pion ---------- */
+        gPion = new TGraph(N);
+        gPion->SetLineColor(kRed+3);
+        gPion->SetLineWidth(3);
+        gPion->SetName("Pion");
+
+        gPion->SetPoint(0,   31.95, 2.4);
+        gPion->SetPoint(1,   31.65, 2.4);
+        gPion->SetPoint(2,   31.35, 2.4);
+        gPion->SetPoint(3,   31.05, 2.4);
+        gPion->SetPoint(4,   30.75, 2.4);
+        gPion->SetPoint(5,   30.45, 2.4);
+        gPion->SetPoint(6,   30.15, 2.4);
+        gPion->SetPoint(7,   29.85, 2.4);
+        gPion->SetPoint(8,   29.55, 2.4);
+        gPion->SetPoint(9,   29.25, 2.4);
+        gPion->SetPoint(10,  28.95, 2.4);
+        gPion->SetPoint(11,  28.65, 2.4);
+        gPion->SetPoint(12,  28.35, 2.4);
+        gPion->SetPoint(13,  28.05, 2.4);
+        gPion->SetPoint(14,  27.75, 2.5);
+        gPion->SetPoint(15,  27.45, 2.5);
+        gPion->SetPoint(16,  27.15, 2.5);
+        gPion->SetPoint(17,  26.85, 2.5);
+        gPion->SetPoint(18,  26.55, 2.5);
+        gPion->SetPoint(19,  26.25, 2.5);
+        gPion->SetPoint(20,  25.95, 2.5);
+        gPion->SetPoint(21,  25.65, 2.5);
+        gPion->SetPoint(22,  25.35, 2.5);
+        gPion->SetPoint(23,  25.05, 2.5);
+        gPion->SetPoint(24,  24.75, 2.5);
+        gPion->SetPoint(25,  24.45, 2.5);
+        gPion->SetPoint(26,  24.15, 2.5);
+        gPion->SetPoint(27,  23.85, 2.5);
+        gPion->SetPoint(28,  23.55, 2.5);
+        gPion->SetPoint(29,  23.25, 2.6);
+        gPion->SetPoint(30,  22.95, 2.6);
+        gPion->SetPoint(31,  22.65, 2.6);
+        gPion->SetPoint(32,  22.35, 2.6);
+        gPion->SetPoint(33,  22.05, 2.6);
+        gPion->SetPoint(34,  21.75, 2.6);
+        gPion->SetPoint(35,  21.45, 2.6);
+        gPion->SetPoint(36,  21.15, 2.6);
+        gPion->SetPoint(37,  20.85, 2.6);
+        gPion->SetPoint(38,  20.55, 2.6);
+        gPion->SetPoint(39,  20.25, 2.6);
+        gPion->SetPoint(40,  19.95, 2.6);
+        gPion->SetPoint(41,  19.65, 2.7);
+        gPion->SetPoint(42,  19.35, 2.7);
+        gPion->SetPoint(43,  19.05, 2.7);
+        gPion->SetPoint(44,  18.75, 2.7);
+        gPion->SetPoint(45,  18.45, 2.7);
+        gPion->SetPoint(46,  18.15, 2.7);
+        gPion->SetPoint(47,  17.85, 2.7);
+        gPion->SetPoint(48,  17.55, 2.7);
+        gPion->SetPoint(49,  17.25, 2.8);
+        gPion->SetPoint(50,  16.95, 2.8);
+        gPion->SetPoint(51,  16.65, 2.8);
+        gPion->SetPoint(52,  16.35, 2.8);
+        gPion->SetPoint(53,  16.05, 2.8);
+        gPion->SetPoint(54,  15.75, 2.8);
+        gPion->SetPoint(55,  15.45, 2.8);
+        gPion->SetPoint(56,  15.15, 2.9);
+        gPion->SetPoint(57,  14.85, 2.9);
+        gPion->SetPoint(58,  14.55, 2.9);
+        gPion->SetPoint(59,  14.25, 2.9);
+        gPion->SetPoint(60,  13.95, 2.9);
+        gPion->SetPoint(61,  13.65, 2.9);
+        gPion->SetPoint(62,  13.35, 3.0);
+        gPion->SetPoint(63,  13.05, 3.0);
+        gPion->SetPoint(64,  12.75, 3.0);
+        gPion->SetPoint(65,  12.45, 3.0);
+        gPion->SetPoint(66,  12.15, 3.0);
+        gPion->SetPoint(67,  11.85, 3.1);
+        gPion->SetPoint(68,  11.55, 3.1);
+        gPion->SetPoint(69,  11.25, 3.1);
+        gPion->SetPoint(70,  10.95, 3.1);
+        gPion->SetPoint(71,  10.65, 3.2);
+        gPion->SetPoint(72,  10.35, 3.2);
+        gPion->SetPoint(73,  10.05, 3.2);
+        gPion->SetPoint(74,   9.75, 3.3);
+        gPion->SetPoint(75,   9.45, 3.3);
+        gPion->SetPoint(76,   9.15, 3.3);
+        gPion->SetPoint(77,   8.85, 3.4);
+        gPion->SetPoint(78,   8.55, 3.4);
+        gPion->SetPoint(79,   8.25, 3.4);
+        gPion->SetPoint(80,   7.95, 3.5);
+        gPion->SetPoint(81,   7.65, 3.5);
+        gPion->SetPoint(82,   7.35, 3.6);
+        gPion->SetPoint(83,   7.05, 3.6);
+        gPion->SetPoint(84,   6.75, 3.7);
+        gPion->SetPoint(85,   6.45, 3.7);
+        gPion->SetPoint(86,   6.15, 3.8);
+        gPion->SetPoint(87,   5.85, 3.9);
+        gPion->SetPoint(88,   5.55, 3.9);
+        gPion->SetPoint(89,   5.25, 4.0);
+        gPion->SetPoint(90,   4.95, 4.1);
+        gPion->SetPoint(91,   4.65, 4.2);
+        gPion->SetPoint(92,   4.35, 4.3);
+        gPion->SetPoint(93,   4.05, 4.4);
+        gPion->SetPoint(94,   3.75, 4.6);
+        gPion->SetPoint(95,   3.45, 4.7);
+        gPion->SetPoint(96,   3.15, 4.9);
+        gPion->SetPoint(97,   2.85, 5.1);
+        gPion->SetPoint(98,   2.55, 5.3);
+        gPion->SetPoint(99,   2.25, 5.6);
+        gPion->SetPoint(100,  1.95, 5.9);
+        gPion->SetPoint(101,  1.65, 6.4);
+        gPion->SetPoint(102,  1.35, 6.9);
+        gPion->SetPoint(103,  1.05, 7.7);
+        gPion->SetPoint(104,  0.75, 8.9);
+        gPion->SetPoint(105,  0.45,11.0);
+        gPion->SetPoint(106,  0.15,16.5);
+    }
+
+    if (pad) pad->cd();
+    gProton->Draw("L same");
+    gPion  ->Draw("L same");
+    
+    if (addLegend) {
+        static TLegend *leg = nullptr;
+        if (!leg) {
+            leg = new TLegend(0.50,0.80,0.75,0.88);
+            leg->AddEntry(gProton, "Proton", "l");
+            leg->AddEntry(gPion,   "Pion",   "l");
+            leg->SetFillStyle(1001);
+            leg->SetBorderSize(0);
+        }
+        leg->Draw();
+    }
 }
