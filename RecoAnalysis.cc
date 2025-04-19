@@ -14,6 +14,7 @@ void RecoAnalysis() {
     TH1D::SetDefaultSumw2();
     TH2D::SetDefaultSumw2();
     // gStyle->SetOptStat(0);
+    gStyle->SetPalette(kRainBow);
 
     // Proton energy bounds
     double PROTON_ENERGY_LOWER_BOUND = 0.075;
@@ -102,16 +103,19 @@ void RecoAnalysis() {
     tree->SetBranchAddress("recoDEDX", &recoDEDX);
     tree->SetBranchAddress("recoResR", &recoResR);
 
+    std::vector<bool>* isTrackInverted = nullptr;
+    tree->SetBranchAddress("isTrackInverted", &isTrackInverted);
+
     // Declare variables for histogram creation
     std::vector<int> PartPDGCodes = {-211, 2212};
     std::vector<TString> PartNames = {"Pion", "Proton"};
 
     // Declare histograms
-    TH1D *hPionMeanDEDX = new TH1D("hPionMeanDEDX", "PionMeanDEDX;;", 40, 0, 4.5);
-    TH1D *hProtonMeanDEDX = new TH1D("hProtonMeanDEDX", "ProtonMeanDEDX;;", 40, 0, 4.5);
+    TH1D *hPionMeanDEDX = new TH1D("hPionMeanDEDX", "PionMeanDEDX;;", 40, 0, 15);
+    TH1D *hProtonMeanDEDX = new TH1D("hProtonMeanDEDX", "ProtonMeanDEDX;;", 40, 0, 15);
 
-    TH1D* hUncontainedProtonMeanDEDX = new TH1D("hUncontainedProtonMeanDEDX", "hUncontainedProtonMeanDEDX;;", 40, 0, 4.5);
-    TH1D* hContainedProtonMeanDEDX = new TH1D("hContainedProtonMeanDEDX", "hContainedProtonMeanDEDX;;", 40, 0, 4.5);
+    TH1D* hUncontainedProtonMeanDEDX = new TH1D("hUncontainedProtonMeanDEDX", "hUncontainedProtonMeanDEDX;;", 40, 0, 20);
+    TH1D* hContainedProtonMeanDEDX = new TH1D("hContainedProtonMeanDEDX", "hContainedProtonMeanDEDX;;", 40, 0, 20);
 
     TH1D *hTrueInitialKEnergyAllProtons = new TH1D("hTrueInitialKEnergyAllProtons", "hTrueInitialKEnergyAllProtons;;", 50, 0, 0.2);
     TH1D *hTrueInitialKEnergyRecoProtons = new TH1D("hTrueInitialKEnergyRecoProtons", "hTrueInitialKEnergyRecoProtons;;", 50, 0, 0.2);
@@ -173,11 +177,25 @@ void RecoAnalysis() {
         100, 0, 40  // 100 bins starting from 0 to 25 for dE/dx
     );
 
+    double startDEDXCut    = 4.0;
+    double stepSizeDEDXCut = 0.125;
+    int    numStepsDEDXCut = 60;
+    TH1D *hMisIDsMeanDEDXCut       = new TH1D("hMisIDsMeanDEDXCut", "hMisIDsMeanDEDXCut", numStepsDEDXCut, startDEDXCut, startDEDXCut + numStepsDEDXCut * stepSizeDEDXCut);
+    TH1D *hMisProtonIDsMeanDEDXCut = new TH1D("hMisProtonIDsMeanDEDXCut", "hMisProtonIDsMeanDEDXCut", numStepsDEDXCut, startDEDXCut, startDEDXCut + numStepsDEDXCut * stepSizeDEDXCut);
+    TH1D *hMisPionIDsMeanDEDXCut   = new TH1D("hMisPionIDsMeanDEDXCut", "hMisPionIDsMeanDEDXCut", numStepsDEDXCut, startDEDXCut, startDEDXCut + numStepsDEDXCut * stepSizeDEDXCut);
+
+    int totalRecoTraks = 0;
+
     int recoProtonsTrueUncontained = 0;
     int recoProtonsUncontained     = 0;
     int truthProtonsUncontained    = 0;
     int recoProtons                = 0;
     int truthProtons               = 0;
+    int recoPions                  = 0;
+
+    int reversedTracks                 = 0;
+    int reversedTracksMatchedToProtons = 0;
+    int reversedTracksMatchedToPions   = 0;
 
     std::ofstream outUncontainedProtonsFile("files/UncontainedProtons.txt");
 
@@ -186,6 +204,37 @@ void RecoAnalysis() {
     std::cout << "Num entries: " << NumEntries << std::endl;
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
+
+        // Look at energy profile for events we are interested in
+        if ((event == 200061) || (event == 200920) || (event == 62282)) {
+            int numRecoParticles = matchedIdentity->size();
+            for (int iParticle = 0; iParticle < numRecoParticles; ++iParticle) {
+                std::vector<double> thisTrackDEDX     = recoDEDX->at(iParticle);
+                std::vector<double> thisTrackRecoResR = recoResR->at(iParticle);
+                int caloPoints = thisTrackDEDX.size();
+
+                TH2D *hDEDXProfile = new TH2D(
+                    "hDEDXProfile", 
+                    "hDEDXProfile;Residual range (cm);dE/dx (MeV/cm)",
+                    caloPoints, 0, 0, 
+                    caloPoints, 0, 0  
+                );
+
+                for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
+                    hDEDXProfile->Fill(thisTrackRecoResR[iCalo], thisTrackDEDX[iCalo]);
+                }
+
+                TCanvas* c1 = new TCanvas("c1", "DEDXProfiles", 800, 600);
+                hDEDXProfile->SetMinimum(0);
+                hDEDXProfile->SetMaximum(1);
+                hDEDXProfile->Draw("COLZ");
+                Overlay_dEdx_RR_Reference_PP();
+                c1->SaveAs(SaveDir +  "dEdxProfiles/" + event + "_" + iParticle + "_" + matchedIdentity->at(iParticle) + ".png");
+                
+                delete c1;
+                delete hDEDXProfile;
+            }
+        }
 
         // Loop over true daughter protons
         int numTruthProtons = truthProtonsKEnergy->size();
@@ -208,14 +257,22 @@ void RecoAnalysis() {
         int numRecoParticles = matchedIdentity->size();
         int thisRecoProtonsTrueUncotained = 0;
         for (int iParticle = 0; iParticle < numRecoParticles; ++iParticle) {
+            totalRecoTraks++;
+
             // Get calo information for this particle
             std::vector<double> thisTrackDEDX     = recoDEDX->at(iParticle);
             std::vector<double> thisTrackRecoResR = recoResR->at(iParticle);
             double thisTrackTrueKE                = matchedKEnergy->at(iParticle);
+            double thisTrackMeanDEDX              = recoMeanDEDX->at(iParticle);
+
+            if (isTrackInverted->at(iParticle)) reversedTracks++;
 
             // Pion
             if (matchedIdentity->at(iParticle) == -211) {
-                hPionMeanDEDX->Fill(recoMeanDEDX->at(iParticle));
+                recoPions++;
+                if (isTrackInverted->at(iParticle)) reversedTracksMatchedToPions++;
+
+                hPionMeanDEDX->Fill(thisTrackMeanDEDX);
 
                 int caloPoints = thisTrackDEDX.size();
                 for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
@@ -224,13 +281,23 @@ void RecoAnalysis() {
             } 
             // Proton
             else if (matchedIdentity->at(iParticle) == 2212) {
+                if (isTrackInverted->at(iParticle)) reversedTracksMatchedToProtons++;
+
                 hTrueInitialKEnergyRecoProtons->Fill(matchedKEnergy->at(iParticle));
                 hTrueLengthRecoProtons->Fill(matchedLength->at(iParticle));
 
                 if ((thisTrackTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisTrackTrueKE <= PROTON_ENERGY_UPPER_BOUND)) { recoProtons++; }
                 else { continue; }
 
-                hProtonMeanDEDX->Fill(recoMeanDEDX->at(iParticle));
+                hProtonMeanDEDX->Fill(thisTrackMeanDEDX);
+
+                // if ((thisTrackMeanDEDX > 1.98) && (thisTrackMeanDEDX < 2.02)) {
+                //     std::cout << event << std::endl;
+                //     for (int iParticleA = 0; iParticleA < numRecoParticles; ++iParticleA) {
+                //         std::cout << matchedIdentity->at(iParticleA) << "   " << recoMeanDEDX->at(iParticleA) << std::endl;
+                //     }
+                //     std::cout << std::endl;
+                // }
 
                 if (
                     (recoEndX->at(iParticle) < minX) || (recoEndX->at(iParticle) > maxX) ||
@@ -245,14 +312,14 @@ void RecoAnalysis() {
                 ) {
                     recoProtonsTrueUncontained++; 
                     thisRecoProtonsTrueUncotained++;
-                    hUncontainedProtonMeanDEDX->Fill(recoMeanDEDX->at(iParticle));
+                    hUncontainedProtonMeanDEDX->Fill(thisTrackMeanDEDX);
                     
                     int caloPoints = thisTrackDEDX.size();
                     for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
                         hEnergyLossUncontainedProtons->Fill(thisTrackRecoResR[iCalo], thisTrackDEDX[iCalo]);
                     }
                 } else {
-                    hContainedProtonMeanDEDX->Fill(recoMeanDEDX->at(iParticle));
+                    hContainedProtonMeanDEDX->Fill(thisTrackMeanDEDX);
 
                     int caloPoints = thisTrackDEDX.size();
                     for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
@@ -270,6 +337,18 @@ void RecoAnalysis() {
                 int caloPoints = thisTrackDEDX.size();
                 for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
                     hEnergyLossAll->Fill(thisTrackRecoResR[iCalo], thisTrackDEDX[iCalo]);
+                }
+            }
+
+            // Find performace in cut
+            for (int stepCut = 0; stepCut < numStepsDEDXCut; stepCut++) {
+                double cutValue = startDEDXCut + (double)(stepCut * stepSizeDEDXCut);
+                if ((thisTrackMeanDEDX > cutValue) && (matchedIdentity->at(iParticle) == -211)) {
+                    hMisPionIDsMeanDEDXCut->Fill(cutValue);
+                    hMisIDsMeanDEDXCut->Fill(cutValue);
+                } else if ((thisTrackMeanDEDX <= cutValue) && (matchedIdentity->at(iParticle) == 2212)) {
+                    hMisProtonIDsMeanDEDXCut->Fill(cutValue);
+                    hMisIDsMeanDEDXCut->Fill(cutValue);
                 }
             }
         }
@@ -309,10 +388,20 @@ void RecoAnalysis() {
         }
     }
 
-    hEnergyLossUncontainedProtons->Scale(1. / recoProtonsTrueUncontained);
-    hEnergyLossContainedProtons->Scale(1. / (recoProtons - recoProtonsTrueUncontained));
-    hUncontainedProtonMeanDEDX->Scale(1. / recoProtonsTrueUncontained);
-    hContainedProtonMeanDEDX->Scale(1. / (recoProtons - recoProtonsTrueUncontained));
+    hEnergyLossUncontainedProtons->Scale(1. / hEnergyLossUncontainedProtons->Integral());
+    hEnergyLossContainedProtons->Scale(1. / hEnergyLossContainedProtons->Integral());
+    hUncontainedProtonMeanDEDX->Scale(1. / hUncontainedProtonMeanDEDX->Integral());
+    hContainedProtonMeanDEDX->Scale(1. / hContainedProtonMeanDEDX->Integral());
+
+    int    minBin     = hMisIDsMeanDEDXCut->GetMinimumBin();
+    double bestCutVal = hMisIDsMeanDEDXCut->GetBinLowEdge(minBin);
+    double bestMisIDs = hMisIDsMeanDEDXCut->GetBinContent(minBin);
+
+    std::cout << std::endl;
+    std::cout << "Minimum overall mis-IDs at " << bestCutVal << "MeV/cm, with " << 100 * (bestMisIDs / totalRecoTraks) << "%" << std::endl;
+
+    // hPionMeanDEDX->Scale(1 / hPionMeanDEDX->Integral());
+    // hProtonMeanDEDX->Scale(1 / hProtonMeanDEDX->Integral());
 
     std::cout << std::endl;
     std::cout << "Number of truth protons: " << truthProtons << std::endl;
@@ -321,6 +410,12 @@ void RecoAnalysis() {
     std::cout << "Number of reconstructed protons: " << recoProtons << std::endl;
     std::cout << "Number of uncontained reco protons: " << recoProtonsUncontained << std::endl;
     std::cout << "Number of truly uncontained reco protons: " << recoProtonsTrueUncontained << std::endl;
+    std::cout << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "Number of reversed tracks: " << reversedTracks << std::endl;
+    std::cout << "Number of reversed tracks matched to pions: " << reversedTracksMatchedToPions << std::endl;
+    std::cout << "Number of reversed tracks matched to protons: " << reversedTracksMatchedToProtons << std::endl;
     std::cout << std::endl;
 
     // Setup for drawing plots
@@ -337,7 +432,8 @@ void RecoAnalysis() {
         {hProtonsEscapingYReduction},
         {hProtonsEscapingXReduction},
         {hProtonsEscapingAllReduction},
-        {hContainedProtonMeanDEDX, hUncontainedProtonMeanDEDX}
+        {hContainedProtonMeanDEDX, hUncontainedProtonMeanDEDX},
+        {hMisIDsMeanDEDXCut, hMisPionIDsMeanDEDXCut, hMisProtonIDsMeanDEDXCut}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -349,7 +445,8 @@ void RecoAnalysis() {
         {"Protons escaping"},
         {"Protons escaping"},
         {"Protons escaping"},
-        {"Contained protons", "Uncontained protons"}
+        {"Contained protons", "Uncontained protons"},
+        {"Total", "Pion", "Proton"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -361,7 +458,8 @@ void RecoAnalysis() {
         "ProtonsEscapingYReduction",
         "ProtonsEscapingXReduction",
         "ProtonsEscapingAllReduction",
-        "ProtonMeanDEDXUncontained"
+        "ProtonMeanDEDXUncontained",
+        "MisIDsDEDXCut"
     };
     
     std::vector<TString> XLabels = {
@@ -373,7 +471,8 @@ void RecoAnalysis() {
         "Reduced volume pushback (only y direction) (cm)",
         "Reduced volume pushback (only x direction) (cm)",
         "Reduced volume pushback (all directions) (cm)",
-        "Mean dE/dx (MeV/cm)"
+        "Mean dE/dx (MeV/cm)",
+        "Mean dE/dx cut value (MeV/cm)"
     };
 
     std::vector<TString> YLabels = {
@@ -385,7 +484,8 @@ void RecoAnalysis() {
         "Protons escaping",
         "Protons escaping",
         "Protons escaping",
-        "Proton counts"
+        "Proton counts",
+        "Misidentified particle counts"
     };
 
     int numPlots = PlotGroups.size();
@@ -438,13 +538,13 @@ void RecoAnalysis() {
             Plots[0]->GetYaxis()->SetRangeUser(0., YAxisRange);	
         }
 
-        if (PlotTitles[iPlot] == "MeanDEDX") {
-            TLine *v_line= new TLine(4,-10,4,180);
-            v_line->SetLineColor(kRed);
-            v_line->SetLineWidth(2);
-            v_line->SetLineStyle(kDashed);
-            v_line->Draw("same");
-        }
+        // if (PlotTitles[iPlot] == "MeanDEDX") {
+        //     TLine *v_line= new TLine(4,-10,4,180);
+        //     v_line->SetLineColor(kRed);
+        //     v_line->SetLineWidth(2);
+        //     v_line->SetLineStyle(kDashed);
+        //     v_line->Draw("same");
+        // }
 
         leg->Draw();
         PlotCanvas->SaveAs(SaveDir + PlotTitles.at(iPlot) + ".png");

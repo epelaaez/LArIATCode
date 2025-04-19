@@ -58,10 +58,10 @@ Reco Np background after no outgoing pion cut:
   Abs 0p: 66
   Abs Np: 0
   Primary muon: 5
-  Primary electron: 169
+  Primary electron: 170
   Other primary: 0
   Outside reduced volume: 6
-  Inelastic scattering: 177
+  Inelastic scattering: 176
   Charge exchange: 18
   Double charge exchange: 4
   Capture at rest: 19
@@ -89,7 +89,7 @@ Reco Np background after small tracks cut:
   Primary electron: 21
   Other primary: 0
   Outside reduced volume: 6
-  Inelastic scattering: 173
+  Inelastic scattering: 172
   Charge exchange: 14
   Double charge exchange: 4
   Capture at rest: 19
@@ -117,7 +117,7 @@ Reco Np background after mean curvature cut:
   Primary electron: 4
   Other primary: 0
   Outside reduced volume: 5
-  Inelastic scattering: 123
+  Inelastic scattering: 122
   Charge exchange: 9
   Double charge exchange: 2
   Capture at rest: 18

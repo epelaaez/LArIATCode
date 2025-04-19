@@ -1,13 +1,13 @@
-Num of flagged events: 1136
+Num of flagged events: 1135
 
 WC match PDG count: 
-    WC match PDG: -211 Count: 895
+    WC match PDG: -211 Count: 894
     WC match PDG: 11 Count: 29
     WC match PDG: 13 Count: 193
     WC match PDG: 2212 Count: 19
 
 Primary PDG count: 
-    True primary PDG: -211 Count: 979
+    True primary PDG: -211 Count: 978
     True primary PDG: 11 Count: 28
     True primary PDG: 13 Count: 129
 
@@ -2372,25 +2372,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170360 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
-True visible protons: 0
-
-Run: 1 subrun: 0 event: 200746
-Background type: Inelastic scattering
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000180390 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 12.8939, -7.99809, 24.2509
-Primary daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000180390 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
 True visible protons: 0
 
 Run: 1 subrun: 0 event: 200772
@@ -12971,6 +12952,25 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 55226
+Background type: Inelastic scattering
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 1000180380 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 20.4964, -4.85259, 19.1241
+Primary daughters: 
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 1000180380 Process: pi-Inelastic
+Tracks reco'ed as protons: 1
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 55239
 Background type: Inelastic scattering
 WC match PDG: -211
@@ -16222,25 +16222,6 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000150330 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
-
-Run: 1 subrun: 0 event: 62487
-Background type: Inelastic scattering
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 2112 Process: pi-Inelastic
-    PDG: -211 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000180390 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 19.2989, -6.72097, 74.143
-Primary daughters: 
-    PDG: 2112 Process: pi-Inelastic
-    PDG: -211 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000180390 Process: pi-Inelastic
 Tracks reco'ed as protons: 1
 True visible protons: 0
 
