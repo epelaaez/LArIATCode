@@ -1,4 +1,4 @@
-Events reconstructed as Np absorption but 0p absorption at truth level: 50
+Events reconstructed as Np absorption but 0p absorption at truth level: 51
 
 Run: 1 subrun: 0 event: 19944
 Background type: Not flagged as background
@@ -807,6 +807,43 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 2112 Process: pi-Inelastic
     PDG: 1000140300 Process: pi-Inelastic
+Tracks reco'ed as protons: 1
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 63709
+Background type: Not flagged as background
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160340 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 24.8528, 4.5854, 48.4984
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160340 Process: pi-Inelastic
 Tracks reco'ed as protons: 1
 True visible protons: 0
 

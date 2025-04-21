@@ -28,6 +28,9 @@ void RecoAnalysis() {
     const double minZ =  3.0;
     const double maxZ = 87.0;
 
+    // Vertex radius
+    double fVertexRadius = 4.;
+
     int FontStyle = 132;
     double TextSize = 0.06;
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/RecoAnalysis/";
@@ -93,10 +96,21 @@ void RecoAnalysis() {
     std::vector<double>* recoEndX     = nullptr;
     std::vector<double>* recoEndY     = nullptr;
     std::vector<double>* recoEndZ     = nullptr;
+    std::vector<double>* recoBeginX   = nullptr;
+    std::vector<double>* recoBeginY   = nullptr;
+    std::vector<double>* recoBeginZ   = nullptr;
+    std::vector<int>*    recoTrkID    = nullptr;
     tree->SetBranchAddress("recoMeanDEDX", &recoMeanDEDX);
     tree->SetBranchAddress("recoEndX", &recoEndX);
     tree->SetBranchAddress("recoEndY", &recoEndY);
     tree->SetBranchAddress("recoEndZ", &recoEndZ);
+    tree->SetBranchAddress("recoBeginX", &recoBeginX);
+    tree->SetBranchAddress("recoBeginY", &recoBeginY);
+    tree->SetBranchAddress("recoBeginZ", &recoBeginZ);
+    tree->SetBranchAddress("recoTrkID", &recoTrkID);
+
+    int WC2TPCtrkID;
+    tree->SetBranchAddress("WC2TPCtrkID", &WC2TPCtrkID);
 
     std::vector<std::vector<double>>* recoDEDX = nullptr;
     std::vector<std::vector<double>>* recoResR = nullptr;
@@ -111,11 +125,14 @@ void RecoAnalysis() {
     std::vector<TString> PartNames = {"Pion", "Proton"};
 
     // Declare histograms
-    TH1D *hPionMeanDEDX = new TH1D("hPionMeanDEDX", "PionMeanDEDX;;", 40, 0, 15);
-    TH1D *hProtonMeanDEDX = new TH1D("hProtonMeanDEDX", "ProtonMeanDEDX;;", 40, 0, 15);
+    TH1D *hPionMeanDEDXSecondary = new TH1D("hPionMeanDEDXSecondary", "PionMeanDEDX;;", 40, 0, 12);
+    TH1D *hProtonMeanDEDXSecondary = new TH1D("hProtonMeanDEDXSecondary", "ProtonMeanDEDX;;", 40, 0, 12);
 
-    TH1D* hUncontainedProtonMeanDEDX = new TH1D("hUncontainedProtonMeanDEDX", "hUncontainedProtonMeanDEDX;;", 40, 0, 20);
-    TH1D* hContainedProtonMeanDEDX = new TH1D("hContainedProtonMeanDEDX", "hContainedProtonMeanDEDX;;", 40, 0, 20);
+    TH1D *hPionMeanDEDXPrimary = new TH1D("hPionMeanDEDXPrimary", "PionMeanDEDX;;", 40, 0, 12);
+    TH1D *hProtonMeanDEDXPrimary = new TH1D("hProtonMeanDEDXPrimary", "ProtonMeanDEDX;;", 40, 0, 12);
+
+    TH1D* hUncontainedProtonMeanDEDX = new TH1D("hUncontainedProtonMeanDEDX", "hUncontainedProtonMeanDEDX;;", 40, 0, 12);
+    TH1D* hContainedProtonMeanDEDX = new TH1D("hContainedProtonMeanDEDX", "hContainedProtonMeanDEDX;;", 40, 0, 12);
 
     TH1D *hTrueInitialKEnergyAllProtons = new TH1D("hTrueInitialKEnergyAllProtons", "hTrueInitialKEnergyAllProtons;;", 50, 0, 0.2);
     TH1D *hTrueInitialKEnergyRecoProtons = new TH1D("hTrueInitialKEnergyRecoProtons", "hTrueInitialKEnergyRecoProtons;;", 50, 0, 0.2);
@@ -177,14 +194,14 @@ void RecoAnalysis() {
         100, 0, 40  // 100 bins starting from 0 to 25 for dE/dx
     );
 
-    double startDEDXCut    = 4.0;
+    double startDEDXCut    = 3.0;
     double stepSizeDEDXCut = 0.125;
     int    numStepsDEDXCut = 60;
     TH1D *hMisIDsMeanDEDXCut       = new TH1D("hMisIDsMeanDEDXCut", "hMisIDsMeanDEDXCut", numStepsDEDXCut, startDEDXCut, startDEDXCut + numStepsDEDXCut * stepSizeDEDXCut);
     TH1D *hMisProtonIDsMeanDEDXCut = new TH1D("hMisProtonIDsMeanDEDXCut", "hMisProtonIDsMeanDEDXCut", numStepsDEDXCut, startDEDXCut, startDEDXCut + numStepsDEDXCut * stepSizeDEDXCut);
     TH1D *hMisPionIDsMeanDEDXCut   = new TH1D("hMisPionIDsMeanDEDXCut", "hMisPionIDsMeanDEDXCut", numStepsDEDXCut, startDEDXCut, startDEDXCut + numStepsDEDXCut * stepSizeDEDXCut);
 
-    int totalRecoTraks = 0;
+    int totalRecoTracks = 0;
 
     int recoProtonsTrueUncontained = 0;
     int recoProtonsUncontained     = 0;
@@ -199,11 +216,33 @@ void RecoAnalysis() {
 
     std::ofstream outUncontainedProtonsFile("files/UncontainedProtons.txt");
 
+    // Mean dE/dx cut performance
+    int totalSecondaryProtons = 0;
+    int totalSecondaryPions   = 0;
+    int totalSecondaryMuons   = 0;
+    int totalSecondaryElectrons = 0;
+    int totalSecondaryOthers  = 0;
+    std::vector<int> idAsProtons(numStepsDEDXCut);
+    std::vector<int> idAsPions(numStepsDEDXCut);
+    std::vector<int> correctIDProtons(numStepsDEDXCut);
+    std::vector<int> correctIDPions(numStepsDEDXCut);
+
     // Loop over events
     Int_t NumEntries = (Int_t) tree->GetEntries();
     std::cout << "Num entries: " << NumEntries << std::endl;
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
+
+        // Get vertex position
+        double primaryVertexX, primaryVertexY, primaryVertexZ;
+        for (int iParticle = 0; iParticle < matchedIdentity->size(); iParticle++) {
+            if (recoTrkID->at(iParticle) == WC2TPCtrkID) {
+                primaryVertexX = recoEndX->at(iParticle);
+                primaryVertexY = recoEndY->at(iParticle);
+                primaryVertexZ = recoEndZ->at(iParticle);
+                break;
+            }
+        }
 
         // Look at energy profile for events we are interested in
         if ((event == 200061) || (event == 200920) || (event == 62282)) {
@@ -257,7 +296,7 @@ void RecoAnalysis() {
         int numRecoParticles = matchedIdentity->size();
         int thisRecoProtonsTrueUncotained = 0;
         for (int iParticle = 0; iParticle < numRecoParticles; ++iParticle) {
-            totalRecoTraks++;
+            totalRecoTracks++;
 
             // Get calo information for this particle
             std::vector<double> thisTrackDEDX     = recoDEDX->at(iParticle);
@@ -265,14 +304,29 @@ void RecoAnalysis() {
             double thisTrackTrueKE                = matchedKEnergy->at(iParticle);
             double thisTrackMeanDEDX              = recoMeanDEDX->at(iParticle);
 
+            int thisTrackID      = recoTrkID->at(iParticle);
+            bool isPrimaryTrack  = (thisTrackID == WC2TPCtrkID);
+            double startDistance = sqrt(
+                pow(recoBeginX->at(iParticle) - primaryVertexX, 2) + pow(recoBeginY->at(iParticle) - primaryVertexY, 2) + pow(recoBeginZ->at(iParticle) - primaryVertexZ, 2)
+            );
+            double endDistance   = sqrt(
+                pow(recoEndX->at(iParticle) - primaryVertexX, 2) + pow(recoEndY->at(iParticle) - primaryVertexY, 2) + pow(recoEndZ->at(iParticle) - primaryVertexZ, 2)
+            );
+            bool isSecondaryTrack = false;
+            if ((thisTrackID != WC2TPCtrkID) && ((startDistance < fVertexRadius) || (endDistance < fVertexRadius))) isSecondaryTrack = true;
+
             if (isTrackInverted->at(iParticle)) reversedTracks++;
 
             // Pion
             if (matchedIdentity->at(iParticle) == -211) {
                 recoPions++;
                 if (isTrackInverted->at(iParticle)) reversedTracksMatchedToPions++;
-
-                hPionMeanDEDX->Fill(thisTrackMeanDEDX);
+                
+                if (isSecondaryTrack) {
+                    hPionMeanDEDXSecondary->Fill(thisTrackMeanDEDX);
+                } else if (isPrimaryTrack) {
+                    hPionMeanDEDXPrimary->Fill(thisTrackMeanDEDX);
+                }
 
                 int caloPoints = thisTrackDEDX.size();
                 for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
@@ -289,7 +343,11 @@ void RecoAnalysis() {
                 if ((thisTrackTrueKE >= PROTON_ENERGY_LOWER_BOUND) && (thisTrackTrueKE <= PROTON_ENERGY_UPPER_BOUND)) { recoProtons++; }
                 else { continue; }
 
-                hProtonMeanDEDX->Fill(thisTrackMeanDEDX);
+                if (isSecondaryTrack) {
+                    hProtonMeanDEDXSecondary->Fill(thisTrackMeanDEDX);
+                } else if (isPrimaryTrack) {
+                    hProtonMeanDEDXPrimary->Fill(thisTrackMeanDEDX);
+                }
 
                 // if ((thisTrackMeanDEDX > 1.98) && (thisTrackMeanDEDX < 2.02)) {
                 //     std::cout << event << std::endl;
@@ -341,14 +399,33 @@ void RecoAnalysis() {
             }
 
             // Find performace in cut
-            for (int stepCut = 0; stepCut < numStepsDEDXCut; stepCut++) {
-                double cutValue = startDEDXCut + (double)(stepCut * stepSizeDEDXCut);
-                if ((thisTrackMeanDEDX > cutValue) && (matchedIdentity->at(iParticle) == -211)) {
-                    hMisPionIDsMeanDEDXCut->Fill(cutValue);
-                    hMisIDsMeanDEDXCut->Fill(cutValue);
-                } else if ((thisTrackMeanDEDX <= cutValue) && (matchedIdentity->at(iParticle) == 2212)) {
-                    hMisProtonIDsMeanDEDXCut->Fill(cutValue);
-                    hMisIDsMeanDEDXCut->Fill(cutValue);
+            if (isSecondaryTrack) {
+                if (matchedIdentity->at(iParticle) == -211) totalSecondaryPions++;
+                else if (matchedIdentity->at(iParticle) == 2212) totalSecondaryProtons++;
+                else if ((matchedIdentity->at(iParticle) == 13) || (matchedIdentity->at(iParticle) == -13)) totalSecondaryMuons++;
+                else if ((matchedIdentity->at(iParticle) == 11) || (matchedIdentity->at(iParticle) == -11)) totalSecondaryElectrons++;
+                else totalSecondaryOthers++;
+                
+                for (int stepCut = 0; stepCut < numStepsDEDXCut; stepCut++) {
+                    double cutValue = startDEDXCut + (double)(stepCut * stepSizeDEDXCut);
+
+                    if (thisTrackMeanDEDX > cutValue) {
+                        idAsProtons[stepCut]++;
+                        if (matchedIdentity->at(iParticle) == -211) {
+                            hMisIDsMeanDEDXCut->Fill(cutValue);
+                            hMisPionIDsMeanDEDXCut->Fill(cutValue);
+                        } else if (matchedIdentity->at(iParticle) == 2212) {
+                            correctIDProtons[stepCut]++;
+                        }
+                    } else if (thisTrackMeanDEDX <= cutValue) {
+                        idAsPions[stepCut]++;
+                        if (matchedIdentity->at(iParticle) == -211) {
+                            correctIDPions[stepCut]++;
+                        } else if (matchedIdentity->at(iParticle) == 2212) {
+                            hMisIDsMeanDEDXCut->Fill(cutValue);
+                            hMisProtonIDsMeanDEDXCut->Fill(cutValue);
+                        }
+                    }
                 }
             }
         }
@@ -388,6 +465,47 @@ void RecoAnalysis() {
         }
     }
 
+    TH1D *hEffProtonMeanDEDXCut  = new TH1D("hEffProtonMeanDEDXCut", "hEffProtonMeanDEDXCut", numStepsDEDXCut, startDEDXCut, startDEDXCut + numStepsDEDXCut * stepSizeDEDXCut);
+    TH1D *hEffPionMeanDEDXCut    = new TH1D("hEffPionMeanDEDXCut", "hEffPionMeanDEDXCut", numStepsDEDXCut, startDEDXCut, startDEDXCut + numStepsDEDXCut * stepSizeDEDXCut);
+
+    TH1D *hPurProtonMeanDEDXCut  = new TH1D("hPurProtonMeanDEDXCut", "hPurProtonMeanDEDXCut", numStepsDEDXCut, startDEDXCut, startDEDXCut + numStepsDEDXCut * stepSizeDEDXCut);
+    TH1D *hPurPionMeanDEDXCut    = new TH1D("hPurPionMeanDEDXCut", "hPurPionMeanDEDXCut", numStepsDEDXCut, startDEDXCut, startDEDXCut + numStepsDEDXCut * stepSizeDEDXCut);
+
+    TH1D *hEffPurProtonMeanDEDXCut = new TH1D("hEffPurProtonMeanDEDXCut", "hEffPurProtonMeanDEDXCut", numStepsDEDXCut, startDEDXCut, startDEDXCut + numStepsDEDXCut * stepSizeDEDXCut);
+    TH1D *hEffPurPionMeanDEDXCut   = new TH1D("hEffPurPionMeanDEDXCut", "hEffPurPionMeanDEDXCut", numStepsDEDXCut, startDEDXCut, startDEDXCut + numStepsDEDXCut * stepSizeDEDXCut);
+
+    std::cout << std::endl;
+    std::cout << "Total secondary pions: " << totalSecondaryPions << std::endl;
+    std::cout << "Total secondary protons: " << totalSecondaryProtons << std::endl;
+    std::cout << "Total secondary muons: " << totalSecondaryMuons << std::endl;
+    std::cout << "Total secondary electrons: " << totalSecondaryElectrons << std::endl;
+    std::cout << "Total secondary others: " << totalSecondaryOthers << std::endl;
+    std::cout << std::endl;
+
+    for (int i = 0; i < numStepsDEDXCut; i++) {
+        double cutValue = startDEDXCut + (double)(i * stepSizeDEDXCut);
+
+        double efficiencyProton = correctIDProtons[i] / (double) totalSecondaryProtons;
+        double purityProton     = correctIDProtons[i] / (double) idAsProtons[i];
+        hEffProtonMeanDEDXCut->Fill(cutValue, efficiencyProton);
+        hPurProtonMeanDEDXCut->Fill(cutValue, purityProton);
+        hEffPurProtonMeanDEDXCut->Fill(cutValue, efficiencyProton * purityProton);
+
+        double efficiencyPion = correctIDPions[i] / (double) totalSecondaryPions;
+        double purityPion     = correctIDPions[i] / (double) idAsPions[i];
+        // std::cout << cutValue << std::endl;
+        // std::cout << "   pion purity: " << purityPion << std::endl;
+        // std::cout << "   correct id as pions: " << correctIDPions[i] << std::endl;
+        // std::cout << "   id as pions: " << idAsPions[i] << std::endl;
+        // std::cout << std::endl;
+        // std::cout << "   proton purity: " << purityProton << std::endl;
+        // std::cout << "   correct id as protons: " << correctIDProtons[i] << std::endl;
+        // std::cout << "   id as protons: " << idAsProtons[i] << std::endl;
+        hEffPionMeanDEDXCut->Fill(cutValue, efficiencyPion);
+        hPurPionMeanDEDXCut->Fill(cutValue, purityPion);
+        hEffPurPionMeanDEDXCut->Fill(cutValue, efficiencyPion * purityPion);
+    }
+
     hEnergyLossUncontainedProtons->Scale(1. / hEnergyLossUncontainedProtons->Integral());
     hEnergyLossContainedProtons->Scale(1. / hEnergyLossContainedProtons->Integral());
     hUncontainedProtonMeanDEDX->Scale(1. / hUncontainedProtonMeanDEDX->Integral());
@@ -398,10 +516,11 @@ void RecoAnalysis() {
     double bestMisIDs = hMisIDsMeanDEDXCut->GetBinContent(minBin);
 
     std::cout << std::endl;
-    std::cout << "Minimum overall mis-IDs at " << bestCutVal << "MeV/cm, with " << 100 * (bestMisIDs / totalRecoTraks) << "%" << std::endl;
+    std::cout << "Total reco tracks: " << totalRecoTracks << std::endl; 
+    std::cout << "Minimum overall mis-IDs at " << bestCutVal << "MeV/cm, with " << 100 * (bestMisIDs / totalRecoTracks) << "%" << std::endl;
 
-    // hPionMeanDEDX->Scale(1 / hPionMeanDEDX->Integral());
-    // hProtonMeanDEDX->Scale(1 / hProtonMeanDEDX->Integral());
+    // hPionMeanDEDXSecondary->Scale(1 / hPionMeanDEDXSecondary->Integral());
+    // hProtonMeanDEDXSecondary->Scale(1 / hProtonMeanDEDXSecondary->Integral());
 
     std::cout << std::endl;
     std::cout << "Number of truth protons: " << truthProtons << std::endl;
@@ -424,8 +543,9 @@ void RecoAnalysis() {
     };
 
     std::vector<std::vector<TH1*>> PlotGroups = {
-        {hProtonMeanDEDX},
-        {hPionMeanDEDX, hProtonMeanDEDX},
+        {hProtonMeanDEDXSecondary},
+        {hPionMeanDEDXSecondary, hProtonMeanDEDXSecondary},
+        {hPionMeanDEDXPrimary, hProtonMeanDEDXPrimary},
         {hTrueInitialKEnergyAllProtons, hTrueInitialKEnergyRecoProtons},
         {hTrueLengthAllProtons, hTrueLengthRecoProtons},
         {hProtonsEscapingZReduction},
@@ -433,11 +553,15 @@ void RecoAnalysis() {
         {hProtonsEscapingXReduction},
         {hProtonsEscapingAllReduction},
         {hContainedProtonMeanDEDX, hUncontainedProtonMeanDEDX},
-        {hMisIDsMeanDEDXCut, hMisPionIDsMeanDEDXCut, hMisProtonIDsMeanDEDXCut}
+        {hMisIDsMeanDEDXCut, hMisPionIDsMeanDEDXCut, hMisProtonIDsMeanDEDXCut},
+        {hEffPurPionMeanDEDXCut, hEffPurProtonMeanDEDXCut},
+        {hEffPionMeanDEDXCut, hEffProtonMeanDEDXCut},
+        {hPurPionMeanDEDXCut, hPurProtonMeanDEDXCut}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         {"Proton"},
+        {"Pion", "Proton"}, 
         {"Pion", "Proton"}, 
         {"True protons", "Reco protons"},
         {"True protons", "Reco protons"},
@@ -446,12 +570,16 @@ void RecoAnalysis() {
         {"Protons escaping"},
         {"Protons escaping"},
         {"Contained protons", "Uncontained protons"},
-        {"Total", "Pion", "Proton"}
+        {"Total", "Pion", "Proton"},
+        {"Pion", "Proton"},
+        {"Pion", "Proton"},
+        {"Pion", "Proton"}
     };
 
     std::vector<TString> PlotTitles = {
-        "ProtonMeanDEDX",
-        "MeanDEDX",
+        "ProtonMeanDEDXSecondary",
+        "MeanDEDXSecondary",
+        "MeanDEDXPrimary",
         "ProtonKE",
         "ProtonLength",
         "ProtonsEscapingZReduction",
@@ -459,10 +587,14 @@ void RecoAnalysis() {
         "ProtonsEscapingXReduction",
         "ProtonsEscapingAllReduction",
         "ProtonMeanDEDXUncontained",
-        "MisIDsDEDXCut"
+        "MisIDsDEDXCut",
+        "EfficiencyPurityDEDXCut",
+        "EfficiencyDEDXCut",
+        "PurityDEDXCut"
     };
     
     std::vector<TString> XLabels = {
+        "Mean dE/dx (MeV/cm)",
         "Mean dE/dx (MeV/cm)",
         "Mean dE/dx (MeV/cm)",
         "Kinetic energy (GeV)",
@@ -472,10 +604,14 @@ void RecoAnalysis() {
         "Reduced volume pushback (only x direction) (cm)",
         "Reduced volume pushback (all directions) (cm)",
         "Mean dE/dx (MeV/cm)",
+        "Mean dE/dx cut value (MeV/cm)",
+        "Mean dE/dx cut value (MeV/cm)",
+        "Mean dE/dx cut value (MeV/cm)",
         "Mean dE/dx cut value (MeV/cm)"
     };
 
     std::vector<TString> YLabels = {
+        "Particle counts",
         "Particle counts",
         "Particle counts",
         "Particle counts",
@@ -485,7 +621,10 @@ void RecoAnalysis() {
         "Protons escaping",
         "Protons escaping",
         "Proton counts",
-        "Misidentified particle counts"
+        "Misidentified particle counts",
+        "Efficiency times purity",
+        "Efficiency",
+        "Purity"
     };
 
     int numPlots = PlotGroups.size();

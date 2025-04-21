@@ -1,4 +1,4 @@
-Events reconstructed as 0p absorption but not absorption at truth level: 961
+Events reconstructed as 0p absorption but not absorption at truth level: 997
 
 Run: 1 subrun: 0 event: 19806
 Background type: Inelastic scattering
@@ -289,6 +289,40 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 19947
+Background type: Inelastic scattering
+WC match PDG: -211
+WC match process: pi-Inelastic
+WC match daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000010030 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000150320 Process: hBertiniCaptureAtRest
+Primary PDG: -211
+Primary vertex: 21.2443, -0.445075, 35.4311
+Primary daughters: 
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160340 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 19977
 Background type: Inelastic scattering
 WC match PDG: -211
@@ -421,6 +455,87 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 199840
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000170400 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 27.3555, 3.94679, 81.8547
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000170400 Process: muMinusCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 199870
 Background type: Inelastic scattering
 WC match PDG: -211
@@ -447,6 +562,69 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000160350 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 199872
+Background type: Decay
+WC match PDG: 13
+WC match process: Decay
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2212 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 1000160370 Process: muMinusCaptureAtRest
+Primary PDG: -211
+Primary vertex: 26.5585, 1.78453, 8.04113
+Primary daughters: 
+    PDG: -14 Process: Decay
+    PDG: 13 Process: Decay
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -707,6 +885,125 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180380 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 200035
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+Primary PDG: 13
+Primary vertex: -37.4271, -151.697, 1010.37
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -2326,129 +2623,6 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
-Run: 1 subrun: 0 event: 200827
-Background type: Primary muon
-WC match PDG: 13
-WC match process: primary
-WC match daughters: 
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-Primary PDG: 13
-Primary vertex: 2.25709, -93.8942, 1010.37
-Primary daughters: 
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-Tracks reco'ed as protons: 0
-True visible protons: 0
-
 Run: 1 subrun: 0 event: 200835
 Background type: Inelastic scattering
 WC match PDG: -211
@@ -2474,146 +2648,46 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
-Run: 1 subrun: 0 event: 200889
-Background type: Primary muon
-WC match PDG: 13
+Run: 1 subrun: 0 event: 200903
+Background type: Outside reduced volume
+WC match PDG: -211
 WC match process: primary
 WC match daughters: 
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-Primary PDG: 13
-Primary vertex: 52.8039, 129.1, 1010.37
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000140290 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 12.5942, -0.278972, 82.452
 Primary daughters: 
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000140290 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -3526,45 +3600,6 @@ Primary daughters:
     PDG: 1000080160 Process: hadElastic
     PDG: -14 Process: Decay
     PDG: 13 Process: Decay
-Tracks reco'ed as protons: 0
-True visible protons: 0
-
-Run: 1 subrun: 0 event: 201317
-Background type: Capture at rest
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000240510 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary vertex: -7.93148, 18.6688, 96.4924
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: 1000180400 Process: hadElastic
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000240510 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -5134,6 +5169,107 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170360 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 202158
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 33.6218, 1.52968, 81.9802
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -8471,6 +8607,141 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 53321
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+Primary PDG: 13
+Primary vertex: -111.804, -32.2875, 1010.37
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 53322
 Background type: Inelastic scattering
 WC match PDG: -211
@@ -9051,23 +9322,6 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
-Run: 1 subrun: 0 event: 53526
-Background type: Decay
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: -14 Process: Decay
-    PDG: 13 Process: Decay
-Primary PDG: -211
-Primary vertex: -40.0173, -36.3874, 415.568
-Primary daughters: 
-    PDG: 1000180400 Process: hadElastic
-    PDG: -14 Process: Decay
-    PDG: 13 Process: Decay
-Tracks reco'ed as protons: 0
-True visible protons: 0
-
 Run: 1 subrun: 0 event: 53569
 Background type: Decay
 WC match PDG: 13
@@ -9431,6 +9685,43 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 53826
+Background type: Capture at rest
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000010030 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000150310 Process: hBertiniCaptureAtRest
+Primary PDG: -211
+Primary vertex: 9.48302, 15.2312, 58.1278
+Primary daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000010030 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000150310 Process: hBertiniCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 53831
 Background type: Primary muon
 WC match PDG: 13
@@ -9701,6 +9992,33 @@ Primary daughters:
     PDG: -211 Process: pi-Inelastic
     PDG: 2112 Process: pi-Inelastic
     PDG: 1000180390 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 53987
+Background type: Inelastic scattering
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000010020 Process: pi-Inelastic
+    PDG: 1000160350 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 4.41541, 1.53898, 79.4328
+Primary daughters: 
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000010020 Process: pi-Inelastic
+    PDG: 1000160350 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -11691,6 +12009,113 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 55090
+Background type: Primary electron
+WC match PDG: 11
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 11 Process: eIoni
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 11 Process: eIoni
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 11 Process: eIoni
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+Primary PDG: 11
+Primary vertex: 11.6963, -0.887043, 22.9791
+Primary daughters: 
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 11 Process: eIoni
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 11 Process: eIoni
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 11 Process: eIoni
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 11 Process: eIoni
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+    PDG: 22 Process: eBrem
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 55104
 Background type: Inelastic scattering
 WC match PDG: -211
@@ -12033,6 +12458,19 @@ Primary daughters:
     PDG: 2112 Process: hBertiniCaptureAtRest
     PDG: 22 Process: hBertiniCaptureAtRest
     PDG: 1000150320 Process: hBertiniCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 55352
+Background type: Outside reduced volume
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+Primary PDG: -211
+Primary vertex: 82.2133, -224.419, 349.538
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -12788,6 +13226,119 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 5891
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000170390 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 29.3008, 0.0825853, 82.1827
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000170390 Process: muMinusCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 5895
 Background type: Charge exchange
 WC match PDG: -211
@@ -13056,6 +13607,29 @@ Primary daughters:
     PDG: 22 Process: hBertiniCaptureAtRest
     PDG: 2112 Process: hBertiniCaptureAtRest
     PDG: 1000140310 Process: hBertiniCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 5966
+Background type: Inelastic scattering
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 2212 Process: pi-Inelastic
+    PDG: -211 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000170380 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 13.9008, 3.22973, 58.7812
+Primary daughters: 
+    PDG: 2212 Process: pi-Inelastic
+    PDG: -211 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000170380 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -13412,117 +13986,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170370 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-True visible protons: 0
-
-Run: 1 subrun: 0 event: 6124
-Background type: Primary muon
-WC match PDG: 13
-WC match process: primary
-WC match daughters: 
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-Primary PDG: 13
-Primary vertex: -226.142, -143.837, 1010.37
-Primary daughters: 
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -13963,6 +14426,33 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 1000020040 Process: pi-Inelastic
     PDG: 1000120260 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 62092
+Background type: Outside reduced volume
+WC match PDG: 2212
+WC match process: pi-Inelastic
+WC match daughters: 
+    PDG: 2112 Process: protonInelastic
+    PDG: 2212 Process: protonInelastic
+    PDG: 22 Process: protonInelastic
+    PDG: 22 Process: protonInelastic
+    PDG: 1000180390 Process: protonInelastic
+Primary PDG: -211
+Primary vertex: 14.9511, 6.80464, 7.02646
+Primary daughters: 
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000020040 Process: pi-Inelastic
+    PDG: 1000140300 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -16498,6 +16988,135 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 63157
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2212 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 1000220470 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: -0.0262759, -4.16247, 122.582
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2212 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 1000220470 Process: muMinusCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 63285
 Background type: Decay
 WC match PDG: 13
@@ -16615,6 +17234,37 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170350 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 63398
+Background type: Capture at rest
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000160350 Process: hBertiniCaptureAtRest
+Primary PDG: -211
+Primary vertex: 9.42781, 0.889905, 83.3498
+Primary daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000160350 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -16969,6 +17619,107 @@ Primary daughters:
     PDG: 11 Process: muIoni
     PDG: 11 Process: muIoni
     PDG: 11 Process: muIoni
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 63574
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 7.73853, 9.85612, 86.0767
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -17512,6 +18263,35 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 2212 Process: pi-Inelastic
     PDG: 1000150330 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 63740
+Background type: Inelastic scattering
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000170370 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 1.59265, 3.661, 71.6138
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000170370 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -18439,6 +19219,39 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 64163
+Background type: Capture at rest
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000010020 Process: hBertiniCaptureAtRest
+    PDG: 1000010030 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000140310 Process: hBertiniCaptureAtRest
+Primary PDG: -211
+Primary vertex: 17.9921, 11.1975, 84.0006
+Primary daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000010020 Process: hBertiniCaptureAtRest
+    PDG: 1000010030 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000140310 Process: hBertiniCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 64235
 Background type: Inelastic scattering
 WC match PDG: -211
@@ -19154,6 +19967,31 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 64555
+Background type: Outside reduced volume
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160380 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 21.1207, 3.30565, 82.298
+Primary daughters: 
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000160380 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 64590
 Background type: Inelastic scattering
 WC match PDG: -211
@@ -19601,6 +20439,44 @@ Primary daughters:
     PDG: 111 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170390 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 6385
+Background type: Decay
+WC match PDG: 13
+WC match process: Decay
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+Primary PDG: -211
+Primary vertex: 18.596, -4.73904, 14.3128
+Primary daughters: 
+    PDG: -14 Process: Decay
+    PDG: 13 Process: Decay
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -20451,6 +21327,41 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 65336
+Background type: Inelastic scattering
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000020040 Process: pi-Inelastic
+    PDG: 1000140290 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 4.79212, 2.72963, 58.062
+Primary daughters: 
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000020040 Process: pi-Inelastic
+    PDG: 1000140290 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 65350
 Background type: Capture at rest
 WC match PDG: -211
@@ -21018,6 +21929,117 @@ Primary vertex: 28.1139, 3.9519, -69.1486
 Primary daughters: 
     PDG: -14 Process: Decay
     PDG: 13 Process: Decay
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 65784
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 2212 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000160360 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 17.7044, 9.37081, 82.8676
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 2212 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000160360 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -21938,6 +22960,43 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 66260
+Background type: Capture at rest
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000160320 Process: hBertiniCaptureAtRest
+Primary PDG: -211
+Primary vertex: 22.2274, -14.7609, 59.2503
+Primary daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000160320 Process: hBertiniCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 66271
 Background type: Primary muon
 WC match PDG: 13
@@ -22360,137 +23419,6 @@ Primary daughters:
     PDG: 22 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000180400 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-True visible protons: 0
-
-Run: 1 subrun: 0 event: 66427
-Background type: Primary muon
-WC match PDG: 13
-WC match process: primary
-WC match daughters: 
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-Primary PDG: 13
-Primary vertex: -36.0031, 154.355, 1010.37
-Primary daughters: 
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -23013,6 +23941,35 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 66697
+Background type: Capture at rest
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000010020 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000150350 Process: hBertiniCaptureAtRest
+Primary PDG: -211
+Primary vertex: 4.57054, 5.29576, 61.5615
+Primary daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000010020 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000150350 Process: hBertiniCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 66707
 Background type: Charge exchange
 WC match PDG: -211
@@ -23443,6 +24400,109 @@ Primary daughters:
     PDG: 1000180400 Process: hadElastic
     PDG: -14 Process: Decay
     PDG: 13 Process: Decay
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 66931
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 35.6966, -25.4121, 237.578
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -24169,6 +25229,37 @@ Primary daughters:
     PDG: 22 Process: muMinusCaptureAtRest
     PDG: 2112 Process: muMinusCaptureAtRest
     PDG: 1000160360 Process: muMinusCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 67345
+Background type: Outside reduced volume
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 1000020040 Process: pi-Inelastic
+    PDG: 1000130290 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 11.6788, -16.2591, 77.1343
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 1000020040 Process: pi-Inelastic
+    PDG: 1000130290 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -25153,6 +26244,103 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 22888
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 25.7468, 1.20326, 82.3458
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 22929
 Background type: Charge exchange
 WC match PDG: -211
@@ -25633,6 +26821,33 @@ Primary daughters:
     PDG: 2112 Process: hBertiniCaptureAtRest
     PDG: 1000010020 Process: hBertiniCaptureAtRest
     PDG: 1000140320 Process: hBertiniCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 229865
+Background type: Inelastic scattering
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000180380 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 4.32669, -1.2852, 77.0692
+Primary daughters: 
+    PDG: 1000180400 Process: hadElastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000180380 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -28218,6 +29433,45 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 230924
+Background type: Capture at rest
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000150320 Process: hBertiniCaptureAtRest
+Primary PDG: -211
+Primary vertex: 12.8506, -12.064, 83.8951
+Primary daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000150320 Process: hBertiniCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 230931
 Background type: Decay
 WC match PDG: -211
@@ -28516,6 +29770,119 @@ Primary daughters:
     PDG: 2112 Process: hBertiniCaptureAtRest
     PDG: 2112 Process: hBertiniCaptureAtRest
     PDG: 1000140290 Process: hBertiniCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 231063
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 2212 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000160370 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 32.9398, -5.49459, 84.9867
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 2212 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000160370 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -29042,6 +30409,212 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 231179
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2212 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000160360 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 29.2582, -0.268264, 82.925
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2212 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000160360 Process: muMinusCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 231209
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000170400 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 17.5356, -6.54233, 83.4144
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000170400 Process: muMinusCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 231211
 Background type: Inelastic scattering
 WC match PDG: -211
@@ -29461,6 +31034,31 @@ Primary daughters:
     PDG: 2112 Process: pi-Inelastic
     PDG: 22 Process: pi-Inelastic
     PDG: 1000170390 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 231464
+Background type: Inelastic scattering
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 1000170360 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 6.01666, -13.1064, 81.555
+Primary daughters: 
+    PDG: -211 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 1000170360 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -30740,6 +32338,107 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 232144
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 32.4204, 0.148128, 81.2164
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 232162
 Background type: Inelastic scattering
 WC match PDG: -211
@@ -31192,6 +32891,45 @@ Primary daughters:
     PDG: 11 Process: muMinusCaptureAtRest
     PDG: -12 Process: muMinusCaptureAtRest
     PDG: 14 Process: muMinusCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 232522
+Background type: Capture at rest
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000010020 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000150310 Process: hBertiniCaptureAtRest
+Primary PDG: -211
+Primary vertex: 9.47391, -4.88764, 79.0755
+Primary daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000010020 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000150310 Process: hBertiniCaptureAtRest
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -32495,6 +34233,49 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 8089
+Background type: Outside reduced volume
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 1000010020 Process: pi-Inelastic
+    PDG: 1000120260 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 12.1529, 2.27262, 82.4622
+Primary daughters: 
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 1000010020 Process: pi-Inelastic
+    PDG: 1000120260 Process: pi-Inelastic
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 8095
 Background type: Inelastic scattering
 WC match PDG: -211
@@ -33123,17 +34904,6 @@ Primary daughters:
     PDG: 22 Process: hBertiniCaptureAtRest
     PDG: 2112 Process: hBertiniCaptureAtRest
     PDG: 1000150320 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 0
-True visible protons: 0
-
-Run: 1 subrun: 0 event: 82848
-Background type: Outside reduced volume
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-Primary PDG: -211
-Primary vertex: -190.099, -192.669, 1010.37
-Primary daughters: 
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -34278,6 +36048,43 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 83411
+Background type: Capture at rest
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000020040 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000140300 Process: hBertiniCaptureAtRest
+Primary PDG: -211
+Primary vertex: 27.8061, 8.84331, 82.6117
+Primary daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 1000020040 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000140300 Process: hBertiniCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 83435
 Background type: Decay
 WC match PDG: -211
@@ -34290,6 +36097,113 @@ Primary vertex: 21.8109, 7.55625, 46.1052
 Primary daughters: 
     PDG: -14 Process: Decay
     PDG: 13 Process: Decay
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 83450
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 32.2989, -7.62818, 81.6029
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -34400,139 +36314,6 @@ Primary daughters:
     PDG: 1000010020 Process: pi-Inelastic
     PDG: 1000010030 Process: pi-Inelastic
     PDG: 1000120260 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-True visible protons: 0
-
-Run: 1 subrun: 0 event: 83581
-Background type: Primary muon
-WC match PDG: 13
-WC match process: primary
-WC match daughters: 
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-Primary PDG: 13
-Primary vertex: 333.617, 224.419, 982.274
-Primary daughters: 
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -35738,6 +37519,43 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 84016
+Background type: Capture at rest
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 1000010020 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000130300 Process: hBertiniCaptureAtRest
+Primary PDG: -211
+Primary vertex: 21.3219, -15.2268, 82.6782
+Primary daughters: 
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 1000010020 Process: hBertiniCaptureAtRest
+    PDG: 2212 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 2112 Process: hBertiniCaptureAtRest
+    PDG: 22 Process: hBertiniCaptureAtRest
+    PDG: 1000130300 Process: hBertiniCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 84032
 Background type: Inelastic scattering
 WC match PDG: -211
@@ -36002,6 +37820,39 @@ Primary daughters:
     PDG: 1000180400 Process: hadElastic
     PDG: -14 Process: Decay
     PDG: 13 Process: Decay
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 84483
+Background type: Outside reduced volume
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000150310 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 8.3533, -5.7752, 82.4202
+Primary daughters: 
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2212 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000150310 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -37191,32 +39042,7 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
-Run: 1 subrun: 0 event: 85203
-Background type: Charge exchange
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 111 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000170380 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 7.15873, -6.97853, 46.5982
-Primary daughters: 
-    PDG: 111 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000170380 Process: pi-Inelastic
-Tracks reco'ed as protons: 0
-True visible protons: 0
-
-Run: 1 subrun: 0 event: 85205
+Run: 1 subrun: 0 event: 85186
 Background type: Primary muon
 WC match PDG: 13
 WC match process: primary
@@ -37267,18 +39093,13 @@ WC match daughters:
     PDG: 11 Process: muIoni
     PDG: 11 Process: muIoni
     PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000170400 Process: muMinusCaptureAtRest
 Primary PDG: 13
-Primary vertex: -234.477, 108.35, 1010.37
+Primary vertex: 23.6433, 6.48507, 82.7941
 Primary daughters: 
     PDG: 11 Process: muIoni
     PDG: 11 Process: muIoni
@@ -37326,16 +39147,36 @@ Primary daughters:
     PDG: 11 Process: muIoni
     PDG: 11 Process: muIoni
     PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
-    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000170400 Process: muMinusCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 85203
+Background type: Charge exchange
+WC match PDG: -211
+WC match process: primary
+WC match daughters: 
+    PDG: 111 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000170380 Process: pi-Inelastic
+Primary PDG: -211
+Primary vertex: 7.15873, -6.97853, 46.5982
+Primary daughters: 
+    PDG: 111 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 2112 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 22 Process: pi-Inelastic
+    PDG: 1000170380 Process: pi-Inelastic
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
@@ -38036,6 +39877,113 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 85529
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+Primary PDG: 13
+Primary vertex: 46.7491, -110.633, 1010.37
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 85532
 Background type: Primary electron
 WC match PDG: 11
@@ -38665,6 +40613,105 @@ Primary daughters:
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
+Run: 1 subrun: 0 event: 8623
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 27.2169, -7.11111, 87.4321
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: 11 Process: muMinusCaptureAtRest
+    PDG: -12 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
 Run: 1 subrun: 0 event: 8638
 Background type: Primary muon
 WC match PDG: 13
@@ -38771,6 +40818,125 @@ Primary daughters:
     PDG: 22 Process: muMinusCaptureAtRest
     PDG: 22 Process: muMinusCaptureAtRest
     PDG: 1000170400 Process: muMinusCaptureAtRest
+Tracks reco'ed as protons: 0
+True visible protons: 0
+
+Run: 1 subrun: 0 event: 8647
+Background type: Primary muon
+WC match PDG: 13
+WC match process: primary
+WC match daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000170380 Process: muMinusCaptureAtRest
+Primary PDG: 13
+Primary vertex: 4.45302, -3.4339, 79.9234
+Primary daughters: 
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 11 Process: muIoni
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 14 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 2112 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 22 Process: muMinusCaptureAtRest
+    PDG: 1000170380 Process: muMinusCaptureAtRest
 Tracks reco'ed as protons: 0
 True visible protons: 0
 
