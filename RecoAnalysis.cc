@@ -7,7 +7,10 @@
 
 #include <vector>
 
-void Overlay_dEdx_RR_Reference_PP(bool addLegend = true, TVirtualPad* pad = gPad);
+void Overlay_dEdx_RR_Reference_PP(TGraph* gProton, TGraph* gPion, bool addLegend = true, TVirtualPad* pad = gPad);
+void initializeProtonPoints(TGraph* gProton);
+void initializePionPoints(TGraph* gPion);
+double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, int nPoints);
 
 void RecoAnalysis() {
     // Set defaults
@@ -15,6 +18,13 @@ void RecoAnalysis() {
     TH2D::SetDefaultSumw2();
     // gStyle->SetOptStat(0);
     gStyle->SetPalette(kRainBow);
+
+    TGraph* gProton = new TGraph();
+    TGraph* gPion   = new TGraph();
+
+    // Initialize points
+    initializeProtonPoints(gProton);
+    initializePionPoints(gPion);
 
     // Proton energy bounds
     double PROTON_ENERGY_LOWER_BOUND = 0.075;
@@ -139,6 +149,30 @@ void RecoAnalysis() {
 
     TH1D *hTrueLengthAllProtons = new TH1D("hTrueLengthAllProtons", "hTrueLengthAllProtons;;", 20, 0, 40);
     TH1D *hTrueLengthRecoProtons = new TH1D("hTrueLengthRecoProtons", "hTrueLengthRecoProtons;;", 20, 0, 40);
+
+    TH1D *hProtonChi2All     = new TH1D("hProtonChi2All", "hProtonChi2All;;", 30, 0, 15);
+    TH1D *hProtonChi2Protons = new TH1D("hProtonChi2Protons", "hProtonChi2Protons;;", 30, 0, 15);
+    TH1D *hProtonChi2Pions   = new TH1D("hProtonChi2Pions", "hProtonChi2Pions;;", 30, 0, 15);
+    TH1D *hProtonChi2Others  = new TH1D("hProtonChi2Others", "hProtonChi2Others;;", 30, 0, 15);
+
+    TH1D *hPionChi2All     = new TH1D("hPionChi2All", "hProtonChi2All;;", 20, 0, 10);
+    TH1D *hPionChi2Protons = new TH1D("hPionChi2Protons", "hProtonChi2Protons;;", 20, 0, 10);
+    TH1D *hPionChi2Pions   = new TH1D("hPionChi2Pions", "hProtonChi2Pions;;", 20, 0, 10);
+    TH1D *hPionChi2Others  = new TH1D("hPionChi2Others", "hProtonChi2Others;;", 20, 0, 10);
+
+    // TH2F* hProtonChi2MisIDs = new TH2F(
+    //     "hProtonChi2MisIDs", 
+    //     "hProtonChi2MisIDs;Proton chi squared;Pion chi squared", 
+    //     30, 0, 15, 
+    //     30, 0, 15
+    // );
+
+    // TH2F* hPionChi2MisIDs = new TH2F(
+    //     "hPionChi2MisIDs", 
+    //     "hPionChi2MisIDs;Proton chi squared;Pion chi squared", 
+    //     30, 0, 15, 
+    //     30, 0, 15
+    // );
 
     double startingZBoundary = 82.0; // start at usual reduced volume
     double stepZBoundary     = 1;    // at each step, decrease by this
@@ -267,7 +301,7 @@ void RecoAnalysis() {
                 hDEDXProfile->SetMinimum(0);
                 hDEDXProfile->SetMaximum(1);
                 hDEDXProfile->Draw("COLZ");
-                Overlay_dEdx_RR_Reference_PP();
+                Overlay_dEdx_RR_Reference_PP(gProton, gPion);
                 c1->SaveAs(SaveDir +  "dEdxProfiles/" + event + "_" + iParticle + "_" + matchedIdentity->at(iParticle) + ".png");
                 
                 delete c1;
@@ -316,6 +350,28 @@ void RecoAnalysis() {
             if ((thisTrackID != WC2TPCtrkID) && ((startDistance < fVertexRadius) || (endDistance < fVertexRadius))) isSecondaryTrack = true;
 
             if (isTrackInverted->at(iParticle)) reversedTracks++;
+
+            // Get chi2 fit if secondary
+            if (isSecondaryTrack) {
+                // Get chi^2 fit to a pion and proton
+                int caloPoints    = thisTrackDEDX.size();
+                double protonChi2 = computeReducedChi2(gProton, thisTrackRecoResR, thisTrackDEDX, caloPoints);
+                double pionChi2   = computeReducedChi2(gPion, thisTrackRecoResR, thisTrackDEDX, caloPoints);
+
+                hProtonChi2All->Fill(protonChi2);
+                hPionChi2All->Fill(pionChi2);
+
+                if (matchedIdentity->at(iParticle) == -211) {
+                    hProtonChi2Pions->Fill(protonChi2);
+                    hPionChi2Pions->Fill(pionChi2);
+                } else if (matchedIdentity->at(iParticle) == 2212) {
+                    hProtonChi2Protons->Fill(protonChi2);
+                    hPionChi2Protons->Fill(pionChi2);
+                } else {
+                    hProtonChi2Others->Fill(protonChi2);
+                    hPionChi2Others->Fill(pionChi2);
+                }
+            }
 
             // Pion
             if (matchedIdentity->at(iParticle) == -211) {
@@ -556,7 +612,9 @@ void RecoAnalysis() {
         {hMisIDsMeanDEDXCut, hMisPionIDsMeanDEDXCut, hMisProtonIDsMeanDEDXCut},
         {hEffPurPionMeanDEDXCut, hEffPurProtonMeanDEDXCut},
         {hEffPionMeanDEDXCut, hEffProtonMeanDEDXCut},
-        {hPurPionMeanDEDXCut, hPurProtonMeanDEDXCut}
+        {hPurPionMeanDEDXCut, hPurProtonMeanDEDXCut},
+        {hProtonChi2Protons, hProtonChi2Pions},
+        {hPionChi2Protons, hPionChi2Pions}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -573,7 +631,9 @@ void RecoAnalysis() {
         {"Total", "Pion", "Proton"},
         {"Pion", "Proton"},
         {"Pion", "Proton"},
-        {"Pion", "Proton"}
+        {"Pion", "Proton"},
+        {"Protons", "Pions"},
+        {"Protons", "Pions"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -590,7 +650,9 @@ void RecoAnalysis() {
         "MisIDsDEDXCut",
         "EfficiencyPurityDEDXCut",
         "EfficiencyDEDXCut",
-        "PurityDEDXCut"
+        "PurityDEDXCut",
+        "ProtonChi2Fit",
+        "PionChi2Fit"
     };
     
     std::vector<TString> XLabels = {
@@ -607,7 +669,9 @@ void RecoAnalysis() {
         "Mean dE/dx cut value (MeV/cm)",
         "Mean dE/dx cut value (MeV/cm)",
         "Mean dE/dx cut value (MeV/cm)",
-        "Mean dE/dx cut value (MeV/cm)"
+        "Mean dE/dx cut value (MeV/cm)",
+        "Reduced chi squared",
+        "Reduced chi squared"
     };
 
     std::vector<TString> YLabels = {
@@ -624,7 +688,9 @@ void RecoAnalysis() {
         "Misidentified particle counts",
         "Efficiency times purity",
         "Efficiency",
-        "Purity"
+        "Purity",
+        "Particle counts",
+        "Particle counts"
     };
 
     int numPlots = PlotGroups.size();
@@ -758,269 +824,65 @@ void RecoAnalysis() {
     hEnergyLossAll->SetMinimum(0);
     hEnergyLossAll->SetMaximum(hEnergyLossAll->GetMaximum());
     hEnergyLossAll->Draw("COLZ");
-    Overlay_dEdx_RR_Reference_PP();
+    Overlay_dEdx_RR_Reference_PP(gProton, gPion);
     c1->SaveAs(SaveDir + "EnergyLossAll.png");
 
     hEnergyLossProtons->SetMinimum(0);
     hEnergyLossProtons->SetMaximum(hEnergyLossProtons->GetMaximum());
     hEnergyLossProtons->Draw("COLZ");
-    Overlay_dEdx_RR_Reference_PP();
+    Overlay_dEdx_RR_Reference_PP(gProton, gPion);
     c1->SaveAs(SaveDir + "EnergyLossProtons.png");
 
     hEnergyLossPions->SetMinimum(0);
     hEnergyLossPions->SetMaximum(hEnergyLossPions->GetMaximum());
     hEnergyLossPions->Draw("COLZ");
-    Overlay_dEdx_RR_Reference_PP();
+    Overlay_dEdx_RR_Reference_PP(gProton, gPion);
     c1->SaveAs(SaveDir + "EnergyLossPions.png");
 
     hEnergyLossUncontainedProtons->SetMinimum(0);
     hEnergyLossUncontainedProtons->SetMaximum(hEnergyLossUncontainedProtons->GetMaximum());
     hEnergyLossUncontainedProtons->Draw("COLZ");
-    Overlay_dEdx_RR_Reference_PP();
+    Overlay_dEdx_RR_Reference_PP(gProton, gPion);
     c1->SaveAs(SaveDir + "EnergyLossUncontainedProtons.png");
 
     hEnergyLossContainedProtons->SetMinimum(0);
     hEnergyLossContainedProtons->SetMaximum(hEnergyLossContainedProtons->GetMaximum());
     hEnergyLossContainedProtons->Draw("COLZ");
-    Overlay_dEdx_RR_Reference_PP();
+    Overlay_dEdx_RR_Reference_PP(gProton, gPion);
     c1->SaveAs(SaveDir + "EnergyLossContainedProtons.png");
 }
 
-void Overlay_dEdx_RR_Reference_PP(bool addLegend = true, TVirtualPad* pad = gPad) {
+double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, int nPoints) {
+    double chi2 = 0.0;
+
+    for (int i = 0; i < nPoints; ++i) {
+        double theoryY = theory->Eval(xData[i]); // interpolate the theory at xData[i]
+        double deltaY = yData[i] - theoryY;
+        chi2 += (deltaY * deltaY) / theoryY;
+    }
+
+    // Currently, no fixed parameters, so dof = nPoints
+    int dof = nPoints;
+    return dof > 0 ? chi2 / dof : 0.0; 
+}
+
+void Overlay_dEdx_RR_Reference_PP(
+    TGraph* gProton,
+    TGraph* gPion,
+    bool addLegend = true, 
+    TVirtualPad* pad = gPad
+) {
     const int N = 107;
 
-    static TGraph *gProton = nullptr;
-    static TGraph *gPion   = nullptr;
+    /* ---------- Proton ---------- */
+    gProton->SetLineColor(kRed+1);
+    gProton->SetLineWidth(3);
+    gProton->SetName("Proton");
 
-    if (!gProton) {
-        /* ---------- Proton ---------- */
-        gProton = new TGraph(N);
-        gProton->SetLineColor(kRed+1);
-        gProton->SetLineWidth(3);
-        gProton->SetName("Proton");
-
-        gProton->SetPoint(0,   31.95, 4.14);
-        gProton->SetPoint(1,   31.65, 4.16);
-        gProton->SetPoint(2,   31.35, 4.17);
-        gProton->SetPoint(3,   31.05, 4.18);
-        gProton->SetPoint(4,   30.75, 4.20);
-        gProton->SetPoint(5,   30.45, 4.21);
-        gProton->SetPoint(6,   30.15, 4.23);
-        gProton->SetPoint(7,   29.85, 4.25);
-        gProton->SetPoint(8,   29.55, 4.26);
-        gProton->SetPoint(9,   29.25, 4.28);
-        gProton->SetPoint(10,  28.95, 4.29);
-        gProton->SetPoint(11,  28.65, 4.31);
-        gProton->SetPoint(12,  28.35, 4.33);
-        gProton->SetPoint(13,  28.05, 4.34);
-        gProton->SetPoint(14,  27.75, 4.36);
-        gProton->SetPoint(15,  27.45, 4.38);
-        gProton->SetPoint(16,  27.15, 4.40);
-        gProton->SetPoint(17,  26.85, 4.42);
-        gProton->SetPoint(18,  26.55, 4.43);
-        gProton->SetPoint(19,  26.25, 4.45);
-        gProton->SetPoint(20,  25.95, 4.47);
-        gProton->SetPoint(21,  25.65, 4.49);
-        gProton->SetPoint(22,  25.35, 4.51);
-        gProton->SetPoint(23,  25.05, 4.53);
-        gProton->SetPoint(24,  24.75, 4.55);
-        gProton->SetPoint(25,  24.45, 4.57);
-        gProton->SetPoint(26,  24.15, 4.60);
-        gProton->SetPoint(27,  23.85, 4.62);
-        gProton->SetPoint(28,  23.55, 4.64);
-        gProton->SetPoint(29,  23.25, 4.66);
-        gProton->SetPoint(30,  22.95, 4.69);
-        gProton->SetPoint(31,  22.65, 4.71);
-        gProton->SetPoint(32,  22.35, 4.73);
-        gProton->SetPoint(33,  22.05, 4.76);
-        gProton->SetPoint(34,  21.75, 4.78);
-        gProton->SetPoint(35,  21.45, 4.81);
-        gProton->SetPoint(36,  21.15, 4.83);
-        gProton->SetPoint(37,  20.85, 4.86);
-        gProton->SetPoint(38,  20.55, 4.89);
-        gProton->SetPoint(39,  20.25, 4.92);
-        gProton->SetPoint(40,  19.95, 4.94);
-        gProton->SetPoint(41,  19.65, 4.97);
-        gProton->SetPoint(42,  19.35, 5.00);
-        gProton->SetPoint(43,  19.05, 5.03);
-        gProton->SetPoint(44,  18.75, 5.07);
-        gProton->SetPoint(45,  18.45, 5.10);
-        gProton->SetPoint(46,  18.15, 5.13);
-        gProton->SetPoint(47,  17.85, 5.16);
-        gProton->SetPoint(48,  17.55, 5.20);
-        gProton->SetPoint(49,  17.25, 5.23);
-        gProton->SetPoint(50,  16.95, 5.27);
-        gProton->SetPoint(51,  16.65, 5.31);
-        gProton->SetPoint(52,  16.35, 5.35);
-        gProton->SetPoint(53,  16.05, 5.39);
-        gProton->SetPoint(54,  15.75, 5.43);
-        gProton->SetPoint(55,  15.45, 5.47);
-        gProton->SetPoint(56,  15.15, 5.51);
-        gProton->SetPoint(57,  14.85, 5.56);
-        gProton->SetPoint(58,  14.55, 5.60);
-        gProton->SetPoint(59,  14.25, 5.65);
-        gProton->SetPoint(60,  13.95, 5.70);
-        gProton->SetPoint(61,  13.65, 5.75);
-        gProton->SetPoint(62,  13.35, 5.80);
-        gProton->SetPoint(63,  13.05, 5.85);
-        gProton->SetPoint(64,  12.75, 5.91);
-        gProton->SetPoint(65,  12.45, 5.97);
-        gProton->SetPoint(66,  12.15, 6.03);
-        gProton->SetPoint(67,  11.85, 6.09);
-        gProton->SetPoint(68,  11.55, 6.15);
-        gProton->SetPoint(69,  11.25, 6.22);
-        gProton->SetPoint(70,  10.95, 6.29);
-        gProton->SetPoint(71,  10.65, 6.36);
-        gProton->SetPoint(72,  10.35, 6.44);
-        gProton->SetPoint(73,  10.05, 6.52);
-        gProton->SetPoint(74,   9.75, 6.60);
-        gProton->SetPoint(75,   9.45, 6.68);
-        gProton->SetPoint(76,   9.15, 6.77);
-        gProton->SetPoint(77,   8.85, 6.87);
-        gProton->SetPoint(78,   8.55, 6.97);
-        gProton->SetPoint(79,   8.25, 7.08);
-        gProton->SetPoint(80,   7.95, 7.19);
-        gProton->SetPoint(81,   7.65, 7.30);
-        gProton->SetPoint(82,   7.35, 7.43);
-        gProton->SetPoint(83,   7.05, 7.56);
-        gProton->SetPoint(84,   6.75, 7.70);
-        gProton->SetPoint(85,   6.45, 7.85);
-        gProton->SetPoint(86,   6.15, 8.02);
-        gProton->SetPoint(87,   5.85, 8.19);
-        gProton->SetPoint(88,   5.55, 8.38);
-        gProton->SetPoint(89,   5.25, 8.58);
-        gProton->SetPoint(90,   4.95, 8.81);
-        gProton->SetPoint(91,   4.65, 9.05);
-        gProton->SetPoint(92,   4.35, 9.32);
-        gProton->SetPoint(93,   4.05, 9.61);
-        gProton->SetPoint(94,   3.75, 9.94);
-        gProton->SetPoint(95,   3.45,10.32);
-        gProton->SetPoint(96,   3.15,10.74);
-        gProton->SetPoint(97,   2.85,11.23);
-        gProton->SetPoint(98,   2.55,11.80);
-        gProton->SetPoint(99,   2.25,12.48);
-        gProton->SetPoint(100,  1.95,13.31);
-        gProton->SetPoint(101,  1.65,14.35);
-        gProton->SetPoint(102,  1.35,15.71);
-        gProton->SetPoint(103,  1.05,17.59);
-        gProton->SetPoint(104,  0.75,20.44);
-        gProton->SetPoint(105,  0.45,25.48);
-        gProton->SetPoint(106,  0.15,38.12);
-
-        /* ---------- Pion ---------- */
-        gPion = new TGraph(N);
-        gPion->SetLineColor(kRed+3);
-        gPion->SetLineWidth(3);
-        gPion->SetName("Pion");
-
-        gPion->SetPoint(0,   31.95, 2.4);
-        gPion->SetPoint(1,   31.65, 2.4);
-        gPion->SetPoint(2,   31.35, 2.4);
-        gPion->SetPoint(3,   31.05, 2.4);
-        gPion->SetPoint(4,   30.75, 2.4);
-        gPion->SetPoint(5,   30.45, 2.4);
-        gPion->SetPoint(6,   30.15, 2.4);
-        gPion->SetPoint(7,   29.85, 2.4);
-        gPion->SetPoint(8,   29.55, 2.4);
-        gPion->SetPoint(9,   29.25, 2.4);
-        gPion->SetPoint(10,  28.95, 2.4);
-        gPion->SetPoint(11,  28.65, 2.4);
-        gPion->SetPoint(12,  28.35, 2.4);
-        gPion->SetPoint(13,  28.05, 2.4);
-        gPion->SetPoint(14,  27.75, 2.5);
-        gPion->SetPoint(15,  27.45, 2.5);
-        gPion->SetPoint(16,  27.15, 2.5);
-        gPion->SetPoint(17,  26.85, 2.5);
-        gPion->SetPoint(18,  26.55, 2.5);
-        gPion->SetPoint(19,  26.25, 2.5);
-        gPion->SetPoint(20,  25.95, 2.5);
-        gPion->SetPoint(21,  25.65, 2.5);
-        gPion->SetPoint(22,  25.35, 2.5);
-        gPion->SetPoint(23,  25.05, 2.5);
-        gPion->SetPoint(24,  24.75, 2.5);
-        gPion->SetPoint(25,  24.45, 2.5);
-        gPion->SetPoint(26,  24.15, 2.5);
-        gPion->SetPoint(27,  23.85, 2.5);
-        gPion->SetPoint(28,  23.55, 2.5);
-        gPion->SetPoint(29,  23.25, 2.6);
-        gPion->SetPoint(30,  22.95, 2.6);
-        gPion->SetPoint(31,  22.65, 2.6);
-        gPion->SetPoint(32,  22.35, 2.6);
-        gPion->SetPoint(33,  22.05, 2.6);
-        gPion->SetPoint(34,  21.75, 2.6);
-        gPion->SetPoint(35,  21.45, 2.6);
-        gPion->SetPoint(36,  21.15, 2.6);
-        gPion->SetPoint(37,  20.85, 2.6);
-        gPion->SetPoint(38,  20.55, 2.6);
-        gPion->SetPoint(39,  20.25, 2.6);
-        gPion->SetPoint(40,  19.95, 2.6);
-        gPion->SetPoint(41,  19.65, 2.7);
-        gPion->SetPoint(42,  19.35, 2.7);
-        gPion->SetPoint(43,  19.05, 2.7);
-        gPion->SetPoint(44,  18.75, 2.7);
-        gPion->SetPoint(45,  18.45, 2.7);
-        gPion->SetPoint(46,  18.15, 2.7);
-        gPion->SetPoint(47,  17.85, 2.7);
-        gPion->SetPoint(48,  17.55, 2.7);
-        gPion->SetPoint(49,  17.25, 2.8);
-        gPion->SetPoint(50,  16.95, 2.8);
-        gPion->SetPoint(51,  16.65, 2.8);
-        gPion->SetPoint(52,  16.35, 2.8);
-        gPion->SetPoint(53,  16.05, 2.8);
-        gPion->SetPoint(54,  15.75, 2.8);
-        gPion->SetPoint(55,  15.45, 2.8);
-        gPion->SetPoint(56,  15.15, 2.9);
-        gPion->SetPoint(57,  14.85, 2.9);
-        gPion->SetPoint(58,  14.55, 2.9);
-        gPion->SetPoint(59,  14.25, 2.9);
-        gPion->SetPoint(60,  13.95, 2.9);
-        gPion->SetPoint(61,  13.65, 2.9);
-        gPion->SetPoint(62,  13.35, 3.0);
-        gPion->SetPoint(63,  13.05, 3.0);
-        gPion->SetPoint(64,  12.75, 3.0);
-        gPion->SetPoint(65,  12.45, 3.0);
-        gPion->SetPoint(66,  12.15, 3.0);
-        gPion->SetPoint(67,  11.85, 3.1);
-        gPion->SetPoint(68,  11.55, 3.1);
-        gPion->SetPoint(69,  11.25, 3.1);
-        gPion->SetPoint(70,  10.95, 3.1);
-        gPion->SetPoint(71,  10.65, 3.2);
-        gPion->SetPoint(72,  10.35, 3.2);
-        gPion->SetPoint(73,  10.05, 3.2);
-        gPion->SetPoint(74,   9.75, 3.3);
-        gPion->SetPoint(75,   9.45, 3.3);
-        gPion->SetPoint(76,   9.15, 3.3);
-        gPion->SetPoint(77,   8.85, 3.4);
-        gPion->SetPoint(78,   8.55, 3.4);
-        gPion->SetPoint(79,   8.25, 3.4);
-        gPion->SetPoint(80,   7.95, 3.5);
-        gPion->SetPoint(81,   7.65, 3.5);
-        gPion->SetPoint(82,   7.35, 3.6);
-        gPion->SetPoint(83,   7.05, 3.6);
-        gPion->SetPoint(84,   6.75, 3.7);
-        gPion->SetPoint(85,   6.45, 3.7);
-        gPion->SetPoint(86,   6.15, 3.8);
-        gPion->SetPoint(87,   5.85, 3.9);
-        gPion->SetPoint(88,   5.55, 3.9);
-        gPion->SetPoint(89,   5.25, 4.0);
-        gPion->SetPoint(90,   4.95, 4.1);
-        gPion->SetPoint(91,   4.65, 4.2);
-        gPion->SetPoint(92,   4.35, 4.3);
-        gPion->SetPoint(93,   4.05, 4.4);
-        gPion->SetPoint(94,   3.75, 4.6);
-        gPion->SetPoint(95,   3.45, 4.7);
-        gPion->SetPoint(96,   3.15, 4.9);
-        gPion->SetPoint(97,   2.85, 5.1);
-        gPion->SetPoint(98,   2.55, 5.3);
-        gPion->SetPoint(99,   2.25, 5.6);
-        gPion->SetPoint(100,  1.95, 5.9);
-        gPion->SetPoint(101,  1.65, 6.4);
-        gPion->SetPoint(102,  1.35, 6.9);
-        gPion->SetPoint(103,  1.05, 7.7);
-        gPion->SetPoint(104,  0.75, 8.9);
-        gPion->SetPoint(105,  0.45,11.0);
-        gPion->SetPoint(106,  0.15,16.5);
-    }
+    /* ---------- Pion ---------- */
+    gPion->SetLineColor(kRed+3);
+    gPion->SetLineWidth(3);
+    gPion->SetName("Pion");
 
     if (pad) pad->cd();
     gProton->Draw("L same");
@@ -1036,5 +898,67 @@ void Overlay_dEdx_RR_Reference_PP(bool addLegend = true, TVirtualPad* pad = gPad
             leg->SetBorderSize(0);
         }
         leg->Draw();
+    }
+}
+
+void initializeProtonPoints(TGraph* gProton) {
+    double protonData[107][2] = {
+        {31.95, 4.14}, {31.65, 4.16}, {31.35, 4.17}, {31.05, 4.18}, {30.75, 4.20},
+        {30.45, 4.21}, {30.15, 4.23}, {29.85, 4.25}, {29.55, 4.26}, {29.25, 4.28},
+        {28.95, 4.29}, {28.65, 4.31}, {28.35, 4.33}, {28.05, 4.34}, {27.75, 4.36},
+        {27.45, 4.38}, {27.15, 4.40}, {26.85, 4.42}, {26.55, 4.43}, {26.25, 4.45},
+        {25.95, 4.47}, {25.65, 4.49}, {25.35, 4.51}, {25.05, 4.53}, {24.75, 4.55},
+        {24.45, 4.57}, {24.15, 4.60}, {23.85, 4.62}, {23.55, 4.64}, {23.25, 4.66},
+        {22.95, 4.69}, {22.65, 4.71}, {22.35, 4.73}, {22.05, 4.76}, {21.75, 4.78},
+        {21.45, 4.81}, {21.15, 4.83}, {20.85, 4.86}, {20.55, 4.89}, {20.25, 4.92},
+        {19.95, 4.94}, {19.65, 4.97}, {19.35, 5.00}, {19.05, 5.03}, {18.75, 5.07},
+        {18.45, 5.10}, {18.15, 5.13}, {17.85, 5.16}, {17.55, 5.20}, {17.25, 5.23},
+        {16.95, 5.27}, {16.65, 5.31}, {16.35, 5.35}, {16.05, 5.39}, {15.75, 5.43},
+        {15.45, 5.47}, {15.15, 5.51}, {14.85, 5.56}, {14.55, 5.60}, {14.25, 5.65},
+        {13.95, 5.70}, {13.65, 5.75}, {13.35, 5.80}, {13.05, 5.85}, {12.75, 5.91},
+        {12.45, 5.97}, {12.15, 6.03}, {11.85, 6.09}, {11.55, 6.15}, {11.25, 6.22},
+        {10.95, 6.29}, {10.65, 6.36}, {10.35, 6.44}, {10.05, 6.52}, {9.75, 6.60},
+        {9.45, 6.68}, {9.15, 6.77}, {8.85, 6.87}, {8.55, 6.97}, {8.25, 7.08},
+        {7.95, 7.19}, {7.65, 7.30}, {7.35, 7.43}, {7.05, 7.56}, {6.75, 7.70},
+        {6.45, 7.85}, {6.15, 8.02}, {5.85, 8.19}, {5.55, 8.38}, {5.25, 8.58},
+        {4.95, 8.81}, {4.65, 9.05}, {4.35, 9.32}, {4.05, 9.61}, {3.75, 9.94},
+        {3.45, 10.32}, {3.15, 10.74}, {2.85, 11.23}, {2.55, 11.80}, {2.25, 12.48},
+        {1.95, 13.31}, {1.65, 14.35}, {1.35, 15.71}, {1.05, 17.59}, {0.75, 20.44},
+        {0.45, 25.48}, {0.15, 38.12}
+    };
+
+    for (int i = 0; i < 107; ++i) {
+        gProton->SetPoint(i, protonData[i][0], protonData[i][1]);
+    }
+}
+
+void initializePionPoints(TGraph* gPion) {
+    double pionData[107][2] = {
+        {31.95, 2.4}, {31.65, 2.4}, {31.35, 2.4}, {31.05, 2.4}, {30.75, 2.4},
+        {30.45, 2.4}, {30.15, 2.4}, {29.85, 2.4}, {29.55, 2.4}, {29.25, 2.4},
+        {28.95, 2.4}, {28.65, 2.4}, {28.35, 2.4}, {28.05, 2.4}, {27.75, 2.5},
+        {27.45, 2.5}, {27.15, 2.5}, {26.85, 2.5}, {26.55, 2.5}, {26.25, 2.5},
+        {25.95, 2.5}, {25.65, 2.5}, {25.35, 2.5}, {25.05, 2.5}, {24.75, 2.5},
+        {24.45, 2.5}, {24.15, 2.5}, {23.85, 2.5}, {23.55, 2.5}, {23.25, 2.6},
+        {22.95, 2.6}, {22.65, 2.6}, {22.35, 2.6}, {22.05, 2.6}, {21.75, 2.6},
+        {21.45, 2.6}, {21.15, 2.6}, {20.85, 2.6}, {20.55, 2.6}, {20.25, 2.6},
+        {19.95, 2.6}, {19.65, 2.7}, {19.35, 2.7}, {19.05, 2.7}, {18.75, 2.7},
+        {18.45, 2.7}, {18.15, 2.7}, {17.85, 2.7}, {17.55, 2.7}, {17.25, 2.8},
+        {16.95, 2.8}, {16.65, 2.8}, {16.35, 2.8}, {16.05, 2.8}, {15.75, 2.8},
+        {15.45, 2.8}, {15.15, 2.9}, {14.85, 2.9}, {14.55, 2.9}, {14.25, 2.9},
+        {13.95, 2.9}, {13.65, 2.9}, {13.35, 3.0}, {13.05, 3.0}, {12.75, 3.0},
+        {12.45, 3.0}, {12.15, 3.0}, {11.85, 3.1}, {11.55, 3.1}, {11.25, 3.1},
+        {10.95, 3.1}, {10.65, 3.2}, {10.35, 3.2}, {10.05, 3.2}, {9.75, 3.3},
+        {9.45, 3.3}, {9.15, 3.3}, {8.85, 3.4}, {8.55, 3.4}, {8.25, 3.4},
+        {7.95, 3.5}, {7.65, 3.5}, {7.35, 3.6}, {7.05, 3.6}, {6.75, 3.7},
+        {6.45, 3.7}, {6.15, 3.8}, {5.85, 3.9}, {5.55, 3.9}, {5.25, 4.0},
+        {4.95, 4.1}, {4.65, 4.2}, {4.35, 4.3}, {4.05, 4.4}, {3.75, 4.6},
+        {3.45, 4.7}, {3.15, 4.9}, {2.85, 5.1}, {2.55, 5.3}, {2.25, 5.6},
+        {1.95, 5.9}, {1.65, 6.4}, {1.35, 6.9}, {1.05, 7.7}, {0.75, 8.9},
+        {0.45, 11.0}, {0.15, 16.5}
+    };
+
+    for (int i = 0; i < 107; ++i) {
+        gPion->SetPoint(i, pionData[i][0], pionData[i][1]);
     }
 }
