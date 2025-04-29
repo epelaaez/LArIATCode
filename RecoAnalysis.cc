@@ -155,24 +155,71 @@ void RecoAnalysis() {
     TH1D *hProtonChi2Pions   = new TH1D("hProtonChi2Pions", "hProtonChi2Pions;;", 30, 0, 15);
     TH1D *hProtonChi2Others  = new TH1D("hProtonChi2Others", "hProtonChi2Others;;", 30, 0, 15);
 
-    TH1D *hPionChi2All     = new TH1D("hPionChi2All", "hProtonChi2All;;", 20, 0, 10);
-    TH1D *hPionChi2Protons = new TH1D("hPionChi2Protons", "hProtonChi2Protons;;", 20, 0, 10);
-    TH1D *hPionChi2Pions   = new TH1D("hPionChi2Pions", "hProtonChi2Pions;;", 20, 0, 10);
-    TH1D *hPionChi2Others  = new TH1D("hPionChi2Others", "hProtonChi2Others;;", 20, 0, 10);
+    TH1D *hPionChi2All     = new TH1D("hPionChi2All", "hPionChi2All;;", 20, 0, 10);
+    TH1D *hPionChi2Protons = new TH1D("hPionChi2Protons", "hPionChi2Protons;;", 20, 0, 10);
+    TH1D *hPionChi2Pions   = new TH1D("hPionChi2Pions", "hPionChi2Pions;;", 20, 0, 10);
+    TH1D *hPionChi2Others  = new TH1D("hPionChi2Others", "hPionChi2Others;;", 20, 0, 10);
 
-    // TH2F* hProtonChi2MisIDs = new TH2F(
-    //     "hProtonChi2MisIDs", 
-    //     "hProtonChi2MisIDs;Proton chi squared;Pion chi squared", 
-    //     30, 0, 15, 
-    //     30, 0, 15
-    // );
+    int protonChiNumSteps = 30;
+    double protonChiStart = 0;
+    double protonChiEnd   = 15;
+    double protonChiStep  = (protonChiEnd - protonChiStart) / ((double) protonChiNumSteps);
 
-    // TH2F* hPionChi2MisIDs = new TH2F(
-    //     "hPionChi2MisIDs", 
-    //     "hPionChi2MisIDs;Proton chi squared;Pion chi squared", 
-    //     30, 0, 15, 
-    //     30, 0, 15
-    // );
+    int pionChiNumSteps = 20;
+    double pionChiStart = 0;
+    double pionChiEnd   = 10;
+    double pionChiStep  = (pionChiEnd - pionChiStart) / ((double) pionChiNumSteps);
+
+
+    TH2F* hProtonChi2TruePositives = new TH2F(
+        "hProtonChi2TruePositives", 
+        "hProtonChi2TruePositives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2F* hProtonChi2FalsePositives = new TH2F(
+        "hProtonChi2FalsePositives", 
+        "hProtonChi2FalsePositives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2F* hProtonChi2TrueNegatives = new TH2F(
+        "hProtonChi2TrueNegatives", 
+        "hProtonChi2TrueNegatives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2F* hProtonChi2FalseNegatives = new TH2F(
+        "hProtonChi2FalseNegatives", 
+        "hProtonChi2FalseNegatives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+
+    TH2F* hPionChi2TruePositives = new TH2F(
+        "hPionChi2TruePositives", 
+        "hPionChi2TruePositives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2F* hPionChi2FalsePositives = new TH2F(
+        "hPionChi2FalsePositives", 
+        "hPionChi2FalsePositives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2F* hPionChi2TrueNegatives = new TH2F(
+        "hPionChi2TrueNegatives", 
+        "hPionChi2TrueNegatives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2F* hPionChi2FalseNegatives = new TH2F(
+        "hPionChi2FalseNegatives", 
+        "hPionChi2FalseNegatives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
 
     double startingZBoundary = 82.0; // start at usual reduced volume
     double stepZBoundary     = 1;    // at each step, decrease by this
@@ -370,6 +417,46 @@ void RecoAnalysis() {
                 } else {
                     hProtonChi2Others->Fill(protonChi2);
                     hPionChi2Others->Fill(pionChi2);
+                }
+
+                // Fill chi2 fit plots
+                for (int iPionChiStep = 0; iPionChiStep < pionChiNumSteps; iPionChiStep++) {
+                    double currentPionChiValue = pionChiStart + (iPionChiStep * pionChiStep);
+                    for (int iProtonChiStep = 0; iProtonChiStep < protonChiNumSteps; iProtonChiStep++) {
+                        double currentProtonChiValue = protonChiStart + (iProtonChiStep * protonChiStep);
+                        
+                        if ((pionChi2 < currentPionChiValue) && (protonChi2 > currentProtonChiValue)) {
+                            // Tagged as pion
+                            if (matchedIdentity->at(iParticle) == -211) {
+                                hPionChi2TruePositives->Fill(currentProtonChiValue, currentPionChiValue);
+                            } else {
+                                hPionChi2FalsePositives->Fill(currentProtonChiValue, currentPionChiValue);
+                            }
+                        } else if ((pionChi2 > currentPionChiValue) && (protonChi2 < currentProtonChiValue)) {
+                            // Tagged as proton
+                            if (matchedIdentity->at(iParticle) == 2212) {
+                                hProtonChi2TruePositives->Fill(currentProtonChiValue, currentPionChiValue);
+                            } else {
+                                hProtonChi2FalsePositives->Fill(currentProtonChiValue, currentPionChiValue);
+                            }
+                        }
+
+                        if (!((pionChi2 < currentPionChiValue) && (protonChi2 > currentProtonChiValue))) {
+                            if (matchedIdentity->at(iParticle) == -211) {
+                                hPionChi2FalseNegatives->Fill(currentProtonChiValue, currentPionChiValue);
+                            } else {
+                                hPionChi2TrueNegatives->Fill(currentProtonChiValue, currentPionChiValue);
+                            }
+                        }
+
+                        if (!((pionChi2 > currentPionChiValue) && (protonChi2 < currentProtonChiValue))) {
+                            if (matchedIdentity->at(iParticle) == 2212) {
+                                hProtonChi2FalseNegatives->Fill(currentProtonChiValue, currentPionChiValue);
+                            } else {
+                                hProtonChi2TrueNegatives->Fill(currentProtonChiValue, currentPionChiValue);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -850,6 +937,46 @@ void RecoAnalysis() {
     hEnergyLossContainedProtons->Draw("COLZ");
     Overlay_dEdx_RR_Reference_PP(gProton, gPion);
     c1->SaveAs(SaveDir + "EnergyLossContainedProtons.png");
+
+    hProtonChi2TruePositives->SetMinimum(0);
+    hProtonChi2TruePositives->SetMaximum(hProtonChi2TruePositives->GetMaximum());
+    hProtonChi2TruePositives->Draw("COLZ");
+    c1->SaveAs(SaveDir + "ProtonChi2TruePositives.png");
+
+    hProtonChi2FalsePositives->SetMinimum(0);
+    hProtonChi2FalsePositives->SetMaximum(hProtonChi2FalsePositives->GetMaximum());
+    hProtonChi2FalsePositives->Draw("COLZ");
+    c1->SaveAs(SaveDir + "ProtonChi2FalsePositives.png");
+
+    hProtonChi2TrueNegatives->SetMinimum(0);
+    hProtonChi2TrueNegatives->SetMaximum(hProtonChi2TrueNegatives->GetMaximum());
+    hProtonChi2TrueNegatives->Draw("COLZ");
+    c1->SaveAs(SaveDir + "ProtonChi2TrueNegatives.png");
+
+    hProtonChi2FalseNegatives->SetMinimum(0);
+    hProtonChi2FalseNegatives->SetMaximum(hProtonChi2FalseNegatives->GetMaximum());
+    hProtonChi2FalseNegatives->Draw("COLZ");
+    c1->SaveAs(SaveDir + "ProtonChi2FalseNegatives.png");
+
+    hPionChi2TruePositives->SetMinimum(0);
+    hPionChi2TruePositives->SetMaximum(hPionChi2TruePositives->GetMaximum());
+    hPionChi2TruePositives->Draw("COLZ");
+    c1->SaveAs(SaveDir + "PionChi2TruePositives.png");
+
+    hPionChi2FalsePositives->SetMinimum(0);
+    hPionChi2FalsePositives->SetMaximum(hPionChi2FalsePositives->GetMaximum());
+    hPionChi2FalsePositives->Draw("COLZ");
+    c1->SaveAs(SaveDir + "PionChi2FalsePositives.png");
+
+    hPionChi2TrueNegatives->SetMinimum(0);
+    hPionChi2TrueNegatives->SetMaximum(hPionChi2TrueNegatives->GetMaximum());
+    hPionChi2TrueNegatives->Draw("COLZ");
+    c1->SaveAs(SaveDir + "PionChi2TrueNegatives.png");
+
+    hPionChi2FalseNegatives->SetMinimum(0);
+    hPionChi2FalseNegatives->SetMaximum(hPionChi2FalseNegatives->GetMaximum());
+    hPionChi2FalseNegatives->Draw("COLZ");
+    c1->SaveAs(SaveDir + "PionChi2FalseNegatives.png");
 }
 
 double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, int nPoints) {
