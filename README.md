@@ -2,7 +2,7 @@
 
 ## LArSoft scripts
 
-The following scripts are available in a separate [GitHub repo.](https://github.com/epelaaez/lariatsoft/tree/epelaez/pion_absorption). These scripts run on the generated events to create ROOT histograms that are analyzed with ROOT scripts later on.
+The following scripts are available in a separate [GitHub repo](https://github.com/epelaaez/lariatsoft/tree/epelaez/pion_absorption). These scripts run on the generated events to create ROOT histograms that are analyzed with ROOT scripts later on.
 
 Reconstruction modules:
 - `RecoEval_module`: rejects non pion events.

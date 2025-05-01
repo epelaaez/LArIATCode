@@ -481,7 +481,7 @@ void SelectionAnalysis() {
     std::cout << "  Reco 0p events: " << hFinalRecoEvents->Integral(1,1) << std::endl;
     std::cout << "  0p channel purity: " << hFinalRecoEvents0pSignal->Integral(1,1) / hFinalRecoEvents->Integral(1,1) << " and efficiency: " << hFinalRecoEvents0pSignal->Integral(1,1) / total0pSignalEvents << std::endl;
     std::cout << "  Reco Np events: " << hFinalRecoEvents->Integral(2,2) << std::endl;
-    std::cout << "  0p channel purity: " << hFinalRecoEventsNpSignal->Integral(2,2) / hFinalRecoEvents->Integral(2,2) << " and efficiency: " << hFinalRecoEventsNpSignal->Integral(2,2) / totalNpSignalEvents << std::endl;
+    std::cout << "  Np channel purity: " << hFinalRecoEventsNpSignal->Integral(2,2) / hFinalRecoEvents->Integral(2,2) << " and efficiency: " << hFinalRecoEventsNpSignal->Integral(2,2) / totalNpSignalEvents << std::endl;
     std::cout << std::endl;
 
     std::cout << "Reco 0p background composition: " << std::endl;
