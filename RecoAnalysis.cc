@@ -16,7 +16,6 @@ void RecoAnalysis() {
     // Set defaults
     TH1D::SetDefaultSumw2();
     TH2D::SetDefaultSumw2();
-    // gStyle->SetOptStat(0);
     gStyle->SetPalette(kRainBow);
 
     TGraph* gProton = new TGraph();
@@ -160,16 +159,15 @@ void RecoAnalysis() {
     TH1D *hPionChi2Pions   = new TH1D("hPionChi2Pions", "hPionChi2Pions;;", 20, 0, 10);
     TH1D *hPionChi2Others  = new TH1D("hPionChi2Others", "hPionChi2Others;;", 20, 0, 10);
 
-    int protonChiNumSteps = 30;
+    int protonChiNumSteps = 20;
     double protonChiStart = 0;
-    double protonChiEnd   = 15;
+    double protonChiEnd   = 10;
     double protonChiStep  = (protonChiEnd - protonChiStart) / ((double) protonChiNumSteps);
 
-    int pionChiNumSteps = 20;
+    int pionChiNumSteps = 10;
     double pionChiStart = 0;
-    double pionChiEnd   = 10;
+    double pionChiEnd   = 5;
     double pionChiStep  = (pionChiEnd - pionChiStart) / ((double) pionChiNumSteps);
-
 
     TH2F* hProtonChi2TruePositives = new TH2F(
         "hProtonChi2TruePositives", 
@@ -907,6 +905,8 @@ void RecoAnalysis() {
         delete PlotCanvas;
     }
 
+    gStyle->SetOptStat(0);
+
     TCanvas* c1 = new TCanvas("c1", "EnergyLossPlots", 800, 600);
     hEnergyLossAll->SetMinimum(0);
     hEnergyLossAll->SetMaximum(hEnergyLossAll->GetMaximum());
@@ -977,6 +977,94 @@ void RecoAnalysis() {
     hPionChi2FalseNegatives->SetMaximum(hPionChi2FalseNegatives->GetMaximum());
     hPionChi2FalseNegatives->Draw("COLZ");
     c1->SaveAs(SaveDir + "PionChi2FalseNegatives.png");
+
+    // TH2F* hPionChi2Trues = dynamic_cast<TH2F*>(hPionChi2TruePositives->Clone("hPionChi2Trues"));
+    // hPionChi2Trues->Add(hPionChi2TrueNegatives);
+    // hPionChi2Trues->SetTitle("hPionChi2Trues");
+    // hPionChi2Trues->SetMinimum(0);
+    // hPionChi2Trues->SetMaximum(hPionChi2Trues->GetMaximum());
+    // hPionChi2Trues->Draw("COLZ");
+    // c1->SaveAs(SaveDir + "PionChi2Trues.png");
+
+    // Compute figure of merit for chi^2 cut
+    TH2F* hProtonChi2FOM = new TH2F(
+        "hProtonChi2FOM", 
+        "hProtonChi2FOM;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2F* hPionChi2FOM = new TH2F(
+        "hPionChi2FOM", 
+        "hPionChi2FOM;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    
+    for (int iPionChiStep = 0; iPionChiStep < pionChiNumSteps; iPionChiStep++) {
+        double currentPionChiValue = pionChiStart + (iPionChiStep * pionChiStep);
+        for (int iProtonChiStep = 0; iProtonChiStep < protonChiNumSteps; iProtonChiStep++) {
+            double currentProtonChiValue = protonChiStart + (iProtonChiStep * protonChiStep);
+
+            int binX = hPionChi2TruePositives->GetXaxis()->FindFixBin(currentProtonChiValue);
+            int binY = hPionChi2TruePositives->GetYaxis()->FindFixBin(currentPionChiValue);
+
+            double pion_tp     = hPionChi2TruePositives->GetBinContent(binX, binY);
+            double pion_tn     = hPionChi2TrueNegatives->GetBinContent(binX, binY);
+            double pion_fp     = hPionChi2FalsePositives->GetBinContent(binX, binY);
+            double pion_fn     = hPionChi2FalseNegatives->GetBinContent(binX, binY);
+            double pion_eff    = pion_tp / (pion_tp + pion_tn);
+            double pion_purity = pion_tp / (pion_tp + pion_fp);
+
+            // double pion_fom = pion_tp / std::sqrt(pion_tp + pion_fp);
+            double pion_fom = (2 * pion_tp) / (2 * pion_tp + pion_fp + pion_fn);
+            // double pion_fom = ((pion_tp * pion_tn) - (pion_fp * pion_fn)) / std::sqrt((pion_tp + pion_fp) * (pion_tp + pion_fn) * (pion_tn * pion_fp) * (pion_tn * pion_fn));
+            hPionChi2FOM->SetBinContent(binX, binY, pion_fom);
+
+            double proton_tp     = hProtonChi2TruePositives->GetBinContent(binX, binY);
+            double proton_tn     = hProtonChi2TrueNegatives->GetBinContent(binX, binY);
+            double proton_fp     = hProtonChi2FalsePositives->GetBinContent(binX, binY);
+            double proton_fn     = hProtonChi2FalseNegatives->GetBinContent(binX, binY);
+            double proton_eff    = proton_tp / (proton_tp + proton_tn);
+            double proton_purity = proton_tp / (proton_tp + proton_fp);
+
+            // double proton_fom = proton_tp / std::sqrt(proton_tp + proton_fp);
+            double proton_fom = (2 * proton_tp) / (2 * proton_tp + proton_fp + proton_fn);
+            // double proton_fom = ((proton_tp * proton_tn) - (proton_fp * proton_fn)) / std::sqrt((proton_tp + proton_fp) * (proton_tp + proton_fn) * (proton_tn * proton_fp) * (proton_tn * proton_fn));
+            hProtonChi2FOM->SetBinContent(binX, binY, proton_fom);
+        }
+    }
+
+    hPionChi2FOM->SetMinimum(0);
+    hPionChi2FOM->SetMaximum(hPionChi2FOM->GetMaximum());
+    hPionChi2FOM->Draw("COLZ");
+    c1->SaveAs(SaveDir + "PionChi2FOM.png");
+
+    hProtonChi2FOM->SetMinimum(0);
+    hProtonChi2FOM->SetMaximum(hProtonChi2FOM->GetMaximum());
+    hProtonChi2FOM->Draw("COLZ");
+    c1->SaveAs(SaveDir + "ProtonChi2FOM.png");
+
+    Int_t binxPion, binyPion, binzPion;
+    Int_t globalBinPion   = hPionChi2FOM->GetMaximumBin(binxPion, binyPion, binzPion);
+
+    double maxContentPion = hPionChi2FOM->GetBinContent(globalBinPion);
+    double xAtMaxPion     = hPionChi2FOM->GetXaxis()->GetBinCenter(binxPion);
+    double yAtMaxPion     = hPionChi2FOM->GetYaxis()->GetBinCenter(binyPion);
+
+    std::cout << std::endl;
+    std::cout << "[PION]  Max‑FOM = " << maxContentPion
+            << " at (χ²_p, χ²_π) = (" << xAtMaxPion << ", " << yAtMaxPion << ")\n";
+
+    Int_t binxProt, binyProt, binzProt;
+    Int_t globalBinProt   = hProtonChi2FOM->GetMaximumBin(binxProt, binyProt, binzProt);
+
+    double maxContentProt = hProtonChi2FOM->GetBinContent(globalBinProt);
+    double xAtMaxProt     = hProtonChi2FOM->GetXaxis()->GetBinCenter(binxProt);
+    double yAtMaxProt     = hProtonChi2FOM->GetYaxis()->GetBinCenter(binyProt);
+
+    std::cout << "[PROTON] Max‑FOM = " << maxContentProt
+            << " at (χ²_p, χ²_π) = (" << xAtMaxProt << ", " << yAtMaxProt << ")\n";
+    std::cout << std::endl;
 }
 
 double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, int nPoints) {

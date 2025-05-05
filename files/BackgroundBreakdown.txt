@@ -55,18 +55,18 @@ Reco 0p background after no outgoing pion cut:
   Other: 2
 
 Reco Np background after no outgoing pion cut:
-  Abs 0p: 67
+  Abs 0p: 17
   Abs Np: 0
-  Primary muon: 6
-  Primary electron: 116
+  Primary muon: 0
+  Primary electron: 4
   Other primary: 0
-  Outside reduced volume: 7
-  Inelastic scattering: 160
-  Charge exchange: 11
-  Double charge exchange: 4
-  Capture at rest: 25
-  Decay: 6
-  Other: 2
+  Outside reduced volume: 2
+  Inelastic scattering: 19
+  Charge exchange: 3
+  Double charge exchange: 0
+  Capture at rest: 2
+  Decay: 0
+  Other: 1
 
 Reco 0p background after small tracks cut:
   Abs 0p: 0
@@ -83,18 +83,18 @@ Reco 0p background after small tracks cut:
   Other: 2
 
 Reco Np background after small tracks cut:
-  Abs 0p: 67
+  Abs 0p: 17
   Abs Np: 0
-  Primary muon: 6
-  Primary electron: 14
+  Primary muon: 0
+  Primary electron: 2
   Other primary: 0
-  Outside reduced volume: 7
-  Inelastic scattering: 156
-  Charge exchange: 9
-  Double charge exchange: 4
-  Capture at rest: 25
-  Decay: 6
-  Other: 1
+  Outside reduced volume: 2
+  Inelastic scattering: 18
+  Charge exchange: 2
+  Double charge exchange: 0
+  Capture at rest: 2
+  Decay: 0
+  Other: 0
 
 Reco 0p background after mean curvature cut:
   Abs 0p: 0
@@ -111,16 +111,16 @@ Reco 0p background after mean curvature cut:
   Other: 1
 
 Reco Np background after mean curvature cut:
-  Abs 0p: 50
+  Abs 0p: 12
   Abs Np: 0
-  Primary muon: 6
-  Primary electron: 3
+  Primary muon: 0
+  Primary electron: 1
   Other primary: 0
-  Outside reduced volume: 5
-  Inelastic scattering: 112
-  Charge exchange: 4
-  Double charge exchange: 2
-  Capture at rest: 22
-  Decay: 6
-  Other: 1
+  Outside reduced volume: 2
+  Inelastic scattering: 10
+  Charge exchange: 1
+  Double charge exchange: 0
+  Capture at rest: 1
+  Decay: 0
+  Other: 0
 
