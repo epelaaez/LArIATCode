@@ -7,10 +7,36 @@
 
 #include <vector>
 
+std::map<int, std::string> backgroundTypes = {
+    {-1, "Not flagged as background"},
+    {0, "Abs 0p"},
+    {1, "Abs Np"},
+    {2, "Primary muon"},
+    {3, "Primary electron"},
+    {4, "Other primary"},
+    {5, "Outside reduced volume"},
+    {6, "Inelastic scattering"},
+    {7, "Charge exchange"},
+    {8, "Double charge exchange"},
+    {9, "Capture at rest"},
+    {10, "Decay"},
+    {11, "Other"}
+};
+
 void initializeProtonPoints(TGraph* gProton);
 void initializePionPoints(TGraph* gPion);
 void initializeMuonNoBraggPoints(TGraph* gMuonTG);
 double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, int nPoints);
+double distance(double x1, double x2, double y1, double y2, double z1, double z2);
+void printOneDPlots(
+    TString dir, int fontStyle, double textSize,
+    std::vector<std::vector<TH1*>> groups,
+    std::vector<int> colors, 
+    std::vector<std::vector<TString>> labels, 
+    std::vector<TString> titles, 
+    std::vector<TString> xlabels, 
+    std::vector<TString> ylabels
+);
 
 void RecoAllAnalysis() {
     // Set defaults
@@ -26,6 +52,21 @@ void RecoAllAnalysis() {
     initializeProtonPoints(gProton);
     initializePionPoints(gPion);
     initializeMuonNoBraggPoints(gMuonTG);
+
+    // Background types
+    int NUM_BACKGROUND_TYPES = 11;
+    //    0:  0p pion absorption
+    //    1:  Np pion absorption
+    //    2:  primary muon event
+    //    3:  primary electron event
+    //    4:  other primary event
+    //    5:  primary pion outside reduced volume
+    //    6:  pion inelastic scattering
+    //    7:  charge exchange
+    //    8:  double charge exchange
+    //    9:  capture at rest
+    //    10: decay
+    //    11: other
 
     // Proton energy bounds
     double PROTON_ENERGY_LOWER_BOUND = 0.075;
@@ -81,12 +122,18 @@ void RecoAllAnalysis() {
     double WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ;
     std::vector<double>* wcMatchResR = nullptr;
     std::vector<double>* wcMatchDEDX = nullptr;
+    std::vector<double>* wcMatchXPos = nullptr;
+    std::vector<double>* wcMatchYPos = nullptr;
+    std::vector<double>* wcMatchZPos = nullptr;
     tree->SetBranchAddress("WC2TPCtrkID", &WC2TPCtrkID);
     tree->SetBranchAddress("WC2TPCPrimaryEndX", &WC2TPCPrimaryEndX);
     tree->SetBranchAddress("WC2TPCPrimaryEndY", &WC2TPCPrimaryEndY);
     tree->SetBranchAddress("WC2TPCPrimaryEndZ", &WC2TPCPrimaryEndZ);
     tree->SetBranchAddress("wcMatchResR", &wcMatchResR);
     tree->SetBranchAddress("wcMatchDEDX", &wcMatchDEDX);
+    tree->SetBranchAddress("wcMatchXPos", &wcMatchXPos);
+    tree->SetBranchAddress("wcMatchYPos", &wcMatchYPos);
+    tree->SetBranchAddress("wcMatchZPos", &wcMatchZPos);
 
     // Reco information
     std::vector<double>* recoMeanDEDX      = nullptr;
@@ -114,8 +161,34 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("recoResR", &recoResR);
     tree->SetBranchAddress("recoDEDX", &recoDEDX);
 
+    // Truth-level information
+    int truthPrimaryPDG;
+    double truthPrimaryVertexX, truthPrimaryVertexY, truthPrimaryVertexZ;
+    std::vector<int>*         truthPrimaryDaughtersPDG     = nullptr;
+    std::vector<std::string>* truthPrimaryDaughtersProcess = nullptr;
+    std::vector<double>*      truthPrimaryDaughtersKE      = nullptr;
+    tree->SetBranchAddress("truthPrimaryPDG", &truthPrimaryPDG);
+    tree->SetBranchAddress("truthPrimaryVertexX", &truthPrimaryVertexX);
+    tree->SetBranchAddress("truthPrimaryVertexY", &truthPrimaryVertexY);
+    tree->SetBranchAddress("truthPrimaryVertexZ", &truthPrimaryVertexZ);
+    tree->SetBranchAddress("truthPrimaryDaughtersPDG", &truthPrimaryDaughtersPDG);
+    tree->SetBranchAddress("truthPrimaryDaughtersProcess", &truthPrimaryDaughtersProcess);
+    tree->SetBranchAddress("truthPrimaryDaughtersKE", &truthPrimaryDaughtersKE);
+
     // Out files
     std::ofstream outStitchFile("files/WCMatchStitching.txt");
+
+    ///////////////////////
+    // Create histograms //
+    ///////////////////////
+
+    TH1D *hTotalSignal = new TH1D("hTotalSignal", "hTotalSignal;;", 1, 0, 1);
+
+    TH1D *hStitchedDistanceFromVertex = new TH1D("hStitchedDistanceFromVertex", "StitchedDistanceFromVertex;;", 50, 0, 20);
+    TH1D *hStitchAsPionAndProton = new TH1D("hStitchAsPionAndProton", "hStitchAsPionAndProton;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D *hStitchAsPionBraggPeak = new TH1D("hStitchAsPionBraggPeak", "hStitchAsPionBraggPeak;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D *hStitchAsThroughgoing = new TH1D("hStitchAsThroughgoing", "hStitchAsThroughgoing;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D *hStitchAsProton = new TH1D("hStitchAsProton", "hStitchAsProton;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
     //////////////////////
     // Loop over events //
@@ -127,13 +200,21 @@ void RecoAllAnalysis() {
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
+        if (isPionAbsorptionSignal) hTotalSignal->Fill(0.5);
+
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
+
+        // Label background type as 0 for 0p signal and 1 for Np signal
+        if (isPionAbsorptionSignal) {
+            if (numVisibleProtons == 0) backgroundType = 0;
+            if (numVisibleProtons > 0)  backgroundType = 1;
+        }
 
         // Perform chi^2 stitching for primary track
         // For this analysis, we get the following chi^2 values:
         //   - Pion (with Bragg peak) chi^2
-        //     - Capture at rest
+        //     - Capture at rest (backgroundType: 9)
         //   - Pion (through-going) chi^2
         //     - 0p or Np
         //   - Proton chi^2
@@ -166,16 +247,88 @@ void RecoAllAnalysis() {
                 bestBreakPoint = caloBreakPoint;
             }
         }
+
+        double breakPointX = wcMatchXPos->at(bestBreakPoint); double breakPointY = wcMatchYPos->at(bestBreakPoint); double breakPointZ = wcMatchZPos->at(bestBreakPoint);
         
-        if (std::min({minStitchedChi2, pionChi2, throughGoingChi2, protonChi2}) != throughGoingChi2) {
+        double minChi2 = std::min({minStitchedChi2, pionChi2, throughGoingChi2, protonChi2});
+        if (minChi2 == minStitchedChi2) {
+            // Track looks the most like a pion + proton, background
+            double distanceFromVertex = distance(breakPointX, truthPrimaryVertexX, breakPointY, truthPrimaryVertexY, breakPointZ, truthPrimaryVertexZ);
+
             outStitchFile << "Event number: " << event << std::endl; 
             outStitchFile << "  Pion with Bragg peak chi^2: " << pionChi2 << std::endl; 
             outStitchFile << "  Through-going pion chi^2: " << throughGoingChi2 << std::endl; 
             outStitchFile << "  Proton with Bragg peak chi^2: " << protonChi2 << std::endl; 
             outStitchFile << "  Best break point: " << bestBreakPoint << " with stitched chi^2: " << minStitchedChi2 << std::endl;
             outStitchFile << std::endl;
+            outStitchFile << "  Break point distance from vertex: " << distanceFromVertex << std::endl;
+            outStitchFile << "  Primary particle PDG: " << truthPrimaryPDG << std::endl;
+            outStitchFile << "  Event classified as: " << backgroundTypes[backgroundType] << std::endl;
+            outStitchFile << std::endl;
+
+            hStitchedDistanceFromVertex->Fill(distanceFromVertex);
+            hStitchAsPionAndProton->Fill(backgroundType);
+            
+        } else if (minChi2 == protonChi2) {
+            // Track looks the most like a proton, background
+            hStitchAsProton->Fill(backgroundType);
+        } else if (minChi2 == pionChi2) {
+            // Track looks like pion with Bragg peak, background
+            // TODO: do we do this, or just go with median cut?
+            hStitchAsPionBraggPeak->Fill(backgroundType);
+            
+        } else {
+            // Track looks like through-going pion, could be signal
+            hStitchAsThroughgoing->Fill(backgroundType);
         }
     }
+
+    std::cout << std::endl;
+    std::cout << "Total absorption signal events: " << hTotalSignal->Integral() << std::endl;
+    std::cout << std::endl;
+
+    //////////////////
+    // Create plots //
+    //////////////////
+
+    std::vector<int> Colors = {
+        kBlack, kBlue, kRed, kGreen
+    };
+
+    std::vector<std::vector<TH1*>> PlotGroups = {
+        {hStitchedDistanceFromVertex},
+        {hStitchAsPionAndProton, hStitchAsPionBraggPeak, hStitchAsThroughgoing, hStitchAsProton}
+    };
+
+    std::vector<std::vector<TString>> PlotLabelGroups = {
+        {"Stitched tracks"},
+        {"Pion-proton", "Pion Bragg", "Through-going", "Proton"},
+    };
+
+    std::vector<TString> PlotTitles = {
+        "StitchedDistanceFromVertex",
+        "StitchedBackgroundTypes"
+    };
+
+    std::vector<TString> XLabels = {
+        "Distance from true vertex (cm)",
+        "Background type"
+    };
+
+    std::vector<TString> YLabels = {
+        "Track counts",
+        "Number of tracks"
+    };
+
+    printOneDPlots(
+        SaveDir, FontStyle, TextSize,
+        PlotGroups,
+        Colors,
+        PlotLabelGroups,
+        PlotTitles,
+        XLabels,
+        YLabels
+    );
 }
 
 double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, int nPoints) {
@@ -282,5 +435,76 @@ void initializeMuonNoBraggPoints(TGraph* gMuonTG) {
 
     for (int i = 0; i < 107; ++i) {
         gMuonTG->SetPoint(i, muonTGData[i][0], muonTGData[i][1]);
+    }
+}
+
+double distance(double x1, double x2, double y1, double y2, double z1, double z2) {
+    return sqrt(
+        pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(z1 - z2, 2)
+    );
+}
+
+void printOneDPlots(
+    TString dir, int fontStyle, double textSize, 
+    std::vector<std::vector<TH1*>> groups,
+    std::vector<int> colors, 
+    std::vector<std::vector<TString>> labels, 
+    std::vector<TString> titles, 
+    std::vector<TString> xlabels, 
+    std::vector<TString> ylabels
+) {
+    int numPlots = groups.size();
+    for (int iPlot = 0; iPlot < numPlots; ++iPlot) {
+        // Set up canvas
+        TCanvas* PlotCanvas = new TCanvas("Canvas","Canvas",205,34,1024,768);
+        PlotCanvas->cd();
+        PlotCanvas->SetLeftMargin(0.15);
+        PlotCanvas->SetBottomMargin(0.15);
+
+        TLegend* leg = new TLegend(0.65,0.65,0.85,0.80);
+        leg->SetBorderSize(0);
+        leg->SetTextSize(textSize * 0.8);
+        leg->SetTextFont(fontStyle);
+
+        // Get histograms and labels
+        std::vector<TH1*> Plots = groups.at(iPlot);
+        std::vector<TString> Labels = labels.at(iPlot);
+
+        Plots[0]->SetTitle(titles.at(iPlot));
+
+        Plots[0]->GetXaxis()->SetTitleFont(fontStyle);
+        Plots[0]->GetXaxis()->SetLabelFont(fontStyle);
+        Plots[0]->GetXaxis()->SetNdivisions(8);
+        Plots[0]->GetXaxis()->SetLabelSize(textSize);
+        Plots[0]->GetXaxis()->SetTitleSize(textSize);
+        Plots[0]->GetXaxis()->SetTitle(xlabels.at(iPlot));
+        Plots[0]->GetXaxis()->SetTitleOffset(1.1);
+        Plots[0]->GetXaxis()->CenterTitle();
+
+        Plots[0]->GetYaxis()->SetTitleFont(fontStyle);
+        Plots[0]->GetYaxis()->SetLabelFont(fontStyle);
+        Plots[0]->GetYaxis()->SetNdivisions(6);
+        Plots[0]->GetYaxis()->SetLabelSize(textSize);
+        Plots[0]->GetYaxis()->SetTitleSize(textSize);
+        Plots[0]->GetYaxis()->SetTitle(ylabels.at(iPlot));
+        Plots[0]->GetYaxis()->SetTitleOffset(1.1);
+        Plots[0]->GetYaxis()->CenterTitle();	
+
+        for (int iSubPlot = 0; iSubPlot < Plots.size(); ++iSubPlot) {
+            leg->AddEntry(Plots[iSubPlot], Labels[iSubPlot], "l");
+            Plots[iSubPlot]->SetLineWidth(2);
+            Plots[iSubPlot]->SetLineColor(colors.at(iSubPlot));
+            Plots[iSubPlot]->Draw("hist same");
+
+            double imax = TMath::Max(Plots[iSubPlot]->GetMaximum(), Plots[0]->GetMaximum());
+
+            double YAxisRange = 1.15*imax;
+            Plots[iSubPlot]->GetYaxis()->SetRangeUser(0., YAxisRange);
+            Plots[0]->GetYaxis()->SetRangeUser(0., YAxisRange);	
+        }
+
+        leg->Draw();
+        PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
+        delete PlotCanvas;
     }
 }
