@@ -10,6 +10,14 @@ Event number: 19806
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
 
 Event number: 19904
   Pion with Bragg peak chi^2: 1.08819
@@ -23,6 +31,15 @@ Event number: 19904
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
 
 Event number: 19910
   Pion with Bragg peak chi^2: 1.2418
@@ -36,6 +53,18 @@ Event number: 19910
 
   Primary particle PDG: -211
   Event classified as: Charge exchange
+  Daughters: 
+    2112 with process: pi-Inelastic
+    111 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000150320 with process: pi-Inelastic
 
 Event number: 19940
   Pion with Bragg peak chi^2: 8.27891
@@ -49,6 +78,46 @@ Event number: 19940
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 19983
   Pion with Bragg peak chi^2: 13.5005
@@ -62,6 +131,19 @@ Event number: 19983
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000010030 with process: pi-Inelastic
+    1000140290 with process: pi-Inelastic
 
 Event number: 19994
   Pion with Bragg peak chi^2: 2.24646
@@ -75,6 +157,16 @@ Event number: 19994
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150350 with process: pi-Inelastic
 
 Event number: 199819
   Pion with Bragg peak chi^2: 22.602
@@ -88,6 +180,14 @@ Event number: 199819
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000140350 with process: pi-Inelastic
 
 Event number: 199824
   Pion with Bragg peak chi^2: 0.346329
@@ -101,6 +201,17 @@ Event number: 199824
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    1000180400 with process: hadElastic
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180360 with process: pi-Inelastic
 
 Event number: 199859
   Pion with Bragg peak chi^2: 1.90433
@@ -114,6 +225,21 @@ Event number: 199859
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000120270 with process: pi-Inelastic
 
 Event number: 199870
   Pion with Bragg peak chi^2: 3.48183
@@ -127,6 +253,16 @@ Event number: 199870
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    2112 with process: pi-Inelastic
+    -211 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160350 with process: pi-Inelastic
 
 Event number: 199871
   Pion with Bragg peak chi^2: 0.880164
@@ -140,6 +276,14 @@ Event number: 199871
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
 
 Event number: 199872
   Pion with Bragg peak chi^2: 2.06699
@@ -153,6 +297,9 @@ Event number: 199872
 
   Primary particle PDG: -211
   Event classified as: Decay
+  Daughters: 
+    -14 with process: Decay
+    13 with process: Decay
 
 Event number: 199874
   Pion with Bragg peak chi^2: 1.06601
@@ -166,6 +313,18 @@ Event number: 199874
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    1000180400 with process: hadElastic
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
 
 Event number: 199889
   Pion with Bragg peak chi^2: 5.48363
@@ -179,6 +338,36 @@ Event number: 199889
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 199917
   Pion with Bragg peak chi^2: 1.5353
@@ -192,6 +381,18 @@ Event number: 199917
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000140300 with process: pi-Inelastic
 
 Event number: 199942
   Pion with Bragg peak chi^2: 1.34748
@@ -205,6 +406,18 @@ Event number: 199942
 
   Primary particle PDG: -211
   Event classified as: Outside reduced volume
+  Daughters: 
+    1000060120 with process: hadElastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000140310 with process: pi-Inelastic
 
 Event number: 199944
   Pion with Bragg peak chi^2: 1.16957
@@ -218,6 +431,38 @@ Event number: 199944
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 199948
   Pion with Bragg peak chi^2: 8.37491
@@ -231,6 +476,25 @@ Event number: 199948
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 199997
   Pion with Bragg peak chi^2: 0.339028
@@ -244,6 +508,15 @@ Event number: 199997
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
 
 Event number: 200055
   Pion with Bragg peak chi^2: 0.304413
@@ -257,6 +530,15 @@ Event number: 200055
 
   Primary particle PDG: -211
   Event classified as: Abs 0p
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
 
 Event number: 200061
   Pion with Bragg peak chi^2: 1.37189
@@ -270,6 +552,14 @@ Event number: 200061
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150370 with process: pi-Inelastic
 
 Event number: 200369
   Pion with Bragg peak chi^2: 56.3594
@@ -283,6 +573,38 @@ Event number: 200369
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 200384
   Pion with Bragg peak chi^2: 1.77959
@@ -296,6 +618,39 @@ Event number: 200384
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 200526
   Pion with Bragg peak chi^2: 2.16197
@@ -309,6 +664,16 @@ Event number: 200526
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150340 with process: pi-Inelastic
 
 Event number: 200542
   Pion with Bragg peak chi^2: 0.451908
@@ -322,6 +687,13 @@ Event number: 200542
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
 
 Event number: 200605
   Pion with Bragg peak chi^2: 2.30846
@@ -335,6 +707,12 @@ Event number: 200605
 
   Primary particle PDG: 13
   Event classified as: Primary muon
+  Daughters: 
+    22 with process: muMinusCaptureAtRest
+    22 with process: muMinusCaptureAtRest
+    14 with process: muMinusCaptureAtRest
+    22 with process: muMinusCaptureAtRest
+    1000170400 with process: muMinusCaptureAtRest
 
 Event number: 200619
   Pion with Bragg peak chi^2: 0.696951
@@ -348,6 +726,21 @@ Event number: 200619
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000120260 with process: pi-Inelastic
 
 Event number: 200674
   Pion with Bragg peak chi^2: 2.49349
@@ -361,6 +754,16 @@ Event number: 200674
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
 
 Event number: 200732
   Pion with Bragg peak chi^2: 8.10987
@@ -374,6 +777,14 @@ Event number: 200732
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000170370 with process: pi-Inelastic
 
 Event number: 200743
   Pion with Bragg peak chi^2: 0.580796
@@ -387,6 +798,18 @@ Event number: 200743
 
   Primary particle PDG: -211
   Event classified as: Abs 0p
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150320 with process: pi-Inelastic
 
 Event number: 200886
   Pion with Bragg peak chi^2: 2.46948
@@ -400,6 +823,17 @@ Event number: 200886
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000010030 with process: pi-Inelastic
+    1000140290 with process: pi-Inelastic
 
 Event number: 200903
   Pion with Bragg peak chi^2: 0.38272
@@ -413,6 +847,23 @@ Event number: 200903
 
   Primary particle PDG: -211
   Event classified as: Outside reduced volume
+  Daughters: 
+    1000180400 with process: hadElastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000140290 with process: pi-Inelastic
 
 Event number: 200915
   Pion with Bragg peak chi^2: 2.29957
@@ -426,6 +877,13 @@ Event number: 200915
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180390 with process: pi-Inelastic
 
 Event number: 200920
   Pion with Bragg peak chi^2: 2.21104
@@ -439,6 +897,17 @@ Event number: 200920
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
 
 Event number: 200958
   Pion with Bragg peak chi^2: 0.363604
@@ -452,6 +921,9 @@ Event number: 200958
 
   Primary particle PDG: -211
   Event classified as: Outside reduced volume
+  Daughters: 
+    1000180400 with process: hadElastic
+    1000180400 with process: hadElastic
 
 Event number: 200992
   Pion with Bragg peak chi^2: 1.68725
@@ -465,6 +937,14 @@ Event number: 200992
 
   Primary particle PDG: -211
   Event classified as: Abs 0p
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160360 with process: pi-Inelastic
 
 Event number: 200997
   Pion with Bragg peak chi^2: 3.23359
@@ -478,6 +958,18 @@ Event number: 200997
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150330 with process: pi-Inelastic
 
 Event number: 201003
   Pion with Bragg peak chi^2: 2.01793
@@ -491,6 +983,13 @@ Event number: 201003
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000140370 with process: pi-Inelastic
 
 Event number: 201077
   Pion with Bragg peak chi^2: 43.9083
@@ -504,6 +1003,42 @@ Event number: 201077
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 201096
   Pion with Bragg peak chi^2: 4.71618
@@ -517,6 +1052,35 @@ Event number: 201096
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 201142
   Pion with Bragg peak chi^2: 3.66743
@@ -530,6 +1094,19 @@ Event number: 201142
 
   Primary particle PDG: -211
   Event classified as: Abs 0p
+  Daughters: 
+    1000180400 with process: hadElastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000140290 with process: pi-Inelastic
 
 Event number: 201252
   Pion with Bragg peak chi^2: 1.26828
@@ -543,6 +1120,16 @@ Event number: 201252
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150350 with process: pi-Inelastic
 
 Event number: 201263
   Pion with Bragg peak chi^2: 40.4125
@@ -556,6 +1143,38 @@ Event number: 201263
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 201275
   Pion with Bragg peak chi^2: 1.19383
@@ -569,6 +1188,43 @@ Event number: 201275
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 201371
   Pion with Bragg peak chi^2: 0.614361
@@ -582,6 +1238,9 @@ Event number: 201371
 
   Primary particle PDG: -211
   Event classified as: Decay
+  Daughters: 
+    -14 with process: Decay
+    13 with process: Decay
 
 Event number: 201388
   Pion with Bragg peak chi^2: 13.9244
@@ -595,6 +1254,13 @@ Event number: 201388
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150370 with process: pi-Inelastic
 
 Event number: 201431
   Pion with Bragg peak chi^2: 1.59009
@@ -608,6 +1274,19 @@ Event number: 201431
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    1000180400 with process: hadElastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160320 with process: pi-Inelastic
 
 Event number: 201572
   Pion with Bragg peak chi^2: 3.04735
@@ -621,6 +1300,59 @@ Event number: 201572
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 201580
   Pion with Bragg peak chi^2: 0.619799
@@ -634,6 +1366,20 @@ Event number: 201580
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010030 with process: pi-Inelastic
+    1000140280 with process: pi-Inelastic
 
 Event number: 201697
   Pion with Bragg peak chi^2: 0.738961
@@ -647,6 +1393,16 @@ Event number: 201697
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000160320 with process: pi-Inelastic
 
 Event number: 201698
   Pion with Bragg peak chi^2: 1.6906
@@ -660,6 +1416,19 @@ Event number: 201698
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 201706
   Pion with Bragg peak chi^2: 0.660491
@@ -673,6 +1442,14 @@ Event number: 201706
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000170370 with process: pi-Inelastic
 
 Event number: 201832
   Pion with Bragg peak chi^2: 132.847
@@ -686,6 +1463,37 @@ Event number: 201832
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 201865
   Pion with Bragg peak chi^2: 1.27031
@@ -699,6 +1507,7 @@ Event number: 201865
 
   Primary particle PDG: 13
   Event classified as: Primary muon
+  Daughters: 
 
 Event number: 201930
   Pion with Bragg peak chi^2: 24.6699
@@ -712,6 +1521,22 @@ Event number: 201930
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010030 with process: pi-Inelastic
+    1000130270 with process: pi-Inelastic
 
 Event number: 202026
   Pion with Bragg peak chi^2: 62.6348
@@ -725,6 +1550,53 @@ Event number: 202026
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 202039
   Pion with Bragg peak chi^2: 3.29974
@@ -738,6 +1610,35 @@ Event number: 202039
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 202046
   Pion with Bragg peak chi^2: 2.06825
@@ -751,6 +1652,15 @@ Event number: 202046
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    1000180400 with process: hadElastic
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000260530 with process: pi-Inelastic
 
 Event number: 202123
   Pion with Bragg peak chi^2: 0.71361
@@ -764,6 +1674,11 @@ Event number: 202123
 
   Primary particle PDG: -211
   Event classified as: Abs 0p
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160380 with process: pi-Inelastic
 
 Event number: 202140
   Pion with Bragg peak chi^2: 8.58117
@@ -777,6 +1692,45 @@ Event number: 202140
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 202172
   Pion with Bragg peak chi^2: 0.402162
@@ -790,6 +1744,14 @@ Event number: 202172
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
 
 Event number: 202222
   Pion with Bragg peak chi^2: 161.649
@@ -803,6 +1765,17 @@ Event number: 202222
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000160330 with process: pi-Inelastic
 
 Event number: 202235
   Pion with Bragg peak chi^2: 0.563654
@@ -816,6 +1789,17 @@ Event number: 202235
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
 
 Event number: 202338
   Pion with Bragg peak chi^2: 11.389
@@ -829,6 +1813,17 @@ Event number: 202338
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    2112 with process: pi-Inelastic
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000150310 with process: pi-Inelastic
 
 Event number: 202349
   Pion with Bragg peak chi^2: 16.064
@@ -842,6 +1837,35 @@ Event number: 202349
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 202361
   Pion with Bragg peak chi^2: 0.342738
@@ -855,6 +1879,16 @@ Event number: 202361
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
 
 Event number: 202395
   Pion with Bragg peak chi^2: 1.14694
@@ -868,6 +1902,14 @@ Event number: 202395
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000150340 with process: pi-Inelastic
 
 Event number: 202479
   Pion with Bragg peak chi^2: 15.045
@@ -881,6 +1923,24 @@ Event number: 202479
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000120260 with process: pi-Inelastic
 
 Event number: 202489
   Pion with Bragg peak chi^2: 0.413539
@@ -894,6 +1954,15 @@ Event number: 202489
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    2112 with process: pi-Inelastic
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
 
 Event number: 202498
   Pion with Bragg peak chi^2: 2.56708
@@ -907,6 +1976,41 @@ Event number: 202498
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 202505
   Pion with Bragg peak chi^2: 0.737549
@@ -920,6 +2024,17 @@ Event number: 202505
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    1000180400 with process: hadElastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
 
 Event number: 202539
   Pion with Bragg peak chi^2: 2.22485
@@ -933,6 +2048,17 @@ Event number: 202539
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150330 with process: pi-Inelastic
 
 Event number: 202555
   Pion with Bragg peak chi^2: 0.670534
@@ -946,6 +2072,9 @@ Event number: 202555
 
   Primary particle PDG: -211
   Event classified as: Decay
+  Daughters: 
+    -14 with process: Decay
+    13 with process: Decay
 
 Event number: 202558
   Pion with Bragg peak chi^2: 12.0101
@@ -959,6 +2088,32 @@ Event number: 202558
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 202584
   Pion with Bragg peak chi^2: 0.534249
@@ -972,6 +2127,10 @@ Event number: 202584
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180400 with process: pi-Inelastic
 
 Event number: 202623
   Pion with Bragg peak chi^2: 13.4486
@@ -985,6 +2144,17 @@ Event number: 202623
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    1000180400 with process: hadElastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150340 with process: pi-Inelastic
 
 Event number: 202631
   Pion with Bragg peak chi^2: 0.275505
@@ -998,6 +2168,11 @@ Event number: 202631
 
   Primary particle PDG: -211
   Event classified as: Decay
+  Daughters: 
+    1000180400 with process: hadElastic
+    1000180400 with process: hadElastic
+    -14 with process: Decay
+    13 with process: Decay
 
 Event number: 202754
   Pion with Bragg peak chi^2: 0.436245
@@ -1011,6 +2186,14 @@ Event number: 202754
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150360 with process: pi-Inelastic
 
 Event number: 202781
   Pion with Bragg peak chi^2: 2.95547
@@ -1024,6 +2207,17 @@ Event number: 202781
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000160330 with process: pi-Inelastic
 
 Event number: 202795
   Pion with Bragg peak chi^2: 0.553475
@@ -1037,6 +2231,16 @@ Event number: 202795
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180360 with process: pi-Inelastic
 
 Event number: 5015
   Pion with Bragg peak chi^2: 1.50991
@@ -1050,6 +2254,25 @@ Event number: 5015
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000130270 with process: pi-Inelastic
 
 Event number: 5086
   Pion with Bragg peak chi^2: 1.38703
@@ -1063,6 +2286,15 @@ Event number: 5086
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000170370 with process: pi-Inelastic
 
 Event number: 5092
   Pion with Bragg peak chi^2: 5.07737
@@ -1076,6 +2308,22 @@ Event number: 5092
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000120270 with process: pi-Inelastic
 
 Event number: 5119
   Pion with Bragg peak chi^2: 1335.54
@@ -1089,6 +2337,21 @@ Event number: 5119
 
   Primary particle PDG: -211
   Event classified as: Outside reduced volume
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000140310 with process: pi-Inelastic
 
 Event number: 5164
   Pion with Bragg peak chi^2: 0.439279
@@ -1102,6 +2365,7 @@ Event number: 5164
 
   Primary particle PDG: 13
   Event classified as: Primary muon
+  Daughters: 
 
 Event number: 5230
   Pion with Bragg peak chi^2: 1.93181
@@ -1115,6 +2379,20 @@ Event number: 5230
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    1000180400 with process: hadElastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000140320 with process: pi-Inelastic
 
 Event number: 5231
   Pion with Bragg peak chi^2: 1.83772
@@ -1128,6 +2406,16 @@ Event number: 5231
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180360 with process: pi-Inelastic
 
 Event number: 5246
   Pion with Bragg peak chi^2: 0.932121
@@ -1141,6 +2429,20 @@ Event number: 5246
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    1000180400 with process: hadElastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000140320 with process: pi-Inelastic
 
 Event number: 5369
   Pion with Bragg peak chi^2: 0.588492
@@ -1154,6 +2456,18 @@ Event number: 5369
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150310 with process: pi-Inelastic
 
 Event number: 52917
   Pion with Bragg peak chi^2: 1.00262
@@ -1167,6 +2481,19 @@ Event number: 52917
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    1000180400 with process: hadElastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150320 with process: pi-Inelastic
 
 Event number: 52922
   Pion with Bragg peak chi^2: 0.380996
@@ -1180,6 +2507,18 @@ Event number: 52922
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000140300 with process: pi-Inelastic
 
 Event number: 53234
   Pion with Bragg peak chi^2: 0.660449
@@ -1193,6 +2532,16 @@ Event number: 53234
 
   Primary particle PDG: -211
   Event classified as: Capture at rest
+  Daughters: 
+    1000180400 with process: hadElastic
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2212 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    1000160380 with process: hBertiniCaptureAtRest
 
 Event number: 53240
   Pion with Bragg peak chi^2: 3.49115
@@ -1206,6 +2555,18 @@ Event number: 53240
 
   Primary particle PDG: -211
   Event classified as: Abs 0p
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150320 with process: pi-Inelastic
 
 Event number: 53313
   Pion with Bragg peak chi^2: 3.41484
@@ -1219,6 +2580,12 @@ Event number: 53313
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160380 with process: pi-Inelastic
 
 Event number: 53349
   Pion with Bragg peak chi^2: 1.1842
@@ -1232,6 +2599,12 @@ Event number: 53349
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    1000180400 with process: hadElastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160380 with process: pi-Inelastic
 
 Event number: 53394
   Pion with Bragg peak chi^2: 2.67688
@@ -1245,6 +2618,36 @@ Event number: 53394
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 53459
   Pion with Bragg peak chi^2: 20.1609
@@ -1258,6 +2661,44 @@ Event number: 53459
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 53475
   Pion with Bragg peak chi^2: 1.06632
@@ -1271,6 +2712,14 @@ Event number: 53475
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160350 with process: pi-Inelastic
 
 Event number: 53563
   Pion with Bragg peak chi^2: 11.5005
@@ -1284,6 +2733,44 @@ Event number: 53563
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 53586
   Pion with Bragg peak chi^2: 0.378602
@@ -1297,6 +2784,12 @@ Event number: 53586
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180390 with process: pi-Inelastic
 
 Event number: 53602
   Pion with Bragg peak chi^2: 27.2771
@@ -1310,6 +2803,13 @@ Event number: 53602
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000140370 with process: pi-Inelastic
 
 Event number: 53636
   Pion with Bragg peak chi^2: 4.07735
@@ -1323,6 +2823,19 @@ Event number: 53636
 
   Primary particle PDG: -211
   Event classified as: Abs 0p
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000140300 with process: pi-Inelastic
 
 Event number: 53671
   Pion with Bragg peak chi^2: 33.4585
@@ -1336,6 +2849,28 @@ Event number: 53671
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 53778
   Pion with Bragg peak chi^2: 1.21466
@@ -1349,6 +2884,21 @@ Event number: 53778
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000140280 with process: pi-Inelastic
 
 Event number: 53821
   Pion with Bragg peak chi^2: 3.75796
@@ -1362,6 +2912,12 @@ Event number: 53821
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160380 with process: pi-Inelastic
 
 Event number: 53881
   Pion with Bragg peak chi^2: 2.92275
@@ -1375,6 +2931,12 @@ Event number: 53881
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    2112 with process: pi-Inelastic
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180390 with process: pi-Inelastic
 
 Event number: 53972
   Pion with Bragg peak chi^2: 11.1306
@@ -1388,6 +2950,20 @@ Event number: 53972
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    1000180400 with process: hadElastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000140320 with process: pi-Inelastic
 
 Event number: 53977
   Pion with Bragg peak chi^2: 0.637214
@@ -1401,6 +2977,12 @@ Event number: 53977
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    2112 with process: pi-Inelastic
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
 
 Event number: 53982
   Pion with Bragg peak chi^2: 3.76274
@@ -1414,6 +2996,52 @@ Event number: 53982
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 53987
   Pion with Bragg peak chi^2: 2.11974
@@ -1427,6 +3055,15 @@ Event number: 53987
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000160350 with process: pi-Inelastic
 
 Event number: 54006
   Pion with Bragg peak chi^2: 0.814583
@@ -1440,6 +3077,18 @@ Event number: 54006
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160330 with process: pi-Inelastic
 
 Event number: 54067
   Pion with Bragg peak chi^2: 1.15642
@@ -1453,6 +3102,18 @@ Event number: 54067
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000140290 with process: pi-Inelastic
 
 Event number: 54091
   Pion with Bragg peak chi^2: 1.61163
@@ -1466,6 +3127,13 @@ Event number: 54091
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150370 with process: pi-Inelastic
 
 Event number: 54138
   Pion with Bragg peak chi^2: 9.04915
@@ -1479,6 +3147,20 @@ Event number: 54138
 
   Primary particle PDG: -211
   Event classified as: Abs 0p
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000130290 with process: pi-Inelastic
 
 Event number: 54163
   Pion with Bragg peak chi^2: 0.355586
@@ -1492,6 +3174,16 @@ Event number: 54163
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    1000180400 with process: hadElastic
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
 
 Event number: 54177
   Pion with Bragg peak chi^2: 2.25514
@@ -1505,6 +3197,48 @@ Event number: 54177
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 54195
   Pion with Bragg peak chi^2: 1.78275
@@ -1518,6 +3252,19 @@ Event number: 54195
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    1000180400 with process: hadElastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000150330 with process: pi-Inelastic
 
 Event number: 54222
   Pion with Bragg peak chi^2: 0.480955
@@ -1531,6 +3278,16 @@ Event number: 54222
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    1000180400 with process: hadElastic
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180360 with process: pi-Inelastic
 
 Event number: 54292
   Pion with Bragg peak chi^2: 4.17989
@@ -1544,6 +3301,18 @@ Event number: 54292
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000150310 with process: pi-Inelastic
 
 Event number: 54390
   Pion with Bragg peak chi^2: 0.819703
@@ -1557,6 +3326,12 @@ Event number: 54390
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180390 with process: pi-Inelastic
 
 Event number: 54398
   Pion with Bragg peak chi^2: 2.82861
@@ -1570,6 +3345,14 @@ Event number: 54398
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    1000180400 with process: hadElastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160380 with process: pi-Inelastic
 
 Event number: 54419
   Pion with Bragg peak chi^2: 0.378242
@@ -1583,6 +3366,15 @@ Event number: 54419
 
   Primary particle PDG: -211
   Event classified as: Charge exchange
+  Daughters: 
+    111 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
 
 Event number: 54558
   Pion with Bragg peak chi^2: 12.0948
@@ -1596,6 +3388,16 @@ Event number: 54558
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150340 with process: pi-Inelastic
 
 Event number: 54574
   Pion with Bragg peak chi^2: 1.8977
@@ -1609,6 +3411,17 @@ Event number: 54574
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150340 with process: pi-Inelastic
 
 Event number: 54776
   Pion with Bragg peak chi^2: 0.642063
@@ -1622,6 +3435,14 @@ Event number: 54776
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000150360 with process: pi-Inelastic
 
 Event number: 54787
   Pion with Bragg peak chi^2: 0.503489
@@ -1635,6 +3456,14 @@ Event number: 54787
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
 
 Event number: 54811
   Pion with Bragg peak chi^2: 0.376951
@@ -1648,6 +3477,16 @@ Event number: 54811
 
   Primary particle PDG: -211
   Event classified as: Abs 0p
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160350 with process: pi-Inelastic
 
 Event number: 54844
   Pion with Bragg peak chi^2: 9.49535
@@ -1661,6 +3500,19 @@ Event number: 54844
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000140290 with process: pi-Inelastic
 
 Event number: 54846
   Pion with Bragg peak chi^2: 11.7477
@@ -1674,6 +3526,45 @@ Event number: 54846
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 54889
   Pion with Bragg peak chi^2: 6.3214
@@ -1687,6 +3578,16 @@ Event number: 54889
 
   Primary particle PDG: -211
   Event classified as: Capture at rest
+  Daughters: 
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2212 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    1000160350 with process: hBertiniCaptureAtRest
 
 Event number: 54940
   Pion with Bragg peak chi^2: 0.370346
@@ -1700,6 +3601,26 @@ Event number: 54940
 
   Primary particle PDG: -211
   Event classified as: Capture at rest
+  Daughters: 
+    1000180400 with process: hadElastic
+    1000180400 with process: hadElastic
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    1000010020 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    1000160340 with process: hBertiniCaptureAtRest
 
 Event number: 54956
   Pion with Bragg peak chi^2: 2.00459
@@ -1713,6 +3634,16 @@ Event number: 54956
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160350 with process: pi-Inelastic
 
 Event number: 55090
   Pion with Bragg peak chi^2: 2.73757
@@ -1726,6 +3657,45 @@ Event number: 55090
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 55352
   Pion with Bragg peak chi^2: 0.395816
@@ -1739,6 +3709,8 @@ Event number: 55352
 
   Primary particle PDG: -211
   Event classified as: Outside reduced volume
+  Daughters: 
+    1000180400 with process: hadElastic
 
 Event number: 55408
   Pion with Bragg peak chi^2: 52.4922
@@ -1752,6 +3724,43 @@ Event number: 55408
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 55419
   Pion with Bragg peak chi^2: 3.43875
@@ -1765,6 +3774,39 @@ Event number: 55419
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 55435
   Pion with Bragg peak chi^2: 3.06236
@@ -1778,6 +3820,17 @@ Event number: 55435
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000150330 with process: pi-Inelastic
 
 Event number: 55675
   Pion with Bragg peak chi^2: 0.428358
@@ -1791,6 +3844,18 @@ Event number: 55675
 
   Primary particle PDG: -211
   Event classified as: Abs 0p
+  Daughters: 
+    1000180400 with process: hadElastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150330 with process: pi-Inelastic
 
 Event number: 55697
   Pion with Bragg peak chi^2: 0.32894
@@ -1804,6 +3869,9 @@ Event number: 55697
 
   Primary particle PDG: -211
   Event classified as: Decay
+  Daughters: 
+    -14 with process: Decay
+    13 with process: Decay
 
 Event number: 55698
   Pion with Bragg peak chi^2: 1.89904
@@ -1817,6 +3885,20 @@ Event number: 55698
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000120270 with process: pi-Inelastic
 
 Event number: 55718
   Pion with Bragg peak chi^2: 0.4968
@@ -1830,6 +3912,18 @@ Event number: 55718
 
   Primary particle PDG: -211
   Event classified as: Abs 0p
+  Daughters: 
+    1000180400 with process: hadElastic
+    1000180400 with process: hadElastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000160330 with process: pi-Inelastic
 
 Event number: 55728
   Pion with Bragg peak chi^2: 2.55707
@@ -1843,6 +3937,15 @@ Event number: 55728
 
   Primary particle PDG: -211
   Event classified as: Abs 0p
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000140320 with process: pi-Inelastic
 
 Event number: 5850
   Pion with Bragg peak chi^2: 0.403362
@@ -1856,6 +3959,12 @@ Event number: 5850
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
 
 Event number: 5899
   Pion with Bragg peak chi^2: 2.60575
@@ -1869,6 +3978,17 @@ Event number: 5899
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000140310 with process: pi-Inelastic
 
 Event number: 5966
   Pion with Bragg peak chi^2: 1.08099
@@ -1882,6 +4002,13 @@ Event number: 5966
 
   Primary particle PDG: -211
   Event classified as: Inelastic scattering
+  Daughters: 
+    2212 with process: pi-Inelastic
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000170380 with process: pi-Inelastic
 
 Event number: 5967
   Pion with Bragg peak chi^2: 10.3168
@@ -1895,6 +4022,58 @@ Event number: 5967
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 6085
   Pion with Bragg peak chi^2: 32.0652
@@ -1908,6 +4087,20 @@ Event number: 6085
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000120280 with process: pi-Inelastic
 
 Event number: 6109
   Pion with Bragg peak chi^2: 2.72789
@@ -1921,6 +4114,27 @@ Event number: 6109
 
   Primary particle PDG: 11
   Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 6125
   Pion with Bragg peak chi^2: 0.461753
@@ -1934,6 +4148,17 @@ Event number: 6125
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150340 with process: pi-Inelastic
 
 Event number: 6165
   Pion with Bragg peak chi^2: 1.49037
@@ -1947,6 +4172,13 @@ Event number: 6165
 
   Primary particle PDG: -211
   Event classified as: Charge exchange
+  Daughters: 
+    111 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000170390 with process: pi-Inelastic
 
 Event number: 6197
   Pion with Bragg peak chi^2: 0.495102
@@ -1960,4 +4192,19 @@ Event number: 6197
 
   Primary particle PDG: -211
   Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000120270 with process: pi-Inelastic
 

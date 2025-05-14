@@ -278,6 +278,12 @@ void RecoAllAnalysis() {
         outWCAll << std::endl;
         outWCAll << "  Primary particle PDG: " << truthPrimaryPDG << std::endl;
         outWCAll << "  Event classified as: " << backgroundTypes[backgroundType] << std::endl;
+        int numDaughters = truthPrimaryDaughtersPDG->size();
+        outWCAll << "  Daughters: " << std::endl;
+        for (int i = 0; i < numDaughters; i++) {
+            if (truthPrimaryDaughtersPDG->at(i) == 11) continue;
+            outWCAll << "    " << truthPrimaryDaughtersPDG->at(i) << " with process: " << truthPrimaryDaughtersProcess->at(i) << std::endl;
+        }
         outWCAll << std::endl;
 
         double minChi2 = std::min({minStitchedChi2, pionChi2, throughGoingChi2, protonChi2});
@@ -299,6 +305,11 @@ void RecoAllAnalysis() {
             outStitchedFile << std::endl;
             outStitchedFile << "  Primary particle PDG: " << truthPrimaryPDG << std::endl;
             outStitchedFile << "  Event classified as: " << backgroundTypes[backgroundType] << std::endl;
+            outStitchedFile << "  Daughters: " << std::endl;
+            for (int i = 0; i < numDaughters; i++) {
+                if (truthPrimaryDaughtersPDG->at(i) == 11) continue;
+                outStitchedFile << "    " << truthPrimaryDaughtersPDG->at(i) << " with process: " << truthPrimaryDaughtersProcess->at(i) << std::endl;
+            }
             outStitchedFile << std::endl;
 
             // if (backgroundType == 1) {
