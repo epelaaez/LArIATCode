@@ -3,6 +3,7 @@
 #include <TString.h>
 #include <TCanvas.h>
 #include <TTree.h>
+#include <TVector3.h>
 #include <TEfficiency.h>
 
 #include <vector>
@@ -26,7 +27,7 @@ std::map<int, std::string> backgroundTypes = {
 void initializeProtonPoints(TGraph* gProton);
 void initializePionPoints(TGraph* gPion);
 void initializeMuonNoBraggPoints(TGraph* gMuonTG);
-double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, int nPoints, int nOutliersToDiscard = 0, int nTrim = 0);
+double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData,  bool dataReversed, int nPoints, int nOutliersToDiscard = 0, int nTrim = 0);
 double distance(double x1, double x2, double y1, double y2, double z1, double z2);
 void printOneDPlots(
     TString dir, int fontStyle, double textSize,
@@ -67,6 +68,15 @@ void RecoAllAnalysis() {
     //    9:  capture at rest
     //    10: decay
     //    11: other
+
+    // Values for chi^2 secondary fits
+    double PION_CHI2_PION_VALUE     = 1.25;
+    double PION_CHI2_PROTON_VALUE   = 2.25;
+    double PROTON_CHI2_PION_VALUE   = 1.75;
+    double PROTON_CHI2_PROTON_VALUE = 2.75; 
+
+    // Vertex radius
+    double VERTEX_RADIUS = 4.0;
 
     // Proton energy bounds
     double PROTON_ENERGY_LOWER_BOUND = 0.075;
@@ -119,13 +129,19 @@ void RecoAllAnalysis() {
 
     // WC match information
     int WC2TPCtrkID;
+    double WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY, WC2TPCPrimaryBeginZ;
     double WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ;
+    int wcMatchPDG;
     std::vector<double>* wcMatchResR = nullptr;
     std::vector<double>* wcMatchDEDX = nullptr;
     std::vector<double>* wcMatchXPos = nullptr;
     std::vector<double>* wcMatchYPos = nullptr;
     std::vector<double>* wcMatchZPos = nullptr;
+    tree->SetBranchAddress("wcMatchPDG", &wcMatchPDG);
     tree->SetBranchAddress("WC2TPCtrkID", &WC2TPCtrkID);
+    tree->SetBranchAddress("WC2TPCPrimaryBeginX", &WC2TPCPrimaryBeginX);
+    tree->SetBranchAddress("WC2TPCPrimaryBeginY", &WC2TPCPrimaryBeginY);
+    tree->SetBranchAddress("WC2TPCPrimaryBeginZ", &WC2TPCPrimaryBeginZ);
     tree->SetBranchAddress("WC2TPCPrimaryEndX", &WC2TPCPrimaryEndX);
     tree->SetBranchAddress("WC2TPCPrimaryEndY", &WC2TPCPrimaryEndY);
     tree->SetBranchAddress("WC2TPCPrimaryEndZ", &WC2TPCPrimaryEndZ);
@@ -154,6 +170,10 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("recoBeginZ", &recoBeginZ);
     tree->SetBranchAddress("recoTrkID", &recoTrkID);
     tree->SetBranchAddress("isTrackNearVertex", &isTrackNearVertex);
+
+    // Reco truth-match information
+    std::vector<int>* matchedIdentity = nullptr;
+    tree->SetBranchAddress("matchedIdentity", &matchedIdentity);
 
     // Calorimetry information
     std::vector<std::vector<double>>* recoResR = nullptr;
@@ -185,15 +205,22 @@ void RecoAllAnalysis() {
 
     TH1D *hTotalSignal = new TH1D("hTotalSignal", "hTotalSignal;;", 1, 0, 1);
 
-    TH1D *hStitchedDistanceFromVertex         = new TH1D("hStitchedDistanceFromVertex", "StitchedDistanceFromVertex;;", 20, 0, 20);
-    TH1D *hStitchedOriginalDistanceFromVertex = new TH1D("hStitchedOriginalDistanceFromVertex", "hStitchedOriginalDistanceFromVertex;;", 20, 0, 20);
+    TH1D *hStitchedDistanceFromVertex         = new TH1D("hStitchedDistanceFromVertex", "StitchedDistanceFromVertex;;", 20, 0, 70);
+    TH1D *hStitchedOriginalDistanceFromVertex = new TH1D("hStitchedOriginalDistanceFromVertex", "hStitchedOriginalDistanceFromVertex;;", 20, 0, 70);
 
     TH1D *hStitchAsPionAndProton = new TH1D("hStitchAsPionAndProton", "hStitchAsPionAndProton;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hStitchAsPionBraggPeak = new TH1D("hStitchAsPionBraggPeak", "hStitchAsPionBraggPeak;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hStitchAsThroughgoing  = new TH1D("hStitchAsThroughgoing", "hStitchAsThroughgoing;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hStitchAsProton        = new TH1D("hStitchAsProton", "hStitchAsProton;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
-
     TH1D *hStitchFracBreakPoints = new TH1D("hStitchFracBreakPoints", "hStitchFracBreakPoints;;", 50, 0, 1);
+
+    TH1D *hSecondaryPionChi2Protons = new TH1D("hSecondaryPionChi2Protons", "hSecondaryPionChi2Protons;;", 20, 0, 20);
+    TH1D *hSecondaryPionChi2Pions   = new TH1D("hSecondaryPionChi2Pions", "hSecondaryPionChi2Pions;;", 20, 0, 20);
+    TH1D *hSecondaryPionChi2Others  = new TH1D("hSecondaryPionChi2Others", "hSecondaryPionChi2Others;;", 20, 0, 20);
+
+    TH1D *hSecondaryProtonChi2Protons = new TH1D("hSecondaryProtonChi2Protons", "hSecondaryProtonChi2Protons;;", 20, 0, 20);
+    TH1D *hSecondaryProtonChi2Pions   = new TH1D("hSecondaryProtonChi2Pions", "hSecondaryProtonChi2Pions;;", 20, 0, 20);
+    TH1D *hSecondaryProtonChi2Others  = new TH1D("hSecondaryProtonChi2Others", "hSecondaryProtonChi2Others;;", 20, 0, 20);
 
     //////////////////////
     // Loop over events //
@@ -237,12 +264,15 @@ void RecoAllAnalysis() {
         int nRemoveEnds     = 3;
         int minPoints       = 5;
 
+        bool primaryReversed = false;
+        if (WC2TPCPrimaryEndZ < WC2TPCPrimaryBeginZ) primaryReversed = true;
+
         outWCAll << "Event number: " << event << std::endl; 
         outWCAll << "  Calorimetry data points: " << totalCaloPoints << std::endl;
 
-        double pionChi2         = computeReducedChi2(gPion, *wcMatchResR, *wcMatchDEDX, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
-        double throughGoingChi2 = computeReducedChi2(gMuonTG, *wcMatchResR, *wcMatchDEDX, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
-        double protonChi2       = computeReducedChi2(gProton, *wcMatchResR, *wcMatchDEDX, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        double pionChi2         = computeReducedChi2(gPion, *wcMatchResR,  *wcMatchDEDX, primaryReversed, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        double throughGoingChi2 = computeReducedChi2(gMuonTG, *wcMatchResR, *wcMatchDEDX, primaryReversed, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        double protonChi2       = computeReducedChi2(gProton, *wcMatchResR, *wcMatchDEDX, primaryReversed, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
 
         double minStitchedChi2 = std::numeric_limits<double>::max();
         int bestBreakPoint = -1;
@@ -254,8 +284,8 @@ void RecoAllAnalysis() {
                 std::vector<double> rightResR(wcMatchResR->begin() + caloBreakPoint, wcMatchResR->end());
                 std::vector<double> rightDEDX(wcMatchDEDX->begin() + caloBreakPoint, wcMatchDEDX->end());
 
-                double chi2LHS = computeReducedChi2(gProton, leftResR, leftDEDX, leftResR.size(), nRemoveOutliers, nRemoveEnds);
-                double chi2RHS = computeReducedChi2(gMuonTG, rightResR, rightDEDX, rightResR.size(), nRemoveOutliers, nRemoveEnds);
+                double chi2LHS = computeReducedChi2(gProton, leftResR, leftDEDX, primaryReversed, leftResR.size(), nRemoveOutliers, nRemoveEnds);
+                double chi2RHS = computeReducedChi2(gMuonTG, rightResR, rightDEDX, primaryReversed, rightResR.size(), nRemoveOutliers, nRemoveEnds);
 
                 double totalChi2 = (chi2LHS * leftResR.size() + chi2RHS * rightResR.size()) / totalCaloPoints;
                 
@@ -286,9 +316,13 @@ void RecoAllAnalysis() {
         }
         outWCAll << std::endl;
 
+        if (bestBreakPoint == -1) bestBreakPoint = wcMatchXPos->size() - 1;
+        double breakPointX = wcMatchXPos->at(bestBreakPoint); 
+        double breakPointY = wcMatchYPos->at(bestBreakPoint); 
+        double breakPointZ = wcMatchZPos->at(bestBreakPoint);
+
         double minChi2 = std::min({minStitchedChi2, pionChi2, throughGoingChi2, protonChi2});
         if (minChi2 == minStitchedChi2) {
-            double breakPointX                = wcMatchXPos->at(bestBreakPoint); double breakPointY = wcMatchYPos->at(bestBreakPoint); double breakPointZ = wcMatchZPos->at(bestBreakPoint);
             double distanceFromVertex         = distance(breakPointX, truthPrimaryVertexX, breakPointY, truthPrimaryVertexY, breakPointZ, truthPrimaryVertexZ);
             double originalDistanceFromVertex = distance(WC2TPCPrimaryEndX, truthPrimaryVertexX, WC2TPCPrimaryEndY, truthPrimaryVertexY, WC2TPCPrimaryEndZ, truthPrimaryVertexZ);
 
@@ -312,12 +346,12 @@ void RecoAllAnalysis() {
             }
             outStitchedFile << std::endl;
 
-            // if (backgroundType == 1) {
-            //     hStitchedDistanceFromVertex->Fill(distanceFromVertex);
-            //     hStitchedOriginalDistanceFromVertex->Fill(originalDistanceFromVertex);
-            // }
-            hStitchedDistanceFromVertex->Fill(distanceFromVertex);
-            hStitchedOriginalDistanceFromVertex->Fill(originalDistanceFromVertex);
+            if ((backgroundType == 1 ) || (backgroundType == 7 ) ) {
+                hStitchedDistanceFromVertex->Fill(distanceFromVertex);
+                hStitchedOriginalDistanceFromVertex->Fill(originalDistanceFromVertex);
+            }
+            // hStitchedDistanceFromVertex->Fill(distanceFromVertex);
+            // hStitchedOriginalDistanceFromVertex->Fill(originalDistanceFromVertex);
             hStitchAsPionAndProton->Fill(backgroundType);
             hStitchFracBreakPoints->Fill(fracBreakPoint);
             
@@ -333,6 +367,69 @@ void RecoAllAnalysis() {
             // Track looks like through-going pion, could be signal
             hStitchAsThroughgoing->Fill(backgroundType);
         }
+
+        ////////////////////////
+        // Continue selection //
+        ////////////////////////
+
+        // If the particle is categorized as throughgoing:
+        //   - Chi^2 selection on secondary tracks
+        //   - If no secondary tracks, accept as 0p event
+        // If the particle is categorized as a pion w/ bragg peak:
+        //   - Chi^2 selection on secondary tracks
+        //   - If no secondary tracks, kill the event 
+        // If the particle is categorized as proton:
+        //   - Test if kill/keep
+        // If the particle is categorized as stitched:
+        //   - Chi^2 selection on secondary tracks from new vertex
+
+        // Get reco tracks near vertex
+        std::cout << "WC match truth-matched PDG: " << wcMatchPDG << std::endl;
+        for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); trk_idx++) {
+            int secondaryMatchedPDG = matchedIdentity->at(trk_idx);
+
+            // Have to re-check track ordering for stitched case
+            double distanceFromStart = distance(
+                recoBeginX->at(trk_idx), breakPointX, 
+                recoBeginY->at(trk_idx), breakPointY,
+                recoBeginZ->at(trk_idx), breakPointZ
+            );
+            double distanceFromEnd = distance(
+                recoEndX->at(trk_idx), breakPointX, 
+                recoEndY->at(trk_idx), breakPointY,
+                recoEndZ->at(trk_idx), breakPointZ
+            );
+
+            // Track is near vertex
+            if ((distanceFromStart < VERTEX_RADIUS) || (distanceFromEnd < VERTEX_RADIUS)) {
+                std::vector<double> secondaryDEDX = recoDEDX->at(trk_idx);
+                std::vector<double> secondaryResR = recoDEDX->at(trk_idx);
+
+                bool secondaryReversed = false;
+                if (distanceFromEnd < distanceFromStart) secondaryReversed = true;
+
+                double pionChi2   = computeReducedChi2(gPion, secondaryResR, secondaryDEDX, secondaryReversed, secondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
+                double protonChi2 = computeReducedChi2(gProton, secondaryResR, secondaryDEDX, secondaryReversed, secondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
+
+                // Using truth-matched, fill corresponding histogram
+                if (secondaryMatchedPDG == -211) {
+                    hSecondaryPionChi2Pions->Fill(pionChi2);
+                    hSecondaryProtonChi2Pions->Fill(protonChi2);
+                } else if (secondaryMatchedPDG == 2212) {
+                    hSecondaryPionChi2Protons->Fill(pionChi2);
+                    hSecondaryProtonChi2Protons->Fill(protonChi2);
+                } else {
+                    std::cout << "Secondary other: " << secondaryMatchedPDG << std::endl;
+                    std::cout << "  Pion chi2: " << pionChi2 << std::endl;
+                    std::cout << "  Proton chi2: " << protonChi2 << std::endl;
+                    std::cout << std::endl;
+
+                    hSecondaryPionChi2Others->Fill(pionChi2);
+                    hSecondaryProtonChi2Others->Fill(protonChi2);
+                }
+            }
+        }
+
     }
 
     std::cout << std::endl;
@@ -350,28 +447,38 @@ void RecoAllAnalysis() {
     std::vector<std::vector<TH1*>> PlotGroups = {
         {hStitchedDistanceFromVertex, hStitchedOriginalDistanceFromVertex},
         {hStitchAsPionAndProton, hStitchAsPionBraggPeak, hStitchAsThroughgoing, hStitchAsProton},
-        {hStitchFracBreakPoints}
+        {hStitchFracBreakPoints},
+        {hSecondaryPionChi2Pions, hSecondaryPionChi2Protons, hSecondaryPionChi2Others},
+        {hSecondaryProtonChi2Pions, hSecondaryProtonChi2Protons, hSecondaryProtonChi2Others}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         {"Detected vertex distance", "Original distance"},
         {"Stitched pion-proton", "Bragg pion", "Through-going", "Proton"},
-        {"Stitched tracks"}
+        {"Stitched tracks"},
+        {"Pions", "Protons", "Others"},
+        {"Pions", "Protons", "Others"}
     };
 
     std::vector<TString> PlotTitles = {
         "StitchedDistanceFromVertex",
         "StitchedBackgroundTypes",
-        "StitchedFracBreakPoints"
+        "StitchedFracBreakPoints",
+        "PionChi2SecondaryTracks",
+        "ProtonChi2SecondaryTracks"
     };
 
     std::vector<TString> XLabels = {
         "Distance from true vertex (cm)",
         "Background type",
-        "Fractional break point"
+        "Fractional break point",
+        "Pion reduced \\chi^2",
+        "Proton reduced \\chi^2"
     };
 
     std::vector<TString> YLabels = {
+        "Number of tracks",
+        "Number of tracks",
         "Number of tracks",
         "Number of tracks",
         "Number of tracks"
@@ -418,7 +525,7 @@ void RecoAllAnalysis() {
     c->SetLeftMargin(0.15);
     c->SetBottomMargin(0.15);
     hBackgroundTypesStack->Draw("HIST");
-    c->BuildLegend();
+    // c->BuildLegend();
 
     hBackgroundTypesStack->GetXaxis()->SetTitleFont(FontStyle);
     hBackgroundTypesStack->GetXaxis()->SetLabelFont(FontStyle);
@@ -443,8 +550,12 @@ void RecoAllAnalysis() {
     c->SaveAs(SaveDir + "StitchedBackgroundTypesStacked.png");
 }
 
-double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, int nPoints, int nOutliersToDiscard = 0, int nTrim = 0) {
+double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, bool dataReversed, int nPoints, int nOutliersToDiscard = 0, int nTrim = 0) {
     std::vector<double> chi2Contributions;
+    if (dataReversed) {
+        std::reverse(xData.begin(), xData.end());
+        std::reverse(yData.begin(), yData.end());
+    }
 
     int startIdx = 0;
     int endIdx   = nPoints;
