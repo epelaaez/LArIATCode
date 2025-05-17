@@ -19,6 +19,25 @@ Event number: 19806
     22 with process: pi-Inelastic
     1000180380 with process: pi-Inelastic
 
+Event number: 19855
+  Pion with Bragg peak chi^2: 0.501365
+  Through-going pion chi^2: 0.387231
+  Proton with Bragg peak chi^2: 1.36286
+  Best break point: 55 with stitched chi^2: 0.333957
+
+  Original point distance from vertex: 44.0537
+  Break point distance from vertex: 25.8308
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    1000180400 with process: hadElastic
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180400 with process: pi-Inelastic
+
 Event number: 19904
   Pion with Bragg peak chi^2: 1.08819
   Through-going pion chi^2: 2.39955
@@ -66,6 +85,23 @@ Event number: 19910
     1000010020 with process: pi-Inelastic
     1000150320 with process: pi-Inelastic
 
+Event number: 19912
+  Pion with Bragg peak chi^2: 0.752558
+  Through-going pion chi^2: 0.599478
+  Proton with Bragg peak chi^2: 1.694
+  Best break point: 62 with stitched chi^2: 0.351844
+
+  Original point distance from vertex: 237.357
+  Break point distance from vertex: 264.498
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Decay
+  Daughters: 
+    1000180400 with process: hadElastic
+    -14 with process: Decay
+    13 with process: Decay
+
 Event number: 19940
   Pion with Bragg peak chi^2: 8.27891
   Through-going pion chi^2: 11.1862
@@ -73,7 +109,7 @@ Event number: 19940
   Best break point: 42 with stitched chi^2: 2.47207
 
   Original point distance from vertex: 5.41422
-  Break point distance from vertex: 10.4769
+  Break point distance from vertex: 20.7704
   Is new better than original: false
 
   Primary particle PDG: 11
@@ -518,6 +554,20 @@ Event number: 199997
     22 with process: pi-Inelastic
     1000180380 with process: pi-Inelastic
 
+Event number: 200035
+  Pion with Bragg peak chi^2: 1.77892
+  Through-going pion chi^2: 2.13821
+  Proton with Bragg peak chi^2: 2.32335
+  Best break point: 77 with stitched chi^2: 1.51765
+
+  Original point distance from vertex: 935.711
+  Break point distance from vertex: 971.742
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
 Event number: 200055
   Pion with Bragg peak chi^2: 0.304413
   Through-going pion chi^2: 0.133363
@@ -560,6 +610,66 @@ Event number: 200061
     22 with process: pi-Inelastic
     22 with process: pi-Inelastic
     1000150370 with process: pi-Inelastic
+
+Event number: 200272
+  Pion with Bragg peak chi^2: 0.849232
+  Through-going pion chi^2: 0.735768
+  Proton with Bragg peak chi^2: 1.88525
+  Best break point: 34 with stitched chi^2: 0.616426
+
+  Original point distance from vertex: 10.7727
+  Break point distance from vertex: 27.5511
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Outside reduced volume
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160380 with process: pi-Inelastic
+
+Event number: 200275
+  Pion with Bragg peak chi^2: 0.552385
+  Through-going pion chi^2: 0.519567
+  Proton with Bragg peak chi^2: 1.43912
+  Best break point: 81 with stitched chi^2: 0.381401
+
+  Original point distance from vertex: 934.81
+  Break point distance from vertex: 972.654
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 200281
+  Pion with Bragg peak chi^2: 0.415754
+  Through-going pion chi^2: 0.364442
+  Proton with Bragg peak chi^2: 1.42356
+  Best break point: 76 with stitched chi^2: 0.336562
+
+  Original point distance from vertex: 931.673
+  Break point distance from vertex: 965.215
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Outside reduced volume
+  Daughters: 
+
+Event number: 200299
+  Pion with Bragg peak chi^2: 0.425764
+  Through-going pion chi^2: 0.302019
+  Proton with Bragg peak chi^2: 1.43019
+  Best break point: 60 with stitched chi^2: 0.276348
+
+  Original point distance from vertex: 938.856
+  Break point distance from vertex: 964.694
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
 
 Event number: 200369
   Pion with Bragg peak chi^2: 56.3594
@@ -695,6 +805,20 @@ Event number: 200542
     22 with process: pi-Inelastic
     1000180380 with process: pi-Inelastic
 
+Event number: 200598
+  Pion with Bragg peak chi^2: 0.879064
+  Through-going pion chi^2: 0.685673
+  Proton with Bragg peak chi^2: 1.92229
+  Best break point: 59 with stitched chi^2: 0.340623
+
+  Original point distance from vertex: 964.447
+  Break point distance from vertex: 991.083
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
 Event number: 200605
   Pion with Bragg peak chi^2: 2.30846
   Through-going pion chi^2: 2.33339
@@ -765,6 +889,20 @@ Event number: 200674
     2112 with process: pi-Inelastic
     1000160340 with process: pi-Inelastic
 
+Event number: 200706
+  Pion with Bragg peak chi^2: 0.500012
+  Through-going pion chi^2: 0.529005
+  Proton with Bragg peak chi^2: 1.34805
+  Best break point: 76 with stitched chi^2: 0.471488
+
+  Original point distance from vertex: 947.174
+  Break point distance from vertex: 983.151
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
 Event number: 200732
   Pion with Bragg peak chi^2: 8.10987
   Through-going pion chi^2: 16.9091
@@ -810,6 +948,20 @@ Event number: 200743
     2112 with process: pi-Inelastic
     22 with process: pi-Inelastic
     1000150320 with process: pi-Inelastic
+
+Event number: 200799
+  Pion with Bragg peak chi^2: 0.351296
+  Through-going pion chi^2: 0.359838
+  Proton with Bragg peak chi^2: 0.985956
+  Best break point: 88 with stitched chi^2: 0.350414
+
+  Original point distance from vertex: 942.948
+  Break point distance from vertex: 982.494
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
 
 Event number: 200886
   Pion with Bragg peak chi^2: 2.46948
@@ -908,6 +1060,31 @@ Event number: 200920
     2112 with process: pi-Inelastic
     22 with process: pi-Inelastic
     1000160340 with process: pi-Inelastic
+
+Event number: 200932
+  Pion with Bragg peak chi^2: 8.01385
+  Through-going pion chi^2: 8.43523
+  Proton with Bragg peak chi^2: 5.00911
+  Best break point: 38 with stitched chi^2: 2.27995
+
+  Original point distance from vertex: 68.295
+  Break point distance from vertex: 34.995
+  Is new better than original: true
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
 
 Event number: 200958
   Pion with Bragg peak chi^2: 0.363604
@@ -1108,6 +1285,43 @@ Event number: 201142
     1000020040 with process: pi-Inelastic
     1000140290 with process: pi-Inelastic
 
+Event number: 201161
+  Pion with Bragg peak chi^2: 0.35505
+  Through-going pion chi^2: 0.206229
+  Proton with Bragg peak chi^2: 1.39505
+  Best break point: 30 with stitched chi^2: 0.197055
+
+  Original point distance from vertex: 20.8477
+  Break point distance from vertex: 34.5415
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000220480 with process: pi-Inelastic
+
+Event number: 201183
+  Pion with Bragg peak chi^2: 2.61767
+  Through-going pion chi^2: 2.59572
+  Proton with Bragg peak chi^2: 3.38073
+  Best break point: 123 with stitched chi^2: 1.30471
+
+  Original point distance from vertex: 945.181
+  Break point distance from vertex: 1002.2
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
 Event number: 201252
   Pion with Bragg peak chi^2: 1.26828
   Through-going pion chi^2: 2.1321
@@ -1138,7 +1352,7 @@ Event number: 201263
   Best break point: 18 with stitched chi^2: 10.5272
 
   Original point distance from vertex: 2.53357
-  Break point distance from vertex: 15.2642
+  Break point distance from vertex: 17.6506
   Is new better than original: false
 
   Primary particle PDG: 11
@@ -1226,22 +1440,6 @@ Event number: 201275
     22 with process: eBrem
     22 with process: eBrem
 
-Event number: 201371
-  Pion with Bragg peak chi^2: 0.614361
-  Through-going pion chi^2: 1.31705
-  Proton with Bragg peak chi^2: 1.17041
-  Best break point: 18 with stitched chi^2: 0.371283
-
-  Original point distance from vertex: 96.3608
-  Break point distance from vertex: 88.7815
-  Is new better than original: true
-
-  Primary particle PDG: -211
-  Event classified as: Decay
-  Daughters: 
-    -14 with process: Decay
-    13 with process: Decay
-
 Event number: 201388
   Pion with Bragg peak chi^2: 13.9244
   Through-going pion chi^2: 27.6386
@@ -1261,6 +1459,28 @@ Event number: 201388
     2112 with process: pi-Inelastic
     22 with process: pi-Inelastic
     1000150370 with process: pi-Inelastic
+
+Event number: 201403
+  Pion with Bragg peak chi^2: 0.408592
+  Through-going pion chi^2: 0.780029
+  Proton with Bragg peak chi^2: 0.511559
+  Best break point: 66 with stitched chi^2: 0.375854
+
+  Original point distance from vertex: 41.805
+  Break point distance from vertex: 1.72528
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160350 with process: pi-Inelastic
 
 Event number: 201431
   Pion with Bragg peak chi^2: 1.59009
@@ -1287,6 +1507,20 @@ Event number: 201431
     22 with process: pi-Inelastic
     22 with process: pi-Inelastic
     1000160320 with process: pi-Inelastic
+
+Event number: 201439
+  Pion with Bragg peak chi^2: 0.401656
+  Through-going pion chi^2: 0.318831
+  Proton with Bragg peak chi^2: 1.48992
+  Best break point: 45 with stitched chi^2: 0.236128
+
+  Original point distance from vertex: 926.347
+  Break point distance from vertex: 947.783
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
 
 Event number: 201572
   Pion with Bragg peak chi^2: 3.04735
@@ -1450,6 +1684,26 @@ Event number: 201706
     22 with process: pi-Inelastic
     22 with process: pi-Inelastic
     1000170370 with process: pi-Inelastic
+
+Event number: 201722
+  Pion with Bragg peak chi^2: 0.886678
+  Through-going pion chi^2: 0.774297
+  Proton with Bragg peak chi^2: 1.65173
+  Best break point: 99 with stitched chi^2: 0.420308
+
+  Original point distance from vertex: 7.80049
+  Break point distance from vertex: 53.521
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180390 with process: pi-Inelastic
 
 Event number: 201832
   Pion with Bragg peak chi^2: 132.847
@@ -1687,7 +1941,7 @@ Event number: 202140
   Best break point: 20 with stitched chi^2: 3.1187
 
   Original point distance from vertex: 3.59327
-  Break point distance from vertex: 17.0762
+  Break point distance from vertex: 8.71371
   Is new better than original: false
 
   Primary particle PDG: 11
@@ -1753,6 +2007,20 @@ Event number: 202172
     22 with process: pi-Inelastic
     1000180380 with process: pi-Inelastic
 
+Event number: 202208
+  Pion with Bragg peak chi^2: 0.313309
+  Through-going pion chi^2: 0.271852
+  Proton with Bragg peak chi^2: 1.30506
+  Best break point: 59 with stitched chi^2: 0.246861
+
+  Original point distance from vertex: 934.199
+  Break point distance from vertex: 961.594
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
 Event number: 202222
   Pion with Bragg peak chi^2: 161.649
   Through-going pion chi^2: 287.353
@@ -1800,6 +2068,50 @@ Event number: 202235
     2112 with process: pi-Inelastic
     22 with process: pi-Inelastic
     1000160340 with process: pi-Inelastic
+
+Event number: 202271
+  Pion with Bragg peak chi^2: 0.503231
+  Through-going pion chi^2: 0.350572
+  Proton with Bragg peak chi^2: 1.42414
+  Best break point: 64 with stitched chi^2: 0.204303
+
+  Original point distance from vertex: 936.221
+  Break point distance from vertex: 964.88
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 202299
+  Pion with Bragg peak chi^2: 0.367542
+  Through-going pion chi^2: 0.184301
+  Proton with Bragg peak chi^2: 1.36841
+  Best break point: 41 with stitched chi^2: 0.178294
+
+  Original point distance from vertex: 76.7578
+  Break point distance from vertex: 57.4141
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Decay
+  Daughters: 
+    -14 with process: Decay
+    13 with process: Decay
+
+Event number: 202307
+  Pion with Bragg peak chi^2: 0.543825
+  Through-going pion chi^2: 0.490582
+  Proton with Bragg peak chi^2: 1.60207
+  Best break point: 62 with stitched chi^2: 0.392214
+
+  Original point distance from vertex: 947.646
+  Break point distance from vertex: 978.353
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
 
 Event number: 202338
   Pion with Bragg peak chi^2: 11.389
@@ -2132,6 +2444,20 @@ Event number: 202584
     22 with process: pi-Inelastic
     1000180400 with process: pi-Inelastic
 
+Event number: 202617
+  Pion with Bragg peak chi^2: 1.80304
+  Through-going pion chi^2: 1.79
+  Proton with Bragg peak chi^2: 2.20425
+  Best break point: 102 with stitched chi^2: 1.72722
+
+  Original point distance from vertex: 780.45
+  Break point distance from vertex: 831.012
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Outside reduced volume
+  Daughters: 
+
 Event number: 202623
   Pion with Bragg peak chi^2: 13.4486
   Through-going pion chi^2: 24.2609
@@ -2325,33 +2651,26 @@ Event number: 5092
     1000010020 with process: pi-Inelastic
     1000120270 with process: pi-Inelastic
 
-Event number: 5119
-  Pion with Bragg peak chi^2: 1335.54
-  Through-going pion chi^2: 2146.31
-  Proton with Bragg peak chi^2: 624.66
-  Best break point: 15 with stitched chi^2: 0.557114
+Event number: 5161
+  Pion with Bragg peak chi^2: 0.348016
+  Through-going pion chi^2: 0.220831
+  Proton with Bragg peak chi^2: 1.47988
+  Best break point: 25 with stitched chi^2: 0.214954
 
-  Original point distance from vertex: 5.61719
-  Break point distance from vertex: 1.24218
-  Is new better than original: true
+  Original point distance from vertex: 38.8597
+  Break point distance from vertex: 55.2325
+  Is new better than original: false
 
-  Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Primary particle PDG: 13
+  Event classified as: Primary muon
   Daughters: 
-    2112 with process: pi-Inelastic
-    2212 with process: pi-Inelastic
-    2212 with process: pi-Inelastic
-    2112 with process: pi-Inelastic
-    2112 with process: pi-Inelastic
-    2212 with process: pi-Inelastic
-    2112 with process: pi-Inelastic
-    2112 with process: pi-Inelastic
-    2112 with process: pi-Inelastic
-    22 with process: pi-Inelastic
-    22 with process: pi-Inelastic
-    22 with process: pi-Inelastic
-    22 with process: pi-Inelastic
-    1000140310 with process: pi-Inelastic
+    22 with process: muMinusCaptureAtRest
+    22 with process: muMinusCaptureAtRest
+    22 with process: muMinusCaptureAtRest
+    22 with process: muMinusCaptureAtRest
+    22 with process: muMinusCaptureAtRest
+    -12 with process: muMinusCaptureAtRest
+    14 with process: muMinusCaptureAtRest
 
 Event number: 5164
   Pion with Bragg peak chi^2: 0.439279
@@ -2366,6 +2685,22 @@ Event number: 5164
   Primary particle PDG: 13
   Event classified as: Primary muon
   Daughters: 
+
+Event number: 5204
+  Pion with Bragg peak chi^2: 0.426558
+  Through-going pion chi^2: 0.250812
+  Proton with Bragg peak chi^2: 1.47713
+  Best break point: 67 with stitched chi^2: 0.205451
+
+  Original point distance from vertex: 205.062
+  Break point distance from vertex: 238.036
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+    14 with process: Decay
+    -12 with process: Decay
 
 Event number: 5230
   Pion with Bragg peak chi^2: 1.93181
@@ -2502,7 +2837,7 @@ Event number: 52922
   Best break point: 24 with stitched chi^2: 0.132209
 
   Original point distance from vertex: 0.23576
-  Break point distance from vertex: 45.7477
+  Break point distance from vertex: 11.8687
   Is new better than original: false
 
   Primary particle PDG: -211
@@ -2519,6 +2854,34 @@ Event number: 52922
     1000020040 with process: pi-Inelastic
     1000020040 with process: pi-Inelastic
     1000140300 with process: pi-Inelastic
+
+Event number: 53155
+  Pion with Bragg peak chi^2: 0.413446
+  Through-going pion chi^2: 0.285118
+  Proton with Bragg peak chi^2: 1.46964
+  Best break point: 49 with stitched chi^2: 0.243729
+
+  Original point distance from vertex: 938.127
+  Break point distance from vertex: 961.039
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 53200
+  Pion with Bragg peak chi^2: 0.658662
+  Through-going pion chi^2: 0.603408
+  Proton with Bragg peak chi^2: 1.50716
+  Best break point: 79 with stitched chi^2: 0.542237
+
+  Original point distance from vertex: 947.203
+  Break point distance from vertex: 983.163
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
 
 Event number: 53234
   Pion with Bragg peak chi^2: 0.660449
@@ -2721,6 +3084,35 @@ Event number: 53475
     22 with process: pi-Inelastic
     1000160350 with process: pi-Inelastic
 
+Event number: 53508
+  Pion with Bragg peak chi^2: 0.335288
+  Through-going pion chi^2: 0.171539
+  Proton with Bragg peak chi^2: 1.41123
+  Best break point: 44 with stitched chi^2: 0.143541
+
+  Original point distance from vertex: 518.966
+  Break point distance from vertex: 536.365
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Outside reduced volume
+  Daughters: 
+    1000180400 with process: hadElastic
+
+Event number: 53539
+  Pion with Bragg peak chi^2: 0.331391
+  Through-going pion chi^2: 0.143519
+  Proton with Bragg peak chi^2: 1.39398
+  Best break point: 40 with stitched chi^2: 0.12531
+
+  Original point distance from vertex: 930.395
+  Break point distance from vertex: 949.983
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Outside reduced volume
+  Daughters: 
+
 Event number: 53563
   Pion with Bragg peak chi^2: 11.5005
   Through-going pion chi^2: 19.8173
@@ -2771,6 +3163,20 @@ Event number: 53563
     22 with process: eBrem
     22 with process: eBrem
     22 with process: eBrem
+
+Event number: 53567
+  Pion with Bragg peak chi^2: 0.491311
+  Through-going pion chi^2: 0.347164
+  Proton with Bragg peak chi^2: 1.66969
+  Best break point: 17 with stitched chi^2: 0.314525
+
+  Original point distance from vertex: 928.69
+  Break point distance from vertex: 936.772
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
 
 Event number: 53586
   Pion with Bragg peak chi^2: 0.378602
@@ -2938,6 +3344,22 @@ Event number: 53881
     22 with process: pi-Inelastic
     1000180390 with process: pi-Inelastic
 
+Event number: 53918
+  Pion with Bragg peak chi^2: 0.353238
+  Through-going pion chi^2: 0.146565
+  Proton with Bragg peak chi^2: 1.47334
+  Best break point: 42 with stitched chi^2: 0.132222
+
+  Original point distance from vertex: 848.906
+  Break point distance from vertex: 868.853
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Decay
+  Daughters: 
+    -14 with process: Decay
+    13 with process: Decay
+
 Event number: 53972
   Pion with Bragg peak chi^2: 11.1306
   Through-going pion chi^2: 28.0705
@@ -3089,6 +3511,23 @@ Event number: 54006
     2112 with process: pi-Inelastic
     22 with process: pi-Inelastic
     1000160330 with process: pi-Inelastic
+
+Event number: 54015
+  Pion with Bragg peak chi^2: 0.304385
+  Through-going pion chi^2: 0.230024
+  Proton with Bragg peak chi^2: 1.1874
+  Best break point: 62 with stitched chi^2: 0.207024
+
+  Original point distance from vertex: 446.671
+  Break point distance from vertex: 476.159
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+    22 with process: muMinusCaptureAtRest
+    -12 with process: muMinusCaptureAtRest
+    14 with process: muMinusCaptureAtRest
 
 Event number: 54067
   Pion with Bragg peak chi^2: 1.15642
@@ -3566,6 +4005,20 @@ Event number: 54846
     22 with process: eBrem
     22 with process: eBrem
 
+Event number: 54879
+  Pion with Bragg peak chi^2: 0.306234
+  Through-going pion chi^2: 0.279226
+  Proton with Bragg peak chi^2: 1.30116
+  Best break point: 75 with stitched chi^2: 0.249544
+
+  Original point distance from vertex: 926.303
+  Break point distance from vertex: 961.286
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
 Event number: 54889
   Pion with Bragg peak chi^2: 6.3214
   Through-going pion chi^2: 19.8636
@@ -3696,6 +4149,62 @@ Event number: 55090
     22 with process: eBrem
     22 with process: eBrem
     22 with process: eBrem
+
+Event number: 55109
+  Pion with Bragg peak chi^2: 0.363758
+  Through-going pion chi^2: 0.18929
+  Proton with Bragg peak chi^2: 1.39912
+  Best break point: 25 with stitched chi^2: 0.171392
+
+  Original point distance from vertex: 1.17007
+  Break point distance from vertex: 23.0718
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Outside reduced volume
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160370 with process: pi-Inelastic
+
+Event number: 55124
+  Pion with Bragg peak chi^2: 0.336596
+  Through-going pion chi^2: 0.255183
+  Proton with Bragg peak chi^2: 1.34144
+  Best break point: 31 with stitched chi^2: 0.244045
+
+  Original point distance from vertex: 967.173
+  Break point distance from vertex: 979.931
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 55268
+  Pion with Bragg peak chi^2: 0.677243
+  Through-going pion chi^2: 0.525548
+  Proton with Bragg peak chi^2: 1.74207
+  Best break point: 81 with stitched chi^2: 0.40063
+
+  Original point distance from vertex: 11.8217
+  Break point distance from vertex: 57.1295
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
 
 Event number: 55352
   Pion with Bragg peak chi^2: 0.395816
@@ -3832,6 +4341,48 @@ Event number: 55435
     2112 with process: pi-Inelastic
     1000150330 with process: pi-Inelastic
 
+Event number: 55545
+  Pion with Bragg peak chi^2: 0.35302
+  Through-going pion chi^2: 0.332793
+  Proton with Bragg peak chi^2: 1.53432
+  Best break point: 47 with stitched chi^2: 0.294549
+
+  Original point distance from vertex: 935.24
+  Break point distance from vertex: 956.165
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 55572
+  Pion with Bragg peak chi^2: 0.311412
+  Through-going pion chi^2: 0.145407
+  Proton with Bragg peak chi^2: 1.31878
+  Best break point: 54 with stitched chi^2: 0.128269
+
+  Original point distance from vertex: 967.554
+  Break point distance from vertex: 993.084
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 55632
+  Pion with Bragg peak chi^2: 2.79282
+  Through-going pion chi^2: 2.90585
+  Proton with Bragg peak chi^2: 4.03274
+  Best break point: 139 with stitched chi^2: 1.25926
+
+  Original point distance from vertex: 926.116
+  Break point distance from vertex: 990.799
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
 Event number: 55675
   Pion with Bragg peak chi^2: 0.428358
   Through-going pion chi^2: 0.238052
@@ -3856,6 +4407,20 @@ Event number: 55675
     22 with process: pi-Inelastic
     22 with process: pi-Inelastic
     1000150330 with process: pi-Inelastic
+
+Event number: 55688
+  Pion with Bragg peak chi^2: 0.427663
+  Through-going pion chi^2: 0.419655
+  Proton with Bragg peak chi^2: 1.40976
+  Best break point: 66 with stitched chi^2: 0.34464
+
+  Original point distance from vertex: 926.811
+  Break point distance from vertex: 956.624
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
 
 Event number: 55697
   Pion with Bragg peak chi^2: 0.32894
@@ -3946,6 +4511,20 @@ Event number: 55728
     1000010020 with process: pi-Inelastic
     1000020040 with process: pi-Inelastic
     1000140320 with process: pi-Inelastic
+
+Event number: 55780
+  Pion with Bragg peak chi^2: 0.51052
+  Through-going pion chi^2: 0.368257
+  Proton with Bragg peak chi^2: 1.46386
+  Best break point: 94 with stitched chi^2: 0.308601
+
+  Original point distance from vertex: 923.857
+  Break point distance from vertex: 968.335
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
 
 Event number: 5850
   Pion with Bragg peak chi^2: 0.403362
@@ -4207,4 +4786,2107 @@ Event number: 6197
     1000010020 with process: pi-Inelastic
     1000010020 with process: pi-Inelastic
     1000120270 with process: pi-Inelastic
+
+Event number: 61814
+  Pion with Bragg peak chi^2: 7.99785
+  Through-going pion chi^2: 10.89
+  Proton with Bragg peak chi^2: 2.87924
+  Best break point: 60 with stitched chi^2: 0.906978
+
+  Original point distance from vertex: 1.10613
+  Break point distance from vertex: 27.7426
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160330 with process: pi-Inelastic
+
+Event number: 61829
+  Pion with Bragg peak chi^2: 1.47892
+  Through-going pion chi^2: 1.774
+  Proton with Bragg peak chi^2: 2.81581
+  Best break point: 14 with stitched chi^2: 1.42397
+
+  Original point distance from vertex: 2.64985
+  Break point distance from vertex: 6.9768
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs 0p
+  Daughters: 
+    1000180400 with process: hadElastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
+
+Event number: 61840
+  Pion with Bragg peak chi^2: 0.646804
+  Through-going pion chi^2: 0.286351
+  Proton with Bragg peak chi^2: 2.53238
+  Best break point: 17 with stitched chi^2: 0.26846
+
+  Original point distance from vertex: 6.38015
+  Break point distance from vertex: 2.6932
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
+
+Event number: 61871
+  Pion with Bragg peak chi^2: 0.349365
+  Through-going pion chi^2: 0.163833
+  Proton with Bragg peak chi^2: 1.59553
+  Best break point: 15 with stitched chi^2: 0.143034
+
+  Original point distance from vertex: 13.9601
+  Break point distance from vertex: 10.5055
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000160360 with process: pi-Inelastic
+
+Event number: 61972
+  Pion with Bragg peak chi^2: 3.90051
+  Through-going pion chi^2: 10.0259
+  Proton with Bragg peak chi^2: 2.00786
+  Best break point: 13 with stitched chi^2: 1.08335
+
+  Original point distance from vertex: 5.86424
+  Break point distance from vertex: 0.875608
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000140360 with process: pi-Inelastic
+
+Event number: 61987
+  Pion with Bragg peak chi^2: 1.43836
+  Through-going pion chi^2: 4.2285
+  Proton with Bragg peak chi^2: 1.28276
+  Best break point: 31 with stitched chi^2: 0.908819
+
+  Original point distance from vertex: 1.14332
+  Break point distance from vertex: 12.5046
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Capture at rest
+  Daughters: 
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2212 with process: hBertiniCaptureAtRest
+    2212 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    1000150370 with process: hBertiniCaptureAtRest
+
+Event number: 62018
+  Pion with Bragg peak chi^2: 2.30723
+  Through-going pion chi^2: 4.92105
+  Proton with Bragg peak chi^2: 0.181696
+  Best break point: 83 with stitched chi^2: 0.0986843
+
+  Original point distance from vertex: 44.1504
+  Break point distance from vertex: 1.79721
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000160350 with process: pi-Inelastic
+
+Event number: 62050
+  Pion with Bragg peak chi^2: 79.8017
+  Through-going pion chi^2: 155.523
+  Proton with Bragg peak chi^2: 30.257
+  Best break point: 13 with stitched chi^2: 1.7188
+
+  Original point distance from vertex: 0.820781
+  Break point distance from vertex: 5.44404
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000140310 with process: pi-Inelastic
+
+Event number: 62123
+  Pion with Bragg peak chi^2: 12.3329
+  Through-going pion chi^2: 14.5622
+  Proton with Bragg peak chi^2: 6.83905
+  Best break point: 53 with stitched chi^2: 4.74298
+
+  Original point distance from vertex: 22.7509
+  Break point distance from vertex: 12.8211
+  Is new better than original: true
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 62136
+  Pion with Bragg peak chi^2: 0.494486
+  Through-going pion chi^2: 0.397283
+  Proton with Bragg peak chi^2: 1.6672
+  Best break point: 24 with stitched chi^2: 0.374422
+
+  Original point distance from vertex: 950.752
+  Break point distance from vertex: 962.048
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 62289
+  Pion with Bragg peak chi^2: 0.346561
+  Through-going pion chi^2: 0.20128
+  Proton with Bragg peak chi^2: 1.65481
+  Best break point: 25 with stitched chi^2: 0.18765
+
+  Original point distance from vertex: 251.144
+  Break point distance from vertex: 271.674
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Outside reduced volume
+  Daughters: 
+    1000180400 with process: hadElastic
+
+Event number: 62342
+  Pion with Bragg peak chi^2: 0.352382
+  Through-going pion chi^2: 0.614443
+  Proton with Bragg peak chi^2: 1.36436
+  Best break point: 13 with stitched chi^2: 0.337189
+
+  Original point distance from vertex: 0.627549
+  Break point distance from vertex: 6.72121
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    2112 with process: pi-Inelastic
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+
+Event number: 62412
+  Pion with Bragg peak chi^2: 8.9634
+  Through-going pion chi^2: 23.2223
+  Proton with Bragg peak chi^2: 3.76356
+  Best break point: 43 with stitched chi^2: 3.50548
+
+  Original point distance from vertex: 0.623488
+  Break point distance from vertex: 20.5706
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000150310 with process: pi-Inelastic
+
+Event number: 62433
+  Pion with Bragg peak chi^2: 0.555532
+  Through-going pion chi^2: 1.49281
+  Proton with Bragg peak chi^2: 1.6885
+  Best break point: 14 with stitched chi^2: 0.133109
+
+  Original point distance from vertex: 2.4879
+  Break point distance from vertex: 6.04451
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160360 with process: pi-Inelastic
+
+Event number: 62516
+  Pion with Bragg peak chi^2: 2.10609
+  Through-going pion chi^2: 2.5025
+  Proton with Bragg peak chi^2: 2.50281
+  Best break point: 42 with stitched chi^2: 0.668523
+
+  Original point distance from vertex: 4.67993
+  Break point distance from vertex: 29.6846
+  Is new better than original: false
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 62518
+  Pion with Bragg peak chi^2: 0.320958
+  Through-going pion chi^2: 0.179004
+  Proton with Bragg peak chi^2: 1.39304
+  Best break point: 43 with stitched chi^2: 0.166165
+
+  Original point distance from vertex: 934.452
+  Break point distance from vertex: 955.761
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 62529
+  Pion with Bragg peak chi^2: 0.639339
+  Through-going pion chi^2: 0.630444
+  Proton with Bragg peak chi^2: 1.30923
+  Best break point: 130 with stitched chi^2: 0.511529
+
+  Original point distance from vertex: 944.03
+  Break point distance from vertex: 1003.38
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 62539
+  Pion with Bragg peak chi^2: 0.412019
+  Through-going pion chi^2: 0.260275
+  Proton with Bragg peak chi^2: 1.43256
+  Best break point: 14 with stitched chi^2: 0.256047
+
+  Original point distance from vertex: 6.00394
+  Break point distance from vertex: 6.84593
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
+
+Event number: 62579
+  Pion with Bragg peak chi^2: 1.18208
+  Through-going pion chi^2: 2.5976
+  Proton with Bragg peak chi^2: 0.862373
+  Best break point: 24 with stitched chi^2: 0.096373
+
+  Original point distance from vertex: 21.4015
+  Break point distance from vertex: 0.450501
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160350 with process: pi-Inelastic
+
+Event number: 62593
+  Pion with Bragg peak chi^2: 5.48739
+  Through-going pion chi^2: 17.7505
+  Proton with Bragg peak chi^2: 2.66485
+  Best break point: 14 with stitched chi^2: 0.178119
+
+  Original point distance from vertex: 5.80692
+  Break point distance from vertex: 0.776628
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000130290 with process: pi-Inelastic
+
+Event number: 62635
+  Pion with Bragg peak chi^2: 31.3728
+  Through-going pion chi^2: 91.037
+  Proton with Bragg peak chi^2: 10.5181
+  Best break point: 17 with stitched chi^2: 10.4302
+
+  Original point distance from vertex: 8.36268
+  Break point distance from vertex: 15.438
+  Is new better than original: false
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 62637
+  Pion with Bragg peak chi^2: 5.7242
+  Through-going pion chi^2: 13.8413
+  Proton with Bragg peak chi^2: 4.63358
+  Best break point: 24 with stitched chi^2: 3.97779
+
+  Original point distance from vertex: 0.352071
+  Break point distance from vertex: 11.0467
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Charge exchange
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    111 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000120290 with process: pi-Inelastic
+
+Event number: 62655
+  Pion with Bragg peak chi^2: 1.21827
+  Through-going pion chi^2: 4.30771
+  Proton with Bragg peak chi^2: 1.68629
+  Best break point: 13 with stitched chi^2: 0.220659
+
+  Original point distance from vertex: 2.65065
+  Break point distance from vertex: 8.58912
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
+
+Event number: 62679
+  Pion with Bragg peak chi^2: 4.00593
+  Through-going pion chi^2: 5.08648
+  Proton with Bragg peak chi^2: 3.32986
+  Best break point: 35 with stitched chi^2: 1.7947
+
+  Original point distance from vertex: 0.425986
+  Break point distance from vertex: 15.3489
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Charge exchange
+  Daughters: 
+    111 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160320 with process: pi-Inelastic
+
+Event number: 62705
+  Pion with Bragg peak chi^2: 1.10646
+  Through-going pion chi^2: 2.04488
+  Proton with Bragg peak chi^2: 0.882625
+  Best break point: 35 with stitched chi^2: 0.364231
+
+  Original point distance from vertex: 1.3511
+  Break point distance from vertex: 17.3673
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180360 with process: pi-Inelastic
+
+Event number: 62839
+  Pion with Bragg peak chi^2: 0.62703
+  Through-going pion chi^2: 0.469401
+  Proton with Bragg peak chi^2: 1.65372
+  Best break point: 61 with stitched chi^2: 0.218278
+
+  Original point distance from vertex: 931.181
+  Break point distance from vertex: 962.322
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 62851
+  Pion with Bragg peak chi^2: 10.2856
+  Through-going pion chi^2: 23.3611
+  Proton with Bragg peak chi^2: 3.96965
+  Best break point: 56 with stitched chi^2: 3.89864
+
+  Original point distance from vertex: 4.85764
+  Break point distance from vertex: 22.6495
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160350 with process: pi-Inelastic
+
+Event number: 62937
+  Pion with Bragg peak chi^2: 0.261738
+  Through-going pion chi^2: 0.281492
+  Proton with Bragg peak chi^2: 1.3707
+  Best break point: 13 with stitched chi^2: 0.241274
+
+  Original point distance from vertex: 9.89369
+  Break point distance from vertex: 6.23931
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    2212 with process: pi-Inelastic
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000170370 with process: pi-Inelastic
+
+Event number: 62979
+  Pion with Bragg peak chi^2: 0.445754
+  Through-going pion chi^2: 1.18154
+  Proton with Bragg peak chi^2: 0.80611
+  Best break point: 14 with stitched chi^2: 0.180786
+
+  Original point distance from vertex: 2.54338
+  Break point distance from vertex: 8.54166
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Outside reduced volume
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150340 with process: pi-Inelastic
+
+Event number: 63000
+  Pion with Bragg peak chi^2: 0.248086
+  Through-going pion chi^2: 0.870952
+  Proton with Bragg peak chi^2: 1.05993
+  Best break point: 13 with stitched chi^2: 0.206572
+
+  Original point distance from vertex: 2.68726
+  Break point distance from vertex: 9.72112
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Capture at rest
+  Daughters: 
+    1000180400 with process: hadElastic
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    2212 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    1000160330 with process: hBertiniCaptureAtRest
+
+Event number: 63025
+  Pion with Bragg peak chi^2: 17.2096
+  Through-going pion chi^2: 28.5716
+  Proton with Bragg peak chi^2: 6.43521
+  Best break point: 26 with stitched chi^2: 4.38
+
+  Original point distance from vertex: 16.2373
+  Break point distance from vertex: 6.72306
+  Is new better than original: true
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 63041
+  Pion with Bragg peak chi^2: 6.90253
+  Through-going pion chi^2: 11.0878
+  Proton with Bragg peak chi^2: 3.43797
+  Best break point: 45 with stitched chi^2: 2.25304
+
+  Original point distance from vertex: 16.9809
+  Break point distance from vertex: 2.34995
+  Is new better than original: true
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 63072
+  Pion with Bragg peak chi^2: 21.2455
+  Through-going pion chi^2: 36.1192
+  Proton with Bragg peak chi^2: 7.65113
+  Best break point: 30 with stitched chi^2: 3.40596
+
+  Original point distance from vertex: 4.4031
+  Break point distance from vertex: 12.8535
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000140290 with process: pi-Inelastic
+
+Event number: 63137
+  Pion with Bragg peak chi^2: 12.8783
+  Through-going pion chi^2: 31.7483
+  Proton with Bragg peak chi^2: 4.26336
+  Best break point: 13 with stitched chi^2: 1.89031
+
+  Original point distance from vertex: 3.65207
+  Break point distance from vertex: 4.57059
+  Is new better than original: false
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 63145
+  Pion with Bragg peak chi^2: 0.957236
+  Through-going pion chi^2: 2.87491
+  Proton with Bragg peak chi^2: 1.28689
+  Best break point: 17 with stitched chi^2: 0.569484
+
+  Original point distance from vertex: 0.269283
+  Break point distance from vertex: 8.46633
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs 0p
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150330 with process: pi-Inelastic
+
+Event number: 63184
+  Pion with Bragg peak chi^2: 0.847216
+  Through-going pion chi^2: 1.53827
+  Proton with Bragg peak chi^2: 2.46966
+  Best break point: 13 with stitched chi^2: 0.821503
+
+  Original point distance from vertex: 1.22268
+  Break point distance from vertex: 5.28326
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
+
+Event number: 63194
+  Pion with Bragg peak chi^2: 0.556062
+  Through-going pion chi^2: 0.412956
+  Proton with Bragg peak chi^2: 2.12725
+  Best break point: 13 with stitched chi^2: 0.364816
+
+  Original point distance from vertex: 0.395662
+  Break point distance from vertex: 5.50976
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000170370 with process: pi-Inelastic
+
+Event number: 63224
+  Pion with Bragg peak chi^2: 1.71981
+  Through-going pion chi^2: 2.68633
+  Proton with Bragg peak chi^2: 3.19425
+  Best break point: 29 with stitched chi^2: 1.29887
+
+  Original point distance from vertex: 0.825082
+  Break point distance from vertex: 13.5878
+  Is new better than original: false
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 63245
+  Pion with Bragg peak chi^2: 0.943992
+  Through-going pion chi^2: 1.83598
+  Proton with Bragg peak chi^2: 0.972658
+  Best break point: 13 with stitched chi^2: 0.493992
+
+  Original point distance from vertex: 2.71581
+  Break point distance from vertex: 11.9945
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
+
+Event number: 63308
+  Pion with Bragg peak chi^2: 1.60352
+  Through-going pion chi^2: 4.13127
+  Proton with Bragg peak chi^2: 0.693426
+  Best break point: 28 with stitched chi^2: 0.0428185
+
+  Original point distance from vertex: 22.3446
+  Break point distance from vertex: 0.904566
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000180400 with process: pi-Inelastic
+
+Event number: 63366
+  Pion with Bragg peak chi^2: 2.71732
+  Through-going pion chi^2: 6.42311
+  Proton with Bragg peak chi^2: 0.430288
+  Best break point: 57 with stitched chi^2: 0.100066
+
+  Original point distance from vertex: 27.0676
+  Break point distance from vertex: 0.659784
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000140300 with process: pi-Inelastic
+
+Event number: 63368
+  Pion with Bragg peak chi^2: 0.359272
+  Through-going pion chi^2: 0.31314
+  Proton with Bragg peak chi^2: 1.37352
+  Best break point: 29 with stitched chi^2: 0.308656
+
+  Original point distance from vertex: 830.357
+  Break point distance from vertex: 842.566
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 63379
+  Pion with Bragg peak chi^2: 0.349319
+  Through-going pion chi^2: 0.142279
+  Proton with Bragg peak chi^2: 1.51181
+  Best break point: 18 with stitched chi^2: 0.115819
+
+  Original point distance from vertex: 0.144873
+  Break point distance from vertex: 7.73433
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Charge exchange
+  Daughters: 
+    1000180400 with process: hadElastic
+    1000180400 with process: hadElastic
+    1000180400 with process: hadElastic
+    111 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000170390 with process: pi-Inelastic
+
+Event number: 63398
+  Pion with Bragg peak chi^2: 4.45278
+  Through-going pion chi^2: 13.0315
+  Proton with Bragg peak chi^2: 2.47204
+  Best break point: 66 with stitched chi^2: 1.9019
+
+  Original point distance from vertex: 0.489961
+  Break point distance from vertex: 34.3895
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Capture at rest
+  Daughters: 
+    22 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2212 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    22 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    1000160350 with process: hBertiniCaptureAtRest
+
+Event number: 63533
+  Pion with Bragg peak chi^2: 0.437493
+  Through-going pion chi^2: 0.252223
+  Proton with Bragg peak chi^2: 1.64337
+  Best break point: 16 with stitched chi^2: 0.249211
+
+  Original point distance from vertex: 955.772
+  Break point distance from vertex: 963.336
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 63562
+  Pion with Bragg peak chi^2: 0.648208
+  Through-going pion chi^2: 0.749621
+  Proton with Bragg peak chi^2: 1.83713
+  Best break point: 24 with stitched chi^2: 0.627332
+
+  Original point distance from vertex: 9.09444
+  Break point distance from vertex: 8.52276
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Outside reduced volume
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000160350 with process: pi-Inelastic
+
+Event number: 63694
+  Pion with Bragg peak chi^2: 7.2617
+  Through-going pion chi^2: 15.0739
+  Proton with Bragg peak chi^2: 2.7223
+  Best break point: 21 with stitched chi^2: 0.567475
+
+  Original point distance from vertex: 0.648229
+  Break point distance from vertex: 8.77674
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000160360 with process: pi-Inelastic
+
+Event number: 63712
+  Pion with Bragg peak chi^2: 0.364169
+  Through-going pion chi^2: 0.239055
+  Proton with Bragg peak chi^2: 1.33159
+  Best break point: 73 with stitched chi^2: 0.231755
+
+  Original point distance from vertex: 953.866
+  Break point distance from vertex: 987.013
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 63740
+  Pion with Bragg peak chi^2: 2.42287
+  Through-going pion chi^2: 4.62087
+  Proton with Bragg peak chi^2: 0.812975
+  Best break point: 45 with stitched chi^2: 0.327231
+
+  Original point distance from vertex: 0.929229
+  Break point distance from vertex: 19.6902
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    1000180400 with process: hadElastic
+    2212 with process: pi-Inelastic
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000170370 with process: pi-Inelastic
+
+Event number: 63805
+  Pion with Bragg peak chi^2: 22.9458
+  Through-going pion chi^2: 31.425
+  Proton with Bragg peak chi^2: 10.8889
+  Best break point: 31 with stitched chi^2: 0.614476
+
+  Original point distance from vertex: 0.565566
+  Break point distance from vertex: 13.7078
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000170350 with process: pi-Inelastic
+
+Event number: 63823
+  Pion with Bragg peak chi^2: 1.31449
+  Through-going pion chi^2: 4.63602
+  Proton with Bragg peak chi^2: 1.71929
+  Best break point: 17 with stitched chi^2: 0.217022
+
+  Original point distance from vertex: 6.7615
+  Break point distance from vertex: 0.74418
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000140320 with process: pi-Inelastic
+
+Event number: 63906
+  Pion with Bragg peak chi^2: 0.715239
+  Through-going pion chi^2: 0.645116
+  Proton with Bragg peak chi^2: 1.76352
+  Best break point: 55 with stitched chi^2: 0.431454
+
+  Original point distance from vertex: 640.621
+  Break point distance from vertex: 670.295
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 63913
+  Pion with Bragg peak chi^2: 1.70018
+  Through-going pion chi^2: 3.83096
+  Proton with Bragg peak chi^2: 0.345959
+  Best break point: 66 with stitched chi^2: 0.106387
+
+  Original point distance from vertex: 30.9284
+  Break point distance from vertex: 1.6297
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000140290 with process: pi-Inelastic
+
+Event number: 63970
+  Pion with Bragg peak chi^2: 0.387044
+  Through-going pion chi^2: 0.562971
+  Proton with Bragg peak chi^2: 1.83701
+  Best break point: 13 with stitched chi^2: 0.285752
+
+  Original point distance from vertex: 2.24275
+  Break point distance from vertex: 5.62643
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000020040 with process: pi-Inelastic
+    1000160320 with process: pi-Inelastic
+
+Event number: 63988
+  Pion with Bragg peak chi^2: 0.911473
+  Through-going pion chi^2: 1.52496
+  Proton with Bragg peak chi^2: 2.5405
+  Best break point: 23 with stitched chi^2: 0.536568
+
+  Original point distance from vertex: 16.6582
+  Break point distance from vertex: 6.27293
+  Is new better than original: true
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 64001
+  Pion with Bragg peak chi^2: 0.391913
+  Through-going pion chi^2: 0.194925
+  Proton with Bragg peak chi^2: 1.51004
+  Best break point: 55 with stitched chi^2: 0.137069
+
+  Original point distance from vertex: 952.657
+  Break point distance from vertex: 978.996
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 64006
+  Pion with Bragg peak chi^2: 0.902303
+  Through-going pion chi^2: 2.13257
+  Proton with Bragg peak chi^2: 0.993633
+  Best break point: 33 with stitched chi^2: 0.659296
+
+  Original point distance from vertex: 17.1506
+  Break point distance from vertex: 2.89236
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150350 with process: pi-Inelastic
+
+Event number: 64038
+  Pion with Bragg peak chi^2: 2.49671
+  Through-going pion chi^2: 5.76359
+  Proton with Bragg peak chi^2: 0.410903
+  Best break point: 53 with stitched chi^2: 0.0915813
+
+  Original point distance from vertex: 29.6611
+  Break point distance from vertex: 0.406951
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160360 with process: pi-Inelastic
+
+Event number: 64049
+  Pion with Bragg peak chi^2: 0.373498
+  Through-going pion chi^2: 0.672172
+  Proton with Bragg peak chi^2: 1.10037
+  Best break point: 14 with stitched chi^2: 0.301222
+
+  Original point distance from vertex: 1.01587
+  Break point distance from vertex: 6.48541
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150350 with process: pi-Inelastic
+
+Event number: 64081
+  Pion with Bragg peak chi^2: 2.69218
+  Through-going pion chi^2: 7.19694
+  Proton with Bragg peak chi^2: 1.8698
+  Best break point: 14 with stitched chi^2: 1.0172
+
+  Original point distance from vertex: 1.28517
+  Break point distance from vertex: 5.88611
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs 0p
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000140330 with process: pi-Inelastic
+
+Event number: 64124
+  Pion with Bragg peak chi^2: 0.424009
+  Through-going pion chi^2: 0.178353
+  Proton with Bragg peak chi^2: 1.70817
+  Best break point: 31 with stitched chi^2: 0.128512
+
+  Original point distance from vertex: 50.722
+  Break point distance from vertex: 31.9686
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000180380 with process: pi-Inelastic
+
+Event number: 64147
+  Pion with Bragg peak chi^2: 0.684496
+  Through-going pion chi^2: 0.564909
+  Proton with Bragg peak chi^2: 1.90826
+  Best break point: 13 with stitched chi^2: 0.547508
+
+  Original point distance from vertex: 951.739
+  Break point distance from vertex: 957.886
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 64150
+  Pion with Bragg peak chi^2: 2412.77
+  Through-going pion chi^2: 2888.91
+  Proton with Bragg peak chi^2: 1259.03
+  Best break point: 36 with stitched chi^2: 1.75811
+
+  Original point distance from vertex: 0.549798
+  Break point distance from vertex: 16.3933
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
+
+Event number: 64169
+  Pion with Bragg peak chi^2: 4.41675
+  Through-going pion chi^2: 5.38847
+  Proton with Bragg peak chi^2: 3.14407
+  Best break point: 14 with stitched chi^2: 1.92656
+
+  Original point distance from vertex: 1.83706
+  Break point distance from vertex: 7.70036
+  Is new better than original: false
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 64199
+  Pion with Bragg peak chi^2: 67.3001
+  Through-going pion chi^2: 100.767
+  Proton with Bragg peak chi^2: 27.2071
+  Best break point: 23 with stitched chi^2: 20.9944
+
+  Original point distance from vertex: 12.5168
+  Break point distance from vertex: 5.63199
+  Is new better than original: true
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 64225
+  Pion with Bragg peak chi^2: 4.45006
+  Through-going pion chi^2: 11.118
+  Proton with Bragg peak chi^2: 2.04167
+  Best break point: 13 with stitched chi^2: 0.705403
+
+  Original point distance from vertex: 0.317856
+  Break point distance from vertex: 5.87574
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160380 with process: pi-Inelastic
+
+Event number: 64291
+  Pion with Bragg peak chi^2: 13.9536
+  Through-going pion chi^2: 23.3107
+  Proton with Bragg peak chi^2: 5.559
+  Best break point: 37 with stitched chi^2: 2.55249
+
+  Original point distance from vertex: 4.44599
+  Break point distance from vertex: 19.8318
+  Is new better than original: false
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 64298
+  Pion with Bragg peak chi^2: 0.920258
+  Through-going pion chi^2: 1.80737
+  Proton with Bragg peak chi^2: 1.70627
+  Best break point: 13 with stitched chi^2: 0.860748
+
+  Original point distance from vertex: 0.182748
+  Break point distance from vertex: 5.86046
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
+
+Event number: 64371
+  Pion with Bragg peak chi^2: 0.460556
+  Through-going pion chi^2: 0.24148
+  Proton with Bragg peak chi^2: 1.62557
+  Best break point: 43 with stitched chi^2: 0.166881
+
+  Original point distance from vertex: 29.8993
+  Break point distance from vertex: 47.1909
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Capture at rest
+  Daughters: 
+    2212 with process: hBertiniCaptureAtRest
+    1000010020 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    2212 with process: hBertiniCaptureAtRest
+    1000010030 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    1000010020 with process: hBertiniCaptureAtRest
+    2112 with process: hBertiniCaptureAtRest
+    1000020040 with process: hBertiniCaptureAtRest
+
+Event number: 64416
+  Pion with Bragg peak chi^2: 4.15224
+  Through-going pion chi^2: 9.63729
+  Proton with Bragg peak chi^2: 2.58253
+  Best break point: 13 with stitched chi^2: 0.131426
+
+  Original point distance from vertex: 4.98612
+  Break point distance from vertex: 1.35327
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000140300 with process: pi-Inelastic
+
+Event number: 64455
+  Pion with Bragg peak chi^2: 4.57737
+  Through-going pion chi^2: 6.32736
+  Proton with Bragg peak chi^2: 3.13008
+  Best break point: 39 with stitched chi^2: 1.10724
+
+  Original point distance from vertex: 5.6322
+  Break point distance from vertex: 21.1311
+  Is new better than original: false
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 64461
+  Pion with Bragg peak chi^2: 10.5128
+  Through-going pion chi^2: 11.9547
+  Proton with Bragg peak chi^2: 6.50378
+  Best break point: 61 with stitched chi^2: 2.04862
+
+  Original point distance from vertex: 3.95423
+  Break point distance from vertex: 24.273
+  Is new better than original: false
+
+  Primary particle PDG: 11
+  Event classified as: Primary electron
+  Daughters: 
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+    22 with process: eBrem
+
+Event number: 64478
+  Pion with Bragg peak chi^2: 1.56026
+  Through-going pion chi^2: 3.71738
+  Proton with Bragg peak chi^2: 1.35591
+  Best break point: 20 with stitched chi^2: 0.303564
+
+  Original point distance from vertex: 2.87001
+  Break point distance from vertex: 10.0706
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    1000180400 with process: hadElastic
+    2112 with process: pi-Inelastic
+    -211 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000160340 with process: pi-Inelastic
+
+Event number: 64526
+  Pion with Bragg peak chi^2: 0.666149
+  Through-going pion chi^2: 0.505869
+  Proton with Bragg peak chi^2: 1.91862
+  Best break point: 20 with stitched chi^2: 0.450507
+
+  Original point distance from vertex: 0.406129
+  Break point distance from vertex: 9.20467
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Charge exchange
+  Daughters: 
+    111 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000170360 with process: pi-Inelastic
+
+Event number: 64541
+  Pion with Bragg peak chi^2: 18.3638
+  Through-going pion chi^2: 36.4136
+  Proton with Bragg peak chi^2: 6.50774
+  Best break point: 13 with stitched chi^2: 3.33496
+
+  Original point distance from vertex: 12.1392
+  Break point distance from vertex: 4.3127
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010030 with process: pi-Inelastic
+    1000140290 with process: pi-Inelastic
+
+Event number: 64557
+  Pion with Bragg peak chi^2: 0.417004
+  Through-going pion chi^2: 0.172775
+  Proton with Bragg peak chi^2: 1.60517
+  Best break point: 20 with stitched chi^2: 0.123775
+
+  Original point distance from vertex: 0.846946
+  Break point distance from vertex: 10.6409
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    1000180400 with process: hadElastic
+    2212 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000150310 with process: pi-Inelastic
+
+Event number: 64574
+  Pion with Bragg peak chi^2: 2.66694
+  Through-going pion chi^2: 8.4874
+  Proton with Bragg peak chi^2: 1.34705
+  Best break point: 17 with stitched chi^2: 0.0779886
+
+  Original point distance from vertex: 7.48517
+  Break point distance from vertex: 0.55375
+  Is new better than original: true
+
+  Primary particle PDG: -211
+  Event classified as: Abs Np
+  Daughters: 
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    1000160320 with process: pi-Inelastic
+
+Event number: 64608
+  Pion with Bragg peak chi^2: 0.37271
+  Through-going pion chi^2: 0.19322
+  Proton with Bragg peak chi^2: 1.48816
+  Best break point: 61 with stitched chi^2: 0.17815
+
+  Original point distance from vertex: 942.082
+  Break point distance from vertex: 975.247
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+
+Event number: 64677
+  Pion with Bragg peak chi^2: 2.77269
+  Through-going pion chi^2: 7.62862
+  Proton with Bragg peak chi^2: 2.54589
+  Best break point: 14 with stitched chi^2: 1.38413
+
+  Original point distance from vertex: 0.975168
+  Break point distance from vertex: 7.36245
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Abs 0p
+  Daughters: 
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000010020 with process: pi-Inelastic
+    1000130280 with process: pi-Inelastic
+
+Event number: 64737
+  Pion with Bragg peak chi^2: 0.343703
+  Through-going pion chi^2: 0.349159
+  Proton with Bragg peak chi^2: 1.32216
+  Best break point: 18 with stitched chi^2: 0.304735
+
+  Original point distance from vertex: 39.7021
+  Break point distance from vertex: 47.7473
+  Is new better than original: false
+
+  Primary particle PDG: 13
+  Event classified as: Primary muon
+  Daughters: 
+    22 with process: muMinusCaptureAtRest
+    22 with process: muMinusCaptureAtRest
+    14 with process: muMinusCaptureAtRest
+    2212 with process: muMinusCaptureAtRest
+    22 with process: muMinusCaptureAtRest
+    2112 with process: muMinusCaptureAtRest
+    22 with process: muMinusCaptureAtRest
+    1000240540 with process: muMinusCaptureAtRest
+
+Event number: 64757
+  Pion with Bragg peak chi^2: 3.04619
+  Through-going pion chi^2: 6.19149
+  Proton with Bragg peak chi^2: 1.43367
+  Best break point: 26 with stitched chi^2: 0.366183
+
+  Original point distance from vertex: 0.371412
+  Break point distance from vertex: 12.4864
+  Is new better than original: false
+
+  Primary particle PDG: -211
+  Event classified as: Inelastic scattering
+  Daughters: 
+    -211 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    2212 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    2112 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    22 with process: pi-Inelastic
+    1000170350 with process: pi-Inelastic
 

@@ -8,6 +8,10 @@
 
 #include <vector>
 
+//////////////////////
+// Global constants //
+//////////////////////
+
 std::map<int, std::string> backgroundTypes = {
     {-1, "Not flagged as background"},
     {0, "Abs 0p"},
@@ -24,11 +28,34 @@ std::map<int, std::string> backgroundTypes = {
     {11, "Other"}
 };
 
+// Reduced volume for interactions
+const double RminX =  5.0;
+const double RmaxX = 42.0;
+const double RminY =-15.0; 
+const double RmaxY = 15.0;
+const double RminZ =  8.0;
+const double RmaxZ = 82.0;
+
+// Detector dimensions
+const double minX =  0.0;
+const double maxX = 47.0;
+const double minY =-20.0; 
+const double maxY = 20.0; 
+const double minZ =  3.0;
+const double maxZ = 87.0;
+
+//////////////////////
+// Helper functions //
+//////////////////////
+
 void initializeProtonPoints(TGraph* gProton);
 void initializePionPoints(TGraph* gPion);
 void initializeMuonNoBraggPoints(TGraph* gMuonTG);
+bool isWithinReducedVolume(double x, double y, double z);
 double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData,  bool dataReversed, int nPoints, int nOutliersToDiscard = 0, int nTrim = 0);
 double distance(double x1, double x2, double y1, double y2, double z1, double z2);
+double meanDEDX(std::vector<double> trackDEDX, bool isTrackReversed, int pointsToUse);
+void printBackgroundInfo(TH1D* background_histo, std::ostream& os);
 void printOneDPlots(
     TString dir, int fontStyle, double textSize,
     std::vector<std::vector<TH1*>> groups,
@@ -38,6 +65,10 @@ void printOneDPlots(
     std::vector<TString> xlabels, 
     std::vector<TString> ylabels
 );
+
+///////////////////
+// Main function //
+///////////////////
 
 void RecoAllAnalysis() {
     // Set defaults
@@ -75,23 +106,18 @@ void RecoAllAnalysis() {
     double PROTON_CHI2_PION_VALUE   = 1.75;
     double PROTON_CHI2_PROTON_VALUE = 2.75; 
 
+    // Mean dE/dx threshold
+    double MEAN_DEDX_THRESHOLD = 5.0;
+
     // Vertex radius
-    double VERTEX_RADIUS = 4.0;
+    double VERTEX_RADIUS = 5.0;
+
+    // Number of points to use in mean dE/dx calculation
+    int MEAN_DEDX_NUM_TRAJ_POINTS = 20;
 
     // Proton energy bounds
     double PROTON_ENERGY_LOWER_BOUND = 0.075;
     double PROTON_ENERGY_UPPER_BOUND = 1.0;
-
-    // Detector dimensions
-    const double minX =  0.0;
-    const double maxX = 47.0;
-    const double minY =-20.0; 
-    const double maxY = 20.0; 
-    const double minZ =  3.0;
-    const double maxZ = 87.0;
-
-    // Vertex radius
-    double fVertexRadius = 4.;
 
     int FontStyle = 132;
     double TextSize = 0.06;
@@ -161,6 +187,7 @@ void RecoAllAnalysis() {
     std::vector<double>* recoBeginZ        = nullptr;
     std::vector<int>*    recoTrkID         = nullptr;
     std::vector<bool>*   isTrackNearVertex = nullptr;
+    std::vector<bool>*   isTrackInverted   = nullptr;
     tree->SetBranchAddress("recoMeanDEDX", &recoMeanDEDX);
     tree->SetBranchAddress("recoEndX", &recoEndX);
     tree->SetBranchAddress("recoEndY", &recoEndY);
@@ -170,10 +197,13 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("recoBeginZ", &recoBeginZ);
     tree->SetBranchAddress("recoTrkID", &recoTrkID);
     tree->SetBranchAddress("isTrackNearVertex", &isTrackNearVertex);
+    tree->SetBranchAddress("isTrackInverted", &isTrackInverted);
 
     // Reco truth-match information
-    std::vector<int>* matchedIdentity = nullptr;
+    std::vector<int>*     matchedIdentity = nullptr;
+    std::vector<double> * matchedKEnergy  = nullptr;
     tree->SetBranchAddress("matchedIdentity", &matchedIdentity);
+    tree->SetBranchAddress("matchedKEnergy", &matchedKEnergy);
 
     // Calorimetry information
     std::vector<std::vector<double>>* recoResR = nullptr;
@@ -203,7 +233,10 @@ void RecoAllAnalysis() {
     // Create histograms //
     ///////////////////////
 
-    TH1D *hTotalSignal = new TH1D("hTotalSignal", "hTotalSignal;;", 1, 0, 1);
+    TH1D *hTotalEvents      = new TH1D("hTotalEvents", "hTotalEvents;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D *hRecoAbsorption   = new TH1D("hRecoAbsorption", "hRecoAbsorption;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D *hRecoAbsorption0p = new TH1D("hRecoAbsorption0p", "hRecoAbsorption0p;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D *hRecoAbsorptionNp = new TH1D("hRecoAbsorptionNp", "hRecoAbsorptionNp;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
     TH1D *hStitchedDistanceFromVertex         = new TH1D("hStitchedDistanceFromVertex", "StitchedDistanceFromVertex;;", 20, 0, 70);
     TH1D *hStitchedOriginalDistanceFromVertex = new TH1D("hStitchedOriginalDistanceFromVertex", "hStitchedOriginalDistanceFromVertex;;", 20, 0, 70);
@@ -214,13 +247,17 @@ void RecoAllAnalysis() {
     TH1D *hStitchAsProton        = new TH1D("hStitchAsProton", "hStitchAsProton;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hStitchFracBreakPoints = new TH1D("hStitchFracBreakPoints", "hStitchFracBreakPoints;;", 50, 0, 1);
 
-    TH1D *hSecondaryPionChi2Protons = new TH1D("hSecondaryPionChi2Protons", "hSecondaryPionChi2Protons;;", 20, 0, 20);
-    TH1D *hSecondaryPionChi2Pions   = new TH1D("hSecondaryPionChi2Pions", "hSecondaryPionChi2Pions;;", 20, 0, 20);
-    TH1D *hSecondaryPionChi2Others  = new TH1D("hSecondaryPionChi2Others", "hSecondaryPionChi2Others;;", 20, 0, 20);
+    TH1D *hSecondaryPionChi2Protons = new TH1D("hSecondaryPionChi2Protons", "hSecondaryPionChi2Protons;;", 20, 0, 10);
+    TH1D *hSecondaryPionChi2Pions   = new TH1D("hSecondaryPionChi2Pions", "hSecondaryPionChi2Pions;;", 20, 0, 10);
+    TH1D *hSecondaryPionChi2Others  = new TH1D("hSecondaryPionChi2Others", "hSecondaryPionChi2Others;;", 20, 0, 10);
 
-    TH1D *hSecondaryProtonChi2Protons = new TH1D("hSecondaryProtonChi2Protons", "hSecondaryProtonChi2Protons;;", 20, 0, 20);
-    TH1D *hSecondaryProtonChi2Pions   = new TH1D("hSecondaryProtonChi2Pions", "hSecondaryProtonChi2Pions;;", 20, 0, 20);
-    TH1D *hSecondaryProtonChi2Others  = new TH1D("hSecondaryProtonChi2Others", "hSecondaryProtonChi2Others;;", 20, 0, 20);
+    TH1D *hSecondaryProtonChi2Protons = new TH1D("hSecondaryProtonChi2Protons", "hSecondaryProtonChi2Protons;;", 20, 0, 10);
+    TH1D *hSecondaryProtonChi2Pions   = new TH1D("hSecondaryProtonChi2Pions", "hSecondaryProtonChi2Pions;;", 20, 0, 10);
+    TH1D *hSecondaryProtonChi2Others  = new TH1D("hSecondaryProtonChi2Others", "hSecondaryProtonChi2Others;;", 20, 0, 10);
+
+    TH1D *hSecondaryMeanDEDXProtons = new TH1D("hSecondaryMeanDEDXProtons", "hSecondaryMeanDEDXProtons;;", 20, 0, 20);
+    TH1D *hSecondaryMeanDEDXPions   = new TH1D("hSecondaryMeanDEDXPions", "hSecondaryMeanDEDXPions;;", 20, 0, 20);
+    TH1D *hSecondaryMeanDEDXOthers  = new TH1D("hSecondaryMeanDEDXOthers", "hSecondaryMeanDEDXOthers;;", 20, 0, 20);
 
     //////////////////////
     // Loop over events //
@@ -232,47 +269,38 @@ void RecoAllAnalysis() {
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
-        if (isPionAbsorptionSignal) hTotalSignal->Fill(0.5);
-
-        // If no track matched to wire-chamber, skip
-        if (WC2TPCtrkID == -99999) continue;
-
-        // Apply small tracks and reduced volume cuts
-        if (!passesPionInRedVolume) continue;
-        if (!passesSmallTracksCut)  continue;
-        // if (!passesNoOutgoingPion)  continue;
-
         // Label background type as 0 for 0p signal and 1 for Np signal
         if (isPionAbsorptionSignal) {
             if (numVisibleProtons == 0) backgroundType = 0;
             if (numVisibleProtons > 0)  backgroundType = 1;
         }
+        hTotalEvents->Fill(backgroundType);
+
+        // If no track matched to wire-chamber, skip
+        if (WC2TPCtrkID == -99999) continue;
+
+        // Apply small tracks and reduced volume cuts
+        if (!passesSmallTracksCut)  continue;
 
         // Perform chi^2 stitching for primary track
         // For this analysis, we get the following chi^2 values:
-        //   - Pion (with Bragg peak) chi^2
-        //     - Capture at rest (backgroundType: 9)
-        //   - Pion (through-going) chi^2
-        //     - 0p or Np
+        //   - Pion with Bragg peak chi^2
+        //   - Through-going chi^2
         //   - Proton chi^2
-        //     - Interaction in detector front face
         //   - Scanning fit with rhs to through-going and lhs to proton
-        //     - Pion + proton stitched as one track; repeat analysis with new vertex
 
         int totalCaloPoints = wcMatchDEDX->size();
         int nRemoveOutliers = 2;
         int nRemoveEnds     = 3;
         int minPoints       = 5;
 
-        bool primaryReversed = false;
-        if (WC2TPCPrimaryEndZ < WC2TPCPrimaryBeginZ) primaryReversed = true;
-
         outWCAll << "Event number: " << event << std::endl; 
         outWCAll << "  Calorimetry data points: " << totalCaloPoints << std::endl;
 
-        double pionChi2         = computeReducedChi2(gPion, *wcMatchResR,  *wcMatchDEDX, primaryReversed, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
-        double throughGoingChi2 = computeReducedChi2(gMuonTG, *wcMatchResR, *wcMatchDEDX, primaryReversed, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
-        double protonChi2       = computeReducedChi2(gProton, *wcMatchResR, *wcMatchDEDX, primaryReversed, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        // Get chi^2 fits, primary tracks are already checked for reversal in first module
+        double pionChi2         = computeReducedChi2(gPion, *wcMatchResR,  *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        double throughGoingChi2 = computeReducedChi2(gMuonTG, *wcMatchResR, *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        double protonChi2       = computeReducedChi2(gProton, *wcMatchResR, *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
 
         double minStitchedChi2 = std::numeric_limits<double>::max();
         int bestBreakPoint = -1;
@@ -284,20 +312,20 @@ void RecoAllAnalysis() {
                 std::vector<double> rightResR(wcMatchResR->begin() + caloBreakPoint, wcMatchResR->end());
                 std::vector<double> rightDEDX(wcMatchDEDX->begin() + caloBreakPoint, wcMatchDEDX->end());
 
-                double chi2LHS = computeReducedChi2(gProton, leftResR, leftDEDX, primaryReversed, leftResR.size(), nRemoveOutliers, nRemoveEnds);
-                double chi2RHS = computeReducedChi2(gMuonTG, rightResR, rightDEDX, primaryReversed, rightResR.size(), nRemoveOutliers, nRemoveEnds);
+                double chi2LHS = computeReducedChi2(gProton, leftResR, leftDEDX, false, leftResR.size(), nRemoveOutliers, nRemoveEnds);
+                double chi2RHS = computeReducedChi2(gMuonTG, rightResR, rightDEDX, false, rightResR.size(), nRemoveOutliers, nRemoveEnds);
 
                 double totalChi2 = (chi2LHS * leftResR.size() + chi2RHS * rightResR.size()) / totalCaloPoints;
                 
                 if (totalChi2 < minStitchedChi2) {
                     minStitchedChi2 = totalChi2;
-                    bestBreakPoint = caloBreakPoint;
+                    bestBreakPoint  = caloBreakPoint;
                 }
             }
         }
-        // If fractional break point < 0.1, not a good cut
+
+        // Get fractional break point
         double fracBreakPoint = (double) bestBreakPoint / totalCaloPoints;
-        // if (fracBreakPoint < 0.05) minStitchedChi2 = std::numeric_limits<double>::max();
         
         outWCAll << "  Fractional break point: " << (double) bestBreakPoint / totalCaloPoints << std::endl;
         outWCAll << std::endl;
@@ -316,12 +344,22 @@ void RecoAllAnalysis() {
         }
         outWCAll << std::endl;
 
-        if (bestBreakPoint == -1) bestBreakPoint = wcMatchXPos->size() - 1;
-        double breakPointX = wcMatchXPos->at(bestBreakPoint); 
-        double breakPointY = wcMatchYPos->at(bestBreakPoint); 
-        double breakPointZ = wcMatchZPos->at(bestBreakPoint);
-
+        // Get smallest chi^2 value for primary track
         double minChi2 = std::min({minStitchedChi2, pionChi2, throughGoingChi2, protonChi2});
+
+        // If primary track stitched, get break point, otherwise break point is end of track
+        double breakPointX = WC2TPCPrimaryEndX; 
+        double breakPointY = WC2TPCPrimaryEndY; 
+        double breakPointZ = WC2TPCPrimaryEndZ;
+        if (minChi2 == minStitchedChi2) {
+            breakPointX = wcMatchXPos->at(bestBreakPoint); 
+            breakPointY = wcMatchYPos->at(bestBreakPoint); 
+            breakPointZ = wcMatchZPos->at(bestBreakPoint);    
+        }
+
+        // Check if vertex is inside reduced volume
+        if (!isWithinReducedVolume(breakPointX, breakPointY, breakPointZ)) continue;
+
         if (minChi2 == minStitchedChi2) {
             double distanceFromVertex         = distance(breakPointX, truthPrimaryVertexX, breakPointY, truthPrimaryVertexY, breakPointZ, truthPrimaryVertexZ);
             double originalDistanceFromVertex = distance(WC2TPCPrimaryEndX, truthPrimaryVertexX, WC2TPCPrimaryEndY, truthPrimaryVertexY, WC2TPCPrimaryEndZ, truthPrimaryVertexZ);
@@ -346,7 +384,7 @@ void RecoAllAnalysis() {
             }
             outStitchedFile << std::endl;
 
-            if ((backgroundType == 1 ) || (backgroundType == 7 ) ) {
+            if ((backgroundType == 1 ) || (backgroundType == 7)) {
                 hStitchedDistanceFromVertex->Fill(distanceFromVertex);
                 hStitchedOriginalDistanceFromVertex->Fill(originalDistanceFromVertex);
             }
@@ -360,9 +398,8 @@ void RecoAllAnalysis() {
             hStitchAsProton->Fill(backgroundType);
         } else if (minChi2 == pionChi2) {
             // Track looks like pion with Bragg peak, background
-            // TODO: do we do this, or just go with median cut?
             hStitchAsPionBraggPeak->Fill(backgroundType);
-            
+            continue;
         } else {
             // Track looks like through-going pion, could be signal
             hStitchAsThroughgoing->Fill(backgroundType);
@@ -384,8 +421,17 @@ void RecoAllAnalysis() {
         //   - Chi^2 selection on secondary tracks from new vertex
 
         // Get reco tracks near vertex
-        std::cout << "WC match truth-matched PDG: " << wcMatchPDG << std::endl;
+        int secondaryTaggedPion   = 0;
+        int secondaryTaggedProton = 0;
+        int secondaryTaggedOther  = 0;
+
+        int otherTaggedPion   = 0;
+        int otherTaggedProton = 0;
+
+        int numTracksNearVertex = 0;
         for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); trk_idx++) {
+            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
             int secondaryMatchedPDG = matchedIdentity->at(trk_idx);
 
             // Have to re-check track ordering for stitched case
@@ -402,38 +448,137 @@ void RecoAllAnalysis() {
 
             // Track is near vertex
             if ((distanceFromStart < VERTEX_RADIUS) || (distanceFromEnd < VERTEX_RADIUS)) {
+                numTracksNearVertex++;
+
                 std::vector<double> secondaryDEDX = recoDEDX->at(trk_idx);
-                std::vector<double> secondaryResR = recoDEDX->at(trk_idx);
+                std::vector<double> secondaryResR = recoResR->at(trk_idx);
 
-                bool secondaryReversed = false;
+                bool secondaryReversed  = false;
+                bool originallyReversed = isTrackInverted->at(trk_idx);
                 if (distanceFromEnd < distanceFromStart) secondaryReversed = true;
+                // If it was originally reversed, we do not reverse again
+                if (originallyReversed && secondaryReversed) secondaryReversed = false; 
 
-                double pionChi2   = computeReducedChi2(gPion, secondaryResR, secondaryDEDX, secondaryReversed, secondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
-                double protonChi2 = computeReducedChi2(gProton, secondaryResR, secondaryDEDX, secondaryReversed, secondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
+                double pionChi2          = computeReducedChi2(gPion, secondaryResR, secondaryDEDX, secondaryReversed, secondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
+                double protonChi2        = computeReducedChi2(gProton, secondaryResR, secondaryDEDX, secondaryReversed, secondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
+                double secondaryMeanDEDX = meanDEDX(secondaryDEDX, secondaryReversed, MEAN_DEDX_NUM_TRAJ_POINTS);
 
                 // Using truth-matched, fill corresponding histogram
                 if (secondaryMatchedPDG == -211) {
                     hSecondaryPionChi2Pions->Fill(pionChi2);
                     hSecondaryProtonChi2Pions->Fill(protonChi2);
-                } else if (secondaryMatchedPDG == 2212) {
+                } else if ((secondaryMatchedPDG == 2212) && (matchedKEnergy->at(trk_idx) >= PROTON_ENERGY_LOWER_BOUND) && (matchedKEnergy->at(trk_idx) <= PROTON_ENERGY_UPPER_BOUND)) {
                     hSecondaryPionChi2Protons->Fill(pionChi2);
                     hSecondaryProtonChi2Protons->Fill(protonChi2);
                 } else {
-                    std::cout << "Secondary other: " << secondaryMatchedPDG << std::endl;
-                    std::cout << "  Pion chi2: " << pionChi2 << std::endl;
-                    std::cout << "  Proton chi2: " << protonChi2 << std::endl;
-                    std::cout << std::endl;
-
                     hSecondaryPionChi2Others->Fill(pionChi2);
                     hSecondaryProtonChi2Others->Fill(protonChi2);
+                }
+
+                // First, try classifying track using chi^2 fits
+                if ((pionChi2 < PION_CHI2_PION_VALUE) && (protonChi2 > PROTON_CHI2_PION_VALUE)) {
+                    // Tagged as pion
+                    secondaryTaggedPion++;
+                } else if ((pionChi2 > PION_CHI2_PROTON_VALUE) && (protonChi2 < PROTON_CHI2_PROTON_VALUE)) {
+                    // Tagged as proton
+                    secondaryTaggedProton++;
+                } else {
+                    // Not tagged with chi^2, use mean dE/dx
+                    secondaryTaggedOther++;
+                    if (secondaryMatchedPDG == -211) {
+                        hSecondaryMeanDEDXPions->Fill(secondaryMeanDEDX);
+                    } else if ((secondaryMatchedPDG == 2212) && (matchedKEnergy->at(trk_idx) >= PROTON_ENERGY_LOWER_BOUND) && (matchedKEnergy->at(trk_idx) <= PROTON_ENERGY_UPPER_BOUND)) {
+                        hSecondaryMeanDEDXProtons->Fill(secondaryMeanDEDX);
+                    } else {
+                        hSecondaryMeanDEDXOthers->Fill(secondaryMeanDEDX);
+                    }
+
+                    if (secondaryMeanDEDX <= MEAN_DEDX_THRESHOLD) {
+                        otherTaggedPion++;
+                    } else {
+                        otherTaggedProton++;
+                    }
                 }
             }
         }
 
+        // For particles where we stitched, we also need to analyze the second part of the primary track
+        if (minChi2 == minStitchedChi2) {
+            std::vector<double> newSecondaryResR(wcMatchResR->begin(), wcMatchResR->begin() + bestBreakPoint);
+            std::vector<double> newSecondaryDEDX(wcMatchDEDX->begin(), wcMatchDEDX->begin() + bestBreakPoint);
+
+            double newPionChi2   = computeReducedChi2(gPion, newSecondaryResR, newSecondaryDEDX, false, newSecondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
+            double newProtonChi2 = computeReducedChi2(gProton, newSecondaryResR, newSecondaryDEDX, false, newSecondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
+            double newMeanDEDX   = meanDEDX(newSecondaryDEDX, false, MEAN_DEDX_NUM_TRAJ_POINTS);
+
+            if ((newPionChi2 < PION_CHI2_PION_VALUE) && (newProtonChi2 > PROTON_CHI2_PION_VALUE)) {
+                // Tagged as pion
+                secondaryTaggedPion++;
+            } else if ((newPionChi2 > PION_CHI2_PROTON_VALUE) && (newProtonChi2 < PROTON_CHI2_PROTON_VALUE)) {
+                // Tagged as proton
+                secondaryTaggedProton++;
+            } else {
+                // Not tagged with chi^2, use mean dE/dx
+                secondaryTaggedOther++;
+                if (newMeanDEDX <= MEAN_DEDX_THRESHOLD) {
+                    otherTaggedPion++;
+                } else {
+                    otherTaggedProton++;
+                }
+            }
+        }
+
+        // If primary is through-going:
+        //   - Usual selection
+        // If primary is pion with Bragg peak:
+        //   - If no secondaries, reject
+        //   - If secondaries, usual selection
+        // If primary is proton:
+        //   - TODO; TEST
+        // If primary is stitched:
+        //   - Usual selection
+
+        if (minChi2 == pionChi2) {
+            if (numTracksNearVertex == 0) continue;
+        } else if (minChi2 == protonChi2) {
+            continue;
+        }
+
+        if ((secondaryTaggedPion + otherTaggedPion) > 0) {
+            // If any secondary tagged as pion, not signal
+            continue;
+        } else {
+            hRecoAbsorption->Fill(backgroundType);
+            int totalTaggedProtons = secondaryTaggedProton + otherTaggedProton;
+            if (totalTaggedProtons == 0) { 
+                hRecoAbsorption0p->Fill(backgroundType);
+            } else if (totalTaggedProtons > 0) {
+                hRecoAbsorptionNp->Fill(backgroundType);
+            }
+        }
     }
 
     std::cout << std::endl;
-    std::cout << "Total absorption signal events: " << hTotalSignal->Integral() << std::endl;
+    std::cout << "Total events: " << hTotalEvents->Integral() << std::endl;
+    printBackgroundInfo(hTotalEvents, std::cout);
+    std::cout << std::endl;
+    std::cout << "Total absorption reco'ed events: " << hRecoAbsorption->Integral() << std::endl;
+    std::cout << "  Abs overall purity: " << hRecoAbsorption->Integral(1,2) / hRecoAbsorption->Integral() << std::endl;
+    std::cout << "  Abs overall efficiency: " << hRecoAbsorption->Integral(1,2) / hTotalEvents->Integral(1,2) << std::endl;
+    std::cout << std::endl;
+    printBackgroundInfo(hRecoAbsorption, std::cout);
+    std::cout << std::endl;
+    std::cout << "Total 0p absorption reco'ed events: " << hRecoAbsorption0p->Integral() << std::endl;
+    std::cout << "  Abs 0p purity: " << hRecoAbsorption0p->Integral(1,1) / hRecoAbsorption0p->Integral() << std::endl;
+    std::cout << "  Abs 0p efficiency: " << hRecoAbsorption0p->Integral(1,1) / hTotalEvents->Integral(1,1) << std::endl;
+    std::cout << std::endl;
+    printBackgroundInfo(hRecoAbsorption0p, std::cout);
+    std::cout << std::endl;
+    std::cout << "Total Np absorption reco'ed events: " << hRecoAbsorptionNp->Integral() << std::endl;
+    std::cout << "  Abs Np purity: " << hRecoAbsorptionNp->Integral(2,2) / hRecoAbsorptionNp->Integral() << std::endl;
+    std::cout << "  Abs Np efficiency: " << hRecoAbsorptionNp->Integral(2,2) / hTotalEvents->Integral(2,2) << std::endl;
+    std::cout << std::endl;
+    printBackgroundInfo(hRecoAbsorptionNp, std::cout);
     std::cout << std::endl;
 
     //////////////////
@@ -449,13 +594,15 @@ void RecoAllAnalysis() {
         {hStitchAsPionAndProton, hStitchAsPionBraggPeak, hStitchAsThroughgoing, hStitchAsProton},
         {hStitchFracBreakPoints},
         {hSecondaryPionChi2Pions, hSecondaryPionChi2Protons, hSecondaryPionChi2Others},
-        {hSecondaryProtonChi2Pions, hSecondaryProtonChi2Protons, hSecondaryProtonChi2Others}
+        {hSecondaryProtonChi2Pions, hSecondaryProtonChi2Protons, hSecondaryProtonChi2Others},
+        {hSecondaryMeanDEDXPions, hSecondaryMeanDEDXProtons, hSecondaryMeanDEDXOthers}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         {"Detected vertex distance", "Original distance"},
         {"Stitched pion-proton", "Bragg pion", "Through-going", "Proton"},
         {"Stitched tracks"},
+        {"Pions", "Protons", "Others"},
         {"Pions", "Protons", "Others"},
         {"Pions", "Protons", "Others"}
     };
@@ -465,18 +612,22 @@ void RecoAllAnalysis() {
         "StitchedBackgroundTypes",
         "StitchedFracBreakPoints",
         "PionChi2SecondaryTracks",
-        "ProtonChi2SecondaryTracks"
+        "ProtonChi2SecondaryTracks",
+        "MeanDEDXSecondaryTracks"
     };
 
     std::vector<TString> XLabels = {
         "Distance from true vertex (cm)",
         "Background type",
         "Fractional break point",
-        "Pion reduced \\chi^2",
-        "Proton reduced \\chi^2"
+        "Pion reduced #chi^{2}",
+        "Proton reduced #chi^{2}",
+        "Mean dE/dx (MeV/cm)"
+
     };
 
     std::vector<TString> YLabels = {
+        "Number of tracks",
         "Number of tracks",
         "Number of tracks",
         "Number of tracks",
@@ -545,7 +696,6 @@ void RecoAllAnalysis() {
     hBackgroundTypesStack->GetYaxis()->SetTitleOffset(1.1);
     hBackgroundTypesStack->GetYaxis()->CenterTitle();
 
-
     c->Update();
     c->SaveAs(SaveDir + "StitchedBackgroundTypesStacked.png");
 }
@@ -581,6 +731,17 @@ double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::
 
     // Return reduced chi²
     return nUsed > 0 ? chi2Sum / nUsed : 0.0;
+}
+
+double meanDEDX(std::vector<double> trackDEDX, bool isTrackReversed, int pointsToUse) {
+    double dEdx = 0;
+    if (isTrackReversed) std::reverse(trackDEDX.begin(), trackDEDX.end());
+
+    unsigned int bound = pointsToUse;
+    if (pointsToUse > trackDEDX.size()) bound = trackDEDX.size();
+    for (unsigned int i = 0; i < bound; ++i) dEdx += trackDEDX.size();
+
+    return (dEdx / bound);
 }
 
 void initializeProtonPoints(TGraph* gProton) {
@@ -682,6 +843,14 @@ double distance(double x1, double x2, double y1, double y2, double z1, double z2
     );
 }
 
+bool isWithinReducedVolume(double x, double y, double z) {
+    return (
+        (x > RminX) && (x < RmaxX) && 
+        (y > RminY) && (y < RmaxY) && 
+        (z > RminZ) && (z < RmaxZ)
+    );
+}
+
 void printOneDPlots(
     TString dir, int fontStyle, double textSize, 
     std::vector<std::vector<TH1*>> groups,
@@ -745,4 +914,32 @@ void printOneDPlots(
         PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
         delete PlotCanvas;
     }
+}
+
+void printBackgroundInfo(TH1D* background_histo, std::ostream& os) {
+    int pionAbs0p            = background_histo->GetBinContent(1);
+    int pionAbsNp            = background_histo->GetBinContent(2);
+    int primaryMuon          = background_histo->GetBinContent(3);
+    int primaryElectron      = background_histo->GetBinContent(4);
+    int otherPrimary         = background_histo->GetBinContent(5);
+    int pionOutRedVol        = background_histo->GetBinContent(6);
+    int pionInelScatter      = background_histo->GetBinContent(7);
+    int chargeExchange       = background_histo->GetBinContent(8);
+    int doubleChargeExchange = background_histo->GetBinContent(9);
+    int captureAtRest        = background_histo->GetBinContent(10);
+    int pionDecay            = background_histo->GetBinContent(11);
+    int other                = background_histo->GetBinContent(12);
+
+    os << "  Abs 0p: " << pionAbs0p << std::endl;;
+    os << "  Abs Np: " << pionAbsNp << std::endl;;
+    os << "  Primary muon: " << primaryMuon << std::endl;;
+    os << "  Primary electron: " << primaryElectron << std::endl;;
+    os << "  Other primary: " << otherPrimary << std::endl;;
+    os << "  Outside reduced volume: " << pionOutRedVol << std::endl;;
+    os << "  Inelastic scattering: " << pionInelScatter << std::endl;;
+    os << "  Charge exchange: " << chargeExchange << std::endl;;
+    os << "  Double charge exchange: " << doubleChargeExchange << std::endl;;
+    os << "  Capture at rest: " << captureAtRest << std::endl;;
+    os << "  Decay: " << pionDecay << std::endl;;
+    os << "  Other: " << other << std::endl;
 }
