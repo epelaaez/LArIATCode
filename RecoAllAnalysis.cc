@@ -65,6 +65,7 @@ void printOneDPlots(
     std::vector<TString> xlabels, 
     std::vector<TString> ylabels
 );
+void printTwoDPlots(TString dir, std::vector<TH2*> plots, std::vector<TString> titles);
 
 ///////////////////
 // Main function //
@@ -101,19 +102,19 @@ void RecoAllAnalysis() {
     //    11: other
 
     // Values for chi^2 secondary fits
-    double PION_CHI2_PION_VALUE     = 1.25;
-    double PION_CHI2_PROTON_VALUE   = 2.25;
-    double PROTON_CHI2_PION_VALUE   = 1.75;
-    double PROTON_CHI2_PROTON_VALUE = 2.75; 
+    double PION_CHI2_PION_VALUE     = 1.375;
+    double PION_CHI2_PROTON_VALUE   = 2.625;
+    double PROTON_CHI2_PION_VALUE   = 1.375;
+    double PROTON_CHI2_PROTON_VALUE = 0.125;
 
     // Mean dE/dx threshold
-    double MEAN_DEDX_THRESHOLD = 5.0;
+    double MEAN_DEDX_THRESHOLD = 4.0;
 
     // Vertex radius
     double VERTEX_RADIUS = 5.0;
 
     // Number of points to use in mean dE/dx calculation
-    int MEAN_DEDX_NUM_TRAJ_POINTS = 20;
+    int MEAN_DEDX_NUM_TRAJ_POINTS = 5;
 
     // Proton energy bounds
     double PROTON_ENERGY_LOWER_BOUND = 0.075;
@@ -255,9 +256,73 @@ void RecoAllAnalysis() {
     TH1D *hSecondaryProtonChi2Pions   = new TH1D("hSecondaryProtonChi2Pions", "hSecondaryProtonChi2Pions;;", 20, 0, 10);
     TH1D *hSecondaryProtonChi2Others  = new TH1D("hSecondaryProtonChi2Others", "hSecondaryProtonChi2Others;;", 20, 0, 10);
 
-    TH1D *hSecondaryMeanDEDXProtons = new TH1D("hSecondaryMeanDEDXProtons", "hSecondaryMeanDEDXProtons;;", 20, 0, 20);
-    TH1D *hSecondaryMeanDEDXPions   = new TH1D("hSecondaryMeanDEDXPions", "hSecondaryMeanDEDXPions;;", 20, 0, 20);
-    TH1D *hSecondaryMeanDEDXOthers  = new TH1D("hSecondaryMeanDEDXOthers", "hSecondaryMeanDEDXOthers;;", 20, 0, 20);
+    TH1D *hSecondaryMeanDEDXProtons = new TH1D("hSecondaryMeanDEDXProtons", "hSecondaryMeanDEDXProtons;;", 10, 0, 10);
+    TH1D *hSecondaryMeanDEDXPions   = new TH1D("hSecondaryMeanDEDXPions", "hSecondaryMeanDEDXPions;;", 10, 0, 10);
+    TH1D *hSecondaryMeanDEDXOthers  = new TH1D("hSecondaryMeanDEDXOthers", "hSecondaryMeanDEDXOthers;;", 10, 0, 10);
+
+    /////////////////////////////////////////////////////
+    // Variables and histograms for chi^2 optimization //
+    /////////////////////////////////////////////////////
+
+    int protonChiNumSteps = 20;
+    double protonChiStart = 0.;
+    double protonChiEnd   = 5.;
+    double protonChiStep  = (protonChiEnd - protonChiStart) / ((double) protonChiNumSteps);
+
+    int pionChiNumSteps = 20;
+    double pionChiStart = 0.;
+    double pionChiEnd   = 5.;
+    double pionChiStep  = (pionChiEnd - pionChiStart) / ((double) pionChiNumSteps);
+
+    TH2D* hProtonChi2TruePositives = new TH2D(
+        "hProtonChi2TruePositives", 
+        "hProtonChi2TruePositives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2D* hProtonChi2FalsePositives = new TH2D(
+        "hProtonChi2FalsePositives", 
+        "hProtonChi2FalsePositives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2D* hProtonChi2TrueNegatives = new TH2D(
+        "hProtonChi2TrueNegatives", 
+        "hProtonChi2TrueNegatives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2D* hProtonChi2FalseNegatives = new TH2D(
+        "hProtonChi2FalseNegatives", 
+        "hProtonChi2FalseNegatives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+
+    TH2D* hPionChi2TruePositives = new TH2D(
+        "hPionChi2TruePositives", 
+        "hPionChi2TruePositives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2D* hPionChi2FalsePositives = new TH2D(
+        "hPionChi2FalsePositives", 
+        "hPionChi2FalsePositives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2D* hPionChi2TrueNegatives = new TH2D(
+        "hPionChi2TrueNegatives", 
+        "hPionChi2TrueNegatives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2D* hPionChi2FalseNegatives = new TH2D(
+        "hPionChi2FalseNegatives", 
+        "hPionChi2FalseNegatives;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
 
     //////////////////////
     // Loop over events //
@@ -384,7 +449,7 @@ void RecoAllAnalysis() {
             }
             outStitchedFile << std::endl;
 
-            if ((backgroundType == 1 ) || (backgroundType == 7)) {
+            if ((backgroundType == 1) || (backgroundType == 7)) {
                 hStitchedDistanceFromVertex->Fill(distanceFromVertex);
                 hStitchedOriginalDistanceFromVertex->Fill(originalDistanceFromVertex);
             }
@@ -473,6 +538,46 @@ void RecoAllAnalysis() {
                 } else {
                     hSecondaryPionChi2Others->Fill(pionChi2);
                     hSecondaryProtonChi2Others->Fill(protonChi2);
+                }
+
+                // Fill chi2 plots for optimization
+                for (int iPionChiStep = 0; iPionChiStep < pionChiNumSteps; iPionChiStep++) {
+                    double currentPionChiValue = pionChiStart + (iPionChiStep * pionChiStep);
+                    for (int iProtonChiStep = 0; iProtonChiStep < protonChiNumSteps; iProtonChiStep++) {
+                        double currentProtonChiValue = protonChiStart + (iProtonChiStep * protonChiStep);
+                        
+                        if ((pionChi2 < currentPionChiValue) && (protonChi2 > currentProtonChiValue)) {
+                            // Tagged as pion
+                            if (secondaryMatchedPDG == -211) {
+                                hPionChi2TruePositives->Fill(currentProtonChiValue, currentPionChiValue);
+                            } else {
+                                hPionChi2FalsePositives->Fill(currentProtonChiValue, currentPionChiValue);
+                            }
+                        } else if ((pionChi2 > currentPionChiValue) && (protonChi2 < currentProtonChiValue)) {
+                            // Tagged as proton
+                            if (secondaryMatchedPDG == 2212) {
+                                hProtonChi2TruePositives->Fill(currentProtonChiValue, currentPionChiValue);
+                            } else {
+                                hProtonChi2FalsePositives->Fill(currentProtonChiValue, currentPionChiValue);
+                            }
+                        }
+
+                        if (!((pionChi2 < currentPionChiValue) && (protonChi2 > currentProtonChiValue))) {
+                            if (secondaryMatchedPDG == -211) {
+                                hPionChi2FalseNegatives->Fill(currentProtonChiValue, currentPionChiValue);
+                            } else {
+                                hPionChi2TrueNegatives->Fill(currentProtonChiValue, currentPionChiValue);
+                            }
+                        }
+
+                        if (!((pionChi2 > currentPionChiValue) && (protonChi2 < currentProtonChiValue))) {
+                            if (secondaryMatchedPDG == 2212) {
+                                hProtonChi2FalseNegatives->Fill(currentProtonChiValue, currentPionChiValue);
+                            } else {
+                                hProtonChi2TrueNegatives->Fill(currentProtonChiValue, currentPionChiValue);
+                            }
+                        }
+                    }
                 }
 
                 // First, try classifying track using chi^2 fits
@@ -581,6 +686,79 @@ void RecoAllAnalysis() {
     printBackgroundInfo(hRecoAbsorptionNp, std::cout);
     std::cout << std::endl;
 
+    ///////////////////////////
+    // Compute FOM for chi^2 //
+    ///////////////////////////
+
+    TH2D* hProtonChi2FOM = new TH2D(
+        "hProtonChi2FOM", 
+        "hProtonChi2FOM;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+    TH2D* hPionChi2FOM = new TH2D(
+        "hPionChi2FOM", 
+        "hPionChi2FOM;Proton chi squared;Pion chi squared", 
+        protonChiNumSteps, protonChiStart, protonChiEnd, 
+        pionChiNumSteps, pionChiStart, pionChiEnd
+    );
+
+    for (int iPionChiStep = 0; iPionChiStep < pionChiNumSteps; iPionChiStep++) {
+        double currentPionChiValue = pionChiStart + (iPionChiStep * pionChiStep);
+        for (int iProtonChiStep = 0; iProtonChiStep < protonChiNumSteps; iProtonChiStep++) {
+            double currentProtonChiValue = protonChiStart + (iProtonChiStep * protonChiStep);
+
+            int binX = hPionChi2TruePositives->GetXaxis()->FindFixBin(currentProtonChiValue);
+            int binY = hPionChi2TruePositives->GetYaxis()->FindFixBin(currentPionChiValue);
+
+            double pion_tp     = hPionChi2TruePositives->GetBinContent(binX, binY);
+            double pion_tn     = hPionChi2TrueNegatives->GetBinContent(binX, binY);
+            double pion_fp     = hPionChi2FalsePositives->GetBinContent(binX, binY);
+            double pion_fn     = hPionChi2FalseNegatives->GetBinContent(binX, binY);
+            double pion_eff    = pion_tp / (pion_tp + pion_tn);
+            double pion_purity = pion_tp / (pion_tp + pion_fp);
+
+            // double pion_fom = pion_tp / std::sqrt(pion_tp + pion_fp);
+            double pion_fom = (2 * pion_tp) / (2 * pion_tp + pion_fp + pion_fn);
+            // double pion_fom = ((pion_tp * pion_tn) - (pion_fp * pion_fn)) / std::sqrt((pion_tp + pion_fp) * (pion_tp + pion_fn) * (pion_tn * pion_fp) * (pion_tn * pion_fn));
+            hPionChi2FOM->SetBinContent(binX, binY, pion_fom);
+
+            double proton_tp     = hProtonChi2TruePositives->GetBinContent(binX, binY);
+            double proton_tn     = hProtonChi2TrueNegatives->GetBinContent(binX, binY);
+            double proton_fp     = hProtonChi2FalsePositives->GetBinContent(binX, binY);
+            double proton_fn     = hProtonChi2FalseNegatives->GetBinContent(binX, binY);
+            double proton_eff    = proton_tp / (proton_tp + proton_tn);
+            double proton_purity = proton_tp / (proton_tp + proton_fp);
+
+            // double proton_fom = proton_tp / std::sqrt(proton_tp + proton_fp);
+            double proton_fom = (2 * proton_tp) / (2 * proton_tp + proton_fp + proton_fn);
+            // double proton_fom = ((proton_tp * proton_tn) - (proton_fp * proton_fn)) / std::sqrt((proton_tp + proton_fp) * (proton_tp + proton_fn) * (proton_tn * proton_fp) * (proton_tn * proton_fn));
+            hProtonChi2FOM->SetBinContent(binX, binY, proton_fom);
+        }
+    }
+
+    Int_t binxPion, binyPion, binzPion;
+    Int_t globalBinPion   = hPionChi2FOM->GetMaximumBin(binxPion, binyPion, binzPion);
+
+    double maxContentPion = hPionChi2FOM->GetBinContent(globalBinPion);
+    double xAtMaxPion     = hPionChi2FOM->GetXaxis()->GetBinCenter(binxPion);
+    double yAtMaxPion     = hPionChi2FOM->GetYaxis()->GetBinCenter(binyPion);
+
+    std::cout << std::endl;
+    std::cout << "[PION]  Max‑FOM = " << maxContentPion
+            << " at (χ²_p, χ²_π) = (" << xAtMaxPion << ", " << yAtMaxPion << ")\n";
+
+    Int_t binxProt, binyProt, binzProt;
+    Int_t globalBinProt   = hProtonChi2FOM->GetMaximumBin(binxProt, binyProt, binzProt);
+
+    double maxContentProt = hProtonChi2FOM->GetBinContent(globalBinProt);
+    double xAtMaxProt     = hProtonChi2FOM->GetXaxis()->GetBinCenter(binxProt);
+    double yAtMaxProt     = hProtonChi2FOM->GetYaxis()->GetBinCenter(binyProt);
+
+    std::cout << "[PROTON] Max‑FOM = " << maxContentProt
+            << " at (χ²_p, χ²_π) = (" << xAtMaxProt << ", " << yAtMaxProt << ")\n";
+    std::cout << std::endl;
+
     //////////////////
     // Create plots //
     //////////////////
@@ -645,9 +823,37 @@ void RecoAllAnalysis() {
         YLabels
     );
 
-    ///////////////////////
-    // Create stacked plots
-    ///////////////////////
+    std::vector<TH2*> TwoDPlots = {
+        hProtonChi2TruePositives, 
+        hProtonChi2FalsePositives,
+        hProtonChi2TrueNegatives,
+        hProtonChi2FalseNegatives,
+        hPionChi2TruePositives, 
+        hPionChi2FalsePositives,
+        hPionChi2TrueNegatives,
+        hPionChi2FalseNegatives,
+        hProtonChi2FOM,
+        hPionChi2FOM
+    };
+
+    std::vector<TString> TwoDTitles = {
+        "ProtonChi2TruePositives",
+        "ProtonChi2FalsePositives",
+        "ProtonChi2TrueNegatives",
+        "ProtonChi2FalseNegatives",
+        "PionChi2TruePositives",
+        "PionChi2FalsePositives",
+        "PionChi2TrueNegatives",
+        "PionChi2FalseNegatives",
+        "ProtonChi2FOM",
+        "PionChi2FOM"
+    };
+
+    printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles);
+
+    //////////////////////////
+    // Create stacked plots //
+    //////////////////////////
 
     THStack* hBackgroundTypesStack = new THStack("hBackgroundTypesStack", "BackgroundTypesStack");
 
@@ -734,14 +940,14 @@ double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::
 }
 
 double meanDEDX(std::vector<double> trackDEDX, bool isTrackReversed, int pointsToUse) {
-    double dEdx = 0;
+    double dEdx = 0.;
     if (isTrackReversed) std::reverse(trackDEDX.begin(), trackDEDX.end());
 
     unsigned int bound = pointsToUse;
     if (pointsToUse > trackDEDX.size()) bound = trackDEDX.size();
-    for (unsigned int i = 0; i < bound; ++i) dEdx += trackDEDX.size();
-
-    return (dEdx / bound);
+    for (unsigned int i = 0; i < bound; ++i) dEdx += trackDEDX.at(i);
+    dEdx /= bound;
+    return dEdx;
 }
 
 void initializeProtonPoints(TGraph* gProton) {
@@ -913,6 +1119,20 @@ void printOneDPlots(
         leg->Draw();
         PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
         delete PlotCanvas;
+    }
+}
+
+void printTwoDPlots(TString dir, std::vector<TH2*> plots, std::vector<TString> titles) {
+    int nPlots = plots.size();
+
+    gStyle->SetOptStat(0);
+    TCanvas* c1 = new TCanvas("c1", "EnergyLossPlots", 800, 600);
+    for (int iPlot = 0; iPlot < nPlots; ++iPlot) {
+        TH1* hPlot = plots.at(iPlot);
+        hPlot->SetMinimum(0);
+        hPlot->SetMaximum(hPlot->GetMaximum());
+        hPlot->Draw("COLZ");
+        c1->SaveAs(dir + titles.at(iPlot) + ".png");
     }
 }
 
