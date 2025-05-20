@@ -28,6 +28,30 @@ std::map<int, std::string> backgroundTypes = {
     {11, "Other"}
 };
 
+struct EventInfo {
+    int run; int subrun; int event;
+    float vertexX; float vertexY; float vertexZ;
+
+    int                      wcMatchPDG;
+    std::string              wcMatchProcess;
+    std::vector<int>         wcMatchDaughtersPDG;
+    std::vector<std::string> wcMatchDaughtersProcess;
+
+    int                      truthPrimaryPDG;
+    std::vector<int>         truthPrimaryDaughtersPDG;
+    std::vector<std::string> truthPrimaryDaughtersProcess;
+
+    std::vector<int>         truthSecondaryDaughtersPDG;
+    std::vector<std::string> truthSecondaryDaughtersProcess;
+    std::vector<double>      truthSecondaryDaughtersKE;
+
+    int visibleProtons;
+    int recoProtonCount;
+    int backgroundNum;
+    int tracksNearVertex;
+    int secondaryInteractionTag;
+};
+
 // Reduced volume for interactions
 const double RminX =  5.0;
 const double RmaxX = 42.0;
@@ -44,6 +68,40 @@ const double maxY = 20.0;
 const double minZ =  3.0;
 const double maxZ = 87.0;
 
+// Background types
+int NUM_BACKGROUND_TYPES = 11;
+//    0:  0p pion absorption
+//    1:  Np pion absorption
+//    2:  primary muon event
+//    3:  primary electron event
+//    4:  other primary event
+//    5:  primary pion outside reduced volume
+//    6:  pion inelastic scattering
+//    7:  charge exchange
+//    8:  double charge exchange
+//    9:  capture at rest
+//    10: decay
+//    11: other
+
+// Values for chi^2 secondary fits
+double PION_CHI2_PION_VALUE     = 1.375;
+double PION_CHI2_PROTON_VALUE   = 2.625;
+double PROTON_CHI2_PION_VALUE   = 1.375;
+double PROTON_CHI2_PROTON_VALUE = 0.125;
+
+// Mean dE/dx threshold
+double MEAN_DEDX_THRESHOLD = 4.0;
+
+// Vertex radius
+double VERTEX_RADIUS = 5.0;
+
+// Number of points to use in mean dE/dx calculation
+int MEAN_DEDX_NUM_TRAJ_POINTS = 5;
+
+// Proton energy bounds
+double PROTON_ENERGY_LOWER_BOUND = 0.075;
+double PROTON_ENERGY_UPPER_BOUND = 1.0;
+
 //////////////////////
 // Helper functions //
 //////////////////////
@@ -51,11 +109,13 @@ const double maxZ = 87.0;
 void initializeProtonPoints(TGraph* gProton);
 void initializePionPoints(TGraph* gPion);
 void initializeMuonNoBraggPoints(TGraph* gMuonTG);
+void printEventInfo(EventInfo event, std::ostream& os);
 bool isWithinReducedVolume(double x, double y, double z);
 double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData,  bool dataReversed, int nPoints, int nOutliersToDiscard = 0, int nTrim = 0);
 double distance(double x1, double x2, double y1, double y2, double z1, double z2);
 double meanDEDX(std::vector<double> trackDEDX, bool isTrackReversed, int pointsToUse);
 void printBackgroundInfo(TH1D* background_histo, std::ostream& os);
+int isSecondaryInteractionAbsorption(std::vector<int> daughtersPDG, std::vector<string> daughtersProcess, std::vector<double> daughtersKE);
 void printOneDPlots(
     TString dir, int fontStyle, double textSize,
     std::vector<std::vector<TH1*>> groups,
@@ -85,40 +145,6 @@ void RecoAllAnalysis() {
     initializeProtonPoints(gProton);
     initializePionPoints(gPion);
     initializeMuonNoBraggPoints(gMuonTG);
-
-    // Background types
-    int NUM_BACKGROUND_TYPES = 11;
-    //    0:  0p pion absorption
-    //    1:  Np pion absorption
-    //    2:  primary muon event
-    //    3:  primary electron event
-    //    4:  other primary event
-    //    5:  primary pion outside reduced volume
-    //    6:  pion inelastic scattering
-    //    7:  charge exchange
-    //    8:  double charge exchange
-    //    9:  capture at rest
-    //    10: decay
-    //    11: other
-
-    // Values for chi^2 secondary fits
-    double PION_CHI2_PION_VALUE     = 1.375;
-    double PION_CHI2_PROTON_VALUE   = 2.625;
-    double PROTON_CHI2_PION_VALUE   = 1.375;
-    double PROTON_CHI2_PROTON_VALUE = 0.125;
-
-    // Mean dE/dx threshold
-    double MEAN_DEDX_THRESHOLD = 4.0;
-
-    // Vertex radius
-    double VERTEX_RADIUS = 5.0;
-
-    // Number of points to use in mean dE/dx calculation
-    int MEAN_DEDX_NUM_TRAJ_POINTS = 5;
-
-    // Proton energy bounds
-    double PROTON_ENERGY_LOWER_BOUND = 0.075;
-    double PROTON_ENERGY_UPPER_BOUND = 1.0;
 
     int FontStyle = 132;
     double TextSize = 0.06;
@@ -158,13 +184,11 @@ void RecoAllAnalysis() {
     int WC2TPCtrkID;
     double WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY, WC2TPCPrimaryBeginZ;
     double WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ;
-    int wcMatchPDG;
     std::vector<double>* wcMatchResR = nullptr;
     std::vector<double>* wcMatchDEDX = nullptr;
     std::vector<double>* wcMatchXPos = nullptr;
     std::vector<double>* wcMatchYPos = nullptr;
     std::vector<double>* wcMatchZPos = nullptr;
-    tree->SetBranchAddress("wcMatchPDG", &wcMatchPDG);
     tree->SetBranchAddress("WC2TPCtrkID", &WC2TPCtrkID);
     tree->SetBranchAddress("WC2TPCPrimaryBeginX", &WC2TPCPrimaryBeginX);
     tree->SetBranchAddress("WC2TPCPrimaryBeginY", &WC2TPCPrimaryBeginY);
@@ -177,6 +201,16 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("wcMatchXPos", &wcMatchXPos);
     tree->SetBranchAddress("wcMatchYPos", &wcMatchYPos);
     tree->SetBranchAddress("wcMatchZPos", &wcMatchZPos);
+
+    // WC match truth information
+    int                       wcMatchPDG;
+    std::string*              wcMatchProcess          = new std::string();
+    std::vector<int>*         wcMatchDaughtersPDG     = nullptr;
+    std::vector<std::string>* wcMatchDaughtersProcess = nullptr;
+    tree->SetBranchAddress("wcMatchDaughtersPDG", &wcMatchDaughtersPDG);
+    tree->SetBranchAddress("wcMatchDaughtersProcess", &wcMatchDaughtersProcess);
+    tree->SetBranchAddress("wcMatchProcess", &wcMatchProcess);
+    tree->SetBranchAddress("wcMatchPDG", &wcMatchPDG);
 
     // Reco information
     std::vector<double>* recoMeanDEDX      = nullptr;
@@ -226,15 +260,20 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("truthPrimaryDaughtersProcess", &truthPrimaryDaughtersProcess);
     tree->SetBranchAddress("truthPrimaryDaughtersKE", &truthPrimaryDaughtersKE);
 
-    // Out files
-    std::ofstream outStitchedFile("files/WCMatchStitching.txt");
-    std::ofstream outWCAll("files/WCMatchAllChi2.txt");
+    std::vector<int>*         truthSecondaryPionDaughtersPDG     = nullptr;
+    std::vector<std::string>* truthSecondaryPionDaughtersProcess = nullptr;
+    std::vector<double>*      truthSecondaryPionDaughtersKE      = nullptr;
+    tree->SetBranchAddress("truthSecondaryPionDaughtersPDG", &truthSecondaryPionDaughtersPDG);
+    tree->SetBranchAddress("truthSecondaryPionDaughtersProcess", &truthSecondaryPionDaughtersProcess);
+    tree->SetBranchAddress("truthSecondaryPionDaughtersKE", &truthSecondaryPionDaughtersKE);
+
+    // Retrieve histograms
+    TH1D* hTotalEvents = (TH1D*) Directory->Get<TH1D>("hTotalEvents");
 
     ///////////////////////
     // Create histograms //
     ///////////////////////
 
-    TH1D *hTotalEvents      = new TH1D("hTotalEvents", "hTotalEvents;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hRecoAbsorption   = new TH1D("hRecoAbsorption", "hRecoAbsorption;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hRecoAbsorption0p = new TH1D("hRecoAbsorption0p", "hRecoAbsorption0p;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hRecoAbsorptionNp = new TH1D("hRecoAbsorptionNp", "hRecoAbsorptionNp;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
@@ -259,6 +298,9 @@ void RecoAllAnalysis() {
     TH1D *hSecondaryMeanDEDXProtons = new TH1D("hSecondaryMeanDEDXProtons", "hSecondaryMeanDEDXProtons;;", 10, 0, 10);
     TH1D *hSecondaryMeanDEDXPions   = new TH1D("hSecondaryMeanDEDXPions", "hSecondaryMeanDEDXPions;;", 10, 0, 10);
     TH1D *hSecondaryMeanDEDXOthers  = new TH1D("hSecondaryMeanDEDXOthers", "hSecondaryMeanDEDXOthers;;", 10, 0, 10);
+
+    TH1D *h0pInelasticBackgroundSecondaryInteraction = new TH1D("h0pInelasticBackgroundSecondaryInteraction", "h0pInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D *hNpInelasticBackgroundSecondaryInteraction = new TH1D("hNpInelasticBackgroundSecondaryInteraction", "hNpInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
     /////////////////////////////////////////////////////
     // Variables and histograms for chi^2 optimization //
@@ -324,6 +366,15 @@ void RecoAllAnalysis() {
         pionChiNumSteps, pionChiStart, pionChiEnd
     );
 
+    /////////////////////////////////
+    // Files for event information //
+    /////////////////////////////////
+
+    std::ofstream outFile0pBackground("files/RecoAllAnalysis/0pBackground.txt");
+    std::ofstream outFileNpBackground("files/RecoAllAnalysis/NpBackground.txt");
+    std::ofstream outStitchedFile("files/RecoAllAnalysis/WCMatchStitching.txt");
+    std::ofstream outWCAll("files/RecoAllAnalysis/WCMatchAllChi2.txt");
+
     //////////////////////
     // Loop over events //
     //////////////////////
@@ -339,7 +390,6 @@ void RecoAllAnalysis() {
             if (numVisibleProtons == 0) backgroundType = 0;
             if (numVisibleProtons > 0)  backgroundType = 1;
         }
-        hTotalEvents->Fill(backgroundType);
 
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
@@ -639,7 +689,7 @@ void RecoAllAnalysis() {
         //   - If no secondaries, reject
         //   - If secondaries, usual selection
         // If primary is proton:
-        //   - TODO; TEST
+        //   - Reject
         // If primary is stitched:
         //   - Usual selection
 
@@ -649,17 +699,64 @@ void RecoAllAnalysis() {
             continue;
         }
 
-        if ((secondaryTaggedPion + otherTaggedPion) > 0) {
+        int totalTaggedPions   = secondaryTaggedPion + otherTaggedPion;
+        int totalTaggedProtons = secondaryTaggedProton + otherTaggedProton;
+
+        if (totalTaggedPions > 0) {
             // If any secondary tagged as pion, not signal
             continue;
         } else {
             hRecoAbsorption->Fill(backgroundType);
-            int totalTaggedProtons = secondaryTaggedProton + otherTaggedProton;
             if (totalTaggedProtons == 0) { 
                 hRecoAbsorption0p->Fill(backgroundType);
             } else if (totalTaggedProtons > 0) {
                 hRecoAbsorptionNp->Fill(backgroundType);
             }
+        }
+
+        /////////////////////////
+        // Analyze backgrounds //
+        /////////////////////////
+
+        // At this point, any event still alive was tagged as pion absorption
+        
+        // First, just print all the data for the background events
+        EventInfo thisEventInfo;
+        thisEventInfo.run    = run;
+        thisEventInfo.subrun = subrun;
+        thisEventInfo.event  = event;
+
+        thisEventInfo.vertexX = truthPrimaryVertexX;
+        thisEventInfo.vertexY = truthPrimaryVertexY;
+        thisEventInfo.vertexZ = truthPrimaryVertexZ;
+
+        thisEventInfo.wcMatchPDG              = wcMatchPDG;
+        thisEventInfo.wcMatchProcess          = *wcMatchProcess;
+        thisEventInfo.wcMatchDaughtersPDG     = *wcMatchDaughtersPDG;
+        thisEventInfo.wcMatchDaughtersProcess = *wcMatchDaughtersProcess;
+
+        thisEventInfo.truthPrimaryPDG              = truthPrimaryPDG;
+        thisEventInfo.truthPrimaryDaughtersPDG     = *truthPrimaryDaughtersPDG;
+        thisEventInfo.truthPrimaryDaughtersProcess = *truthPrimaryDaughtersProcess;
+
+        thisEventInfo.visibleProtons   = numVisibleProtons;
+        thisEventInfo.backgroundNum    = backgroundType;
+        thisEventInfo.recoProtonCount  = totalTaggedProtons;
+        thisEventInfo.tracksNearVertex = numTracksNearVertex;
+
+        thisEventInfo.truthSecondaryDaughtersPDG     = *truthSecondaryPionDaughtersPDG;
+        thisEventInfo.truthSecondaryDaughtersProcess = *truthSecondaryPionDaughtersProcess;
+        thisEventInfo.truthSecondaryDaughtersKE      = *truthSecondaryPionDaughtersKE;
+
+        int secondaryInteractionTag           = isSecondaryInteractionAbsorption(*truthSecondaryPionDaughtersPDG, *truthSecondaryPionDaughtersProcess, *truthSecondaryPionDaughtersKE);
+        thisEventInfo.secondaryInteractionTag = secondaryInteractionTag;
+
+        if ((totalTaggedProtons == 0) && (backgroundType != 0)) {
+            printEventInfo(thisEventInfo, outFile0pBackground);
+            if (backgroundType == 6) h0pInelasticBackgroundSecondaryInteraction->Fill(secondaryInteractionTag);
+        } else if ((totalTaggedProtons > 0) && (backgroundType != 1)) {
+            printEventInfo(thisEventInfo, outFileNpBackground);
+            if (backgroundType == 6) hNpInelasticBackgroundSecondaryInteraction->Fill(secondaryInteractionTag);
         }
     }
 
@@ -679,11 +776,17 @@ void RecoAllAnalysis() {
     std::cout << std::endl;
     printBackgroundInfo(hRecoAbsorption0p, std::cout);
     std::cout << std::endl;
+    std::cout << "0p inelastic scattering background secondary interactions: " << std::endl;
+    printBackgroundInfo(h0pInelasticBackgroundSecondaryInteraction, std::cout);
+    std::cout << std::endl;
     std::cout << "Total Np absorption reco'ed events: " << hRecoAbsorptionNp->Integral() << std::endl;
     std::cout << "  Abs Np purity: " << hRecoAbsorptionNp->Integral(2,2) / hRecoAbsorptionNp->Integral() << std::endl;
     std::cout << "  Abs Np efficiency: " << hRecoAbsorptionNp->Integral(2,2) / hTotalEvents->Integral(2,2) << std::endl;
     std::cout << std::endl;
     printBackgroundInfo(hRecoAbsorptionNp, std::cout);
+    std::cout << std::endl;
+    std::cout << "Np inelastic scattering background secondary interactions: " << std::endl;
+    printBackgroundInfo(hNpInelasticBackgroundSecondaryInteraction, std::cout);
     std::cout << std::endl;
 
     ///////////////////////////
@@ -745,8 +848,7 @@ void RecoAllAnalysis() {
     double yAtMaxPion     = hPionChi2FOM->GetYaxis()->GetBinCenter(binyPion);
 
     std::cout << std::endl;
-    std::cout << "[PION]  Max‑FOM = " << maxContentPion
-            << " at (χ²_p, χ²_π) = (" << xAtMaxPion << ", " << yAtMaxPion << ")\n";
+    std::cout << "Pion χ² max‑FOM = " << maxContentPion << " at (χ²_p, χ²_π) = (" << xAtMaxPion << ", " << yAtMaxPion << ")" << std::endl;
 
     Int_t binxProt, binyProt, binzProt;
     Int_t globalBinProt   = hProtonChi2FOM->GetMaximumBin(binxProt, binyProt, binzProt);
@@ -755,8 +857,7 @@ void RecoAllAnalysis() {
     double xAtMaxProt     = hProtonChi2FOM->GetXaxis()->GetBinCenter(binxProt);
     double yAtMaxProt     = hProtonChi2FOM->GetYaxis()->GetBinCenter(binyProt);
 
-    std::cout << "[PROTON] Max‑FOM = " << maxContentProt
-            << " at (χ²_p, χ²_π) = (" << xAtMaxProt << ", " << yAtMaxProt << ")\n";
+    std::cout << "Proton χ² max‑FOM = " << maxContentProt << " at (χ²_p, χ²_π) = (" << xAtMaxProt << ", " << yAtMaxProt << ")" << std::endl;
     std::cout << std::endl;
 
     //////////////////
@@ -948,6 +1049,34 @@ double meanDEDX(std::vector<double> trackDEDX, bool isTrackReversed, int pointsT
     for (unsigned int i = 0; i < bound; ++i) dEdx += trackDEDX.at(i);
     dEdx /= bound;
     return dEdx;
+}
+
+int isSecondaryInteractionAbsorption(std::vector<int> daughtersPDG, std::vector<string> daughtersProcess, std::vector<double> daughtersKE) {
+    int numDaughters = daughtersPDG.size();
+    if (numDaughters == 0) return 11;
+
+    int tempNumProtons = 0;
+    for (int i = 0; i < numDaughters; ++i) {
+        if ((daughtersPDG[i] == 11) && (daughtersProcess[i] == "hIoni")) continue;
+        if (daughtersPDG[i] == -211) return 6;
+        if (daughtersPDG[i] == 111) return 7;
+        if (daughtersPDG[i] == 211) return 8;
+        if (daughtersProcess[i] == "Decay") return 10;
+        if (daughtersProcess[i] == "hBertiniCaptureAtRest") return 9;
+
+        if (daughtersProcess[i] == "pi-Inelastic") {
+            if ((daughtersPDG[i] == 13) || (daughtersPDG[i] == -13)) return 11;
+            else if ((daughtersPDG[i] == 321) || (daughtersPDG[i] == -321) || (daughtersPDG[i] == 311)) return 11;
+            else if (daughtersPDG[i] == 2212) {
+                if ((daughtersKE[i] >= PROTON_ENERGY_LOWER_BOUND) && (daughtersKE[i] <= PROTON_ENERGY_UPPER_BOUND)) {
+                    tempNumProtons++;
+                }
+            }
+        }
+    }
+
+    if (tempNumProtons == 0) return 0;
+    return 1;
 }
 
 void initializeProtonPoints(TGraph* gProton) {
@@ -1162,4 +1291,41 @@ void printBackgroundInfo(TH1D* background_histo, std::ostream& os) {
     os << "  Capture at rest: " << captureAtRest << std::endl;;
     os << "  Decay: " << pionDecay << std::endl;;
     os << "  Other: " << other << std::endl;
+}
+
+void printEventInfo(EventInfo event, std::ostream& os) {
+    os << "Run: " << event.run << " subrun: " << event.subrun << " event: " << event.event << std::endl;
+    os << "  Background type: " << backgroundTypes[event.backgroundNum] << std::endl;
+    os << "  WC match PDG: " << event.wcMatchPDG << std::endl;
+    os << "  WC match process: " << event.wcMatchProcess << std::endl;
+    os << "  WC match daughters: " << std::endl;
+    for (int n = 0; n < event.wcMatchDaughtersPDG.size(); ++n) {
+        if (event.wcMatchDaughtersPDG[n] == 11 && event.wcMatchDaughtersProcess[n] == "hIoni") continue;
+        os << "      PDG: " << event.wcMatchDaughtersPDG[n];
+        os << " Process: " << event.wcMatchDaughtersProcess[n];
+        os << std::endl;
+    }
+    os << std::endl;
+    os << "  Primary PDG: " << event.truthPrimaryPDG << std::endl;
+    os << "  Primary vertex: " << event.vertexX << ", " << event.vertexY << ", " << event.vertexZ << std::endl; 
+    os << "  Primary daughters: " << std::endl;
+    for (int n = 0; n < event.truthPrimaryDaughtersPDG.size(); ++n) {
+        if (event.truthPrimaryDaughtersPDG[n] == 11 && event.truthPrimaryDaughtersProcess[n] == "hIoni") continue;
+        os << "      PDG: " << event.truthPrimaryDaughtersPDG[n];
+        os << " Process: " << event.truthPrimaryDaughtersProcess[n];
+        os << std::endl;
+    }
+    os << "  Secondary pion daughters: " << std::endl;
+    for (int n = 0; n < event.truthSecondaryDaughtersPDG.size(); ++n) {
+        if (event.truthSecondaryDaughtersPDG[n] == 11 && event.truthSecondaryDaughtersProcess[n] == "hIoni") continue;
+        os << "      PDG: " << event.truthSecondaryDaughtersPDG[n];
+        os << " Process: " << event.truthSecondaryDaughtersProcess[n];
+        os << std::endl;
+    }
+    os << "  Secondary interaction tagged as: " << backgroundTypes[event.secondaryInteractionTag] << std::endl;
+    os << std::endl;
+    os << "  Tracks reco'ed near vertex: " << event.tracksNearVertex << std::endl;
+    os << "  Tracks reco'ed as protons: " << event.recoProtonCount << std::endl;
+    os << "  True visible protons: " << event.visibleProtons << std::endl;
+    os << std::endl;
 }
