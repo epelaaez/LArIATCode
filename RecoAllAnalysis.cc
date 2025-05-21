@@ -310,9 +310,9 @@ void RecoAllAnalysis() {
     TH1D *h0pBackgroundScatteringAngle    = new TH1D("h0pBackgroundScatteringAngle", "h0pBackgroundScatteringAngle;;", 20, 0, TMath::Pi());
     TH1D *hNpBackgroundScatteringAngle    = new TH1D("hNpBackgroundScatteringAngle", "hNpBackgroundScatteringAngle;;", 20, 0, TMath::Pi());
 
-    TH1D *hTotalBackgroundScatteringLength = new TH1D("hTotalBackgroundScatteringLength", "hTotalBackgroundScatteringLength;;", 20, 0, 30);
-    TH1D *h0pBackgroundScatteringLength    = new TH1D("h0pBackgroundScatteringLength", "h0pBackgroundScatteringLength;;", 20, 0, 30);
-    TH1D *hNpBackgroundScatteringLength    = new TH1D("hNpBackgroundScatteringLength", "hNpBackgroundScatteringLength;;", 20, 0, 30);
+    TH1D *hTotalBackgroundScatteringLength = new TH1D("hTotalBackgroundScatteringLength", "hTotalBackgroundScatteringLength;;", 15, 0, 40);
+    TH1D *h0pBackgroundScatteringLength    = new TH1D("h0pBackgroundScatteringLength", "h0pBackgroundScatteringLength;;", 15, 0, 40);
+    TH1D *hNpBackgroundScatteringLength    = new TH1D("hNpBackgroundScatteringLength", "hNpBackgroundScatteringLength;;", 15, 0, 40);
 
     TH1D *hScatteringBackgroundOriginalDistanceToPrimaryVertex = new TH1D("hScatteringBackgroundOriginalDistanceToPrimaryVertex", "hScatteringBackgroundOriginalDistanceToPrimaryVertex;;", 20, 0, 20);
     TH1D *hScatteringBackgroundOriginalDistanceToSecondaryVertex = new TH1D("hScatteringBackgroundOriginalDistanceToSecondaryVertex", "hScatteringBackgroundOriginalDistanceToSecondaryVertex;;", 20, 0, 20);
