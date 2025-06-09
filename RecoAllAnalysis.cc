@@ -264,12 +264,13 @@ void RecoAllAnalysis() {
     std::vector<int>*         truthSecondaryPionDaughtersPDG     = nullptr;
     std::vector<std::string>* truthSecondaryPionDaughtersProcess = nullptr;
     std::vector<double>*      truthSecondaryPionDaughtersKE      = nullptr;
-    double truthScatteringAngle, truthSecondaryVertexX, truthSecondaryVertexY, truthSecondaryVertexZ, truthScatteredPionLength;
+    double truthScatteringAngle, truthSecondaryVertexX, truthSecondaryVertexY, truthSecondaryVertexZ, truthScatteredPionLength, truthScatteredPionKE;
     tree->SetBranchAddress("truthSecondaryPionDaughtersPDG", &truthSecondaryPionDaughtersPDG);
     tree->SetBranchAddress("truthSecondaryPionDaughtersProcess", &truthSecondaryPionDaughtersProcess);
     tree->SetBranchAddress("truthSecondaryPionDaughtersKE", &truthSecondaryPionDaughtersKE);
     tree->SetBranchAddress("truthScatteringAngle", &truthScatteringAngle);
     tree->SetBranchAddress("truthScatteredPionLength", &truthScatteredPionLength);
+    tree->SetBranchAddress("truthScatteredPionKE", &truthScatteredPionKE);
     tree->SetBranchAddress("truthSecondaryVertexX", &truthSecondaryVertexX);
     tree->SetBranchAddress("truthSecondaryVertexY", &truthSecondaryVertexY);
     tree->SetBranchAddress("truthSecondaryVertexZ", &truthSecondaryVertexZ);
@@ -314,6 +315,10 @@ void RecoAllAnalysis() {
     TH1D *h0pBackgroundScatteringLength    = new TH1D("h0pBackgroundScatteringLength", "h0pBackgroundScatteringLength;;", 15, 0, 40);
     TH1D *hNpBackgroundScatteringLength    = new TH1D("hNpBackgroundScatteringLength", "hNpBackgroundScatteringLength;;", 15, 0, 40);
 
+    TH1D *hTotalBackgroundScatteringKE = new TH1D("hTotalBackgroundScatteringKE", "hTotalBackgroundScatteringKE;;", 20, 0, 0.5);
+    TH1D *h0pBackgroundScatteringKE    = new TH1D("h0pBackgroundScatteringKE", "h0pBackgroundScatteringKE;;", 20, 0, 0.5);
+    TH1D *hNpBackgroundScatteringKE    = new TH1D("hNpBackgroundScatteringKE", "hNpBackgroundScatteringKE;;", 20, 0, 0.5);
+
     TH1D *hScatteringBackgroundOriginalDistanceToPrimaryVertex = new TH1D("hScatteringBackgroundOriginalDistanceToPrimaryVertex", "hScatteringBackgroundOriginalDistanceToPrimaryVertex;;", 20, 0, 20);
     TH1D *hScatteringBackgroundOriginalDistanceToSecondaryVertex = new TH1D("hScatteringBackgroundOriginalDistanceToSecondaryVertex", "hScatteringBackgroundOriginalDistanceToSecondaryVertex;;", 20, 0, 20);
     TH1D *hScatteringBackgroundDistanceToPrimaryVertex = new TH1D("hScatteringBackgroundDistanceToPrimaryVertex", "hScatteringBackgroundDistanceToPrimaryVertex;;", 20, 0, 20);
@@ -321,6 +326,20 @@ void RecoAllAnalysis() {
 
     TH1D *h0pInelasticBackgroundSecondaryInteraction = new TH1D("h0pInelasticBackgroundSecondaryInteraction", "h0pInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hNpInelasticBackgroundSecondaryInteraction = new TH1D("hNpInelasticBackgroundSecondaryInteraction", "hNpInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+
+    TH2D *hTotalBackgroundScatteringLengthVSAngle = new TH2D(
+        "hTotalBackgroundScatteringLengthVSAngle",
+        "hTotalBackgroundScatteringLengthVSAngle;Length (cm);Angle (rad)",
+        10, 0, 40, 
+        10, 0, TMath::Pi()
+    );
+
+    TH2D *hTotalBackgroundScatteringLengthVSKEnergy = new TH2D(
+        "hTotalBackgroundScatteringLengthVSKEnergy",
+        "hTotalBackgroundScatteringLengthVSKEnergy;Length (cm);Energy (GeV/c)",
+        10, 0, 40,
+        8, 0, 0.4
+    );
 
     /////////////////////////////////////////////////////
     // Variables and histograms for chi^2 optimization //
@@ -673,6 +692,11 @@ void RecoAllAnalysis() {
                         otherTaggedProton++;
                     }
                 }
+            } else {
+                // TODO: if track is not near vertex
+                //       First, check at least one of the two endpoints is inside reduced volume
+                //       Then, we want to check that this track is not a pion
+                //       If pion, reject event
             }
         }
 
@@ -773,6 +797,10 @@ void RecoAllAnalysis() {
         if (backgroundType == 6) {
             hTotalBackgroundScatteringAngle->Fill(truthScatteringAngle);
             hTotalBackgroundScatteringLength->Fill(truthScatteredPionLength);
+            hTotalBackgroundScatteringKE->Fill(truthScatteredPionKE);
+
+            hTotalBackgroundScatteringLengthVSAngle->Fill(truthScatteredPionLength, truthScatteringAngle);
+            hTotalBackgroundScatteringLengthVSKEnergy->Fill(truthScatteredPionLength, truthScatteredPionKE);
 
             // Compute distance of reco'ed vertex to secondary vertex
             double distanceFromSecondaryVertex         = distance(breakPointX, truthSecondaryVertexX, breakPointY, truthSecondaryVertexY, breakPointZ, truthSecondaryVertexZ);
@@ -790,6 +818,7 @@ void RecoAllAnalysis() {
                 h0pInelasticBackgroundSecondaryInteraction->Fill(secondaryInteractionTag);
                 h0pBackgroundScatteringAngle->Fill(truthScatteringAngle);
                 h0pBackgroundScatteringLength->Fill(truthScatteredPionLength);
+                h0pBackgroundScatteringKE->Fill(truthScatteredPionKE);
             }
         } else if ((totalTaggedProtons > 0) && (backgroundType != 1)) {
             printEventInfo(thisEventInfo, outFileNpBackground);
@@ -797,6 +826,7 @@ void RecoAllAnalysis() {
                 hNpInelasticBackgroundSecondaryInteraction->Fill(secondaryInteractionTag);
                 hNpBackgroundScatteringAngle->Fill(truthScatteringAngle);
                 hNpBackgroundScatteringLength->Fill(truthScatteredPionLength);
+                hNpBackgroundScatteringKE->Fill(truthScatteredPionKE);
             }
         }
     }
@@ -918,6 +948,7 @@ void RecoAllAnalysis() {
         {hSecondaryMeanDEDXPions, hSecondaryMeanDEDXProtons, hSecondaryMeanDEDXOthers},
         {hTotalBackgroundScatteringAngle, h0pBackgroundScatteringAngle, hNpBackgroundScatteringAngle},
         {hTotalBackgroundScatteringLength, h0pBackgroundScatteringLength, hNpBackgroundScatteringLength},
+        {hTotalBackgroundScatteringKE, h0pBackgroundScatteringKE, hNpBackgroundScatteringKE},
         {hScatteringBackgroundOriginalDistanceToPrimaryVertex, hScatteringBackgroundOriginalDistanceToSecondaryVertex, hScatteringBackgroundDistanceToPrimaryVertex, hScatteringBackgroundDistanceToSecondaryVertex}
     };
 
@@ -928,6 +959,7 @@ void RecoAllAnalysis() {
         {"Pions", "Protons", "Others"},
         {"Pions", "Protons", "Others"},
         {"Pions", "Protons", "Others"},
+        {"All background", "0p background", "Np background"},
         {"All background", "0p background", "Np background"},
         {"All background", "0p background", "Np background"},
         {"Original to primary", "Original to secondary", "Detected to primary", "Detected to secondary"}
@@ -942,6 +974,7 @@ void RecoAllAnalysis() {
         "MeanDEDXSecondaryTracks",
         "InelasticScatteringBackgroundAngle",
         "InelasticScatteringBackgroundLength",
+        "InelasticScatteringBackgroundKE",
         "InelasticScatteringBackgroundDistanceFromVertex"
     };
 
@@ -954,6 +987,7 @@ void RecoAllAnalysis() {
         "Mean dE/dx (MeV/cm)",
         "Scattering angle (rad)",
         "Scattered pion length (cm)",
+        "Kinetic energy (MeV/c)",
         "Distance from true vertex (cm)"
     };
 
@@ -965,6 +999,7 @@ void RecoAllAnalysis() {
         "Number of tracks",
         "Number of tracks",
         "Number of events",
+        "Number of tracks",
         "Number of tracks",
         "Number of tracks"
     };
@@ -989,7 +1024,9 @@ void RecoAllAnalysis() {
         hPionChi2TrueNegatives,
         hPionChi2FalseNegatives,
         hProtonChi2FOM,
-        hPionChi2FOM
+        hPionChi2FOM,
+        hTotalBackgroundScatteringLengthVSAngle,
+        hTotalBackgroundScatteringLengthVSKEnergy
     };
 
     std::vector<TString> TwoDTitles = {
@@ -1002,7 +1039,9 @@ void RecoAllAnalysis() {
         "PionChi2TrueNegatives",
         "PionChi2FalseNegatives",
         "ProtonChi2FOM",
-        "PionChi2FOM"
+        "PionChi2FOM",
+        "TotalBackgroundScatteringLengthVSAngle",
+        "TotalBackgroundScatteringLengthVSKEnergy"
     };
 
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles);
