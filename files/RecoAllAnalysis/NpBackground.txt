@@ -38,6 +38,8 @@ Run: 1 subrun: 0 event: 19806
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 19888
   Background type: Abs 0p
   WC match PDG: -211
@@ -65,6 +67,8 @@ Run: 1 subrun: 0 event: 19888
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 19904
   Background type: Inelastic scattering
@@ -105,6 +109,8 @@ Run: 1 subrun: 0 event: 19904
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 19944
   Background type: Abs 0p
@@ -158,6 +164,8 @@ Run: 1 subrun: 0 event: 19944
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 199854
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -193,6 +201,8 @@ Run: 1 subrun: 0 event: 199854
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 199870
   Background type: Inelastic scattering
@@ -240,6 +250,8 @@ Run: 1 subrun: 0 event: 199870
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 3
 
 Run: 1 subrun: 0 event: 199872
   Background type: Decay
@@ -308,6 +320,8 @@ Run: 1 subrun: 0 event: 199872
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 199889
   Background type: Primary electron
@@ -421,6 +435,8 @@ Run: 1 subrun: 0 event: 199889
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 199942
   Background type: Outside reduced volume
   WC match PDG: -211
@@ -458,6 +474,8 @@ Run: 1 subrun: 0 event: 199942
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 2
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 3
 
 Run: 1 subrun: 0 event: 199944
   Background type: Primary electron
@@ -564,6 +582,8 @@ Run: 1 subrun: 0 event: 199944
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 3
 
 Run: 1 subrun: 0 event: 199970
   Background type: Primary electron
@@ -673,6 +693,8 @@ Run: 1 subrun: 0 event: 199970
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 4
+
 Run: 1 subrun: 0 event: 200174
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -705,6 +727,8 @@ Run: 1 subrun: 0 event: 200174
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 2
 
 Run: 1 subrun: 0 event: 200341
   Background type: Inelastic scattering
@@ -744,6 +768,8 @@ Run: 1 subrun: 0 event: 200341
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 200528
   Background type: Abs 0p
@@ -793,6 +819,8 @@ Run: 1 subrun: 0 event: 200528
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 200571
   Background type: Abs 0p
   WC match PDG: -211
@@ -825,6 +853,8 @@ Run: 1 subrun: 0 event: 200571
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 200599
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -855,6 +885,8 @@ Run: 1 subrun: 0 event: 200599
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 200732
   Background type: Inelastic scattering
@@ -898,6 +930,8 @@ Run: 1 subrun: 0 event: 200732
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 200743
   Background type: Abs 0p
   WC match PDG: -211
@@ -936,6 +970,8 @@ Run: 1 subrun: 0 event: 200743
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 200772
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -972,6 +1008,8 @@ Run: 1 subrun: 0 event: 200772
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 200887
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -1007,6 +1045,8 @@ Run: 1 subrun: 0 event: 200887
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 200903
   Background type: Outside reduced volume
@@ -1056,6 +1096,8 @@ Run: 1 subrun: 0 event: 200903
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 200915
   Background type: Inelastic scattering
   WC match PDG: 2212
@@ -1084,6 +1126,8 @@ Run: 1 subrun: 0 event: 200915
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 2
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 200932
   Background type: Primary electron
@@ -1129,6 +1173,8 @@ Run: 1 subrun: 0 event: 200932
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 3
+
 Run: 1 subrun: 0 event: 200992
   Background type: Abs 0p
   WC match PDG: -211
@@ -1158,6 +1204,8 @@ Run: 1 subrun: 0 event: 200992
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 2
 
 Run: 1 subrun: 0 event: 201077
   Background type: Primary electron
@@ -1287,6 +1335,8 @@ Run: 1 subrun: 0 event: 201077
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 4
+
 Run: 1 subrun: 0 event: 201108
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -1323,6 +1373,8 @@ Run: 1 subrun: 0 event: 201108
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 201128
   Background type: Capture at rest
   WC match PDG: 11
@@ -1355,6 +1407,8 @@ Run: 1 subrun: 0 event: 201128
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 201142
   Background type: Abs 0p
@@ -1396,6 +1450,8 @@ Run: 1 subrun: 0 event: 201142
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 201309
   Background type: Abs 0p
   WC match PDG: -211
@@ -1435,6 +1491,8 @@ Run: 1 subrun: 0 event: 201309
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 201457
   Background type: Abs 0p
@@ -1486,6 +1544,8 @@ Run: 1 subrun: 0 event: 201457
   Tracks reco'ed as protons: 2
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 201565
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -1531,6 +1591,8 @@ Run: 1 subrun: 0 event: 201565
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 201678
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -1571,6 +1633,8 @@ Run: 1 subrun: 0 event: 201678
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 201706
   Background type: Inelastic scattering
@@ -1614,6 +1678,8 @@ Run: 1 subrun: 0 event: 201706
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 201857
   Background type: Abs 0p
   WC match PDG: -211
@@ -1654,6 +1720,8 @@ Run: 1 subrun: 0 event: 201857
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 201880
   Background type: Abs 0p
   WC match PDG: -211
@@ -1691,6 +1759,8 @@ Run: 1 subrun: 0 event: 201880
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 4
 
 Run: 1 subrun: 0 event: 201914
   Background type: Double charge exchange
@@ -1732,6 +1802,8 @@ Run: 1 subrun: 0 event: 201914
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 201949
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -1768,6 +1840,8 @@ Run: 1 subrun: 0 event: 201949
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 2
 
 Run: 1 subrun: 0 event: 201967
   Background type: Abs 0p
@@ -1807,6 +1881,8 @@ Run: 1 subrun: 0 event: 201967
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 201972
   Background type: Charge exchange
   WC match PDG: -211
@@ -1840,6 +1916,8 @@ Run: 1 subrun: 0 event: 201972
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 202046
   Background type: Inelastic scattering
@@ -1875,6 +1953,8 @@ Run: 1 subrun: 0 event: 202046
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 202123
   Background type: Abs 0p
   WC match PDG: -211
@@ -1898,6 +1978,8 @@ Run: 1 subrun: 0 event: 202123
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 2
 
 Run: 1 subrun: 0 event: 202222
   Background type: Inelastic scattering
@@ -1944,6 +2026,8 @@ Run: 1 subrun: 0 event: 202222
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 202338
   Background type: Inelastic scattering
@@ -1993,6 +2077,8 @@ Run: 1 subrun: 0 event: 202338
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 202387
   Background type: Inelastic scattering
@@ -2048,6 +2134,8 @@ Run: 1 subrun: 0 event: 202387
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 202395
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -2077,6 +2165,8 @@ Run: 1 subrun: 0 event: 202395
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 202498
   Background type: Primary electron
@@ -2196,6 +2286,8 @@ Run: 1 subrun: 0 event: 202498
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 4
+
 Run: 1 subrun: 0 event: 202520
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -2234,6 +2326,8 @@ Run: 1 subrun: 0 event: 202520
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 202578
   Background type: Inelastic scattering
@@ -2280,6 +2374,8 @@ Run: 1 subrun: 0 event: 202578
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 202795
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -2322,6 +2418,8 @@ Run: 1 subrun: 0 event: 202795
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 5048
   Background type: Abs 0p
@@ -2366,6 +2464,8 @@ Run: 1 subrun: 0 event: 5048
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 5088
   Background type: Inelastic scattering
@@ -2415,6 +2515,8 @@ Run: 1 subrun: 0 event: 5088
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 5231
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -2453,6 +2555,8 @@ Run: 1 subrun: 0 event: 5231
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 5321
   Background type: Inelastic scattering
@@ -2496,6 +2600,8 @@ Run: 1 subrun: 0 event: 5321
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 52866
   Background type: Inelastic scattering
@@ -2541,6 +2647,8 @@ Run: 1 subrun: 0 event: 52866
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 52870
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -2578,6 +2686,8 @@ Run: 1 subrun: 0 event: 52870
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 53050
   Background type: Inelastic scattering
@@ -2618,6 +2728,8 @@ Run: 1 subrun: 0 event: 53050
   Tracks reco'ed as protons: 2
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 3
+
 Run: 1 subrun: 0 event: 53234
   Background type: Capture at rest
   WC match PDG: -211
@@ -2651,6 +2763,8 @@ Run: 1 subrun: 0 event: 53234
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 53240
   Background type: Abs 0p
@@ -2689,6 +2803,8 @@ Run: 1 subrun: 0 event: 53240
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 3
 
 Run: 1 subrun: 0 event: 53394
   Background type: Primary electron
@@ -2794,6 +2910,8 @@ Run: 1 subrun: 0 event: 53394
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 3
+
 Run: 1 subrun: 0 event: 53636
   Background type: Abs 0p
   WC match PDG: -211
@@ -2834,6 +2952,8 @@ Run: 1 subrun: 0 event: 53636
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 53640
   Background type: Abs 0p
   WC match PDG: -211
@@ -2871,6 +2991,8 @@ Run: 1 subrun: 0 event: 53640
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 53838
   Background type: Inelastic scattering
@@ -2912,6 +3034,8 @@ Run: 1 subrun: 0 event: 53838
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 53916
   Background type: Outside reduced volume
@@ -2963,6 +3087,8 @@ Run: 1 subrun: 0 event: 53916
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 53987
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -3009,6 +3135,8 @@ Run: 1 subrun: 0 event: 53987
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 54138
   Background type: Abs 0p
   WC match PDG: -211
@@ -3051,6 +3179,8 @@ Run: 1 subrun: 0 event: 54138
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 9
+
 Run: 1 subrun: 0 event: 54238
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -3084,6 +3214,8 @@ Run: 1 subrun: 0 event: 54238
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 54289
   Background type: Inelastic scattering
@@ -3126,6 +3258,8 @@ Run: 1 subrun: 0 event: 54289
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 54352
   Background type: Abs 0p
@@ -3172,6 +3306,8 @@ Run: 1 subrun: 0 event: 54352
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 54402
   Background type: Capture at rest
@@ -3223,6 +3359,8 @@ Run: 1 subrun: 0 event: 54402
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 54498
   Background type: Abs 0p
   WC match PDG: -211
@@ -3260,6 +3398,8 @@ Run: 1 subrun: 0 event: 54498
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 54742
   Background type: Inelastic scattering
@@ -3307,6 +3447,8 @@ Run: 1 subrun: 0 event: 54742
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 54764
   Background type: Abs 0p
   WC match PDG: -211
@@ -3347,6 +3489,8 @@ Run: 1 subrun: 0 event: 54764
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 54889
   Background type: Capture at rest
   WC match PDG: -211
@@ -3380,6 +3524,8 @@ Run: 1 subrun: 0 event: 54889
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 54939
   Background type: Abs 0p
@@ -3433,6 +3579,8 @@ Run: 1 subrun: 0 event: 54939
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 55022
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -3482,6 +3630,8 @@ Run: 1 subrun: 0 event: 55022
   Tracks reco'ed as protons: 2
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 55125
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -3524,6 +3674,8 @@ Run: 1 subrun: 0 event: 55125
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 55324
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -3560,6 +3712,8 @@ Run: 1 subrun: 0 event: 55324
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 55352
   Background type: Outside reduced volume
   WC match PDG: -211
@@ -3577,6 +3731,8 @@ Run: 1 subrun: 0 event: 55352
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 55385
   Background type: Abs 0p
@@ -3630,6 +3786,8 @@ Run: 1 subrun: 0 event: 55385
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 55387
   Background type: Abs 0p
   WC match PDG: -211
@@ -3671,6 +3829,8 @@ Run: 1 subrun: 0 event: 55387
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 2
 
 Run: 1 subrun: 0 event: 55408
   Background type: Primary electron
@@ -3798,6 +3958,8 @@ Run: 1 subrun: 0 event: 55408
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 55620
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -3831,6 +3993,8 @@ Run: 1 subrun: 0 event: 55620
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 55718
   Background type: Abs 0p
@@ -3870,6 +4034,8 @@ Run: 1 subrun: 0 event: 55718
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 55728
   Background type: Abs 0p
   WC match PDG: 1000010020
@@ -3898,6 +4064,8 @@ Run: 1 subrun: 0 event: 55728
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 5819
   Background type: Abs 0p
@@ -3932,6 +4100,8 @@ Run: 1 subrun: 0 event: 5819
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 5906
   Background type: Inelastic scattering
@@ -3976,6 +4146,8 @@ Run: 1 subrun: 0 event: 5906
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 2
 
 Run: 1 subrun: 0 event: 5967
   Background type: Primary electron
@@ -4143,6 +4315,8 @@ Run: 1 subrun: 0 event: 5967
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 61814
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -4199,6 +4373,8 @@ Run: 1 subrun: 0 event: 61814
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 61829
   Background type: Abs 0p
   WC match PDG: -211
@@ -4237,6 +4413,8 @@ Run: 1 subrun: 0 event: 61829
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 61844
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -4267,6 +4445,8 @@ Run: 1 subrun: 0 event: 61844
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 61883
   Background type: Inelastic scattering
@@ -4304,6 +4484,8 @@ Run: 1 subrun: 0 event: 61883
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 61987
   Background type: Capture at rest
   WC match PDG: -211
@@ -4339,6 +4521,8 @@ Run: 1 subrun: 0 event: 61987
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 61993
   Background type: Abs 0p
@@ -4377,6 +4561,8 @@ Run: 1 subrun: 0 event: 61993
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 62138
   Background type: Inelastic scattering
@@ -4417,6 +4603,8 @@ Run: 1 subrun: 0 event: 62138
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 62297
   Background type: Abs 0p
@@ -4464,6 +4652,8 @@ Run: 1 subrun: 0 event: 62297
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 62380
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -4497,6 +4687,8 @@ Run: 1 subrun: 0 event: 62380
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 62422
   Background type: Inelastic scattering
@@ -4532,6 +4724,8 @@ Run: 1 subrun: 0 event: 62422
   Tracks reco'ed near vertex: 2
   Tracks reco'ed as protons: 2
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 2
 
 Run: 1 subrun: 0 event: 62433
   Background type: Inelastic scattering
@@ -4581,6 +4775,8 @@ Run: 1 subrun: 0 event: 62433
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 62465
   Background type: Outside reduced volume
   WC match PDG: -211
@@ -4616,6 +4812,8 @@ Run: 1 subrun: 0 event: 62465
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 62590
   Background type: Inelastic scattering
@@ -4654,6 +4852,8 @@ Run: 1 subrun: 0 event: 62590
   Tracks reco'ed near vertex: 2
   Tracks reco'ed as protons: 2
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 62635
   Background type: Primary electron
@@ -4773,6 +4973,8 @@ Run: 1 subrun: 0 event: 62635
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 62637
   Background type: Charge exchange
   WC match PDG: -211
@@ -4821,6 +5023,8 @@ Run: 1 subrun: 0 event: 62637
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 62638
   Background type: Abs 0p
   WC match PDG: -211
@@ -4860,6 +5064,8 @@ Run: 1 subrun: 0 event: 62638
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 62655
   Background type: Inelastic scattering
@@ -4905,6 +5111,8 @@ Run: 1 subrun: 0 event: 62655
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 62705
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -4947,6 +5155,8 @@ Run: 1 subrun: 0 event: 62705
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 62735
   Background type: Inelastic scattering
@@ -4991,6 +5201,8 @@ Run: 1 subrun: 0 event: 62735
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 62924
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -5027,6 +5239,8 @@ Run: 1 subrun: 0 event: 62924
   Tracks reco'ed as protons: 2
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 62979
   Background type: Outside reduced volume
   WC match PDG: -211
@@ -5060,6 +5274,8 @@ Run: 1 subrun: 0 event: 62979
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 2
 
 Run: 1 subrun: 0 event: 63000
   Background type: Capture at rest
@@ -5100,6 +5316,8 @@ Run: 1 subrun: 0 event: 63000
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 2
 
 Run: 1 subrun: 0 event: 63025
   Background type: Primary electron
@@ -5172,6 +5390,8 @@ Run: 1 subrun: 0 event: 63025
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 3
 
 Run: 1 subrun: 0 event: 63041
   Background type: Primary electron
@@ -5257,6 +5477,8 @@ Run: 1 subrun: 0 event: 63041
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 63073
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -5295,6 +5517,8 @@ Run: 1 subrun: 0 event: 63073
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 63076
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -5330,6 +5554,8 @@ Run: 1 subrun: 0 event: 63076
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 63137
   Background type: Primary electron
@@ -5429,6 +5655,8 @@ Run: 1 subrun: 0 event: 63137
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 4
+
 Run: 1 subrun: 0 event: 63145
   Background type: Abs 0p
   WC match PDG: -211
@@ -5464,6 +5692,8 @@ Run: 1 subrun: 0 event: 63145
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 3
 
 Run: 1 subrun: 0 event: 63190
   Background type: Inelastic scattering
@@ -5504,6 +5734,8 @@ Run: 1 subrun: 0 event: 63190
   Tracks reco'ed near vertex: 2
   Tracks reco'ed as protons: 2
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 2
 
 Run: 1 subrun: 0 event: 63245
   Background type: Inelastic scattering
@@ -5551,6 +5783,8 @@ Run: 1 subrun: 0 event: 63245
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 63303
   Background type: Abs 0p
   WC match PDG: -211
@@ -5589,6 +5823,8 @@ Run: 1 subrun: 0 event: 63303
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 63398
   Background type: Capture at rest
   WC match PDG: -211
@@ -5624,6 +5860,8 @@ Run: 1 subrun: 0 event: 63398
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 63420
   Background type: Primary electron
@@ -5725,6 +5963,8 @@ Run: 1 subrun: 0 event: 63420
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 3
+
 Run: 1 subrun: 0 event: 63441
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -5761,6 +6001,8 @@ Run: 1 subrun: 0 event: 63441
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 63613
   Background type: Abs 0p
   WC match PDG: -211
@@ -5790,6 +6032,8 @@ Run: 1 subrun: 0 event: 63613
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 63740
   Background type: Inelastic scattering
@@ -5826,6 +6070,8 @@ Run: 1 subrun: 0 event: 63740
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 63790
   Background type: Abs 0p
@@ -5868,6 +6114,8 @@ Run: 1 subrun: 0 event: 63790
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 
 Run: 1 subrun: 0 event: 63805
   Background type: Inelastic scattering
@@ -5917,6 +6165,8 @@ Run: 1 subrun: 0 event: 63805
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 63970
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -5965,6 +6215,8 @@ Run: 1 subrun: 0 event: 63970
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 64081
   Background type: Abs 0p
   WC match PDG: -211
@@ -6003,6 +6255,8 @@ Run: 1 subrun: 0 event: 64081
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 64117
   Background type: Abs 0p
   WC match PDG: -211
@@ -6039,6 +6293,8 @@ Run: 1 subrun: 0 event: 64117
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 0
+
 Run: 1 subrun: 0 event: 64119
   Background type: Abs 0p
   WC match PDG: -211
@@ -6072,6 +6328,8 @@ Run: 1 subrun: 0 event: 64119
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 64338
   Background type: Abs 0p
@@ -6118,6 +6376,8 @@ Run: 1 subrun: 0 event: 64338
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 64461
   Background type: Primary electron
@@ -6253,6 +6513,8 @@ Run: 1 subrun: 0 event: 64461
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 3
+
 Run: 1 subrun: 0 event: 64478
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -6306,6 +6568,8 @@ Run: 1 subrun: 0 event: 64478
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 64503
   Background type: Charge exchange
   WC match PDG: -211
@@ -6345,6 +6609,8 @@ Run: 1 subrun: 0 event: 64503
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 4
 
 Run: 1 subrun: 0 event: 64565
   Background type: Inelastic scattering
@@ -6392,6 +6658,8 @@ Run: 1 subrun: 0 event: 64565
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 64575
   Background type: Abs 0p
@@ -6441,6 +6709,8 @@ Run: 1 subrun: 0 event: 64575
   Tracks reco'ed as protons: 2
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 64580
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -6485,6 +6755,8 @@ Run: 1 subrun: 0 event: 64580
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 1
+
 Run: 1 subrun: 0 event: 64677
   Background type: Abs 0p
   WC match PDG: -211
@@ -6528,6 +6800,8 @@ Run: 1 subrun: 0 event: 64677
   Tracks reco'ed near vertex: 0
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 2
 
 Run: 1 subrun: 0 event: 64694
   Background type: Inelastic scattering
@@ -6577,6 +6851,8 @@ Run: 1 subrun: 0 event: 64694
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 3
+
 Run: 1 subrun: 0 event: 64750
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -6618,6 +6894,8 @@ Run: 1 subrun: 0 event: 64750
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 0
 
 Run: 1 subrun: 0 event: 64757
   Background type: Inelastic scattering
@@ -6670,6 +6948,8 @@ Run: 1 subrun: 0 event: 64757
   Tracks reco'ed as protons: 1
   True visible protons: 0
 
+  Number of hit clusters found near primary track: 2
+
 Run: 1 subrun: 0 event: 64772
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -6718,4 +6998,6 @@ Run: 1 subrun: 0 event: 64772
   Tracks reco'ed near vertex: 1
   Tracks reco'ed as protons: 1
   True visible protons: 0
+
+  Number of hit clusters found near primary track: 1
 

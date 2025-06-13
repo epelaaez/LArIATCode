@@ -50,6 +50,16 @@ struct EventInfo {
     int backgroundNum;
     int tracksNearVertex;
     int secondaryInteractionTag;
+
+    int numHitClusters;
+};
+
+struct HitCluster {
+    std::vector<int>   hitKeys;
+    std::vector<float> hitX;
+    std::vector<float> hitW;
+    std::vector<float> hitCharge;
+    std::vector<float> hitChargeCol;
 };
 
 // Reduced volume for interactions
@@ -102,6 +112,9 @@ int MEAN_DEDX_NUM_TRAJ_POINTS = 5;
 double PROTON_ENERGY_LOWER_BOUND = 0.075;
 double PROTON_ENERGY_UPPER_BOUND = 1.0;
 
+// Hit wire separation
+double HIT_WIRE_SEPARATION = 0.4; // converts wire # to cm
+
 //////////////////////
 // Helper functions //
 //////////////////////
@@ -126,6 +139,7 @@ void printOneDPlots(
     std::vector<TString> ylabels
 );
 void printTwoDPlots(TString dir, std::vector<TH2*> plots, std::vector<TString> titles);
+bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold);
 
 ///////////////////
 // Main function //
@@ -275,6 +289,29 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("truthSecondaryVertexY", &truthSecondaryVertexY);
     tree->SetBranchAddress("truthSecondaryVertexZ", &truthSecondaryVertexZ);
 
+    // Individual hit information
+    double primaryEndPointHitW, primaryEndPointHitX;
+    std::vector<int>*   fHitKey = nullptr;
+    std::vector<int>*   fHitPlane = nullptr;
+    std::vector<int>*   hitRecoAsTrackKey = nullptr;
+    std::vector<float>* fHitT = nullptr;
+    std::vector<float>* fHitX = nullptr;
+    std::vector<float>* fHitW = nullptr;
+    std::vector<float>* fHitCharge = nullptr;
+    std::vector<float>* fHitChargeCol = nullptr;
+    std::vector<int>*   hitWC2TPCKey = nullptr;
+    tree->SetBranchAddress("primaryEndPointHitW", &primaryEndPointHitW);
+    tree->SetBranchAddress("primaryEndPointHitX", &primaryEndPointHitX);
+    tree->SetBranchAddress("fHitKey", &fHitKey);
+    tree->SetBranchAddress("fHitPlane", &fHitPlane);
+    tree->SetBranchAddress("hitRecoAsTrackKey", &hitRecoAsTrackKey);
+    tree->SetBranchAddress("fHitT", &fHitT);
+    tree->SetBranchAddress("fHitX", &fHitX);
+    tree->SetBranchAddress("fHitW", &fHitW);
+    tree->SetBranchAddress("fHitCharge", &fHitCharge);
+    tree->SetBranchAddress("fHitChargeCol", &fHitChargeCol);
+    tree->SetBranchAddress("hitWC2TPCKey", &hitWC2TPCKey);
+
     // Retrieve histograms
     TH1D* hTotalEvents = (TH1D*) Directory->Get<TH1D>("hTotalEvents");
 
@@ -326,6 +363,21 @@ void RecoAllAnalysis() {
 
     TH1D *h0pInelasticBackgroundSecondaryInteraction = new TH1D("h0pInelasticBackgroundSecondaryInteraction", "h0pInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hNpInelasticBackgroundSecondaryInteraction = new TH1D("hNpInelasticBackgroundSecondaryInteraction", "hNpInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+
+    TH1D *hHitClusters0p           = new TH1D("hHitClusters0p", "hHitClusters0p;;", 10, 0, 10);
+    TH1D *hHitClusters0pBackground = new TH1D("hHitClusters0pBackground", "hHitClusters0pBackground;;", 10, 0, 10);
+    TH1D *hHitClustersNp           = new TH1D("hHitClustersNp", "hHitClustersNp;;", 10, 0, 10);
+    TH1D *hHitClustersNpBackground = new TH1D("hHitClustersNpBackground", "hHitClustersNpBackground;;", 10, 0, 10);
+
+    TH1D *hHitClustersSize0p           = new TH1D("hHitClustersSize0p", "hHitClustersSize0p;;", 10, 2, 8);
+    TH1D *hHitClustersSize0pBackground = new TH1D("hHitClustersSize0pBackground", "hHitClustersSize0pBackground;;", 10, 2, 8);
+    TH1D *hHitClustersSizeNp           = new TH1D("hHitClustersSizeNp", "hHitClustersSizeNp;;", 10, 2, 8);
+    TH1D *hHitClustersSizeNpBackground = new TH1D("hHitClustersSizeNpBackground", "hHitClustersSizeNpBackground;;", 10, 2, 8);
+
+    TH1D *hHitLargeClusters0p           = new TH1D("hHitLargeClusters0p", "hHitClustersSize0p;;", 10, 0, 10);
+    TH1D *hHitLargeClusters0pBackground = new TH1D("hHitLargeClusters0pBackground", "hHitClustersSize0pBackground;;", 10, 0, 10);
+    TH1D *hHitLargeClustersNp           = new TH1D("hHitLargeClustersNp", "hHitClustersSizeNp;;", 10, 0, 10);
+    TH1D *hHitLargeClustersNpBackground = new TH1D("hHitLargeClustersNpBackground", "hHitClustersSizeNpBackground;;", 10, 0, 10);
 
     TH2D *hTotalBackgroundScatteringLengthVSAngle = new TH2D(
         "hTotalBackgroundScatteringLengthVSAngle",
@@ -405,6 +457,35 @@ void RecoAllAnalysis() {
         pionChiNumSteps, pionChiStart, pionChiEnd
     );
 
+    ///////////////////////////////////////////////////////////
+    // Variables and histograms for hit cluster optimization //
+    ///////////////////////////////////////////////////////////
+
+    double STARTING_CLUSTER_SIZE  = 2. * HIT_WIRE_SEPARATION;
+    double CLUSTER_SIZE_STEP      = 1. * HIT_WIRE_SEPARATION;
+    int    CLUSTER_SIZE_NUM_STEPS = 5;
+    std::vector<int> NUM_CLUSTERS;
+
+    int STARTING_NUM_CLUSTERS  = 1;
+    int NUM_CLUSTERS_STEP      = 1;
+    int NUM_CLUSTERS_NUM_STEPS = 3;
+
+    TH2D* hHitClusterCut0pReco = new TH2D(
+        "hHitClusterCut0pReco", 
+        "hHitClusterCut0pReco;Large cluster size;Number of large clusters", 
+        CLUSTER_SIZE_NUM_STEPS, STARTING_CLUSTER_SIZE, STARTING_CLUSTER_SIZE + (CLUSTER_SIZE_STEP * CLUSTER_SIZE_NUM_STEPS), 
+        NUM_CLUSTERS_NUM_STEPS, STARTING_NUM_CLUSTERS, STARTING_NUM_CLUSTERS + (NUM_CLUSTERS_STEP * NUM_CLUSTERS_NUM_STEPS)
+    );
+    TH2D* hHitClusterCut0pRecoTrue = new TH2D(
+        "hHitClusterCut0pRecoTrue", 
+        "hHitClusterCut0pRecoTrue;Large cluster size;Number of large clusters", 
+        CLUSTER_SIZE_NUM_STEPS, STARTING_CLUSTER_SIZE, STARTING_CLUSTER_SIZE + (CLUSTER_SIZE_STEP * CLUSTER_SIZE_NUM_STEPS), 
+        NUM_CLUSTERS_NUM_STEPS, STARTING_NUM_CLUSTERS, STARTING_NUM_CLUSTERS + (NUM_CLUSTERS_STEP * NUM_CLUSTERS_NUM_STEPS)
+    );
+
+    int    NUM_CLUSTERS_THRESHOLD  = 1;
+    double LARGE_CLUSTER_THRESHOLD = HIT_WIRE_SEPARATION * 3;
+
     /////////////////////////////////
     // Files for event information //
     /////////////////////////////////
@@ -433,7 +514,7 @@ void RecoAllAnalysis() {
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
 
-        // Apply small tracks and reduced volume cuts
+        // Apply small tracks cut
         if (!passesSmallTracksCut)  continue;
 
         // Perform chi^2 stitching for primary track
@@ -537,12 +618,11 @@ void RecoAllAnalysis() {
             }
             outStitchedFile << std::endl;
 
-            if ((backgroundType == 1) || (backgroundType == 7)) {
+            // Gauge performance for Np events
+            if (backgroundType == 1) {
                 hStitchedDistanceFromVertex->Fill(distanceFromVertex);
                 hStitchedOriginalDistanceFromVertex->Fill(originalDistanceFromVertex);
             }
-            // hStitchedDistanceFromVertex->Fill(distanceFromVertex);
-            // hStitchedOriginalDistanceFromVertex->Fill(originalDistanceFromVertex);
             hStitchAsPionAndProton->Fill(backgroundType);
             hStitchFracBreakPoints->Fill(fracBreakPoint);
             
@@ -737,9 +817,9 @@ void RecoAllAnalysis() {
         //   - Usual selection
 
         if (minChi2 == pionChi2) {
-            if (numTracksNearVertex == 0) continue;
+            if (numTracksNearVertex == 0) continue; // capture at rest
         } else if (minChi2 == protonChi2) {
-            continue;
+            continue; // reject events matching to proton primary
         }
 
         int totalTaggedPions   = secondaryTaggedPion + otherTaggedPion;
@@ -748,13 +828,189 @@ void RecoAllAnalysis() {
         if (totalTaggedPions > 0) {
             // If any secondary tagged as pion, not signal
             continue;
-        } else {
-            hRecoAbsorption->Fill(backgroundType);
-            if (totalTaggedProtons == 0) { 
-                hRecoAbsorption0p->Fill(backgroundType);
-            } else if (totalTaggedProtons > 0) {
-                hRecoAbsorptionNp->Fill(backgroundType);
+        }
+
+        /////////////////////////////////////////
+        // Selection on non-reconstructed hits //
+        /////////////////////////////////////////
+
+        // First, find hits in the induction plane near the primary track that
+        // were not reconstructed into any of the already existing tracks
+        const float xThreshold = 2.0;
+        const float wThreshold = 5.0 * HIT_WIRE_SEPARATION;
+        std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
+        std::vector<int> candidateInductionHits;
+
+        int nTotalHits = fHitKey->size();
+        for (size_t iHit = 0; iHit < nTotalHits; ++iHit) {
+            // Skip hits already in tracks and collection plane
+            if ((hitsInTracks.count(iHit) > 0) || (fHitPlane->at(iHit) != 0)) continue;
+
+            float hitX = fHitX->at(iHit);
+            float hitW = fHitW->at(iHit);
+
+            if (isHitNearPrimary(
+                hitWC2TPCKey, 
+                fHitX, 
+                fHitW, 
+                hitX, 
+                hitW,
+                xThreshold, 
+                wThreshold
+            )) { candidateInductionHits.push_back(iHit); }
+        }
+
+        // Now cluster using those hits as starting points
+        std::unordered_set<int> usedHits;
+        std::vector<HitCluster> hitClusters;
+        int nCandidateHits    = candidateInductionHits.size();
+
+        // Hits in the same cluster must be separated by at most some number of wires
+        float maxHitClusterSeparation = HIT_WIRE_SEPARATION * 3.0; 
+        float maxHitXSeparation       = 1.0;
+
+        // std::cout << "Candidate hits: " << nCandidateHits << std::endl;
+        // std::cout << "Vertex hit X: " << primaryEndPointHitX << "  W: " << primaryEndPointHitW << std::endl;
+        
+        for (int iHit = 0; iHit < nCandidateHits; ++iHit) {
+            // std::cout << "  X: " << fHitX->at(candidateInductionHits.at(iHit));
+            // std::cout << "  W: " << fHitW->at(candidateInductionHits.at(iHit)) << std::endl;
+
+            // The candidate hits are only STARTING points, as this could make up 
+            // really long tracks in the induction plane that are no longer near 
+            // the ending point of the primary track
+            
+            // First, check if we have already used this hit
+            int   thisHitKey       = candidateInductionHits.at(iHit);
+            float thisHitW         = fHitW->at(thisHitKey);
+            float thisHitX         = fHitX->at(thisHitKey);
+            float thisHitCharge    = fHitCharge->at(thisHitKey);
+            float thisHitChargeCol = fHitChargeCol->at(thisHitKey);
+
+            if (usedHits.count(thisHitKey)) continue;
+            
+            std::vector<int> clusterKeys;
+            std::vector<float> clusterX;
+            std::vector<float> clusterW;
+            std::vector<float> clusterCharge;
+            std::vector<float> clusterChargeCol;
+
+            clusterKeys.push_back(thisHitKey);
+            clusterX.push_back(thisHitX);
+            clusterW.push_back(thisHitW);
+            clusterCharge.push_back(thisHitCharge);
+            clusterChargeCol.push_back(thisHitChargeCol);
+            
+            for (int iAllHit = 0; iAllHit < nTotalHits; ++iAllHit) {
+                // Skip already used hits, those reconstructed in tracks, and those in collection plane
+                if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit) || (fHitPlane->at(iHit) != 0)) continue;
+                float internalHitW  = fHitW->at(iAllHit);
+                float internalHitX  = fHitX->at(iAllHit);
+                float dW            = std::abs(internalHitW - thisHitW);
+                float dX            = std::abs(internalHitX - thisHitX);
+
+                int   nClusterSoFar = clusterW.size();
+                for (int iCluster = 0; iCluster < nClusterSoFar; ++iCluster) {
+                    float tempdW = std::abs(internalHitW - clusterW.at(iCluster));
+                    if (tempdW < dW) dW = tempdW;
+                    float tempdX = std::abs(internalHitX - clusterX.at(iCluster));
+                    if (tempdX < dX) dX = tempdX;
+                }
+
+                if ((dW < maxHitClusterSeparation) && (dX < maxHitXSeparation)) {
+                    usedHits.insert(iAllHit);
+                    clusterKeys.push_back(iAllHit);
+                    clusterX.push_back(fHitX->at(iAllHit));
+                    clusterW.push_back(fHitW->at(iAllHit));
+                    clusterCharge.push_back(fHitCharge->at(iAllHit));
+                    clusterChargeCol.push_back(fHitChargeCol->at(iAllHit));
+                }
             }
+
+            HitCluster thisCluster;
+            thisCluster.hitKeys      = clusterKeys;
+            thisCluster.hitX         = clusterX;
+            thisCluster.hitW         = clusterW;
+            thisCluster.hitCharge    = clusterCharge;
+            thisCluster.hitChargeCol = clusterChargeCol;
+            
+            usedHits.insert(thisHitKey);
+            hitClusters.push_back(thisCluster);
+        }
+
+        // std::cout << "Found clusters: " << hitClusters.size() << std::endl;
+        // std::cout << std::endl;
+
+        // Optimize cut; note, this cut is only for events so far categorized as 0p
+        if (totalTaggedProtons == 0) {
+            double currentClusterSize = STARTING_CLUSTER_SIZE;
+            for (int clusterStep = 0; clusterStep <= CLUSTER_SIZE_NUM_STEPS; ++clusterStep) {                
+                int largeClusterCounter = 0;
+                for (int i = 0; i < hitClusters.size(); ++i) {
+                    double maxWire = *std::max_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
+                    double minWire = *std::min_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
+                    if (std::abs(maxWire - minWire) > currentClusterSize) largeClusterCounter++;
+                }
+
+                int currentNumClusters = STARTING_NUM_CLUSTERS;
+                for (int numClusterStep = 0; numClusterStep <= NUM_CLUSTERS_NUM_STEPS; ++numClusterStep) {                    
+                    if (largeClusterCounter < currentNumClusters) {
+                        // ID event as 0p
+                        hHitClusterCut0pReco->Fill(currentClusterSize, currentNumClusters);
+                        if (backgroundType == 0) hHitClusterCut0pRecoTrue->Fill(currentClusterSize, currentNumClusters);
+                    }
+                    currentNumClusters += NUM_CLUSTERS_STEP;
+                }
+                currentClusterSize += CLUSTER_SIZE_STEP;
+            }
+        }
+
+        // Get data for cut
+        float totalClusterSize        = 0.;
+        int   numLargeClusters        = 0;
+        for (int i = 0; i < hitClusters.size(); ++i) {
+            float maxWire = *std::max_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
+            float minWire = *std::min_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
+            if (std::abs(maxWire - minWire) > LARGE_CLUSTER_THRESHOLD) numLargeClusters++;
+            totalClusterSize += maxWire - minWire;
+        }
+        float averageClusterSize = totalClusterSize / ((float) hitClusters.size());
+
+        // Fill histograms
+        if (totalTaggedProtons == 0) {
+            if (backgroundType == 0) {
+                hHitClusters0p->Fill(hitClusters.size());
+                hHitLargeClusters0p->Fill(numLargeClusters);
+                hHitClustersSize0p->Fill(averageClusterSize);
+            } else {
+                hHitClusters0pBackground->Fill(hitClusters.size());
+                hHitLargeClusters0pBackground->Fill(numLargeClusters);
+                hHitClustersSize0pBackground->Fill(averageClusterSize);
+            }
+        } else if (totalTaggedProtons > 0) {
+            if (backgroundType == 1) {
+                hHitClustersNp->Fill(hitClusters.size());
+                hHitLargeClustersNp->Fill(numLargeClusters);
+                hHitClustersSizeNp->Fill(averageClusterSize);
+            } else {
+                hHitClustersNpBackground->Fill(hitClusters.size());
+                hHitLargeClustersNpBackground->Fill(numLargeClusters);
+                hHitClustersSizeNpBackground->Fill(averageClusterSize);
+            }
+        }
+
+        // If tagged as 0p and too many large clusters, reject
+        if ((totalTaggedProtons == 0) && (numLargeClusters >= NUM_CLUSTERS_THRESHOLD)) continue;
+
+        ///////////////////////////
+        // Fill final histograms //
+        ///////////////////////////
+
+        hRecoAbsorption->Fill(backgroundType);
+        if (totalTaggedProtons == 0) { 
+            hRecoAbsorption0p->Fill(backgroundType);
+        } else if (totalTaggedProtons > 0) {
+            hRecoAbsorptionNp->Fill(backgroundType);
         }
 
         /////////////////////////
@@ -793,6 +1049,8 @@ void RecoAllAnalysis() {
 
         int secondaryInteractionTag           = isSecondaryInteractionAbsorption(*truthSecondaryPionDaughtersPDG, *truthSecondaryPionDaughtersProcess, *truthSecondaryPionDaughtersKE);
         thisEventInfo.secondaryInteractionTag = secondaryInteractionTag;
+
+        thisEventInfo.numHitClusters = hitClusters.size();
 
         if (backgroundType == 6) {
             hTotalBackgroundScatteringAngle->Fill(truthScatteringAngle);
@@ -931,6 +1189,24 @@ void RecoAllAnalysis() {
     std::cout << "Proton χ² max‑FOM = " << maxContentProt << " at (χ²_p, χ²_π) = (" << xAtMaxProt << ", " << yAtMaxProt << ")" << std::endl;
     std::cout << std::endl;
 
+    ///////////////////////////////////////
+    // Compute purity for hit clustering //
+    ///////////////////////////////////////
+
+    TH2D* hHitClusterCut0pPurity = (TH2D*) hHitClusterCut0pRecoTrue->Clone("hHitClusterCut0pPurity");
+    hHitClusterCut0pPurity->SetTitle("0p purity;Large cluster size;Number of large clusters");
+    hHitClusterCut0pPurity->Divide(hHitClusterCut0pReco);
+
+    Int_t hitClusterBinX, hitClusterBinY, hitClusterBinZ;
+    Int_t globalHitClusterBin = hHitClusterCut0pPurity->GetMaximumBin(hitClusterBinX, hitClusterBinY, hitClusterBinZ);
+
+    double maxContentHitCluster = hHitClusterCut0pPurity->GetBinContent(globalHitClusterBin);
+    double xAtMaxHitCluster     = hHitClusterCut0pPurity->GetXaxis()->GetBinLowEdge(hitClusterBinX);
+    double yAtMaxHitCluster     = hHitClusterCut0pPurity->GetYaxis()->GetBinLowEdge(hitClusterBinY);
+
+    std::cout << "Hit cluster cut max purity = " << maxContentHitCluster << " at (cluster size, num clusters) = (" << xAtMaxHitCluster << ", " << yAtMaxHitCluster << ")" << std::endl;
+    std::cout << std::endl;
+
     //////////////////
     // Create plots //
     //////////////////
@@ -949,7 +1225,10 @@ void RecoAllAnalysis() {
         {hTotalBackgroundScatteringAngle, h0pBackgroundScatteringAngle, hNpBackgroundScatteringAngle},
         {hTotalBackgroundScatteringLength, h0pBackgroundScatteringLength, hNpBackgroundScatteringLength},
         {hTotalBackgroundScatteringKE, h0pBackgroundScatteringKE, hNpBackgroundScatteringKE},
-        {hScatteringBackgroundOriginalDistanceToPrimaryVertex, hScatteringBackgroundOriginalDistanceToSecondaryVertex, hScatteringBackgroundDistanceToPrimaryVertex, hScatteringBackgroundDistanceToSecondaryVertex}
+        {hScatteringBackgroundOriginalDistanceToPrimaryVertex, hScatteringBackgroundOriginalDistanceToSecondaryVertex, hScatteringBackgroundDistanceToPrimaryVertex, hScatteringBackgroundDistanceToSecondaryVertex},
+        {hHitClusters0p, hHitClusters0pBackground, hHitClustersNp, hHitClustersNpBackground},
+        {hHitClustersSize0p, hHitClustersSize0pBackground, hHitClustersSizeNp, hHitClustersSizeNpBackground},
+        {hHitLargeClusters0p, hHitLargeClusters0pBackground, hHitLargeClustersNp, hHitLargeClustersNpBackground}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -962,7 +1241,10 @@ void RecoAllAnalysis() {
         {"All background", "0p background", "Np background"},
         {"All background", "0p background", "Np background"},
         {"All background", "0p background", "Np background"},
-        {"Original to primary", "Original to secondary", "Detected to primary", "Detected to secondary"}
+        {"Original to primary", "Original to secondary", "Detected to primary", "Detected to secondary"},
+        {"Reco 0p true", "Reco 0p background", "Reco Np true", "Reco Np background"},
+        {"Reco 0p true", "Reco 0p background", "Reco Np true", "Reco Np background"},
+        {"Reco 0p true", "Reco 0p background", "Reco Np true", "Reco Np background"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -975,7 +1257,10 @@ void RecoAllAnalysis() {
         "InelasticScatteringBackgroundAngle",
         "InelasticScatteringBackgroundLength",
         "InelasticScatteringBackgroundKE",
-        "InelasticScatteringBackgroundDistanceFromVertex"
+        "InelasticScatteringBackgroundDistanceFromVertex",
+        "NumberOfHitClusters",
+        "AverageHitClusterSize",
+        "NumberOfLargeHitClusters"
     };
 
     std::vector<TString> XLabels = {
@@ -988,7 +1273,10 @@ void RecoAllAnalysis() {
         "Scattering angle (rad)",
         "Scattered pion length (cm)",
         "Kinetic energy (MeV/c)",
-        "Distance from true vertex (cm)"
+        "Distance from true vertex (cm)",
+        "Number of induction plane hit clusters",
+        "Induction plane hit cluster average size",
+        "Number of induction plane large hit clusters"
     };
 
     std::vector<TString> YLabels = {
@@ -1001,7 +1289,10 @@ void RecoAllAnalysis() {
         "Number of events",
         "Number of tracks",
         "Number of tracks",
-        "Number of tracks"
+        "Number of tracks",
+        "Number of events",
+        "Number of events",
+        "Number of events"
     };
 
     printOneDPlots(
@@ -1026,7 +1317,10 @@ void RecoAllAnalysis() {
         hProtonChi2FOM,
         hPionChi2FOM,
         hTotalBackgroundScatteringLengthVSAngle,
-        hTotalBackgroundScatteringLengthVSKEnergy
+        hTotalBackgroundScatteringLengthVSKEnergy,
+        hHitClusterCut0pReco,
+        hHitClusterCut0pRecoTrue,
+        hHitClusterCut0pPurity
     };
 
     std::vector<TString> TwoDTitles = {
@@ -1041,7 +1335,10 @@ void RecoAllAnalysis() {
         "ProtonChi2FOM",
         "PionChi2FOM",
         "TotalBackgroundScatteringLengthVSAngle",
-        "TotalBackgroundScatteringLengthVSKEnergy"
+        "TotalBackgroundScatteringLengthVSKEnergy",
+        "HitClusterCut0pReco",
+        "HitClusterCut0pRecoTrue",
+        "HitClusterCut0pPurity"
     };
 
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles);
@@ -1077,14 +1374,14 @@ void RecoAllAnalysis() {
     c->SetLeftMargin(0.15);
     c->SetBottomMargin(0.15);
     hBackgroundTypesStack->Draw("HIST");
-    // c->BuildLegend();
+    c->BuildLegend(0.65, 0.7, 0.95, 0.85);
 
     hBackgroundTypesStack->GetXaxis()->SetTitleFont(FontStyle);
     hBackgroundTypesStack->GetXaxis()->SetLabelFont(FontStyle);
     hBackgroundTypesStack->GetXaxis()->SetNdivisions(8);
     hBackgroundTypesStack->GetXaxis()->SetLabelSize(TextSize);
     hBackgroundTypesStack->GetXaxis()->SetTitleSize(TextSize);
-    hBackgroundTypesStack->GetXaxis()->SetTitle("Background type");
+    // hBackgroundTypesStack->GetXaxis()->SetTitle("Background type");
     hBackgroundTypesStack->GetXaxis()->SetTitleOffset(1.1);
     hBackgroundTypesStack->GetXaxis()->CenterTitle();
 
@@ -1097,8 +1394,25 @@ void RecoAllAnalysis() {
     hBackgroundTypesStack->GetYaxis()->SetTitleOffset(1.1);
     hBackgroundTypesStack->GetYaxis()->CenterTitle();
 
+    for (const auto& entry : backgroundTypes) {
+        int bin = entry.first;
+        const std::string& label = entry.second;
+        if ((bin+1 == 0) || (bin+1 == 12)) continue; // extra bins, hacky
+        hBackgroundTypesStack->GetXaxis()->SetBinLabel(bin + 1, label.c_str());
+    }
+
     c->Update();
     c->SaveAs(SaveDir + "StitchedBackgroundTypesStacked.png");
+}
+
+bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold) {
+    int nPrimaryHits = primaryKey->size();
+    for (int iHit = 0; iHit < nPrimaryHits; ++iHit) {
+        float dX = std::abs(thisHitX - hitX->at(primaryKey->at(iHit)));
+        float dW = std::abs(thisHitW - hitW->at(primaryKey->at(iHit)));
+        if ((dX < xThreshold) && (dW < wThreshold)) return true;
+    }
+    return false;
 }
 
 double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, bool dataReversed, int nPoints, int nOutliersToDiscard = 0, int nTrim = 0) {
@@ -1421,5 +1735,7 @@ void printEventInfo(EventInfo event, std::ostream& os) {
     os << "  Tracks reco'ed near vertex: " << event.tracksNearVertex << std::endl;
     os << "  Tracks reco'ed as protons: " << event.recoProtonCount << std::endl;
     os << "  True visible protons: " << event.visibleProtons << std::endl;
+    os << std::endl;
+    os << "  Number of hit clusters found near primary track: " << event.numHitClusters << std::endl;
     os << std::endl;
 }
