@@ -140,6 +140,7 @@ void printOneDPlots(
 );
 void printTwoDPlots(TString dir, std::vector<TH2*> plots, std::vector<TString> titles);
 bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold);
+void Overlay_dEdx_RR_Reference_PP(TGraph* gProton, TGraph* gPion, bool addLegend = true, TVirtualPad* pad = gPad);
 
 ///////////////////
 // Main function //
@@ -511,6 +512,36 @@ void RecoAllAnalysis() {
             if (numVisibleProtons > 0)  backgroundType = 1;
         }
 
+        // Look at energy profile for events we are interested in
+        if (event == 200920) {
+            int caloPoints = wcMatchResR->size();
+
+            TH2D *hDEDXProfile = new TH2D(
+                "hDEDXProfile", 
+                "hDEDXProfile;Residual range (cm);dE/dx (MeV/cm)",
+                caloPoints, 0, 0, 
+                caloPoints, 0, 0
+            );
+
+            if (event == 200920) {
+                std::cout << "Event " << event << " has breakpoint at " << wcMatchResR->at(73) << " rr (cm)" << std::endl; 
+            }
+
+            for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
+                hDEDXProfile->Fill(wcMatchResR->at(iCalo), wcMatchDEDX->at(iCalo));
+            }
+
+            TCanvas* c1 = new TCanvas("c1", "DEDXProfiles", 800, 600);
+            hDEDXProfile->SetMinimum(0);
+            hDEDXProfile->SetMaximum(1);
+            hDEDXProfile->Draw("COLZ");
+            Overlay_dEdx_RR_Reference_PP(gProton, gPion);
+            c1->SaveAs(SaveDir +  "dEdxProfiles/" + event + ".png");
+            
+            delete c1;
+            delete hDEDXProfile;
+        }
+
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
 
@@ -632,7 +663,6 @@ void RecoAllAnalysis() {
         } else if (minChi2 == pionChi2) {
             // Track looks like pion with Bragg peak, background
             hStitchAsPionBraggPeak->Fill(backgroundType);
-            continue;
         } else {
             // Track looks like through-going pion, could be signal
             hStitchAsThroughgoing->Fill(backgroundType);
@@ -646,10 +676,9 @@ void RecoAllAnalysis() {
         //   - Chi^2 selection on secondary tracks
         //   - If no secondary tracks, accept as 0p event
         // If the particle is categorized as a pion w/ bragg peak:
-        //   - Chi^2 selection on secondary tracks
-        //   - If no secondary tracks, kill the event 
+        //   - Kill
         // If the particle is categorized as proton:
-        //   - Test if kill/keep
+        //   - Kill
         // If the particle is categorized as stitched:
         //   - Chi^2 selection on secondary tracks from new vertex
 
@@ -809,15 +838,14 @@ void RecoAllAnalysis() {
         // If primary is through-going:
         //   - Usual selection
         // If primary is pion with Bragg peak:
-        //   - If no secondaries, reject
-        //   - If secondaries, usual selection
+        //   - Reject
         // If primary is proton:
         //   - Reject
         // If primary is stitched:
         //   - Usual selection
 
         if (minChi2 == pionChi2) {
-            if (numTracksNearVertex == 0) continue; // capture at rest
+            continue; 
         } else if (minChi2 == protonChi2) {
             continue; // reject events matching to proton primary
         }
@@ -1579,6 +1607,42 @@ void initializeMuonNoBraggPoints(TGraph* gMuonTG) {
         gMuonTG->SetPoint(i, muonTGData[i][0], muonTGData[i][1]);
     }
 }
+
+void Overlay_dEdx_RR_Reference_PP(
+    TGraph* gProton,
+    TGraph* gPion,
+    bool addLegend = true, 
+    TVirtualPad* pad = gPad
+) {
+    const int N = 107;
+
+    /* ---------- Proton ---------- */
+    gProton->SetLineColor(kRed+1);
+    gProton->SetLineWidth(3);
+    gProton->SetName("Proton");
+
+    /* ---------- Pion ---------- */
+    gPion->SetLineColor(kRed+3);
+    gPion->SetLineWidth(3);
+    gPion->SetName("Pion");
+
+    if (pad) pad->cd();
+    gProton->Draw("L same");
+    gPion  ->Draw("L same");
+    
+    if (addLegend) {
+        static TLegend *leg = nullptr;
+        if (!leg) {
+            leg = new TLegend(0.50,0.80,0.75,0.88);
+            leg->AddEntry(gProton, "Proton", "l");
+            leg->AddEntry(gPion,   "Pion",   "l");
+            leg->SetFillStyle(1001);
+            leg->SetBorderSize(0);
+        }
+        leg->Draw();
+    }
+}
+
 
 double distance(double x1, double x2, double y1, double y2, double z1, double z2) {
     return sqrt(
