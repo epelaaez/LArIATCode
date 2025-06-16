@@ -329,7 +329,7 @@ void RecoAllAnalysis() {
 
     TH1D *hStitchAsPionAndProton = new TH1D("hStitchAsPionAndProton", "hStitchAsPionAndProton;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hStitchAsPionBraggPeak = new TH1D("hStitchAsPionBraggPeak", "hStitchAsPionBraggPeak;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
-    TH1D *hStitchAsThroughgoing  = new TH1D("hStitchAsThroughgoing", "hStitchAsThroughgoing;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D *hStitchAsMIP  = new TH1D("hStitchAsMIP", "hStitchAsMIP;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hStitchAsProton        = new TH1D("hStitchAsProton", "hStitchAsProton;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hStitchFracBreakPoints = new TH1D("hStitchFracBreakPoints", "hStitchFracBreakPoints;;", 50, 0, 1);
 
@@ -551,9 +551,9 @@ void RecoAllAnalysis() {
         // Perform chi^2 stitching for primary track
         // For this analysis, we get the following chi^2 values:
         //   - Pion with Bragg peak chi^2
-        //   - Through-going chi^2
-        //   - Proton chi^2
-        //   - Scanning fit with rhs to through-going and lhs to proton
+        //   - Proton with Bragg peak chi^2
+        //   - MIP chi^2
+        //   - Scanning fit with rhs to MIP and lhs to proton
 
         int totalCaloPoints = wcMatchDEDX->size();
         int nRemoveOutliers = 2;
@@ -565,7 +565,7 @@ void RecoAllAnalysis() {
 
         // Get chi^2 fits, primary tracks are already checked for reversal in first module
         double pionChi2         = computeReducedChi2(gPion, *wcMatchResR,  *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
-        double throughGoingChi2 = computeReducedChi2(gMuonTG, *wcMatchResR, *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        double MIPChi2 = computeReducedChi2(gMuonTG, *wcMatchResR, *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
         double protonChi2       = computeReducedChi2(gProton, *wcMatchResR, *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
 
         double minStitchedChi2 = std::numeric_limits<double>::max();
@@ -596,8 +596,8 @@ void RecoAllAnalysis() {
         outWCAll << "  Fractional break point: " << (double) bestBreakPoint / totalCaloPoints << std::endl;
         outWCAll << std::endl;
         outWCAll << "  Pion with Bragg peak chi^2: " << pionChi2 << std::endl; 
-        outWCAll << "  Through-going pion chi^2: " << throughGoingChi2 << std::endl; 
         outWCAll << "  Proton with Bragg peak chi^2: " << protonChi2 << std::endl; 
+        outWCAll << "  MIP chi^2: " << MIPChi2 << std::endl; 
         outWCAll << "  Best break point: " << bestBreakPoint << " with stitched chi^2: " << minStitchedChi2 << std::endl;
         outWCAll << std::endl;
         outWCAll << "  Primary particle PDG: " << truthPrimaryPDG << std::endl;
@@ -611,7 +611,7 @@ void RecoAllAnalysis() {
         outWCAll << std::endl;
 
         // Get smallest chi^2 value for primary track
-        double minChi2 = std::min({minStitchedChi2, pionChi2, throughGoingChi2, protonChi2});
+        double minChi2 = std::min({minStitchedChi2, pionChi2, MIPChi2, protonChi2});
 
         // If primary track stitched, get break point, otherwise break point is end of track
         double breakPointX = WC2TPCPrimaryEndX; 
@@ -632,8 +632,8 @@ void RecoAllAnalysis() {
             // Track looks the most like a pion + proton, background
             outStitchedFile << "Event number: " << event << std::endl; 
             outStitchedFile << "  Pion with Bragg peak chi^2: " << pionChi2 << std::endl; 
-            outStitchedFile << "  Through-going pion chi^2: " << throughGoingChi2 << std::endl; 
             outStitchedFile << "  Proton with Bragg peak chi^2: " << protonChi2 << std::endl; 
+            outStitchedFile << "  MIP chi^2: " << MIPChi2 << std::endl; 
             outStitchedFile << "  Best break point: " << bestBreakPoint << " with stitched chi^2: " << minStitchedChi2 << std::endl;
             outStitchedFile << std::endl;
             outStitchedFile << "  Original point distance from vertex: " << originalDistanceFromVertex << std::endl;
@@ -664,15 +664,15 @@ void RecoAllAnalysis() {
             // Track looks like pion with Bragg peak, background
             hStitchAsPionBraggPeak->Fill(backgroundType);
         } else {
-            // Track looks like through-going pion, could be signal
-            hStitchAsThroughgoing->Fill(backgroundType);
+            // Track looks like mip, could be signal
+            hStitchAsMIP->Fill(backgroundType);
         }
 
         ////////////////////////
         // Continue selection //
         ////////////////////////
 
-        // If the particle is categorized as throughgoing:
+        // If the particle is categorized as MIP:
         //   - Chi^2 selection on secondary tracks
         //   - If no secondary tracks, accept as 0p event
         // If the particle is categorized as a pion w/ bragg peak:
@@ -835,7 +835,7 @@ void RecoAllAnalysis() {
             }
         }
 
-        // If primary is through-going:
+        // If primary is MIP:
         //   - Usual selection
         // If primary is pion with Bragg peak:
         //   - Reject
@@ -1245,7 +1245,7 @@ void RecoAllAnalysis() {
 
     std::vector<std::vector<TH1*>> PlotGroups = {
         {hStitchedDistanceFromVertex, hStitchedOriginalDistanceFromVertex},
-        {hStitchAsPionAndProton, hStitchAsPionBraggPeak, hStitchAsThroughgoing, hStitchAsProton},
+        {hStitchAsPionAndProton, hStitchAsPionBraggPeak, hStitchAsMIP, hStitchAsProton},
         {hStitchFracBreakPoints},
         {hSecondaryPionChi2Pions, hSecondaryPionChi2Protons, hSecondaryPionChi2Others},
         {hSecondaryProtonChi2Pions, hSecondaryProtonChi2Protons, hSecondaryProtonChi2Others},
@@ -1261,7 +1261,7 @@ void RecoAllAnalysis() {
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         {"Detected vertex distance", "Original distance"},
-        {"Stitched pion-proton", "Bragg pion", "Through-going", "Proton"},
+        {"Stitched MIP-proton", "Bragg pion", "MIP", "Proton"},
         {"Stitched tracks"},
         {"Pions", "Protons", "Others"},
         {"Pions", "Protons", "Others"},
@@ -1378,22 +1378,22 @@ void RecoAllAnalysis() {
     THStack* hBackgroundTypesStack = new THStack("hBackgroundTypesStack", "BackgroundTypesStack");
 
     double alpha = 0.2;
-    hStitchAsPionAndProton->SetTitle("Stitched pion-proton");
+    hStitchAsPionAndProton->SetTitle("Stitched MIP-proton");
     hStitchAsPionBraggPeak->SetTitle("Bragg pion");
-    hStitchAsThroughgoing->SetTitle("Through-going");
-    hStitchAsProton->SetTitle("Proton");
+    hStitchAsMIP->SetTitle("MIP");
+    hStitchAsProton->SetTitle("Bragg proton");
 
     hStitchAsPionAndProton->SetFillColorAlpha(Colors[0], alpha);
     hStitchAsPionBraggPeak->SetFillColorAlpha(Colors[1], alpha);
-    hStitchAsThroughgoing->SetFillColorAlpha(Colors[2], alpha);
+    hStitchAsMIP->SetFillColorAlpha(Colors[2], alpha);
     hStitchAsProton->SetFillColorAlpha(Colors[3], alpha);
 
     hStitchAsPionAndProton->SetLineColor(Colors[0]);
     hStitchAsPionBraggPeak->SetLineColor(Colors[1]);
-    hStitchAsThroughgoing->SetLineColor(Colors[2]);
+    hStitchAsMIP->SetLineColor(Colors[2]);
     hStitchAsProton->SetLineColor(Colors[3]);
 
-    hBackgroundTypesStack->Add(hStitchAsThroughgoing);
+    hBackgroundTypesStack->Add(hStitchAsMIP);
     hBackgroundTypesStack->Add(hStitchAsPionAndProton);
     hBackgroundTypesStack->Add(hStitchAsPionBraggPeak);
     hBackgroundTypesStack->Add(hStitchAsProton);

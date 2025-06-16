@@ -1,7 +1,7 @@
 Event number: 19806
   Pion with Bragg peak chi^2: 2.02742
-  Through-going pion chi^2: 5.35457
   Proton with Bragg peak chi^2: 1.89344
+  MIP chi^2: 5.35457
   Best break point: 13 with stitched chi^2: 0.188454
 
   Original point distance from vertex: 10.2078
@@ -21,8 +21,8 @@ Event number: 19806
 
 Event number: 19855
   Pion with Bragg peak chi^2: 0.501365
-  Through-going pion chi^2: 0.387231
   Proton with Bragg peak chi^2: 1.36286
+  MIP chi^2: 0.387231
   Best break point: 55 with stitched chi^2: 0.333957
 
   Original point distance from vertex: 44.0537
@@ -40,8 +40,8 @@ Event number: 19855
 
 Event number: 19904
   Pion with Bragg peak chi^2: 1.08819
-  Through-going pion chi^2: 2.39955
   Proton with Bragg peak chi^2: 2.13821
+  MIP chi^2: 2.39955
   Best break point: 13 with stitched chi^2: 0.473265
 
   Original point distance from vertex: 9.95627
@@ -62,8 +62,8 @@ Event number: 19904
 
 Event number: 19910
   Pion with Bragg peak chi^2: 1.2418
-  Through-going pion chi^2: 1.45906
   Proton with Bragg peak chi^2: 1.28157
+  MIP chi^2: 1.45906
   Best break point: 17 with stitched chi^2: 0.419539
 
   Original point distance from vertex: 5.9145
@@ -87,8 +87,8 @@ Event number: 19910
 
 Event number: 19912
   Pion with Bragg peak chi^2: 0.752558
-  Through-going pion chi^2: 0.599478
   Proton with Bragg peak chi^2: 1.694
+  MIP chi^2: 0.599478
   Best break point: 62 with stitched chi^2: 0.351844
 
   Original point distance from vertex: 237.357
@@ -104,8 +104,8 @@ Event number: 19912
 
 Event number: 19940
   Pion with Bragg peak chi^2: 8.27891
-  Through-going pion chi^2: 11.1862
   Proton with Bragg peak chi^2: 4.22698
+  MIP chi^2: 11.1862
   Best break point: 42 with stitched chi^2: 2.47207
 
   Original point distance from vertex: 5.41422
@@ -157,8 +157,8 @@ Event number: 19940
 
 Event number: 19983
   Pion with Bragg peak chi^2: 13.5005
-  Through-going pion chi^2: 24.3954
   Proton with Bragg peak chi^2: 4.62788
+  MIP chi^2: 24.3954
   Best break point: 25 with stitched chi^2: 1.23985
 
   Original point distance from vertex: 0.411261
@@ -183,8 +183,8 @@ Event number: 19983
 
 Event number: 19994
   Pion with Bragg peak chi^2: 2.24646
-  Through-going pion chi^2: 6.36359
   Proton with Bragg peak chi^2: 1.91576
+  MIP chi^2: 6.36359
   Best break point: 28 with stitched chi^2: 1.33001
 
   Original point distance from vertex: 0.730236
@@ -206,8 +206,8 @@ Event number: 19994
 
 Event number: 199819
   Pion with Bragg peak chi^2: 22.602
-  Through-going pion chi^2: 37.8489
   Proton with Bragg peak chi^2: 8.29748
+  MIP chi^2: 37.8489
   Best break point: 38 with stitched chi^2: 2.57385
 
   Original point distance from vertex: 14.7521
@@ -227,8 +227,8 @@ Event number: 199819
 
 Event number: 199824
   Pion with Bragg peak chi^2: 0.346329
-  Through-going pion chi^2: 0.204992
   Proton with Bragg peak chi^2: 1.45781
+  MIP chi^2: 0.204992
   Best break point: 27 with stitched chi^2: 0.184944
 
   Original point distance from vertex: 0.260955
@@ -251,8 +251,8 @@ Event number: 199824
 
 Event number: 199859
   Pion with Bragg peak chi^2: 1.90433
-  Through-going pion chi^2: 4.65709
   Proton with Bragg peak chi^2: 0.723393
+  MIP chi^2: 4.65709
   Best break point: 34 with stitched chi^2: 0.255283
 
   Original point distance from vertex: 19.8152
@@ -279,8 +279,8 @@ Event number: 199859
 
 Event number: 199870
   Pion with Bragg peak chi^2: 3.48183
-  Through-going pion chi^2: 9.37143
   Proton with Bragg peak chi^2: 1.90578
+  MIP chi^2: 9.37143
   Best break point: 13 with stitched chi^2: 0.785332
 
   Original point distance from vertex: 0.926559
@@ -302,8 +302,8 @@ Event number: 199870
 
 Event number: 199871
   Pion with Bragg peak chi^2: 0.880164
-  Through-going pion chi^2: 2.59095
   Proton with Bragg peak chi^2: 0.587896
+  MIP chi^2: 2.59095
   Best break point: 69 with stitched chi^2: 0.350748
 
   Original point distance from vertex: 29.8277
@@ -323,8 +323,8 @@ Event number: 199871
 
 Event number: 199872
   Pion with Bragg peak chi^2: 2.06699
-  Through-going pion chi^2: 4.72898
   Proton with Bragg peak chi^2: 1.65131
+  MIP chi^2: 4.72898
   Best break point: 39 with stitched chi^2: 1.297
 
   Original point distance from vertex: 76.8184
@@ -339,8 +339,8 @@ Event number: 199872
 
 Event number: 199874
   Pion with Bragg peak chi^2: 1.06601
-  Through-going pion chi^2: 0.960972
   Proton with Bragg peak chi^2: 2.16819
+  MIP chi^2: 0.960972
   Best break point: 51 with stitched chi^2: 0.528542
 
   Original point distance from vertex: 5.32412
@@ -364,8 +364,8 @@ Event number: 199874
 
 Event number: 199889
   Pion with Bragg peak chi^2: 5.48363
-  Through-going pion chi^2: 11.3287
   Proton with Bragg peak chi^2: 2.37891
+  MIP chi^2: 11.3287
   Best break point: 25 with stitched chi^2: 1.35975
 
   Original point distance from vertex: 5.73503
@@ -407,8 +407,8 @@ Event number: 199889
 
 Event number: 199917
   Pion with Bragg peak chi^2: 1.5353
-  Through-going pion chi^2: 3.17929
   Proton with Bragg peak chi^2: 0.88403
+  MIP chi^2: 3.17929
   Best break point: 19 with stitched chi^2: 0.151426
 
   Original point distance from vertex: 15.2699
@@ -432,8 +432,8 @@ Event number: 199917
 
 Event number: 199942
   Pion with Bragg peak chi^2: 1.34748
-  Through-going pion chi^2: 3.04152
   Proton with Bragg peak chi^2: 1.97559
+  MIP chi^2: 3.04152
   Best break point: 13 with stitched chi^2: 0.962799
 
   Original point distance from vertex: 3.13012
@@ -457,8 +457,8 @@ Event number: 199942
 
 Event number: 199944
   Pion with Bragg peak chi^2: 1.16957
-  Through-going pion chi^2: 1.83638
   Proton with Bragg peak chi^2: 1.72364
+  MIP chi^2: 1.83638
   Best break point: 13 with stitched chi^2: 0.489824
 
   Original point distance from vertex: 1.56968
@@ -502,8 +502,8 @@ Event number: 199944
 
 Event number: 199948
   Pion with Bragg peak chi^2: 8.37491
-  Through-going pion chi^2: 15.5108
   Proton with Bragg peak chi^2: 4.68487
+  MIP chi^2: 15.5108
   Best break point: 13 with stitched chi^2: 0.581034
 
   Original point distance from vertex: 29.266
@@ -534,8 +534,8 @@ Event number: 199948
 
 Event number: 199997
   Pion with Bragg peak chi^2: 0.339028
-  Through-going pion chi^2: 0.252394
   Proton with Bragg peak chi^2: 1.51632
+  MIP chi^2: 0.252394
   Best break point: 38 with stitched chi^2: 0.158134
 
   Original point distance from vertex: 0.324049
@@ -556,8 +556,8 @@ Event number: 199997
 
 Event number: 200035
   Pion with Bragg peak chi^2: 1.77892
-  Through-going pion chi^2: 2.13821
   Proton with Bragg peak chi^2: 2.32335
+  MIP chi^2: 2.13821
   Best break point: 77 with stitched chi^2: 1.51765
 
   Original point distance from vertex: 935.711
@@ -570,8 +570,8 @@ Event number: 200035
 
 Event number: 200055
   Pion with Bragg peak chi^2: 0.304413
-  Through-going pion chi^2: 0.133363
   Proton with Bragg peak chi^2: 1.38308
+  MIP chi^2: 0.133363
   Best break point: 18 with stitched chi^2: 0.130256
 
   Original point distance from vertex: 0.875364
@@ -592,8 +592,8 @@ Event number: 200055
 
 Event number: 200061
   Pion with Bragg peak chi^2: 1.37189
-  Through-going pion chi^2: 2.58559
   Proton with Bragg peak chi^2: 0.378265
+  MIP chi^2: 2.58559
   Best break point: 52 with stitched chi^2: 0.136231
 
   Original point distance from vertex: 35.8287
@@ -613,8 +613,8 @@ Event number: 200061
 
 Event number: 200272
   Pion with Bragg peak chi^2: 0.849232
-  Through-going pion chi^2: 0.735768
   Proton with Bragg peak chi^2: 1.88525
+  MIP chi^2: 0.735768
   Best break point: 34 with stitched chi^2: 0.616426
 
   Original point distance from vertex: 10.7727
@@ -631,8 +631,8 @@ Event number: 200272
 
 Event number: 200275
   Pion with Bragg peak chi^2: 0.552385
-  Through-going pion chi^2: 0.519567
   Proton with Bragg peak chi^2: 1.43912
+  MIP chi^2: 0.519567
   Best break point: 81 with stitched chi^2: 0.381401
 
   Original point distance from vertex: 934.81
@@ -645,8 +645,8 @@ Event number: 200275
 
 Event number: 200281
   Pion with Bragg peak chi^2: 0.415754
-  Through-going pion chi^2: 0.364442
   Proton with Bragg peak chi^2: 1.42356
+  MIP chi^2: 0.364442
   Best break point: 76 with stitched chi^2: 0.336562
 
   Original point distance from vertex: 931.673
@@ -659,8 +659,8 @@ Event number: 200281
 
 Event number: 200299
   Pion with Bragg peak chi^2: 0.425764
-  Through-going pion chi^2: 0.302019
   Proton with Bragg peak chi^2: 1.43019
+  MIP chi^2: 0.302019
   Best break point: 60 with stitched chi^2: 0.276348
 
   Original point distance from vertex: 938.856
@@ -673,8 +673,8 @@ Event number: 200299
 
 Event number: 200369
   Pion with Bragg peak chi^2: 56.3594
-  Through-going pion chi^2: 83.6292
   Proton with Bragg peak chi^2: 22.1202
+  MIP chi^2: 83.6292
   Best break point: 22 with stitched chi^2: 5.59595
 
   Original point distance from vertex: 5.28502
@@ -718,8 +718,8 @@ Event number: 200369
 
 Event number: 200384
   Pion with Bragg peak chi^2: 1.77959
-  Through-going pion chi^2: 2.66496
   Proton with Bragg peak chi^2: 3.80714
+  MIP chi^2: 2.66496
   Best break point: 13 with stitched chi^2: 0.96388
 
   Original point distance from vertex: 0.635136
@@ -764,8 +764,8 @@ Event number: 200384
 
 Event number: 200526
   Pion with Bragg peak chi^2: 2.16197
-  Through-going pion chi^2: 4.56624
   Proton with Bragg peak chi^2: 0.812412
+  MIP chi^2: 4.56624
   Best break point: 22 with stitched chi^2: 0.115169
 
   Original point distance from vertex: 19.9947
@@ -787,8 +787,8 @@ Event number: 200526
 
 Event number: 200542
   Pion with Bragg peak chi^2: 0.451908
-  Through-going pion chi^2: 0.249732
   Proton with Bragg peak chi^2: 2.30181
+  MIP chi^2: 0.249732
   Best break point: 14 with stitched chi^2: 0.234658
 
   Original point distance from vertex: 13.1773
@@ -807,8 +807,8 @@ Event number: 200542
 
 Event number: 200598
   Pion with Bragg peak chi^2: 0.879064
-  Through-going pion chi^2: 0.685673
   Proton with Bragg peak chi^2: 1.92229
+  MIP chi^2: 0.685673
   Best break point: 59 with stitched chi^2: 0.340623
 
   Original point distance from vertex: 964.447
@@ -821,8 +821,8 @@ Event number: 200598
 
 Event number: 200605
   Pion with Bragg peak chi^2: 2.30846
-  Through-going pion chi^2: 2.33339
   Proton with Bragg peak chi^2: 6.75778
+  MIP chi^2: 2.33339
   Best break point: 17 with stitched chi^2: 1.12463
 
   Original point distance from vertex: 7.10941
@@ -840,8 +840,8 @@ Event number: 200605
 
 Event number: 200619
   Pion with Bragg peak chi^2: 0.696951
-  Through-going pion chi^2: 1.41497
   Proton with Bragg peak chi^2: 1.77137
+  MIP chi^2: 1.41497
   Best break point: 13 with stitched chi^2: 0.529871
 
   Original point distance from vertex: 3.22533
@@ -868,8 +868,8 @@ Event number: 200619
 
 Event number: 200674
   Pion with Bragg peak chi^2: 2.49349
-  Through-going pion chi^2: 5.89455
   Proton with Bragg peak chi^2: 0.320429
+  MIP chi^2: 5.89455
   Best break point: 75 with stitched chi^2: 0.101429
 
   Original point distance from vertex: 29.7961
@@ -891,8 +891,8 @@ Event number: 200674
 
 Event number: 200706
   Pion with Bragg peak chi^2: 0.500012
-  Through-going pion chi^2: 0.529005
   Proton with Bragg peak chi^2: 1.34805
+  MIP chi^2: 0.529005
   Best break point: 76 with stitched chi^2: 0.471488
 
   Original point distance from vertex: 947.174
@@ -905,8 +905,8 @@ Event number: 200706
 
 Event number: 200732
   Pion with Bragg peak chi^2: 8.10987
-  Through-going pion chi^2: 16.9091
   Proton with Bragg peak chi^2: 3.80954
+  MIP chi^2: 16.9091
   Best break point: 13 with stitched chi^2: 1.47436
 
   Original point distance from vertex: 0.413405
@@ -926,8 +926,8 @@ Event number: 200732
 
 Event number: 200743
   Pion with Bragg peak chi^2: 0.580796
-  Through-going pion chi^2: 1.14846
   Proton with Bragg peak chi^2: 2.19393
+  MIP chi^2: 1.14846
   Best break point: 13 with stitched chi^2: 0.515103
 
   Original point distance from vertex: 2.92131
@@ -951,8 +951,8 @@ Event number: 200743
 
 Event number: 200799
   Pion with Bragg peak chi^2: 0.351296
-  Through-going pion chi^2: 0.359838
   Proton with Bragg peak chi^2: 0.985956
+  MIP chi^2: 0.359838
   Best break point: 88 with stitched chi^2: 0.350414
 
   Original point distance from vertex: 942.948
@@ -965,8 +965,8 @@ Event number: 200799
 
 Event number: 200886
   Pion with Bragg peak chi^2: 2.46948
-  Through-going pion chi^2: 7.56668
   Proton with Bragg peak chi^2: 2.64371
+  MIP chi^2: 7.56668
   Best break point: 13 with stitched chi^2: 0.921341
 
   Original point distance from vertex: 2.63298
@@ -989,8 +989,8 @@ Event number: 200886
 
 Event number: 200903
   Pion with Bragg peak chi^2: 0.38272
-  Through-going pion chi^2: 0.540836
   Proton with Bragg peak chi^2: 1.10944
+  MIP chi^2: 0.540836
   Best break point: 13 with stitched chi^2: 0.317234
 
   Original point distance from vertex: 0.525269
@@ -1019,8 +1019,8 @@ Event number: 200903
 
 Event number: 200915
   Pion with Bragg peak chi^2: 2.29957
-  Through-going pion chi^2: 5.6108
   Proton with Bragg peak chi^2: 0.297057
+  MIP chi^2: 5.6108
   Best break point: 81 with stitched chi^2: 0.0671988
 
   Original point distance from vertex: 49.0167
@@ -1039,8 +1039,8 @@ Event number: 200915
 
 Event number: 200920
   Pion with Bragg peak chi^2: 2.21104
-  Through-going pion chi^2: 5.01401
   Proton with Bragg peak chi^2: 0.176226
+  MIP chi^2: 5.01401
   Best break point: 73 with stitched chi^2: 0.0774321
 
   Original point distance from vertex: 41.2982
@@ -1063,8 +1063,8 @@ Event number: 200920
 
 Event number: 200932
   Pion with Bragg peak chi^2: 8.01385
-  Through-going pion chi^2: 8.43523
   Proton with Bragg peak chi^2: 5.00911
+  MIP chi^2: 8.43523
   Best break point: 38 with stitched chi^2: 2.27995
 
   Original point distance from vertex: 68.295
@@ -1088,8 +1088,8 @@ Event number: 200932
 
 Event number: 200958
   Pion with Bragg peak chi^2: 0.363604
-  Through-going pion chi^2: 0.172025
   Proton with Bragg peak chi^2: 1.61851
+  MIP chi^2: 0.172025
   Best break point: 23 with stitched chi^2: 0.119176
 
   Original point distance from vertex: 539.557
@@ -1104,8 +1104,8 @@ Event number: 200958
 
 Event number: 200992
   Pion with Bragg peak chi^2: 1.68725
-  Through-going pion chi^2: 4.99886
   Proton with Bragg peak chi^2: 1.6225
+  MIP chi^2: 4.99886
   Best break point: 13 with stitched chi^2: 0.532268
 
   Original point distance from vertex: 0.653289
@@ -1125,8 +1125,8 @@ Event number: 200992
 
 Event number: 200997
   Pion with Bragg peak chi^2: 3.23359
-  Through-going pion chi^2: 6.57958
   Proton with Bragg peak chi^2: 0.868294
+  MIP chi^2: 6.57958
   Best break point: 49 with stitched chi^2: 0.10817
 
   Original point distance from vertex: 24.743
@@ -1150,8 +1150,8 @@ Event number: 200997
 
 Event number: 201003
   Pion with Bragg peak chi^2: 2.01793
-  Through-going pion chi^2: 8.08962
   Proton with Bragg peak chi^2: 1.63717
+  MIP chi^2: 8.08962
   Best break point: 15 with stitched chi^2: 0.279455
 
   Original point distance from vertex: 12.6959
@@ -1170,8 +1170,8 @@ Event number: 201003
 
 Event number: 201077
   Pion with Bragg peak chi^2: 43.9083
-  Through-going pion chi^2: 69.9461
   Proton with Bragg peak chi^2: 17.0741
+  MIP chi^2: 69.9461
   Best break point: 49 with stitched chi^2: 10.148
 
   Original point distance from vertex: 3.3013
@@ -1219,8 +1219,8 @@ Event number: 201077
 
 Event number: 201096
   Pion with Bragg peak chi^2: 4.71618
-  Through-going pion chi^2: 9.15904
   Proton with Bragg peak chi^2: 3.43511
+  MIP chi^2: 9.15904
   Best break point: 15 with stitched chi^2: 1.60416
 
   Original point distance from vertex: 4.24837
@@ -1261,8 +1261,8 @@ Event number: 201096
 
 Event number: 201142
   Pion with Bragg peak chi^2: 3.66743
-  Through-going pion chi^2: 11.0267
   Proton with Bragg peak chi^2: 3.52091
+  MIP chi^2: 11.0267
   Best break point: 13 with stitched chi^2: 1.59307
 
   Original point distance from vertex: 3.56846
@@ -1287,8 +1287,8 @@ Event number: 201142
 
 Event number: 201161
   Pion with Bragg peak chi^2: 0.35505
-  Through-going pion chi^2: 0.206229
   Proton with Bragg peak chi^2: 1.39505
+  MIP chi^2: 0.206229
   Best break point: 30 with stitched chi^2: 0.197055
 
   Original point distance from vertex: 20.8477
@@ -1310,8 +1310,8 @@ Event number: 201161
 
 Event number: 201183
   Pion with Bragg peak chi^2: 2.61767
-  Through-going pion chi^2: 2.59572
   Proton with Bragg peak chi^2: 3.38073
+  MIP chi^2: 2.59572
   Best break point: 123 with stitched chi^2: 1.30471
 
   Original point distance from vertex: 945.181
@@ -1324,8 +1324,8 @@ Event number: 201183
 
 Event number: 201252
   Pion with Bragg peak chi^2: 1.26828
-  Through-going pion chi^2: 2.1321
   Proton with Bragg peak chi^2: 1.801
+  MIP chi^2: 2.1321
   Best break point: 17 with stitched chi^2: 1.21077
 
   Original point distance from vertex: 5.98399
@@ -1347,8 +1347,8 @@ Event number: 201252
 
 Event number: 201263
   Pion with Bragg peak chi^2: 40.4125
-  Through-going pion chi^2: 71.8895
   Proton with Bragg peak chi^2: 14.2153
+  MIP chi^2: 71.8895
   Best break point: 18 with stitched chi^2: 10.5272
 
   Original point distance from vertex: 2.53357
@@ -1392,8 +1392,8 @@ Event number: 201263
 
 Event number: 201275
   Pion with Bragg peak chi^2: 1.19383
-  Through-going pion chi^2: 0.891368
   Proton with Bragg peak chi^2: 3.36754
+  MIP chi^2: 0.891368
   Best break point: 16 with stitched chi^2: 0.67359
 
   Original point distance from vertex: 3.97865
@@ -1442,8 +1442,8 @@ Event number: 201275
 
 Event number: 201388
   Pion with Bragg peak chi^2: 13.9244
-  Through-going pion chi^2: 27.6386
   Proton with Bragg peak chi^2: 6.21428
+  MIP chi^2: 27.6386
   Best break point: 13 with stitched chi^2: 0.230831
 
   Original point distance from vertex: 5.24421
@@ -1462,8 +1462,8 @@ Event number: 201388
 
 Event number: 201403
   Pion with Bragg peak chi^2: 0.408592
-  Through-going pion chi^2: 0.780029
   Proton with Bragg peak chi^2: 0.511559
+  MIP chi^2: 0.780029
   Best break point: 66 with stitched chi^2: 0.375854
 
   Original point distance from vertex: 41.805
@@ -1484,8 +1484,8 @@ Event number: 201403
 
 Event number: 201431
   Pion with Bragg peak chi^2: 1.59009
-  Through-going pion chi^2: 4.08233
   Proton with Bragg peak chi^2: 0.7212
+  MIP chi^2: 4.08233
   Best break point: 30 with stitched chi^2: 0.167203
 
   Original point distance from vertex: 13.6214
@@ -1510,8 +1510,8 @@ Event number: 201431
 
 Event number: 201439
   Pion with Bragg peak chi^2: 0.401656
-  Through-going pion chi^2: 0.318831
   Proton with Bragg peak chi^2: 1.48992
+  MIP chi^2: 0.318831
   Best break point: 45 with stitched chi^2: 0.236128
 
   Original point distance from vertex: 926.347
@@ -1524,8 +1524,8 @@ Event number: 201439
 
 Event number: 201572
   Pion with Bragg peak chi^2: 3.04735
-  Through-going pion chi^2: 5.81539
   Proton with Bragg peak chi^2: 2.09811
+  MIP chi^2: 5.81539
   Best break point: 16 with stitched chi^2: 1.22133
 
   Original point distance from vertex: 11.2402
@@ -1590,8 +1590,8 @@ Event number: 201572
 
 Event number: 201580
   Pion with Bragg peak chi^2: 0.619799
-  Through-going pion chi^2: 1.09686
   Proton with Bragg peak chi^2: 1.52692
+  MIP chi^2: 1.09686
   Best break point: 13 with stitched chi^2: 0.447652
 
   Original point distance from vertex: 0.562318
@@ -1617,8 +1617,8 @@ Event number: 201580
 
 Event number: 201697
   Pion with Bragg peak chi^2: 0.738961
-  Through-going pion chi^2: 1.41353
   Proton with Bragg peak chi^2: 1.55379
+  MIP chi^2: 1.41353
   Best break point: 13 with stitched chi^2: 0.157312
 
   Original point distance from vertex: 2.43079
@@ -1640,8 +1640,8 @@ Event number: 201697
 
 Event number: 201698
   Pion with Bragg peak chi^2: 1.6906
-  Through-going pion chi^2: 2.94769
   Proton with Bragg peak chi^2: 2.24458
+  MIP chi^2: 2.94769
   Best break point: 17 with stitched chi^2: 0.979575
 
   Original point distance from vertex: 42.2543
@@ -1666,8 +1666,8 @@ Event number: 201698
 
 Event number: 201706
   Pion with Bragg peak chi^2: 0.660491
-  Through-going pion chi^2: 2.09622
   Proton with Bragg peak chi^2: 1.19722
+  MIP chi^2: 2.09622
   Best break point: 32 with stitched chi^2: 0.301512
 
   Original point distance from vertex: 1.32129
@@ -1687,8 +1687,8 @@ Event number: 201706
 
 Event number: 201722
   Pion with Bragg peak chi^2: 0.886678
-  Through-going pion chi^2: 0.774297
   Proton with Bragg peak chi^2: 1.65173
+  MIP chi^2: 0.774297
   Best break point: 99 with stitched chi^2: 0.420308
 
   Original point distance from vertex: 7.80049
@@ -1707,8 +1707,8 @@ Event number: 201722
 
 Event number: 201832
   Pion with Bragg peak chi^2: 132.847
-  Through-going pion chi^2: 227.215
   Proton with Bragg peak chi^2: 53.6432
+  MIP chi^2: 227.215
   Best break point: 21 with stitched chi^2: 11.0578
 
   Original point distance from vertex: 6.01408
@@ -1751,8 +1751,8 @@ Event number: 201832
 
 Event number: 201865
   Pion with Bragg peak chi^2: 1.27031
-  Through-going pion chi^2: 1.88362
   Proton with Bragg peak chi^2: 3.04136
+  MIP chi^2: 1.88362
   Best break point: 22 with stitched chi^2: 0.972206
 
   Original point distance from vertex: 985.94
@@ -1765,8 +1765,8 @@ Event number: 201865
 
 Event number: 201930
   Pion with Bragg peak chi^2: 24.6699
-  Through-going pion chi^2: 42.4946
   Proton with Bragg peak chi^2: 11.2542
+  MIP chi^2: 42.4946
   Best break point: 18 with stitched chi^2: 0.115583
 
   Original point distance from vertex: 8.4883
@@ -1794,8 +1794,8 @@ Event number: 201930
 
 Event number: 202026
   Pion with Bragg peak chi^2: 62.6348
-  Through-going pion chi^2: 90.5841
   Proton with Bragg peak chi^2: 25.7722
+  MIP chi^2: 90.5841
   Best break point: 41 with stitched chi^2: 10.206
 
   Original point distance from vertex: 5.42342
@@ -1854,8 +1854,8 @@ Event number: 202026
 
 Event number: 202039
   Pion with Bragg peak chi^2: 3.29974
-  Through-going pion chi^2: 6.4192
   Proton with Bragg peak chi^2: 2.46075
+  MIP chi^2: 6.4192
   Best break point: 15 with stitched chi^2: 1.09536
 
   Original point distance from vertex: 2.73374
@@ -1896,8 +1896,8 @@ Event number: 202039
 
 Event number: 202046
   Pion with Bragg peak chi^2: 2.06825
-  Through-going pion chi^2: 6.13717
   Proton with Bragg peak chi^2: 2.49319
+  MIP chi^2: 6.13717
   Best break point: 13 with stitched chi^2: 1.22971
 
   Original point distance from vertex: 94.5498
@@ -1918,8 +1918,8 @@ Event number: 202046
 
 Event number: 202123
   Pion with Bragg peak chi^2: 0.71361
-  Through-going pion chi^2: 2.04988
   Proton with Bragg peak chi^2: 1.49728
+  MIP chi^2: 2.04988
   Best break point: 13 with stitched chi^2: 0.678599
 
   Original point distance from vertex: 0.162096
@@ -1936,8 +1936,8 @@ Event number: 202123
 
 Event number: 202140
   Pion with Bragg peak chi^2: 8.58117
-  Through-going pion chi^2: 15.1918
   Proton with Bragg peak chi^2: 4.39647
+  MIP chi^2: 15.1918
   Best break point: 20 with stitched chi^2: 3.1187
 
   Original point distance from vertex: 3.59327
@@ -1988,8 +1988,8 @@ Event number: 202140
 
 Event number: 202172
   Pion with Bragg peak chi^2: 0.402162
-  Through-going pion chi^2: 0.193374
   Proton with Bragg peak chi^2: 1.72341
+  MIP chi^2: 0.193374
   Best break point: 19 with stitched chi^2: 0.155596
 
   Original point distance from vertex: 0.504961
@@ -2009,8 +2009,8 @@ Event number: 202172
 
 Event number: 202208
   Pion with Bragg peak chi^2: 0.313309
-  Through-going pion chi^2: 0.271852
   Proton with Bragg peak chi^2: 1.30506
+  MIP chi^2: 0.271852
   Best break point: 59 with stitched chi^2: 0.246861
 
   Original point distance from vertex: 934.199
@@ -2023,8 +2023,8 @@ Event number: 202208
 
 Event number: 202222
   Pion with Bragg peak chi^2: 161.649
-  Through-going pion chi^2: 287.353
   Proton with Bragg peak chi^2: 72.3563
+  MIP chi^2: 287.353
   Best break point: 13 with stitched chi^2: 0.549458
 
   Original point distance from vertex: 0.60483
@@ -2047,8 +2047,8 @@ Event number: 202222
 
 Event number: 202235
   Pion with Bragg peak chi^2: 0.563654
-  Through-going pion chi^2: 0.228061
   Proton with Bragg peak chi^2: 2.27644
+  MIP chi^2: 0.228061
   Best break point: 13 with stitched chi^2: 0.214976
 
   Original point distance from vertex: 1.89951
@@ -2071,8 +2071,8 @@ Event number: 202235
 
 Event number: 202271
   Pion with Bragg peak chi^2: 0.503231
-  Through-going pion chi^2: 0.350572
   Proton with Bragg peak chi^2: 1.42414
+  MIP chi^2: 0.350572
   Best break point: 64 with stitched chi^2: 0.204303
 
   Original point distance from vertex: 936.221
@@ -2085,8 +2085,8 @@ Event number: 202271
 
 Event number: 202299
   Pion with Bragg peak chi^2: 0.367542
-  Through-going pion chi^2: 0.184301
   Proton with Bragg peak chi^2: 1.36841
+  MIP chi^2: 0.184301
   Best break point: 41 with stitched chi^2: 0.178294
 
   Original point distance from vertex: 76.7578
@@ -2101,8 +2101,8 @@ Event number: 202299
 
 Event number: 202307
   Pion with Bragg peak chi^2: 0.543825
-  Through-going pion chi^2: 0.490582
   Proton with Bragg peak chi^2: 1.60207
+  MIP chi^2: 0.490582
   Best break point: 62 with stitched chi^2: 0.392214
 
   Original point distance from vertex: 947.646
@@ -2115,8 +2115,8 @@ Event number: 202307
 
 Event number: 202338
   Pion with Bragg peak chi^2: 11.389
-  Through-going pion chi^2: 20.3267
   Proton with Bragg peak chi^2: 6.19213
+  MIP chi^2: 20.3267
   Best break point: 13 with stitched chi^2: 0.312569
 
   Original point distance from vertex: 1.30026
@@ -2139,8 +2139,8 @@ Event number: 202338
 
 Event number: 202349
   Pion with Bragg peak chi^2: 16.064
-  Through-going pion chi^2: 19.7005
   Proton with Bragg peak chi^2: 7.9246
+  MIP chi^2: 19.7005
   Best break point: 28 with stitched chi^2: 3.93187
 
   Original point distance from vertex: 18.3118
@@ -2181,8 +2181,8 @@ Event number: 202349
 
 Event number: 202361
   Pion with Bragg peak chi^2: 0.342738
-  Through-going pion chi^2: 0.223579
   Proton with Bragg peak chi^2: 1.65732
+  MIP chi^2: 0.223579
   Best break point: 13 with stitched chi^2: 0.194775
 
   Original point distance from vertex: 0.513114
@@ -2204,8 +2204,8 @@ Event number: 202361
 
 Event number: 202395
   Pion with Bragg peak chi^2: 1.14694
-  Through-going pion chi^2: 3.35293
   Proton with Bragg peak chi^2: 1.16644
+  MIP chi^2: 3.35293
   Best break point: 26 with stitched chi^2: 0.12421
 
   Original point distance from vertex: 7.05459
@@ -2225,8 +2225,8 @@ Event number: 202395
 
 Event number: 202479
   Pion with Bragg peak chi^2: 15.045
-  Through-going pion chi^2: 34.9704
   Proton with Bragg peak chi^2: 3.59161
+  MIP chi^2: 34.9704
   Best break point: 15 with stitched chi^2: 0.526444
 
   Original point distance from vertex: 1.00793
@@ -2256,8 +2256,8 @@ Event number: 202479
 
 Event number: 202489
   Pion with Bragg peak chi^2: 0.413539
-  Through-going pion chi^2: 0.178507
   Proton with Bragg peak chi^2: 1.63084
+  MIP chi^2: 0.178507
   Best break point: 13 with stitched chi^2: 0.143078
 
   Original point distance from vertex: 0.626455
@@ -2278,8 +2278,8 @@ Event number: 202489
 
 Event number: 202498
   Pion with Bragg peak chi^2: 2.56708
-  Through-going pion chi^2: 5.39548
   Proton with Bragg peak chi^2: 1.7807
+  MIP chi^2: 5.39548
   Best break point: 13 with stitched chi^2: 1.35114
 
   Original point distance from vertex: 2.83631
@@ -2326,8 +2326,8 @@ Event number: 202498
 
 Event number: 202505
   Pion with Bragg peak chi^2: 0.737549
-  Through-going pion chi^2: 1.76791
   Proton with Bragg peak chi^2: 1.23883
+  MIP chi^2: 1.76791
   Best break point: 43 with stitched chi^2: 0.352953
 
   Original point distance from vertex: 17.8539
@@ -2350,8 +2350,8 @@ Event number: 202505
 
 Event number: 202539
   Pion with Bragg peak chi^2: 2.22485
-  Through-going pion chi^2: 6.93347
   Proton with Bragg peak chi^2: 2.49545
+  MIP chi^2: 6.93347
   Best break point: 16 with stitched chi^2: 1.72234
 
   Original point distance from vertex: 1.98959
@@ -2374,8 +2374,8 @@ Event number: 202539
 
 Event number: 202555
   Pion with Bragg peak chi^2: 0.670534
-  Through-going pion chi^2: 0.468525
   Proton with Bragg peak chi^2: 2.11117
+  MIP chi^2: 0.468525
   Best break point: 26 with stitched chi^2: 0.313307
 
   Original point distance from vertex: 4.08118
@@ -2390,8 +2390,8 @@ Event number: 202555
 
 Event number: 202558
   Pion with Bragg peak chi^2: 12.0101
-  Through-going pion chi^2: 13.7674
   Proton with Bragg peak chi^2: 6.1863
+  MIP chi^2: 13.7674
   Best break point: 25 with stitched chi^2: 3.97779
 
   Original point distance from vertex: 35.1511
@@ -2429,8 +2429,8 @@ Event number: 202558
 
 Event number: 202584
   Pion with Bragg peak chi^2: 0.534249
-  Through-going pion chi^2: 0.254863
   Proton with Bragg peak chi^2: 2.08899
+  MIP chi^2: 0.254863
   Best break point: 13 with stitched chi^2: 0.207411
 
   Original point distance from vertex: 0.723229
@@ -2446,8 +2446,8 @@ Event number: 202584
 
 Event number: 202617
   Pion with Bragg peak chi^2: 1.80304
-  Through-going pion chi^2: 1.79
   Proton with Bragg peak chi^2: 2.20425
+  MIP chi^2: 1.79
   Best break point: 102 with stitched chi^2: 1.72722
 
   Original point distance from vertex: 780.45
@@ -2460,8 +2460,8 @@ Event number: 202617
 
 Event number: 202623
   Pion with Bragg peak chi^2: 13.4486
-  Through-going pion chi^2: 24.2609
   Proton with Bragg peak chi^2: 5.63315
+  MIP chi^2: 24.2609
   Best break point: 14 with stitched chi^2: 0.0439001
 
   Original point distance from vertex: 10.0795
@@ -2484,8 +2484,8 @@ Event number: 202623
 
 Event number: 202631
   Pion with Bragg peak chi^2: 0.275505
-  Through-going pion chi^2: 0.0948348
   Proton with Bragg peak chi^2: 1.49197
+  MIP chi^2: 0.0948348
   Best break point: 13 with stitched chi^2: 0.092352
 
   Original point distance from vertex: 33.7263
@@ -2502,8 +2502,8 @@ Event number: 202631
 
 Event number: 202754
   Pion with Bragg peak chi^2: 0.436245
-  Through-going pion chi^2: 0.165491
   Proton with Bragg peak chi^2: 1.8455
+  MIP chi^2: 0.165491
   Best break point: 15 with stitched chi^2: 0.121842
 
   Original point distance from vertex: 0.0833163
@@ -2523,8 +2523,8 @@ Event number: 202754
 
 Event number: 202781
   Pion with Bragg peak chi^2: 2.95547
-  Through-going pion chi^2: 8.08152
   Proton with Bragg peak chi^2: 0.546313
+  MIP chi^2: 8.08152
   Best break point: 24 with stitched chi^2: 0.0545884
 
   Original point distance from vertex: 13.978
@@ -2547,8 +2547,8 @@ Event number: 202781
 
 Event number: 202795
   Pion with Bragg peak chi^2: 0.553475
-  Through-going pion chi^2: 1.63149
   Proton with Bragg peak chi^2: 1.73033
+  MIP chi^2: 1.63149
   Best break point: 13 with stitched chi^2: 0.213799
 
   Original point distance from vertex: 2.95035
@@ -2570,8 +2570,8 @@ Event number: 202795
 
 Event number: 5015
   Pion with Bragg peak chi^2: 1.50991
-  Through-going pion chi^2: 8.40911
   Proton with Bragg peak chi^2: 2.24061
+  MIP chi^2: 8.40911
   Best break point: 14 with stitched chi^2: 0.181884
 
   Original point distance from vertex: 5.35016
@@ -2602,8 +2602,8 @@ Event number: 5015
 
 Event number: 5086
   Pion with Bragg peak chi^2: 1.38703
-  Through-going pion chi^2: 2.60518
   Proton with Bragg peak chi^2: 1.53368
+  MIP chi^2: 2.60518
   Best break point: 59 with stitched chi^2: 1.10444
 
   Original point distance from vertex: 1.42126
@@ -2624,8 +2624,8 @@ Event number: 5086
 
 Event number: 5092
   Pion with Bragg peak chi^2: 5.07737
-  Through-going pion chi^2: 17.6102
   Proton with Bragg peak chi^2: 2.4403
+  MIP chi^2: 17.6102
   Best break point: 13 with stitched chi^2: 0.222214
 
   Original point distance from vertex: 2.23282
@@ -2653,8 +2653,8 @@ Event number: 5092
 
 Event number: 5161
   Pion with Bragg peak chi^2: 0.348016
-  Through-going pion chi^2: 0.220831
   Proton with Bragg peak chi^2: 1.47988
+  MIP chi^2: 0.220831
   Best break point: 25 with stitched chi^2: 0.214954
 
   Original point distance from vertex: 38.8597
@@ -2674,8 +2674,8 @@ Event number: 5161
 
 Event number: 5164
   Pion with Bragg peak chi^2: 0.439279
-  Through-going pion chi^2: 0.198243
   Proton with Bragg peak chi^2: 1.66699
+  MIP chi^2: 0.198243
   Best break point: 31 with stitched chi^2: 0.192356
 
   Original point distance from vertex: 977.103
@@ -2688,8 +2688,8 @@ Event number: 5164
 
 Event number: 5204
   Pion with Bragg peak chi^2: 0.426558
-  Through-going pion chi^2: 0.250812
   Proton with Bragg peak chi^2: 1.47713
+  MIP chi^2: 0.250812
   Best break point: 67 with stitched chi^2: 0.205451
 
   Original point distance from vertex: 205.062
@@ -2704,8 +2704,8 @@ Event number: 5204
 
 Event number: 5230
   Pion with Bragg peak chi^2: 1.93181
-  Through-going pion chi^2: 5.78282
   Proton with Bragg peak chi^2: 2.2071
+  MIP chi^2: 5.78282
   Best break point: 13 with stitched chi^2: 0.844878
 
   Original point distance from vertex: 4.66598
@@ -2731,8 +2731,8 @@ Event number: 5230
 
 Event number: 5231
   Pion with Bragg peak chi^2: 1.83772
-  Through-going pion chi^2: 3.86341
   Proton with Bragg peak chi^2: 1.40405
+  MIP chi^2: 3.86341
   Best break point: 14 with stitched chi^2: 0.673339
 
   Original point distance from vertex: 18.5155
@@ -2754,8 +2754,8 @@ Event number: 5231
 
 Event number: 5246
   Pion with Bragg peak chi^2: 0.932121
-  Through-going pion chi^2: 2.16626
   Proton with Bragg peak chi^2: 1.89347
+  MIP chi^2: 2.16626
   Best break point: 13 with stitched chi^2: 0.683733
 
   Original point distance from vertex: 8.69345
@@ -2781,8 +2781,8 @@ Event number: 5246
 
 Event number: 5369
   Pion with Bragg peak chi^2: 0.588492
-  Through-going pion chi^2: 0.559124
   Proton with Bragg peak chi^2: 1.92715
+  MIP chi^2: 0.559124
   Best break point: 19 with stitched chi^2: 0.299887
 
   Original point distance from vertex: 0.594341
@@ -2806,8 +2806,8 @@ Event number: 5369
 
 Event number: 52917
   Pion with Bragg peak chi^2: 1.00262
-  Through-going pion chi^2: 2.35874
   Proton with Bragg peak chi^2: 1.28661
+  MIP chi^2: 2.35874
   Best break point: 13 with stitched chi^2: 0.315775
 
   Original point distance from vertex: 3.71789
@@ -2832,8 +2832,8 @@ Event number: 52917
 
 Event number: 52922
   Pion with Bragg peak chi^2: 0.380996
-  Through-going pion chi^2: 0.145877
   Proton with Bragg peak chi^2: 1.7486
+  MIP chi^2: 0.145877
   Best break point: 24 with stitched chi^2: 0.132209
 
   Original point distance from vertex: 0.23576
@@ -2857,8 +2857,8 @@ Event number: 52922
 
 Event number: 53155
   Pion with Bragg peak chi^2: 0.413446
-  Through-going pion chi^2: 0.285118
   Proton with Bragg peak chi^2: 1.46964
+  MIP chi^2: 0.285118
   Best break point: 49 with stitched chi^2: 0.243729
 
   Original point distance from vertex: 938.127
@@ -2871,8 +2871,8 @@ Event number: 53155
 
 Event number: 53200
   Pion with Bragg peak chi^2: 0.658662
-  Through-going pion chi^2: 0.603408
   Proton with Bragg peak chi^2: 1.50716
+  MIP chi^2: 0.603408
   Best break point: 79 with stitched chi^2: 0.542237
 
   Original point distance from vertex: 947.203
@@ -2885,8 +2885,8 @@ Event number: 53200
 
 Event number: 53234
   Pion with Bragg peak chi^2: 0.660449
-  Through-going pion chi^2: 1.2616
   Proton with Bragg peak chi^2: 0.725741
+  MIP chi^2: 1.2616
   Best break point: 16 with stitched chi^2: 0.268615
 
   Original point distance from vertex: 2.52681
@@ -2908,8 +2908,8 @@ Event number: 53234
 
 Event number: 53240
   Pion with Bragg peak chi^2: 3.49115
-  Through-going pion chi^2: 11.1717
   Proton with Bragg peak chi^2: 3.92328
+  MIP chi^2: 11.1717
   Best break point: 13 with stitched chi^2: 2.01646
 
   Original point distance from vertex: 0.867818
@@ -2933,8 +2933,8 @@ Event number: 53240
 
 Event number: 53313
   Pion with Bragg peak chi^2: 3.41484
-  Through-going pion chi^2: 8.0985
   Proton with Bragg peak chi^2: 1.5818
+  MIP chi^2: 8.0985
   Best break point: 13 with stitched chi^2: 0.945654
 
   Original point distance from vertex: 8.77723
@@ -2952,8 +2952,8 @@ Event number: 53313
 
 Event number: 53349
   Pion with Bragg peak chi^2: 1.1842
-  Through-going pion chi^2: 3.41142
   Proton with Bragg peak chi^2: 0.698485
+  MIP chi^2: 3.41142
   Best break point: 27 with stitched chi^2: 0.0971389
 
   Original point distance from vertex: 12.6513
@@ -2971,8 +2971,8 @@ Event number: 53349
 
 Event number: 53394
   Pion with Bragg peak chi^2: 2.67688
-  Through-going pion chi^2: 9.85332
   Proton with Bragg peak chi^2: 1.94516
+  MIP chi^2: 9.85332
   Best break point: 13 with stitched chi^2: 0.24622
 
   Original point distance from vertex: 0.67596
@@ -3014,8 +3014,8 @@ Event number: 53394
 
 Event number: 53459
   Pion with Bragg peak chi^2: 20.1609
-  Through-going pion chi^2: 27.9892
   Proton with Bragg peak chi^2: 8.33815
+  MIP chi^2: 27.9892
   Best break point: 36 with stitched chi^2: 6.75881
 
   Original point distance from vertex: 4.00336
@@ -3065,8 +3065,8 @@ Event number: 53459
 
 Event number: 53475
   Pion with Bragg peak chi^2: 1.06632
-  Through-going pion chi^2: 2.85797
   Proton with Bragg peak chi^2: 0.444844
+  MIP chi^2: 2.85797
   Best break point: 41 with stitched chi^2: 0.147556
 
   Original point distance from vertex: 19.3376
@@ -3086,8 +3086,8 @@ Event number: 53475
 
 Event number: 53508
   Pion with Bragg peak chi^2: 0.335288
-  Through-going pion chi^2: 0.171539
   Proton with Bragg peak chi^2: 1.41123
+  MIP chi^2: 0.171539
   Best break point: 44 with stitched chi^2: 0.143541
 
   Original point distance from vertex: 518.966
@@ -3101,8 +3101,8 @@ Event number: 53508
 
 Event number: 53539
   Pion with Bragg peak chi^2: 0.331391
-  Through-going pion chi^2: 0.143519
   Proton with Bragg peak chi^2: 1.39398
+  MIP chi^2: 0.143519
   Best break point: 40 with stitched chi^2: 0.12531
 
   Original point distance from vertex: 930.395
@@ -3115,8 +3115,8 @@ Event number: 53539
 
 Event number: 53563
   Pion with Bragg peak chi^2: 11.5005
-  Through-going pion chi^2: 19.8173
   Proton with Bragg peak chi^2: 4.68589
+  MIP chi^2: 19.8173
   Best break point: 33 with stitched chi^2: 1.75106
 
   Original point distance from vertex: 4.77736
@@ -3166,8 +3166,8 @@ Event number: 53563
 
 Event number: 53567
   Pion with Bragg peak chi^2: 0.491311
-  Through-going pion chi^2: 0.347164
   Proton with Bragg peak chi^2: 1.66969
+  MIP chi^2: 0.347164
   Best break point: 17 with stitched chi^2: 0.314525
 
   Original point distance from vertex: 928.69
@@ -3180,8 +3180,8 @@ Event number: 53567
 
 Event number: 53586
   Pion with Bragg peak chi^2: 0.378602
-  Through-going pion chi^2: 0.187325
   Proton with Bragg peak chi^2: 1.55818
+  MIP chi^2: 0.187325
   Best break point: 21 with stitched chi^2: 0.177696
 
   Original point distance from vertex: 0.182924
@@ -3199,8 +3199,8 @@ Event number: 53586
 
 Event number: 53602
   Pion with Bragg peak chi^2: 27.2771
-  Through-going pion chi^2: 62.7603
   Proton with Bragg peak chi^2: 11.4007
+  MIP chi^2: 62.7603
   Best break point: 65 with stitched chi^2: 11.0314
 
   Original point distance from vertex: 2.67871
@@ -3219,8 +3219,8 @@ Event number: 53602
 
 Event number: 53636
   Pion with Bragg peak chi^2: 4.07735
-  Through-going pion chi^2: 12.4874
   Proton with Bragg peak chi^2: 3.67045
+  MIP chi^2: 12.4874
   Best break point: 13 with stitched chi^2: 2.36176
 
   Original point distance from vertex: 2.25648
@@ -3245,8 +3245,8 @@ Event number: 53636
 
 Event number: 53671
   Pion with Bragg peak chi^2: 33.4585
-  Through-going pion chi^2: 50.3263
   Proton with Bragg peak chi^2: 12.8215
+  MIP chi^2: 50.3263
   Best break point: 36 with stitched chi^2: 10.2094
 
   Original point distance from vertex: 2.72051
@@ -3280,8 +3280,8 @@ Event number: 53671
 
 Event number: 53778
   Pion with Bragg peak chi^2: 1.21466
-  Through-going pion chi^2: 2.84001
   Proton with Bragg peak chi^2: 1.98422
+  MIP chi^2: 2.84001
   Best break point: 13 with stitched chi^2: 0.485562
 
   Original point distance from vertex: 0.790455
@@ -3308,8 +3308,8 @@ Event number: 53778
 
 Event number: 53821
   Pion with Bragg peak chi^2: 3.75796
-  Through-going pion chi^2: 10.6286
   Proton with Bragg peak chi^2: 2.37057
+  MIP chi^2: 10.6286
   Best break point: 19 with stitched chi^2: 1.64711
 
   Original point distance from vertex: 0.796312
@@ -3327,8 +3327,8 @@ Event number: 53821
 
 Event number: 53881
   Pion with Bragg peak chi^2: 2.92275
-  Through-going pion chi^2: 3.84964
   Proton with Bragg peak chi^2: 3.87453
+  MIP chi^2: 3.84964
   Best break point: 24 with stitched chi^2: 2.46209
 
   Original point distance from vertex: 0.218731
@@ -3346,8 +3346,8 @@ Event number: 53881
 
 Event number: 53918
   Pion with Bragg peak chi^2: 0.353238
-  Through-going pion chi^2: 0.146565
   Proton with Bragg peak chi^2: 1.47334
+  MIP chi^2: 0.146565
   Best break point: 42 with stitched chi^2: 0.132222
 
   Original point distance from vertex: 848.906
@@ -3362,8 +3362,8 @@ Event number: 53918
 
 Event number: 53972
   Pion with Bragg peak chi^2: 11.1306
-  Through-going pion chi^2: 28.0705
   Proton with Bragg peak chi^2: 5.06782
+  MIP chi^2: 28.0705
   Best break point: 46 with stitched chi^2: 4.98052
 
   Original point distance from vertex: 0.822932
@@ -3389,8 +3389,8 @@ Event number: 53972
 
 Event number: 53977
   Pion with Bragg peak chi^2: 0.637214
-  Through-going pion chi^2: 2.24396
   Proton with Bragg peak chi^2: 1.64652
+  MIP chi^2: 2.24396
   Best break point: 28 with stitched chi^2: 0.519041
 
   Original point distance from vertex: 0.388048
@@ -3408,8 +3408,8 @@ Event number: 53977
 
 Event number: 53982
   Pion with Bragg peak chi^2: 3.76274
-  Through-going pion chi^2: 4.03163
   Proton with Bragg peak chi^2: 2.93207
+  MIP chi^2: 4.03163
   Best break point: 46 with stitched chi^2: 2.01495
 
   Original point distance from vertex: 11.3948
@@ -3467,8 +3467,8 @@ Event number: 53982
 
 Event number: 53987
   Pion with Bragg peak chi^2: 2.11974
-  Through-going pion chi^2: 4.04054
   Proton with Bragg peak chi^2: 1.3289
+  MIP chi^2: 4.04054
   Best break point: 23 with stitched chi^2: 0.348407
 
   Original point distance from vertex: 0.852254
@@ -3489,8 +3489,8 @@ Event number: 53987
 
 Event number: 54006
   Pion with Bragg peak chi^2: 0.814583
-  Through-going pion chi^2: 2.99998
   Proton with Bragg peak chi^2: 1.6919
+  MIP chi^2: 2.99998
   Best break point: 15 with stitched chi^2: 0.108522
 
   Original point distance from vertex: 0.439606
@@ -3514,8 +3514,8 @@ Event number: 54006
 
 Event number: 54015
   Pion with Bragg peak chi^2: 0.304385
-  Through-going pion chi^2: 0.230024
   Proton with Bragg peak chi^2: 1.1874
+  MIP chi^2: 0.230024
   Best break point: 62 with stitched chi^2: 0.207024
 
   Original point distance from vertex: 446.671
@@ -3531,8 +3531,8 @@ Event number: 54015
 
 Event number: 54067
   Pion with Bragg peak chi^2: 1.15642
-  Through-going pion chi^2: 3.60006
   Proton with Bragg peak chi^2: 2.12532
+  MIP chi^2: 3.60006
   Best break point: 14 with stitched chi^2: 0.0997614
 
   Original point distance from vertex: 4.63515
@@ -3556,8 +3556,8 @@ Event number: 54067
 
 Event number: 54091
   Pion with Bragg peak chi^2: 1.61163
-  Through-going pion chi^2: 3.39104
   Proton with Bragg peak chi^2: 0.349463
+  MIP chi^2: 3.39104
   Best break point: 52 with stitched chi^2: 0.112165
 
   Original point distance from vertex: 30.3466
@@ -3576,8 +3576,8 @@ Event number: 54091
 
 Event number: 54138
   Pion with Bragg peak chi^2: 9.04915
-  Through-going pion chi^2: 10.8818
   Proton with Bragg peak chi^2: 5.84331
+  MIP chi^2: 10.8818
   Best break point: 60 with stitched chi^2: 1.67328
 
   Original point distance from vertex: 0.469298
@@ -3603,8 +3603,8 @@ Event number: 54138
 
 Event number: 54163
   Pion with Bragg peak chi^2: 0.355586
-  Through-going pion chi^2: 0.120741
   Proton with Bragg peak chi^2: 1.73485
+  MIP chi^2: 0.120741
   Best break point: 16 with stitched chi^2: 0.11987
 
   Original point distance from vertex: 1.40638
@@ -3626,8 +3626,8 @@ Event number: 54163
 
 Event number: 54177
   Pion with Bragg peak chi^2: 2.25514
-  Through-going pion chi^2: 3.12258
   Proton with Bragg peak chi^2: 2.33755
+  MIP chi^2: 3.12258
   Best break point: 59 with stitched chi^2: 1.16792
 
   Original point distance from vertex: 0.386739
@@ -3681,8 +3681,8 @@ Event number: 54177
 
 Event number: 54195
   Pion with Bragg peak chi^2: 1.78275
-  Through-going pion chi^2: 2.01304
   Proton with Bragg peak chi^2: 1.42118
+  MIP chi^2: 2.01304
   Best break point: 18 with stitched chi^2: 0.511442
 
   Original point distance from vertex: 19.5652
@@ -3707,8 +3707,8 @@ Event number: 54195
 
 Event number: 54222
   Pion with Bragg peak chi^2: 0.480955
-  Through-going pion chi^2: 1.14332
   Proton with Bragg peak chi^2: 1.26244
+  MIP chi^2: 1.14332
   Best break point: 13 with stitched chi^2: 0.335276
 
   Original point distance from vertex: 9.49966
@@ -3730,8 +3730,8 @@ Event number: 54222
 
 Event number: 54292
   Pion with Bragg peak chi^2: 4.17989
-  Through-going pion chi^2: 7.17045
   Proton with Bragg peak chi^2: 1.61271
+  MIP chi^2: 7.17045
   Best break point: 40 with stitched chi^2: 0.144868
 
   Original point distance from vertex: 18.4561
@@ -3755,8 +3755,8 @@ Event number: 54292
 
 Event number: 54390
   Pion with Bragg peak chi^2: 0.819703
-  Through-going pion chi^2: 2.07882
   Proton with Bragg peak chi^2: 1.63071
+  MIP chi^2: 2.07882
   Best break point: 14 with stitched chi^2: 0.196156
 
   Original point distance from vertex: 0.397012
@@ -3774,8 +3774,8 @@ Event number: 54390
 
 Event number: 54398
   Pion with Bragg peak chi^2: 2.82861
-  Through-going pion chi^2: 6.80545
   Proton with Bragg peak chi^2: 0.385721
+  MIP chi^2: 6.80545
   Best break point: 50 with stitched chi^2: 0.105499
 
   Original point distance from vertex: 26.7315
@@ -3795,8 +3795,8 @@ Event number: 54398
 
 Event number: 54419
   Pion with Bragg peak chi^2: 0.378242
-  Through-going pion chi^2: 0.176077
   Proton with Bragg peak chi^2: 1.86942
+  MIP chi^2: 0.176077
   Best break point: 13 with stitched chi^2: 0.151792
 
   Original point distance from vertex: 0.120031
@@ -3817,8 +3817,8 @@ Event number: 54419
 
 Event number: 54558
   Pion with Bragg peak chi^2: 12.0948
-  Through-going pion chi^2: 27.6043
   Proton with Bragg peak chi^2: 5.06649
+  MIP chi^2: 27.6043
   Best break point: 13 with stitched chi^2: 1.37538
 
   Original point distance from vertex: 1.92096
@@ -3840,8 +3840,8 @@ Event number: 54558
 
 Event number: 54574
   Pion with Bragg peak chi^2: 1.8977
-  Through-going pion chi^2: 4.40883
   Proton with Bragg peak chi^2: 0.340795
+  MIP chi^2: 4.40883
   Best break point: 61 with stitched chi^2: 0.102247
 
   Original point distance from vertex: 27.1358
@@ -3864,8 +3864,8 @@ Event number: 54574
 
 Event number: 54776
   Pion with Bragg peak chi^2: 0.642063
-  Through-going pion chi^2: 1.33953
   Proton with Bragg peak chi^2: 0.333553
+  MIP chi^2: 1.33953
   Best break point: 128 with stitched chi^2: 0.18715
 
   Original point distance from vertex: 50.342
@@ -3885,8 +3885,8 @@ Event number: 54776
 
 Event number: 54787
   Pion with Bragg peak chi^2: 0.503489
-  Through-going pion chi^2: 0.195837
   Proton with Bragg peak chi^2: 2.48404
+  MIP chi^2: 0.195837
   Best break point: 13 with stitched chi^2: 0.132375
 
   Original point distance from vertex: 3.39023
@@ -3906,8 +3906,8 @@ Event number: 54787
 
 Event number: 54811
   Pion with Bragg peak chi^2: 0.376951
-  Through-going pion chi^2: 0.199572
   Proton with Bragg peak chi^2: 1.53456
+  MIP chi^2: 0.199572
   Best break point: 31 with stitched chi^2: 0.185367
 
   Original point distance from vertex: 0.166313
@@ -3929,8 +3929,8 @@ Event number: 54811
 
 Event number: 54844
   Pion with Bragg peak chi^2: 9.49535
-  Through-going pion chi^2: 25.4905
   Proton with Bragg peak chi^2: 3.84109
+  MIP chi^2: 25.4905
   Best break point: 13 with stitched chi^2: 2.33803
 
   Original point distance from vertex: 5.7583
@@ -3955,8 +3955,8 @@ Event number: 54844
 
 Event number: 54846
   Pion with Bragg peak chi^2: 11.7477
-  Through-going pion chi^2: 21.4387
   Proton with Bragg peak chi^2: 5.07225
+  MIP chi^2: 21.4387
   Best break point: 60 with stitched chi^2: 2.62926
 
   Original point distance from vertex: 3.2301
@@ -4007,8 +4007,8 @@ Event number: 54846
 
 Event number: 54879
   Pion with Bragg peak chi^2: 0.306234
-  Through-going pion chi^2: 0.279226
   Proton with Bragg peak chi^2: 1.30116
+  MIP chi^2: 0.279226
   Best break point: 75 with stitched chi^2: 0.249544
 
   Original point distance from vertex: 926.303
@@ -4021,8 +4021,8 @@ Event number: 54879
 
 Event number: 54889
   Pion with Bragg peak chi^2: 6.3214
-  Through-going pion chi^2: 19.8636
   Proton with Bragg peak chi^2: 2.82512
+  MIP chi^2: 19.8636
   Best break point: 157 with stitched chi^2: 2.74086
 
   Original point distance from vertex: 1.54701
@@ -4044,8 +4044,8 @@ Event number: 54889
 
 Event number: 54940
   Pion with Bragg peak chi^2: 0.370346
-  Through-going pion chi^2: 0.179614
   Proton with Bragg peak chi^2: 1.80164
+  MIP chi^2: 0.179614
   Best break point: 13 with stitched chi^2: 0.151939
 
   Original point distance from vertex: 23.7316
@@ -4077,8 +4077,8 @@ Event number: 54940
 
 Event number: 54956
   Pion with Bragg peak chi^2: 2.00459
-  Through-going pion chi^2: 4.45824
   Proton with Bragg peak chi^2: 0.178853
+  MIP chi^2: 4.45824
   Best break point: 93 with stitched chi^2: 0.0899382
 
   Original point distance from vertex: 39.3545
@@ -4100,8 +4100,8 @@ Event number: 54956
 
 Event number: 55090
   Pion with Bragg peak chi^2: 2.73757
-  Through-going pion chi^2: 6.42664
   Proton with Bragg peak chi^2: 3.48908
+  MIP chi^2: 6.42664
   Best break point: 13 with stitched chi^2: 0.987524
 
   Original point distance from vertex: 25.0821
@@ -4152,8 +4152,8 @@ Event number: 55090
 
 Event number: 55109
   Pion with Bragg peak chi^2: 0.363758
-  Through-going pion chi^2: 0.18929
   Proton with Bragg peak chi^2: 1.39912
+  MIP chi^2: 0.18929
   Best break point: 25 with stitched chi^2: 0.171392
 
   Original point distance from vertex: 1.17007
@@ -4171,8 +4171,8 @@ Event number: 55109
 
 Event number: 55124
   Pion with Bragg peak chi^2: 0.336596
-  Through-going pion chi^2: 0.255183
   Proton with Bragg peak chi^2: 1.34144
+  MIP chi^2: 0.255183
   Best break point: 31 with stitched chi^2: 0.244045
 
   Original point distance from vertex: 967.173
@@ -4185,8 +4185,8 @@ Event number: 55124
 
 Event number: 55268
   Pion with Bragg peak chi^2: 0.677243
-  Through-going pion chi^2: 0.525548
   Proton with Bragg peak chi^2: 1.74207
+  MIP chi^2: 0.525548
   Best break point: 81 with stitched chi^2: 0.40063
 
   Original point distance from vertex: 11.8217
@@ -4208,8 +4208,8 @@ Event number: 55268
 
 Event number: 55352
   Pion with Bragg peak chi^2: 0.395816
-  Through-going pion chi^2: 0.668594
   Proton with Bragg peak chi^2: 0.751888
+  MIP chi^2: 0.668594
   Best break point: 20 with stitched chi^2: 0.18597
 
   Original point distance from vertex: 352.98
@@ -4223,8 +4223,8 @@ Event number: 55352
 
 Event number: 55408
   Pion with Bragg peak chi^2: 52.4922
-  Through-going pion chi^2: 67.8043
   Proton with Bragg peak chi^2: 23.7588
+  MIP chi^2: 67.8043
   Best break point: 47 with stitched chi^2: 9.20056
 
   Original point distance from vertex: 5.4699
@@ -4273,8 +4273,8 @@ Event number: 55408
 
 Event number: 55419
   Pion with Bragg peak chi^2: 3.43875
-  Through-going pion chi^2: 9.64254
   Proton with Bragg peak chi^2: 2.82647
+  MIP chi^2: 9.64254
   Best break point: 14 with stitched chi^2: 1.63783
 
   Original point distance from vertex: 30.6557
@@ -4319,8 +4319,8 @@ Event number: 55419
 
 Event number: 55435
   Pion with Bragg peak chi^2: 3.06236
-  Through-going pion chi^2: 5.77489
   Proton with Bragg peak chi^2: 2.17921
+  MIP chi^2: 5.77489
   Best break point: 128 with stitched chi^2: 0.908702
 
   Original point distance from vertex: 27.8669
@@ -4343,8 +4343,8 @@ Event number: 55435
 
 Event number: 55545
   Pion with Bragg peak chi^2: 0.35302
-  Through-going pion chi^2: 0.332793
   Proton with Bragg peak chi^2: 1.53432
+  MIP chi^2: 0.332793
   Best break point: 47 with stitched chi^2: 0.294549
 
   Original point distance from vertex: 935.24
@@ -4357,8 +4357,8 @@ Event number: 55545
 
 Event number: 55572
   Pion with Bragg peak chi^2: 0.311412
-  Through-going pion chi^2: 0.145407
   Proton with Bragg peak chi^2: 1.31878
+  MIP chi^2: 0.145407
   Best break point: 54 with stitched chi^2: 0.128269
 
   Original point distance from vertex: 967.554
@@ -4371,8 +4371,8 @@ Event number: 55572
 
 Event number: 55632
   Pion with Bragg peak chi^2: 2.79282
-  Through-going pion chi^2: 2.90585
   Proton with Bragg peak chi^2: 4.03274
+  MIP chi^2: 2.90585
   Best break point: 139 with stitched chi^2: 1.25926
 
   Original point distance from vertex: 926.116
@@ -4385,8 +4385,8 @@ Event number: 55632
 
 Event number: 55675
   Pion with Bragg peak chi^2: 0.428358
-  Through-going pion chi^2: 0.238052
   Proton with Bragg peak chi^2: 1.62169
+  MIP chi^2: 0.238052
   Best break point: 23 with stitched chi^2: 0.183502
 
   Original point distance from vertex: 1.38752
@@ -4410,8 +4410,8 @@ Event number: 55675
 
 Event number: 55688
   Pion with Bragg peak chi^2: 0.427663
-  Through-going pion chi^2: 0.419655
   Proton with Bragg peak chi^2: 1.40976
+  MIP chi^2: 0.419655
   Best break point: 66 with stitched chi^2: 0.34464
 
   Original point distance from vertex: 926.811
@@ -4424,8 +4424,8 @@ Event number: 55688
 
 Event number: 55697
   Pion with Bragg peak chi^2: 0.32894
-  Through-going pion chi^2: 0.208833
   Proton with Bragg peak chi^2: 1.29966
+  MIP chi^2: 0.208833
   Best break point: 59 with stitched chi^2: 0.199156
 
   Original point distance from vertex: 156.999
@@ -4440,8 +4440,8 @@ Event number: 55697
 
 Event number: 55698
   Pion with Bragg peak chi^2: 1.89904
-  Through-going pion chi^2: 4.76362
   Proton with Bragg peak chi^2: 1.43535
+  MIP chi^2: 4.76362
   Best break point: 15 with stitched chi^2: 0.245724
 
   Original point distance from vertex: 0.496781
@@ -4467,8 +4467,8 @@ Event number: 55698
 
 Event number: 55718
   Pion with Bragg peak chi^2: 0.4968
-  Through-going pion chi^2: 1.35164
   Proton with Bragg peak chi^2: 0.832293
+  MIP chi^2: 1.35164
   Best break point: 18 with stitched chi^2: 0.162944
 
   Original point distance from vertex: 3.12965
@@ -4492,8 +4492,8 @@ Event number: 55718
 
 Event number: 55728
   Pion with Bragg peak chi^2: 2.55707
-  Through-going pion chi^2: 9.71002
   Proton with Bragg peak chi^2: 1.87913
+  MIP chi^2: 9.71002
   Best break point: 15 with stitched chi^2: 0.171531
 
   Original point distance from vertex: 4.89848
@@ -4514,8 +4514,8 @@ Event number: 55728
 
 Event number: 55780
   Pion with Bragg peak chi^2: 0.51052
-  Through-going pion chi^2: 0.368257
   Proton with Bragg peak chi^2: 1.46386
+  MIP chi^2: 0.368257
   Best break point: 94 with stitched chi^2: 0.308601
 
   Original point distance from vertex: 923.857
@@ -4528,8 +4528,8 @@ Event number: 55780
 
 Event number: 5850
   Pion with Bragg peak chi^2: 0.403362
-  Through-going pion chi^2: 0.151489
   Proton with Bragg peak chi^2: 1.98306
+  MIP chi^2: 0.151489
   Best break point: 13 with stitched chi^2: 0.129968
 
   Original point distance from vertex: 0.216591
@@ -4547,8 +4547,8 @@ Event number: 5850
 
 Event number: 5899
   Pion with Bragg peak chi^2: 2.60575
-  Through-going pion chi^2: 9.88022
   Proton with Bragg peak chi^2: 1.95219
+  MIP chi^2: 9.88022
   Best break point: 17 with stitched chi^2: 0.100041
 
   Original point distance from vertex: 6.83733
@@ -4571,8 +4571,8 @@ Event number: 5899
 
 Event number: 5966
   Pion with Bragg peak chi^2: 1.08099
-  Through-going pion chi^2: 2.34295
   Proton with Bragg peak chi^2: 0.499442
+  MIP chi^2: 2.34295
   Best break point: 55 with stitched chi^2: 0.154672
 
   Original point distance from vertex: 25.7867
@@ -4591,8 +4591,8 @@ Event number: 5966
 
 Event number: 5967
   Pion with Bragg peak chi^2: 10.3168
-  Through-going pion chi^2: 18.1928
   Proton with Bragg peak chi^2: 3.78066
+  MIP chi^2: 18.1928
   Best break point: 58 with stitched chi^2: 2.99296
 
   Original point distance from vertex: 3.4405
@@ -4656,8 +4656,8 @@ Event number: 5967
 
 Event number: 6085
   Pion with Bragg peak chi^2: 32.0652
-  Through-going pion chi^2: 57.2315
   Proton with Bragg peak chi^2: 13.1691
+  MIP chi^2: 57.2315
   Best break point: 14 with stitched chi^2: 1.3006
 
   Original point distance from vertex: 3.13015
@@ -4683,8 +4683,8 @@ Event number: 6085
 
 Event number: 6109
   Pion with Bragg peak chi^2: 2.72789
-  Through-going pion chi^2: 4.2039
   Proton with Bragg peak chi^2: 2.09771
+  MIP chi^2: 4.2039
   Best break point: 38 with stitched chi^2: 1.73599
 
   Original point distance from vertex: 43.2565
@@ -4717,8 +4717,8 @@ Event number: 6109
 
 Event number: 6125
   Pion with Bragg peak chi^2: 0.461753
-  Through-going pion chi^2: 1.28555
   Proton with Bragg peak chi^2: 1.53186
+  MIP chi^2: 1.28555
   Best break point: 20 with stitched chi^2: 0.334364
 
   Original point distance from vertex: 10.2725
@@ -4741,8 +4741,8 @@ Event number: 6125
 
 Event number: 6165
   Pion with Bragg peak chi^2: 1.49037
-  Through-going pion chi^2: 2.77985
   Proton with Bragg peak chi^2: 2.05562
+  MIP chi^2: 2.77985
   Best break point: 14 with stitched chi^2: 0.526442
 
   Original point distance from vertex: 0.874549
@@ -4761,8 +4761,8 @@ Event number: 6165
 
 Event number: 6197
   Pion with Bragg peak chi^2: 0.495102
-  Through-going pion chi^2: 1.32225
   Proton with Bragg peak chi^2: 1.66104
+  MIP chi^2: 1.32225
   Best break point: 13 with stitched chi^2: 0.135223
 
   Original point distance from vertex: 0.234538
@@ -4789,8 +4789,8 @@ Event number: 6197
 
 Event number: 61814
   Pion with Bragg peak chi^2: 7.99785
-  Through-going pion chi^2: 10.89
   Proton with Bragg peak chi^2: 2.87924
+  MIP chi^2: 10.89
   Best break point: 60 with stitched chi^2: 0.906978
 
   Original point distance from vertex: 1.10613
@@ -4815,8 +4815,8 @@ Event number: 61814
 
 Event number: 61829
   Pion with Bragg peak chi^2: 1.47892
-  Through-going pion chi^2: 1.774
   Proton with Bragg peak chi^2: 2.81581
+  MIP chi^2: 1.774
   Best break point: 14 with stitched chi^2: 1.42397
 
   Original point distance from vertex: 2.64985
@@ -4840,8 +4840,8 @@ Event number: 61829
 
 Event number: 61840
   Pion with Bragg peak chi^2: 0.646804
-  Through-going pion chi^2: 0.286351
   Proton with Bragg peak chi^2: 2.53238
+  MIP chi^2: 0.286351
   Best break point: 17 with stitched chi^2: 0.26846
 
   Original point distance from vertex: 6.38015
@@ -4861,8 +4861,8 @@ Event number: 61840
 
 Event number: 61871
   Pion with Bragg peak chi^2: 0.349365
-  Through-going pion chi^2: 0.163833
   Proton with Bragg peak chi^2: 1.59553
+  MIP chi^2: 0.163833
   Best break point: 15 with stitched chi^2: 0.143034
 
   Original point distance from vertex: 13.9601
@@ -4880,8 +4880,8 @@ Event number: 61871
 
 Event number: 61972
   Pion with Bragg peak chi^2: 3.90051
-  Through-going pion chi^2: 10.0259
   Proton with Bragg peak chi^2: 2.00786
+  MIP chi^2: 10.0259
   Best break point: 13 with stitched chi^2: 1.08335
 
   Original point distance from vertex: 5.86424
@@ -4902,8 +4902,8 @@ Event number: 61972
 
 Event number: 61987
   Pion with Bragg peak chi^2: 1.43836
-  Through-going pion chi^2: 4.2285
   Proton with Bragg peak chi^2: 1.28276
+  MIP chi^2: 4.2285
   Best break point: 31 with stitched chi^2: 0.908819
 
   Original point distance from vertex: 1.14332
@@ -4926,8 +4926,8 @@ Event number: 61987
 
 Event number: 62018
   Pion with Bragg peak chi^2: 2.30723
-  Through-going pion chi^2: 4.92105
   Proton with Bragg peak chi^2: 0.181696
+  MIP chi^2: 4.92105
   Best break point: 83 with stitched chi^2: 0.0986843
 
   Original point distance from vertex: 44.1504
@@ -4947,8 +4947,8 @@ Event number: 62018
 
 Event number: 62050
   Pion with Bragg peak chi^2: 79.8017
-  Through-going pion chi^2: 155.523
   Proton with Bragg peak chi^2: 30.257
+  MIP chi^2: 155.523
   Best break point: 13 with stitched chi^2: 1.7188
 
   Original point distance from vertex: 0.820781
@@ -4971,8 +4971,8 @@ Event number: 62050
 
 Event number: 62123
   Pion with Bragg peak chi^2: 12.3329
-  Through-going pion chi^2: 14.5622
   Proton with Bragg peak chi^2: 6.83905
+  MIP chi^2: 14.5622
   Best break point: 53 with stitched chi^2: 4.74298
 
   Original point distance from vertex: 22.7509
@@ -5016,8 +5016,8 @@ Event number: 62123
 
 Event number: 62136
   Pion with Bragg peak chi^2: 0.494486
-  Through-going pion chi^2: 0.397283
   Proton with Bragg peak chi^2: 1.6672
+  MIP chi^2: 0.397283
   Best break point: 24 with stitched chi^2: 0.374422
 
   Original point distance from vertex: 950.752
@@ -5030,8 +5030,8 @@ Event number: 62136
 
 Event number: 62289
   Pion with Bragg peak chi^2: 0.346561
-  Through-going pion chi^2: 0.20128
   Proton with Bragg peak chi^2: 1.65481
+  MIP chi^2: 0.20128
   Best break point: 25 with stitched chi^2: 0.18765
 
   Original point distance from vertex: 251.144
@@ -5045,8 +5045,8 @@ Event number: 62289
 
 Event number: 62342
   Pion with Bragg peak chi^2: 0.352382
-  Through-going pion chi^2: 0.614443
   Proton with Bragg peak chi^2: 1.36436
+  MIP chi^2: 0.614443
   Best break point: 13 with stitched chi^2: 0.337189
 
   Original point distance from vertex: 0.627549
@@ -5063,8 +5063,8 @@ Event number: 62342
 
 Event number: 62412
   Pion with Bragg peak chi^2: 8.9634
-  Through-going pion chi^2: 23.2223
   Proton with Bragg peak chi^2: 3.76356
+  MIP chi^2: 23.2223
   Best break point: 43 with stitched chi^2: 3.50548
 
   Original point distance from vertex: 0.623488
@@ -5089,8 +5089,8 @@ Event number: 62412
 
 Event number: 62433
   Pion with Bragg peak chi^2: 0.555532
-  Through-going pion chi^2: 1.49281
   Proton with Bragg peak chi^2: 1.6885
+  MIP chi^2: 1.49281
   Best break point: 14 with stitched chi^2: 0.133109
 
   Original point distance from vertex: 2.4879
@@ -5113,8 +5113,8 @@ Event number: 62433
 
 Event number: 62516
   Pion with Bragg peak chi^2: 2.10609
-  Through-going pion chi^2: 2.5025
   Proton with Bragg peak chi^2: 2.50281
+  MIP chi^2: 2.5025
   Best break point: 42 with stitched chi^2: 0.668523
 
   Original point distance from vertex: 4.67993
@@ -5170,8 +5170,8 @@ Event number: 62516
 
 Event number: 62518
   Pion with Bragg peak chi^2: 0.320958
-  Through-going pion chi^2: 0.179004
   Proton with Bragg peak chi^2: 1.39304
+  MIP chi^2: 0.179004
   Best break point: 43 with stitched chi^2: 0.166165
 
   Original point distance from vertex: 934.452
@@ -5184,8 +5184,8 @@ Event number: 62518
 
 Event number: 62529
   Pion with Bragg peak chi^2: 0.639339
-  Through-going pion chi^2: 0.630444
   Proton with Bragg peak chi^2: 1.30923
+  MIP chi^2: 0.630444
   Best break point: 130 with stitched chi^2: 0.511529
 
   Original point distance from vertex: 944.03
@@ -5198,8 +5198,8 @@ Event number: 62529
 
 Event number: 62539
   Pion with Bragg peak chi^2: 0.412019
-  Through-going pion chi^2: 0.260275
   Proton with Bragg peak chi^2: 1.43256
+  MIP chi^2: 0.260275
   Best break point: 14 with stitched chi^2: 0.256047
 
   Original point distance from vertex: 6.00394
@@ -5219,8 +5219,8 @@ Event number: 62539
 
 Event number: 62579
   Pion with Bragg peak chi^2: 1.18208
-  Through-going pion chi^2: 2.5976
   Proton with Bragg peak chi^2: 0.862373
+  MIP chi^2: 2.5976
   Best break point: 24 with stitched chi^2: 0.096373
 
   Original point distance from vertex: 21.4015
@@ -5241,8 +5241,8 @@ Event number: 62579
 
 Event number: 62593
   Pion with Bragg peak chi^2: 5.48739
-  Through-going pion chi^2: 17.7505
   Proton with Bragg peak chi^2: 2.66485
+  MIP chi^2: 17.7505
   Best break point: 14 with stitched chi^2: 0.178119
 
   Original point distance from vertex: 5.80692
@@ -5270,8 +5270,8 @@ Event number: 62593
 
 Event number: 62635
   Pion with Bragg peak chi^2: 31.3728
-  Through-going pion chi^2: 91.037
   Proton with Bragg peak chi^2: 10.5181
+  MIP chi^2: 91.037
   Best break point: 17 with stitched chi^2: 10.4302
 
   Original point distance from vertex: 8.36268
@@ -5319,8 +5319,8 @@ Event number: 62635
 
 Event number: 62637
   Pion with Bragg peak chi^2: 5.7242
-  Through-going pion chi^2: 13.8413
   Proton with Bragg peak chi^2: 4.63358
+  MIP chi^2: 13.8413
   Best break point: 24 with stitched chi^2: 3.97779
 
   Original point distance from vertex: 0.352071
@@ -5349,8 +5349,8 @@ Event number: 62637
 
 Event number: 62655
   Pion with Bragg peak chi^2: 1.21827
-  Through-going pion chi^2: 4.30771
   Proton with Bragg peak chi^2: 1.68629
+  MIP chi^2: 4.30771
   Best break point: 13 with stitched chi^2: 0.220659
 
   Original point distance from vertex: 2.65065
@@ -5371,8 +5371,8 @@ Event number: 62655
 
 Event number: 62679
   Pion with Bragg peak chi^2: 4.00593
-  Through-going pion chi^2: 5.08648
   Proton with Bragg peak chi^2: 3.32986
+  MIP chi^2: 5.08648
   Best break point: 35 with stitched chi^2: 1.7947
 
   Original point distance from vertex: 0.425986
@@ -5401,8 +5401,8 @@ Event number: 62679
 
 Event number: 62705
   Pion with Bragg peak chi^2: 1.10646
-  Through-going pion chi^2: 2.04488
   Proton with Bragg peak chi^2: 0.882625
+  MIP chi^2: 2.04488
   Best break point: 35 with stitched chi^2: 0.364231
 
   Original point distance from vertex: 1.3511
@@ -5422,8 +5422,8 @@ Event number: 62705
 
 Event number: 62839
   Pion with Bragg peak chi^2: 0.62703
-  Through-going pion chi^2: 0.469401
   Proton with Bragg peak chi^2: 1.65372
+  MIP chi^2: 0.469401
   Best break point: 61 with stitched chi^2: 0.218278
 
   Original point distance from vertex: 931.181
@@ -5436,8 +5436,8 @@ Event number: 62839
 
 Event number: 62851
   Pion with Bragg peak chi^2: 10.2856
-  Through-going pion chi^2: 23.3611
   Proton with Bragg peak chi^2: 3.96965
+  MIP chi^2: 23.3611
   Best break point: 56 with stitched chi^2: 3.89864
 
   Original point distance from vertex: 4.85764
@@ -5459,8 +5459,8 @@ Event number: 62851
 
 Event number: 62937
   Pion with Bragg peak chi^2: 0.261738
-  Through-going pion chi^2: 0.281492
   Proton with Bragg peak chi^2: 1.3707
+  MIP chi^2: 0.281492
   Best break point: 13 with stitched chi^2: 0.241274
 
   Original point distance from vertex: 9.89369
@@ -5479,8 +5479,8 @@ Event number: 62937
 
 Event number: 62979
   Pion with Bragg peak chi^2: 0.445754
-  Through-going pion chi^2: 1.18154
   Proton with Bragg peak chi^2: 0.80611
+  MIP chi^2: 1.18154
   Best break point: 14 with stitched chi^2: 0.180786
 
   Original point distance from vertex: 2.54338
@@ -5502,8 +5502,8 @@ Event number: 62979
 
 Event number: 63000
   Pion with Bragg peak chi^2: 0.248086
-  Through-going pion chi^2: 0.870952
   Proton with Bragg peak chi^2: 1.05993
+  MIP chi^2: 0.870952
   Best break point: 13 with stitched chi^2: 0.206572
 
   Original point distance from vertex: 2.68726
@@ -5528,8 +5528,8 @@ Event number: 63000
 
 Event number: 63025
   Pion with Bragg peak chi^2: 17.2096
-  Through-going pion chi^2: 28.5716
   Proton with Bragg peak chi^2: 6.43521
+  MIP chi^2: 28.5716
   Best break point: 26 with stitched chi^2: 4.38
 
   Original point distance from vertex: 16.2373
@@ -5560,8 +5560,8 @@ Event number: 63025
 
 Event number: 63041
   Pion with Bragg peak chi^2: 6.90253
-  Through-going pion chi^2: 11.0878
   Proton with Bragg peak chi^2: 3.43797
+  MIP chi^2: 11.0878
   Best break point: 45 with stitched chi^2: 2.25304
 
   Original point distance from vertex: 16.9809
@@ -5598,8 +5598,8 @@ Event number: 63041
 
 Event number: 63072
   Pion with Bragg peak chi^2: 21.2455
-  Through-going pion chi^2: 36.1192
   Proton with Bragg peak chi^2: 7.65113
+  MIP chi^2: 36.1192
   Best break point: 30 with stitched chi^2: 3.40596
 
   Original point distance from vertex: 4.4031
@@ -5626,8 +5626,8 @@ Event number: 63072
 
 Event number: 63137
   Pion with Bragg peak chi^2: 12.8783
-  Through-going pion chi^2: 31.7483
   Proton with Bragg peak chi^2: 4.26336
+  MIP chi^2: 31.7483
   Best break point: 13 with stitched chi^2: 1.89031
 
   Original point distance from vertex: 3.65207
@@ -5666,8 +5666,8 @@ Event number: 63137
 
 Event number: 63145
   Pion with Bragg peak chi^2: 0.957236
-  Through-going pion chi^2: 2.87491
   Proton with Bragg peak chi^2: 1.28689
+  MIP chi^2: 2.87491
   Best break point: 17 with stitched chi^2: 0.569484
 
   Original point distance from vertex: 0.269283
@@ -5690,8 +5690,8 @@ Event number: 63145
 
 Event number: 63184
   Pion with Bragg peak chi^2: 0.847216
-  Through-going pion chi^2: 1.53827
   Proton with Bragg peak chi^2: 2.46966
+  MIP chi^2: 1.53827
   Best break point: 13 with stitched chi^2: 0.821503
 
   Original point distance from vertex: 1.22268
@@ -5710,8 +5710,8 @@ Event number: 63184
 
 Event number: 63194
   Pion with Bragg peak chi^2: 0.556062
-  Through-going pion chi^2: 0.412956
   Proton with Bragg peak chi^2: 2.12725
+  MIP chi^2: 0.412956
   Best break point: 13 with stitched chi^2: 0.364816
 
   Original point distance from vertex: 0.395662
@@ -5730,8 +5730,8 @@ Event number: 63194
 
 Event number: 63224
   Pion with Bragg peak chi^2: 1.71981
-  Through-going pion chi^2: 2.68633
   Proton with Bragg peak chi^2: 3.19425
+  MIP chi^2: 2.68633
   Best break point: 29 with stitched chi^2: 1.29887
 
   Original point distance from vertex: 0.825082
@@ -5782,8 +5782,8 @@ Event number: 63224
 
 Event number: 63245
   Pion with Bragg peak chi^2: 0.943992
-  Through-going pion chi^2: 1.83598
   Proton with Bragg peak chi^2: 0.972658
+  MIP chi^2: 1.83598
   Best break point: 13 with stitched chi^2: 0.493992
 
   Original point distance from vertex: 2.71581
@@ -5803,8 +5803,8 @@ Event number: 63245
 
 Event number: 63308
   Pion with Bragg peak chi^2: 1.60352
-  Through-going pion chi^2: 4.13127
   Proton with Bragg peak chi^2: 0.693426
+  MIP chi^2: 4.13127
   Best break point: 28 with stitched chi^2: 0.0428185
 
   Original point distance from vertex: 22.3446
@@ -5822,8 +5822,8 @@ Event number: 63308
 
 Event number: 63366
   Pion with Bragg peak chi^2: 2.71732
-  Through-going pion chi^2: 6.42311
   Proton with Bragg peak chi^2: 0.430288
+  MIP chi^2: 6.42311
   Best break point: 57 with stitched chi^2: 0.100066
 
   Original point distance from vertex: 27.0676
@@ -5848,8 +5848,8 @@ Event number: 63366
 
 Event number: 63368
   Pion with Bragg peak chi^2: 0.359272
-  Through-going pion chi^2: 0.31314
   Proton with Bragg peak chi^2: 1.37352
+  MIP chi^2: 0.31314
   Best break point: 29 with stitched chi^2: 0.308656
 
   Original point distance from vertex: 830.357
@@ -5862,8 +5862,8 @@ Event number: 63368
 
 Event number: 63379
   Pion with Bragg peak chi^2: 0.349319
-  Through-going pion chi^2: 0.142279
   Proton with Bragg peak chi^2: 1.51181
+  MIP chi^2: 0.142279
   Best break point: 18 with stitched chi^2: 0.115819
 
   Original point distance from vertex: 0.144873
@@ -5883,8 +5883,8 @@ Event number: 63379
 
 Event number: 63398
   Pion with Bragg peak chi^2: 4.45278
-  Through-going pion chi^2: 13.0315
   Proton with Bragg peak chi^2: 2.47204
+  MIP chi^2: 13.0315
   Best break point: 66 with stitched chi^2: 1.9019
 
   Original point distance from vertex: 0.489961
@@ -5907,8 +5907,8 @@ Event number: 63398
 
 Event number: 63533
   Pion with Bragg peak chi^2: 0.437493
-  Through-going pion chi^2: 0.252223
   Proton with Bragg peak chi^2: 1.64337
+  MIP chi^2: 0.252223
   Best break point: 16 with stitched chi^2: 0.249211
 
   Original point distance from vertex: 955.772
@@ -5921,8 +5921,8 @@ Event number: 63533
 
 Event number: 63562
   Pion with Bragg peak chi^2: 0.648208
-  Through-going pion chi^2: 0.749621
   Proton with Bragg peak chi^2: 1.83713
+  MIP chi^2: 0.749621
   Best break point: 24 with stitched chi^2: 0.627332
 
   Original point distance from vertex: 9.09444
@@ -5943,8 +5943,8 @@ Event number: 63562
 
 Event number: 63694
   Pion with Bragg peak chi^2: 7.2617
-  Through-going pion chi^2: 15.0739
   Proton with Bragg peak chi^2: 2.7223
+  MIP chi^2: 15.0739
   Best break point: 21 with stitched chi^2: 0.567475
 
   Original point distance from vertex: 0.648229
@@ -5965,8 +5965,8 @@ Event number: 63694
 
 Event number: 63712
   Pion with Bragg peak chi^2: 0.364169
-  Through-going pion chi^2: 0.239055
   Proton with Bragg peak chi^2: 1.33159
+  MIP chi^2: 0.239055
   Best break point: 73 with stitched chi^2: 0.231755
 
   Original point distance from vertex: 953.866
@@ -5979,8 +5979,8 @@ Event number: 63712
 
 Event number: 63740
   Pion with Bragg peak chi^2: 2.42287
-  Through-going pion chi^2: 4.62087
   Proton with Bragg peak chi^2: 0.812975
+  MIP chi^2: 4.62087
   Best break point: 45 with stitched chi^2: 0.327231
 
   Original point distance from vertex: 0.929229
@@ -6002,8 +6002,8 @@ Event number: 63740
 
 Event number: 63805
   Pion with Bragg peak chi^2: 22.9458
-  Through-going pion chi^2: 31.425
   Proton with Bragg peak chi^2: 10.8889
+  MIP chi^2: 31.425
   Best break point: 31 with stitched chi^2: 0.614476
 
   Original point distance from vertex: 0.565566
@@ -6026,8 +6026,8 @@ Event number: 63805
 
 Event number: 63823
   Pion with Bragg peak chi^2: 1.31449
-  Through-going pion chi^2: 4.63602
   Proton with Bragg peak chi^2: 1.71929
+  MIP chi^2: 4.63602
   Best break point: 17 with stitched chi^2: 0.217022
 
   Original point distance from vertex: 6.7615
@@ -6051,8 +6051,8 @@ Event number: 63823
 
 Event number: 63906
   Pion with Bragg peak chi^2: 0.715239
-  Through-going pion chi^2: 0.645116
   Proton with Bragg peak chi^2: 1.76352
+  MIP chi^2: 0.645116
   Best break point: 55 with stitched chi^2: 0.431454
 
   Original point distance from vertex: 640.621
@@ -6065,8 +6065,8 @@ Event number: 63906
 
 Event number: 63913
   Pion with Bragg peak chi^2: 1.70018
-  Through-going pion chi^2: 3.83096
   Proton with Bragg peak chi^2: 0.345959
+  MIP chi^2: 3.83096
   Best break point: 66 with stitched chi^2: 0.106387
 
   Original point distance from vertex: 30.9284
@@ -6089,8 +6089,8 @@ Event number: 63913
 
 Event number: 63970
   Pion with Bragg peak chi^2: 0.387044
-  Through-going pion chi^2: 0.562971
   Proton with Bragg peak chi^2: 1.83701
+  MIP chi^2: 0.562971
   Best break point: 13 with stitched chi^2: 0.285752
 
   Original point distance from vertex: 2.24275
@@ -6112,8 +6112,8 @@ Event number: 63970
 
 Event number: 63988
   Pion with Bragg peak chi^2: 0.911473
-  Through-going pion chi^2: 1.52496
   Proton with Bragg peak chi^2: 2.5405
+  MIP chi^2: 1.52496
   Best break point: 23 with stitched chi^2: 0.536568
 
   Original point distance from vertex: 16.6582
@@ -6158,8 +6158,8 @@ Event number: 63988
 
 Event number: 64001
   Pion with Bragg peak chi^2: 0.391913
-  Through-going pion chi^2: 0.194925
   Proton with Bragg peak chi^2: 1.51004
+  MIP chi^2: 0.194925
   Best break point: 55 with stitched chi^2: 0.137069
 
   Original point distance from vertex: 952.657
@@ -6172,8 +6172,8 @@ Event number: 64001
 
 Event number: 64006
   Pion with Bragg peak chi^2: 0.902303
-  Through-going pion chi^2: 2.13257
   Proton with Bragg peak chi^2: 0.993633
+  MIP chi^2: 2.13257
   Best break point: 33 with stitched chi^2: 0.659296
 
   Original point distance from vertex: 17.1506
@@ -6195,8 +6195,8 @@ Event number: 64006
 
 Event number: 64038
   Pion with Bragg peak chi^2: 2.49671
-  Through-going pion chi^2: 5.76359
   Proton with Bragg peak chi^2: 0.410903
+  MIP chi^2: 5.76359
   Best break point: 53 with stitched chi^2: 0.0915813
 
   Original point distance from vertex: 29.6611
@@ -6216,8 +6216,8 @@ Event number: 64038
 
 Event number: 64049
   Pion with Bragg peak chi^2: 0.373498
-  Through-going pion chi^2: 0.672172
   Proton with Bragg peak chi^2: 1.10037
+  MIP chi^2: 0.672172
   Best break point: 14 with stitched chi^2: 0.301222
 
   Original point distance from vertex: 1.01587
@@ -6238,8 +6238,8 @@ Event number: 64049
 
 Event number: 64081
   Pion with Bragg peak chi^2: 2.69218
-  Through-going pion chi^2: 7.19694
   Proton with Bragg peak chi^2: 1.8698
+  MIP chi^2: 7.19694
   Best break point: 14 with stitched chi^2: 1.0172
 
   Original point distance from vertex: 1.28517
@@ -6263,8 +6263,8 @@ Event number: 64081
 
 Event number: 64124
   Pion with Bragg peak chi^2: 0.424009
-  Through-going pion chi^2: 0.178353
   Proton with Bragg peak chi^2: 1.70817
+  MIP chi^2: 0.178353
   Best break point: 31 with stitched chi^2: 0.128512
 
   Original point distance from vertex: 50.722
@@ -6282,8 +6282,8 @@ Event number: 64124
 
 Event number: 64147
   Pion with Bragg peak chi^2: 0.684496
-  Through-going pion chi^2: 0.564909
   Proton with Bragg peak chi^2: 1.90826
+  MIP chi^2: 0.564909
   Best break point: 13 with stitched chi^2: 0.547508
 
   Original point distance from vertex: 951.739
@@ -6296,8 +6296,8 @@ Event number: 64147
 
 Event number: 64150
   Pion with Bragg peak chi^2: 2412.77
-  Through-going pion chi^2: 2888.91
   Proton with Bragg peak chi^2: 1259.03
+  MIP chi^2: 2888.91
   Best break point: 36 with stitched chi^2: 1.75811
 
   Original point distance from vertex: 0.549798
@@ -6320,8 +6320,8 @@ Event number: 64150
 
 Event number: 64169
   Pion with Bragg peak chi^2: 4.41675
-  Through-going pion chi^2: 5.38847
   Proton with Bragg peak chi^2: 3.14407
+  MIP chi^2: 5.38847
   Best break point: 14 with stitched chi^2: 1.92656
 
   Original point distance from vertex: 1.83706
@@ -6374,8 +6374,8 @@ Event number: 64169
 
 Event number: 64199
   Pion with Bragg peak chi^2: 67.3001
-  Through-going pion chi^2: 100.767
   Proton with Bragg peak chi^2: 27.2071
+  MIP chi^2: 100.767
   Best break point: 23 with stitched chi^2: 20.9944
 
   Original point distance from vertex: 12.5168
@@ -6421,8 +6421,8 @@ Event number: 64199
 
 Event number: 64225
   Pion with Bragg peak chi^2: 4.45006
-  Through-going pion chi^2: 11.118
   Proton with Bragg peak chi^2: 2.04167
+  MIP chi^2: 11.118
   Best break point: 13 with stitched chi^2: 0.705403
 
   Original point distance from vertex: 0.317856
@@ -6439,8 +6439,8 @@ Event number: 64225
 
 Event number: 64291
   Pion with Bragg peak chi^2: 13.9536
-  Through-going pion chi^2: 23.3107
   Proton with Bragg peak chi^2: 5.559
+  MIP chi^2: 23.3107
   Best break point: 37 with stitched chi^2: 2.55249
 
   Original point distance from vertex: 4.44599
@@ -6490,8 +6490,8 @@ Event number: 64291
 
 Event number: 64298
   Pion with Bragg peak chi^2: 0.920258
-  Through-going pion chi^2: 1.80737
   Proton with Bragg peak chi^2: 1.70627
+  MIP chi^2: 1.80737
   Best break point: 13 with stitched chi^2: 0.860748
 
   Original point distance from vertex: 0.182748
@@ -6514,8 +6514,8 @@ Event number: 64298
 
 Event number: 64371
   Pion with Bragg peak chi^2: 0.460556
-  Through-going pion chi^2: 0.24148
   Proton with Bragg peak chi^2: 1.62557
+  MIP chi^2: 0.24148
   Best break point: 43 with stitched chi^2: 0.166881
 
   Original point distance from vertex: 29.8993
@@ -6537,8 +6537,8 @@ Event number: 64371
 
 Event number: 64416
   Pion with Bragg peak chi^2: 4.15224
-  Through-going pion chi^2: 9.63729
   Proton with Bragg peak chi^2: 2.58253
+  MIP chi^2: 9.63729
   Best break point: 13 with stitched chi^2: 0.131426
 
   Original point distance from vertex: 4.98612
@@ -6563,8 +6563,8 @@ Event number: 64416
 
 Event number: 64455
   Pion with Bragg peak chi^2: 4.57737
-  Through-going pion chi^2: 6.32736
   Proton with Bragg peak chi^2: 3.13008
+  MIP chi^2: 6.32736
   Best break point: 39 with stitched chi^2: 1.10724
 
   Original point distance from vertex: 5.6322
@@ -6622,8 +6622,8 @@ Event number: 64455
 
 Event number: 64461
   Pion with Bragg peak chi^2: 10.5128
-  Through-going pion chi^2: 11.9547
   Proton with Bragg peak chi^2: 6.50378
+  MIP chi^2: 11.9547
   Best break point: 61 with stitched chi^2: 2.04862
 
   Original point distance from vertex: 3.95423
@@ -6678,8 +6678,8 @@ Event number: 64461
 
 Event number: 64478
   Pion with Bragg peak chi^2: 1.56026
-  Through-going pion chi^2: 3.71738
   Proton with Bragg peak chi^2: 1.35591
+  MIP chi^2: 3.71738
   Best break point: 20 with stitched chi^2: 0.303564
 
   Original point distance from vertex: 2.87001
@@ -6702,8 +6702,8 @@ Event number: 64478
 
 Event number: 64526
   Pion with Bragg peak chi^2: 0.666149
-  Through-going pion chi^2: 0.505869
   Proton with Bragg peak chi^2: 1.91862
+  MIP chi^2: 0.505869
   Best break point: 20 with stitched chi^2: 0.450507
 
   Original point distance from vertex: 0.406129
@@ -6724,8 +6724,8 @@ Event number: 64526
 
 Event number: 64541
   Pion with Bragg peak chi^2: 18.3638
-  Through-going pion chi^2: 36.4136
   Proton with Bragg peak chi^2: 6.50774
+  MIP chi^2: 36.4136
   Best break point: 13 with stitched chi^2: 3.33496
 
   Original point distance from vertex: 12.1392
@@ -6750,8 +6750,8 @@ Event number: 64541
 
 Event number: 64557
   Pion with Bragg peak chi^2: 0.417004
-  Through-going pion chi^2: 0.172775
   Proton with Bragg peak chi^2: 1.60517
+  MIP chi^2: 0.172775
   Best break point: 20 with stitched chi^2: 0.123775
 
   Original point distance from vertex: 0.846946
@@ -6778,8 +6778,8 @@ Event number: 64557
 
 Event number: 64574
   Pion with Bragg peak chi^2: 2.66694
-  Through-going pion chi^2: 8.4874
   Proton with Bragg peak chi^2: 1.34705
+  MIP chi^2: 8.4874
   Best break point: 17 with stitched chi^2: 0.0779886
 
   Original point distance from vertex: 7.48517
@@ -6804,8 +6804,8 @@ Event number: 64574
 
 Event number: 64608
   Pion with Bragg peak chi^2: 0.37271
-  Through-going pion chi^2: 0.19322
   Proton with Bragg peak chi^2: 1.48816
+  MIP chi^2: 0.19322
   Best break point: 61 with stitched chi^2: 0.17815
 
   Original point distance from vertex: 942.082
@@ -6818,8 +6818,8 @@ Event number: 64608
 
 Event number: 64677
   Pion with Bragg peak chi^2: 2.77269
-  Through-going pion chi^2: 7.62862
   Proton with Bragg peak chi^2: 2.54589
+  MIP chi^2: 7.62862
   Best break point: 14 with stitched chi^2: 1.38413
 
   Original point distance from vertex: 0.975168
@@ -6846,8 +6846,8 @@ Event number: 64677
 
 Event number: 64737
   Pion with Bragg peak chi^2: 0.343703
-  Through-going pion chi^2: 0.349159
   Proton with Bragg peak chi^2: 1.32216
+  MIP chi^2: 0.349159
   Best break point: 18 with stitched chi^2: 0.304735
 
   Original point distance from vertex: 39.7021
@@ -6868,8 +6868,8 @@ Event number: 64737
 
 Event number: 64757
   Pion with Bragg peak chi^2: 3.04619
-  Through-going pion chi^2: 6.19149
   Proton with Bragg peak chi^2: 1.43367
+  MIP chi^2: 6.19149
   Best break point: 26 with stitched chi^2: 0.366183
 
   Original point distance from vertex: 0.371412
