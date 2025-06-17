@@ -1,10 +1,13 @@
-#include <TFile.h>
-#include <TTree.h>
-#include <TString.h>
-#include <TCanvas.h>
-#include <TTree.h>
-#include <TVector3.h>
-#include <TEfficiency.h>
+#include "TFile.h"
+#include "TTree.h"
+#include "TString.h"
+#include "TCanvas.h"
+#include "TTree.h"
+#include "TVector3.h"
+#include "TMatrixDSym.h"
+#include "TMatrixDSymEigen.h"
+#include "TVectorD.h"
+#include "TEfficiency.h"
 
 #include <vector>
 
@@ -115,6 +118,9 @@ double PROTON_ENERGY_UPPER_BOUND = 1.0;
 // Hit wire separation
 double HIT_WIRE_SEPARATION = 0.4; // converts wire # to cm
 
+// Window size for local linearity
+int WINDOW_SIZE_LINEARITY = 5;
+
 //////////////////////
 // Helper functions //
 //////////////////////
@@ -142,6 +148,7 @@ void printTwoDPlots(TString dir, std::vector<TH2*> plots, std::vector<TString> t
 bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold);
 void Overlay_dEdx_RR_Reference_PP(TGraph* gProton, TGraph* gPion, bool addLegend = true, TVirtualPad* pad = gPad);
 void printEfficiencyPlots(TString dir, int fontStyle, double textSize, std::vector<TEfficiency*> efficiencies, std::vector<TString> titles, std::vector<TString> xlabels);
+std::vector<double> calcLinearityProfile(std::vector<double>& vx, std::vector<double>& vy, std::vector<double>& vz, int nb);
 
 ///////////////////
 // Main function //
@@ -604,6 +611,28 @@ void RecoAllAnalysis() {
 
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
+
+        // Get linearity profile for wire-chamber match
+        std::vector<double> WC2TPCLinearity = calcLinearityProfile(*WC2TPCLocationsX, *WC2TPCLocationsY, *WC2TPCLocationsZ, WINDOW_SIZE_LINEARITY);
+
+        if ((event == 19977) || (event == 6197) || ((event == 5899))) {
+            TCanvas* c1 = new TCanvas("c1", "DEDXProfiles", 800, 600);
+
+            int N = WC2TPCLinearity.size();
+            std::vector<double> x(N);
+            for (int i = 0; i < N; ++i) x[i] = i;
+
+            TGraph *gLinearity = new TGraph(N, x.data(), WC2TPCLinearity.data());
+
+            gLinearity->SetTitle("Linearity;Position index;Local linearity");
+            gLinearity->SetMarkerStyle(20);
+            gLinearity->SetMarkerColor(kBlack);
+            gLinearity->Draw("AP");
+            c1->SaveAs(SaveDir + "linearityProfiles/" + event + ".png");
+
+            delete c1;
+            delete gLinearity;
+        }
 
         // Apply small tracks cut
         if (!passesSmallTracksCut)  continue;
@@ -1705,6 +1734,69 @@ int isSecondaryInteractionAbsorption(std::vector<int> daughtersPDG, std::vector<
 
     if (tempNumProtons == 0) return 0;
     return 1;
+}
+
+std::vector<double> calcLinearityProfile(std::vector<double>& vx, std::vector<double>& vy, std::vector<double>& vz, int nb) {
+    size_t N = vx.size();
+    std::vector<double> linearity(N, 0.0);
+
+    if (N < 3 || vx.size() != vy.size() || vx.size() != vz.size()) return linearity;
+
+    for (size_t index = 0; index < N; ++index) {
+        int k1 = std::max(int(0), int(index - nb));
+        int k2 = std::min(int(N - 1), int(index + nb));
+        int M  = k2 - k1 + 1;
+
+        double mx = 0., my = 0., mz = 0.;
+        for (int i = k1; i <= k2; ++i) {
+            mx += vx[i];
+            my += vy[i];
+            mz += vz[i];
+        }
+        mx /= M; my /= M; mz /= M;
+
+        double Cxx = 0., Cxy = 0., Cxz = 0.;
+        double Cyy = 0., Cyz = 0., Czz = 0.;
+
+        for (int i = k1; i <= k2; ++i) {
+            double dx = vx[i] - mx;
+            double dy = vy[i] - my;
+            double dz = vz[i] - mz;
+
+            Cxx += dx * dx;
+            Cxy += dx * dy;
+            Cxz += dx * dz;
+            Cyy += dy * dy;
+            Cyz += dy * dz;
+            Czz += dz * dz;
+        }
+
+        Cxx /= M; Cxy /= M; Cxz /= M;
+        Cyy /= M; Cyz /= M;
+        Czz /= M;
+
+        TMatrixDSym cov(3);
+        cov(0,0) = Cxx; cov(0,1) = Cxy; cov(0,2) = Cxz;
+        cov(1,0) = Cxy; cov(1,1) = Cyy; cov(1,2) = Cyz;
+        cov(2,0) = Cxz; cov(2,1) = Cyz; cov(2,2) = Czz;
+
+        TMatrixDSymEigen eigenSolver(cov);
+        TVectorD evals = eigenSolver.GetEigenValues();
+        std::vector<double> eigs = { evals[0], evals[1], evals[2] };
+
+        double lambda_sum = eigs[0] + eigs[1] + eigs[2];
+        if (lambda_sum == 0.0f) {
+            linearity[index] = 1.0;
+        } else {
+            linearity[index] = eigs[0] / lambda_sum;
+            // linearity[index] = (eigs[1] - eigs[2]) / lambda_sum;
+        }
+
+        std::cout << "   eigenvalues: " << eigs[0] << "  " << eigs[1] <<"  " << eigs[2] << std::endl;
+        std::cout << "   planarity: " << (eigs[1] - eigs[2]) / lambda_sum << std::endl;
+        // std::cout << "   linearity: " << eigs[0] / lambda_sum << std::endl;
+    }
+    return linearity;
 }
 
 void initializeProtonPoints(TGraph* gProton) {
