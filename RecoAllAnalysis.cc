@@ -141,6 +141,7 @@ void printOneDPlots(
 void printTwoDPlots(TString dir, std::vector<TH2*> plots, std::vector<TString> titles);
 bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold);
 void Overlay_dEdx_RR_Reference_PP(TGraph* gProton, TGraph* gPion, bool addLegend = true, TVirtualPad* pad = gPad);
+void printEfficiencyPlots(TString dir, int fontStyle, double textSize, std::vector<TEfficiency*> efficiencies, std::vector<TString> titles, std::vector<TString> xlabels);
 
 ///////////////////
 // Main function //
@@ -217,6 +218,14 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("wcMatchYPos", &wcMatchYPos);
     tree->SetBranchAddress("wcMatchZPos", &wcMatchZPos);
 
+    // WC match location information
+    std::vector<double>* WC2TPCLocationsX = nullptr;
+    std::vector<double>* WC2TPCLocationsY = nullptr;
+    std::vector<double>* WC2TPCLocationsZ = nullptr;
+    tree->SetBranchAddress("WC2TPCLocationsX", &WC2TPCLocationsX);
+    tree->SetBranchAddress("WC2TPCLocationsY", &WC2TPCLocationsY);
+    tree->SetBranchAddress("WC2TPCLocationsZ", &WC2TPCLocationsZ);
+
     // WC match truth information
     int                       wcMatchPDG;
     std::string*              wcMatchProcess          = new std::string();
@@ -250,10 +259,14 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("isTrackInverted", &isTrackInverted);
 
     // Reco truth-match information
-    std::vector<int>*     matchedIdentity = nullptr;
-    std::vector<double> * matchedKEnergy  = nullptr;
+    std::vector<int>*         matchedIdentity = nullptr;
+    std::vector<int>*         matchedTrkID    = nullptr;
+    std::vector<double>*      matchedKEnergy  = nullptr;
+    std::vector<std::string>* matchedProcess  = nullptr;
     tree->SetBranchAddress("matchedIdentity", &matchedIdentity);
+    tree->SetBranchAddress("matchedTrkID", &matchedTrkID);
     tree->SetBranchAddress("matchedKEnergy", &matchedKEnergy);
+    tree->SetBranchAddress("matchedProcess", &matchedProcess);
 
     // Calorimetry information
     std::vector<std::vector<double>>* recoResR = nullptr;
@@ -264,10 +277,13 @@ void RecoAllAnalysis() {
     // Truth-level information
     int truthPrimaryPDG;
     double truthPrimaryVertexX, truthPrimaryVertexY, truthPrimaryVertexZ;
+    double truthPrimaryIncidentKE, truthPrimaryVertexKE;
     std::vector<int>*         truthPrimaryDaughtersPDG     = nullptr;
     std::vector<std::string>* truthPrimaryDaughtersProcess = nullptr;
     std::vector<double>*      truthPrimaryDaughtersKE      = nullptr;
     tree->SetBranchAddress("truthPrimaryPDG", &truthPrimaryPDG);
+    tree->SetBranchAddress("truthPrimaryIncidentKE", &truthPrimaryIncidentKE);
+    tree->SetBranchAddress("truthPrimaryVertexKE", &truthPrimaryVertexKE);
     tree->SetBranchAddress("truthPrimaryVertexX", &truthPrimaryVertexX);
     tree->SetBranchAddress("truthPrimaryVertexY", &truthPrimaryVertexY);
     tree->SetBranchAddress("truthPrimaryVertexZ", &truthPrimaryVertexZ);
@@ -487,6 +503,31 @@ void RecoAllAnalysis() {
     int    NUM_CLUSTERS_THRESHOLD  = 1;
     double LARGE_CLUSTER_THRESHOLD = HIT_WIRE_SEPARATION * 3;
 
+    //////////////////////////////////////////
+    // Data for inelastic scattering events //
+    //////////////////////////////////////////
+
+    std::vector<double> InelasticScatteringIncidentKE;
+    std::vector<double> InelasticScatteringVertexKE;
+    std::vector<double> InelasticScatteringOutgoingKE;
+
+    std::vector<double> Background0pInelasticScatteringIncidentKE;
+    std::vector<double> Background0pInelasticScatteringVertexKE;
+    std::vector<double> Background0pInelasticScatteringOutgoingKE;
+
+    std::vector<double> BackgroundNpInelasticScatteringIncidentKE;
+    std::vector<double> BackgroundNpInelasticScatteringVertexKE;
+    std::vector<double> BackgroundNpInelasticScatteringOutgoingKE;
+
+    TH1D *hInelasticScatteringReconstructed = new TH1D("hInelasticScatteringReconstructionEfficiency", "hInelasticScatteringReconstructionEfficiency;;", 20, 0, 0.4);
+    TH1D *hInelasticScatteringTotal         = new TH1D("hInelasticScatteringTotal", "hInelasticScatteringTotal;;", 20, 0, 0.4);
+
+    TH1D *hInelasticScatteringReconstructed0pBkg = new TH1D("hInelasticScatteringReconstructionEfficiency0pBkg", "hInelasticScatteringReconstructionEfficiency0pBkg;;", 20, 0, 0.4);
+    TH1D *hInelasticScatteringTotal0pBkg         = new TH1D("hInelasticScatteringTotal0pBkg", "hInelasticScatteringTotal0pBkg;;", 20, 0, 0.4);
+
+    TH1D *hInelasticScatteringReconstructedNpBkg = new TH1D("hInelasticScatteringReconstructionEfficiencyNpBkg", "hInelasticScatteringReconstructionEfficiencyNpBkg;;", 20, 0, 0.4);
+    TH1D *hInelasticScatteringTotalNpBkg         = new TH1D("hInelasticScatteringTotalNpBkg", "hInelasticScatteringTotalNpBkg;;", 20, 0, 0.4);
+
     /////////////////////////////////
     // Files for event information //
     /////////////////////////////////
@@ -542,6 +583,25 @@ void RecoAllAnalysis() {
             delete hDEDXProfile;
         }
 
+        // Study ALL inelastic scattering events
+        if (backgroundType == 6) {
+            InelasticScatteringIncidentKE.push_back(truthPrimaryIncidentKE);
+            InelasticScatteringVertexKE.push_back(truthPrimaryVertexKE);
+            InelasticScatteringOutgoingKE.push_back(truthScatteredPionKE);
+
+            hInelasticScatteringTotal->Fill(truthScatteredPionKE);
+            for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
+                if (
+                    (matchedIdentity->at(iRecoTrk) == -211) && 
+                    (matchedTrkID->at(iRecoTrk) != WC2TPCtrkID) && 
+                    (matchedProcess->at(iRecoTrk) == "pi-Inelastic")
+                ) {
+                    hInelasticScatteringReconstructed->Fill(truthScatteredPionKE);
+                    break;
+                }
+            }
+        }
+
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
 
@@ -564,9 +624,9 @@ void RecoAllAnalysis() {
         outWCAll << "  Calorimetry data points: " << totalCaloPoints << std::endl;
 
         // Get chi^2 fits, primary tracks are already checked for reversal in first module
-        double pionChi2         = computeReducedChi2(gPion, *wcMatchResR,  *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
-        double MIPChi2 = computeReducedChi2(gMuonTG, *wcMatchResR, *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
-        double protonChi2       = computeReducedChi2(gProton, *wcMatchResR, *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        double pionChi2   = computeReducedChi2(gPion, *wcMatchResR,  *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        double MIPChi2    = computeReducedChi2(gMuonTG, *wcMatchResR, *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        double protonChi2 = computeReducedChi2(gProton, *wcMatchResR, *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
 
         double minStitchedChi2 = std::numeric_limits<double>::max();
         int bestBreakPoint = -1;
@@ -672,13 +732,13 @@ void RecoAllAnalysis() {
         // Continue selection //
         ////////////////////////
 
-        // If the particle is categorized as MIP:
-        //   - Chi^2 selection on secondary tracks
-        //   - If no secondary tracks, accept as 0p event
         // If the particle is categorized as a pion w/ bragg peak:
         //   - Kill
         // If the particle is categorized as proton:
         //   - Kill
+        // If the particle is categorized as MIP:
+        //   - Chi^2 selection on secondary tracks
+        //   - If no secondary tracks, accept as 0p event
         // If the particle is categorized as stitched:
         //   - Chi^2 selection on secondary tracks from new vertex
 
@@ -1096,6 +1156,33 @@ void RecoAllAnalysis() {
             hScatteringBackgroundOriginalDistanceToSecondaryVertex->Fill(originalDistanceFromSecondaryVertex);
             hScatteringBackgroundDistanceToPrimaryVertex->Fill(distanceFromVertex);
             hScatteringBackgroundDistanceToSecondaryVertex->Fill(distanceFromSecondaryVertex);
+
+            if (totalTaggedProtons == 0) {
+                Background0pInelasticScatteringIncidentKE.push_back(truthPrimaryIncidentKE);
+                Background0pInelasticScatteringVertexKE.push_back(truthPrimaryVertexKE);
+                Background0pInelasticScatteringOutgoingKE.push_back(truthScatteredPionKE);
+
+                hInelasticScatteringTotal0pBkg->Fill(truthScatteredPionKE);
+                for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
+                    if ((matchedIdentity->at(iRecoTrk) == -211) && (matchedTrkID->at(iRecoTrk) != WC2TPCtrkID) && (matchedProcess->at(iRecoTrk) == "pi-Inelastic")) {
+                        hInelasticScatteringReconstructed0pBkg->Fill(truthScatteredPionKE);
+                        break;
+                    }
+                }
+
+            } else if (totalTaggedProtons > 0) {
+                BackgroundNpInelasticScatteringIncidentKE.push_back(truthPrimaryIncidentKE);
+                BackgroundNpInelasticScatteringVertexKE.push_back(truthPrimaryVertexKE);
+                BackgroundNpInelasticScatteringOutgoingKE.push_back(truthScatteredPionKE);
+
+                hInelasticScatteringTotalNpBkg->Fill(truthScatteredPionKE);
+                for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
+                    if ((matchedIdentity->at(iRecoTrk) == -211) && (matchedTrkID->at(iRecoTrk) != WC2TPCtrkID) && (matchedProcess->at(iRecoTrk) == "pi-Inelastic")) {
+                        hInelasticScatteringReconstructedNpBkg->Fill(truthScatteredPionKE);
+                        break;
+                    }
+                }
+            }
         }
 
         if ((totalTaggedProtons == 0) && (backgroundType != 0)) {
@@ -1235,6 +1322,44 @@ void RecoAllAnalysis() {
     std::cout << "Hit cluster cut max purity = " << maxContentHitCluster << " at (cluster size, num clusters) = (" << xAtMaxHitCluster << ", " << yAtMaxHitCluster << ")" << std::endl;
     std::cout << std::endl;
 
+    ////////////////////////////////////////////
+    // Compute reco efficiency for scattering //
+    ////////////////////////////////////////////
+
+    TEfficiency* hInelasticScatteringReconstructionEfficiency = nullptr;
+    hInelasticScatteringReconstructionEfficiency = new TEfficiency(*hInelasticScatteringReconstructed, *hInelasticScatteringTotal);
+
+    TEfficiency* hInelasticScatteringReconstructionEfficiency0pBkg = nullptr;
+    hInelasticScatteringReconstructionEfficiency0pBkg = new TEfficiency(*hInelasticScatteringReconstructed0pBkg, *hInelasticScatteringTotal0pBkg);
+
+    TEfficiency* hInelasticScatteringReconstructionEfficiencyNpBkg = nullptr;
+    hInelasticScatteringReconstructionEfficiencyNpBkg = new TEfficiency(*hInelasticScatteringReconstructedNpBkg, *hInelasticScatteringTotalNpBkg);
+
+    std::vector<TEfficiency*> EfficiencyPlots = {
+        hInelasticScatteringReconstructionEfficiency,
+        hInelasticScatteringReconstructionEfficiency0pBkg,
+        hInelasticScatteringReconstructionEfficiencyNpBkg
+    };
+
+    std::vector<TString> EfficiencyPlotsTitles = {
+        "RecoEfficiencyScatteredPions",
+        "RecoEfficiencyScatteredPions0pBkg",
+        "RecoEfficiencyScatteredPionsNpBkg"
+    };
+
+    std::vector<TString> EfficiencyPlotsXLabels = {
+        "Outgoing pion KE (GeV/c)",
+        "Outgoing pion KE (GeV/c)",
+        "Outgoing pion KE (GeV/c)"
+    };
+
+    printEfficiencyPlots(
+        SaveDir, FontStyle, TextSize,
+        EfficiencyPlots,
+        EfficiencyPlotsTitles,
+        EfficiencyPlotsXLabels
+    );
+
     //////////////////
     // Create plots //
     //////////////////
@@ -1256,7 +1381,10 @@ void RecoAllAnalysis() {
         {hScatteringBackgroundOriginalDistanceToPrimaryVertex, hScatteringBackgroundOriginalDistanceToSecondaryVertex, hScatteringBackgroundDistanceToPrimaryVertex, hScatteringBackgroundDistanceToSecondaryVertex},
         {hHitClusters0p, hHitClusters0pBackground, hHitClustersNp, hHitClustersNpBackground},
         {hHitClustersSize0p, hHitClustersSize0pBackground, hHitClustersSizeNp, hHitClustersSizeNpBackground},
-        {hHitLargeClusters0p, hHitLargeClusters0pBackground, hHitLargeClustersNp, hHitLargeClustersNpBackground}
+        {hHitLargeClusters0p, hHitLargeClusters0pBackground, hHitLargeClustersNp, hHitLargeClustersNpBackground},
+        {hInelasticScatteringTotal, hInelasticScatteringReconstructed},
+        {hInelasticScatteringTotal0pBkg, hInelasticScatteringReconstructed0pBkg},
+        {hInelasticScatteringTotalNpBkg, hInelasticScatteringReconstructedNpBkg}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -1272,7 +1400,10 @@ void RecoAllAnalysis() {
         {"Original to primary", "Original to secondary", "Detected to primary", "Detected to secondary"},
         {"Reco 0p true", "Reco 0p background", "Reco Np true", "Reco Np background"},
         {"Reco 0p true", "Reco 0p background", "Reco Np true", "Reco Np background"},
-        {"Reco 0p true", "Reco 0p background", "Reco Np true", "Reco Np background"}
+        {"Reco 0p true", "Reco 0p background", "Reco Np true", "Reco Np background"},
+        {"All", "Reconstructed"},
+        {"All", "Reconstructed"},
+        {"All", "Reconstructed"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -1288,7 +1419,10 @@ void RecoAllAnalysis() {
         "InelasticScatteringBackgroundDistanceFromVertex",
         "NumberOfHitClusters",
         "AverageHitClusterSize",
-        "NumberOfLargeHitClusters"
+        "NumberOfLargeHitClusters",
+        "RecoScatteredPions",
+        "RecoScatteredPions0pBkg",
+        "RecoScatteredPionsNpBkg"
     };
 
     std::vector<TString> XLabels = {
@@ -1304,7 +1438,10 @@ void RecoAllAnalysis() {
         "Distance from true vertex (cm)",
         "Number of induction plane hit clusters",
         "Induction plane hit cluster average size",
-        "Number of induction plane large hit clusters"
+        "Number of induction plane large hit clusters",
+        "Outgoing pion energy (GeV/c)",
+        "Outgoing pion energy (GeV/c)",
+        "Outgoing pion energy (GeV/c)"
     };
 
     std::vector<TString> YLabels = {
@@ -1318,6 +1455,9 @@ void RecoAllAnalysis() {
         "Number of tracks",
         "Number of tracks",
         "Number of tracks",
+        "Number of events",
+        "Number of events",
+        "Number of events",
         "Number of events",
         "Number of events",
         "Number of events"
@@ -1431,6 +1571,58 @@ void RecoAllAnalysis() {
 
     c->Update();
     c->SaveAs(SaveDir + "StitchedBackgroundTypesStacked.png");
+
+    //////////////////////////////////////////////////////
+    // Create scatter plots for inelastic scattering KE //
+    //////////////////////////////////////////////////////
+
+    int nDataPoints               = InelasticScatteringIncidentKE.size();
+    TGraph *gIncidentVSOutgoingKE = new TGraph(nDataPoints, InelasticScatteringIncidentKE.data(), InelasticScatteringOutgoingKE.data());
+    TGraph *gVertexVSOutgoingKE   = new TGraph(nDataPoints, InelasticScatteringVertexKE.data(), InelasticScatteringOutgoingKE.data());
+
+    gIncidentVSOutgoingKE->SetTitle("Outgoing KE vs Incident KE;Incident KE [MeV];Outgoing KE [MeV]");
+    gIncidentVSOutgoingKE->SetMarkerStyle(20);
+    gIncidentVSOutgoingKE->SetMarkerColor(kBlack);
+    gIncidentVSOutgoingKE->Draw("AP");
+    c->SaveAs(SaveDir + "InelasticScatteringIncidentVSOutgoingKE.png");
+
+    gVertexVSOutgoingKE->SetTitle("Outgoing KE vs Vertex KE;Vertex KE [MeV];Outgoing KE [MeV]");
+    gVertexVSOutgoingKE->SetMarkerStyle(20);
+    gVertexVSOutgoingKE->SetMarkerColor(kBlack);
+    gVertexVSOutgoingKE->Draw("AP");
+    c->SaveAs(SaveDir + "InelasticScatteringVertexVSOutgoingKE.png");
+
+    int n0pDataPoints               = Background0pInelasticScatteringIncidentKE.size();
+    TGraph *g0pIncidentVSOutgoingKE = new TGraph(n0pDataPoints, Background0pInelasticScatteringIncidentKE.data(), Background0pInelasticScatteringOutgoingKE.data());
+    TGraph *g0pVertexVSOutgoingKE   = new TGraph(n0pDataPoints, Background0pInelasticScatteringVertexKE.data(), Background0pInelasticScatteringOutgoingKE.data());
+
+    g0pIncidentVSOutgoingKE->SetTitle("Outgoing KE vs Incident KE;Incident KE [MeV];Outgoing KE [MeV]");
+    g0pIncidentVSOutgoingKE->SetMarkerStyle(20);
+    g0pIncidentVSOutgoingKE->SetMarkerColor(kBlack);
+    g0pIncidentVSOutgoingKE->Draw("AP");
+    c->SaveAs(SaveDir + "Background0pInelasticScatteringIncidentVSOutgoingKE.png");
+
+    g0pVertexVSOutgoingKE->SetTitle("Outgoing KE vs Vertex KE;Vertex KE [MeV];Outgoing KE [MeV]");
+    g0pVertexVSOutgoingKE->SetMarkerStyle(20);
+    g0pVertexVSOutgoingKE->SetMarkerColor(kBlack);
+    g0pVertexVSOutgoingKE->Draw("AP");
+    c->SaveAs(SaveDir + "Background0pInelasticScatteringVertexVSOutgoingKE.png");
+
+    int nNpDataPoints               = BackgroundNpInelasticScatteringIncidentKE.size();
+    TGraph *gNpIncidentVSOutgoingKE = new TGraph(nNpDataPoints, BackgroundNpInelasticScatteringIncidentKE.data(), BackgroundNpInelasticScatteringOutgoingKE.data());
+    TGraph *gNpVertexVSOutgoingKE   = new TGraph(nNpDataPoints, BackgroundNpInelasticScatteringVertexKE.data(), BackgroundNpInelasticScatteringOutgoingKE.data());
+
+    gNpIncidentVSOutgoingKE->SetTitle("Outgoing KE vs Incident KE;Incident KE [MeV];Outgoing KE [MeV]");
+    gNpIncidentVSOutgoingKE->SetMarkerStyle(20);
+    gNpIncidentVSOutgoingKE->SetMarkerColor(kBlack);
+    gNpIncidentVSOutgoingKE->Draw("AP");
+    c->SaveAs(SaveDir + "BackgroundNpInelasticScatteringIncidentVSOutgoingKE.png");
+
+    gNpVertexVSOutgoingKE->SetTitle("Outgoing KE vs Vertex KE;Vertex KE [MeV];Outgoing KE [MeV]");
+    gNpVertexVSOutgoingKE->SetMarkerStyle(20);
+    gNpVertexVSOutgoingKE->SetMarkerColor(kBlack);
+    gNpVertexVSOutgoingKE->Draw("AP");
+    c->SaveAs(SaveDir + "BackgroundNpInelasticScatteringVertexVSOutgoingKE.png");
 }
 
 bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold) {
@@ -1658,13 +1850,62 @@ bool isWithinReducedVolume(double x, double y, double z) {
     );
 }
 
+void printEfficiencyPlots(
+    TString dir, int fontStyle, double textSize,
+    std::vector<TEfficiency*> efficiencies,
+    std::vector<TString> titles,
+    std::vector<TString> xlabels
+) {
+    for (size_t iPlot = 0; iPlot < efficiencies.size(); ++iPlot) {
+        TEfficiency* eff = efficiencies.at(iPlot);
+
+        TCanvas* PlotCanvas = new TCanvas("Canvas","Canvas",205,34,1024,768);
+        PlotCanvas->cd();
+        PlotCanvas->SetLeftMargin(0.15);
+        PlotCanvas->SetBottomMargin(0.15);
+
+        eff->SetTitle(titles.at(iPlot) + ";" + xlabels.at(iPlot) + ";Efficiency");
+        eff->SetLineWidth(2);
+        eff->SetMarkerStyle(20);
+        eff->SetMarkerSize(1.0);
+        eff->Draw("AP");
+
+        PlotCanvas->Update();
+        TGraph* gr = eff->GetPaintedGraph();
+        if (gr) {
+            gr->GetXaxis()->SetTitleFont(fontStyle);
+            gr->GetXaxis()->SetLabelFont(fontStyle);
+            gr->GetXaxis()->SetNdivisions(8);
+            gr->GetXaxis()->SetLabelSize(textSize);
+            gr->GetXaxis()->SetTitleSize(textSize);
+            gr->GetXaxis()->SetTitle(xlabels[iPlot]);
+            gr->GetYaxis()->SetTitleOffset(1.1);
+            gr->GetYaxis()->CenterTitle();
+
+            gr->GetYaxis()->SetTitleFont(fontStyle);
+            gr->GetYaxis()->SetLabelFont(fontStyle);
+            gr->GetYaxis()->SetNdivisions(8);
+            gr->GetYaxis()->SetLabelSize(textSize);
+            gr->GetYaxis()->SetTitleSize(textSize);
+            gr->GetYaxis()->SetTitle("Efficiency");
+            gr->GetYaxis()->SetTitleOffset(1.1);
+            gr->GetYaxis()->CenterTitle();
+        }
+        PlotCanvas->Update();
+
+        // Save plot and delete canvas
+        PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
+        delete PlotCanvas;
+    }
+}
+
 void printOneDPlots(
     TString dir, int fontStyle, double textSize, 
     std::vector<std::vector<TH1*>> groups,
-    std::vector<int> colors, 
+    std::vector<int> colors,
     std::vector<std::vector<TString>> labels, 
     std::vector<TString> titles, 
-    std::vector<TString> xlabels, 
+    std::vector<TString> xlabels,
     std::vector<TString> ylabels
 ) {
     int numPlots = groups.size();
