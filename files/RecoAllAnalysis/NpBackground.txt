@@ -40,6 +40,9 @@ Run: 1 subrun: 0 event: 19806
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0
+  Maximum primary track linearity derivative: 6.95265e-310 above threshold: 0
+
 Run: 1 subrun: 0 event: 19888
   Background type: Abs 0p
   WC match PDG: -211
@@ -69,6 +72,9 @@ Run: 1 subrun: 0 event: 19888
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999033
+  Maximum primary track linearity derivative: 0.000216193 above threshold: 1
 
 Run: 1 subrun: 0 event: 19904
   Background type: Inelastic scattering
@@ -111,6 +117,9 @@ Run: 1 subrun: 0 event: 19904
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999836
+  Maximum primary track linearity derivative: 4.06139e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 19944
   Background type: Abs 0p
@@ -166,6 +175,9 @@ Run: 1 subrun: 0 event: 19944
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999749
+  Maximum primary track linearity derivative: 6.86917e-05 above threshold: 1
+
 Run: 1 subrun: 0 event: 199854
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -203,6 +215,9 @@ Run: 1 subrun: 0 event: 199854
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999657
+  Maximum primary track linearity derivative: 7.95369e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 199870
   Background type: Inelastic scattering
@@ -252,6 +267,9 @@ Run: 1 subrun: 0 event: 199870
   True visible protons: 0
 
   Number of hit clusters found near primary track: 3
+
+  Minimum primary track linearity: 0.993463
+  Maximum primary track linearity derivative: 0.00156753 above threshold: 1
 
 Run: 1 subrun: 0 event: 199872
   Background type: Decay
@@ -322,6 +340,9 @@ Run: 1 subrun: 0 event: 199872
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.993463
+  Maximum primary track linearity derivative: 0.00156753 above threshold: 1
 
 Run: 1 subrun: 0 event: 199889
   Background type: Primary electron
@@ -437,6 +458,9 @@ Run: 1 subrun: 0 event: 199889
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.993463
+  Maximum primary track linearity derivative: 0.00156753 above threshold: 1
+
 Run: 1 subrun: 0 event: 199942
   Background type: Outside reduced volume
   WC match PDG: -211
@@ -476,6 +500,9 @@ Run: 1 subrun: 0 event: 199942
   True visible protons: 0
 
   Number of hit clusters found near primary track: 3
+
+  Minimum primary track linearity: 0.999599
+  Maximum primary track linearity derivative: 8.35931e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 199944
   Background type: Primary electron
@@ -584,6 +611,9 @@ Run: 1 subrun: 0 event: 199944
   True visible protons: 0
 
   Number of hit clusters found near primary track: 3
+
+  Minimum primary track linearity: 0.999599
+  Maximum primary track linearity derivative: 8.35931e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 199970
   Background type: Primary electron
@@ -695,6 +725,9 @@ Run: 1 subrun: 0 event: 199970
 
   Number of hit clusters found near primary track: 4
 
+  Minimum primary track linearity: 0.997299
+  Maximum primary track linearity derivative: 0.000756931 above threshold: 1
+
 Run: 1 subrun: 0 event: 200174
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -729,6 +762,9 @@ Run: 1 subrun: 0 event: 200174
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.99827
+  Maximum primary track linearity derivative: 0.000581697 above threshold: 1
 
 Run: 1 subrun: 0 event: 200341
   Background type: Inelastic scattering
@@ -770,6 +806,9 @@ Run: 1 subrun: 0 event: 200341
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999796
+  Maximum primary track linearity derivative: 4.63069e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 200528
   Background type: Abs 0p
@@ -821,6 +860,9 @@ Run: 1 subrun: 0 event: 200528
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.997549
+  Maximum primary track linearity derivative: 0.000648573 above threshold: 1
+
 Run: 1 subrun: 0 event: 200571
   Background type: Abs 0p
   WC match PDG: -211
@@ -855,6 +897,9 @@ Run: 1 subrun: 0 event: 200571
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999741
+  Maximum primary track linearity derivative: 6.29403e-05 above threshold: 1
+
 Run: 1 subrun: 0 event: 200599
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -887,6 +932,9 @@ Run: 1 subrun: 0 event: 200599
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999817
+  Maximum primary track linearity derivative: 5.95167e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 200732
   Background type: Inelastic scattering
@@ -932,6 +980,9 @@ Run: 1 subrun: 0 event: 200732
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999811
+  Maximum primary track linearity derivative: 4.5962e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 200743
   Background type: Abs 0p
   WC match PDG: -211
@@ -972,6 +1023,9 @@ Run: 1 subrun: 0 event: 200743
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.99978
+  Maximum primary track linearity derivative: 4.21238e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 200772
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -1010,6 +1064,9 @@ Run: 1 subrun: 0 event: 200772
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999777
+  Maximum primary track linearity derivative: 5.56207e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 200887
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -1047,6 +1104,9 @@ Run: 1 subrun: 0 event: 200887
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999647
+  Maximum primary track linearity derivative: 0.000122696 above threshold: 1
 
 Run: 1 subrun: 0 event: 200903
   Background type: Outside reduced volume
@@ -1098,6 +1158,9 @@ Run: 1 subrun: 0 event: 200903
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999908
+  Maximum primary track linearity derivative: 2.16618e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 200915
   Background type: Inelastic scattering
   WC match PDG: 2212
@@ -1128,6 +1191,9 @@ Run: 1 subrun: 0 event: 200915
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999554
+  Maximum primary track linearity derivative: 0.000119733 above threshold: 1
 
 Run: 1 subrun: 0 event: 200932
   Background type: Primary electron
@@ -1175,6 +1241,9 @@ Run: 1 subrun: 0 event: 200932
 
   Number of hit clusters found near primary track: 3
 
+  Minimum primary track linearity: 0.999585
+  Maximum primary track linearity derivative: 0.000103565 above threshold: 1
+
 Run: 1 subrun: 0 event: 200992
   Background type: Abs 0p
   WC match PDG: -211
@@ -1206,6 +1275,9 @@ Run: 1 subrun: 0 event: 200992
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.998835
+  Maximum primary track linearity derivative: 0.00113945 above threshold: 1
 
 Run: 1 subrun: 0 event: 201077
   Background type: Primary electron
@@ -1337,6 +1409,9 @@ Run: 1 subrun: 0 event: 201077
 
   Number of hit clusters found near primary track: 4
 
+  Minimum primary track linearity: 0.99845
+  Maximum primary track linearity derivative: 0.000433791 above threshold: 1
+
 Run: 1 subrun: 0 event: 201108
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -1375,6 +1450,9 @@ Run: 1 subrun: 0 event: 201108
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999738
+  Maximum primary track linearity derivative: 5.90686e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 201128
   Background type: Capture at rest
   WC match PDG: 11
@@ -1409,6 +1487,9 @@ Run: 1 subrun: 0 event: 201128
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999883
+  Maximum primary track linearity derivative: 3.57654e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 201142
   Background type: Abs 0p
@@ -1452,6 +1533,9 @@ Run: 1 subrun: 0 event: 201142
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999862
+  Maximum primary track linearity derivative: 3.69277e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 201309
   Background type: Abs 0p
   WC match PDG: -211
@@ -1493,6 +1577,9 @@ Run: 1 subrun: 0 event: 201309
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999958
+  Maximum primary track linearity derivative: 9.1468e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 201457
   Background type: Abs 0p
@@ -1546,6 +1633,9 @@ Run: 1 subrun: 0 event: 201457
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.998634
+  Maximum primary track linearity derivative: 0.000385452 above threshold: 1
+
 Run: 1 subrun: 0 event: 201565
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -1593,6 +1683,9 @@ Run: 1 subrun: 0 event: 201565
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.99899
+  Maximum primary track linearity derivative: 0.000263377 above threshold: 1
+
 Run: 1 subrun: 0 event: 201678
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -1635,6 +1728,9 @@ Run: 1 subrun: 0 event: 201678
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999436
+  Maximum primary track linearity derivative: 0.000148736 above threshold: 1
 
 Run: 1 subrun: 0 event: 201706
   Background type: Inelastic scattering
@@ -1680,6 +1776,9 @@ Run: 1 subrun: 0 event: 201706
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999436
+  Maximum primary track linearity derivative: 0.000148736 above threshold: 1
+
 Run: 1 subrun: 0 event: 201857
   Background type: Abs 0p
   WC match PDG: -211
@@ -1722,6 +1821,9 @@ Run: 1 subrun: 0 event: 201857
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.998613
+  Maximum primary track linearity derivative: 0.000333738 above threshold: 1
+
 Run: 1 subrun: 0 event: 201880
   Background type: Abs 0p
   WC match PDG: -211
@@ -1761,6 +1863,9 @@ Run: 1 subrun: 0 event: 201880
   True visible protons: 0
 
   Number of hit clusters found near primary track: 4
+
+  Minimum primary track linearity: 0.999826
+  Maximum primary track linearity derivative: 4.16567e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 201914
   Background type: Double charge exchange
@@ -1804,6 +1909,9 @@ Run: 1 subrun: 0 event: 201914
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.885453
+  Maximum primary track linearity derivative: 0.0251739 above threshold: 1
+
 Run: 1 subrun: 0 event: 201949
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -1842,6 +1950,9 @@ Run: 1 subrun: 0 event: 201949
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.999785
+  Maximum primary track linearity derivative: 5.35409e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 201967
   Background type: Abs 0p
@@ -1883,6 +1994,9 @@ Run: 1 subrun: 0 event: 201967
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.699122
+  Maximum primary track linearity derivative: 0.0727347 above threshold: 1
+
 Run: 1 subrun: 0 event: 201972
   Background type: Charge exchange
   WC match PDG: -211
@@ -1918,6 +2032,9 @@ Run: 1 subrun: 0 event: 201972
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999365
+  Maximum primary track linearity derivative: 0.000156947 above threshold: 1
 
 Run: 1 subrun: 0 event: 202046
   Background type: Inelastic scattering
@@ -1955,6 +2072,9 @@ Run: 1 subrun: 0 event: 202046
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999909
+  Maximum primary track linearity derivative: 2.18827e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 202123
   Background type: Abs 0p
   WC match PDG: -211
@@ -1980,6 +2100,9 @@ Run: 1 subrun: 0 event: 202123
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.999758
+  Maximum primary track linearity derivative: 5.64798e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 202222
   Background type: Inelastic scattering
@@ -2028,6 +2151,9 @@ Run: 1 subrun: 0 event: 202222
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999897
+  Maximum primary track linearity derivative: 2.27124e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 202338
   Background type: Inelastic scattering
@@ -2079,6 +2205,9 @@ Run: 1 subrun: 0 event: 202338
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999808
+  Maximum primary track linearity derivative: 4.24867e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 202387
   Background type: Inelastic scattering
@@ -2136,6 +2265,9 @@ Run: 1 subrun: 0 event: 202387
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999545
+  Maximum primary track linearity derivative: 0.000109863 above threshold: 1
+
 Run: 1 subrun: 0 event: 202395
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -2167,6 +2299,9 @@ Run: 1 subrun: 0 event: 202395
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999545
+  Maximum primary track linearity derivative: 0.000109863 above threshold: 1
 
 Run: 1 subrun: 0 event: 202498
   Background type: Primary electron
@@ -2288,6 +2423,9 @@ Run: 1 subrun: 0 event: 202498
 
   Number of hit clusters found near primary track: 4
 
+  Minimum primary track linearity: 0.999973
+  Maximum primary track linearity derivative: 6.97698e-06 above threshold: 0
+
 Run: 1 subrun: 0 event: 202520
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -2328,6 +2466,9 @@ Run: 1 subrun: 0 event: 202520
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.987211
+  Maximum primary track linearity derivative: 0.00312148 above threshold: 1
 
 Run: 1 subrun: 0 event: 202578
   Background type: Inelastic scattering
@@ -2376,6 +2517,9 @@ Run: 1 subrun: 0 event: 202578
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.99858
+  Maximum primary track linearity derivative: 0.000306275 above threshold: 1
+
 Run: 1 subrun: 0 event: 202795
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -2420,6 +2564,9 @@ Run: 1 subrun: 0 event: 202795
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.99972
+  Maximum primary track linearity derivative: 6.43089e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 5048
   Background type: Abs 0p
@@ -2466,6 +2613,9 @@ Run: 1 subrun: 0 event: 5048
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999515
+  Maximum primary track linearity derivative: 0.000109189 above threshold: 1
 
 Run: 1 subrun: 0 event: 5088
   Background type: Inelastic scattering
@@ -2517,6 +2667,9 @@ Run: 1 subrun: 0 event: 5088
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999814
+  Maximum primary track linearity derivative: 4.72736e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 5231
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -2557,6 +2710,9 @@ Run: 1 subrun: 0 event: 5231
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999928
+  Maximum primary track linearity derivative: 1.62466e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 5321
   Background type: Inelastic scattering
@@ -2602,6 +2758,9 @@ Run: 1 subrun: 0 event: 5321
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999083
+  Maximum primary track linearity derivative: 0.000188153 above threshold: 1
 
 Run: 1 subrun: 0 event: 52866
   Background type: Inelastic scattering
@@ -2649,6 +2808,9 @@ Run: 1 subrun: 0 event: 52866
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999941
+  Maximum primary track linearity derivative: 1.45853e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 52870
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -2688,6 +2850,9 @@ Run: 1 subrun: 0 event: 52870
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999896
+  Maximum primary track linearity derivative: 2.61953e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 53050
   Background type: Inelastic scattering
@@ -2730,6 +2895,9 @@ Run: 1 subrun: 0 event: 53050
 
   Number of hit clusters found near primary track: 3
 
+  Minimum primary track linearity: 0.99985
+  Maximum primary track linearity derivative: 3.09225e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 53234
   Background type: Capture at rest
   WC match PDG: -211
@@ -2765,6 +2933,9 @@ Run: 1 subrun: 0 event: 53234
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.996229
+  Maximum primary track linearity derivative: 0.000962625 above threshold: 1
 
 Run: 1 subrun: 0 event: 53240
   Background type: Abs 0p
@@ -2805,6 +2976,9 @@ Run: 1 subrun: 0 event: 53240
   True visible protons: 0
 
   Number of hit clusters found near primary track: 3
+
+  Minimum primary track linearity: 0.999931
+  Maximum primary track linearity derivative: 1.95184e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 53394
   Background type: Primary electron
@@ -2912,6 +3086,9 @@ Run: 1 subrun: 0 event: 53394
 
   Number of hit clusters found near primary track: 3
 
+  Minimum primary track linearity: 0.994967
+  Maximum primary track linearity derivative: 0.0024042 above threshold: 1
+
 Run: 1 subrun: 0 event: 53636
   Background type: Abs 0p
   WC match PDG: -211
@@ -2954,6 +3131,9 @@ Run: 1 subrun: 0 event: 53636
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999687
+  Maximum primary track linearity derivative: 7.36755e-05 above threshold: 1
+
 Run: 1 subrun: 0 event: 53640
   Background type: Abs 0p
   WC match PDG: -211
@@ -2993,6 +3173,9 @@ Run: 1 subrun: 0 event: 53640
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999796
+  Maximum primary track linearity derivative: 5.19849e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 53838
   Background type: Inelastic scattering
@@ -3036,6 +3219,9 @@ Run: 1 subrun: 0 event: 53838
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999956
+  Maximum primary track linearity derivative: 8.25309e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 53916
   Background type: Outside reduced volume
@@ -3089,6 +3275,9 @@ Run: 1 subrun: 0 event: 53916
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.998813
+  Maximum primary track linearity derivative: 0.000310331 above threshold: 1
+
 Run: 1 subrun: 0 event: 53987
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -3137,6 +3326,9 @@ Run: 1 subrun: 0 event: 53987
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.998657
+  Maximum primary track linearity derivative: 0.000347758 above threshold: 1
+
 Run: 1 subrun: 0 event: 54138
   Background type: Abs 0p
   WC match PDG: -211
@@ -3181,6 +3373,9 @@ Run: 1 subrun: 0 event: 54138
 
   Number of hit clusters found near primary track: 9
 
+  Minimum primary track linearity: 0.999934
+  Maximum primary track linearity derivative: 1.69708e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 54238
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -3216,6 +3411,9 @@ Run: 1 subrun: 0 event: 54238
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.990862
+  Maximum primary track linearity derivative: 0.00221086 above threshold: 1
 
 Run: 1 subrun: 0 event: 54289
   Background type: Inelastic scattering
@@ -3260,6 +3458,9 @@ Run: 1 subrun: 0 event: 54289
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.982674
+  Maximum primary track linearity derivative: 0.00258417 above threshold: 1
 
 Run: 1 subrun: 0 event: 54352
   Background type: Abs 0p
@@ -3308,6 +3509,9 @@ Run: 1 subrun: 0 event: 54352
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999807
+  Maximum primary track linearity derivative: 5.08448e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 54402
   Background type: Capture at rest
@@ -3361,6 +3565,9 @@ Run: 1 subrun: 0 event: 54402
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999003
+  Maximum primary track linearity derivative: 0.000213813 above threshold: 1
+
 Run: 1 subrun: 0 event: 54498
   Background type: Abs 0p
   WC match PDG: -211
@@ -3400,6 +3607,9 @@ Run: 1 subrun: 0 event: 54498
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999713
+  Maximum primary track linearity derivative: 7.4211e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 54742
   Background type: Inelastic scattering
@@ -3449,6 +3659,9 @@ Run: 1 subrun: 0 event: 54742
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.99995
+  Maximum primary track linearity derivative: 1.24292e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 54764
   Background type: Abs 0p
   WC match PDG: -211
@@ -3491,6 +3704,9 @@ Run: 1 subrun: 0 event: 54764
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999374
+  Maximum primary track linearity derivative: 0.000145265 above threshold: 1
+
 Run: 1 subrun: 0 event: 54889
   Background type: Capture at rest
   WC match PDG: -211
@@ -3526,6 +3742,9 @@ Run: 1 subrun: 0 event: 54889
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.99941
+  Maximum primary track linearity derivative: 0.000143778 above threshold: 1
 
 Run: 1 subrun: 0 event: 54939
   Background type: Abs 0p
@@ -3581,6 +3800,9 @@ Run: 1 subrun: 0 event: 54939
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999856
+  Maximum primary track linearity derivative: 3.04928e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 55022
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -3632,6 +3854,9 @@ Run: 1 subrun: 0 event: 55022
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999245
+  Maximum primary track linearity derivative: 0.000230123 above threshold: 1
+
 Run: 1 subrun: 0 event: 55125
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -3676,6 +3901,9 @@ Run: 1 subrun: 0 event: 55125
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.969717
+  Maximum primary track linearity derivative: 0.00730238 above threshold: 1
+
 Run: 1 subrun: 0 event: 55324
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -3714,6 +3942,9 @@ Run: 1 subrun: 0 event: 55324
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999681
+  Maximum primary track linearity derivative: 7.51051e-05 above threshold: 1
+
 Run: 1 subrun: 0 event: 55352
   Background type: Outside reduced volume
   WC match PDG: -211
@@ -3733,6 +3964,9 @@ Run: 1 subrun: 0 event: 55352
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999681
+  Maximum primary track linearity derivative: 7.51051e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 55385
   Background type: Abs 0p
@@ -3788,6 +4022,9 @@ Run: 1 subrun: 0 event: 55385
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.998459
+  Maximum primary track linearity derivative: 0.000374795 above threshold: 1
+
 Run: 1 subrun: 0 event: 55387
   Background type: Abs 0p
   WC match PDG: -211
@@ -3831,6 +4068,9 @@ Run: 1 subrun: 0 event: 55387
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.999024
+  Maximum primary track linearity derivative: 0.000241471 above threshold: 1
 
 Run: 1 subrun: 0 event: 55408
   Background type: Primary electron
@@ -3960,6 +4200,9 @@ Run: 1 subrun: 0 event: 55408
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999955
+  Maximum primary track linearity derivative: 1.06581e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 55620
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -3995,6 +4238,9 @@ Run: 1 subrun: 0 event: 55620
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.998508
+  Maximum primary track linearity derivative: 0.000359102 above threshold: 1
 
 Run: 1 subrun: 0 event: 55718
   Background type: Abs 0p
@@ -4036,6 +4282,9 @@ Run: 1 subrun: 0 event: 55718
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999757
+  Maximum primary track linearity derivative: 5.64108e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 55728
   Background type: Abs 0p
   WC match PDG: 1000010020
@@ -4066,6 +4315,9 @@ Run: 1 subrun: 0 event: 55728
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999917
+  Maximum primary track linearity derivative: 1.94427e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 5819
   Background type: Abs 0p
@@ -4102,6 +4354,9 @@ Run: 1 subrun: 0 event: 5819
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999913
+  Maximum primary track linearity derivative: 2.17701e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 5906
   Background type: Inelastic scattering
@@ -4148,6 +4403,9 @@ Run: 1 subrun: 0 event: 5906
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.999787
+  Maximum primary track linearity derivative: 5.59068e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 5967
   Background type: Primary electron
@@ -4317,6 +4575,9 @@ Run: 1 subrun: 0 event: 5967
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999928
+  Maximum primary track linearity derivative: 1.65214e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 61814
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -4375,6 +4636,9 @@ Run: 1 subrun: 0 event: 61814
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.997758
+  Maximum primary track linearity derivative: 0.000562292 above threshold: 1
+
 Run: 1 subrun: 0 event: 61829
   Background type: Abs 0p
   WC match PDG: -211
@@ -4415,6 +4679,9 @@ Run: 1 subrun: 0 event: 61829
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.992375
+  Maximum primary track linearity derivative: 0.00194267 above threshold: 1
+
 Run: 1 subrun: 0 event: 61844
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -4447,6 +4714,9 @@ Run: 1 subrun: 0 event: 61844
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.994539
+  Maximum primary track linearity derivative: 0.00185519 above threshold: 1
 
 Run: 1 subrun: 0 event: 61883
   Background type: Inelastic scattering
@@ -4486,6 +4756,9 @@ Run: 1 subrun: 0 event: 61883
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999399
+  Maximum primary track linearity derivative: 0.000152739 above threshold: 1
+
 Run: 1 subrun: 0 event: 61987
   Background type: Capture at rest
   WC match PDG: -211
@@ -4523,6 +4796,9 @@ Run: 1 subrun: 0 event: 61987
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999979
+  Maximum primary track linearity derivative: 4.81534e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 61993
   Background type: Abs 0p
@@ -4563,6 +4839,9 @@ Run: 1 subrun: 0 event: 61993
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999905
+  Maximum primary track linearity derivative: 2.20944e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 62138
   Background type: Inelastic scattering
@@ -4605,6 +4884,9 @@ Run: 1 subrun: 0 event: 62138
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.998462
+  Maximum primary track linearity derivative: 0.000380179 above threshold: 1
 
 Run: 1 subrun: 0 event: 62297
   Background type: Abs 0p
@@ -4654,6 +4936,9 @@ Run: 1 subrun: 0 event: 62297
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.995711
+  Maximum primary track linearity derivative: 0.00154579 above threshold: 1
+
 Run: 1 subrun: 0 event: 62380
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -4689,6 +4974,9 @@ Run: 1 subrun: 0 event: 62380
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999957
+  Maximum primary track linearity derivative: 1.02431e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 62422
   Background type: Inelastic scattering
@@ -4726,6 +5014,9 @@ Run: 1 subrun: 0 event: 62422
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.996144
+  Maximum primary track linearity derivative: 0.000978754 above threshold: 1
 
 Run: 1 subrun: 0 event: 62433
   Background type: Inelastic scattering
@@ -4777,6 +5068,9 @@ Run: 1 subrun: 0 event: 62433
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999107
+  Maximum primary track linearity derivative: 0.000218316 above threshold: 1
+
 Run: 1 subrun: 0 event: 62465
   Background type: Outside reduced volume
   WC match PDG: -211
@@ -4814,6 +5108,9 @@ Run: 1 subrun: 0 event: 62465
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999796
+  Maximum primary track linearity derivative: 4.9488e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 62590
   Background type: Inelastic scattering
@@ -4854,6 +5151,9 @@ Run: 1 subrun: 0 event: 62590
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.779583
+  Maximum primary track linearity derivative: 0.0833976 above threshold: 1
 
 Run: 1 subrun: 0 event: 62635
   Background type: Primary electron
@@ -4975,6 +5275,9 @@ Run: 1 subrun: 0 event: 62635
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.691797
+  Maximum primary track linearity derivative: 0.108591 above threshold: 1
+
 Run: 1 subrun: 0 event: 62637
   Background type: Charge exchange
   WC match PDG: -211
@@ -5025,6 +5328,9 @@ Run: 1 subrun: 0 event: 62637
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.691797
+  Maximum primary track linearity derivative: 0.108591 above threshold: 1
+
 Run: 1 subrun: 0 event: 62638
   Background type: Abs 0p
   WC match PDG: -211
@@ -5066,6 +5372,9 @@ Run: 1 subrun: 0 event: 62638
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999589
+  Maximum primary track linearity derivative: 0.000106467 above threshold: 1
 
 Run: 1 subrun: 0 event: 62655
   Background type: Inelastic scattering
@@ -5113,6 +5422,9 @@ Run: 1 subrun: 0 event: 62655
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.997881
+  Maximum primary track linearity derivative: 0.00056233 above threshold: 1
+
 Run: 1 subrun: 0 event: 62705
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -5157,6 +5469,9 @@ Run: 1 subrun: 0 event: 62705
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.99611
+  Maximum primary track linearity derivative: 0.000858002 above threshold: 1
 
 Run: 1 subrun: 0 event: 62735
   Background type: Inelastic scattering
@@ -5203,6 +5518,9 @@ Run: 1 subrun: 0 event: 62735
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999864
+  Maximum primary track linearity derivative: 4.50492e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 62924
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -5241,6 +5559,9 @@ Run: 1 subrun: 0 event: 62924
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.988429
+  Maximum primary track linearity derivative: 0.0106087 above threshold: 1
+
 Run: 1 subrun: 0 event: 62979
   Background type: Outside reduced volume
   WC match PDG: -211
@@ -5276,6 +5597,9 @@ Run: 1 subrun: 0 event: 62979
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.999084
+  Maximum primary track linearity derivative: 0.00023455 above threshold: 1
 
 Run: 1 subrun: 0 event: 63000
   Background type: Capture at rest
@@ -5318,6 +5642,9 @@ Run: 1 subrun: 0 event: 63000
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.998383
+  Maximum primary track linearity derivative: 0.000540392 above threshold: 1
 
 Run: 1 subrun: 0 event: 63025
   Background type: Primary electron
@@ -5392,6 +5719,9 @@ Run: 1 subrun: 0 event: 63025
   True visible protons: 0
 
   Number of hit clusters found near primary track: 3
+
+  Minimum primary track linearity: 0.999957
+  Maximum primary track linearity derivative: 1.03112e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 63041
   Background type: Primary electron
@@ -5479,6 +5809,9 @@ Run: 1 subrun: 0 event: 63041
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999965
+  Maximum primary track linearity derivative: 7.67179e-06 above threshold: 0
+
 Run: 1 subrun: 0 event: 63073
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -5519,6 +5852,9 @@ Run: 1 subrun: 0 event: 63073
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.998611
+  Maximum primary track linearity derivative: 0.000324599 above threshold: 1
+
 Run: 1 subrun: 0 event: 63076
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -5556,6 +5892,9 @@ Run: 1 subrun: 0 event: 63076
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999759
+  Maximum primary track linearity derivative: 6.16984e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 63137
   Background type: Primary electron
@@ -5657,6 +5996,9 @@ Run: 1 subrun: 0 event: 63137
 
   Number of hit clusters found near primary track: 4
 
+  Minimum primary track linearity: 0.999958
+  Maximum primary track linearity derivative: 9.89126e-06 above threshold: 0
+
 Run: 1 subrun: 0 event: 63145
   Background type: Abs 0p
   WC match PDG: -211
@@ -5694,6 +6036,9 @@ Run: 1 subrun: 0 event: 63145
   True visible protons: 0
 
   Number of hit clusters found near primary track: 3
+
+  Minimum primary track linearity: 0.99978
+  Maximum primary track linearity derivative: 5.34129e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 63190
   Background type: Inelastic scattering
@@ -5736,6 +6081,9 @@ Run: 1 subrun: 0 event: 63190
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.997488
+  Maximum primary track linearity derivative: 0.000600441 above threshold: 1
 
 Run: 1 subrun: 0 event: 63245
   Background type: Inelastic scattering
@@ -5785,6 +6133,9 @@ Run: 1 subrun: 0 event: 63245
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.997488
+  Maximum primary track linearity derivative: 0.000600441 above threshold: 1
+
 Run: 1 subrun: 0 event: 63303
   Background type: Abs 0p
   WC match PDG: -211
@@ -5825,6 +6176,9 @@ Run: 1 subrun: 0 event: 63303
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.99924
+  Maximum primary track linearity derivative: 0.000167235 above threshold: 1
+
 Run: 1 subrun: 0 event: 63398
   Background type: Capture at rest
   WC match PDG: -211
@@ -5862,6 +6216,9 @@ Run: 1 subrun: 0 event: 63398
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999947
+  Maximum primary track linearity derivative: 1.13899e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 63420
   Background type: Primary electron
@@ -5965,6 +6322,9 @@ Run: 1 subrun: 0 event: 63420
 
   Number of hit clusters found near primary track: 3
 
+  Minimum primary track linearity: 0.996402
+  Maximum primary track linearity derivative: 0.000819018 above threshold: 1
+
 Run: 1 subrun: 0 event: 63441
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -6003,6 +6363,9 @@ Run: 1 subrun: 0 event: 63441
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.961675
+  Maximum primary track linearity derivative: 0.00894164 above threshold: 1
+
 Run: 1 subrun: 0 event: 63613
   Background type: Abs 0p
   WC match PDG: -211
@@ -6034,6 +6397,9 @@ Run: 1 subrun: 0 event: 63613
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.996807
+  Maximum primary track linearity derivative: 0.000641595 above threshold: 1
 
 Run: 1 subrun: 0 event: 63740
   Background type: Inelastic scattering
@@ -6072,6 +6438,9 @@ Run: 1 subrun: 0 event: 63740
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999661
+  Maximum primary track linearity derivative: 8.31815e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 63790
   Background type: Abs 0p
@@ -6116,6 +6485,9 @@ Run: 1 subrun: 0 event: 63790
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999013
+  Maximum primary track linearity derivative: 0.000173334 above threshold: 1
 
 Run: 1 subrun: 0 event: 63805
   Background type: Inelastic scattering
@@ -6167,6 +6539,9 @@ Run: 1 subrun: 0 event: 63805
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999013
+  Maximum primary track linearity derivative: 0.000173334 above threshold: 1
+
 Run: 1 subrun: 0 event: 63970
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -6217,6 +6592,9 @@ Run: 1 subrun: 0 event: 63970
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999534
+  Maximum primary track linearity derivative: 0.000116462 above threshold: 1
+
 Run: 1 subrun: 0 event: 64081
   Background type: Abs 0p
   WC match PDG: -211
@@ -6257,6 +6635,9 @@ Run: 1 subrun: 0 event: 64081
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999935
+  Maximum primary track linearity derivative: 1.35608e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 64117
   Background type: Abs 0p
   WC match PDG: -211
@@ -6295,6 +6676,9 @@ Run: 1 subrun: 0 event: 64117
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999616
+  Maximum primary track linearity derivative: 0.000107904 above threshold: 1
+
 Run: 1 subrun: 0 event: 64119
   Background type: Abs 0p
   WC match PDG: -211
@@ -6330,6 +6714,9 @@ Run: 1 subrun: 0 event: 64119
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999962
+  Maximum primary track linearity derivative: 9.73561e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 64338
   Background type: Abs 0p
@@ -6378,6 +6765,9 @@ Run: 1 subrun: 0 event: 64338
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999953
+  Maximum primary track linearity derivative: 1.26152e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 64461
   Background type: Primary electron
@@ -6515,6 +6905,9 @@ Run: 1 subrun: 0 event: 64461
 
   Number of hit clusters found near primary track: 3
 
+  Minimum primary track linearity: 0.999796
+  Maximum primary track linearity derivative: 4.52407e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 64478
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -6570,6 +6963,9 @@ Run: 1 subrun: 0 event: 64478
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.996552
+  Maximum primary track linearity derivative: 0.00110602 above threshold: 1
+
 Run: 1 subrun: 0 event: 64503
   Background type: Charge exchange
   WC match PDG: -211
@@ -6611,6 +7007,9 @@ Run: 1 subrun: 0 event: 64503
   True visible protons: 0
 
   Number of hit clusters found near primary track: 4
+
+  Minimum primary track linearity: 0.987645
+  Maximum primary track linearity derivative: 0.00390556 above threshold: 1
 
 Run: 1 subrun: 0 event: 64565
   Background type: Inelastic scattering
@@ -6660,6 +7059,9 @@ Run: 1 subrun: 0 event: 64565
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999931
+  Maximum primary track linearity derivative: 1.54492e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 64575
   Background type: Abs 0p
@@ -6711,6 +7113,9 @@ Run: 1 subrun: 0 event: 64575
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999726
+  Maximum primary track linearity derivative: 7.96694e-05 above threshold: 1
+
 Run: 1 subrun: 0 event: 64580
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -6757,6 +7162,9 @@ Run: 1 subrun: 0 event: 64580
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999005
+  Maximum primary track linearity derivative: 0.000239969 above threshold: 1
+
 Run: 1 subrun: 0 event: 64677
   Background type: Abs 0p
   WC match PDG: -211
@@ -6802,6 +7210,9 @@ Run: 1 subrun: 0 event: 64677
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.999822
+  Maximum primary track linearity derivative: 3.97769e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 64694
   Background type: Inelastic scattering
@@ -6853,6 +7264,9 @@ Run: 1 subrun: 0 event: 64694
 
   Number of hit clusters found near primary track: 3
 
+  Minimum primary track linearity: 0.751351
+  Maximum primary track linearity derivative: 0.0835979 above threshold: 1
+
 Run: 1 subrun: 0 event: 64750
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -6896,6 +7310,9 @@ Run: 1 subrun: 0 event: 64750
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.99685
+  Maximum primary track linearity derivative: 0.000692986 above threshold: 1
 
 Run: 1 subrun: 0 event: 64757
   Background type: Inelastic scattering
@@ -6950,6 +7367,9 @@ Run: 1 subrun: 0 event: 64757
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.99685
+  Maximum primary track linearity derivative: 0.000692986 above threshold: 1
+
 Run: 1 subrun: 0 event: 64772
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -7001,6 +7421,9 @@ Run: 1 subrun: 0 event: 64772
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.997194
+  Maximum primary track linearity derivative: 0.000730618 above threshold: 1
+
 Run: 1 subrun: 0 event: 6231
   Background type: Abs 0p
   WC match PDG: -211
@@ -7036,6 +7459,9 @@ Run: 1 subrun: 0 event: 6231
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.998807
+  Maximum primary track linearity derivative: 0.000507044 above threshold: 1
 
 Run: 1 subrun: 0 event: 6232
   Background type: Inelastic scattering
@@ -7077,6 +7503,9 @@ Run: 1 subrun: 0 event: 6232
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.998807
+  Maximum primary track linearity derivative: 0.000507044 above threshold: 1
+
 Run: 1 subrun: 0 event: 65130
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -7115,6 +7544,9 @@ Run: 1 subrun: 0 event: 65130
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999992
+  Maximum primary track linearity derivative: 2.21362e-06 above threshold: 0
+
 Run: 1 subrun: 0 event: 65213
   Background type: Capture at rest
   WC match PDG: -211
@@ -7152,6 +7584,9 @@ Run: 1 subrun: 0 event: 65213
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999972
+  Maximum primary track linearity derivative: 7.16127e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 65219
   Background type: Inelastic scattering
@@ -7198,6 +7633,9 @@ Run: 1 subrun: 0 event: 65219
 
   Number of hit clusters found near primary track: 3
 
+  Minimum primary track linearity: 0.992816
+  Maximum primary track linearity derivative: 0.00138519 above threshold: 1
+
 Run: 1 subrun: 0 event: 65234
   Background type: Abs 0p
   WC match PDG: -211
@@ -7235,6 +7673,9 @@ Run: 1 subrun: 0 event: 65234
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999962
+  Maximum primary track linearity derivative: 8.04437e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 65295
   Background type: Inelastic scattering
@@ -7286,6 +7727,9 @@ Run: 1 subrun: 0 event: 65295
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.999949
+  Maximum primary track linearity derivative: 1.06886e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 65394
   Background type: Primary electron
@@ -7429,6 +7873,9 @@ Run: 1 subrun: 0 event: 65394
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999905
+  Maximum primary track linearity derivative: 2.36752e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 65434
   Background type: Abs 0p
   WC match PDG: -211
@@ -7479,6 +7926,9 @@ Run: 1 subrun: 0 event: 65434
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999777
+  Maximum primary track linearity derivative: 5.20765e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 65508
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -7521,6 +7971,9 @@ Run: 1 subrun: 0 event: 65508
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.998286
+  Maximum primary track linearity derivative: 0.000475195 above threshold: 1
 
 Run: 1 subrun: 0 event: 65563
   Background type: Inelastic scattering
@@ -7568,6 +8021,9 @@ Run: 1 subrun: 0 event: 65563
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999811
+  Maximum primary track linearity derivative: 5.40101e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 65574
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -7607,6 +8063,9 @@ Run: 1 subrun: 0 event: 65574
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.884683
+  Maximum primary track linearity derivative: 0.0228493 above threshold: 1
 
 Run: 1 subrun: 0 event: 65862
   Background type: Inelastic scattering
@@ -7652,6 +8111,9 @@ Run: 1 subrun: 0 event: 65862
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999891
+  Maximum primary track linearity derivative: 3.00103e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 65904
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -7694,6 +8156,9 @@ Run: 1 subrun: 0 event: 65904
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999891
+  Maximum primary track linearity derivative: 3.00103e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 65966
   Background type: Primary electron
@@ -7807,6 +8272,9 @@ Run: 1 subrun: 0 event: 65966
 
   Number of hit clusters found near primary track: 4
 
+  Minimum primary track linearity: 0.999822
+  Maximum primary track linearity derivative: 4.78139e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 65982
   Background type: Double charge exchange
   WC match PDG: -211
@@ -7850,6 +8318,9 @@ Run: 1 subrun: 0 event: 65982
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.99993
+  Maximum primary track linearity derivative: 2.24582e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 66078
   Background type: Inelastic scattering
@@ -7898,6 +8369,9 @@ Run: 1 subrun: 0 event: 66078
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999927
+  Maximum primary track linearity derivative: 1.82523e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 66151
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -7935,6 +8409,9 @@ Run: 1 subrun: 0 event: 66151
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.997848
+  Maximum primary track linearity derivative: 0.000523563 above threshold: 1
 
 Run: 1 subrun: 0 event: 66390
   Background type: Primary electron
@@ -8024,6 +8501,9 @@ Run: 1 subrun: 0 event: 66390
 
   Number of hit clusters found near primary track: 4
 
+  Minimum primary track linearity: 0.999425
+  Maximum primary track linearity derivative: 0.000151676 above threshold: 1
+
 Run: 1 subrun: 0 event: 66489
   Background type: Abs 0p
   WC match PDG: -211
@@ -8065,6 +8545,9 @@ Run: 1 subrun: 0 event: 66489
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999873
+  Maximum primary track linearity derivative: 3.94166e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 66511
   Background type: Abs 0p
@@ -8116,6 +8599,9 @@ Run: 1 subrun: 0 event: 66511
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.964462
+  Maximum primary track linearity derivative: 0.00604539 above threshold: 1
+
 Run: 1 subrun: 0 event: 66582
   Background type: Abs 0p
   WC match PDG: 1000010020
@@ -8143,6 +8629,9 @@ Run: 1 subrun: 0 event: 66582
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.997061
+  Maximum primary track linearity derivative: 0.000579341 above threshold: 1
 
 Run: 1 subrun: 0 event: 66600
   Background type: Inelastic scattering
@@ -8193,6 +8682,9 @@ Run: 1 subrun: 0 event: 66600
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.986706
+  Maximum primary track linearity derivative: 0.0087315 above threshold: 1
+
 Run: 1 subrun: 0 event: 66622
   Background type: Abs 0p
   WC match PDG: -211
@@ -8228,6 +8720,9 @@ Run: 1 subrun: 0 event: 66622
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.99887
+  Maximum primary track linearity derivative: 0.000332144 above threshold: 1
 
 Run: 1 subrun: 0 event: 66639
   Background type: Inelastic scattering
@@ -8275,6 +8770,9 @@ Run: 1 subrun: 0 event: 66639
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.99887
+  Maximum primary track linearity derivative: 0.000332144 above threshold: 1
 
 Run: 1 subrun: 0 event: 66651
   Background type: Inelastic scattering
@@ -8334,6 +8832,9 @@ Run: 1 subrun: 0 event: 66651
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999973
+  Maximum primary track linearity derivative: 5.45509e-06 above threshold: 0
+
 Run: 1 subrun: 0 event: 66690
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -8378,6 +8879,9 @@ Run: 1 subrun: 0 event: 66690
 
   Number of hit clusters found near primary track: 5
 
+  Minimum primary track linearity: 0.997563
+  Maximum primary track linearity derivative: 0.000552428 above threshold: 1
+
 Run: 1 subrun: 0 event: 66819
   Background type: Charge exchange
   WC match PDG: -211
@@ -8413,6 +8917,9 @@ Run: 1 subrun: 0 event: 66819
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999772
+  Maximum primary track linearity derivative: 5.28981e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 66909
   Background type: Inelastic scattering
@@ -8466,6 +8973,9 @@ Run: 1 subrun: 0 event: 66909
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999926
+  Maximum primary track linearity derivative: 2.12844e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 66953
   Background type: Double charge exchange
   WC match PDG: -211
@@ -8515,6 +9025,9 @@ Run: 1 subrun: 0 event: 66953
   True visible protons: 0
 
   Number of hit clusters found near primary track: 3
+
+  Minimum primary track linearity: 0.992926
+  Maximum primary track linearity derivative: 0.00145783 above threshold: 1
 
 Run: 1 subrun: 0 event: 67034
   Background type: Primary electron
@@ -8640,6 +9153,9 @@ Run: 1 subrun: 0 event: 67034
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999716
+  Maximum primary track linearity derivative: 6.83793e-05 above threshold: 1
+
 Run: 1 subrun: 0 event: 67193
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -8687,6 +9203,9 @@ Run: 1 subrun: 0 event: 67193
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.989334
+  Maximum primary track linearity derivative: 0.00668963 above threshold: 1
+
 Run: 1 subrun: 0 event: 67208
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -8732,6 +9251,9 @@ Run: 1 subrun: 0 event: 67208
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.989334
+  Maximum primary track linearity derivative: 0.00668963 above threshold: 1
 
 Run: 1 subrun: 0 event: 67213
   Background type: Abs 0p
@@ -8790,6 +9312,9 @@ Run: 1 subrun: 0 event: 67213
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999303
+  Maximum primary track linearity derivative: 0.00016924 above threshold: 1
 
 Run: 1 subrun: 0 event: 67239
   Background type: Primary electron
@@ -8867,6 +9392,9 @@ Run: 1 subrun: 0 event: 67239
 
   Number of hit clusters found near primary track: 4
 
+  Minimum primary track linearity: 0.982754
+  Maximum primary track linearity derivative: 0.0037266 above threshold: 1
+
 Run: 1 subrun: 0 event: 67333
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -8916,6 +9444,9 @@ Run: 1 subrun: 0 event: 67333
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999464
+  Maximum primary track linearity derivative: 0.000109549 above threshold: 1
+
 Run: 1 subrun: 0 event: 67344
   Background type: Abs 0p
   WC match PDG: -211
@@ -8956,6 +9487,9 @@ Run: 1 subrun: 0 event: 67344
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.99918
+  Maximum primary track linearity derivative: 0.000191594 above threshold: 1
+
 Run: 1 subrun: 0 event: 67345
   Background type: Outside reduced volume
   WC match PDG: -211
@@ -8993,6 +9527,9 @@ Run: 1 subrun: 0 event: 67345
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.99918
+  Maximum primary track linearity derivative: 0.000191594 above threshold: 1
 
 Run: 1 subrun: 0 event: 67424
   Background type: Abs 0p
@@ -9049,6 +9586,9 @@ Run: 1 subrun: 0 event: 67424
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999869
+  Maximum primary track linearity derivative: 2.91598e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 67551
   Background type: Primary electron
@@ -9208,6 +9748,9 @@ Run: 1 subrun: 0 event: 67551
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999937
+  Maximum primary track linearity derivative: 2.14741e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 67588
   Background type: Abs 0p
   WC match PDG: -211
@@ -9249,6 +9792,9 @@ Run: 1 subrun: 0 event: 67588
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999937
+  Maximum primary track linearity derivative: 2.14741e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 67764
   Background type: Abs 0p
@@ -9295,6 +9841,9 @@ Run: 1 subrun: 0 event: 67764
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999778
+  Maximum primary track linearity derivative: 4.48259e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 22888
   Background type: Primary muon
@@ -9400,6 +9949,9 @@ Run: 1 subrun: 0 event: 22888
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999731
+  Maximum primary track linearity derivative: 6.93633e-05 above threshold: 1
+
 Run: 1 subrun: 0 event: 22997
   Background type: Capture at rest
   WC match PDG: -211
@@ -9429,6 +9981,9 @@ Run: 1 subrun: 0 event: 22997
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.997155
+  Maximum primary track linearity derivative: 0.000682006 above threshold: 1
 
 Run: 1 subrun: 0 event: 229907
   Background type: Abs 0p
@@ -9465,6 +10020,9 @@ Run: 1 subrun: 0 event: 229907
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999981
+  Maximum primary track linearity derivative: 4.83478e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 229919
   Background type: Inelastic scattering
@@ -9513,6 +10071,9 @@ Run: 1 subrun: 0 event: 229919
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.997641
+  Maximum primary track linearity derivative: 0.000613065 above threshold: 1
+
 Run: 1 subrun: 0 event: 229987
   Background type: Abs 0p
   WC match PDG: -211
@@ -9560,6 +10121,9 @@ Run: 1 subrun: 0 event: 229987
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999937
+  Maximum primary track linearity derivative: 1.26121e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 230048
   Background type: Primary electron
@@ -9715,6 +10279,9 @@ Run: 1 subrun: 0 event: 230048
 
   Number of hit clusters found near primary track: 5
 
+  Minimum primary track linearity: 0.999559
+  Maximum primary track linearity derivative: 0.000112484 above threshold: 1
+
 Run: 1 subrun: 0 event: 230141
   Background type: Primary electron
   WC match PDG: 11
@@ -9841,6 +10408,9 @@ Run: 1 subrun: 0 event: 230141
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999897
+  Maximum primary track linearity derivative: 2.56148e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 230193
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -9889,6 +10459,9 @@ Run: 1 subrun: 0 event: 230193
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.97992
+  Maximum primary track linearity derivative: 0.00681653 above threshold: 1
+
 Run: 1 subrun: 0 event: 230249
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -9931,6 +10504,9 @@ Run: 1 subrun: 0 event: 230249
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999967
+  Maximum primary track linearity derivative: 6.87398e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 230393
   Background type: Inelastic scattering
@@ -9976,6 +10552,9 @@ Run: 1 subrun: 0 event: 230393
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999616
+  Maximum primary track linearity derivative: 8.77308e-05 above threshold: 1
+
 Run: 1 subrun: 0 event: 230406
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -10009,6 +10588,9 @@ Run: 1 subrun: 0 event: 230406
   True visible protons: 0
 
   Number of hit clusters found near primary track: 5
+
+  Minimum primary track linearity: 0.999616
+  Maximum primary track linearity derivative: 8.77308e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 230477
   Background type: Inelastic scattering
@@ -10054,6 +10636,9 @@ Run: 1 subrun: 0 event: 230477
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999748
+  Maximum primary track linearity derivative: 6.29268e-05 above threshold: 1
+
 Run: 1 subrun: 0 event: 230588
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -10093,6 +10678,9 @@ Run: 1 subrun: 0 event: 230588
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999963
+  Maximum primary track linearity derivative: 9.50677e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 230670
   Background type: Inelastic scattering
@@ -10149,6 +10737,9 @@ Run: 1 subrun: 0 event: 230670
   True visible protons: 0
 
   Number of hit clusters found near primary track: 4
+
+  Minimum primary track linearity: 0.999824
+  Maximum primary track linearity derivative: 4.31618e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 230708
   Background type: Inelastic scattering
@@ -10208,6 +10799,9 @@ Run: 1 subrun: 0 event: 230708
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.998897
+  Maximum primary track linearity derivative: 0.000279079 above threshold: 1
+
 Run: 1 subrun: 0 event: 230849
   Background type: Abs 0p
   WC match PDG: -211
@@ -10264,6 +10858,9 @@ Run: 1 subrun: 0 event: 230849
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999189
+  Maximum primary track linearity derivative: 0.000150343 above threshold: 1
+
 Run: 1 subrun: 0 event: 230959
   Background type: Abs 0p
   WC match PDG: -211
@@ -10306,6 +10903,9 @@ Run: 1 subrun: 0 event: 230959
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999643
+  Maximum primary track linearity derivative: 0.000101459 above threshold: 1
+
 Run: 1 subrun: 0 event: 231034
   Background type: Abs 0p
   WC match PDG: -211
@@ -10345,6 +10945,9 @@ Run: 1 subrun: 0 event: 231034
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.99986
+  Maximum primary track linearity derivative: 3.35451e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 231148
   Background type: Abs 0p
@@ -10387,6 +10990,9 @@ Run: 1 subrun: 0 event: 231148
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999733
+  Maximum primary track linearity derivative: 6.84636e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 231176
   Background type: Abs 0p
@@ -10437,6 +11043,9 @@ Run: 1 subrun: 0 event: 231176
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999765
+  Maximum primary track linearity derivative: 4.43859e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 231179
   Background type: Primary muon
@@ -10543,6 +11152,9 @@ Run: 1 subrun: 0 event: 231179
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999765
+  Maximum primary track linearity derivative: 4.43859e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 231209
   Background type: Primary muon
@@ -10658,6 +11270,9 @@ Run: 1 subrun: 0 event: 231209
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.9085
+  Maximum primary track linearity derivative: 0.0224781 above threshold: 1
+
 Run: 1 subrun: 0 event: 231321
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -10695,6 +11310,9 @@ Run: 1 subrun: 0 event: 231321
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999796
+  Maximum primary track linearity derivative: 4.45606e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 231346
   Background type: Abs 0p
@@ -10734,6 +11352,9 @@ Run: 1 subrun: 0 event: 231346
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999617
+  Maximum primary track linearity derivative: 0.000101863 above threshold: 1
+
 Run: 1 subrun: 0 event: 231349
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -10771,6 +11392,9 @@ Run: 1 subrun: 0 event: 231349
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.99967
+  Maximum primary track linearity derivative: 8.48101e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 231406
   Background type: Inelastic scattering
@@ -10827,6 +11451,9 @@ Run: 1 subrun: 0 event: 231406
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999889
+  Maximum primary track linearity derivative: 2.97493e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 231459
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -10873,6 +11500,9 @@ Run: 1 subrun: 0 event: 231459
 
   Number of hit clusters found near primary track: 3
 
+  Minimum primary track linearity: 0.999921
+  Maximum primary track linearity derivative: 2.05318e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 231464
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -10914,6 +11544,9 @@ Run: 1 subrun: 0 event: 231464
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999921
+  Maximum primary track linearity derivative: 2.05318e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 231534
   Background type: Inelastic scattering
@@ -10957,6 +11590,9 @@ Run: 1 subrun: 0 event: 231534
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999944
+  Maximum primary track linearity derivative: 1.44566e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 231574
   Background type: Abs 0p
@@ -11008,6 +11644,9 @@ Run: 1 subrun: 0 event: 231574
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999966
+  Maximum primary track linearity derivative: 1.05628e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 231666
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -11048,6 +11687,9 @@ Run: 1 subrun: 0 event: 231666
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999568
+  Maximum primary track linearity derivative: 0.000105006 above threshold: 1
 
 Run: 1 subrun: 0 event: 231752
   Background type: Inelastic scattering
@@ -11097,6 +11739,9 @@ Run: 1 subrun: 0 event: 231752
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.998211
+  Maximum primary track linearity derivative: 0.000654042 above threshold: 1
+
 Run: 1 subrun: 0 event: 231818
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -11142,6 +11787,9 @@ Run: 1 subrun: 0 event: 231818
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999913
+  Maximum primary track linearity derivative: 2.38755e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 231847
   Background type: Abs 0p
@@ -11195,6 +11843,9 @@ Run: 1 subrun: 0 event: 231847
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999665
+  Maximum primary track linearity derivative: 8.44054e-05 above threshold: 1
+
 Run: 1 subrun: 0 event: 231939
   Background type: Outside reduced volume
   WC match PDG: 2212
@@ -11227,6 +11878,9 @@ Run: 1 subrun: 0 event: 231939
 
   Number of hit clusters found near primary track: 3
 
+  Minimum primary track linearity: 0.960816
+  Maximum primary track linearity derivative: 0.0132849 above threshold: 1
+
 Run: 1 subrun: 0 event: 232193
   Background type: Abs 0p
   WC match PDG: -211
@@ -11256,6 +11910,9 @@ Run: 1 subrun: 0 event: 232193
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999886
+  Maximum primary track linearity derivative: 2.38465e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 232431
   Background type: Primary electron
@@ -11403,6 +12060,9 @@ Run: 1 subrun: 0 event: 232431
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.997799
+  Maximum primary track linearity derivative: 0.000985578 above threshold: 1
+
 Run: 1 subrun: 0 event: 232469
   Background type: Capture at rest
   WC match PDG: -211
@@ -11436,6 +12096,9 @@ Run: 1 subrun: 0 event: 232469
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.999376
+  Maximum primary track linearity derivative: 0.000178253 above threshold: 1
 
 Run: 1 subrun: 0 event: 232495
   Background type: Outside reduced volume
@@ -11484,6 +12147,9 @@ Run: 1 subrun: 0 event: 232495
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.994516
+  Maximum primary track linearity derivative: 0.0012506 above threshold: 1
 
 Run: 1 subrun: 0 event: 232594
   Background type: Primary electron
@@ -11615,6 +12281,9 @@ Run: 1 subrun: 0 event: 232594
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.996763
+  Maximum primary track linearity derivative: 0.000791997 above threshold: 1
+
 Run: 1 subrun: 0 event: 232603
   Background type: Abs 0p
   WC match PDG: -211
@@ -11655,6 +12324,9 @@ Run: 1 subrun: 0 event: 232603
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999915
+  Maximum primary track linearity derivative: 2.18245e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 232659
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -11692,6 +12364,9 @@ Run: 1 subrun: 0 event: 232659
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.999197
+  Maximum primary track linearity derivative: 0.000181401 above threshold: 1
 
 Run: 1 subrun: 0 event: 232698
   Background type: Inelastic scattering
@@ -11745,6 +12420,9 @@ Run: 1 subrun: 0 event: 232698
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.99986
+  Maximum primary track linearity derivative: 3.31388e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 232700
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -11784,6 +12462,9 @@ Run: 1 subrun: 0 event: 232700
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999665
+  Maximum primary track linearity derivative: 7.77615e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 232702
   Background type: Capture at rest
@@ -11831,6 +12512,9 @@ Run: 1 subrun: 0 event: 232702
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999979
+  Maximum primary track linearity derivative: 4.70049e-06 above threshold: 0
+
 Run: 1 subrun: 0 event: 232736
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -11869,6 +12553,9 @@ Run: 1 subrun: 0 event: 232736
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.99972
+  Maximum primary track linearity derivative: 6.59329e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 232761
   Background type: Inelastic scattering
@@ -11915,6 +12602,9 @@ Run: 1 subrun: 0 event: 232761
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.998349
+  Maximum primary track linearity derivative: 0.00041686 above threshold: 1
+
 Run: 1 subrun: 0 event: 232847
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -11959,6 +12649,9 @@ Run: 1 subrun: 0 event: 232847
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.998531
+  Maximum primary track linearity derivative: 0.000330545 above threshold: 1
 
 Run: 1 subrun: 0 event: 232864
   Background type: Primary muon
@@ -12110,6 +12803,9 @@ Run: 1 subrun: 0 event: 232864
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999255
+  Maximum primary track linearity derivative: 0.000218741 above threshold: 1
+
 Run: 1 subrun: 0 event: 232950
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -12150,6 +12846,9 @@ Run: 1 subrun: 0 event: 232950
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999806
+  Maximum primary track linearity derivative: 4.12776e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 232997
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -12189,6 +12888,9 @@ Run: 1 subrun: 0 event: 232997
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.99998
+  Maximum primary track linearity derivative: 3.79772e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 8061
   Background type: Abs 0p
@@ -12238,6 +12940,9 @@ Run: 1 subrun: 0 event: 8061
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999436
+  Maximum primary track linearity derivative: 0.00018868 above threshold: 1
+
 Run: 1 subrun: 0 event: 8081
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -12284,6 +12989,9 @@ Run: 1 subrun: 0 event: 8081
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999869
+  Maximum primary track linearity derivative: 4.18523e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 8111
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -12318,6 +13026,9 @@ Run: 1 subrun: 0 event: 8111
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999975
+  Maximum primary track linearity derivative: 6.75884e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 8166
   Background type: Inelastic scattering
@@ -12361,6 +13072,9 @@ Run: 1 subrun: 0 event: 8166
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.996726
+  Maximum primary track linearity derivative: 0.000868917 above threshold: 1
+
 Run: 1 subrun: 0 event: 8185
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -12403,6 +13117,9 @@ Run: 1 subrun: 0 event: 8185
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999479
+  Maximum primary track linearity derivative: 0.000137019 above threshold: 1
 
 Run: 1 subrun: 0 event: 82824
   Background type: Inelastic scattering
@@ -12449,6 +13166,9 @@ Run: 1 subrun: 0 event: 82824
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.960502
+  Maximum primary track linearity derivative: 0.0388985 above threshold: 1
+
 Run: 1 subrun: 0 event: 82886
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -12492,6 +13212,9 @@ Run: 1 subrun: 0 event: 82886
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999299
+  Maximum primary track linearity derivative: 0.000171358 above threshold: 1
 
 Run: 1 subrun: 0 event: 82983
   Background type: Primary electron
@@ -12605,6 +13328,9 @@ Run: 1 subrun: 0 event: 82983
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.999973
+  Maximum primary track linearity derivative: 6.23759e-06 above threshold: 0
+
 Run: 1 subrun: 0 event: 82994
   Background type: Charge exchange
   WC match PDG: -211
@@ -12638,6 +13364,9 @@ Run: 1 subrun: 0 event: 82994
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.99984
+  Maximum primary track linearity derivative: 3.91163e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 82995
   Background type: Charge exchange
@@ -12682,6 +13411,9 @@ Run: 1 subrun: 0 event: 82995
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999343
+  Maximum primary track linearity derivative: 0.000138765 above threshold: 1
 
 Run: 1 subrun: 0 event: 83009
   Background type: Inelastic scattering
@@ -12728,6 +13460,9 @@ Run: 1 subrun: 0 event: 83009
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.998228
+  Maximum primary track linearity derivative: 0.000408176 above threshold: 1
+
 Run: 1 subrun: 0 event: 83015
   Background type: Abs 0p
   WC match PDG: -211
@@ -12773,6 +13508,9 @@ Run: 1 subrun: 0 event: 83015
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.999404
+  Maximum primary track linearity derivative: 0.000147958 above threshold: 1
 
 Run: 1 subrun: 0 event: 83027
   Background type: Inelastic scattering
@@ -12825,6 +13563,9 @@ Run: 1 subrun: 0 event: 83027
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999941
+  Maximum primary track linearity derivative: 1.44146e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 83246
   Background type: Outside reduced volume
   WC match PDG: -211
@@ -12860,6 +13601,9 @@ Run: 1 subrun: 0 event: 83246
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999555
+  Maximum primary track linearity derivative: 0.000111272 above threshold: 1
 
 Run: 1 subrun: 0 event: 83262
   Background type: Inelastic scattering
@@ -12910,6 +13654,9 @@ Run: 1 subrun: 0 event: 83262
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.997107
+  Maximum primary track linearity derivative: 0.00282142 above threshold: 1
 
 Run: 1 subrun: 0 event: 83336
   Background type: Primary electron
@@ -13065,6 +13812,9 @@ Run: 1 subrun: 0 event: 83336
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999944
+  Maximum primary track linearity derivative: 1.47419e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 83358
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -13097,6 +13847,9 @@ Run: 1 subrun: 0 event: 83358
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.999923
+  Maximum primary track linearity derivative: 2.26753e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 83397
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -13124,6 +13877,9 @@ Run: 1 subrun: 0 event: 83397
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.970213
+  Maximum primary track linearity derivative: 0.00561282 above threshold: 1
 
 Run: 1 subrun: 0 event: 83557
   Background type: Inelastic scattering
@@ -13163,6 +13919,9 @@ Run: 1 subrun: 0 event: 83557
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.997335
+  Maximum primary track linearity derivative: 0.000656377 above threshold: 1
 
 Run: 1 subrun: 0 event: 83621
   Background type: Primary electron
@@ -13292,6 +14051,9 @@ Run: 1 subrun: 0 event: 83621
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.94272
+  Maximum primary track linearity derivative: 0.0572798 above threshold: 1
+
 Run: 1 subrun: 0 event: 83655
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -13346,6 +14108,9 @@ Run: 1 subrun: 0 event: 83655
 
   Number of hit clusters found near primary track: 4
 
+  Minimum primary track linearity: 0.999785
+  Maximum primary track linearity derivative: 4.94282e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 83751
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -13386,6 +14151,9 @@ Run: 1 subrun: 0 event: 83751
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.999939
+  Maximum primary track linearity derivative: 1.35097e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 83754
   Background type: Abs 0p
@@ -13430,6 +14198,9 @@ Run: 1 subrun: 0 event: 83754
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999939
+  Maximum primary track linearity derivative: 1.35097e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 83796
   Background type: Inelastic scattering
@@ -13477,6 +14248,9 @@ Run: 1 subrun: 0 event: 83796
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.998332
+  Maximum primary track linearity derivative: 0.00038363 above threshold: 1
+
 Run: 1 subrun: 0 event: 83847
   Background type: Abs 0p
   WC match PDG: -211
@@ -13516,6 +14290,9 @@ Run: 1 subrun: 0 event: 83847
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999734
+  Maximum primary track linearity derivative: 7.77029e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 83878
   Background type: Inelastic scattering
@@ -13564,6 +14341,9 @@ Run: 1 subrun: 0 event: 83878
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.997218
+  Maximum primary track linearity derivative: 0.000706998 above threshold: 1
 
 Run: 1 subrun: 0 event: 83975
   Background type: Primary electron
@@ -13625,6 +14405,9 @@ Run: 1 subrun: 0 event: 83975
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.994261
+  Maximum primary track linearity derivative: 0.00106004 above threshold: 1
+
 Run: 1 subrun: 0 event: 84066
   Background type: Abs 0p
   WC match PDG: -211
@@ -13677,6 +14460,9 @@ Run: 1 subrun: 0 event: 84066
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.993718
+  Maximum primary track linearity derivative: 0.00168665 above threshold: 1
+
 Run: 1 subrun: 0 event: 84076
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -13720,6 +14506,9 @@ Run: 1 subrun: 0 event: 84076
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999898
+  Maximum primary track linearity derivative: 2.67645e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 84366
   Background type: Abs 0p
   WC match PDG: -211
@@ -13762,6 +14551,9 @@ Run: 1 subrun: 0 event: 84366
 
   Number of hit clusters found near primary track: 0
 
+  Minimum primary track linearity: 0.998941
+  Maximum primary track linearity derivative: 0.000207158 above threshold: 1
+
 Run: 1 subrun: 0 event: 84423
   Background type: Abs 0p
   WC match PDG: -211
@@ -13799,6 +14591,9 @@ Run: 1 subrun: 0 event: 84423
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.997812
+  Maximum primary track linearity derivative: 0.000893004 above threshold: 1
 
 Run: 1 subrun: 0 event: 84692
   Background type: Inelastic scattering
@@ -13839,6 +14634,9 @@ Run: 1 subrun: 0 event: 84692
   True visible protons: 0
 
   Number of hit clusters found near primary track: 2
+
+  Minimum primary track linearity: 0.998757
+  Maximum primary track linearity derivative: 0.00028378 above threshold: 1
 
 Run: 1 subrun: 0 event: 84724
   Background type: Inelastic scattering
@@ -13881,6 +14679,9 @@ Run: 1 subrun: 0 event: 84724
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.995101
+  Maximum primary track linearity derivative: 0.0012475 above threshold: 1
 
 Run: 1 subrun: 0 event: 84740
   Background type: Inelastic scattering
@@ -13933,6 +14734,9 @@ Run: 1 subrun: 0 event: 84740
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.998481
+  Maximum primary track linearity derivative: 0.000406275 above threshold: 1
+
 Run: 1 subrun: 0 event: 85020
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -13977,6 +14781,9 @@ Run: 1 subrun: 0 event: 85020
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.997656
+  Maximum primary track linearity derivative: 0.000628463 above threshold: 1
+
 Run: 1 subrun: 0 event: 85159
   Background type: Outside reduced volume
   WC match PDG: -211
@@ -14010,6 +14817,9 @@ Run: 1 subrun: 0 event: 85159
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.965889
+  Maximum primary track linearity derivative: 0.00832992 above threshold: 1
 
 Run: 1 subrun: 0 event: 85204
   Background type: Other
@@ -14061,6 +14871,9 @@ Run: 1 subrun: 0 event: 85204
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999655
+  Maximum primary track linearity derivative: 7.80118e-05 above threshold: 1
+
 Run: 1 subrun: 0 event: 85221
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -14098,6 +14911,9 @@ Run: 1 subrun: 0 event: 85221
 
   Number of hit clusters found near primary track: 3
 
+  Minimum primary track linearity: 0.999688
+  Maximum primary track linearity derivative: 7.6204e-05 above threshold: 1
+
 Run: 1 subrun: 0 event: 85227
   Background type: Inelastic scattering
   WC match PDG: 2212
@@ -14133,6 +14949,9 @@ Run: 1 subrun: 0 event: 85227
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999845
+  Maximum primary track linearity derivative: 3.97299e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 85419
   Background type: Inelastic scattering
@@ -14170,6 +14989,9 @@ Run: 1 subrun: 0 event: 85419
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999958
+  Maximum primary track linearity derivative: 1.58221e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 85471
   Background type: Inelastic scattering
@@ -14220,6 +15042,9 @@ Run: 1 subrun: 0 event: 85471
 
   Number of hit clusters found near primary track: 1
 
+  Minimum primary track linearity: 0.999958
+  Maximum primary track linearity derivative: 1.58221e-05 above threshold: 0
+
 Run: 1 subrun: 0 event: 85626
   Background type: Capture at rest
   WC match PDG: -211
@@ -14253,6 +15078,9 @@ Run: 1 subrun: 0 event: 85626
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.999921
+  Maximum primary track linearity derivative: 2.00024e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 85760
   Background type: Primary electron
@@ -14354,6 +15182,9 @@ Run: 1 subrun: 0 event: 85760
 
   Number of hit clusters found near primary track: 2
 
+  Minimum primary track linearity: 0.9922
+  Maximum primary track linearity derivative: 0.00309049 above threshold: 1
+
 Run: 1 subrun: 0 event: 8735
   Background type: Inelastic scattering
   WC match PDG: -211
@@ -14386,6 +15217,9 @@ Run: 1 subrun: 0 event: 8735
   True visible protons: 0
 
   Number of hit clusters found near primary track: 0
+
+  Minimum primary track linearity: 0.999677
+  Maximum primary track linearity derivative: 8.36519e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 8778
   Background type: Capture at rest
@@ -14426,6 +15260,9 @@ Run: 1 subrun: 0 event: 8778
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.987722
+  Maximum primary track linearity derivative: 0.00387288 above threshold: 1
 
 Run: 1 subrun: 0 event: 8788
   Background type: Abs 0p
@@ -14476,4 +15313,7 @@ Run: 1 subrun: 0 event: 8788
   True visible protons: 0
 
   Number of hit clusters found near primary track: 1
+
+  Minimum primary track linearity: 0.993221
+  Maximum primary track linearity derivative: 0.00162729 above threshold: 1
 

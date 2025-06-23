@@ -54,7 +54,9 @@ struct EventInfo {
     int tracksNearVertex;
     int secondaryInteractionTag;
 
-    int numHitClusters;
+    int    numHitClusters;
+    double minLocalLinearity;
+    double maxLocalLinearityD;
 };
 
 struct HitCluster {
@@ -119,10 +121,11 @@ double PROTON_ENERGY_UPPER_BOUND = 1.0;
 double HIT_WIRE_SEPARATION = 0.4; // converts wire # to cm
 
 // Window size for local linearity
-int WINDOW_SIZE_LINEARITY = 3;
+int WINDOW_SIZE_LINEARITY = 8;
 
-// Threshold used to cut based on derivative of primatry track linearity
-double LINEARITY_DERIVATIVE_THRESHOLD = 0.14e-3;
+// Threshold(s) used to cut based on primary track local linearity
+double LINEARITY_DERIVATIVE_THRESHOLD = 0.06e-3;
+double STD_DEV_LINEARITY_THRESHOLD    = 0.045E-3;
 
 //////////////////////
 // Helper functions //
@@ -411,14 +414,17 @@ void RecoAllAnalysis() {
     TH1D *hMinimumLinearityNp           = new TH1D("hMinimumLinearityNp", "hMinimumLinearityNp;;", 20, 0.995, 1);
     TH1D *hMinimumLinearityNpBackground = new TH1D("hMinimumLinearityNpBackground", "hMinimumLinearityNpBackground;;", 20, 0.995, 1);
 
-    TH1D *hStdDevLinearity0p           = new TH1D("hStdDevLinearity0p", "hStdDevLinearity0p;;", 20, 0, 0.00015);
-    TH1D *hStdDevLinearity0pBackground = new TH1D("hStdDevLinearity0pBackground", "hStdDevLinearity0pBackground;;", 20, 0, 0.00015);
+    TH1D *hStdDevLinearity0p           = new TH1D("hStdDevLinearity0p", "hStdDevLinearity0p;;", 20, 0, 0.0001);
+    TH1D *hStdDevLinearity0pBackground = new TH1D("hStdDevLinearity0pBackground", "hStdDevLinearity0pBackground;;", 20, 0, 0.0001);
     TH1D *hStdDevLinearityNp           = new TH1D("hStdDevLinearityNp", "hStdDevLinearityNp;;", 20, 0, 0.0002);
     TH1D *hStdDevLinearityNpBackground = new TH1D("hStdDevLinearityNpBackground", "hStdDevLinearityNpBackground;;", 20, 0, 0.0002);
 
     TH1D *hMaxLinearityD0p           = new TH1D("hMaxLinearityD0p", "hMaxLinearityD0p;;", 20, 0, 0.0004);
     // TH1D *hMaxLinearityD0pScattering = new TH1D("hMaxLinearityD0pScattering", "hMaxLinearityD0pScattering;;", 20, 0, 0.001);
     TH1D *hMaxLinearityD0pBackground = new TH1D("hMaxLinearityD0pBackground", "hMaxLinearityD0pBackground;;", 20, 0, 0.0004);
+
+    TH1D *hMaxLinearityDD0p           = new TH1D("hMaxLinearityDD0p", "hMaxLinearityDD0p;;", 20, 0, 0.0002);
+    TH1D *hMaxLinearityDD0pBackground = new TH1D("hMaxLinearityDD0pBackground", "hMaxLinearityDD0pBackground;;", 20, 0, 0.0002);
 
     TH2D *hTotalBackgroundScatteringLengthVSAngle = new TH2D(
         "hTotalBackgroundScatteringLengthVSAngle",
@@ -433,6 +439,19 @@ void RecoAllAnalysis() {
         10, 0, 40,
         8, 0, 0.4
     );
+
+    /////////////////////////////////////////////////////////////////////////////
+    // Variables and histograms for local linearity derivative cut optimizaton //
+    /////////////////////////////////////////////////////////////////////////////
+
+    double INIT_LIN_DERIV_THRESHOLD = 0.06e-3;
+    double LIN_DERIV_STEP_SIZE      = 0.02e-3;
+    int    LIN_DERIV_NUM_STEPS      = 10;
+
+    TH1D *hLocalLinearityDerivativeReco     = new TH1D("hLocalLinearityDerivativeReco", "hLocalLinearityDerivativeReco;;", LIN_DERIV_NUM_STEPS, INIT_LIN_DERIV_THRESHOLD, INIT_LIN_DERIV_THRESHOLD + LIN_DERIV_NUM_STEPS * LIN_DERIV_STEP_SIZE);
+    TH1D *hLocalLinearityDerivativeRecoTrue = new TH1D("hLocalLinearityDerivativeRecoTrue", "hLocalLinearityDerivativeRecoTrue;;", LIN_DERIV_NUM_STEPS, INIT_LIN_DERIV_THRESHOLD, INIT_LIN_DERIV_THRESHOLD + LIN_DERIV_NUM_STEPS * LIN_DERIV_STEP_SIZE);
+    TH1D *hLocalLinearityDerivativeCutPur   = new TH1D("hLocalLinearityDerivativeCutPur", "hLocalLinearityDerivativeCutPur;;", LIN_DERIV_NUM_STEPS, INIT_LIN_DERIV_THRESHOLD, INIT_LIN_DERIV_THRESHOLD + LIN_DERIV_NUM_STEPS * LIN_DERIV_STEP_SIZE);
+    TH1D *hLocalLinearityDerivativeCutEff   = new TH1D("hLocalLinearityDerivativeCutEff", "hLocalLinearityDerivativeCutEff;;", LIN_DERIV_NUM_STEPS, INIT_LIN_DERIV_THRESHOLD, INIT_LIN_DERIV_THRESHOLD + LIN_DERIV_NUM_STEPS * LIN_DERIV_STEP_SIZE);
 
     /////////////////////////////////////////////////////
     // Variables and histograms for chi^2 optimization //
@@ -556,6 +575,8 @@ void RecoAllAnalysis() {
     // Files for event information //
     /////////////////////////////////
 
+    std::ofstream outFile0pTrue("files/RecoAllAnalysis/0pRecoTrue.txt");
+    std::ofstream outFileNpTrue("files/RecoAllAnalysis/NpRecoTrue.txt");
     std::ofstream outFile0pBackground("files/RecoAllAnalysis/0pBackground.txt");
     std::ofstream outFileNpBackground("files/RecoAllAnalysis/NpBackground.txt");
     std::ofstream outStitchedFile("files/RecoAllAnalysis/WCMatchStitching.txt");
@@ -632,7 +653,7 @@ void RecoAllAnalysis() {
         // Get linearity profile for wire-chamber match
         std::vector<double> WC2TPCLinearity = calcLinearityProfile(*WC2TPCLocationsX, *WC2TPCLocationsY, *WC2TPCLocationsZ, WINDOW_SIZE_LINEARITY);
 
-        if ((event == 19977) || (event == 6197) || (event == 5899) || (event == 5966)) {
+        if ((event == 19977) || (event == 6197) || (event == 5899) || (event == 5966) || (event == 200213) || (event == 200494) || (event == 54275)) {
             TCanvas* c1 = new TCanvas("c1", "DEDXProfiles", 900, 600);
             c1->SetLeftMargin(0.15);
             c1->SetBottomMargin(0.15);
@@ -1145,29 +1166,43 @@ void RecoAllAnalysis() {
 
         // If we did not detect a kink with the energy profile, we look
         // for a spatial kink using the local linearity of the primary track
+        double maxLocalLinearityD, maxLocalLinearityDD, minLocalLinearity, stdevLocalLinearity;
+
         if (minChi2 == MIPChi2) {
-            double minLocalLinearity   = *std::min_element(WC2TPCLinearity.begin(), WC2TPCLinearity.end());
+            minLocalLinearity          = *std::min_element(WC2TPCLinearity.begin(), WC2TPCLinearity.end());
             double sumLocalLinearity   = std::accumulate(WC2TPCLinearity.begin(), WC2TPCLinearity.end(), 0.0);
             double meanLocalLinearity  = sumLocalLinearity / WC2TPCLinearity.size();
             double sqsumLocalLinearity = std::inner_product(WC2TPCLinearity.begin(), WC2TPCLinearity.end(), WC2TPCLinearity.begin(), 0.0);
-            double stdevLocalLinearity = std::sqrt(sqsumLocalLinearity / WC2TPCLinearity.size() - meanLocalLinearity * meanLocalLinearity);
+            stdevLocalLinearity        = std::sqrt(sqsumLocalLinearity / WC2TPCLinearity.size() - meanLocalLinearity * meanLocalLinearity);
 
             std::vector<double> localLinearityD;
             for (int i = 1; i < WC2TPCLinearity.size(); ++i) {
                 double diff = WC2TPCLinearity.at(i) - WC2TPCLinearity.at(i - 1);
-                localLinearityD.push_back(std::abs(diff));
+                localLinearityD.push_back(diff);
             }
-            double maxLocalLinearityD = *std::max_element(localLinearityD.begin(), localLinearityD.end());
+
+            std::vector<double> localLinearityDAbs;
+            for (int i = 0; i < localLinearityD.size(); ++i) localLinearityDAbs.push_back(std::abs(localLinearityD[i]));
+            maxLocalLinearityD = *std::max_element(localLinearityDAbs.begin(), localLinearityDAbs.end());
+
+            std::vector<double> localLinearityDD;
+            for (int i = 1; i < localLinearityD.size(); ++i) {
+                double diff = localLinearityD.at(i) - localLinearityD.at(i - 1);
+                localLinearityDD.push_back(std::abs(diff));
+            }
+            maxLocalLinearityDD = *std::max_element(localLinearityDD.begin(), localLinearityDD.end());
 
             if (totalTaggedProtons == 0) {
                 if (backgroundType == 0) {
                     hMinimumLinearity0p->Fill(minLocalLinearity);
                     hStdDevLinearity0p->Fill(stdevLocalLinearity);
                     hMaxLinearityD0p->Fill(maxLocalLinearityD);
+                    hMaxLinearityDD0p->Fill(maxLocalLinearityDD);
                 } else {
                     hMinimumLinearity0pBackground->Fill(minLocalLinearity);
                     hStdDevLinearity0pBackground->Fill(stdevLocalLinearity);
                     hMaxLinearityD0pBackground->Fill(maxLocalLinearityD);
+                    hMaxLinearityDD0pBackground->Fill(maxLocalLinearityDD);
 
                     // if (backgroundType == 6){ hMaxLinearityD0pScattering->Fill(maxLocalLinearityD); }
                     // else { hMaxLinearityD0pBackground->Fill(maxLocalLinearityD); }
@@ -1182,8 +1217,19 @@ void RecoAllAnalysis() {
                 }
             }
 
+            // Study efficiency and purity curves
+            double currentLinDerivThreshold = INIT_LIN_DERIV_THRESHOLD;
+            for (int iLinDeriv = 0; iLinDeriv < LIN_DERIV_NUM_STEPS; ++iLinDeriv) {
+                if ((totalTaggedProtons == 0) && (maxLocalLinearityD < currentLinDerivThreshold)) {
+                    hLocalLinearityDerivativeReco->Fill(currentLinDerivThreshold + 0.01e-3);
+                    if (backgroundType == 0) hLocalLinearityDerivativeRecoTrue->Fill(currentLinDerivThreshold + 0.01e-3);
+                }
+                currentLinDerivThreshold += LIN_DERIV_STEP_SIZE;
+            }
+
             // Actually perform cut 
-            if ((totalTaggedProtons == 0) && (maxLocalLinearityD >= LINEARITY_DERIVATIVE_THRESHOLD)) continue;
+            // if ((totalTaggedProtons == 0) && (maxLocalLinearityD >= LINEARITY_DERIVATIVE_THRESHOLD)) continue;
+            // if ((totalTaggedProtons == 0) && (stdevLocalLinearity >= STD_DEV_LINEARITY_THRESHOLD)) continue;
         }
 
         ///////////////////////////
@@ -1234,7 +1280,9 @@ void RecoAllAnalysis() {
         int secondaryInteractionTag           = isSecondaryInteractionAbsorption(*truthSecondaryPionDaughtersPDG, *truthSecondaryPionDaughtersProcess, *truthSecondaryPionDaughtersKE);
         thisEventInfo.secondaryInteractionTag = secondaryInteractionTag;
 
-        thisEventInfo.numHitClusters = hitClusters.size();
+        thisEventInfo.numHitClusters     = hitClusters.size();
+        thisEventInfo.minLocalLinearity  = minLocalLinearity;
+        thisEventInfo.maxLocalLinearityD = maxLocalLinearityD;
 
         if (backgroundType == 6) {
             hTotalBackgroundScatteringAngle->Fill(truthScatteringAngle);
@@ -1281,22 +1329,26 @@ void RecoAllAnalysis() {
             }
         }
 
-        if ((totalTaggedProtons == 0) && (backgroundType != 0)) {
-            printEventInfo(thisEventInfo, outFile0pBackground);
-            if (backgroundType == 6) {
+        if (totalTaggedProtons == 0) {
+            if (backgroundType == 0) {
+                printEventInfo(thisEventInfo, outFile0pTrue);
+            } else if (backgroundType == 6) {
+                printEventInfo(thisEventInfo, outFile0pBackground);
                 h0pInelasticBackgroundSecondaryInteraction->Fill(secondaryInteractionTag);
                 h0pBackgroundScatteringAngle->Fill(truthScatteringAngle);
                 h0pBackgroundScatteringLength->Fill(truthScatteredPionLength);
                 h0pBackgroundScatteringKE->Fill(truthScatteredPionKE);
-            }
-        } else if ((totalTaggedProtons > 0) && (backgroundType != 1)) {
-            printEventInfo(thisEventInfo, outFileNpBackground);
-            if (backgroundType == 6) {
+            } else { printEventInfo(thisEventInfo, outFile0pBackground); }
+        } else if (totalTaggedProtons > 0) {
+            if (backgroundType == 1) {
+                printEventInfo(thisEventInfo, outFileNpTrue);
+            } else if (backgroundType == 6) {
+                printEventInfo(thisEventInfo, outFileNpBackground);
                 hNpInelasticBackgroundSecondaryInteraction->Fill(secondaryInteractionTag);
                 hNpBackgroundScatteringAngle->Fill(truthScatteringAngle);
                 hNpBackgroundScatteringLength->Fill(truthScatteredPionLength);
                 hNpBackgroundScatteringKE->Fill(truthScatteredPionKE);
-            }
+            } else { printEventInfo(thisEventInfo, outFileNpBackground); }
         }
     }
 
@@ -1418,6 +1470,16 @@ void RecoAllAnalysis() {
     std::cout << "Hit cluster cut max purity = " << maxContentHitCluster << " at (cluster size, num clusters) = (" << xAtMaxHitCluster << ", " << yAtMaxHitCluster << ")" << std::endl;
     std::cout << std::endl;
 
+    //////////////////////////////////////////////////////////////////
+    // Compute purity and efficiency for local linearity derivative //
+    //////////////////////////////////////////////////////////////////
+
+    hLocalLinearityDerivativeCutPur = (TH1D*) hLocalLinearityDerivativeRecoTrue->Clone("hLocalLinearityDerivativeCutPur");
+    hLocalLinearityDerivativeCutPur->Divide(hLocalLinearityDerivativeReco);
+
+    hLocalLinearityDerivativeCutEff = (TH1D*) hLocalLinearityDerivativeRecoTrue->Clone("hLocalLinearityDerivativeCutPur");
+    hLocalLinearityDerivativeCutEff->Scale(1.0 / hTotalEvents->Integral(2,2));
+
     ////////////////////////////////////////////
     // Compute reco efficiency for scattering //
     ////////////////////////////////////////////
@@ -1485,7 +1547,9 @@ void RecoAllAnalysis() {
         {hStdDevLinearity0p, hStdDevLinearity0pBackground},
         {hMinimumLinearityNp, hMinimumLinearityNpBackground},
         {hStdDevLinearityNp, hStdDevLinearityNpBackground},
-        {hMaxLinearityD0p, hMaxLinearityD0pBackground}
+        {hMaxLinearityD0p, hMaxLinearityD0pBackground},
+        {hMaxLinearityDD0p, hMaxLinearityDD0pBackground},
+        {hLocalLinearityDerivativeCutPur, hLocalLinearityDerivativeCutEff}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -1509,7 +1573,9 @@ void RecoAllAnalysis() {
         {"Reco 0p true", "Reco 0p background"},
         {"Reco 0p true", "Reco 0p background"},
         {"Reco Np true", "Reco Np background"},
-        {"Reco 0p true", "Reco 0p background"}
+        {"Reco 0p true", "Reco 0p background"},
+        {"Reco 0p true", "Reco 0p background"},
+        {"Purity", "Efficiency"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -1533,7 +1599,9 @@ void RecoAllAnalysis() {
         "StdDevLinearity0pReco",
         "MinLocalLinearityNpReco",
         "StdDevLinearityNpReco",
-        "MaxLocalLinearityDeriv0pReco"
+        "MaxLocalLinearityDeriv0pReco",
+        "MaxLocalLinearitySecondDeriv0pReco",
+        "MaxLocalLinearityDerivCut"
     };
 
     std::vector<TString> XLabels = {
@@ -1557,7 +1625,9 @@ void RecoAllAnalysis() {
         "Standard dev. local linearity",
         "Minimum local linearity",
         "Standard dev. local linearity",
-        "Maximum local linearity derivative"
+        "Maximum local linearity derivative",
+        "Maximum local linearity second derivative",
+        "Maximum local linearity derivative allowed"
     };
 
     std::vector<TString> YLabels = {
@@ -1581,7 +1651,9 @@ void RecoAllAnalysis() {
         "Number of tracks",
         "Number of tracks",
         "Number of tracks",
-        "Number of tracks"
+        "Number of tracks",
+        "Number of tracks",
+        "Purity/Efficiency"
     };
 
     printOneDPlots(
@@ -2214,5 +2286,8 @@ void printEventInfo(EventInfo event, std::ostream& os) {
     os << "  True visible protons: " << event.visibleProtons << std::endl;
     os << std::endl;
     os << "  Number of hit clusters found near primary track: " << event.numHitClusters << std::endl;
+    os << std::endl;
+    os << "  Minimum primary track linearity: " << event.minLocalLinearity << std::endl;
+    os << "  Maximum primary track linearity derivative: " << event.maxLocalLinearityD << " above threshold: " << (event.maxLocalLinearityD >= LINEARITY_DERIVATIVE_THRESHOLD) << std::endl;
     os << std::endl;
 }
