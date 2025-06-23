@@ -453,6 +453,24 @@ void RecoAllAnalysis() {
     TH1D *hLocalLinearityDerivativeCutPur   = new TH1D("hLocalLinearityDerivativeCutPur", "hLocalLinearityDerivativeCutPur;;", LIN_DERIV_NUM_STEPS, INIT_LIN_DERIV_THRESHOLD, INIT_LIN_DERIV_THRESHOLD + LIN_DERIV_NUM_STEPS * LIN_DERIV_STEP_SIZE);
     TH1D *hLocalLinearityDerivativeCutEff   = new TH1D("hLocalLinearityDerivativeCutEff", "hLocalLinearityDerivativeCutEff;;", LIN_DERIV_NUM_STEPS, INIT_LIN_DERIV_THRESHOLD, INIT_LIN_DERIV_THRESHOLD + LIN_DERIV_NUM_STEPS * LIN_DERIV_STEP_SIZE);
 
+    double INIT_LIN_STDDEV_THRESHOLD = 0.01e-3;
+    double LIN_STDDEV_STEP_SIZE      = 0.005e-3;
+    int    LIN_STDDEV_NUM_STEPS      = 20;
+
+    TH1D *hLocalLinearityStdDevReco     = new TH1D("hLocalLinearityStdDevReco", "hLocalLinearityStdDevReco;;", LIN_STDDEV_NUM_STEPS, INIT_LIN_STDDEV_THRESHOLD, INIT_LIN_STDDEV_THRESHOLD + LIN_STDDEV_NUM_STEPS * LIN_STDDEV_STEP_SIZE);
+    TH1D *hLocalLinearityStdDevRecoTrue = new TH1D("hLocalLinearityStdDevRecoTrue", "hLocalLinearityStdDevRecoTrue;;", LIN_STDDEV_NUM_STEPS, INIT_LIN_STDDEV_THRESHOLD, INIT_LIN_STDDEV_THRESHOLD + LIN_STDDEV_NUM_STEPS * LIN_STDDEV_STEP_SIZE);
+    TH1D *hLocalLinearityStdDevCutPur   = new TH1D("hLocalLinearityStdDevCutPur", "hLocalLinearityStdDevCutPur;;", LIN_STDDEV_NUM_STEPS, INIT_LIN_STDDEV_THRESHOLD, INIT_LIN_STDDEV_THRESHOLD + LIN_STDDEV_NUM_STEPS * LIN_STDDEV_STEP_SIZE);
+    TH1D *hLocalLinearityStdDevCutEff   = new TH1D("hLocalLinearityStdDevCutEff", "hLocalLinearityStdDevCutEff;;", LIN_STDDEV_NUM_STEPS, INIT_LIN_STDDEV_THRESHOLD, INIT_LIN_STDDEV_THRESHOLD + LIN_STDDEV_NUM_STEPS * LIN_STDDEV_STEP_SIZE);
+
+    double INIT_LIN_MIN_THRESHOLD = 0.9995;
+    double LIN_MIN_STEP_SIZE      = -0.0002;
+    int    LIN_MIN_NUM_STEPS      = 20;
+
+    TH1D *hLocalLinearityMinReco     = new TH1D("hLocalLinearityMinReco", "hLocalLinearityMinReco;;", LIN_MIN_NUM_STEPS, 1 - INIT_LIN_MIN_THRESHOLD, 1 - (INIT_LIN_MIN_THRESHOLD + LIN_MIN_NUM_STEPS * LIN_MIN_STEP_SIZE));
+    TH1D *hLocalLinearityMinRecoTrue = new TH1D("hLocalLinearityMinRecoTrue", "hLocalLinearityMinRecoTrue;;", LIN_MIN_NUM_STEPS, 1 - INIT_LIN_MIN_THRESHOLD, 1 - (INIT_LIN_MIN_THRESHOLD + LIN_MIN_NUM_STEPS * LIN_MIN_STEP_SIZE));
+    TH1D *hLocalLinearityMinCutPur   = new TH1D("hLocalLinearityMinCutPur", "hLocalLinearityMinCutPur;;", LIN_MIN_NUM_STEPS, 1 - INIT_LIN_MIN_THRESHOLD, 1 - (INIT_LIN_MIN_THRESHOLD + LIN_MIN_NUM_STEPS * LIN_MIN_STEP_SIZE));
+    TH1D *hLocalLinearityMinCutEff   = new TH1D("hLocalLinearityMinCutEff", "hLocalLinearityMinCutEff;;", LIN_MIN_NUM_STEPS, 1 - INIT_LIN_MIN_THRESHOLD, 1 - (INIT_LIN_MIN_THRESHOLD + LIN_MIN_NUM_STEPS * LIN_MIN_STEP_SIZE));
+
     /////////////////////////////////////////////////////
     // Variables and histograms for chi^2 optimization //
     /////////////////////////////////////////////////////
@@ -1227,6 +1245,24 @@ void RecoAllAnalysis() {
                 currentLinDerivThreshold += LIN_DERIV_STEP_SIZE;
             }
 
+            double currentLinStdDevThreshold = INIT_LIN_STDDEV_THRESHOLD;
+            for (int iLinStdDev = 0; iLinStdDev < LIN_STDDEV_NUM_STEPS; ++iLinStdDev) {
+                if ((totalTaggedProtons == 0) && (stdevLocalLinearity < currentLinStdDevThreshold)) {
+                    hLocalLinearityStdDevReco->Fill(currentLinStdDevThreshold + 0.001e-3);
+                    if (backgroundType == 0) hLocalLinearityStdDevRecoTrue->Fill(currentLinStdDevThreshold + 0.001e-3);
+                }
+                currentLinStdDevThreshold += LIN_STDDEV_STEP_SIZE;
+            }
+
+            double currentLinMinThreshold = INIT_LIN_MIN_THRESHOLD;
+            for (int iLinMin = 0; iLinMin < LIN_MIN_NUM_STEPS; ++iLinMin) {
+                if ((totalTaggedProtons == 0) && (minLocalLinearity > currentLinMinThreshold)) {
+                    hLocalLinearityMinReco->Fill((1 - currentLinMinThreshold) + 0.0001e-3);
+                    if (backgroundType == 0) hLocalLinearityMinRecoTrue->Fill((1 - currentLinMinThreshold) + 0.0001e-3);
+                }
+                currentLinMinThreshold += LIN_MIN_STEP_SIZE;
+            }
+
             // Actually perform cut 
             // if ((totalTaggedProtons == 0) && (maxLocalLinearityD >= LINEARITY_DERIVATIVE_THRESHOLD)) continue;
             // if ((totalTaggedProtons == 0) && (stdevLocalLinearity >= STD_DEV_LINEARITY_THRESHOLD)) continue;
@@ -1480,6 +1516,18 @@ void RecoAllAnalysis() {
     hLocalLinearityDerivativeCutEff = (TH1D*) hLocalLinearityDerivativeRecoTrue->Clone("hLocalLinearityDerivativeCutPur");
     hLocalLinearityDerivativeCutEff->Scale(1.0 / hTotalEvents->Integral(2,2));
 
+    hLocalLinearityStdDevCutPur = (TH1D*) hLocalLinearityStdDevRecoTrue->Clone("hLocalLinearityStdDevCutPur");
+    hLocalLinearityStdDevCutPur->Divide(hLocalLinearityStdDevReco);
+
+    hLocalLinearityStdDevCutEff = (TH1D*) hLocalLinearityStdDevRecoTrue->Clone("hLocalLinearityStdDevCutEff");
+    hLocalLinearityStdDevCutEff->Scale(1.0 / hTotalEvents->Integral(2,2));
+
+    hLocalLinearityMinCutPur = (TH1D*) hLocalLinearityMinRecoTrue->Clone("hLocalLinearityMinCutPur");
+    hLocalLinearityMinCutPur->Divide(hLocalLinearityMinReco);
+
+    hLocalLinearityMinCutEff = (TH1D*) hLocalLinearityMinRecoTrue->Clone("hLocalLinearityMinCutEff");
+    hLocalLinearityMinCutEff->Scale(1.0 / hTotalEvents->Integral(2,2));
+
     ////////////////////////////////////////////
     // Compute reco efficiency for scattering //
     ////////////////////////////////////////////
@@ -1549,7 +1597,9 @@ void RecoAllAnalysis() {
         {hStdDevLinearityNp, hStdDevLinearityNpBackground},
         {hMaxLinearityD0p, hMaxLinearityD0pBackground},
         {hMaxLinearityDD0p, hMaxLinearityDD0pBackground},
-        {hLocalLinearityDerivativeCutPur, hLocalLinearityDerivativeCutEff}
+        {hLocalLinearityDerivativeCutPur, hLocalLinearityDerivativeCutEff},
+        {hLocalLinearityStdDevCutPur, hLocalLinearityStdDevCutEff},
+        {hLocalLinearityMinCutPur, hLocalLinearityMinCutEff}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -1575,6 +1625,8 @@ void RecoAllAnalysis() {
         {"Reco Np true", "Reco Np background"},
         {"Reco 0p true", "Reco 0p background"},
         {"Reco 0p true", "Reco 0p background"},
+        {"Purity", "Efficiency"},
+        {"Purity", "Efficiency"},
         {"Purity", "Efficiency"}
     };
 
@@ -1601,7 +1653,9 @@ void RecoAllAnalysis() {
         "StdDevLinearityNpReco",
         "MaxLocalLinearityDeriv0pReco",
         "MaxLocalLinearitySecondDeriv0pReco",
-        "MaxLocalLinearityDerivCut"
+        "MaxLocalLinearityDerivCut",
+        "MaxLocalLinearityStdDevCut",
+        "MinLocalLinearityCut"
     };
 
     std::vector<TString> XLabels = {
@@ -1627,7 +1681,9 @@ void RecoAllAnalysis() {
         "Standard dev. local linearity",
         "Maximum local linearity derivative",
         "Maximum local linearity second derivative",
-        "Maximum local linearity derivative allowed"
+        "Maximum local linearity derivative allowed",
+        "Maximum local linearity std. dev. allowed",
+        "1 - minimum local linearity allowed"
     };
 
     std::vector<TString> YLabels = {
@@ -1653,6 +1709,8 @@ void RecoAllAnalysis() {
         "Number of tracks",
         "Number of tracks",
         "Number of tracks",
+        "Purity/Efficiency",
+        "Purity/Efficiency",
         "Purity/Efficiency"
     };
 
@@ -2201,6 +2259,13 @@ void printOneDPlots(
             Plots[iSubPlot]->GetYaxis()->SetRangeUser(0., YAxisRange);
             Plots[0]->GetYaxis()->SetRangeUser(0., YAxisRange);	
         }
+
+        gPad->Update();
+        TAxis *x = Plots[0]->GetXaxis();
+        // x->SetNoExponent(kFALSE);
+        x->SetMaxDigits(3);
+        gPad->Modified();
+        gPad->Update();
 
         leg->Draw();
         PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
