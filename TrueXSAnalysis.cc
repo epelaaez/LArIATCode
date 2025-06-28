@@ -70,7 +70,7 @@ void TrueXSAnalysis() {
         if (!Histograms[i]) continue;
 
         // Rebin and modify range
-        Histograms[i]->Rebin(1);
+        Histograms[i]->Rebin(1); // NOT SURE THIS WOULD BE RIGHT, BETTER TO ADJUST BINNING IN MODULE
         Histograms[i]->GetXaxis()->SetRangeUser(0, 700);
         double maxY = Histograms[i]->GetMaximum();
         for (int bin = 1; bin <= Histograms[i]->GetNbinsX(); ++bin) {
@@ -232,4 +232,39 @@ void TrueXSAnalysis() {
     legAll->Draw();
 
     c->SaveAs(SaveDir + "AllInteractionsStacked.png");
+
+    /////////////////////////////////////////////////////
+    // Total cross section compared to pion absorption //
+    /////////////////////////////////////////////////////
+
+    THStack* hStackTotalAbs = new THStack("hStackTotalAbs", "Total vs. Absorption Cross Section;Kinetic Energy [MeV];Cross Section [barn]");
+
+    hStackTotalAbs->Add(hCrossSectionPionAbs0p, "H");
+    hStackTotalAbs->Add(hCrossSectionPionAbsNp, "H");
+
+    // Draw the stack
+    hStackTotalAbs->Draw("hist");
+    hStackTotalAbs->SetMaximum(1.1 * std::max(hCrossSection->GetMaximum(), hStackTotalAbs->GetMaximum()));
+    hStackTotalAbs->GetXaxis()->SetRangeUser(0, 700);
+    hStackTotalAbs->GetXaxis()->SetTitle("Kinetic Energy [MeV]");
+    hStackTotalAbs->GetYaxis()->SetTitle("Cross Section [barn]");
+
+    // Draw total cross-section on top
+    hCrossSection->SetLineColor(kBlack);
+    hCrossSection->SetLineWidth(2);
+    hCrossSection->SetMarkerSize(1.2);
+    hCrossSection->SetMarkerStyle(20);
+    hCrossSection->SetMarkerColor(kBlack);
+    hCrossSection->Draw("E1 SAME");
+
+    // Add legend
+    TLegend* legTotalAbs = new TLegend(0.65, 0.65, 0.85, 0.85);
+    legTotalAbs->SetTextFont(FontStyle);
+    legTotalAbs->SetTextSize(TextSize * 0.9);
+    legTotalAbs->AddEntry(hCrossSectionPionAbs0p, "Abs. 0p", "f");
+    legTotalAbs->AddEntry(hCrossSectionPionAbsNp, "Abs. Np", "f");
+    legTotalAbs->AddEntry(hCrossSection, "Total", "lep");
+    legTotalAbs->Draw();
+
+    c->SaveAs(SaveDir + "TotalComparedAbsStacked.png");
 }
