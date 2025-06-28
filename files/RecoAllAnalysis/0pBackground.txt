@@ -100,7 +100,7 @@ Run: 1 subrun: 0 event: 199817
   Maximum primary track linearity derivative: 4.77253e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 199927
-  Background type: Decay
+  Background type: Outside reduced volume
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -486,7 +486,7 @@ Run: 1 subrun: 0 event: 200230
   Maximum primary track linearity derivative: 0.00029139 above threshold: 1
 
 Run: 1 subrun: 0 event: 200314
-  Background type: Inelastic scattering
+  Background type: Outside reduced volume
   WC match PDG: -211
   WC match process: pi-Inelastic
   WC match daughters: 
@@ -1107,7 +1107,7 @@ Run: 1 subrun: 0 event: 200747
   Maximum primary track linearity derivative: 3.99239e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 200792
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -1296,7 +1296,7 @@ Run: 1 subrun: 0 event: 200967
   Maximum primary track linearity derivative: 0.00113945 above threshold: 1
 
 Run: 1 subrun: 0 event: 201080
-  Background type: Capture at rest
+  Background type: Outside reduced volume
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -1759,7 +1759,7 @@ Run: 1 subrun: 0 event: 201444
   Maximum primary track linearity derivative: 1.05489e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 201448
-  Background type: Capture at rest
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -2434,7 +2434,7 @@ Run: 1 subrun: 0 event: 201842
   Maximum primary track linearity derivative: 7.82898e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 201853
-  Background type: Capture at rest
+  Background type: Outside reduced volume
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -2534,7 +2534,7 @@ Run: 1 subrun: 0 event: 201889
   Maximum primary track linearity derivative: 2.61889e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 201923
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -2812,7 +2812,7 @@ Run: 1 subrun: 0 event: 202282
   Maximum primary track linearity derivative: 2.40349e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 202289
-  Background type: Charge exchange
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -2970,7 +2970,7 @@ Run: 1 subrun: 0 event: 202358
   Maximum primary track linearity derivative: 4.82749e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 202546
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -3393,7 +3393,7 @@ Run: 1 subrun: 0 event: 5145
   Maximum primary track linearity derivative: 0.000736439 above threshold: 1
 
 Run: 1 subrun: 0 event: 5158
-  Background type: Charge exchange
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -3426,7 +3426,7 @@ Run: 1 subrun: 0 event: 5158
   Maximum primary track linearity derivative: 5.49529e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 5285
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -3626,7 +3626,7 @@ Run: 1 subrun: 0 event: 52843
   Maximum primary track linearity derivative: 5.0302e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 52850
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -3688,7 +3688,7 @@ Run: 1 subrun: 0 event: 52875
   Maximum primary track linearity derivative: 1.17222e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 52897
-  Background type: Capture at rest
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -4032,7 +4032,7 @@ Run: 1 subrun: 0 event: 53322
   Maximum primary track linearity derivative: 0.000311125 above threshold: 1
 
 Run: 1 subrun: 0 event: 53342
-  Background type: Capture at rest
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -4131,7 +4131,7 @@ Run: 1 subrun: 0 event: 53357
   Maximum primary track linearity derivative: 3.0012e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 53379
-  Background type: Capture at rest
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -4256,7 +4256,7 @@ Run: 1 subrun: 0 event: 53556
   Maximum primary track linearity derivative: 0.0955518 above threshold: 1
 
 Run: 1 subrun: 0 event: 53661
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -4715,7 +4715,7 @@ Run: 1 subrun: 0 event: 53872
   Maximum primary track linearity derivative: 3.06549e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 53892
-  Background type: Decay
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -4869,7 +4869,7 @@ Run: 1 subrun: 0 event: 54151
   Maximum primary track linearity derivative: 2.84219e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 54199
-  Background type: Inelastic scattering
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -4968,7 +4968,7 @@ Run: 1 subrun: 0 event: 54205
   Maximum primary track linearity derivative: 0.000765805 above threshold: 1
 
 Run: 1 subrun: 0 event: 54247
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -5897,7 +5897,7 @@ Run: 1 subrun: 0 event: 55244
   Maximum primary track linearity derivative: 0.00132565 above threshold: 1
 
 Run: 1 subrun: 0 event: 55270
-  Background type: Decay
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -5964,7 +5964,7 @@ Run: 1 subrun: 0 event: 55292
   Maximum primary track linearity derivative: 2.17752e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 55384
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -6466,7 +6466,7 @@ Run: 1 subrun: 0 event: 6083
   Maximum primary track linearity derivative: 2.13395e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 6088
-  Background type: Decay
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -7011,7 +7011,7 @@ Run: 1 subrun: 0 event: 62162
   Maximum primary track linearity derivative: 0.000539615 above threshold: 1
 
 Run: 1 subrun: 0 event: 62181
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -7739,7 +7739,7 @@ Run: 1 subrun: 0 event: 62789
   Maximum primary track linearity derivative: 0.000112054 above threshold: 1
 
 Run: 1 subrun: 0 event: 62802
-  Background type: Capture at rest
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -7790,7 +7790,7 @@ Run: 1 subrun: 0 event: 62802
   Maximum primary track linearity derivative: 0.000857378 above threshold: 1
 
 Run: 1 subrun: 0 event: 62817
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -7811,7 +7811,7 @@ Run: 1 subrun: 0 event: 62817
   Maximum primary track linearity derivative: 0.000113336 above threshold: 1
 
 Run: 1 subrun: 0 event: 62834
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -8062,7 +8062,7 @@ Run: 1 subrun: 0 event: 62961
   Maximum primary track linearity derivative: 7.423e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 62986
-  Background type: Inelastic scattering
+  Background type: Outside reduced volume
   WC match PDG: -211
   WC match process: pi-Inelastic
   WC match daughters: 
@@ -8378,7 +8378,7 @@ Run: 1 subrun: 0 event: 63295
   Maximum primary track linearity derivative: 0.000552782 above threshold: 1
 
 Run: 1 subrun: 0 event: 63401
-  Background type: Charge exchange
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -8487,7 +8487,7 @@ Run: 1 subrun: 0 event: 63498
   Maximum primary track linearity derivative: 0.000259974 above threshold: 1
 
 Run: 1 subrun: 0 event: 63661
-  Background type: Inelastic scattering
+  Background type: Outside reduced volume
   WC match PDG: -211
   WC match process: pi-Inelastic
   WC match daughters: 
@@ -8744,7 +8744,7 @@ Run: 1 subrun: 0 event: 64054
   Maximum primary track linearity derivative: 0.000190903 above threshold: 1
 
 Run: 1 subrun: 0 event: 64065
-  Background type: Inelastic scattering
+  Background type: Outside reduced volume
   WC match PDG: -211
   WC match process: pi-Inelastic
   WC match daughters: 
@@ -9101,7 +9101,7 @@ Run: 1 subrun: 0 event: 64382
   Maximum primary track linearity derivative: 0.0164243 above threshold: 1
 
 Run: 1 subrun: 0 event: 64392
-  Background type: Decay
+  Background type: Outside reduced volume
   WC match PDG: 13
   WC match process: Decay
   WC match daughters: 
@@ -9940,7 +9940,7 @@ Run: 1 subrun: 0 event: 64974
   Maximum primary track linearity derivative: 1.74377e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 65043
-  Background type: Inelastic scattering
+  Background type: Outside reduced volume
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -10513,7 +10513,7 @@ Run: 1 subrun: 0 event: 65498
   Maximum primary track linearity derivative: 5.54546e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 65502
-  Background type: Decay
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -10575,7 +10575,7 @@ Run: 1 subrun: 0 event: 65600
   Maximum primary track linearity derivative: 3.65781e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 65607
-  Background type: Inelastic scattering
+  Background type: Outside reduced volume
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -11479,7 +11479,7 @@ Run: 1 subrun: 0 event: 66130
   Maximum primary track linearity derivative: 7.4104e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 66166
-  Background type: Decay
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -11893,7 +11893,7 @@ Run: 1 subrun: 0 event: 66666
   Maximum primary track linearity derivative: 0.0344416 above threshold: 1
 
 Run: 1 subrun: 0 event: 66734
-  Background type: Inelastic scattering
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -12262,7 +12262,7 @@ Run: 1 subrun: 0 event: 66817
   Maximum primary track linearity derivative: 3.49392e-06 above threshold: 0
 
 Run: 1 subrun: 0 event: 66823
-  Background type: Inelastic scattering
+  Background type: Outside reduced volume
   WC match PDG: -211
   WC match process: pi-Inelastic
   WC match daughters: 
@@ -12834,7 +12834,7 @@ Run: 1 subrun: 0 event: 67625
   Maximum primary track linearity derivative: 1.22313e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 67654
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -12901,7 +12901,7 @@ Run: 1 subrun: 0 event: 67682
   Maximum primary track linearity derivative: 0.000112385 above threshold: 1
 
 Run: 1 subrun: 0 event: 67694
-  Background type: Decay
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -15134,7 +15134,7 @@ Run: 1 subrun: 0 event: 231335
   Maximum primary track linearity derivative: 6.47441e-05 above threshold: 1
 
 Run: 1 subrun: 0 event: 231356
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -15648,7 +15648,7 @@ Run: 1 subrun: 0 event: 231968
   Maximum primary track linearity derivative: 0.00362014 above threshold: 1
 
 Run: 1 subrun: 0 event: 232016
-  Background type: Capture at rest
+  Background type: Outside reduced volume
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -15792,7 +15792,7 @@ Run: 1 subrun: 0 event: 232579
   Maximum primary track linearity derivative: 0.000791997 above threshold: 1
 
 Run: 1 subrun: 0 event: 232652
-  Background type: Capture at rest
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -16115,7 +16115,7 @@ Run: 1 subrun: 0 event: 232970
   Maximum primary track linearity derivative: 0.000119771 above threshold: 1
 
 Run: 1 subrun: 0 event: 8011
-  Background type: Outside reduced volume
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -17061,7 +17061,7 @@ Run: 1 subrun: 0 event: 83700
   Maximum primary track linearity derivative: 0.000582551 above threshold: 1
 
 Run: 1 subrun: 0 event: 83763
-  Background type: Inelastic scattering
+  Background type: Elastic scattering
   WC match PDG: -211
   WC match process: primary
   WC match daughters: 
@@ -17556,7 +17556,7 @@ Run: 1 subrun: 0 event: 84146
   Maximum primary track linearity derivative: 2.73454e-05 above threshold: 0
 
 Run: 1 subrun: 0 event: 84294
-  Background type: Inelastic scattering
+  Background type: Outside reduced volume
   WC match PDG: -211
   WC match process: pi-Inelastic
   WC match daughters: 

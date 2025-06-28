@@ -30,7 +30,7 @@ Event number: 19855
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     -211 with process: pi-Inelastic
@@ -96,7 +96,7 @@ Event number: 19912
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     -14 with process: Decay
@@ -998,7 +998,7 @@ Event number: 200903
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     2212 with process: pi-Inelastic
@@ -1097,7 +1097,7 @@ Event number: 200958
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     1000180400 with process: hadElastic
@@ -1296,7 +1296,7 @@ Event number: 201161
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Outside reduced volume
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -1696,7 +1696,7 @@ Event number: 201722
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Outside reduced volume
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -1905,7 +1905,7 @@ Event number: 202046
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     -211 with process: pi-Inelastic
@@ -2094,7 +2094,7 @@ Event number: 202299
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Outside reduced volume
   Daughters: 
     -14 with process: Decay
     13 with process: Decay
@@ -2455,7 +2455,7 @@ Event number: 202617
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
 
 Event number: 202623
@@ -2493,7 +2493,7 @@ Event number: 202631
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     1000180400 with process: hadElastic
@@ -2894,7 +2894,7 @@ Event number: 53234
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Capture at rest
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     22 with process: hBertiniCaptureAtRest
@@ -3095,7 +3095,7 @@ Event number: 53508
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
 
@@ -3355,7 +3355,7 @@ Event number: 53918
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Outside reduced volume
   Daughters: 
     -14 with process: Decay
     13 with process: Decay
@@ -3476,7 +3476,7 @@ Event number: 53987
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Elastic scattering
   Daughters: 
     -211 with process: pi-Inelastic
     2212 with process: pi-Inelastic
@@ -4030,7 +4030,7 @@ Event number: 54889
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Capture at rest
+  Event classified as: Outside reduced volume
   Daughters: 
     22 with process: hBertiniCaptureAtRest
     22 with process: hBertiniCaptureAtRest
@@ -4053,7 +4053,7 @@ Event number: 54940
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Capture at rest
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     1000180400 with process: hadElastic
@@ -4194,7 +4194,7 @@ Event number: 55268
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Outside reduced volume
   Daughters: 
     2112 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -4217,7 +4217,7 @@ Event number: 55352
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
 
@@ -4433,7 +4433,7 @@ Event number: 55697
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Outside reduced volume
   Daughters: 
     -14 with process: Decay
     13 with process: Decay
@@ -5039,7 +5039,7 @@ Event number: 62289
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
 
@@ -5488,7 +5488,7 @@ Event number: 62979
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
     2212 with process: pi-Inelastic
     2212 with process: pi-Inelastic
@@ -5511,7 +5511,7 @@ Event number: 63000
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Capture at rest
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     22 with process: hBertiniCaptureAtRest
@@ -5892,7 +5892,7 @@ Event number: 63398
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Capture at rest
+  Event classified as: Elastic scattering
   Daughters: 
     22 with process: hBertiniCaptureAtRest
     22 with process: hBertiniCaptureAtRest
@@ -5988,7 +5988,7 @@ Event number: 63740
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     2212 with process: pi-Inelastic
@@ -6523,7 +6523,7 @@ Event number: 64371
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Capture at rest
+  Event classified as: Elastic scattering
   Daughters: 
     2212 with process: hBertiniCaptureAtRest
     1000010020 with process: hBertiniCaptureAtRest
@@ -7217,7 +7217,7 @@ Event number: 64940
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Capture at rest
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     22 with process: hBertiniCaptureAtRest
@@ -7377,7 +7377,7 @@ Event number: 65245
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Outside reduced volume
   Daughters: 
     -14 with process: Decay
     13 with process: Decay
@@ -7535,7 +7535,7 @@ Event number: 65595
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     2112 with process: pi-Inelastic
@@ -7630,7 +7630,7 @@ Event number: 65662
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
     2212 with process: pi-Inelastic
     2212 with process: pi-Inelastic
@@ -8156,7 +8156,7 @@ Event number: 66339
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Elastic scattering
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -8387,7 +8387,7 @@ Event number: 66835
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Capture at rest
+  Event classified as: Outside reduced volume
   Daughters: 
     111 with process: hBertiniCaptureAtRest
     2112 with process: hBertiniCaptureAtRest
@@ -8403,7 +8403,7 @@ Event number: 66907
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Outside reduced volume
   Daughters: 
     -14 with process: Decay
     13 with process: Decay
@@ -8488,7 +8488,7 @@ Event number: 67004
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Capture at rest
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     22 with process: hBertiniCaptureAtRest
@@ -8802,7 +8802,7 @@ Event number: 67345
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     2212 with process: pi-Inelastic
@@ -8951,7 +8951,7 @@ Event number: 67566
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Outside reduced volume
   Daughters: 
     -14 with process: Decay
     13 with process: Decay
@@ -9362,7 +9362,7 @@ Event number: 230158
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     -14 with process: Decay
@@ -9573,7 +9573,7 @@ Event number: 230328
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Outside reduced volume
   Daughters: 
     -14 with process: Decay
     13 with process: Decay
@@ -9694,7 +9694,7 @@ Event number: 230466
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     1000080160 with process: hadElastic
@@ -10161,7 +10161,7 @@ Event number: 231043
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Capture at rest
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     22 with process: hBertiniCaptureAtRest
@@ -10385,7 +10385,7 @@ Event number: 231210
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Outside reduced volume
   Daughters: 
     -14 with process: Decay
     13 with process: Decay
@@ -10924,7 +10924,7 @@ Event number: 231823
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Outside reduced volume
   Daughters: 
     -14 with process: Decay
     13 with process: Decay
@@ -11240,7 +11240,7 @@ Event number: 232476
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Decay
+  Event classified as: Outside reduced volume
   Daughters: 
     -14 with process: Decay
     13 with process: Decay
@@ -11569,7 +11569,7 @@ Event number: 232881
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     1000180400 with process: hadElastic
@@ -12068,7 +12068,7 @@ Event number: 83287
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Capture at rest
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     22 with process: hBertiniCaptureAtRest
@@ -12338,7 +12338,7 @@ Event number: 83402
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
     -211 with process: pi-Inelastic
@@ -12357,7 +12357,7 @@ Event number: 83473
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Outside reduced volume
   Daughters: 
     1000180400 with process: CoulombScat
     -211 with process: pi-Inelastic
@@ -12592,7 +12592,7 @@ Event number: 83869
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
 
@@ -13156,7 +13156,7 @@ Event number: 85141
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Outside reduced volume
+  Event classified as: Elastic scattering
   Daughters: 
     1000180400 with process: hadElastic
 
@@ -13377,7 +13377,7 @@ Event number: 85419
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Outside reduced volume
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -13530,7 +13530,7 @@ Event number: 85626
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Capture at rest
+  Event classified as: Elastic scattering
   Daughters: 
     22 with process: hBertiniCaptureAtRest
     2112 with process: hBertiniCaptureAtRest

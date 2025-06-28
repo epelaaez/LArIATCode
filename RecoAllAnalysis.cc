@@ -28,7 +28,8 @@ std::map<int, std::string> backgroundTypes = {
     {8, "Double charge exchange"},
     {9, "Capture at rest"},
     {10, "Decay"},
-    {11, "Other"}
+    {11, "Other"},
+    {12, "Elastic scattering"}
 };
 
 struct EventInfo {
@@ -84,7 +85,7 @@ const double minZ =  3.0;
 const double maxZ = 87.0;
 
 // Background types
-int NUM_BACKGROUND_TYPES = 11;
+int NUM_BACKGROUND_TYPES = 12;
 //    0:  0p pion absorption
 //    1:  Np pion absorption
 //    2:  primary muon event
@@ -97,6 +98,7 @@ int NUM_BACKGROUND_TYPES = 11;
 //    9:  capture at rest
 //    10: decay
 //    11: other
+//    12: elastic scattering
 
 // Values for chi^2 secondary fits
 double PION_CHI2_PION_VALUE     = 1.375;
@@ -189,7 +191,7 @@ void RecoAllAnalysis() {
     ///////////////////
 
     // Load tree and branches
-    TTree* tree = (TTree*) Directory->Get<TTree>("RecoEvalTree");
+    TTree* tree = (TTree*) Directory->Get<TTree>("RecoAllEvalTree");
 
     int run, subrun, event;
     tree->SetBranchAddress("run", &run); 
@@ -303,6 +305,14 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("truthPrimaryDaughtersPDG", &truthPrimaryDaughtersPDG);
     tree->SetBranchAddress("truthPrimaryDaughtersProcess", &truthPrimaryDaughtersProcess);
     tree->SetBranchAddress("truthPrimaryDaughtersKE", &truthPrimaryDaughtersKE);
+
+    // Truth-level interaction information
+    bool         interactionInTrajectory;
+    std::string* trajectoryInteractionLabel = new std::string();
+    double       trajectoryInteractionAngle;
+    tree->SetBranchAddress("interactionInTrajectory", &interactionInTrajectory);
+    tree->SetBranchAddress("trajectoryInteractionLabel", &trajectoryInteractionLabel);
+    tree->SetBranchAddress("trajectoryInteractionAngle", &trajectoryInteractionAngle);
 
     // Truth-level secondary pion interaction information
     std::vector<int>*         truthSecondaryPionDaughtersPDG     = nullptr;
@@ -589,6 +599,14 @@ void RecoAllAnalysis() {
     TH1D *hInelasticScatteringReconstructedNpBkg = new TH1D("hInelasticScatteringReconstructionEfficiencyNpBkg", "hInelasticScatteringReconstructionEfficiencyNpBkg;;", 20, 0, 0.4);
     TH1D *hInelasticScatteringTotalNpBkg         = new TH1D("hInelasticScatteringTotalNpBkg", "hInelasticScatteringTotalNpBkg;;", 20, 0, 0.4);
 
+    ///////////////////////////////////////////////////////////////
+    // Truth study for scattering angles (elastic and inelastic) //
+    ///////////////////////////////////////////////////////////////
+
+    TH1D *hAllScatteringAngle       = new TH1D("hAllScatteringAngle", "hAllScatteringAngle;;", 20, 0, 20);
+    TH1D *hElasticScatteringAngle   = new TH1D("hElasticScatteringAngle", "hElasticScatteringAngle;;", 20, 0, 20);
+    TH1D *hInelasticScatteringAngle = new TH1D("hInelasticScatteringAngle", "hInelasticScatteringAngle;;", 20, 0, 20);
+
     /////////////////////////////////
     // Files for event information //
     /////////////////////////////////
@@ -614,6 +632,16 @@ void RecoAllAnalysis() {
         if (isPionAbsorptionSignal) {
             if (numVisibleProtons == 0) backgroundType = 0;
             if (numVisibleProtons > 0)  backgroundType = 1;
+        }
+
+        // Get information about elastic/inelastic scattering
+        if (interactionInTrajectory && *trajectoryInteractionLabel == "hadElastic") {
+            // if the process is inelastic, goes into another bin
+            hElasticScatteringAngle->Fill(trajectoryInteractionAngle * (180. / TMath::Pi()));
+            hAllScatteringAngle->Fill(trajectoryInteractionAngle * (180. / TMath::Pi()));
+        } else if (backgroundType == 6) {
+            hInelasticScatteringAngle->Fill(truthScatteringAngle * (180. / TMath::Pi()));
+            hAllScatteringAngle->Fill(truthScatteringAngle * (180. / TMath::Pi()));
         }
 
         // Look at energy profile for events we are interested in
@@ -1599,7 +1627,8 @@ void RecoAllAnalysis() {
         {hMaxLinearityDD0p, hMaxLinearityDD0pBackground},
         {hLocalLinearityDerivativeCutPur, hLocalLinearityDerivativeCutEff},
         {hLocalLinearityStdDevCutPur, hLocalLinearityStdDevCutEff},
-        {hLocalLinearityMinCutPur, hLocalLinearityMinCutEff}
+        {hLocalLinearityMinCutPur, hLocalLinearityMinCutEff},
+        {hAllScatteringAngle, hElasticScatteringAngle, hInelasticScatteringAngle}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -1627,7 +1656,8 @@ void RecoAllAnalysis() {
         {"Reco 0p true", "Reco 0p background"},
         {"Purity", "Efficiency"},
         {"Purity", "Efficiency"},
-        {"Purity", "Efficiency"}
+        {"Purity", "Efficiency"},
+        {"All", "Elastic", "Inelastic"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -1655,7 +1685,8 @@ void RecoAllAnalysis() {
         "MaxLocalLinearitySecondDeriv0pReco",
         "MaxLocalLinearityDerivCut",
         "MaxLocalLinearityStdDevCut",
-        "MinLocalLinearityCut"
+        "MinLocalLinearityCut",
+        "AllScatteringAngle"
     };
 
     std::vector<TString> XLabels = {
@@ -1683,7 +1714,8 @@ void RecoAllAnalysis() {
         "Maximum local linearity second derivative",
         "Maximum local linearity derivative allowed",
         "Maximum local linearity std. dev. allowed",
-        "1 - minimum local linearity allowed"
+        "1 - minimum local linearity allowed",
+        "Scattering angle (deg)"
     };
 
     std::vector<TString> YLabels = {
@@ -1711,7 +1743,8 @@ void RecoAllAnalysis() {
         "Number of tracks",
         "Purity/Efficiency",
         "Purity/Efficiency",
-        "Purity/Efficiency"
+        "Purity/Efficiency",
+        "Number of events"
     };
 
     printOneDPlots(
@@ -2300,6 +2333,7 @@ void printBackgroundInfo(TH1D* background_histo, std::ostream& os) {
     int captureAtRest        = background_histo->GetBinContent(10);
     int pionDecay            = background_histo->GetBinContent(11);
     int other                = background_histo->GetBinContent(12);
+    int elasticScattering    = background_histo->GetBinContent(13);
 
     os << "  Abs 0p: " << pionAbs0p << std::endl;;
     os << "  Abs Np: " << pionAbsNp << std::endl;;
@@ -2308,6 +2342,7 @@ void printBackgroundInfo(TH1D* background_histo, std::ostream& os) {
     os << "  Other primary: " << otherPrimary << std::endl;;
     os << "  Outside reduced volume: " << pionOutRedVol << std::endl;;
     os << "  Inelastic scattering: " << pionInelScatter << std::endl;;
+    os << "  Elastic scattering: " << elasticScattering << std::endl;;
     os << "  Charge exchange: " << chargeExchange << std::endl;;
     os << "  Double charge exchange: " << doubleChargeExchange << std::endl;;
     os << "  Capture at rest: " << captureAtRest << std::endl;;
