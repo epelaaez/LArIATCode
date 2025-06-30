@@ -40,8 +40,8 @@ void TrueXSAnalysis() {
     TH1D* hCrossSectionPionAbsNp = (TH1D*) Directory->Get("hCrossSectionPionAbsNp");
 
     // Background cross sections
-    TH1D* hCrossSectionOutsideRedVolume    = (TH1D*) Directory->Get("hCrossSectionOutsideRedVolume");
     TH1D* hCrossSectionPionInelastic       = (TH1D*) Directory->Get("hCrossSectionPionInelastic");
+    TH1D* hCrossSectionPionElastic         = (TH1D*) Directory->Get("hCrossSectionPionElastic");
     TH1D* hCrossSectionChargeExchange      = (TH1D*) Directory->Get("hCrossSectionChargeExchange");
     TH1D* hCrossSectionDoubleChargeExchange = (TH1D*) Directory->Get("hCrossSectionDoubleChargeExchange");
     TH1D* hCrossSectionCaptureAtRest       = (TH1D*) Directory->Get("hCrossSectionCaptureAtRest");
@@ -53,8 +53,8 @@ void TrueXSAnalysis() {
         hCrossSectionPionAbs, 
         hCrossSectionPionAbs0p, 
         hCrossSectionPionAbsNp,
-        hCrossSectionOutsideRedVolume,
         hCrossSectionPionInelastic,
+        hCrossSectionPionElastic,
         hCrossSectionChargeExchange,
         hCrossSectionDoubleChargeExchange,
         hCrossSectionCaptureAtRest,
@@ -172,13 +172,13 @@ void TrueXSAnalysis() {
     hCrossSectionPionAbsNp->SetLineColor(kOrange+7);
     hStackAll->Add(hCrossSectionPionAbsNp, "H");
 
-    hCrossSectionOutsideRedVolume->SetFillColor(kGray+2);
-    hCrossSectionOutsideRedVolume->SetLineColor(kGray+2);
-    hStackAll->Add(hCrossSectionOutsideRedVolume, "H");
-    
     hCrossSectionPionInelastic->SetFillColor(kGreen+2);
     hCrossSectionPionInelastic->SetLineColor(kGreen+2);
     hStackAll->Add(hCrossSectionPionInelastic, "H");
+
+    hCrossSectionPionElastic->SetFillColor(kBlue+2);
+    hCrossSectionPionElastic->SetLineColor(kBlue+2);
+    hStackAll->Add(hCrossSectionPionElastic, "H");
 
     hCrossSectionChargeExchange->SetFillColor(kMagenta+1);
     hCrossSectionChargeExchange->SetLineColor(kMagenta+1);
@@ -221,8 +221,8 @@ void TrueXSAnalysis() {
     legAll->SetTextSize(TextSize * 0.5);
     legAll->AddEntry(hCrossSectionPionAbs0p, "Abs. 0p", "f");
     legAll->AddEntry(hCrossSectionPionAbsNp, "Abs. Np", "f");
-    legAll->AddEntry(hCrossSectionOutsideRedVolume, "Outside red. vol.", "f");
     legAll->AddEntry(hCrossSectionPionInelastic, "Inelastic", "f");
+    legAll->AddEntry(hCrossSectionPionElastic, "Elastic", "f");
     legAll->AddEntry(hCrossSectionChargeExchange, "Charge exc.", "f");
     legAll->AddEntry(hCrossSectionDoubleChargeExchange, "Double charge exc.", "f");
     legAll->AddEntry(hCrossSectionCaptureAtRest, "Cap. at rest", "f");
