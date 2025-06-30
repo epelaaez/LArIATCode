@@ -363,6 +363,10 @@ void RecoAllAnalysis() {
     TH1D *hRecoAbsorption0p = new TH1D("hRecoAbsorption0p", "hRecoAbsorption0p;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hRecoAbsorptionNp = new TH1D("hRecoAbsorptionNp", "hRecoAbsorptionNp;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
+    //////////////////////////////////////////////
+    // Histograms for primary stitching studies //
+    //////////////////////////////////////////////
+
     TH1D *hStitchedDistanceFromVertex         = new TH1D("hStitchedDistanceFromVertex", "StitchedDistanceFromVertex;;", 20, 0, 70);
     TH1D *hStitchedOriginalDistanceFromVertex = new TH1D("hStitchedOriginalDistanceFromVertex", "hStitchedOriginalDistanceFromVertex;;", 20, 0, 70);
 
@@ -371,6 +375,15 @@ void RecoAllAnalysis() {
     TH1D *hStitchAsMIP  = new TH1D("hStitchAsMIP", "hStitchAsMIP;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hStitchAsProton        = new TH1D("hStitchAsProton", "hStitchAsProton;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hStitchFracBreakPoints = new TH1D("hStitchFracBreakPoints", "hStitchFracBreakPoints;;", 50, 0, 1);
+
+    TH1D *hInelScatteringBackgroundOriginalDistanceToPrimaryVertex   = new TH1D("hInelScatteringBackgroundOriginalDistanceToPrimaryVertex", "hInelScatteringBackgroundOriginalDistanceToPrimaryVertex;;", 20, 0, 20);
+    TH1D *hInelScatteringBackgroundOriginalDistanceToSecondaryVertex = new TH1D("hInelScatteringBackgroundOriginalDistanceToSecondaryVertex", "hInelScatteringBackgroundOriginalDistanceToSecondaryVertex;;", 20, 0, 20);
+    TH1D *hInelScatteringBackgroundDistanceToPrimaryVertex           = new TH1D("hInelScatteringBackgroundDistanceToPrimaryVertex", "hInelScatteringBackgroundDistanceToPrimaryVertex;;", 20, 0, 20);
+    TH1D *hInelScatteringBackgroundDistanceToSecondaryVertex         = new TH1D("hInelScatteringBackgroundDistanceToSecondaryVertex", "hInelScatteringBackgroundDistanceToSecondaryVertex;;", 20, 0, 20);
+
+    /////////////////////////////////////////////////////
+    // Histograms for secondary track PID optimization //
+    /////////////////////////////////////////////////////
 
     TH1D *hSecondaryPionChi2Protons = new TH1D("hSecondaryPionChi2Protons", "hSecondaryPionChi2Protons;;", 20, 0, 10);
     TH1D *hSecondaryPionChi2Pions   = new TH1D("hSecondaryPionChi2Pions", "hSecondaryPionChi2Pions;;", 20, 0, 10);
@@ -383,72 +396,6 @@ void RecoAllAnalysis() {
     TH1D *hSecondaryMeanDEDXProtons = new TH1D("hSecondaryMeanDEDXProtons", "hSecondaryMeanDEDXProtons;;", 10, 0, 10);
     TH1D *hSecondaryMeanDEDXPions   = new TH1D("hSecondaryMeanDEDXPions", "hSecondaryMeanDEDXPions;;", 10, 0, 10);
     TH1D *hSecondaryMeanDEDXOthers  = new TH1D("hSecondaryMeanDEDXOthers", "hSecondaryMeanDEDXOthers;;", 10, 0, 10);
-
-    TH1D *hTotalBackgroundScatteringAngle = new TH1D("hTotalBackgroundScatteringAngle", "hTotalBackgroundScatteringAngle;;", 20, 0, TMath::Pi());
-    TH1D *h0pBackgroundScatteringAngle    = new TH1D("h0pBackgroundScatteringAngle", "h0pBackgroundScatteringAngle;;", 20, 0, TMath::Pi());
-    TH1D *hNpBackgroundScatteringAngle    = new TH1D("hNpBackgroundScatteringAngle", "hNpBackgroundScatteringAngle;;", 20, 0, TMath::Pi());
-
-    TH1D *hTotalBackgroundScatteringLength = new TH1D("hTotalBackgroundScatteringLength", "hTotalBackgroundScatteringLength;;", 15, 0, 40);
-    TH1D *h0pBackgroundScatteringLength    = new TH1D("h0pBackgroundScatteringLength", "h0pBackgroundScatteringLength;;", 15, 0, 40);
-    TH1D *hNpBackgroundScatteringLength    = new TH1D("hNpBackgroundScatteringLength", "hNpBackgroundScatteringLength;;", 15, 0, 40);
-
-    TH1D *hTotalBackgroundScatteringKE = new TH1D("hTotalBackgroundScatteringKE", "hTotalBackgroundScatteringKE;;", 20, 0, 0.5);
-    TH1D *h0pBackgroundScatteringKE    = new TH1D("h0pBackgroundScatteringKE", "h0pBackgroundScatteringKE;;", 20, 0, 0.5);
-    TH1D *hNpBackgroundScatteringKE    = new TH1D("hNpBackgroundScatteringKE", "hNpBackgroundScatteringKE;;", 20, 0, 0.5);
-
-    TH1D *hScatteringBackgroundOriginalDistanceToPrimaryVertex = new TH1D("hScatteringBackgroundOriginalDistanceToPrimaryVertex", "hScatteringBackgroundOriginalDistanceToPrimaryVertex;;", 20, 0, 20);
-    TH1D *hScatteringBackgroundOriginalDistanceToSecondaryVertex = new TH1D("hScatteringBackgroundOriginalDistanceToSecondaryVertex", "hScatteringBackgroundOriginalDistanceToSecondaryVertex;;", 20, 0, 20);
-    TH1D *hScatteringBackgroundDistanceToPrimaryVertex = new TH1D("hScatteringBackgroundDistanceToPrimaryVertex", "hScatteringBackgroundDistanceToPrimaryVertex;;", 20, 0, 20);
-    TH1D *hScatteringBackgroundDistanceToSecondaryVertex = new TH1D("hScatteringBackgroundDistanceToSecondaryVertex", "hScatteringBackgroundDistanceToSecondaryVertex;;", 20, 0, 20);
-
-    TH1D *h0pInelasticBackgroundSecondaryInteraction = new TH1D("h0pInelasticBackgroundSecondaryInteraction", "h0pInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
-    TH1D *hNpInelasticBackgroundSecondaryInteraction = new TH1D("hNpInelasticBackgroundSecondaryInteraction", "hNpInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
-
-    TH1D *hHitClusters0p           = new TH1D("hHitClusters0p", "hHitClusters0p;;", 10, 0, 10);
-    TH1D *hHitClusters0pBackground = new TH1D("hHitClusters0pBackground", "hHitClusters0pBackground;;", 10, 0, 10);
-    TH1D *hHitClustersNp           = new TH1D("hHitClustersNp", "hHitClustersNp;;", 10, 0, 10);
-    TH1D *hHitClustersNpBackground = new TH1D("hHitClustersNpBackground", "hHitClustersNpBackground;;", 10, 0, 10);
-
-    TH1D *hHitClustersSize0p           = new TH1D("hHitClustersSize0p", "hHitClustersSize0p;;", 10, 2, 8);
-    TH1D *hHitClustersSize0pBackground = new TH1D("hHitClustersSize0pBackground", "hHitClustersSize0pBackground;;", 10, 2, 8);
-    TH1D *hHitClustersSizeNp           = new TH1D("hHitClustersSizeNp", "hHitClustersSizeNp;;", 10, 2, 8);
-    TH1D *hHitClustersSizeNpBackground = new TH1D("hHitClustersSizeNpBackground", "hHitClustersSizeNpBackground;;", 10, 2, 8);
-
-    TH1D *hHitLargeClusters0p           = new TH1D("hHitLargeClusters0p", "hHitClustersSize0p;;", 10, 0, 10);
-    TH1D *hHitLargeClusters0pBackground = new TH1D("hHitLargeClusters0pBackground", "hHitClustersSize0pBackground;;", 10, 0, 10);
-    TH1D *hHitLargeClustersNp           = new TH1D("hHitLargeClustersNp", "hHitClustersSizeNp;;", 10, 0, 10);
-    TH1D *hHitLargeClustersNpBackground = new TH1D("hHitLargeClustersNpBackground", "hHitClustersSizeNpBackground;;", 10, 0, 10);
-
-    TH1D *hMinimumLinearity0p           = new TH1D("hMinimumLinearity0p", "hMinimumLinearity0p;;", 20, 0.998, 1);
-    TH1D *hMinimumLinearity0pBackground = new TH1D("hMinimumLinearity0pBackground", "hMinimumLinearity0pBackground;;", 20, 0.998, 1);
-    TH1D *hMinimumLinearityNp           = new TH1D("hMinimumLinearityNp", "hMinimumLinearityNp;;", 20, 0.995, 1);
-    TH1D *hMinimumLinearityNpBackground = new TH1D("hMinimumLinearityNpBackground", "hMinimumLinearityNpBackground;;", 20, 0.995, 1);
-
-    TH1D *hStdDevLinearity0p           = new TH1D("hStdDevLinearity0p", "hStdDevLinearity0p;;", 20, 0, 0.0001);
-    TH1D *hStdDevLinearity0pBackground = new TH1D("hStdDevLinearity0pBackground", "hStdDevLinearity0pBackground;;", 20, 0, 0.0001);
-    TH1D *hStdDevLinearityNp           = new TH1D("hStdDevLinearityNp", "hStdDevLinearityNp;;", 20, 0, 0.0002);
-    TH1D *hStdDevLinearityNpBackground = new TH1D("hStdDevLinearityNpBackground", "hStdDevLinearityNpBackground;;", 20, 0, 0.0002);
-
-    TH1D *hMaxLinearityD0p           = new TH1D("hMaxLinearityD0p", "hMaxLinearityD0p;;", 20, 0, 0.0004);
-    // TH1D *hMaxLinearityD0pScattering = new TH1D("hMaxLinearityD0pScattering", "hMaxLinearityD0pScattering;;", 20, 0, 0.001);
-    TH1D *hMaxLinearityD0pBackground = new TH1D("hMaxLinearityD0pBackground", "hMaxLinearityD0pBackground;;", 20, 0, 0.0004);
-
-    TH1D *hMaxLinearityDD0p           = new TH1D("hMaxLinearityDD0p", "hMaxLinearityDD0p;;", 20, 0, 0.0002);
-    TH1D *hMaxLinearityDD0pBackground = new TH1D("hMaxLinearityDD0pBackground", "hMaxLinearityDD0pBackground;;", 20, 0, 0.0002);
-
-    TH2D *hTotalBackgroundScatteringLengthVSAngle = new TH2D(
-        "hTotalBackgroundScatteringLengthVSAngle",
-        "hTotalBackgroundScatteringLengthVSAngle;Length (cm);Angle (rad)",
-        10, 0, 40, 
-        10, 0, TMath::Pi()
-    );
-
-    TH2D *hTotalBackgroundScatteringLengthVSKEnergy = new TH2D(
-        "hTotalBackgroundScatteringLengthVSKEnergy",
-        "hTotalBackgroundScatteringLengthVSKEnergy;Length (cm);Energy (GeV/c)",
-        10, 0, 40,
-        8, 0, 0.4
-    );
 
     /////////////////////////////////////////////////////////////////////////////
     // Variables and histograms for local linearity derivative cut optimizaton //
@@ -480,6 +427,23 @@ void RecoAllAnalysis() {
     TH1D *hLocalLinearityMinRecoTrue = new TH1D("hLocalLinearityMinRecoTrue", "hLocalLinearityMinRecoTrue;;", LIN_MIN_NUM_STEPS, 1 - INIT_LIN_MIN_THRESHOLD, 1 - (INIT_LIN_MIN_THRESHOLD + LIN_MIN_NUM_STEPS * LIN_MIN_STEP_SIZE));
     TH1D *hLocalLinearityMinCutPur   = new TH1D("hLocalLinearityMinCutPur", "hLocalLinearityMinCutPur;;", LIN_MIN_NUM_STEPS, 1 - INIT_LIN_MIN_THRESHOLD, 1 - (INIT_LIN_MIN_THRESHOLD + LIN_MIN_NUM_STEPS * LIN_MIN_STEP_SIZE));
     TH1D *hLocalLinearityMinCutEff   = new TH1D("hLocalLinearityMinCutEff", "hLocalLinearityMinCutEff;;", LIN_MIN_NUM_STEPS, 1 - INIT_LIN_MIN_THRESHOLD, 1 - (INIT_LIN_MIN_THRESHOLD + LIN_MIN_NUM_STEPS * LIN_MIN_STEP_SIZE));
+
+    TH1D *hMinimumLinearity0p           = new TH1D("hMinimumLinearity0p", "hMinimumLinearity0p;;", 20, 0.998, 1);
+    TH1D *hMinimumLinearity0pBackground = new TH1D("hMinimumLinearity0pBackground", "hMinimumLinearity0pBackground;;", 20, 0.998, 1);
+    TH1D *hMinimumLinearityNp           = new TH1D("hMinimumLinearityNp", "hMinimumLinearityNp;;", 20, 0.995, 1);
+    TH1D *hMinimumLinearityNpBackground = new TH1D("hMinimumLinearityNpBackground", "hMinimumLinearityNpBackground;;", 20, 0.995, 1);
+
+    TH1D *hStdDevLinearity0p           = new TH1D("hStdDevLinearity0p", "hStdDevLinearity0p;;", 20, 0, 0.0001);
+    TH1D *hStdDevLinearity0pBackground = new TH1D("hStdDevLinearity0pBackground", "hStdDevLinearity0pBackground;;", 20, 0, 0.0001);
+    TH1D *hStdDevLinearityNp           = new TH1D("hStdDevLinearityNp", "hStdDevLinearityNp;;", 20, 0, 0.0002);
+    TH1D *hStdDevLinearityNpBackground = new TH1D("hStdDevLinearityNpBackground", "hStdDevLinearityNpBackground;;", 20, 0, 0.0002);
+
+    TH1D *hMaxLinearityD0p           = new TH1D("hMaxLinearityD0p", "hMaxLinearityD0p;;", 20, 0, 0.0004);
+    // TH1D *hMaxLinearityD0pScattering = new TH1D("hMaxLinearityD0pScattering", "hMaxLinearityD0pScattering;;", 20, 0, 0.001);
+    TH1D *hMaxLinearityD0pBackground = new TH1D("hMaxLinearityD0pBackground", "hMaxLinearityD0pBackground;;", 20, 0, 0.0004);
+
+    TH1D *hMaxLinearityDD0p           = new TH1D("hMaxLinearityDD0p", "hMaxLinearityDD0p;;", 20, 0, 0.0002);
+    TH1D *hMaxLinearityDD0pBackground = new TH1D("hMaxLinearityDD0pBackground", "hMaxLinearityDD0pBackground;;", 20, 0, 0.0002);
 
     /////////////////////////////////////////////////////
     // Variables and histograms for chi^2 optimization //
@@ -574,9 +538,38 @@ void RecoAllAnalysis() {
     int    NUM_CLUSTERS_THRESHOLD  = 1;
     double LARGE_CLUSTER_THRESHOLD = HIT_WIRE_SEPARATION * 3;
 
+    TH1D *hHitClusters0p           = new TH1D("hHitClusters0p", "hHitClusters0p;;", 10, 0, 10);
+    TH1D *hHitClusters0pBackground = new TH1D("hHitClusters0pBackground", "hHitClusters0pBackground;;", 10, 0, 10);
+    TH1D *hHitClustersNp           = new TH1D("hHitClustersNp", "hHitClustersNp;;", 10, 0, 10);
+    TH1D *hHitClustersNpBackground = new TH1D("hHitClustersNpBackground", "hHitClustersNpBackground;;", 10, 0, 10);
+
+    TH1D *hHitClustersSize0p           = new TH1D("hHitClustersSize0p", "hHitClustersSize0p;;", 10, 2, 8);
+    TH1D *hHitClustersSize0pBackground = new TH1D("hHitClustersSize0pBackground", "hHitClustersSize0pBackground;;", 10, 2, 8);
+    TH1D *hHitClustersSizeNp           = new TH1D("hHitClustersSizeNp", "hHitClustersSizeNp;;", 10, 2, 8);
+    TH1D *hHitClustersSizeNpBackground = new TH1D("hHitClustersSizeNpBackground", "hHitClustersSizeNpBackground;;", 10, 2, 8);
+
+    TH1D *hHitLargeClusters0p           = new TH1D("hHitLargeClusters0p", "hHitClustersSize0p;;", 10, 0, 10);
+    TH1D *hHitLargeClusters0pBackground = new TH1D("hHitLargeClusters0pBackground", "hHitClustersSize0pBackground;;", 10, 0, 10);
+    TH1D *hHitLargeClustersNp           = new TH1D("hHitLargeClustersNp", "hHitClustersSizeNp;;", 10, 0, 10);
+    TH1D *hHitLargeClustersNpBackground = new TH1D("hHitLargeClustersNpBackground", "hHitClustersSizeNpBackground;;", 10, 0, 10);
+
     //////////////////////////////////////////
     // Data for inelastic scattering events //
     //////////////////////////////////////////
+
+    TH2D *hTotalBackgroundInelScatteringLengthVSAngle = new TH2D(
+        "hTotalBackgroundInelScatteringLengthVSAngle",
+        "hTotalBackgroundInelScatteringLengthVSAngle;Length (cm);Angle (rad)",
+        10, 0, 40, 
+        10, 0, TMath::Pi()
+    );
+
+    TH2D *hTotalBackgroundInelScatteringLengthVSKEnergy = new TH2D(
+        "hTotalBackgroundInelScatteringLengthVSKEnergy",
+        "hTotalBackgroundInelScatteringLengthVSKEnergy;Length (cm);Energy (GeV/c)",
+        10, 0, 40,
+        8, 0, 0.4
+    );
 
     std::vector<double> InelasticScatteringIncidentKE;
     std::vector<double> InelasticScatteringVertexKE;
@@ -598,6 +591,28 @@ void RecoAllAnalysis() {
 
     TH1D *hInelasticScatteringReconstructedNpBkg = new TH1D("hInelasticScatteringReconstructionEfficiencyNpBkg", "hInelasticScatteringReconstructionEfficiencyNpBkg;;", 20, 0, 0.4);
     TH1D *hInelasticScatteringTotalNpBkg         = new TH1D("hInelasticScatteringTotalNpBkg", "hInelasticScatteringTotalNpBkg;;", 20, 0, 0.4);
+
+    TH1D *hTotalBackgroundInelScatteringAngle = new TH1D("hTotalBackgroundInelScatteringAngle", "hTotalBackgroundInelScatteringAngle;;", 20, 0, TMath::Pi());
+    TH1D *h0pBackgroundInelScatteringAngle    = new TH1D("h0pBackgroundInelScatteringAngle", "h0pBackgroundInelScatteringAngle;;", 20, 0, TMath::Pi());
+    TH1D *hNpBackgroundInelScatteringAngle    = new TH1D("hNpBackgroundInelScatteringAngle", "hNpBackgroundInelScatteringAngle;;", 20, 0, TMath::Pi());
+
+    TH1D *hTotalBackgroundInelScatteringLength = new TH1D("hTotalBackgroundInelScatteringLength", "hTotalBackgroundInelScatteringLength;;", 15, 0, 40);
+    TH1D *h0pBackgroundInelScatteringLength    = new TH1D("h0pBackgroundInelScatteringLength", "h0pBackgroundInelScatteringLength;;", 15, 0, 40);
+    TH1D *hNpBackgroundInelScatteringLength    = new TH1D("hNpBackgroundInelScatteringLength", "hNpBackgroundInelScatteringLength;;", 15, 0, 40);
+
+    TH1D *hTotalBackgroundInelScatteringKE = new TH1D("hTotalBackgroundInelScatteringKE", "hTotalBackgroundInelScatteringKE;;", 20, 0, 0.5);
+    TH1D *h0pBackgroundInelScatteringKE    = new TH1D("h0pBackgroundInelScatteringKE", "h0pBackgroundInelScatteringKE;;", 20, 0, 0.5);
+    TH1D *hNpBackgroundInelScatteringKE    = new TH1D("hNpBackgroundInelScatteringKE", "hNpBackgroundInelScatteringKE;;", 20, 0, 0.5);
+
+    TH1D *h0pInelasticBackgroundSecondaryInteraction = new TH1D("h0pInelasticBackgroundSecondaryInteraction", "h0pInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D *hNpInelasticBackgroundSecondaryInteraction = new TH1D("hNpInelasticBackgroundSecondaryInteraction", "hNpInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+
+    ////////////////////////////////////////
+    // Data for elastic scattering events //
+    ////////////////////////////////////////
+
+    TH1D *hElasticScatteringReconstructedAngle = new TH1D("hElasticScatteringReconstructedAngle", "hElasticScatteringReconstructedAngle;;", 20, 0, TMath::Pi());
+    TH1D *hElasticScatteringTotalAngle         = new TH1D("hElasticScatteringTotalAngle", "hElasticScatteringTotalAngle;;", 20, 0, TMath::Pi());
 
     ///////////////////////////////////////////////////////////////
     // Truth study for scattering angles (elastic and inelastic) //
@@ -691,6 +706,10 @@ void RecoAllAnalysis() {
                     break;
                 }
             }
+        }
+        // Study ALl elasic scattering events
+        else if (backgroundType == 12) {
+
         }
 
         // If no track matched to wire-chamber, skip
@@ -1349,21 +1368,21 @@ void RecoAllAnalysis() {
         thisEventInfo.maxLocalLinearityD = maxLocalLinearityD;
 
         if (backgroundType == 6) {
-            hTotalBackgroundScatteringAngle->Fill(truthScatteringAngle);
-            hTotalBackgroundScatteringLength->Fill(truthScatteredPionLength);
-            hTotalBackgroundScatteringKE->Fill(truthScatteredPionKE);
+            hTotalBackgroundInelScatteringAngle->Fill(truthScatteringAngle);
+            hTotalBackgroundInelScatteringLength->Fill(truthScatteredPionLength);
+            hTotalBackgroundInelScatteringKE->Fill(truthScatteredPionKE);
 
-            hTotalBackgroundScatteringLengthVSAngle->Fill(truthScatteredPionLength, truthScatteringAngle);
-            hTotalBackgroundScatteringLengthVSKEnergy->Fill(truthScatteredPionLength, truthScatteredPionKE);
+            hTotalBackgroundInelScatteringLengthVSAngle->Fill(truthScatteredPionLength, truthScatteringAngle);
+            hTotalBackgroundInelScatteringLengthVSKEnergy->Fill(truthScatteredPionLength, truthScatteredPionKE);
 
             // Compute distance of reco'ed vertex to secondary vertex
             double distanceFromSecondaryVertex         = distance(breakPointX, truthSecondaryVertexX, breakPointY, truthSecondaryVertexY, breakPointZ, truthSecondaryVertexZ);
             double originalDistanceFromSecondaryVertex = distance(WC2TPCPrimaryEndX, truthSecondaryVertexX, WC2TPCPrimaryEndY, truthSecondaryVertexY, WC2TPCPrimaryEndZ, truthSecondaryVertexZ);
 
-            hScatteringBackgroundOriginalDistanceToPrimaryVertex->Fill(originalDistanceFromVertex);
-            hScatteringBackgroundOriginalDistanceToSecondaryVertex->Fill(originalDistanceFromSecondaryVertex);
-            hScatteringBackgroundDistanceToPrimaryVertex->Fill(distanceFromVertex);
-            hScatteringBackgroundDistanceToSecondaryVertex->Fill(distanceFromSecondaryVertex);
+            hInelScatteringBackgroundOriginalDistanceToPrimaryVertex->Fill(originalDistanceFromVertex);
+            hInelScatteringBackgroundOriginalDistanceToSecondaryVertex->Fill(originalDistanceFromSecondaryVertex);
+            hInelScatteringBackgroundDistanceToPrimaryVertex->Fill(distanceFromVertex);
+            hInelScatteringBackgroundDistanceToSecondaryVertex->Fill(distanceFromSecondaryVertex);
 
             if (totalTaggedProtons == 0) {
                 Background0pInelasticScatteringIncidentKE.push_back(truthPrimaryIncidentKE);
@@ -1399,9 +1418,9 @@ void RecoAllAnalysis() {
             } else if (backgroundType == 6) {
                 printEventInfo(thisEventInfo, outFile0pBackground);
                 h0pInelasticBackgroundSecondaryInteraction->Fill(secondaryInteractionTag);
-                h0pBackgroundScatteringAngle->Fill(truthScatteringAngle);
-                h0pBackgroundScatteringLength->Fill(truthScatteredPionLength);
-                h0pBackgroundScatteringKE->Fill(truthScatteredPionKE);
+                h0pBackgroundInelScatteringAngle->Fill(truthScatteringAngle);
+                h0pBackgroundInelScatteringLength->Fill(truthScatteredPionLength);
+                h0pBackgroundInelScatteringKE->Fill(truthScatteredPionKE);
             } else { printEventInfo(thisEventInfo, outFile0pBackground); }
         } else if (totalTaggedProtons > 0) {
             if (backgroundType == 1) {
@@ -1409,9 +1428,9 @@ void RecoAllAnalysis() {
             } else if (backgroundType == 6) {
                 printEventInfo(thisEventInfo, outFileNpBackground);
                 hNpInelasticBackgroundSecondaryInteraction->Fill(secondaryInteractionTag);
-                hNpBackgroundScatteringAngle->Fill(truthScatteringAngle);
-                hNpBackgroundScatteringLength->Fill(truthScatteredPionLength);
-                hNpBackgroundScatteringKE->Fill(truthScatteredPionKE);
+                hNpBackgroundInelScatteringAngle->Fill(truthScatteringAngle);
+                hNpBackgroundInelScatteringLength->Fill(truthScatteredPionLength);
+                hNpBackgroundInelScatteringKE->Fill(truthScatteredPionKE);
             } else { printEventInfo(thisEventInfo, outFileNpBackground); }
         }
     }
@@ -1609,10 +1628,10 @@ void RecoAllAnalysis() {
         {hSecondaryPionChi2Pions, hSecondaryPionChi2Protons, hSecondaryPionChi2Others},
         {hSecondaryProtonChi2Pions, hSecondaryProtonChi2Protons, hSecondaryProtonChi2Others},
         {hSecondaryMeanDEDXPions, hSecondaryMeanDEDXProtons, hSecondaryMeanDEDXOthers},
-        {hTotalBackgroundScatteringAngle, h0pBackgroundScatteringAngle, hNpBackgroundScatteringAngle},
-        {hTotalBackgroundScatteringLength, h0pBackgroundScatteringLength, hNpBackgroundScatteringLength},
-        {hTotalBackgroundScatteringKE, h0pBackgroundScatteringKE, hNpBackgroundScatteringKE},
-        {hScatteringBackgroundOriginalDistanceToPrimaryVertex, hScatteringBackgroundOriginalDistanceToSecondaryVertex, hScatteringBackgroundDistanceToPrimaryVertex, hScatteringBackgroundDistanceToSecondaryVertex},
+        {hTotalBackgroundInelScatteringAngle, h0pBackgroundInelScatteringAngle, hNpBackgroundInelScatteringAngle},
+        {hTotalBackgroundInelScatteringLength, h0pBackgroundInelScatteringLength, hNpBackgroundInelScatteringLength},
+        {hTotalBackgroundInelScatteringKE, h0pBackgroundInelScatteringKE, hNpBackgroundInelScatteringKE},
+        {hInelScatteringBackgroundOriginalDistanceToPrimaryVertex, hInelScatteringBackgroundOriginalDistanceToSecondaryVertex, hInelScatteringBackgroundDistanceToPrimaryVertex, hInelScatteringBackgroundDistanceToSecondaryVertex},
         {hHitClusters0p, hHitClusters0pBackground, hHitClustersNp, hHitClustersNpBackground},
         {hHitClustersSize0p, hHitClustersSize0pBackground, hHitClustersSizeNp, hHitClustersSizeNpBackground},
         {hHitLargeClusters0p, hHitLargeClusters0pBackground, hHitLargeClustersNp, hHitLargeClustersNpBackground},
@@ -1768,8 +1787,8 @@ void RecoAllAnalysis() {
         hPionChi2FalseNegatives,
         hProtonChi2FOM,
         hPionChi2FOM,
-        hTotalBackgroundScatteringLengthVSAngle,
-        hTotalBackgroundScatteringLengthVSKEnergy,
+        hTotalBackgroundInelScatteringLengthVSAngle,
+        hTotalBackgroundInelScatteringLengthVSKEnergy,
         hHitClusterCut0pReco,
         hHitClusterCut0pRecoTrue,
         hHitClusterCut0pPurity
