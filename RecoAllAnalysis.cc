@@ -310,9 +310,13 @@ void RecoAllAnalysis() {
     bool         interactionInTrajectory;
     std::string* trajectoryInteractionLabel = new std::string();
     double       trajectoryInteractionAngle;
+    double       trajectoryInteractionX, trajectoryInteractionY, trajectoryInteractionZ;
     tree->SetBranchAddress("interactionInTrajectory", &interactionInTrajectory);
     tree->SetBranchAddress("trajectoryInteractionLabel", &trajectoryInteractionLabel);
     tree->SetBranchAddress("trajectoryInteractionAngle", &trajectoryInteractionAngle);
+    tree->SetBranchAddress("trajectoryInteractionX", &trajectoryInteractionX);
+    tree->SetBranchAddress("trajectoryInteractionY", &trajectoryInteractionY);
+    tree->SetBranchAddress("trajectoryInteractionZ", &trajectoryInteractionZ);
 
     // Truth-level secondary pion interaction information
     std::vector<int>*         truthSecondaryPionDaughtersPDG     = nullptr;
@@ -607,20 +611,22 @@ void RecoAllAnalysis() {
     TH1D *h0pInelasticBackgroundSecondaryInteraction = new TH1D("h0pInelasticBackgroundSecondaryInteraction", "h0pInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hNpInelasticBackgroundSecondaryInteraction = new TH1D("hNpInelasticBackgroundSecondaryInteraction", "hNpInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
+    TH1D *hInelasticScatteringAngle     = new TH1D("hInelasticScatteringAngle", "hInelasticScatteringAngle;;", 20, 0, 90);
+    TH1D *hInelasticScatteringRecoAngle = new TH1D("hInelasticScatteringRecoAngle", "hInelasthInelasticScatteringRecoAngleicScatteringAngle;;", 20, 0, 90);
+
     ////////////////////////////////////////
     // Data for elastic scattering events //
     ////////////////////////////////////////
 
-    TH1D *hElasticScatteringReconstructedAngle = new TH1D("hElasticScatteringReconstructedAngle", "hElasticScatteringReconstructedAngle;;", 20, 0, TMath::Pi());
-    TH1D *hElasticScatteringTotalAngle         = new TH1D("hElasticScatteringTotalAngle", "hElasticScatteringTotalAngle;;", 20, 0, TMath::Pi());
+    TH1D *hElasticScatteringRecoAngle = new TH1D("hElasticScatteringRecoAngle", "hElasticScatteringRecoAngle;;", 20, 0, 90);
+    TH1D *hElasticScatteringAngle     = new TH1D("hElasticScatteringAngle", "hElasticScatteringAngle;;", 20, 0, 90);
 
-    ///////////////////////////////////////////////////////////////
-    // Truth study for scattering angles (elastic and inelastic) //
-    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////
+    // Histograms for ALL scattering //
+    ///////////////////////////////////
 
-    TH1D *hAllScatteringAngle       = new TH1D("hAllScatteringAngle", "hAllScatteringAngle;;", 20, 0, 20);
-    TH1D *hElasticScatteringAngle   = new TH1D("hElasticScatteringAngle", "hElasticScatteringAngle;;", 20, 0, 20);
-    TH1D *hInelasticScatteringAngle = new TH1D("hInelasticScatteringAngle", "hInelasticScatteringAngle;;", 20, 0, 20);
+    TH1D *hAllScatteringAngle      = new TH1D("hAllScatteringAngle", "hAllScatteringAngle;;", 20, 0, 90);
+    TH1D *hAllScatteringRecoAngle  = new TH1D("hAllScatteringRecoAngle", "hAllScatteringRecoAngle;;", 20, 0, 90);
 
     /////////////////////////////////
     // Files for event information //
@@ -649,14 +655,50 @@ void RecoAllAnalysis() {
             if (numVisibleProtons > 0)  backgroundType = 1;
         }
 
-        // Get information about elastic/inelastic scattering
-        if (interactionInTrajectory && *trajectoryInteractionLabel == "hadElastic") {
-            // if the process is inelastic, goes into another bin
+        // Study elastic and inelastic scattering events
+        if (backgroundType == 12) {
+            // Elastic scattering event
             hElasticScatteringAngle->Fill(trajectoryInteractionAngle * (180. / TMath::Pi()));
             hAllScatteringAngle->Fill(trajectoryInteractionAngle * (180. / TMath::Pi()));
+
+            for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
+                if (
+                    (matchedIdentity->at(iRecoTrk) == -211) && // pion
+                    (distance(
+                        recoBeginX->at(iRecoTrk),
+                        trajectoryInteractionX,
+                        recoBeginY->at(iRecoTrk),
+                        trajectoryInteractionY,
+                        recoBeginZ->at(iRecoTrk),
+                        trajectoryInteractionZ
+                    ) < VERTEX_RADIUS) // within 5 cm of scattering vertex
+                ) {
+                    hElasticScatteringRecoAngle->Fill(trajectoryInteractionAngle * (180. / TMath::Pi()));
+                    hAllScatteringRecoAngle->Fill(trajectoryInteractionAngle * (180. / TMath::Pi()));
+                    break;
+                }
+            }
         } else if (backgroundType == 6) {
+            // Inelastic scattering event
+            hInelasticScatteringTotal->Fill(truthScatteredPionKE);
             hInelasticScatteringAngle->Fill(truthScatteringAngle * (180. / TMath::Pi()));
             hAllScatteringAngle->Fill(truthScatteringAngle * (180. / TMath::Pi()));
+
+            InelasticScatteringIncidentKE.push_back(truthPrimaryIncidentKE);
+            InelasticScatteringVertexKE.push_back(truthPrimaryVertexKE);
+            InelasticScatteringOutgoingKE.push_back(truthScatteredPionKE);
+
+            for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
+                if (
+                    (matchedIdentity->at(iRecoTrk) == -211) &&       // pion
+                    (matchedProcess->at(iRecoTrk) == "pi-Inelastic") // inelastic process
+                ) {
+                    hInelasticScatteringReconstructed->Fill(truthScatteredPionKE);
+                    hInelasticScatteringRecoAngle->Fill(truthScatteringAngle * (180. / TMath::Pi()));
+                    hAllScatteringRecoAngle->Fill(truthScatteringAngle * (180. / TMath::Pi()));
+                    break;
+                }
+            }
         }
 
         // Look at energy profile for events we are interested in
@@ -687,29 +729,6 @@ void RecoAllAnalysis() {
             
             delete c1;
             delete hDEDXProfile;
-        }
-
-        // Study ALL inelastic scattering events
-        if (backgroundType == 6) {
-            InelasticScatteringIncidentKE.push_back(truthPrimaryIncidentKE);
-            InelasticScatteringVertexKE.push_back(truthPrimaryVertexKE);
-            InelasticScatteringOutgoingKE.push_back(truthScatteredPionKE);
-
-            hInelasticScatteringTotal->Fill(truthScatteredPionKE);
-            for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
-                if (
-                    (matchedIdentity->at(iRecoTrk) == -211) && 
-                    (matchedTrkID->at(iRecoTrk) != WC2TPCtrkID) && 
-                    (matchedProcess->at(iRecoTrk) == "pi-Inelastic")
-                ) {
-                    hInelasticScatteringReconstructed->Fill(truthScatteredPionKE);
-                    break;
-                }
-            }
-        }
-        // Study ALl elasic scattering events
-        else if (backgroundType == 12) {
-
         }
 
         // If no track matched to wire-chamber, skip
@@ -1588,22 +1607,40 @@ void RecoAllAnalysis() {
     TEfficiency* hInelasticScatteringReconstructionEfficiencyNpBkg = nullptr;
     hInelasticScatteringReconstructionEfficiencyNpBkg = new TEfficiency(*hInelasticScatteringReconstructedNpBkg, *hInelasticScatteringTotalNpBkg);
 
+    TEfficiency* hInelasticScatteringReconstructionEfficiencyAngle = nullptr;
+    hInelasticScatteringReconstructionEfficiencyAngle = new TEfficiency(*hInelasticScatteringRecoAngle, *hInelasticScatteringAngle);
+
+    TEfficiency* hElasticScatteringReconstructionEfficiencyAngle = nullptr;
+    hElasticScatteringReconstructionEfficiencyAngle = new TEfficiency(*hElasticScatteringRecoAngle, *hElasticScatteringAngle);
+
+    TEfficiency* hAllScatteringReconstructionEfficiencyAngle = nullptr;
+    hAllScatteringReconstructionEfficiencyAngle = new TEfficiency(*hAllScatteringRecoAngle, *hAllScatteringAngle);
+
     std::vector<TEfficiency*> EfficiencyPlots = {
         hInelasticScatteringReconstructionEfficiency,
         hInelasticScatteringReconstructionEfficiency0pBkg,
-        hInelasticScatteringReconstructionEfficiencyNpBkg
+        hInelasticScatteringReconstructionEfficiencyNpBkg,
+        hInelasticScatteringReconstructionEfficiencyAngle,
+        hElasticScatteringReconstructionEfficiencyAngle,
+        hAllScatteringReconstructionEfficiencyAngle
     };
 
     std::vector<TString> EfficiencyPlotsTitles = {
         "Scattering/RecoEfficiencyInelScatteredPions",
         "Scattering/RecoEfficiencyInelScatteredPions0pBkg",
-        "Scattering/RecoEfficiencyInelScatteredPionsNpBkg"
+        "Scattering/RecoEfficiencyInelScatteredPionsNpBkg",
+        "Scattering/RecoEfficiencyInelScatteredAngle",
+        "Scattering/RecoEfficiencyElasticScatteredAngle",
+        "Scattering/RecoEfficiencyAllScatteredAngle"
     };
 
     std::vector<TString> EfficiencyPlotsXLabels = {
         "Outgoing pion KE (GeV/c)",
         "Outgoing pion KE (GeV/c)",
-        "Outgoing pion KE (GeV/c)"
+        "Outgoing pion KE (GeV/c)",
+        "Scattering angle (deg)",
+        "Scattering angle (deg)",
+        "Scattering angle (deg)"
     };
 
     printEfficiencyPlots(
