@@ -85,7 +85,7 @@ const double minZ =  3.0;
 const double maxZ = 87.0;
 
 // Background types
-int NUM_BACKGROUND_TYPES = 12;
+int NUM_BACKGROUND_TYPES = 13;
 //    0:  0p pion absorption
 //    1:  Np pion absorption
 //    2:  primary muon event
@@ -1576,9 +1576,9 @@ void RecoAllAnalysis() {
     };
 
     std::vector<TString> EfficiencyPlotsTitles = {
-        "RecoEfficiencyScatteredPions",
-        "RecoEfficiencyScatteredPions0pBkg",
-        "RecoEfficiencyScatteredPionsNpBkg"
+        "Scattering/RecoEfficiencyInelScatteredPions",
+        "Scattering/RecoEfficiencyInelScatteredPions0pBkg",
+        "Scattering/RecoEfficiencyInelScatteredPionsNpBkg"
     };
 
     std::vector<TString> EfficiencyPlotsXLabels = {
@@ -1661,32 +1661,32 @@ void RecoAllAnalysis() {
     };
 
     std::vector<TString> PlotTitles = {
-        "StitchedDistanceFromVertex",
-        "StitchedBackgroundTypes",
-        "StitchedFracBreakPoints",
-        "PionChi2SecondaryTracks",
-        "ProtonChi2SecondaryTracks",
-        "MeanDEDXSecondaryTracks",
-        "InelasticScatteringBackgroundAngle",
-        "InelasticScatteringBackgroundLength",
-        "InelasticScatteringBackgroundKE",
-        "InelasticScatteringBackgroundDistanceFromVertex",
-        "NumberOfHitClusters",
-        "AverageHitClusterSize",
-        "NumberOfLargeHitClusters",
-        "RecoScatteredPions",
-        "RecoScatteredPions0pBkg",
-        "RecoScatteredPionsNpBkg",
-        "MinLocalLinearity0pReco",
-        "StdDevLinearity0pReco",
-        "MinLocalLinearityNpReco",
-        "StdDevLinearityNpReco",
-        "MaxLocalLinearityDeriv0pReco",
-        "MaxLocalLinearitySecondDeriv0pReco",
-        "MaxLocalLinearityDerivCut",
-        "MaxLocalLinearityStdDevCut",
-        "MinLocalLinearityCut",
-        "AllScatteringAngle"
+        "PrimaryStitching/StitchedDistanceFromVertex",
+        "PrimaryStitching/StitchedBackgroundTypes",
+        "PrimaryStitching/StitchedFracBreakPoints",
+        "SecondaryPID/PionChi2SecondaryTracks",
+        "SecondaryPID/ProtonChi2SecondaryTracks",
+        "SecondaryPID/MeanDEDXSecondaryTracks",
+        "Scattering/InelasticScatteringBackgroundAngle",
+        "Scattering/InelasticScatteringBackgroundLength",
+        "Scattering/InelasticScatteringBackgroundKE",
+        "Scattering/InelasticScatteringBackgroundDistanceFromVertex",
+        "HitClustering/NumberOfHitClusters",
+        "HitClustering/AverageHitClusterSize",
+        "HitClustering/NumberOfLargeHitClusters",
+        "Scattering/RecoInelScatteredPions",
+        "Scattering/RecoInelScatteredPions0pBkg",
+        "Scattering/RecoInelScatteredPionsNpBkg",
+        "LocalLinearity/MinLocalLinearity0pReco",
+        "LocalLinearity/StdDevLinearity0pReco",
+        "LocalLinearity/MinLocalLinearityNpReco",
+        "LocalLinearity/StdDevLinearityNpReco",
+        "LocalLinearity/MaxLocalLinearityDeriv0pReco",
+        "LocalLinearity/MaxLocalLinearitySecondDeriv0pReco",
+        "LocalLinearity/MaxLocalLinearityDerivCut",
+        "LocalLinearity/MaxLocalLinearityStdDevCut",
+        "LocalLinearity/MinLocalLinearityCut",
+        "Scattering/AllScatteringAngle"
     };
 
     std::vector<TString> XLabels = {
@@ -1776,21 +1776,21 @@ void RecoAllAnalysis() {
     };
 
     std::vector<TString> TwoDTitles = {
-        "ProtonChi2TruePositives",
-        "ProtonChi2FalsePositives",
-        "ProtonChi2TrueNegatives",
-        "ProtonChi2FalseNegatives",
-        "PionChi2TruePositives",
-        "PionChi2FalsePositives",
-        "PionChi2TrueNegatives",
-        "PionChi2FalseNegatives",
-        "ProtonChi2FOM",
-        "PionChi2FOM",
-        "TotalBackgroundScatteringLengthVSAngle",
-        "TotalBackgroundScatteringLengthVSKEnergy",
-        "HitClusterCut0pReco",
-        "HitClusterCut0pRecoTrue",
-        "HitClusterCut0pPurity"
+        "SecondaryPID/ProtonChi2TruePositives",
+        "SecondaryPID/ProtonChi2FalsePositives",
+        "SecondaryPID/ProtonChi2TrueNegatives",
+        "SecondaryPID/ProtonChi2FalseNegatives",
+        "SecondaryPID/PionChi2TruePositives",
+        "SecondaryPID/PionChi2FalsePositives",
+        "SecondaryPID/PionChi2TrueNegatives",
+        "SecondaryPID/PionChi2FalseNegatives",
+        "SecondaryPID/ProtonChi2FOM",
+        "SecondaryPID/PionChi2FOM",
+        "Scattering/TotalBackgroundScatteringLengthVSAngle",
+        "Scattering/TotalBackgroundScatteringLengthVSKEnergy",
+        "HitClustering/HitClusterCut0pReco",
+        "HitClustering/HitClusterCut0pRecoTrue",
+        "HitClustering/HitClusterCut0pPurity"
     };
 
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles);
@@ -1849,12 +1849,12 @@ void RecoAllAnalysis() {
     for (const auto& entry : backgroundTypes) {
         int bin = entry.first;
         const std::string& label = entry.second;
-        if ((bin+1 == 0) || (bin+1 == 12)) continue; // extra bins, hacky
+        if ((bin + 1 == 0) || (bin + 1 == 14)) continue; // extra bins, hacky
         hBackgroundTypesStack->GetXaxis()->SetBinLabel(bin + 1, label.c_str());
     }
 
     c->Update();
-    c->SaveAs(SaveDir + "StitchedBackgroundTypesStacked.png");
+    c->SaveAs(SaveDir + "PrimaryStitching/StitchedBackgroundTypesStacked.png");
 
     //////////////////////////////////////////////////////
     // Create scatter plots for inelastic scattering KE //
@@ -1868,13 +1868,13 @@ void RecoAllAnalysis() {
     gIncidentVSOutgoingKE->SetMarkerStyle(20);
     gIncidentVSOutgoingKE->SetMarkerColor(kBlack);
     gIncidentVSOutgoingKE->Draw("AP");
-    c->SaveAs(SaveDir + "InelasticScatteringIncidentVSOutgoingKE.png");
+    c->SaveAs(SaveDir + "Scattering/InelasticScatteringIncidentVSOutgoingKE.png");
 
     gVertexVSOutgoingKE->SetTitle("Outgoing KE vs Vertex KE;Vertex KE [MeV];Outgoing KE [MeV]");
     gVertexVSOutgoingKE->SetMarkerStyle(20);
     gVertexVSOutgoingKE->SetMarkerColor(kBlack);
     gVertexVSOutgoingKE->Draw("AP");
-    c->SaveAs(SaveDir + "InelasticScatteringVertexVSOutgoingKE.png");
+    c->SaveAs(SaveDir + "Scattering/InelasticScatteringVertexVSOutgoingKE.png");
 
     int n0pDataPoints               = Background0pInelasticScatteringIncidentKE.size();
     TGraph *g0pIncidentVSOutgoingKE = new TGraph(n0pDataPoints, Background0pInelasticScatteringIncidentKE.data(), Background0pInelasticScatteringOutgoingKE.data());
@@ -1884,13 +1884,13 @@ void RecoAllAnalysis() {
     g0pIncidentVSOutgoingKE->SetMarkerStyle(20);
     g0pIncidentVSOutgoingKE->SetMarkerColor(kBlack);
     g0pIncidentVSOutgoingKE->Draw("AP");
-    c->SaveAs(SaveDir + "Background0pInelasticScatteringIncidentVSOutgoingKE.png");
+    c->SaveAs(SaveDir + "Scattering/Background0pInelasticScatteringIncidentVSOutgoingKE.png");
 
     g0pVertexVSOutgoingKE->SetTitle("Outgoing KE vs Vertex KE;Vertex KE [MeV];Outgoing KE [MeV]");
     g0pVertexVSOutgoingKE->SetMarkerStyle(20);
     g0pVertexVSOutgoingKE->SetMarkerColor(kBlack);
     g0pVertexVSOutgoingKE->Draw("AP");
-    c->SaveAs(SaveDir + "Background0pInelasticScatteringVertexVSOutgoingKE.png");
+    c->SaveAs(SaveDir + "Scattering/Background0pInelasticScatteringVertexVSOutgoingKE.png");
 
     int nNpDataPoints               = BackgroundNpInelasticScatteringIncidentKE.size();
     TGraph *gNpIncidentVSOutgoingKE = new TGraph(nNpDataPoints, BackgroundNpInelasticScatteringIncidentKE.data(), BackgroundNpInelasticScatteringOutgoingKE.data());
@@ -1900,13 +1900,13 @@ void RecoAllAnalysis() {
     gNpIncidentVSOutgoingKE->SetMarkerStyle(20);
     gNpIncidentVSOutgoingKE->SetMarkerColor(kBlack);
     gNpIncidentVSOutgoingKE->Draw("AP");
-    c->SaveAs(SaveDir + "BackgroundNpInelasticScatteringIncidentVSOutgoingKE.png");
+    c->SaveAs(SaveDir + "Scattering/BackgroundNpInelasticScatteringIncidentVSOutgoingKE.png");
 
     gNpVertexVSOutgoingKE->SetTitle("Outgoing KE vs Vertex KE;Vertex KE [MeV];Outgoing KE [MeV]");
     gNpVertexVSOutgoingKE->SetMarkerStyle(20);
     gNpVertexVSOutgoingKE->SetMarkerColor(kBlack);
     gNpVertexVSOutgoingKE->Draw("AP");
-    c->SaveAs(SaveDir + "BackgroundNpInelasticScatteringVertexVSOutgoingKE.png");
+    c->SaveAs(SaveDir + "Scattering/BackgroundNpInelasticScatteringVertexVSOutgoingKE.png");
 }
 
 bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold) {
