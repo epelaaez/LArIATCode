@@ -33,7 +33,7 @@ std::map<int, std::string> backgroundTypes = {
 };
 
 struct EventInfo {
-    int run; int subrun; int event;
+    int run; int subrun; int event; bool isData;
     float vertexX; float vertexY; float vertexZ;
 
     int                      wcMatchPDG;
@@ -129,6 +129,14 @@ int WINDOW_SIZE_LINEARITY = 8;
 double LINEARITY_DERIVATIVE_THRESHOLD = 0.06e-3;
 double STD_DEV_LINEARITY_THRESHOLD    = 0.045E-3;
 
+// Masses
+const double PionMass    = 139.57018;    // in MeV
+const double ProtonMass  = 938.27208816; // in MeV
+const double NeutronMass = 939.5654133;  // in MeV
+
+// Threshold for individual dE/dx hits
+double HIT_DEDX_THRESHOLD = 40.;
+
 //////////////////////
 // Helper functions //
 //////////////////////
@@ -157,6 +165,8 @@ bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, st
 void Overlay_dEdx_RR_Reference_PP(TGraph* gProton, TGraph* gPion, bool addLegend = true, TVirtualPad* pad = gPad);
 void printEfficiencyPlots(TString dir, int fontStyle, double textSize, std::vector<TEfficiency*> efficiencies, std::vector<TString> titles, std::vector<TString> xlabels);
 std::vector<double> calcLinearityProfile(std::vector<double>& vx, std::vector<double>& vy, std::vector<double>& vz, int nb);
+double energyLossCalculation();
+double energyLossCalculation(double x, double px, bool isData);
 
 ///////////////////
 // Main function //
@@ -193,10 +203,11 @@ void RecoAllAnalysis() {
     // Load tree and branches
     TTree* tree = (TTree*) Directory->Get<TTree>("RecoAllEvalTree");
 
-    int run, subrun, event;
+    int run, subrun, event; bool isData;
     tree->SetBranchAddress("run", &run); 
     tree->SetBranchAddress("subrun", &subrun); 
     tree->SetBranchAddress("event", &event);
+    tree->SetBranchAddress("isData", &isData);
 
     // Signal information
     bool isPionAbsorptionSignal; int backgroundType, numVisibleProtons; 
@@ -213,14 +224,20 @@ void RecoAllAnalysis() {
 
     // WC match information
     int WC2TPCtrkID;
+    double WCTrackMomentum, WCTheta, WCPhi, WC4PrimaryX;
     double WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY, WC2TPCPrimaryBeginZ;
     double WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ;
     std::vector<double>* wcMatchResR = nullptr;
     std::vector<double>* wcMatchDEDX = nullptr;
+    std::vector<double>* wcMatchEDep = nullptr;
     std::vector<double>* wcMatchXPos = nullptr;
     std::vector<double>* wcMatchYPos = nullptr;
     std::vector<double>* wcMatchZPos = nullptr;
     tree->SetBranchAddress("WC2TPCtrkID", &WC2TPCtrkID);
+    tree->SetBranchAddress("WCTrackMomentum", &WCTrackMomentum);
+    tree->SetBranchAddress("WCTheta", &WCTheta);
+    tree->SetBranchAddress("WCPhi", &WCPhi);
+    tree->SetBranchAddress("WC4PrimaryX", &WC4PrimaryX);
     tree->SetBranchAddress("WC2TPCPrimaryBeginX", &WC2TPCPrimaryBeginX);
     tree->SetBranchAddress("WC2TPCPrimaryBeginY", &WC2TPCPrimaryBeginY);
     tree->SetBranchAddress("WC2TPCPrimaryBeginZ", &WC2TPCPrimaryBeginZ);
@@ -229,6 +246,7 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("WC2TPCPrimaryEndZ", &WC2TPCPrimaryEndZ);
     tree->SetBranchAddress("wcMatchResR", &wcMatchResR);
     tree->SetBranchAddress("wcMatchDEDX", &wcMatchDEDX);
+    tree->SetBranchAddress("wcMatchEDep", &wcMatchEDep);
     tree->SetBranchAddress("wcMatchXPos", &wcMatchXPos);
     tree->SetBranchAddress("wcMatchYPos", &wcMatchYPos);
     tree->SetBranchAddress("wcMatchZPos", &wcMatchZPos);
@@ -312,6 +330,7 @@ void RecoAllAnalysis() {
     double       trajectoryInteractionAngle;
     double       trajectoryInteractionX, trajectoryInteractionY, trajectoryInteractionZ;
     double       trajectoryInteractionKE;
+    double       trajectoryInitialMomentumX;
     tree->SetBranchAddress("interactionInTrajectory", &interactionInTrajectory);
     tree->SetBranchAddress("trajectoryInteractionLabel", &trajectoryInteractionLabel);
     tree->SetBranchAddress("trajectoryInteractionAngle", &trajectoryInteractionAngle);
@@ -319,6 +338,7 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("trajectoryInteractionY", &trajectoryInteractionY);
     tree->SetBranchAddress("trajectoryInteractionZ", &trajectoryInteractionZ);
     tree->SetBranchAddress("trajectoryInteractionKE", &trajectoryInteractionKE);
+    tree->SetBranchAddress("trajectoryInitialMomentumX", &trajectoryInitialMomentumX);
 
     // Truth-level secondary pion interaction information
     std::vector<int>*         truthSecondaryPionDaughtersPDG     = nullptr;
@@ -723,6 +743,19 @@ void RecoAllAnalysis() {
     TH1D *h0pBackgroundAllScatteringVertexKE    = new TH1D("h0pBackgroundAllScatteringVertexKE", "h0pBackgroundAllScatteringVertexKE;;", 20, 0, 0.5);
     TH1D *hNpBackgroundAllScatteringVertexKE    = new TH1D("hNpBackgroundAllScatteringVertexKE", "hNpBackgroundAllScatteringVertexKE;;", 20, 0, 0.5);
 
+    //////////////////////////////
+    // Cross-section histograms //
+    //////////////////////////////
+
+    TH1D *hIncidentKE  = new TH1D("hRecoIncidentKE", "Incident KE [MeV]", 20, 0, 800);
+    TH1D *hPionAbsKE   = new TH1D("hPionAbsKE", "Interacting KE [MeV]", 20, 0, 800);
+    TH1D *h0pPionAbsKE = new TH1D("h0pPionAbsKE", "Interacting KE [MeV]", 20, 0, 800);
+    TH1D *hNpPionAbsKE = new TH1D("hNpPionAbsKE", "Interacting KE [MeV]", 20, 0, 800);
+
+    TH1D *hPionAbsCrossSection   = new TH1D("hPionAbsCrossSection", "Cross section [barn]", 20, 0, 800);
+    TH1D *hPion0pAbsCrossSection = new TH1D("hPion0pAbsCrossSection", "Cross section [barn]", 20, 0, 800);
+    TH1D *hPionNpAbsCrossSection = new TH1D("hPionNpAbsCrossSection", "Cross section [barn]", 20, 0, 800);
+
     /////////////////////////////////
     // Files for event information //
     /////////////////////////////////
@@ -867,6 +900,7 @@ void RecoAllAnalysis() {
         }
 
         // Apply small tracks cut
+        // We can do this before incident KE is added since we do not care about electrons
         if (!passesSmallTracksCut)  continue;
 
         // Perform chi^2 stitching for primary track
@@ -943,6 +977,38 @@ void RecoAllAnalysis() {
             breakPointY = wcMatchYPos->at(bestBreakPoint); 
             breakPointZ = wcMatchZPos->at(bestBreakPoint);    
         }
+
+        // Before rejecting anything, we want to add energy depositions to incident
+        // KE histogram for cross-section computation using the found vertex
+        double WCKE             = TMath::Sqrt(WCTrackMomentum * WCTrackMomentum + PionMass * PionMass) - PionMass;
+        double calculatedEnLoss = energyLossCalculation(); 
+        if (isData) {
+            double tanThetaCosPhi = TMath::Tan(WCTheta) * TMath::Cos(WCPhi);
+            double tanThetaSinPhi = TMath::Tan(WCTheta) * TMath::Sin(WCPhi);
+            double den            = TMath::Sqrt(1 + tanThetaCosPhi * tanThetaCosPhi);
+            double onTheFlyPz     = WCTrackMomentum / den;
+            double onTheFlyPx     = onTheFlyPz * tanThetaSinPhi;
+
+            calculatedEnLoss = energyLossCalculation(WC4PrimaryX, onTheFlyPx, isData);
+        } else { calculatedEnLoss = energyLossCalculation(WC4PrimaryX, trajectoryInitialMomentumX, isData); }
+        const double initialKE = WCKE - calculatedEnLoss;
+
+        double energyDeposited = 0;
+        for (size_t iDep = 0; iDep < wcMatchDEDX->size(); ++iDep) {
+            energyDeposited += wcMatchEDep->at(iDep);
+
+            // If larger than threshold, continue
+            if (wcMatchDEDX->at(iDep) > HIT_DEDX_THRESHOLD) continue;
+
+            // If we are past detected breaking point, exit loop
+            if (wcMatchZPos->at(iDep) > breakPointZ) break;
+            
+            // Add to incident KE if inside reduced volume
+            if (isWithinReducedVolume(wcMatchXPos->at(iDep), wcMatchYPos->at(iDep), wcMatchZPos->at(iDep))) {
+                hIncidentKE->Fill(initialKE - energyDeposited);
+            }
+        }
+        double energyAtVertex = initialKE - energyDeposited;
 
         // Check if vertex is inside reduced volume
         if (!isWithinReducedVolume(breakPointX, breakPointY, breakPointZ)) continue;
@@ -1193,7 +1259,7 @@ void RecoAllAnalysis() {
         int nTotalHits = fHitKey->size();
         for (size_t iHit = 0; iHit < nTotalHits; ++iHit) {
             // Skip hits already in tracks and collection plane
-            if ((hitsInTracks.count(iHit) > 0) || (fHitPlane->at(iHit) != 0)) continue;
+            if ((hitsInTracks.count(iHit) > 0) || (fHitPlane->at(iHit) == 1)) continue;
 
             float hitX = fHitX->at(iHit);
             float hitW = fHitW->at(iHit);
@@ -1450,6 +1516,13 @@ void RecoAllAnalysis() {
             hRecoAbsorption0p->Fill(backgroundType);
         } else if (totalTaggedProtons > 0) {
             hRecoAbsorptionNp->Fill(backgroundType);
+        }
+
+        hPionAbsKE->Fill(energyAtVertex);
+        if (totalTaggedProtons == 0) {
+            h0pPionAbsKE->Fill(energyAtVertex);
+        } else if (totalTaggedProtons > 0) {
+            hNpPionAbsKE->Fill(energyAtVertex);
         }
 
         /////////////////////////
@@ -1820,6 +1893,29 @@ void RecoAllAnalysis() {
         EfficiencyPlotsXLabels
     );
 
+    ////////////////////////////
+    // Compute cross-sections //
+    ////////////////////////////
+
+    float rho            = 1396; // kg / m^3
+    float molar_mass     = 39.95; // g / mol
+    float g_per_kg       = 1000; 
+    float avogadro       = 6.022e+23; // number/mol
+    float number_density = rho * g_per_kg / molar_mass * avogadro;
+    float slab_width     = 0.0047; // in m
+
+    for (int iBin = 1; iBin <= hIncidentKE->GetNbinsX(); ++iBin) {
+        if (hIncidentKE->GetBinContent(iBin) == 0) continue;
+
+        float pionAbsCrossSection   = ((hPionAbsKE->GetBinContent(iBin) / hIncidentKE->GetBinContent(iBin)) * (1 / number_density) * (1 / slab_width)) * (1 / 1e-28);
+        float pion0pAbsCrossSection = ((h0pPionAbsKE->GetBinContent(iBin) / hIncidentKE->GetBinContent(iBin)) * (1 / number_density) * (1 / slab_width)) * (1 / 1e-28);
+        float pionNpAbsCrossSection = ((hNpPionAbsKE->GetBinContent(iBin) / hIncidentKE->GetBinContent(iBin)) * (1 / number_density) * (1 / slab_width)) * (1 / 1e-28);
+
+        hPionAbsCrossSection->SetBinContent(iBin, pionAbsCrossSection);
+        hPion0pAbsCrossSection->SetBinContent(iBin, pion0pAbsCrossSection);
+        hPionNpAbsCrossSection->SetBinContent(iBin, pionNpAbsCrossSection);
+    }
+
     //////////////////
     // Create plots //
     //////////////////
@@ -1875,6 +1971,10 @@ void RecoAllAnalysis() {
         // All scattering 
         {hAllScatteringAngle, hElasticScatteringAngle, hInelasticScatteringAngle},
         {hAllScatteringVertexKE, hElasticScatteringVertexKE, hInelasticScatteringVertexKE},
+
+        // Cross section
+        {hIncidentKE},
+        {hPionAbsCrossSection, hPion0pAbsCrossSection, hPionNpAbsCrossSection}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -1923,12 +2023,16 @@ void RecoAllAnalysis() {
 
         // All scattering
         {"All", "Elastic", "Inelastic"},
-        {"All", "Elastic", "Inelastic"}
+        {"All", "Elastic", "Inelastic"},
+
+        // Cross section
+        {"Incident"},
+        {"All", "0p", "Np"}
     };
 
     std::vector<TString> PlotTitles = {
         // Stitching
-        "PrimaryStitching/StitchedDistanceFromVertex",
+        "PrimaryStitching/StitchedDistanceFromVertexNp",
         "PrimaryStitching/StitchedBackgroundTypes",
         "PrimaryStitching/StitchedFracBreakPoints",
 
@@ -1972,7 +2076,11 @@ void RecoAllAnalysis() {
 
         // All scattering
         "Scattering/AllScatteringAngle",
-        "Scattering/AllScatteringVertexKE"
+        "Scattering/AllScatteringVertexKE",
+
+        // Cross section
+        "CrossSection/IncidentKE",
+        "CrossSection/All"
     };
 
     std::vector<TString> XLabels = {
@@ -2021,7 +2129,11 @@ void RecoAllAnalysis() {
 
         // All scattering
         "Scattering angle (deg)",
-        "Scattering vertex KE (GeV/c)"
+        "Scattering vertex KE (GeV/c)",
+
+        // Cross section
+        "Kinetic Energy [MeV]",
+        "Kinetic Energy [MeV]"
     };
 
     std::vector<TString> YLabels = {
@@ -2070,7 +2182,11 @@ void RecoAllAnalysis() {
 
         // All scattering
         "Number of events",
-        "Number of events"
+        "Number of events",
+
+        // Cross section
+        "Number of events",
+        "Cross section [barn]"
     };
 
     printOneDPlots(
@@ -2191,7 +2307,6 @@ void RecoAllAnalysis() {
     hBackgroundTypesStack->GetXaxis()->SetNdivisions(8);
     hBackgroundTypesStack->GetXaxis()->SetLabelSize(TextSize);
     hBackgroundTypesStack->GetXaxis()->SetTitleSize(TextSize);
-    // hBackgroundTypesStack->GetXaxis()->SetTitle("Background type");
     hBackgroundTypesStack->GetXaxis()->SetTitleOffset(1.1);
     hBackgroundTypesStack->GetXaxis()->CenterTitle();
 
@@ -2265,6 +2380,22 @@ void RecoAllAnalysis() {
     gNpVertexVSOutgoingKE->SetMarkerColor(kBlack);
     gNpVertexVSOutgoingKE->Draw("AP");
     c->SaveAs(SaveDir + "Scattering/BackgroundNpInelasticScatteringVertexVSOutgoingKE.png");
+}
+
+double energyLossCalculation() { return 40.; }
+
+double energyLossCalculation(double x, double px, bool isData) {
+    // x in cm and px in MeV
+    double discriminant = 0.0733 * px + 1.3 * x - 31; 
+    if (discriminant > 0) {
+        // particles going through the halo hole
+        if (isData) return 17.5;
+        else return 24.5;
+    } else {
+        // particles going through the halo paddle
+        if (isData) return 25.5;
+        else return 32.5;
+    }
 }
 
 bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold) {
