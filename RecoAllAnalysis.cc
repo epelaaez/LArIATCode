@@ -635,8 +635,8 @@ void RecoAllAnalysis() {
     TH1D *h0pInelasticBackgroundSecondaryInteraction = new TH1D("h0pInelasticBackgroundSecondaryInteraction", "h0pInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hNpInelasticBackgroundSecondaryInteraction = new TH1D("hNpInelasticBackgroundSecondaryInteraction", "hNpInelasticBackgroundSecondaryInteraction;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
-    TH1D *hInelasticScatteringAngle     = new TH1D("hInelasticScatteringAngle", "hInelasticScatteringAngle;;", 20, 0, 90);
-    TH1D *hInelasticScatteringRecoAngle = new TH1D("hInelasticScatteringRecoAngle", "hInelasthInelasticScatteringRecoAngleicScatteringAngle;;", 20, 0, 90);
+    TH1D *hInelasticScatteringAngle     = new TH1D("hInelasticScatteringAngle", "hInelasticScatteringAngle;;", 20, 0, 180);
+    TH1D *hInelasticScatteringRecoAngle = new TH1D("hInelasticScatteringRecoAngle", "hInelasthInelasticScatteringRecoAngleicScatteringAngle;;", 20, 0, 180);
 
     TH1D *hInelasticScatteringEnergyDiff     = new TH1D("hInelasticScatteringEnergyDiff", "hInelasticScatteringEnergyDiff;;", 20, 0, 0.4);
     TH1D *hInelasticScatteringRecoEnergyDiff = new TH1D("hInelasticScatteringRecoEnergyDiff", "hInelasticScatteringRecoEnergyDiff;;", 20, 0, 0.4);
@@ -670,8 +670,8 @@ void RecoAllAnalysis() {
         10, 0, TMath::Pi()
     );
 
-    TH1D *hElasticScatteringRecoAngle = new TH1D("hElasticScatteringRecoAngle", "hElasticScatteringRecoAngle;;", 20, 0, 90);
-    TH1D *hElasticScatteringAngle     = new TH1D("hElasticScatteringAngle", "hElasticScatteringAngle;;", 20, 0, 90);
+    TH1D *hElasticScatteringRecoAngle = new TH1D("hElasticScatteringRecoAngle", "hElasticScatteringRecoAngle;;", 20, 0, 180);
+    TH1D *hElasticScatteringAngle     = new TH1D("hElasticScatteringAngle", "hElasticScatteringAngle;;", 20, 0, 180);
 
     TH1D *hElasticScatteringVertexKE     = new TH1D("hElasticScatteringVertexKE", "hElasticScatteringVertexKE;;", 20, 0, 0.5);
     TH1D *hElasticScatteringRecoVertexKE = new TH1D("hElasticScatteringRecoVertexKE", "hElasticScatteringRecoVertexKE;;", 20, 0, 0.5);
@@ -709,8 +709,8 @@ void RecoAllAnalysis() {
         10, 0, TMath::Pi()
     );
 
-    TH1D *hAllScatteringAngle      = new TH1D("hAllScatteringAngle", "hAllScatteringAngle;;", 20, 0, 90);
-    TH1D *hAllScatteringRecoAngle  = new TH1D("hAllScatteringRecoAngle", "hAllScatteringRecoAngle;;", 20, 0, 90);
+    TH1D *hAllScatteringAngle      = new TH1D("hAllScatteringAngle", "hAllScatteringAngle;;", 20, 0, 180);
+    TH1D *hAllScatteringRecoAngle  = new TH1D("hAllScatteringRecoAngle", "hAllScatteringRecoAngle;;", 20, 0, 180);
 
     TH1D *hAllScatteringVertexKE     = new TH1D("hAllScatteringVertexKE", "hAllScatteringVertexKE;;", 20, 0, 0.5);
     TH1D *hAllScatteringRecoVertexKE = new TH1D("hAllScatteringRecoVertexKE", "hAllScatteringRecoVertexKE;;", 20, 0, 0.5);

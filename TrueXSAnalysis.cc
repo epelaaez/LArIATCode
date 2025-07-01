@@ -71,7 +71,7 @@ void TrueXSAnalysis() {
 
         // Rebin and modify range
         Histograms[i]->Rebin(1); // NOT SURE THIS WOULD BE RIGHT, BETTER TO ADJUST BINNING IN MODULE
-        Histograms[i]->GetXaxis()->SetRangeUser(0, 700);
+        Histograms[i]->GetXaxis()->SetRangeUser(0, 600);
         double maxY = Histograms[i]->GetMaximum();
         for (int bin = 1; bin <= Histograms[i]->GetNbinsX(); ++bin) {
             double y = Histograms[i]->GetBinContent(bin) + Histograms[i]->GetBinError(bin);
@@ -134,7 +134,7 @@ void TrueXSAnalysis() {
 
     hStackPionAbs->Draw("hist");
     hStackPionAbs->SetMaximum(1.1 * std::max(hCrossSectionPionAbs->GetMaximum(), hStackPionAbs->GetMaximum()));
-    hStackPionAbs->GetXaxis()->SetRangeUser(0, 700);
+    hStackPionAbs->GetXaxis()->SetRangeUser(0, 600);
     hStackPionAbs->GetXaxis()->SetTitle("Kinetic Energy [MeV]");
     hStackPionAbs->GetYaxis()->SetTitle("Cross Section [barn]");
 
@@ -196,14 +196,14 @@ void TrueXSAnalysis() {
     hCrossSectionDecay->SetLineColor(kYellow+1);
     hStackAll->Add(hCrossSectionDecay, "H");
 
-    hCrossSectionOther->SetFillColor(kViolet+7);
-    hCrossSectionOther->SetLineColor(kViolet+7);
+    hCrossSectionOther->SetFillColor(kGray+2);
+    hCrossSectionOther->SetLineColor(kGray+2);
     hStackAll->Add(hCrossSectionOther, "H");
     
     // Draw the stack
     hStackAll->Draw("hist");
     hStackAll->SetMaximum(1.1 * std::max(hCrossSection->GetMaximum(), hStackAll->GetMaximum()));
-    hStackAll->GetXaxis()->SetRangeUser(0, 700);
+    hStackAll->GetXaxis()->SetRangeUser(0, 600);
     hStackAll->GetXaxis()->SetTitle("Kinetic Energy [MeV]");
     hStackAll->GetYaxis()->SetTitle("Cross Section [barn]");
 
@@ -245,7 +245,7 @@ void TrueXSAnalysis() {
     // Draw the stack
     hStackTotalAbs->Draw("hist");
     hStackTotalAbs->SetMaximum(1.1 * std::max(hCrossSection->GetMaximum(), hStackTotalAbs->GetMaximum()));
-    hStackTotalAbs->GetXaxis()->SetRangeUser(0, 700);
+    hStackTotalAbs->GetXaxis()->SetRangeUser(0, 600);
     hStackTotalAbs->GetXaxis()->SetTitle("Kinetic Energy [MeV]");
     hStackTotalAbs->GetYaxis()->SetTitle("Cross Section [barn]");
 
