@@ -747,14 +747,14 @@ void RecoAllAnalysis() {
     // Cross-section histograms //
     //////////////////////////////
 
-    TH1D *hIncidentKE  = new TH1D("hRecoIncidentKE", "Incident KE [MeV]", 20, 0, 800);
-    TH1D *hPionAbsKE   = new TH1D("hPionAbsKE", "Interacting KE [MeV]", 20, 0, 800);
-    TH1D *h0pPionAbsKE = new TH1D("h0pPionAbsKE", "Interacting KE [MeV]", 20, 0, 800);
-    TH1D *hNpPionAbsKE = new TH1D("hNpPionAbsKE", "Interacting KE [MeV]", 20, 0, 800);
+    TH1D *hIncidentKE  = new TH1D("hRecoIncidentKE", "Incident KE [MeV]", 12, 0, 600);
+    TH1D *hPionAbsKE   = new TH1D("hPionAbsKE", "Interacting KE [MeV]", 12, 0, 600);
+    TH1D *h0pPionAbsKE = new TH1D("h0pPionAbsKE", "Interacting KE [MeV]", 12, 0, 600);
+    TH1D *hNpPionAbsKE = new TH1D("hNpPionAbsKE", "Interacting KE [MeV]", 12, 0, 600);
 
-    TH1D *hPionAbsCrossSection   = new TH1D("hPionAbsCrossSection", "Cross section [barn]", 20, 0, 800);
-    TH1D *hPion0pAbsCrossSection = new TH1D("hPion0pAbsCrossSection", "Cross section [barn]", 20, 0, 800);
-    TH1D *hPionNpAbsCrossSection = new TH1D("hPionNpAbsCrossSection", "Cross section [barn]", 20, 0, 800);
+    TH1D *hPionAbsCrossSection   = new TH1D("hPionAbsCrossSection", "Cross section [barn]", 12, 0, 600);
+    TH1D *hPion0pAbsCrossSection = new TH1D("hPion0pAbsCrossSection", "Cross section [barn]", 12, 0, 600);
+    TH1D *hPionNpAbsCrossSection = new TH1D("hPionNpAbsCrossSection", "Cross section [barn]", 12, 0, 600);
 
     /////////////////////////////////
     // Files for event information //
@@ -995,13 +995,14 @@ void RecoAllAnalysis() {
 
         double energyDeposited = 0;
         for (size_t iDep = 0; iDep < wcMatchDEDX->size(); ++iDep) {
-            energyDeposited += wcMatchEDep->at(iDep);
+            // If we are past detected breaking point, exit loop
+            if (wcMatchZPos->at(iDep) > breakPointZ) break;
 
             // If larger than threshold, continue
             if (wcMatchDEDX->at(iDep) > HIT_DEDX_THRESHOLD) continue;
 
-            // If we are past detected breaking point, exit loop
-            if (wcMatchZPos->at(iDep) > breakPointZ) break;
+            // Else, add to energy deposited so far
+            energyDeposited += wcMatchEDep->at(iDep);
             
             // Add to incident KE if inside reduced volume
             if (isWithinReducedVolume(wcMatchXPos->at(iDep), wcMatchYPos->at(iDep), wcMatchZPos->at(iDep))) {
@@ -1914,7 +1915,116 @@ void RecoAllAnalysis() {
         hPionAbsCrossSection->SetBinContent(iBin, pionAbsCrossSection);
         hPion0pAbsCrossSection->SetBinContent(iBin, pion0pAbsCrossSection);
         hPionNpAbsCrossSection->SetBinContent(iBin, pionNpAbsCrossSection);
+
+        float denomError = pow(hIncidentKE->GetBinContent(iBin),0.5);
+        float denom      = hIncidentKE->GetBinContent(iBin);
+        if (denom == 0) { continue; }
+        float termDenom = denomError / denom;
+
+        float numErrorAbs = pow(hPionAbsKE->GetBinContent(iBin), 0.5);
+        float numAbs      = hPionAbsKE->GetBinContent(iBin);
+        if(numAbs == 0){ continue; }
+        float termAbs       = numErrorAbs / numAbs;
+        float totalAbsError = (pionAbsCrossSection) * (std::pow(((termAbs * termAbs) + (termDenom * termDenom)), 0.5)) * (1 / number_density) * (1 / slab_width) * (1e26);
+        hPionAbsCrossSection->SetBinError(iBin, totalAbsError);
+
+        float numErrorAbs0p = pow(h0pPionAbsKE->GetBinContent(iBin), 0.5);
+        float numAbs0p      = h0pPionAbsKE->GetBinContent(iBin);
+        if(numAbs0p == 0){ continue; }
+        float termAbs0p       = numErrorAbs0p / numAbs0p;
+        float totalAbs0pError = (pion0pAbsCrossSection) * (std::pow(((termAbs0p * termAbs0p) + (termDenom * termDenom)), 0.5)) * (1 / number_density) * (1 / slab_width) * (1e26);
+        hPion0pAbsCrossSection->SetBinError(iBin, totalAbs0pError);
+
+        float numErrorAbsNp = pow(hNpPionAbsKE->GetBinContent(iBin), 0.5);
+        float numAbsNp      = hNpPionAbsKE->GetBinContent(iBin);
+        if(numAbsNp == 0){ continue; }
+        float termAbsNp       = numErrorAbsNp / numAbsNp;
+        float totalAbsNpError = (pionNpAbsCrossSection) * (std::pow(((termAbsNp * termAbsNp) + (termDenom * termDenom)), 0.5)) * (1 / number_density) * (1 / slab_width) * (1e26);
+        hPionNpAbsCrossSection->SetBinError(iBin, totalAbsNpError);
     }
+
+    std::vector<TH1D*> XSecHistos = {
+        hPionAbsCrossSection, 
+        hPion0pAbsCrossSection,
+        hPionNpAbsCrossSection
+    };
+
+    TCanvas* XSecCanvas = new TCanvas("Canvas", "Canvas", 205, 34, 1024, 768);
+
+    gStyle->SetOptStat(0);
+    for (size_t i = 0; i < XSecHistos.size(); ++i) {
+        if (!XSecHistos[i]) continue;
+
+        double maxY = XSecHistos[i]->GetMaximum();
+        for (int bin = 1; bin <= XSecHistos[i]->GetNbinsX(); ++bin) {
+            double y = XSecHistos[i]->GetBinContent(bin) + XSecHistos[i]->GetBinError(bin);
+            if (y > maxY) maxY = y;
+        }
+        XSecHistos[i]->GetYaxis()->SetRangeUser(0, 1.1 * maxY);
+
+        XSecHistos[i]->SetLineColor(kBlack);
+        XSecHistos[i]->SetMarkerColor(kBlack);
+        XSecHistos[i]->SetMarkerStyle(20);
+        XSecHistos[i]->SetMarkerSize(1.2);
+
+        XSecHistos[i]->SetFillColor(kBlack);
+        XSecHistos[i]->SetFillStyle(3001);        // e.g. 3001 = hatched; 1001 = solid
+        XSecHistos[i]->SetFillColorAlpha(kBlack, 0.2);
+
+        XSecHistos[i]->SetTitle(XSecHistos[i]->GetName());
+        XSecHistos[i]->GetXaxis()->SetTitle("Kinetic Energy [MeV]");
+        XSecHistos[i]->GetYaxis()->SetTitle("Cross Section [barn]");
+        // Histograms[i]->Draw("E1");   // only points
+        XSecHistos[i]->Draw("E1 H"); // points with histogram bars
+
+        XSecCanvas->SetLeftMargin(0.13);
+        XSecCanvas->SetBottomMargin(0.13);
+
+        TString histName = XSecHistos[i]->GetName();
+        histName.Remove(0, 1); // Remove the first character
+        XSecCanvas->SaveAs(SaveDir + "CrossSection/" + histName + ".png");
+    }
+
+    // Create a stacked histogram for pion absorption 0p and Np
+    THStack* hStackPionAbs = new THStack("hStackPionAbs", "Pion Absorption Reco Cross Section;Kinetic Energy [MeV];Cross Section [barn]");
+
+    // Set colors for stack
+    hPion0pAbsCrossSection->SetFillColor(kAzure+1);
+    hPion0pAbsCrossSection->SetLineColor(kAzure+1);
+
+    hPionNpAbsCrossSection->SetFillColor(kOrange+7);
+    hPionNpAbsCrossSection->SetLineColor(kOrange+7);
+
+    // Add to stack
+    hStackPionAbs->Add(hPion0pAbsCrossSection, "H");
+    hStackPionAbs->Add(hPionNpAbsCrossSection, "H");
+
+    hStackPionAbs->Draw("hist");
+    hStackPionAbs->SetMaximum(1.1 * std::max(hPionAbsCrossSection->GetMaximum(), hStackPionAbs->GetMaximum()));
+    hStackPionAbs->GetXaxis()->SetTitle("Kinetic Energy [MeV]");
+    hStackPionAbs->GetYaxis()->SetTitle("Cross Section [barn]");
+
+    // Draw total pion absorption cross-section on top
+    hPionAbsCrossSection->SetLineColor(kBlack);
+    hPionAbsCrossSection->SetLineWidth(2);
+    hPionAbsCrossSection->SetMarkerSize(1.2);
+    hPionAbsCrossSection->SetMarkerStyle(20);
+    hPionAbsCrossSection->SetMarkerColor(kBlack);
+    hPionAbsCrossSection->Draw("E1 SAME");
+
+    // Add legend
+    TLegend* leg = new TLegend(0.65, 0.65, 0.85, 0.85);
+    leg->SetTextFont(FontStyle);
+    leg->SetTextSize(TextSize * 0.9);
+    leg->AddEntry(hPion0pAbsCrossSection, "Abs. 0p", "f");
+    leg->AddEntry(hPionNpAbsCrossSection, "Abs. Np", "f");
+    leg->AddEntry(hPionAbsCrossSection, "Total abs.", "lep");
+    leg->Draw();
+
+    XSecCanvas->SaveAs(SaveDir + "CrossSection/PionAbsorptionStacked.png");
+    delete XSecCanvas;
+
+    gStyle->SetOptStat(1);
 
     //////////////////
     // Create plots //
@@ -1974,7 +2084,7 @@ void RecoAllAnalysis() {
 
         // Cross section
         {hIncidentKE},
-        {hPionAbsCrossSection, hPion0pAbsCrossSection, hPionNpAbsCrossSection}
+        {hPionAbsKE, h0pPionAbsKE, hNpPionAbsKE}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2080,7 +2190,7 @@ void RecoAllAnalysis() {
 
         // Cross section
         "CrossSection/IncidentKE",
-        "CrossSection/All"
+        "CrossSection/InteractingkE"
     };
 
     std::vector<TString> XLabels = {
@@ -2186,7 +2296,7 @@ void RecoAllAnalysis() {
 
         // Cross section
         "Number of events",
-        "Cross section [barn]"
+        "Number of events"
     };
 
     printOneDPlots(
