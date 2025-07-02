@@ -753,6 +753,11 @@ void RecoAllAnalysis() {
     //////////////////////////////
 
     // True cross sections
+    TH1D* hTrueIncidentKE  = (TH1D*) TrueXSDirectory->Get("hIncidentKE");
+    TH1D* hTruePionAbsKE   = (TH1D*) TrueXSDirectory->Get("hInteractingKEPionAbs");
+    TH1D* hTruePionAbs0pKE = (TH1D*) TrueXSDirectory->Get("hInteractingKEPionAbs0p");
+    TH1D* hTruePionAbsNpKE = (TH1D*) TrueXSDirectory->Get("hInteractingKEPionAbsNp");
+
     TH1D* hPionAbsTrueCrossSection   = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbs");
     TH1D* hPion0pAbsTrueCrossSection = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbs0p");
     TH1D* hPionNpAbsTrueCrossSection = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbsNp");
@@ -1954,6 +1959,29 @@ void RecoAllAnalysis() {
         hPionNpAbsRecoCrossSection->SetBinError(iBin, totalAbsNpError);
     }
 
+    // Compute corrections
+    TH1D* hPsiInc = (TH1D*) hIncidentKE->Clone("hPsiInc");
+    hPsiInc->Divide(hTrueIncidentKE);
+
+    TH1D* hPsiIntPionAbs = (TH1D*) hPionAbsKE->Clone("hPsiIntPionAbs");
+    hPsiIntPionAbs->Divide(hTruePionAbsKE);
+
+    TH1D* hPsiIntPionAbs0p = (TH1D*) h0pPionAbsKE->Clone("hPsiIntPionAbs0p");
+    hPsiIntPionAbs0p->Divide(hTruePionAbs0pKE);
+
+    TH1D* hPsiIntPionAbsNp = (TH1D*) hNpPionAbsKE->Clone("hPsiIntPionAbsNp");
+    hPsiIntPionAbsNp->Divide(hTruePionAbsNpKE);
+
+    // Apply corrections
+    hPionAbsRecoCrossSection->Multiply(hPsiInc);
+    hPionAbsRecoCrossSection->Divide(hPsiIntPionAbs);
+
+    hPion0pAbsRecoCrossSection->Multiply(hPsiInc);
+    hPion0pAbsRecoCrossSection->Divide(hPsiIntPionAbs0p);
+
+    hPionNpAbsRecoCrossSection->Multiply(hPsiInc);
+    hPionNpAbsRecoCrossSection->Divide(hPsiIntPionAbsNp);
+
     std::vector<TH1D*> XSecHistos = {
         hPionAbsRecoCrossSection, 
         hPion0pAbsRecoCrossSection,
@@ -1989,8 +2017,7 @@ void RecoAllAnalysis() {
         XSecHistos[i]->SetTitle(XSecHistos[i]->GetName());
         XSecHistos[i]->GetXaxis()->SetTitle("Kinetic Energy [MeV]");
         XSecHistos[i]->GetYaxis()->SetTitle("Cross Section [barn]");
-        // Histograms[i]->Draw("E1");   // only points
-        XSecHistos[i]->Draw("E1 H"); // points with histogram bars
+        XSecHistos[i]->Draw("HISTO E1"); // points with histogram bars
 
         XSecCanvas->SetLeftMargin(0.13);
         XSecCanvas->SetBottomMargin(0.13);
@@ -2032,7 +2059,7 @@ void RecoAllAnalysis() {
     hPionAbsRecoCrossSection->Draw("E1 SAME");
 
     // Add legend
-    TLegend* leg = new TLegend(0.65, 0.65, 0.85, 0.85);
+    TLegend* leg = new TLegend(0.60, 0.65, 0.85, 0.85);
     leg->SetTextFont(FontStyle);
     leg->SetTextSize(TextSize * 0.9);
     leg->AddEntry(hPion0pAbsRecoCrossSection, "Reco 0p", "f");

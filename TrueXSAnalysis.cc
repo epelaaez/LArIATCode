@@ -31,6 +31,12 @@ void TrueXSAnalysis() {
     // Retrieve histograms //
     /////////////////////////
 
+    // Kinetic energies
+    TH1D* hIncidentKE  = (TH1D*) Directory->Get("hIncidentKE");
+    TH1D* hPionAbsKE   = (TH1D*) Directory->Get("hInteractingKEPionAbs");
+    TH1D* hPionAbs0pKE = (TH1D*) Directory->Get("hInteractingKEPionAbs0p");
+    TH1D* hPionAbsNpKE = (TH1D*) Directory->Get("hInteractingKEPionAbsNp");
+
     // All hadronic pion cross section
     TH1D* hCrossSection          = (TH1D*) Directory->Get("hCrossSection");
 
@@ -59,7 +65,11 @@ void TrueXSAnalysis() {
         hCrossSectionDoubleChargeExchange,
         hCrossSectionCaptureAtRest,
         hCrossSectionDecay,
-        hCrossSectionOther
+        hCrossSectionOther,
+        hIncidentKE,
+        hPionAbsKE,
+        hPionAbs0pKE,
+        hPionAbsNpKE
     };
 
     ///////////////////////////
