@@ -196,6 +196,11 @@ void RecoAllAnalysis() {
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoAllEval");
 
+    // Load root file with true cross sections
+    TString TrueXSRootFilePath = "/exp/lariat/app/users/epelaez/files/TrueXSPionAbs_histo.root";
+    std::unique_ptr<TFile> TrueXSFile(TFile::Open(TrueXSRootFilePath));
+    TDirectory* TrueXSDirectory = (TDirectory*) TrueXSFile->Get("TrueXSPionAbs");
+
     ///////////////////
     // Load branches //
     ///////////////////
@@ -747,14 +752,20 @@ void RecoAllAnalysis() {
     // Cross-section histograms //
     //////////////////////////////
 
+    // True cross sections
+    TH1D* hPionAbsTrueCrossSection   = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbs");
+    TH1D* hPion0pAbsTrueCrossSection = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbs0p");
+    TH1D* hPionNpAbsTrueCrossSection = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbsNp");
+
+    // Reco cross sections
     TH1D *hIncidentKE  = new TH1D("hRecoIncidentKE", "Incident KE [MeV]", 12, 0, 600);
     TH1D *hPionAbsKE   = new TH1D("hPionAbsKE", "Interacting KE [MeV]", 12, 0, 600);
     TH1D *h0pPionAbsKE = new TH1D("h0pPionAbsKE", "Interacting KE [MeV]", 12, 0, 600);
     TH1D *hNpPionAbsKE = new TH1D("hNpPionAbsKE", "Interacting KE [MeV]", 12, 0, 600);
 
-    TH1D *hPionAbsCrossSection   = new TH1D("hPionAbsCrossSection", "Cross section [barn]", 12, 0, 600);
-    TH1D *hPion0pAbsCrossSection = new TH1D("hPion0pAbsCrossSection", "Cross section [barn]", 12, 0, 600);
-    TH1D *hPionNpAbsCrossSection = new TH1D("hPionNpAbsCrossSection", "Cross section [barn]", 12, 0, 600);
+    TH1D *hPionAbsRecoCrossSection   = new TH1D("hPionAbsRecoCrossSection", "Cross section [barn]", 12, 0, 600);
+    TH1D *hPion0pAbsRecoCrossSection = new TH1D("hPion0pAbsRecoCrossSection", "Cross section [barn]", 12, 0, 600);
+    TH1D *hPionNpAbsRecoCrossSection = new TH1D("hPionNpAbsRecoCrossSection", "Cross section [barn]", 12, 0, 600);
 
     /////////////////////////////////
     // Files for event information //
@@ -1912,9 +1923,9 @@ void RecoAllAnalysis() {
         float pion0pAbsCrossSection = ((h0pPionAbsKE->GetBinContent(iBin) / hIncidentKE->GetBinContent(iBin)) * (1 / number_density) * (1 / slab_width)) * (1 / 1e-28);
         float pionNpAbsCrossSection = ((hNpPionAbsKE->GetBinContent(iBin) / hIncidentKE->GetBinContent(iBin)) * (1 / number_density) * (1 / slab_width)) * (1 / 1e-28);
 
-        hPionAbsCrossSection->SetBinContent(iBin, pionAbsCrossSection);
-        hPion0pAbsCrossSection->SetBinContent(iBin, pion0pAbsCrossSection);
-        hPionNpAbsCrossSection->SetBinContent(iBin, pionNpAbsCrossSection);
+        hPionAbsRecoCrossSection->SetBinContent(iBin, pionAbsCrossSection);
+        hPion0pAbsRecoCrossSection->SetBinContent(iBin, pion0pAbsCrossSection);
+        hPionNpAbsRecoCrossSection->SetBinContent(iBin, pionNpAbsCrossSection);
 
         float denomError = pow(hIncidentKE->GetBinContent(iBin),0.5);
         float denom      = hIncidentKE->GetBinContent(iBin);
@@ -1926,30 +1937,34 @@ void RecoAllAnalysis() {
         if(numAbs == 0){ continue; }
         float termAbs       = numErrorAbs / numAbs;
         float totalAbsError = (pionAbsCrossSection) * (std::pow(((termAbs * termAbs) + (termDenom * termDenom)), 0.5)) * (1 / number_density) * (1 / slab_width) * (1e26);
-        hPionAbsCrossSection->SetBinError(iBin, totalAbsError);
+        hPionAbsRecoCrossSection->SetBinError(iBin, totalAbsError);
 
         float numErrorAbs0p = pow(h0pPionAbsKE->GetBinContent(iBin), 0.5);
         float numAbs0p      = h0pPionAbsKE->GetBinContent(iBin);
         if(numAbs0p == 0){ continue; }
         float termAbs0p       = numErrorAbs0p / numAbs0p;
         float totalAbs0pError = (pion0pAbsCrossSection) * (std::pow(((termAbs0p * termAbs0p) + (termDenom * termDenom)), 0.5)) * (1 / number_density) * (1 / slab_width) * (1e26);
-        hPion0pAbsCrossSection->SetBinError(iBin, totalAbs0pError);
+        hPion0pAbsRecoCrossSection->SetBinError(iBin, totalAbs0pError);
 
         float numErrorAbsNp = pow(hNpPionAbsKE->GetBinContent(iBin), 0.5);
         float numAbsNp      = hNpPionAbsKE->GetBinContent(iBin);
         if(numAbsNp == 0){ continue; }
         float termAbsNp       = numErrorAbsNp / numAbsNp;
         float totalAbsNpError = (pionNpAbsCrossSection) * (std::pow(((termAbsNp * termAbsNp) + (termDenom * termDenom)), 0.5)) * (1 / number_density) * (1 / slab_width) * (1e26);
-        hPionNpAbsCrossSection->SetBinError(iBin, totalAbsNpError);
+        hPionNpAbsRecoCrossSection->SetBinError(iBin, totalAbsNpError);
     }
 
     std::vector<TH1D*> XSecHistos = {
-        hPionAbsCrossSection, 
-        hPion0pAbsCrossSection,
-        hPionNpAbsCrossSection
+        hPionAbsRecoCrossSection, 
+        hPion0pAbsRecoCrossSection,
+        hPionNpAbsRecoCrossSection
     };
 
     TCanvas* XSecCanvas = new TCanvas("Canvas", "Canvas", 205, 34, 1024, 768);
+
+    ////////////////////////////
+    // Draw them individually //
+    ////////////////////////////
 
     gStyle->SetOptStat(0);
     for (size_t i = 0; i < XSecHistos.size(); ++i) {
@@ -1985,43 +2000,112 @@ void RecoAllAnalysis() {
         XSecCanvas->SaveAs(SaveDir + "CrossSection/" + histName + ".png");
     }
 
+    ///////////////////////
+    // Draw them stacked //
+    ///////////////////////
+
     // Create a stacked histogram for pion absorption 0p and Np
     THStack* hStackPionAbs = new THStack("hStackPionAbs", "Pion Absorption Reco Cross Section;Kinetic Energy [MeV];Cross Section [barn]");
 
     // Set colors for stack
-    hPion0pAbsCrossSection->SetFillColor(kAzure+1);
-    hPion0pAbsCrossSection->SetLineColor(kAzure+1);
+    hPion0pAbsRecoCrossSection->SetFillColor(kAzure+1);
+    hPion0pAbsRecoCrossSection->SetLineColor(kAzure+1);
 
-    hPionNpAbsCrossSection->SetFillColor(kOrange+7);
-    hPionNpAbsCrossSection->SetLineColor(kOrange+7);
+    hPionNpAbsRecoCrossSection->SetFillColor(kOrange+7);
+    hPionNpAbsRecoCrossSection->SetLineColor(kOrange+7);
 
     // Add to stack
-    hStackPionAbs->Add(hPion0pAbsCrossSection, "H");
-    hStackPionAbs->Add(hPionNpAbsCrossSection, "H");
+    hStackPionAbs->Add(hPion0pAbsRecoCrossSection, "H");
+    hStackPionAbs->Add(hPionNpAbsRecoCrossSection, "H");
 
     hStackPionAbs->Draw("hist");
-    hStackPionAbs->SetMaximum(1.1 * std::max(hPionAbsCrossSection->GetMaximum(), hStackPionAbs->GetMaximum()));
+    hStackPionAbs->SetMaximum(1.1 * std::max(hPionAbsRecoCrossSection->GetMaximum(), hStackPionAbs->GetMaximum()));
     hStackPionAbs->GetXaxis()->SetTitle("Kinetic Energy [MeV]");
     hStackPionAbs->GetYaxis()->SetTitle("Cross Section [barn]");
 
     // Draw total pion absorption cross-section on top
-    hPionAbsCrossSection->SetLineColor(kBlack);
-    hPionAbsCrossSection->SetLineWidth(2);
-    hPionAbsCrossSection->SetMarkerSize(1.2);
-    hPionAbsCrossSection->SetMarkerStyle(20);
-    hPionAbsCrossSection->SetMarkerColor(kBlack);
-    hPionAbsCrossSection->Draw("E1 SAME");
+    hPionAbsRecoCrossSection->SetLineColor(kBlack);
+    hPionAbsRecoCrossSection->SetLineWidth(2);
+    hPionAbsRecoCrossSection->SetMarkerSize(1.2);
+    hPionAbsRecoCrossSection->SetMarkerStyle(20);
+    hPionAbsRecoCrossSection->SetMarkerColor(kBlack);
+    hPionAbsRecoCrossSection->Draw("E1 SAME");
 
     // Add legend
     TLegend* leg = new TLegend(0.65, 0.65, 0.85, 0.85);
     leg->SetTextFont(FontStyle);
     leg->SetTextSize(TextSize * 0.9);
-    leg->AddEntry(hPion0pAbsCrossSection, "Abs. 0p", "f");
-    leg->AddEntry(hPionNpAbsCrossSection, "Abs. Np", "f");
-    leg->AddEntry(hPionAbsCrossSection, "Total abs.", "lep");
-    leg->Draw();
+    leg->AddEntry(hPion0pAbsRecoCrossSection, "Reco 0p", "f");
+    leg->AddEntry(hPionNpAbsRecoCrossSection, "Reco Np", "f");
+    leg->AddEntry(hPionAbsRecoCrossSection, "Reco Total", "lep");
 
+    leg->Draw();
     XSecCanvas->SaveAs(SaveDir + "CrossSection/PionAbsorptionStacked.png");
+    delete leg;
+
+    ///////////////////////////////////
+    // Draw them overlaid with truth //
+    ///////////////////////////////////
+
+    hPionAbsRecoCrossSection->SetMaximum(1.15 * std::max({
+        hPionAbsTrueCrossSection->GetMaximum(),
+        hPionAbsRecoCrossSection->GetMaximum(),
+        hPion0pAbsRecoCrossSection->GetMaximum(),
+        hPionNpAbsRecoCrossSection->GetMaximum()
+    }));
+
+    hPionAbsRecoCrossSection->SetFillColorAlpha(kBlack, 0.0);
+    hPionAbsRecoCrossSection->SetMarkerColor(kBlack);
+    hPionAbsRecoCrossSection->SetLineColor(kBlack);
+    hPionAbsRecoCrossSection->SetLineWidth(2);
+    hPionAbsRecoCrossSection->Draw("HIST E1");
+
+    hPion0pAbsRecoCrossSection->SetFillColorAlpha(kAzure+1, 0.2);
+    hPion0pAbsRecoCrossSection->SetMarkerColor(kAzure+1);
+    hPion0pAbsRecoCrossSection->SetLineColor(kAzure+1);
+    hPion0pAbsRecoCrossSection->SetLineWidth(2);
+    hPion0pAbsRecoCrossSection->Draw("HIST E1 SAME");
+
+    hPionNpAbsRecoCrossSection->SetFillColorAlpha(kOrange+7, 0.2);
+    hPionNpAbsRecoCrossSection->SetMarkerColor(kOrange+7);
+    hPionNpAbsRecoCrossSection->SetLineColor(kOrange+7);
+    hPionNpAbsRecoCrossSection->SetLineWidth(2);
+    hPionNpAbsRecoCrossSection->Draw("HIST E1 SAME");
+
+    // Draw true cross-sections
+    hPion0pAbsTrueCrossSection->SetMarkerStyle(20);
+    hPion0pAbsTrueCrossSection->SetMarkerColor(kAzure+4);
+    hPion0pAbsTrueCrossSection->SetLineColor(kAzure+4);
+    hPion0pAbsTrueCrossSection->SetMarkerSize(1.2);
+    hPion0pAbsTrueCrossSection->Draw("E1 SAME");
+
+    hPionNpAbsTrueCrossSection->SetMarkerStyle(20);
+    hPionNpAbsTrueCrossSection->SetMarkerColor(kOrange+9);
+    hPionNpAbsTrueCrossSection->SetLineColor(kOrange+9);
+    hPionNpAbsTrueCrossSection->SetMarkerSize(1.2);
+    hPionNpAbsTrueCrossSection->Draw("E1 SAME");
+
+    hPionAbsTrueCrossSection->SetMarkerStyle(20);
+    hPionAbsTrueCrossSection->SetMarkerColor(kGray+2);
+    hPionAbsTrueCrossSection->SetLineColor(kGray+2);
+    hPionAbsTrueCrossSection->SetMarkerSize(1.2);
+    hPionAbsTrueCrossSection->Draw("E1 SAME");
+
+    // Add legend
+    TLegend* leg2 = new TLegend(0.60, 0.55, 0.85, 0.85);
+    leg2->SetTextFont(FontStyle);
+    leg2->SetTextSize(TextSize * 0.9);
+    leg2->AddEntry(hPion0pAbsRecoCrossSection, "Reco 0p", "f");
+    leg2->AddEntry(hPionNpAbsRecoCrossSection, "Reco Np", "f");
+    leg2->AddEntry(hPionAbsRecoCrossSection, "Reco Total", "f");
+    leg2->AddEntry(hPion0pAbsTrueCrossSection, "True 0p", "lep");
+    leg2->AddEntry(hPionNpAbsTrueCrossSection, "True Np", "lep");
+    leg2->AddEntry(hPionAbsTrueCrossSection, "True Total", "lep");
+
+    leg2->Draw();
+    XSecCanvas->SaveAs(SaveDir + "CrossSection/PionAbsorptionOverlay.png");
+    delete leg2;
+
     delete XSecCanvas;
 
     gStyle->SetOptStat(1);
@@ -2137,7 +2221,7 @@ void RecoAllAnalysis() {
 
         // Cross section
         {"Incident"},
-        {"All", "0p", "Np"}
+        {"All abs", "0p abs", "Np abs"}
     };
 
     std::vector<TString> PlotTitles = {

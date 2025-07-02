@@ -40,8 +40,8 @@ Run: 1 subrun: 0 event: 19806
 
   Number of hit clusters found near primary track: 0
 
-  Minimum primary track linearity: 0
-  Maximum primary track linearity derivative: 0 above threshold: 0
+  Minimum primary track linearity: 3.56682e-316
+  Maximum primary track linearity derivative: 6.9185e-310 above threshold: 0
 
 Run: 1 subrun: 0 event: 19888
   Background type: Abs 0p
