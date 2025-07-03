@@ -772,6 +772,17 @@ void RecoAllAnalysis() {
     TH1D *hPion0pAbsRecoCrossSection = new TH1D("hPion0pAbsRecoCrossSection", "Cross section [barn]", 12, 0, 600);
     TH1D *hPionNpAbsRecoCrossSection = new TH1D("hPionNpAbsRecoCrossSection", "Cross section [barn]", 12, 0, 600);
 
+    // Histograms for corrections
+    TH1D *hIncidentKEOnlyPions  = new TH1D("hIncidentKEOnlyPions", "Incident KE [MeV]", 12, 0, 600);
+
+    TH1D *hPionAbsKEOnlyAbs     = new TH1D("hPionAbsKEOnlyAbs", "Interacting KE [MeV]", 12, 0, 600);
+    TH1D *h0pPionAbsKEOnly0pAbs = new TH1D("h0pPionAbsKEOnly0pAbs", "Interacting KE [MeV]", 12, 0, 600);
+    TH1D *hNpPionAbsKEOnlyNpAbs = new TH1D("hNpPionAbsKEOnlyNpAbs", "Interacting KE [MeV]", 12, 0, 600);
+
+    TH1D *hPionAbsKEOnlyPions   = new TH1D("hPionAbsKEOnlyPions", "Interacting KE [MeV]", 12, 0, 600);
+    TH1D *h0pPionAbsKEOnlyPions = new TH1D("h0pPionAbsKEOnlyPions", "Interacting KE [MeV]", 12, 0, 600);
+    TH1D *hNpPionAbsKEOnlyPions = new TH1D("hNpPionAbsKEOnlyPions", "Interacting KE [MeV]", 12, 0, 600);
+
     /////////////////////////////////
     // Files for event information //
     /////////////////////////////////
@@ -1023,6 +1034,7 @@ void RecoAllAnalysis() {
             // Add to incident KE if inside reduced volume
             if (isWithinReducedVolume(wcMatchXPos->at(iDep), wcMatchYPos->at(iDep), wcMatchZPos->at(iDep))) {
                 hIncidentKE->Fill(initialKE - energyDeposited);
+                if (truthPrimaryPDG == -211) hIncidentKEOnlyPions->Fill(initialKE - energyDeposited);
             }
         }
         double energyAtVertex = initialKE - energyDeposited;
@@ -1542,6 +1554,24 @@ void RecoAllAnalysis() {
             hNpPionAbsKE->Fill(energyAtVertex);
         }
 
+        if (truthPrimaryPDG == -211) {
+            if (backgroundType == 0 || backgroundType == 1) hPionAbsKEOnlyPions->Fill(energyAtVertex);
+            if (backgroundType == 0 && totalTaggedProtons == 0) {
+                h0pPionAbsKEOnlyPions->Fill(energyAtVertex);
+            } else if (backgroundType == 1 && totalTaggedProtons > 0) {
+                hNpPionAbsKEOnlyPions->Fill(energyAtVertex);
+            }
+        }
+
+        if (backgroundType == 0 || backgroundType == 1) {
+            hPionAbsKEOnlyAbs->Fill(energyAtVertex);
+            if (backgroundType == 0 && totalTaggedProtons == 0) {
+                h0pPionAbsKEOnly0pAbs->Fill(energyAtVertex);
+            } else if (backgroundType == 1 && totalTaggedProtons > 0) {
+                hNpPionAbsKEOnlyNpAbs->Fill(energyAtVertex);
+            }
+        }
+
         /////////////////////////
         // Analyze backgrounds //
         /////////////////////////
@@ -1960,27 +1990,45 @@ void RecoAllAnalysis() {
     }
 
     // Compute corrections
-    TH1D* hPsiInc = (TH1D*) hIncidentKE->Clone("hPsiInc");
+    TH1D* hPsiInc = (TH1D*) hIncidentKEOnlyPions->Clone("hPsiInc");
     hPsiInc->Divide(hTrueIncidentKE);
 
-    TH1D* hPsiIntPionAbs = (TH1D*) hPionAbsKE->Clone("hPsiIntPionAbs");
+    TH1D* hPsiIntPionAbs = (TH1D*) hPionAbsKEOnlyAbs->Clone("hPsiIntPionAbs");
     hPsiIntPionAbs->Divide(hTruePionAbsKE);
 
-    TH1D* hPsiIntPionAbs0p = (TH1D*) h0pPionAbsKE->Clone("hPsiIntPionAbs0p");
+    TH1D* hPsiIntPionAbs0p = (TH1D*) h0pPionAbsKEOnly0pAbs->Clone("hPsiIntPionAbs0p");
     hPsiIntPionAbs0p->Divide(hTruePionAbs0pKE);
 
-    TH1D* hPsiIntPionAbsNp = (TH1D*) hNpPionAbsKE->Clone("hPsiIntPionAbsNp");
+    TH1D* hPsiIntPionAbsNp = (TH1D*) hNpPionAbsKEOnlyNpAbs->Clone("hPsiIntPionAbsNp");
     hPsiIntPionAbsNp->Divide(hTruePionAbsNpKE);
+
+    TH1D* hCInc = (TH1D*) hIncidentKEOnlyPions->Clone("hCInc");
+    hCInc->Divide(hIncidentKE);
+
+    TH1D* hCIntPionAbs = (TH1D*) hPionAbsKEOnlyPions->Clone("hCIntPionAbs");
+    hCIntPionAbs->Divide(hPionAbsKE);
+
+    TH1D* hCIntPionAbs0p = (TH1D*) h0pPionAbsKEOnlyPions->Clone("hCIntPionAbs0p");
+    hCIntPionAbs0p->Divide(h0pPionAbsKE);
+
+    TH1D* hCIntPionAbsNp = (TH1D*) hNpPionAbsKEOnlyPions->Clone("hCIntPionAbsNp");
+    hCIntPionAbsNp->Divide(hNpPionAbsKE);
 
     // Apply corrections
     hPionAbsRecoCrossSection->Multiply(hPsiInc);
     hPionAbsRecoCrossSection->Divide(hPsiIntPionAbs);
+    hPionAbsRecoCrossSection->Multiply(hCIntPionAbs);
+    hPionAbsRecoCrossSection->Divide(hCInc);
 
     hPion0pAbsRecoCrossSection->Multiply(hPsiInc);
     hPion0pAbsRecoCrossSection->Divide(hPsiIntPionAbs0p);
+    hPion0pAbsRecoCrossSection->Multiply(hCIntPionAbs0p);
+    hPion0pAbsRecoCrossSection->Divide(hCInc);
 
     hPionNpAbsRecoCrossSection->Multiply(hPsiInc);
     hPionNpAbsRecoCrossSection->Divide(hPsiIntPionAbsNp);
+    hPionNpAbsRecoCrossSection->Multiply(hCIntPionAbsNp);
+    hPionNpAbsRecoCrossSection->Divide(hCInc);
 
     std::vector<TH1D*> XSecHistos = {
         hPionAbsRecoCrossSection, 
@@ -2017,7 +2065,8 @@ void RecoAllAnalysis() {
         XSecHistos[i]->SetTitle(XSecHistos[i]->GetName());
         XSecHistos[i]->GetXaxis()->SetTitle("Kinetic Energy [MeV]");
         XSecHistos[i]->GetYaxis()->SetTitle("Cross Section [barn]");
-        XSecHistos[i]->Draw("HISTO E1"); // points with histogram bars
+        // XSecHistos[i]->Draw("HISTO E1");
+        XSecHistos[i]->Draw("E1");
 
         XSecCanvas->SetLeftMargin(0.13);
         XSecCanvas->SetBottomMargin(0.13);
@@ -2074,60 +2123,63 @@ void RecoAllAnalysis() {
     // Draw them overlaid with truth //
     ///////////////////////////////////
 
-    hPionAbsRecoCrossSection->SetMaximum(1.15 * std::max({
+    hPionAbsTrueCrossSection->SetMaximum(1.15 * std::max({
         hPionAbsTrueCrossSection->GetMaximum(),
-        hPionAbsRecoCrossSection->GetMaximum(),
-        hPion0pAbsRecoCrossSection->GetMaximum(),
-        hPionNpAbsRecoCrossSection->GetMaximum()
+        hPionAbsRecoCrossSection->GetMaximum()
     }));
 
-    hPionAbsRecoCrossSection->SetFillColorAlpha(kBlack, 0.0);
-    hPionAbsRecoCrossSection->SetMarkerColor(kBlack);
-    hPionAbsRecoCrossSection->SetLineColor(kBlack);
-    hPionAbsRecoCrossSection->SetLineWidth(2);
-    hPionAbsRecoCrossSection->Draw("HIST E1");
-
-    hPion0pAbsRecoCrossSection->SetFillColorAlpha(kAzure+1, 0.2);
-    hPion0pAbsRecoCrossSection->SetMarkerColor(kAzure+1);
-    hPion0pAbsRecoCrossSection->SetLineColor(kAzure+1);
-    hPion0pAbsRecoCrossSection->SetLineWidth(2);
-    hPion0pAbsRecoCrossSection->Draw("HIST E1 SAME");
-
-    hPionNpAbsRecoCrossSection->SetFillColorAlpha(kOrange+7, 0.2);
-    hPionNpAbsRecoCrossSection->SetMarkerColor(kOrange+7);
-    hPionNpAbsRecoCrossSection->SetLineColor(kOrange+7);
-    hPionNpAbsRecoCrossSection->SetLineWidth(2);
-    hPionNpAbsRecoCrossSection->Draw("HIST E1 SAME");
+    hPionAbsTrueCrossSection->GetXaxis()->SetTitle("Kinetic Energy [MeV]");
+    hPionAbsTrueCrossSection->GetYaxis()->SetTitle("Cross Section [barn]");
+    hPionAbsTrueCrossSection->SetTitle("Pion Absorption Cross-Section");
 
     // Draw true cross-sections
-    hPion0pAbsTrueCrossSection->SetMarkerStyle(20);
-    hPion0pAbsTrueCrossSection->SetMarkerColor(kAzure+4);
-    hPion0pAbsTrueCrossSection->SetLineColor(kAzure+4);
-    hPion0pAbsTrueCrossSection->SetMarkerSize(1.2);
-    hPion0pAbsTrueCrossSection->Draw("E1 SAME");
-
-    hPionNpAbsTrueCrossSection->SetMarkerStyle(20);
-    hPionNpAbsTrueCrossSection->SetMarkerColor(kOrange+9);
-    hPionNpAbsTrueCrossSection->SetLineColor(kOrange+9);
-    hPionNpAbsTrueCrossSection->SetMarkerSize(1.2);
-    hPionNpAbsTrueCrossSection->Draw("E1 SAME");
-
+    hPionAbsTrueCrossSection->SetFillColorAlpha(kGray+2, 0.1);
     hPionAbsTrueCrossSection->SetMarkerStyle(20);
     hPionAbsTrueCrossSection->SetMarkerColor(kGray+2);
     hPionAbsTrueCrossSection->SetLineColor(kGray+2);
     hPionAbsTrueCrossSection->SetMarkerSize(1.2);
-    hPionAbsTrueCrossSection->Draw("E1 SAME");
+    hPionAbsTrueCrossSection->Draw("HIST E1");
+
+    hPion0pAbsTrueCrossSection->SetFillColorAlpha(kAzure+4, 0.1);
+    hPion0pAbsTrueCrossSection->SetMarkerStyle(20);
+    hPion0pAbsTrueCrossSection->SetMarkerColor(kAzure+4);
+    hPion0pAbsTrueCrossSection->SetLineColor(kAzure+4);
+    hPion0pAbsTrueCrossSection->SetMarkerSize(1.2);
+    hPion0pAbsTrueCrossSection->Draw("HIST E1 SAME");
+
+    hPionNpAbsTrueCrossSection->SetFillColorAlpha(kOrange+9, 0.2);
+    hPionNpAbsTrueCrossSection->SetMarkerStyle(20);
+    hPionNpAbsTrueCrossSection->SetMarkerColor(kOrange+9);
+    hPionNpAbsTrueCrossSection->SetLineColor(kOrange+9);
+    hPionNpAbsTrueCrossSection->SetMarkerSize(1.2);
+    hPionNpAbsTrueCrossSection->Draw("HIST E1 SAME");
+
+    // Draw reco cross sections
+    hPionAbsRecoCrossSection->SetMarkerColor(kBlack);
+    hPionAbsRecoCrossSection->SetLineColor(kBlack);
+    hPionAbsRecoCrossSection->SetLineWidth(2);
+    hPionAbsRecoCrossSection->Draw("E1 SAME");
+
+    hPion0pAbsRecoCrossSection->SetMarkerColor(kAzure+1);
+    hPion0pAbsRecoCrossSection->SetLineColor(kAzure+1);
+    hPion0pAbsRecoCrossSection->SetLineWidth(2);
+    hPion0pAbsRecoCrossSection->Draw("E1 SAME");
+
+    hPionNpAbsRecoCrossSection->SetMarkerColor(kOrange+7);
+    hPionNpAbsRecoCrossSection->SetLineColor(kOrange+7);
+    hPionNpAbsRecoCrossSection->SetLineWidth(2);
+    hPionNpAbsRecoCrossSection->Draw("E1 SAME");
 
     // Add legend
     TLegend* leg2 = new TLegend(0.60, 0.55, 0.85, 0.85);
     leg2->SetTextFont(FontStyle);
     leg2->SetTextSize(TextSize * 0.9);
-    leg2->AddEntry(hPion0pAbsRecoCrossSection, "Reco 0p", "f");
-    leg2->AddEntry(hPionNpAbsRecoCrossSection, "Reco Np", "f");
-    leg2->AddEntry(hPionAbsRecoCrossSection, "Reco Total", "f");
-    leg2->AddEntry(hPion0pAbsTrueCrossSection, "True 0p", "lep");
-    leg2->AddEntry(hPionNpAbsTrueCrossSection, "True Np", "lep");
-    leg2->AddEntry(hPionAbsTrueCrossSection, "True Total", "lep");
+    leg2->AddEntry(hPionAbsTrueCrossSection, "True Total", "f");
+    leg2->AddEntry(hPionAbsRecoCrossSection, "Reco Total", "lep");
+    leg2->AddEntry(hPion0pAbsTrueCrossSection, "True 0p", "f");
+    leg2->AddEntry(hPion0pAbsRecoCrossSection, "Reco 0p", "lep");
+    leg2->AddEntry(hPionNpAbsTrueCrossSection, "True Np", "f");
+    leg2->AddEntry(hPionNpAbsRecoCrossSection, "Reco Np", "lep");
 
     leg2->Draw();
     XSecCanvas->SaveAs(SaveDir + "CrossSection/PionAbsorptionOverlay.png");
