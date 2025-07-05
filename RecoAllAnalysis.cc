@@ -551,7 +551,7 @@ void RecoAllAnalysis() {
 
     int STARTING_NUM_CLUSTERS  = 1;
     int NUM_CLUSTERS_STEP      = 1;
-    int NUM_CLUSTERS_NUM_STEPS = 3;
+    int NUM_CLUSTERS_NUM_STEPS = 5;
 
     TH2D* hHitClusterCut0pReco = new TH2D(
         "hHitClusterCut0pReco", 
@@ -566,7 +566,7 @@ void RecoAllAnalysis() {
         NUM_CLUSTERS_NUM_STEPS, STARTING_NUM_CLUSTERS, STARTING_NUM_CLUSTERS + (NUM_CLUSTERS_STEP * NUM_CLUSTERS_NUM_STEPS)
     );
 
-    int    NUM_CLUSTERS_THRESHOLD  = 1;
+    int    NUM_CLUSTERS_THRESHOLD  = 2;
     double LARGE_CLUSTER_THRESHOLD = HIT_WIRE_SEPARATION * 3;
 
     TH1D *hHitClusters0p           = new TH1D("hHitClusters0p", "hHitClusters0p;;", 10, 0, 10);
@@ -778,10 +778,6 @@ void RecoAllAnalysis() {
     TH1D *hPionAbsKEOnlyAbs     = new TH1D("hPionAbsKEOnlyAbs", "Interacting KE [MeV]", 12, 0, 600);
     TH1D *h0pPionAbsKEOnly0pAbs = new TH1D("h0pPionAbsKEOnly0pAbs", "Interacting KE [MeV]", 12, 0, 600);
     TH1D *hNpPionAbsKEOnlyNpAbs = new TH1D("hNpPionAbsKEOnlyNpAbs", "Interacting KE [MeV]", 12, 0, 600);
-
-    TH1D *hPionAbsKEOnlyPions   = new TH1D("hPionAbsKEOnlyPions", "Interacting KE [MeV]", 12, 0, 600);
-    TH1D *h0pPionAbsKEOnlyPions = new TH1D("h0pPionAbsKEOnlyPions", "Interacting KE [MeV]", 12, 0, 600);
-    TH1D *hNpPionAbsKEOnlyPions = new TH1D("hNpPionAbsKEOnlyPions", "Interacting KE [MeV]", 12, 0, 600);
 
     /////////////////////////////////
     // Files for event information //
@@ -1288,7 +1284,8 @@ void RecoAllAnalysis() {
         int nTotalHits = fHitKey->size();
         for (size_t iHit = 0; iHit < nTotalHits; ++iHit) {
             // Skip hits already in tracks and collection plane
-            if ((hitsInTracks.count(iHit) > 0) || (fHitPlane->at(iHit) == 1)) continue;
+            // if ((hitsInTracks.count(iHit) > 0) || (fHitPlane->at(iHit) == 1)) continue;
+            if (hitsInTracks.count(iHit) > 0) continue;
 
             float hitX = fHitX->at(iHit);
             float hitW = fHitW->at(iHit);
@@ -1347,7 +1344,8 @@ void RecoAllAnalysis() {
             
             for (int iAllHit = 0; iAllHit < nTotalHits; ++iAllHit) {
                 // Skip already used hits, those reconstructed in tracks, and those in collection plane
-                if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit) || (fHitPlane->at(iHit) != 0)) continue;
+                // if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit) || (fHitPlane->at(iHit) != 0)) continue;
+                if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit)) continue;
                 float internalHitW  = fHitW->at(iAllHit);
                 float internalHitX  = fHitX->at(iAllHit);
                 float dW            = std::abs(internalHitW - thisHitW);
@@ -1552,15 +1550,6 @@ void RecoAllAnalysis() {
             h0pPionAbsKE->Fill(energyAtVertex);
         } else if (totalTaggedProtons > 0) {
             hNpPionAbsKE->Fill(energyAtVertex);
-        }
-
-        if (truthPrimaryPDG == -211) {
-            if (backgroundType == 0 || backgroundType == 1) hPionAbsKEOnlyPions->Fill(energyAtVertex);
-            if (backgroundType == 0 && totalTaggedProtons == 0) {
-                h0pPionAbsKEOnlyPions->Fill(energyAtVertex);
-            } else if (backgroundType == 1 && totalTaggedProtons > 0) {
-                hNpPionAbsKEOnlyPions->Fill(energyAtVertex);
-            }
         }
 
         if (backgroundType == 0 || backgroundType == 1) {
@@ -2005,13 +1994,13 @@ void RecoAllAnalysis() {
     TH1D* hCInc = (TH1D*) hIncidentKEOnlyPions->Clone("hCInc");
     hCInc->Divide(hIncidentKE);
 
-    TH1D* hCIntPionAbs = (TH1D*) hPionAbsKEOnlyPions->Clone("hCIntPionAbs");
+    TH1D* hCIntPionAbs = (TH1D*) hPionAbsKEOnlyAbs->Clone("hCIntPionAbs");
     hCIntPionAbs->Divide(hPionAbsKE);
 
-    TH1D* hCIntPionAbs0p = (TH1D*) h0pPionAbsKEOnlyPions->Clone("hCIntPionAbs0p");
+    TH1D* hCIntPionAbs0p = (TH1D*) h0pPionAbsKEOnly0pAbs->Clone("hCIntPionAbs0p");
     hCIntPionAbs0p->Divide(h0pPionAbsKE);
 
-    TH1D* hCIntPionAbsNp = (TH1D*) hNpPionAbsKEOnlyPions->Clone("hCIntPionAbsNp");
+    TH1D* hCIntPionAbsNp = (TH1D*) hNpPionAbsKEOnlyNpAbs->Clone("hCIntPionAbsNp");
     hCIntPionAbsNp->Divide(hNpPionAbsKE);
 
     // Apply corrections
