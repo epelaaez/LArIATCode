@@ -101,8 +101,8 @@ int NUM_BACKGROUND_TYPES = 13;
 //    12: elastic scattering
 
 // Values for chi^2 secondary fits
-double PION_CHI2_PION_VALUE     = 1.375;
-double PION_CHI2_PROTON_VALUE   = 2.625;
+double PION_CHI2_PION_VALUE     = 1.125;
+double PION_CHI2_PROTON_VALUE   = 1.125;
 double PROTON_CHI2_PION_VALUE   = 1.375;
 double PROTON_CHI2_PROTON_VALUE = 0.125;
 
@@ -162,7 +162,7 @@ void printOneDPlots(
 );
 void printTwoDPlots(TString dir, std::vector<TH2*> plots, std::vector<TString> titles);
 bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold);
-void Overlay_dEdx_RR_Reference_PP(TGraph* gProton, TGraph* gPion, bool addLegend = true, TVirtualPad* pad = gPad);
+void Overlay_dEdx_RR_Reference_PP(TGraph* gProton, TGraph* gPion, TGraph* gMIP, double MIPStart = 0., bool addLegend = true, TVirtualPad* pad = gPad);
 void printEfficiencyPlots(TString dir, int fontStyle, double textSize, std::vector<TEfficiency*> efficiencies, std::vector<TString> titles, std::vector<TString> xlabels);
 std::vector<double> calcLinearityProfile(std::vector<double>& vx, std::vector<double>& vy, std::vector<double>& vz, int nb);
 double energyLossCalculation();
@@ -790,6 +790,43 @@ void RecoAllAnalysis() {
     std::ofstream outStitchedFile("files/RecoAllAnalysis/WCMatchStitching.txt");
     std::ofstream outWCAll("files/RecoAllAnalysis/WCMatchAllChi2.txt");
 
+    /////////////////////////////////////
+    // Plot energy deposition profiles //
+    /////////////////////////////////////
+
+    gProton->SetLineColor(kRed+1);
+    gProton->SetLineWidth(2);
+    gProton->SetTitle("Proton");
+
+    gPion->SetLineColor(kRed+3);
+    gPion->SetLineWidth(2);
+    gPion->SetTitle("Pion");
+
+    gMuonTG->SetLineColor(kOrange+7);
+    gMuonTG->SetLineWidth(2);
+    gMuonTG->SetTitle("MIP");
+
+    // Set axis labels using one of the graphs
+    gProton->SetTitle("dE/dx vs Residual Range;Residual Range [cm];dE/dx [MeV/cm]");
+
+    // Create a canvas and draw the graphs
+    TCanvas* c1 = new TCanvas("c1", "dE/dx vs Residual Range", 800, 600);
+    gProton->Draw("AL");
+    gPion->Draw("L SAME");
+    gMuonTG->Draw("L SAME");
+
+    // Add a legend
+    TLegend* legend = new TLegend(0.65, 0.70, 0.88, 0.88);
+    legend->AddEntry(gProton, "Proton", "l");
+    legend->AddEntry(gPion,   "Pion",   "l");
+    legend->AddEntry(gMuonTG, "MIP",   "l");
+    legend->Draw();
+
+    // Optional: set grid
+    c1->SetGrid();
+    c1->SaveAs(SaveDir +  "dEdxProfiles/AllProfiles.png");
+    delete c1;
+
     //////////////////////
     // Loop over events //
     //////////////////////
@@ -887,7 +924,7 @@ void RecoAllAnalysis() {
             hDEDXProfile->SetMinimum(0);
             hDEDXProfile->SetMaximum(1);
             hDEDXProfile->Draw("COLZ");
-            Overlay_dEdx_RR_Reference_PP(gProton, gPion);
+            Overlay_dEdx_RR_Reference_PP(gProton, gPion, gMuonTG, wcMatchResR->at(73));
             c1->SaveAs(SaveDir +  "dEdxProfiles/" + event + ".png");
             
             delete c1;
@@ -955,6 +992,11 @@ void RecoAllAnalysis() {
 
                 std::vector<double> rightResR(wcMatchResR->begin() + caloBreakPoint, wcMatchResR->end());
                 std::vector<double> rightDEDX(wcMatchDEDX->begin() + caloBreakPoint, wcMatchDEDX->end());
+
+                // Shift right-hand side to fix r.r.
+                for (int i = 0; i < rightResR.size(); ++i) {
+                    rightResR[i] = rightResR[i] - rightResR[0];
+                }
 
                 double chi2LHS = computeReducedChi2(gProton, leftResR, leftDEDX, false, leftResR.size(), nRemoveOutliers, nRemoveEnds);
                 double chi2RHS = computeReducedChi2(gMuonTG, rightResR, rightDEDX, false, rightResR.size(), nRemoveOutliers, nRemoveEnds);
@@ -2889,38 +2931,99 @@ void initializeMuonNoBraggPoints(TGraph* gMuonTG) {
 void Overlay_dEdx_RR_Reference_PP(
     TGraph* gProton,
     TGraph* gPion,
-    bool addLegend = true, 
+    TGraph* gMIP,
+    double MIPStart = 0,
+    bool addLegend = true,
     TVirtualPad* pad = gPad
 ) {
-    const int N = 107;
+    // Helper to interpolate (or extrapolate) y at a given x in a TGraph
+    auto interpolateAt = [](TGraph* g, double x_target) -> double {
+        int n = g->GetN();
+        double* x = g->GetX();
+        double* y = g->GetY();
 
-    /* ---------- Proton ---------- */
-    gProton->SetLineColor(kRed+1);
-    gProton->SetLineWidth(3);
-    gProton->SetName("Proton");
+        for (int i = 0; i < n - 1; ++i) {
+            if ((x[i] <= x_target && x_target <= x[i + 1]) ||
+                (x[i] >= x_target && x_target >= x[i + 1])) {
+                // Linear interpolation
+                double t = (x_target - x[i]) / (x[i + 1] - x[i]);
+                return y[i] + t * (y[i + 1] - y[i]);
+            }
+        }
 
-    /* ---------- Pion ---------- */
-    gPion->SetLineColor(kRed+3);
-    gPion->SetLineWidth(3);
-    gPion->SetName("Pion");
+        // If out of bounds, return endpoint (flat extrapolation)
+        return (x_target < x[0]) ? y[0] : y[n - 1];
+    };
 
+    auto truncateGraphAt = [&](TGraph* g, double x_max) -> TGraph* {
+        TGraph* gTrunc = new TGraph();
+        int n = g->GetN();
+        double* x = g->GetX();
+        double* y = g->GetY();
+
+        for (int i = 0; i < n; ++i) {
+            if (x[i] <= x_max) {
+                gTrunc->SetPoint(gTrunc->GetN(), x[i], y[i]);
+            } else {
+                break;
+            }
+        }
+
+        // Add interpolated point at x = x_max if needed
+        if (x_max > x[0] && x_max < x[n - 1]) {
+            double y_interp = interpolateAt(g, x_max);
+            gTrunc->SetPoint(gTrunc->GetN(), x_max, y_interp);
+        }
+
+        return gTrunc;
+    };
+
+    // Clone and truncate Proton and Pion
+    TGraph* gProtonTrunc = truncateGraphAt(gProton, MIPStart);
+    TGraph* gPionTrunc   = truncateGraphAt(gPion,   MIPStart);
+
+    gProtonTrunc->SetLineColor(kRed + 1);
+    gProtonTrunc->SetLineWidth(3);
+    gProtonTrunc->SetName("Proton");
+
+    gPionTrunc->SetLineColor(kRed + 3);
+    gPionTrunc->SetLineWidth(3);
+    gPionTrunc->SetName("Pion");
+
+    // Shift MIP to start at x = MIPStart
+    int nMIP = gMIP->GetN();
+    double* xMIP = gMIP->GetX();
+    double* yMIP = gMIP->GetY();
+
+    TGraph* gMIPShifted = new TGraph(nMIP);
+    for (int i = 0; i < nMIP; ++i) {
+        gMIPShifted->SetPoint(i, xMIP[i] + MIPStart, yMIP[i]);
+    }
+
+    gMIPShifted->SetLineColor(kOrange + 7);
+    gMIPShifted->SetLineWidth(3);
+    gMIPShifted->SetName("MIP");
+
+    // Draw
     if (pad) pad->cd();
-    gProton->Draw("L same");
-    gPion  ->Draw("L same");
-    
+    gProtonTrunc->Draw("L same");
+    gPionTrunc->Draw("L same");
+    gMIPShifted->Draw("L same");
+
+    // Legend
     if (addLegend) {
         static TLegend *leg = nullptr;
         if (!leg) {
-            leg = new TLegend(0.50,0.80,0.75,0.88);
-            leg->AddEntry(gProton, "Proton", "l");
-            leg->AddEntry(gPion,   "Pion",   "l");
+            leg = new TLegend(0.50, 0.80, 0.75, 0.88);
+            leg->AddEntry(gProtonTrunc, "Proton", "l");
+            leg->AddEntry(gPionTrunc,   "Pion",   "l");
+            leg->AddEntry(gMIPShifted,  "MIP",    "l");
             leg->SetFillStyle(1001);
             leg->SetBorderSize(0);
         }
         leg->Draw();
     }
 }
-
 
 double distance(double x1, double x2, double y1, double y2, double z1, double z2) {
     return sqrt(
