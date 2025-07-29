@@ -167,6 +167,7 @@ void printEfficiencyPlots(TString dir, int fontStyle, double textSize, std::vect
 std::vector<double> calcLinearityProfile(std::vector<double>& vx, std::vector<double>& vy, std::vector<double>& vz, int nb);
 double energyLossCalculation();
 double energyLossCalculation(double x, double px, bool isData);
+int getCorrespondingBin(double value, int num_bins, double low, double high);
 
 ///////////////////
 // Main function //
@@ -762,22 +763,34 @@ void RecoAllAnalysis() {
     TH1D* hPion0pAbsTrueCrossSection = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbs0p");
     TH1D* hPionNpAbsTrueCrossSection = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbsNp");
 
-    // Reco cross sections
-    TH1D *hIncidentKE  = new TH1D("hRecoIncidentKE", "Incident KE [MeV]", 12, 0, 600);
-    TH1D *hPionAbsKE   = new TH1D("hPionAbsKE", "Interacting KE [MeV]", 12, 0, 600);
-    TH1D *h0pPionAbsKE = new TH1D("h0pPionAbsKE", "Interacting KE [MeV]", 12, 0, 600);
-    TH1D *hNpPionAbsKE = new TH1D("hNpPionAbsKE", "Interacting KE [MeV]", 12, 0, 600);
+    // Numbers for bins
+    double LOWER_BOUND_KE = 0.;
+    double UPPER_BOUND_KE = 600.;
+    int    NUM_BINS_KE    = 12;
 
-    TH1D *hPionAbsRecoCrossSection   = new TH1D("hPionAbsRecoCrossSection", "Cross section [barn]", 12, 0, 600);
-    TH1D *hPion0pAbsRecoCrossSection = new TH1D("hPion0pAbsRecoCrossSection", "Cross section [barn]", 12, 0, 600);
-    TH1D *hPionNpAbsRecoCrossSection = new TH1D("hPionNpAbsRecoCrossSection", "Cross section [barn]", 12, 0, 600);
+    // Reco cross sections
+    TH1D *hIncidentKE  = new TH1D("hRecoIncidentKE", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKE   = new TH1D("hPionAbsKE", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionAbsKE = new TH1D("h0pPionAbsKE", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionAbsKE = new TH1D("hNpPionAbsKE", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    
+    TH1D *hIncidentKECorrect   = new TH1D("hRecoIncidentKECorrect", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hIncidentKEGhosts    = new TH1D("hRecoIncidentKEGhosts", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hIncidentKEMuons     = new TH1D("hIncidentKEMuons", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hIncidentKEElectrons = new TH1D("hIncidentKEElectrons", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    TH1D *hPionAbsKECorrect = new TH1D("hPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    TH1D *hPionAbsRecoCrossSection   = new TH1D("hPionAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPion0pAbsRecoCrossSection = new TH1D("hPion0pAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionNpAbsRecoCrossSection = new TH1D("hPionNpAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
     // Histograms for corrections
-    TH1D *hIncidentKEOnlyPions  = new TH1D("hIncidentKEOnlyPions", "Incident KE [MeV]", 12, 0, 600);
+    TH1D *hIncidentKEOnlyPions  = new TH1D("hIncidentKEOnlyPions", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
-    TH1D *hPionAbsKEOnlyAbs     = new TH1D("hPionAbsKEOnlyAbs", "Interacting KE [MeV]", 12, 0, 600);
-    TH1D *h0pPionAbsKEOnly0pAbs = new TH1D("h0pPionAbsKEOnly0pAbs", "Interacting KE [MeV]", 12, 0, 600);
-    TH1D *hNpPionAbsKEOnlyNpAbs = new TH1D("hNpPionAbsKEOnlyNpAbs", "Interacting KE [MeV]", 12, 0, 600);
+    TH1D *hPionAbsKEOnlyAbs     = new TH1D("hPionAbsKEOnlyAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionAbsKEOnly0pAbs = new TH1D("h0pPionAbsKEOnly0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionAbsKEOnlyNpAbs = new TH1D("hNpPionAbsKEOnlyNpAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
     /////////////////////////////////
     // Files for event information //
@@ -842,6 +855,10 @@ void RecoAllAnalysis() {
             if (numVisibleProtons == 0) backgroundType = 0;
             if (numVisibleProtons > 0)  backgroundType = 1;
         }
+
+        // Using the truth-primary vertex KE, see what bin should be filled for the
+        // interacting histogram, assuming perfect reconstruction; also GeV -> MeV
+        int idealInteractingKEBin = getCorrespondingBin(truthPrimaryVertexKE * 1000, NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
         // Study elastic and inelastic scattering events
         if (backgroundType == 12) {
@@ -1073,6 +1090,20 @@ void RecoAllAnalysis() {
             if (isWithinReducedVolume(wcMatchXPos->at(iDep), wcMatchYPos->at(iDep), wcMatchZPos->at(iDep))) {
                 hIncidentKE->Fill(initialKE - energyDeposited);
                 if (truthPrimaryPDG == -211) hIncidentKEOnlyPions->Fill(initialKE - energyDeposited);
+
+                // See if we are adding a "ghost"
+                int targetBin = getCorrespondingBin(initialKE - energyDeposited, NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+                if (targetBin >= idealInteractingKEBin) {
+                    if (truthPrimaryPDG == -211) {
+                        hIncidentKECorrect->Fill(initialKE - energyDeposited);
+                    } else if (truthPrimaryPDG == 13) {
+                        hIncidentKEMuons->Fill(initialKE - energyDeposited);
+                    } else if (truthPrimaryPDG == 11) {
+                        hIncidentKEElectrons->Fill(initialKE - energyDeposited);
+                    }
+                } else {
+                    hIncidentKEGhosts->Fill(initialKE - energyDeposited);
+                }
             }
         }
         double energyAtVertex = initialKE - energyDeposited;
@@ -1593,6 +1624,9 @@ void RecoAllAnalysis() {
         } else if (totalTaggedProtons > 0) {
             hNpPionAbsKE->Fill(energyAtVertex);
         }
+
+        // We want to see if we filled the interacting bin correctly when
+        // comparing to truth information
 
         if (backgroundType == 0 || backgroundType == 1) {
             hPionAbsKEOnlyAbs->Fill(energyAtVertex);
@@ -2278,6 +2312,7 @@ void RecoAllAnalysis() {
 
         // Cross section
         {hIncidentKE},
+        {hIncidentKECorrect, hIncidentKEGhosts, hIncidentKEMuons, hIncidentKEElectrons},
         {hPionAbsKE, h0pPionAbsKE, hNpPionAbsKE}
     };
 
@@ -2331,6 +2366,7 @@ void RecoAllAnalysis() {
 
         // Cross section
         {"Incident"},
+        {"Pions", "Ghosts", "Muons", "Electrons"},
         {"All abs", "0p abs", "Np abs"}
     };
 
@@ -2384,6 +2420,7 @@ void RecoAllAnalysis() {
 
         // Cross section
         "CrossSection/IncidentKE",
+        "CrossSection/IncidentKEBreakdown",
         "CrossSection/InteractingkE"
     };
 
@@ -2437,6 +2474,7 @@ void RecoAllAnalysis() {
 
         // Cross section
         "Kinetic Energy [MeV]",
+        "Kinetic Energy [MeV]",
         "Kinetic Energy [MeV]"
     };
 
@@ -2489,8 +2527,9 @@ void RecoAllAnalysis() {
         "Number of events",
 
         // Cross section
-        "Number of events",
-        "Number of events"
+        "Counts",
+        "Counts",
+        "Counts"
     };
 
     printOneDPlots(
@@ -2684,6 +2723,11 @@ void RecoAllAnalysis() {
     gNpVertexVSOutgoingKE->SetMarkerColor(kBlack);
     gNpVertexVSOutgoingKE->Draw("AP");
     c->SaveAs(SaveDir + "Scattering/BackgroundNpInelasticScatteringVertexVSOutgoingKE.png");
+}
+
+int getCorrespondingBin(double value, int num_bins, double low, double high) {
+    double bin_size = (high - low) / (double) num_bins;
+    return std::ceil(value / bin_size); // 1 is first bin, 2 second, etc.
 }
 
 double energyLossCalculation() { return 40.; }
