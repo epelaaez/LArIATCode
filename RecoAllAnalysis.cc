@@ -779,7 +779,14 @@ void RecoAllAnalysis() {
     TH1D *hIncidentKEMuons     = new TH1D("hIncidentKEMuons", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D *hIncidentKEElectrons = new TH1D("hIncidentKEElectrons", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
-    TH1D *hPionAbsKECorrect = new TH1D("hPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKECorrect    = new TH1D("hPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKEScattering = new TH1D("hPionAbsKEScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKEChEx       = new TH1D("hPionAbsKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKEMuons      = new TH1D("hPionAbsKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKEElectrons  = new TH1D("hPionAbsKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKEThrough    = new TH1D("hPionAbsKEThrough", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKEGhost      = new TH1D("hPionAbsKEGhost", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKEOther      = new TH1D("hPionAbsKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
     TH1D *hPionAbsRecoCrossSection   = new TH1D("hPionAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D *hPion0pAbsRecoCrossSection = new TH1D("hPion0pAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -1627,6 +1634,28 @@ void RecoAllAnalysis() {
 
         // We want to see if we filled the interacting bin correctly when
         // comparing to truth information
+        int intEnergyBin = getCorrespondingBin(energyAtVertex, NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+        // if (intEnergyBin == idealInteractingKEBin) {
+        //     if (backgroundType == 0 || backgroundType == 1) hPionAbsKECorrect->Fill(energyAtVertex);
+        //     else if (backgroundType == 2) hPionAbsKEMuons->Fill(energyAtVertex);
+        //     else if (backgroundType == 3) hPionAbsKEElectrons->Fill(energyAtVertex);
+        //     else if (backgroundType == 12 || backgroundType == 6) hPionAbsKEScattering->Fill(energyAtVertex);
+        //     else if (backgroundType == 7) hPionAbsKEChEx->Fill(energyAtVertex);
+        //     else if (backgroundType == 5) hPionAbsKEThrough->Fill(energyAtVertex);
+        //     else hPionAbsKEOther->Fill(energyAtVertex);
+        // } else if (intEnergyBin > idealInteractingKEBin) {
+        //     if (truthPrimaryPDG == -211) hPionAbsKEThrough->Fill(energyAtVertex);
+        //     else if (truthPrimaryPDG == 13) hPionAbsKEMuons->Fill(energyAtVertex);
+        //     else if (truthPrimaryPDG == 11) hPionAbsKEElectrons->Fill(energyAtVertex);
+        // } else {
+        //     hPionAbsKEGhost->Fill(energyAtVertex);
+        // }
+        if (backgroundType == 0 || backgroundType == 1) hPionAbsKECorrect->Fill(energyAtVertex);
+        else if (backgroundType == 2) hPionAbsKEMuons->Fill(energyAtVertex);
+        else if (backgroundType == 3) hPionAbsKEElectrons->Fill(energyAtVertex);
+        else if (backgroundType == 12 || backgroundType == 6) hPionAbsKEScattering->Fill(energyAtVertex);
+        else if (backgroundType == 7) hPionAbsKEChEx->Fill(energyAtVertex);
+        else hPionAbsKEOther->Fill(energyAtVertex);
 
         if (backgroundType == 0 || backgroundType == 1) {
             hPionAbsKEOnlyAbs->Fill(energyAtVertex);
@@ -2259,7 +2288,16 @@ void RecoAllAnalysis() {
     //////////////////
 
     std::vector<int> Colors = {
-        kBlack, kBlue, kRed, kGreen
+        kBlack,
+        kBlue,
+        kRed,
+        kGreen,
+        kOrange+1,
+        kMagenta,
+        kCyan+1,
+        kViolet+1,
+        kAzure+1,
+        kPink+6
     };
 
     std::vector<std::vector<TH1*>> PlotGroups = {
@@ -2313,7 +2351,9 @@ void RecoAllAnalysis() {
         // Cross section
         {hIncidentKE},
         {hIncidentKECorrect, hIncidentKEGhosts, hIncidentKEMuons, hIncidentKEElectrons},
-        {hPionAbsKE, h0pPionAbsKE, hNpPionAbsKE}
+        {hPionAbsKE, h0pPionAbsKE, hNpPionAbsKE},
+        // {hPionAbsKECorrect, hPionAbsKEScattering, hPionAbsKEChEx, hPionAbsKEMuons, hPionAbsKEElectrons, hPionAbsKEThrough, hPionAbsKEGhost, hPionAbsKEOther}
+        {hPionAbsKECorrect, hPionAbsKEScattering, hPionAbsKEChEx, hPionAbsKEMuons, hPionAbsKEElectrons, hPionAbsKEOther}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2367,7 +2407,9 @@ void RecoAllAnalysis() {
         // Cross section
         {"Incident"},
         {"Pions", "Ghosts", "Muons", "Electrons"},
-        {"All abs", "0p abs", "Np abs"}
+        {"All abs", "0p abs", "Np abs"},
+        // {"Abs", "Scatter", "Ch. Exch.", "Muon", "Electron", "TG", "Ghost", "Other"}
+        {"Abs", "Scatter", "Ch. Exch.", "Muon", "Electron", "Other"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -2421,7 +2463,8 @@ void RecoAllAnalysis() {
         // Cross section
         "CrossSection/IncidentKE",
         "CrossSection/IncidentKEBreakdown",
-        "CrossSection/InteractingkE"
+        "CrossSection/InteractingkE",
+        "CrossSection/InteractingkEBreakdown"
     };
 
     std::vector<TString> XLabels = {
@@ -2473,6 +2516,7 @@ void RecoAllAnalysis() {
         "Scattering vertex KE (GeV/c)",
 
         // Cross section
+        "Kinetic Energy [MeV]",
         "Kinetic Energy [MeV]",
         "Kinetic Energy [MeV]",
         "Kinetic Energy [MeV]"
@@ -2527,6 +2571,7 @@ void RecoAllAnalysis() {
         "Number of events",
 
         // Cross section
+        "Counts",
         "Counts",
         "Counts",
         "Counts"
