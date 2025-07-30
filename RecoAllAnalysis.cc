@@ -80,7 +80,7 @@ const double RmaxZ = 82.0;
 const double minX =  0.0;
 const double maxX = 47.0;
 const double minY =-20.0; 
-const double maxY = 20.0; 
+const double maxY = 20.0;
 const double minZ =  3.0;
 const double maxZ = 87.0;
 
@@ -175,6 +175,7 @@ int getCorrespondingBin(double value, int num_bins, double low, double high);
 
 void RecoAllAnalysis() {
     // Set defaults
+    gStyle->SetOptStat(0); // get rid of stats box
     TH1D::SetDefaultSumw2();
     TH2D::SetDefaultSumw2();
     gStyle->SetPalette(kRainBow);
@@ -778,14 +779,34 @@ void RecoAllAnalysis() {
     TH1D *hIncidentKEMuons     = new TH1D("hIncidentKEMuons", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D *hIncidentKEElectrons = new TH1D("hIncidentKEElectrons", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
-    TH1D *hPionAbsKECorrect    = new TH1D("hPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKEScattering = new TH1D("hPionAbsKEScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKEChEx       = new TH1D("hPionAbsKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKEMuons      = new TH1D("hPionAbsKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKEElectrons  = new TH1D("hPionAbsKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKEThrough    = new TH1D("hPionAbsKEThrough", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKEGhost      = new TH1D("hPionAbsKEGhost", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKEOther      = new TH1D("hPionAbsKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    // Background breakdown for all absorption
+    TH1D *hPionAbsKECorrect      = new TH1D("hPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKE0pScattering = new TH1D("hPionAbsKE0pScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKENpScattering = new TH1D("hPionAbsKENpScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKEChEx         = new TH1D("hPionAbsKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKEMuons        = new TH1D("hPionAbsKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKEElectrons    = new TH1D("hPionAbsKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKEOther        = new TH1D("hPionAbsKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // Background breakdown for 0p absorption
+    TH1D *h0pPionAbsKECorrect      = new TH1D("h0pPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionAbsKENpAbs        = new TH1D("h0pPionAbsKENpAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionAbsKE0pScattering = new TH1D("h0pPionAbsKE0pScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionAbsKENpScattering = new TH1D("h0pPionAbsKENpScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionAbsKEChEx         = new TH1D("h0pPionAbsKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionAbsKEMuons        = new TH1D("h0pPionAbsKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionAbsKEElectrons    = new TH1D("h0pPionAbsKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionAbsKEOther        = new TH1D("h0pPionAbsKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // Background breakdown for Np absorption
+    TH1D *hNpPionAbsKECorrect      = new TH1D("hNpPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionAbsKE0pAbs        = new TH1D("hNpPionAbsKE0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionAbsKE0pScattering = new TH1D("hNpPionAbsKE0pScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionAbsKENpScattering = new TH1D("hNpPionAbsKENpScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionAbsKEChEx         = new TH1D("hNpPionAbsKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionAbsKEMuons        = new TH1D("hNpPionAbsKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionAbsKEElectrons    = new TH1D("hNpPionAbsKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionAbsKEOther        = new TH1D("hNpPionAbsKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
     TH1D *hPionAbsRecoCrossSection   = new TH1D("hPionAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D *hPion0pAbsRecoCrossSection = new TH1D("hPion0pAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -797,6 +818,43 @@ void RecoAllAnalysis() {
     TH1D *hPionAbsKEOnlyAbs     = new TH1D("hPionAbsKEOnlyAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D *h0pPionAbsKEOnly0pAbs = new TH1D("h0pPionAbsKEOnly0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D *hNpPionAbsKEOnlyNpAbs = new TH1D("hNpPionAbsKEOnlyNpAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    ///////////////////////////
+    // Scattering histograms //
+    ///////////////////////////
+
+    TH1D *hPionScatteringKE   = new TH1D("hPionScatteringKE", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionScatteringKE0p = new TH1D("hPionScatteringKE0p", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionScatteringKENp = new TH1D("hPionScatteringKENp", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // Background breakdown for all scattering
+    TH1D *hPionScatteringKECorrect   = new TH1D("hPionScatteringKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionScatteringKE0pAbs     = new TH1D("hPionScatteringKE0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionScatteringKENpAbs     = new TH1D("hPionScatteringKENpAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionScatteringKEChEx      = new TH1D("hPionScatteringKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionScatteringKEMuons     = new TH1D("hPionScatteringKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionScatteringKEElectrons = new TH1D("hPionScatteringKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionScatteringKEOther     = new TH1D("hPionScatteringKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // Background breakdown for 0p scattering
+    TH1D *h0pPionScatteringKECorrect   = new TH1D("h0pPionScatteringKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionScatteringKENpScatter = new TH1D("h0pPionScatteringKENpScatter", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionScatteringKE0pAbs     = new TH1D("h0pPionScatteringKE0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionScatteringKENpAbs     = new TH1D("h0pPionScatteringKENpAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionScatteringKEChEx      = new TH1D("h0pPionScatteringKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionScatteringKEMuons     = new TH1D("h0pPionScatteringKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionScatteringKEElectrons = new TH1D("h0pPionScatteringKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionScatteringKEOther     = new TH1D("h0pPionScatteringKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    
+    // Background breakdown for Np scattering
+    TH1D *hNpPionScatteringKECorrect   = new TH1D("hNpPionScatteringKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionScatteringKE0pScatter = new TH1D("hNpPionScatteringKE0pScatter", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionScatteringKE0pAbs     = new TH1D("hNpPionScatteringKE0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionScatteringKENpAbs     = new TH1D("hNpPionScatteringKENpAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionScatteringKEChEx      = new TH1D("hNpPionScatteringKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionScatteringKEMuons     = new TH1D("hNpPionScatteringKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionScatteringKEElectrons = new TH1D("hNpPionScatteringKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionScatteringKEOther     = new TH1D("hNpPionScatteringKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
     /////////////////////////////////
     // Files for event information //
@@ -862,9 +920,14 @@ void RecoAllAnalysis() {
             if (numVisibleProtons > 0)  backgroundType = 1;
         }
 
-        // Using the truth-primary vertex KE, see what bin should be filled for the
-        // interacting histogram, assuming perfect reconstruction; also GeV -> MeV
-        int idealInteractingKEBin = getCorrespondingBin(truthPrimaryVertexKE * 1000, NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+        // Categorize scatterings into 0p and Np scatterings
+        int scatteringType = -1; // -1: not scattering, 0: 0p scattering, 1: Np scattering
+        if (backgroundType == 12 || backgroundType == 6) {
+            scatteringType = 0;
+            for (int iDaughter = 0; iDaughter < truthPrimaryDaughtersPDG->size(); ++iDaughter) {
+                if (truthPrimaryDaughtersPDG->at(iDaughter) == 2212 && truthPrimaryDaughtersKE->at(iDaughter) >= PROTON_ENERGY_LOWER_BOUND) { scatteringType = 1; break; }
+            }
+        }
 
         // Study elastic and inelastic scattering events
         if (backgroundType == 12) {
@@ -1097,8 +1160,7 @@ void RecoAllAnalysis() {
                 hIncidentKE->Fill(initialKE - energyDeposited);
                 if (truthPrimaryPDG == -211) hIncidentKEOnlyPions->Fill(initialKE - energyDeposited);
 
-                // See if we are adding a "ghost"
-                int targetBin = getCorrespondingBin(initialKE - energyDeposited, NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+                // Background breakdown
                 if (truthPrimaryPDG == -211) {
                     hIncidentKECorrect->Fill(initialKE - energyDeposited);
                 } else if (truthPrimaryPDG == 13) {
@@ -1341,7 +1403,46 @@ void RecoAllAnalysis() {
         int totalTaggedProtons = secondaryTaggedProton + otherTaggedProton;
 
         if (totalTaggedPions > 0) {
-            // If any secondary tagged as pion, not signal
+            if (totalTaggedPions > 1) continue; // reject events with more than one tagged pion
+            
+            // If any secondary tagged as pion, event is not pion absorption signal
+            // However, we are still interested in tagging scattering events
+            hPionScatteringKE->Fill(energyAtVertex);
+
+            // Background breakdown for pion scattering
+            if (scatteringType != -1) hPionScatteringKECorrect->Fill(energyAtVertex);
+            else if (backgroundType == 0) hPionScatteringKE0pAbs->Fill(energyAtVertex);
+            else if (backgroundType == 1) hPionScatteringKENpAbs->Fill(energyAtVertex);
+            else if (backgroundType == 7) hPionScatteringKEChEx->Fill(energyAtVertex);
+            else if (backgroundType == 2) hPionScatteringKEMuons->Fill(energyAtVertex);
+            else if (backgroundType == 3) hPionScatteringKEElectrons->Fill(energyAtVertex);
+            else hPionScatteringKEOther->Fill(energyAtVertex);
+
+            if (totalTaggedProtons == 0) {
+                hPionScatteringKE0p->Fill(energyAtVertex);
+
+                // Background breakdown for pion 0p scattering
+                if (scatteringType == 0) h0pPionScatteringKECorrect->Fill(energyAtVertex);
+                else if (scatteringType == 1) h0pPionScatteringKENpScatter->Fill(energyAtVertex);
+                else if (backgroundType == 0) h0pPionScatteringKE0pAbs->Fill(energyAtVertex);
+                else if (backgroundType == 1) h0pPionScatteringKENpAbs->Fill(energyAtVertex);
+                else if (backgroundType == 7) h0pPionScatteringKEChEx->Fill(energyAtVertex);
+                else if (backgroundType == 2) h0pPionScatteringKEMuons->Fill(energyAtVertex);
+                else if (backgroundType == 3) h0pPionScatteringKEElectrons->Fill(energyAtVertex);
+                else h0pPionScatteringKEOther->Fill(energyAtVertex);
+            } else if (totalTaggedProtons > 0) {
+                hPionScatteringKENp->Fill(energyAtVertex);
+
+                // Background breakdown for pion Np scattering
+                if (scatteringType == 1) hNpPionScatteringKECorrect->Fill(energyAtVertex);
+                else if (scatteringType == 0) hNpPionScatteringKE0pScatter->Fill(energyAtVertex);
+                else if (backgroundType == 0) hNpPionScatteringKE0pAbs->Fill(energyAtVertex);
+                else if (backgroundType == 1) hNpPionScatteringKENpAbs->Fill(energyAtVertex);
+                else if (backgroundType == 7) hNpPionScatteringKEChEx->Fill(energyAtVertex);
+                else if (backgroundType == 2) hNpPionScatteringKEMuons->Fill(energyAtVertex);
+                else if (backgroundType == 3) hNpPionScatteringKEElectrons->Fill(energyAtVertex);
+                else hNpPionScatteringKEOther->Fill(energyAtVertex);
+            }
             continue;
         }
 
@@ -1384,14 +1485,8 @@ void RecoAllAnalysis() {
         // Hits in the same cluster must be separated by at most some number of wires
         float maxHitClusterSeparation = HIT_WIRE_SEPARATION * 3.0; 
         float maxHitXSeparation       = 1.0;
-
-        // std::cout << "Candidate hits: " << nCandidateHits << std::endl;
-        // std::cout << "Vertex hit X: " << primaryEndPointHitX << "  W: " << primaryEndPointHitW << std::endl;
         
         for (int iHit = 0; iHit < nCandidateHits; ++iHit) {
-            // std::cout << "  X: " << fHitX->at(candidateInductionHits.at(iHit));
-            // std::cout << "  W: " << fHitW->at(candidateInductionHits.at(iHit)) << std::endl;
-
             // The candidate hits are only STARTING points, as this could make up 
             // really long tracks in the induction plane that are no longer near 
             // the ending point of the primary track
@@ -1483,8 +1578,8 @@ void RecoAllAnalysis() {
         }
 
         // Get data for cut
-        float totalClusterSize        = 0.;
-        int   numLargeClusters        = 0;
+        float totalClusterSize = 0.;
+        int   numLargeClusters = 0;
         for (int i = 0; i < hitClusters.size(); ++i) {
             float maxWire = *std::max_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
             float minWire = *std::min_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
@@ -1627,30 +1722,37 @@ void RecoAllAnalysis() {
             hNpPionAbsKE->Fill(energyAtVertex);
         }
 
-        // We want to see if we filled the interacting bin correctly when
-        // comparing to truth information
-        int intEnergyBin = getCorrespondingBin(energyAtVertex, NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-        // if (intEnergyBin == idealInteractingKEBin) {
-        //     if (backgroundType == 0 || backgroundType == 1) hPionAbsKECorrect->Fill(energyAtVertex);
-        //     else if (backgroundType == 2) hPionAbsKEMuons->Fill(energyAtVertex);
-        //     else if (backgroundType == 3) hPionAbsKEElectrons->Fill(energyAtVertex);
-        //     else if (backgroundType == 12 || backgroundType == 6) hPionAbsKEScattering->Fill(energyAtVertex);
-        //     else if (backgroundType == 7) hPionAbsKEChEx->Fill(energyAtVertex);
-        //     else if (backgroundType == 5) hPionAbsKEThrough->Fill(energyAtVertex);
-        //     else hPionAbsKEOther->Fill(energyAtVertex);
-        // } else if (intEnergyBin > idealInteractingKEBin) {
-        //     if (truthPrimaryPDG == -211) hPionAbsKEThrough->Fill(energyAtVertex);
-        //     else if (truthPrimaryPDG == 13) hPionAbsKEMuons->Fill(energyAtVertex);
-        //     else if (truthPrimaryPDG == 11) hPionAbsKEElectrons->Fill(energyAtVertex);
-        // } else {
-        //     hPionAbsKEGhost->Fill(energyAtVertex);
-        // }
+        // We want to see if we filled the interacting bin correctly using truth info
         if (backgroundType == 0 || backgroundType == 1) hPionAbsKECorrect->Fill(energyAtVertex);
+        else if (scatteringType == 0) hPionAbsKE0pScattering->Fill(energyAtVertex);
+        else if (scatteringType == 1) hPionAbsKENpScattering->Fill(energyAtVertex);
+        else if (backgroundType == 7) hPionAbsKEChEx->Fill(energyAtVertex);
         else if (backgroundType == 2) hPionAbsKEMuons->Fill(energyAtVertex);
         else if (backgroundType == 3) hPionAbsKEElectrons->Fill(energyAtVertex);
-        else if (backgroundType == 12 || backgroundType == 6) hPionAbsKEScattering->Fill(energyAtVertex);
-        else if (backgroundType == 7) hPionAbsKEChEx->Fill(energyAtVertex);
         else hPionAbsKEOther->Fill(energyAtVertex);
+
+        // Same thing for 0p absorption
+        if (totalTaggedProtons == 0) {
+            if (backgroundType == 0) h0pPionAbsKECorrect->Fill(energyAtVertex);
+            else if (backgroundType == 1) h0pPionAbsKENpAbs->Fill(energyAtVertex);
+            else if (scatteringType == 0) h0pPionAbsKE0pScattering->Fill(energyAtVertex);
+            else if (scatteringType == 1) h0pPionAbsKENpScattering->Fill(energyAtVertex);
+            else if (backgroundType == 7) h0pPionAbsKEChEx->Fill(energyAtVertex);
+            else if (backgroundType == 2) h0pPionAbsKEMuons->Fill(energyAtVertex);
+            else if (backgroundType == 3) h0pPionAbsKEElectrons->Fill(energyAtVertex);
+            else h0pPionAbsKEOther->Fill(energyAtVertex);
+        } 
+        // And for Np absorption
+        else if (totalTaggedProtons > 0) {
+            if (backgroundType == 1) hNpPionAbsKECorrect->Fill(energyAtVertex);
+            else if (backgroundType == 0) hNpPionAbsKE0pAbs->Fill(energyAtVertex);
+            else if (scatteringType == 0) hNpPionAbsKE0pScattering->Fill(energyAtVertex);
+            else if (scatteringType == 1) hNpPionAbsKENpScattering->Fill(energyAtVertex);
+            else if (backgroundType == 7) hNpPionAbsKEChEx->Fill(energyAtVertex);
+            else if (backgroundType == 2) hNpPionAbsKEMuons->Fill(energyAtVertex);
+            else if (backgroundType == 3) hNpPionAbsKEElectrons->Fill(energyAtVertex);
+            else hNpPionAbsKEOther->Fill(energyAtVertex);
+        }
 
         if (backgroundType == 0 || backgroundType == 1) {
             hPionAbsKEOnlyAbs->Fill(energyAtVertex);
@@ -2131,7 +2233,7 @@ void RecoAllAnalysis() {
     // Draw them individually //
     ////////////////////////////
 
-    gStyle->SetOptStat(0);
+    // gStyle->SetOptStat(0);
     for (size_t i = 0; i < XSecHistos.size(); ++i) {
         if (!XSecHistos[i]) continue;
 
@@ -2276,7 +2378,7 @@ void RecoAllAnalysis() {
 
     delete XSecCanvas;
 
-    gStyle->SetOptStat(1);
+    // gStyle->SetOptStat(1);
 
     //////////////////
     // Create plots //
@@ -2343,12 +2445,21 @@ void RecoAllAnalysis() {
         {hAllScatteringAngle, hElasticScatteringAngle, hInelasticScatteringAngle},
         {hAllScatteringVertexKE, hElasticScatteringVertexKE, hInelasticScatteringVertexKE},
 
-        // Cross section
+        // Incident histograms
         {hIncidentKE},
         {hIncidentKECorrect, hIncidentKEMuons, hIncidentKEElectrons},
+
+        // Pion absorption interacting slices
         {hPionAbsKE, h0pPionAbsKE, hNpPionAbsKE},
-        // {hPionAbsKECorrect, hPionAbsKEScattering, hPionAbsKEChEx, hPionAbsKEMuons, hPionAbsKEElectrons, hPionAbsKEThrough, hPionAbsKEGhost, hPionAbsKEOther}
-        {hPionAbsKECorrect, hPionAbsKEScattering, hPionAbsKEChEx, hPionAbsKEMuons, hPionAbsKEElectrons, hPionAbsKEOther}
+        {hPionAbsKECorrect, hPionAbsKE0pScattering, hPionAbsKENpScattering, hPionAbsKEChEx, hPionAbsKEMuons, hPionAbsKEElectrons, hPionAbsKEOther},
+        {h0pPionAbsKECorrect, h0pPionAbsKENpAbs, h0pPionAbsKE0pScattering, h0pPionAbsKENpScattering, h0pPionAbsKEChEx, h0pPionAbsKEMuons, h0pPionAbsKEElectrons, h0pPionAbsKEOther},
+        {hNpPionAbsKECorrect, hNpPionAbsKE0pAbs, hNpPionAbsKE0pScattering, hNpPionAbsKENpScattering, hNpPionAbsKEChEx, hNpPionAbsKEMuons, hNpPionAbsKEElectrons, hNpPionAbsKEOther},
+
+        // Scattering interacting slices
+        {hPionScatteringKE, hPionScatteringKE0p, hPionScatteringKENp},
+        {hPionScatteringKECorrect, hPionScatteringKE0pAbs, hPionScatteringKENpAbs, hPionScatteringKEChEx, hPionScatteringKEMuons, hPionScatteringKEElectrons, hPionScatteringKEOther},
+        {h0pPionScatteringKECorrect, h0pPionScatteringKENpScatter, h0pPionScatteringKE0pAbs, h0pPionScatteringKENpAbs, h0pPionScatteringKEChEx, h0pPionScatteringKEMuons, h0pPionScatteringKEElectrons, h0pPionScatteringKEOther},
+        {hNpPionScatteringKECorrect, hNpPionScatteringKE0pScatter, hNpPionScatteringKE0pAbs, hNpPionScatteringKENpAbs, hNpPionScatteringKEChEx, hNpPionScatteringKEMuons, hNpPionScatteringKEElectrons, hNpPionScatteringKEOther}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2399,12 +2510,22 @@ void RecoAllAnalysis() {
         {"All", "Elastic", "Inelastic"},
         {"All", "Elastic", "Inelastic"},
 
-        // Cross section
+        // Incident histograms
         {"Incident"},
         {"Pions", "Muons", "Electrons"},
+
+        // Pion absorption interacting slices
         {"All abs", "0p abs", "Np abs"},
-        // {"Abs", "Scatter", "Ch. Exch.", "Muon", "Electron", "TG", "Ghost", "Other"}
-        {"Abs", "Scatter", "Ch. Exch.", "Muon", "Electron", "Other"}
+        {"Abs", "0p scatter", "Np scatter", "Ch. Exch.", "Muon", "Electron", "Other"},
+        {"0p abs", "Np abs", "0p scatter", "Np scatter", "Ch. Exch.", "Muon", "Electron", "Other"},
+        {"Np abs", "0p abs", "0p scatter", "Np scatter", "Ch. Exch.", "Muon", "Electron", "Other"},
+
+        // Scattering interacting slices        
+        {"All scatter", "0p Scatter", "Np scatter"},
+        {"Scatter", "0p abs", "Np abs", "Ch. Exch.", "Muon", "Electron", "Other"},
+        {"0p scatter", "Np scatter", "0p abs", "Np abs", "Ch. Exch.", "Muon", "Electron", "Other"},
+        {"Np scatter", "0p scatter", "0p abs", "Np abs", "Ch. Exch.", "Muon", "Electron", "Other"}
+
     };
 
     std::vector<TString> PlotTitles = {
@@ -2455,11 +2576,21 @@ void RecoAllAnalysis() {
         "Scattering/AllScatteringAngle",
         "Scattering/AllScatteringVertexKE",
 
-        // Cross section
+        // Incident histograms
         "CrossSection/IncidentKE",
         "CrossSection/IncidentKEBreakdown",
-        "CrossSection/InteractingkE",
-        "CrossSection/InteractingkEBreakdown"
+
+        // Pion absorption interacting slices
+        "CrossSection/AbsInteractingKE",
+        "CrossSection/AbsInteractingKEBreakdown",
+        "CrossSection/0pAbsInteractingKEBreakdown",
+        "CrossSection/NpAbsInteractingKEBreakdown",
+
+        // Scattering interacting slices
+        "CrossSection/ScatteringInteractingKE",
+        "CrossSection/ScatteringInteractingKEBreakdown",
+        "CrossSection/0pScatteringInteractingKEBreakdown",
+        "CrossSection/NpScatteringInteractingKEBreakdown"
     };
 
     std::vector<TString> XLabels = {
@@ -2510,7 +2641,17 @@ void RecoAllAnalysis() {
         "Scattering angle (deg)",
         "Scattering vertex KE (GeV/c)",
 
-        // Cross section
+        // Incident histograms
+        "Kinetic Energy [MeV]",
+        "Kinetic Energy [MeV]",
+
+        // Pion absorption interacting slices
+        "Kinetic Energy [MeV]",
+        "Kinetic Energy [MeV]",
+        "Kinetic Energy [MeV]",
+        "Kinetic Energy [MeV]",
+
+        // Scattering interacting slices
         "Kinetic Energy [MeV]",
         "Kinetic Energy [MeV]",
         "Kinetic Energy [MeV]",
@@ -2565,7 +2706,17 @@ void RecoAllAnalysis() {
         "Number of events",
         "Number of events",
 
-        // Cross section
+        // Incident histograms
+        "Counts",
+        "Counts",
+
+        // Pion absorption interacting slices
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+
+        // Scattering interacting slices
         "Counts",
         "Counts",
         "Counts",
@@ -3189,7 +3340,7 @@ void printOneDPlots(
         PlotCanvas->SetLeftMargin(0.15);
         PlotCanvas->SetBottomMargin(0.15);
 
-        TLegend* leg = new TLegend(0.65,0.65,0.85,0.80);
+        TLegend* leg = new TLegend(0.60,0.50,0.85,0.80);
         leg->SetBorderSize(0);
         leg->SetTextSize(textSize * 0.8);
         leg->SetTextFont(fontStyle);
@@ -3247,7 +3398,7 @@ void printOneDPlots(
 void printTwoDPlots(TString dir, std::vector<TH2*> plots, std::vector<TString> titles) {
     int nPlots = plots.size();
 
-    gStyle->SetOptStat(0);
+    // gStyle->SetOptStat(0);
     TCanvas* c1 = new TCanvas("c1", "EnergyLossPlots", 800, 600);
     for (int iPlot = 0; iPlot < nPlots; ++iPlot) {
         TH1* hPlot = plots.at(iPlot);
