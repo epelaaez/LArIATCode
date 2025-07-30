@@ -775,7 +775,6 @@ void RecoAllAnalysis() {
     TH1D *hNpPionAbsKE = new TH1D("hNpPionAbsKE", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     
     TH1D *hIncidentKECorrect   = new TH1D("hRecoIncidentKECorrect", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hIncidentKEGhosts    = new TH1D("hRecoIncidentKEGhosts", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D *hIncidentKEMuons     = new TH1D("hIncidentKEMuons", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D *hIncidentKEElectrons = new TH1D("hIncidentKEElectrons", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
@@ -1100,16 +1099,12 @@ void RecoAllAnalysis() {
 
                 // See if we are adding a "ghost"
                 int targetBin = getCorrespondingBin(initialKE - energyDeposited, NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-                if (targetBin >= idealInteractingKEBin) {
-                    if (truthPrimaryPDG == -211) {
-                        hIncidentKECorrect->Fill(initialKE - energyDeposited);
-                    } else if (truthPrimaryPDG == 13) {
-                        hIncidentKEMuons->Fill(initialKE - energyDeposited);
-                    } else if (truthPrimaryPDG == 11) {
-                        hIncidentKEElectrons->Fill(initialKE - energyDeposited);
-                    }
-                } else {
-                    hIncidentKEGhosts->Fill(initialKE - energyDeposited);
+                if (truthPrimaryPDG == -211) {
+                    hIncidentKECorrect->Fill(initialKE - energyDeposited);
+                } else if (truthPrimaryPDG == 13) {
+                    hIncidentKEMuons->Fill(initialKE - energyDeposited);
+                } else if (truthPrimaryPDG == 11) {
+                    hIncidentKEElectrons->Fill(initialKE - energyDeposited);
                 }
             }
         }
@@ -2350,7 +2345,7 @@ void RecoAllAnalysis() {
 
         // Cross section
         {hIncidentKE},
-        {hIncidentKECorrect, hIncidentKEGhosts, hIncidentKEMuons, hIncidentKEElectrons},
+        {hIncidentKECorrect, hIncidentKEMuons, hIncidentKEElectrons},
         {hPionAbsKE, h0pPionAbsKE, hNpPionAbsKE},
         // {hPionAbsKECorrect, hPionAbsKEScattering, hPionAbsKEChEx, hPionAbsKEMuons, hPionAbsKEElectrons, hPionAbsKEThrough, hPionAbsKEGhost, hPionAbsKEOther}
         {hPionAbsKECorrect, hPionAbsKEScattering, hPionAbsKEChEx, hPionAbsKEMuons, hPionAbsKEElectrons, hPionAbsKEOther}
@@ -2406,7 +2401,7 @@ void RecoAllAnalysis() {
 
         // Cross section
         {"Incident"},
-        {"Pions", "Ghosts", "Muons", "Electrons"},
+        {"Pions", "Muons", "Electrons"},
         {"All abs", "0p abs", "Np abs"},
         // {"Abs", "Scatter", "Ch. Exch.", "Muon", "Electron", "TG", "Ghost", "Other"}
         {"Abs", "Scatter", "Ch. Exch.", "Muon", "Electron", "Other"}
