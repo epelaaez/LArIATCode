@@ -152,13 +152,16 @@ double meanDEDX(std::vector<double> trackDEDX, bool isTrackReversed, int pointsT
 void printBackgroundInfo(TH1D* background_histo, std::ostream& os);
 int isSecondaryInteractionAbsorption(std::vector<int> daughtersPDG, std::vector<string> daughtersProcess, std::vector<double> daughtersKE);
 void printOneDPlots(
-    TString dir, int fontStyle, double textSize,
-    std::vector<std::vector<TH1*>> groups,
-    std::vector<int> colors, 
-    std::vector<std::vector<TString>> labels, 
-    std::vector<TString> titles, 
-    std::vector<TString> xlabels, 
-    std::vector<TString> ylabels
+    const TString& dir, 
+    int fontStyle, 
+    double textSize,
+    std::vector<std::vector<TH1*>>& groups,
+    std::vector<int>& colors, 
+    std::vector<std::vector<TString>>& labels, 
+    std::vector<TString>& titles, 
+    std::vector<TString>& xlabels, 
+    std::vector<TString>& ylabels,
+    std::vector<bool>& stack
 );
 void printTwoDPlots(TString dir, std::vector<TH2*> plots, std::vector<TString> titles);
 bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold);
@@ -2520,15 +2523,15 @@ void RecoAllAnalysis() {
 
         // Pion absorption interacting slices
         {"All abs", "0p abs", "Np abs"},
-        {"Abs", "0p scatter", "Np scatter", "Ch. Exch.", "Muon", "Electron", "Other"},
-        {"0p abs", "Np abs", "0p scatter", "Np scatter", "Ch. Exch.", "Muon", "Electron", "Other"},
-        {"Np abs", "0p abs", "0p scatter", "Np scatter", "Ch. Exch.", "Muon", "Electron", "Other"},
+        {"Abs", "0p scatter", "Np scatter", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"0p abs", "Np abs", "0p scatter", "Np scatter", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"Np abs", "0p abs", "0p scatter", "Np scatter", "Ch. exch.", "Muon", "Electron", "Other"},
 
         // Scattering interacting slices        
         {"All scatter", "0p Scatter", "Np scatter"},
-        {"Scatter", "0p abs", "Np abs", "Ch. Exch.", "Muon", "Electron", "Other"},
-        {"0p scatter", "Np scatter", "0p abs", "Np abs", "Ch. Exch.", "Muon", "Electron", "Other"},
-        {"Np scatter", "0p scatter", "0p abs", "Np abs", "Ch. Exch.", "Muon", "Electron", "Other"}
+        {"Scatter", "0p abs", "Np abs", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"0p scatter", "Np scatter", "0p abs", "Np abs", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"Np scatter", "0p scatter", "0p abs", "Np abs", "Ch. exch.", "Muon", "Electron", "Other"}
 
     };
 
@@ -2727,6 +2730,71 @@ void RecoAllAnalysis() {
         "Counts"
     };
 
+    std::vector<bool> PlotStacked = {
+        // Stitching
+        false,
+        false,
+        false,
+
+        // Secondary PID
+        false,
+        false,
+        false,
+
+        // Scattering
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+
+        // Hit clustering
+        false,
+        false,
+        false,
+
+        // Scattering reconstruction
+        false,
+        false,
+        false,
+        false,
+
+        // Local linearity
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+
+        // All scattering
+        false,
+        false,
+
+        // Incident histograms
+        false,
+        true,
+
+        // Pion absorption interacting slices
+        false,
+        true,
+        true,
+        true,
+
+        // Scattering interacting slices
+        false,
+        true,
+        true,
+        true
+    };
+
     printOneDPlots(
         SaveDir, FontStyle, TextSize,
         PlotGroups,
@@ -2734,7 +2802,8 @@ void RecoAllAnalysis() {
         PlotLabelGroups,
         PlotTitles,
         XLabels,
-        YLabels
+        YLabels,
+        PlotStacked
     );
 
     ///////////////////////////
@@ -3328,13 +3397,16 @@ void printEfficiencyPlots(
 }
 
 void printOneDPlots(
-    TString dir, int fontStyle, double textSize, 
-    std::vector<std::vector<TH1*>> groups,
-    std::vector<int> colors,
-    std::vector<std::vector<TString>> labels, 
-    std::vector<TString> titles, 
-    std::vector<TString> xlabels,
-    std::vector<TString> ylabels
+    const TString& dir, 
+    int fontStyle, 
+    double textSize,
+    std::vector<std::vector<TH1*>>& groups,
+    std::vector<int>& colors, 
+    std::vector<std::vector<TString>>& labels, 
+    std::vector<TString>& titles, 
+    std::vector<TString>& xlabels, 
+    std::vector<TString>& ylabels,
+    std::vector<bool>& stack
 ) {
     int numPlots = groups.size();
     for (int iPlot = 0; iPlot < numPlots; ++iPlot) {
@@ -3351,50 +3423,109 @@ void printOneDPlots(
 
         // Get histograms and labels
         std::vector<TH1*> Plots = groups.at(iPlot);
-        std::vector<TString> Labels = labels.at(iPlot);
+        std::vector<TString> Labels = labels.at(iPlot);	
 
-        Plots[0]->SetTitle(titles.at(iPlot));
+        // If stacked
+        if (stack.at(iPlot)) {
+            THStack stack("stack", titles.at(iPlot));
 
-        Plots[0]->GetXaxis()->SetTitleFont(fontStyle);
-        Plots[0]->GetXaxis()->SetLabelFont(fontStyle);
-        Plots[0]->GetXaxis()->SetNdivisions(8);
-        Plots[0]->GetXaxis()->SetLabelSize(textSize);
-        Plots[0]->GetXaxis()->SetTitleSize(textSize);
-        Plots[0]->GetXaxis()->SetTitle(xlabels.at(iPlot));
-        Plots[0]->GetXaxis()->SetTitleOffset(1.1);
-        Plots[0]->GetXaxis()->CenterTitle();
+            // Style and add each histogram to the stack
+            for (int iSubPlot = 0; iSubPlot < (int) Plots.size(); ++iSubPlot) {
+                TH1* h = Plots[iSubPlot];
+                leg->AddEntry(h, Labels[iSubPlot], "f");
+                h->SetLineWidth(2);
+                h->SetLineColor(colors.at(iSubPlot));
+                h->SetFillColor(colors.at(iSubPlot));
+                h->SetFillColorAlpha(colors.at(iSubPlot), 0.2);
+                h->SetFillStyle(3001);
+                stack.Add(h, "H");
+            }
 
-        Plots[0]->GetYaxis()->SetTitleFont(fontStyle);
-        Plots[0]->GetYaxis()->SetLabelFont(fontStyle);
-        Plots[0]->GetYaxis()->SetNdivisions(6);
-        Plots[0]->GetYaxis()->SetLabelSize(textSize);
-        Plots[0]->GetYaxis()->SetTitleSize(textSize);
-        Plots[0]->GetYaxis()->SetTitle(ylabels.at(iPlot));
-        Plots[0]->GetYaxis()->SetTitleOffset(1.1);
-        Plots[0]->GetYaxis()->CenterTitle();	
+            // Style the stack
+            stack.SetTitle(titles.at(iPlot));
 
-        for (int iSubPlot = 0; iSubPlot < Plots.size(); ++iSubPlot) {
-            leg->AddEntry(Plots[iSubPlot], Labels[iSubPlot], "l");
-            Plots[iSubPlot]->SetLineWidth(2);
-            Plots[iSubPlot]->SetLineColor(colors.at(iSubPlot));
-            Plots[iSubPlot]->Draw("hist same");
+            // Draw stack
+            stack.Draw("hist");
 
-            double imax = TMath::Max(Plots[iSubPlot]->GetMaximum(), Plots[0]->GetMaximum());
+            stack.GetXaxis()->SetTitleFont(fontStyle);
+            stack.GetXaxis()->SetLabelFont(fontStyle);
+            stack.GetXaxis()->SetNdivisions(8);
+            stack.GetXaxis()->SetLabelSize(textSize);
+            stack.GetXaxis()->SetTitleSize(textSize);
+            stack.GetXaxis()->SetTitle(xlabels.at(iPlot));
+            stack.GetXaxis()->SetTitleOffset(1.1);
+            stack.GetXaxis()->CenterTitle();
 
-            double YAxisRange = 1.15*imax;
-            Plots[iSubPlot]->GetYaxis()->SetRangeUser(0., YAxisRange);
-            Plots[0]->GetYaxis()->SetRangeUser(0., YAxisRange);	
+            stack.GetYaxis()->SetTitleFont(fontStyle);
+            stack.GetYaxis()->SetLabelFont(fontStyle);
+            stack.GetYaxis()->SetNdivisions(6);
+            stack.GetYaxis()->SetLabelSize(textSize);
+            stack.GetYaxis()->SetTitleSize(textSize);
+            stack.GetYaxis()->SetTitle(ylabels.at(iPlot));
+            stack.GetYaxis()->SetTitleOffset(1.1);
+            stack.GetYaxis()->CenterTitle();
+
+            // Determine proper max from stack object
+            double stackMax = stack.GetMaximum();
+            double YAxisRange = 1.15 * stackMax;
+            stack.SetMaximum(YAxisRange);
+            stack.SetMinimum(0.0);
+
+            gPad->Update();
+            TAxis *x = Plots[0]->GetXaxis();
+            x->SetMaxDigits(3);
+            gPad->Modified();
+            gPad->Update();
+
+            leg->Draw();
+            PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
+        } 
+        // If not stacked
+        else {
+            // Style the first plot
+            Plots[0]->SetTitle(titles.at(iPlot));
+
+            Plots[0]->GetXaxis()->SetTitleFont(fontStyle);
+            Plots[0]->GetXaxis()->SetLabelFont(fontStyle);
+            Plots[0]->GetXaxis()->SetNdivisions(8);
+            Plots[0]->GetXaxis()->SetLabelSize(textSize);
+            Plots[0]->GetXaxis()->SetTitleSize(textSize);
+            Plots[0]->GetXaxis()->SetTitle(xlabels.at(iPlot));
+            Plots[0]->GetXaxis()->SetTitleOffset(1.1);
+            Plots[0]->GetXaxis()->CenterTitle();
+
+            Plots[0]->GetYaxis()->SetTitleFont(fontStyle);
+            Plots[0]->GetYaxis()->SetLabelFont(fontStyle);
+            Plots[0]->GetYaxis()->SetNdivisions(6);
+            Plots[0]->GetYaxis()->SetLabelSize(textSize);
+            Plots[0]->GetYaxis()->SetTitleSize(textSize);
+            Plots[0]->GetYaxis()->SetTitle(ylabels.at(iPlot));
+            Plots[0]->GetYaxis()->SetTitleOffset(1.1);
+            Plots[0]->GetYaxis()->CenterTitle();
+
+            double imax;
+            for (int iSubPlot = 0; iSubPlot < (int) Plots.size(); ++iSubPlot) {
+                leg->AddEntry(Plots[iSubPlot], Labels[iSubPlot], "l");
+                Plots[iSubPlot]->SetLineWidth(2);
+                Plots[iSubPlot]->SetLineColor(colors.at(iSubPlot));
+                Plots[iSubPlot]->Draw("hist same");
+
+                imax = TMath::Max(Plots[iSubPlot]->GetMaximum(), Plots[0]->GetMaximum());
+
+                double YAxisRange = 1.15 * imax;
+                Plots[iSubPlot]->GetYaxis()->SetRangeUser(0., YAxisRange);
+                Plots[0]->GetYaxis()->SetRangeUser(0., YAxisRange);	
+            }
+
+            gPad->Update();
+            TAxis *x = Plots[0]->GetXaxis();
+            x->SetMaxDigits(3);
+            gPad->Modified();
+            gPad->Update();
+
+            leg->Draw();
+            PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
         }
-
-        gPad->Update();
-        TAxis *x = Plots[0]->GetXaxis();
-        // x->SetNoExponent(kFALSE);
-        x->SetMaxDigits(3);
-        gPad->Modified();
-        gPad->Update();
-
-        leg->Draw();
-        PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
         delete PlotCanvas;
     }
 }
