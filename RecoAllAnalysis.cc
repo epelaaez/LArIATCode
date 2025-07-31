@@ -922,7 +922,11 @@ void RecoAllAnalysis() {
 
         // Categorize scatterings into 0p and Np scatterings
         int scatteringType = -1; // -1: not scattering, 0: 0p scattering, 1: Np scattering
-        if (backgroundType == 12 || backgroundType == 6) {
+        if (backgroundType == 12) {
+            // For elastic scattering, it must be 0p scattering
+            scatteringType = 0;
+        }
+        else if (backgroundType == 6) {
             scatteringType = 0;
             for (int iDaughter = 0; iDaughter < truthPrimaryDaughtersPDG->size(); ++iDaughter) {
                 if (truthPrimaryDaughtersPDG->at(iDaughter) == 2212 && truthPrimaryDaughtersKE->at(iDaughter) >= PROTON_ENERGY_LOWER_BOUND) { scatteringType = 1; break; }
