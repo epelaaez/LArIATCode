@@ -57,6 +57,7 @@ void printOneDPlots(
 
 void RecoNNShowers() {
     // Set defaults
+    gStyle->SetOptStat(0); // get rid of stats box
     TH1D::SetDefaultSumw2();
     TH2D::SetDefaultSumw2();
     gStyle->SetPalette(kRainBow);
@@ -98,6 +99,9 @@ void RecoNNShowers() {
     TH1D* hPionShowerProb     = new TH1D("hPionShowerProb", "hPionShowerProb;;", 20, 0., 1.);
     TH1D* hMuonShowerProb     = new TH1D("hMuonShowerProb", "hMuonShowerProb;;", 20, 0., 1.);
 
+    TH1D* hPionChargeExchangeShowerProb = new TH1D("hPionChargeExchangeShowerProb", "hPionChargeExchangeShowerProb;;", 20, 0., 1.);
+    TH1D* hPionOtherShowerProb          = new TH1D("hPionOtherShowerProb", "hPionOtherShowerProb;;", 20, 0., 1.);
+
     //////////////////////
     // Loop over events //
     //////////////////////
@@ -116,6 +120,12 @@ void RecoNNShowers() {
             hElectronShowerProb->Fill(showerProb);
         } else {
             hPionShowerProb->Fill(showerProb);
+        }
+
+        if (backgroundType == 7) {
+            hPionChargeExchangeShowerProb->Fill(showerProb);
+        } else if (backgroundType != 2 && backgroundType != 3) {
+            hPionOtherShowerProb->Fill(showerProb);
         }
     }
 
@@ -137,26 +147,32 @@ void RecoNNShowers() {
     };
 
     std::vector<std::vector<TH1*>> PlotGroups = {
-        {hElectronShowerProb, hPionShowerProb, hMuonShowerProb}
+        {hElectronShowerProb, hPionShowerProb, hMuonShowerProb},
+        {hPionChargeExchangeShowerProb, hPionOtherShowerProb}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
-        {"Electron", "Pion", "Muon"}
+        {"Electron", "Pion", "Muon"},
+        {"Ch. exch.", "Other"}
     };
 
     std::vector<TString> PlotTitles = {
-        "ShowerProbability"
+        "PrimaryTrackShowerProb",
+        "PionInteractionShowerProb"
     };
 
     std::vector<TString> XLabels = {
+        "Shower probability",
         "Shower probability"
     };
 
     std::vector<TString> YLabels = {
+        "Number of events",
         "Number of events"
     };
 
     std::vector<bool> PlotStacked = {
+        false,
         false
     };
 
