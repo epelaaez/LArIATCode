@@ -171,6 +171,7 @@ std::vector<double> calcLinearityProfile(std::vector<double>& vx, std::vector<do
 double energyLossCalculation();
 double energyLossCalculation(double x, double px, bool isData);
 int getCorrespondingBin(double value, int num_bins, double low, double high);
+std::pair<TH1*, TH1*> getBinEfficiencyAndPurity(TH1* hTrue, TH1* hReco, TH1* hRecoTrue);
 
 ///////////////////
 // Main function //
@@ -763,6 +764,10 @@ void RecoAllAnalysis() {
     TH1D* hTruePionAbs0pKE = (TH1D*) TrueXSDirectory->Get("hInteractingKEPionAbs0p");
     TH1D* hTruePionAbsNpKE = (TH1D*) TrueXSDirectory->Get("hInteractingKEPionAbsNp");
 
+    TH1D* hTruePionScatteringKE   = (TH1D*) TrueXSDirectory->Get("hInteractingKEScattering");
+    TH1D* hTruePion0pScatteringKE = (TH1D*) TrueXSDirectory->Get("hInteractingKE0pScattering");
+    TH1D* hTruePionNpScatteringKE = (TH1D*) TrueXSDirectory->Get("hInteractingKENpScattering");
+
     TH1D* hPionAbsTrueCrossSection   = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbs");
     TH1D* hPion0pAbsTrueCrossSection = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbs0p");
     TH1D* hPionNpAbsTrueCrossSection = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbsNp");
@@ -925,15 +930,11 @@ void RecoAllAnalysis() {
 
         // Categorize scatterings into 0p and Np scatterings
         int scatteringType = -1; // -1: not scattering, 0: 0p scattering, 1: Np scattering
-        if (backgroundType == 12) {
-            // For elastic scattering, it must be 0p scattering
+        if (backgroundType == 12 || (backgroundType == 6 && numVisibleProtons == 0)) {
             scatteringType = 0;
         }
-        else if (backgroundType == 6) {
-            scatteringType = 0;
-            for (int iDaughter = 0; iDaughter < truthPrimaryDaughtersPDG->size(); ++iDaughter) {
-                if (truthPrimaryDaughtersPDG->at(iDaughter) == 2212 && truthPrimaryDaughtersKE->at(iDaughter) >= PROTON_ENERGY_LOWER_BOUND) { scatteringType = 1; break; }
-            }
+        else if (backgroundType == 6 && numVisibleProtons > 0) {
+            scatteringType = 1;
         }
 
         // Study elastic and inelastic scattering events
@@ -2387,6 +2388,34 @@ void RecoAllAnalysis() {
 
     // gStyle->SetOptStat(1);
 
+    //////////////////////////////////////////
+    // Get bin-by-bin efficiency and purity //
+    //////////////////////////////////////////
+
+    auto AbsEffPur = getBinEfficiencyAndPurity(hTruePionAbsKE, hPionAbsKE, hPionAbsKECorrect);
+    TH1* hAbsEff = AbsEffPur.first;
+    TH1* hAbsPur = AbsEffPur.second;
+
+    auto Abs0pEffPur = getBinEfficiencyAndPurity(hTruePionAbs0pKE, h0pPionAbsKE, h0pPionAbsKECorrect);
+    TH1* hAbs0pEff = Abs0pEffPur.first;
+    TH1* hAbs0pPur = Abs0pEffPur.second;
+
+    auto AbsNpEffPur = getBinEfficiencyAndPurity(hTruePionAbsNpKE, hNpPionAbsKE, hNpPionAbsKECorrect);
+    TH1* hAbsNpEff = AbsNpEffPur.first;
+    TH1* hAbsNpPur = AbsNpEffPur.second;
+
+    auto ScatterEffPur = getBinEfficiencyAndPurity(hTruePionScatteringKE, hPionScatteringKE, hPionScatteringKECorrect);
+    TH1* hScatterEff = ScatterEffPur.first;
+    TH1* hScatterPur = ScatterEffPur.second;
+
+    auto Scatter0pEffPur = getBinEfficiencyAndPurity(hTruePion0pScatteringKE, hPionScatteringKE0p, h0pPionScatteringKECorrect);
+    TH1* hScatter0pEff = Scatter0pEffPur.first;
+    TH1* hScatter0pPur = Scatter0pEffPur.second;
+
+    auto ScatterNpEffPur = getBinEfficiencyAndPurity(hTruePionNpScatteringKE, hPionScatteringKENp, hNpPionScatteringKECorrect);
+    TH1* hScatterNpEff = ScatterNpEffPur.first;
+    TH1* hScatterNpPur = ScatterNpEffPur.second;
+
     //////////////////
     // Create plots //
     //////////////////
@@ -2466,7 +2495,15 @@ void RecoAllAnalysis() {
         {hPionScatteringKE, hPionScatteringKE0p, hPionScatteringKENp},
         {hPionScatteringKECorrect, hPionScatteringKE0pAbs, hPionScatteringKENpAbs, hPionScatteringKEChEx, hPionScatteringKEMuons, hPionScatteringKEElectrons, hPionScatteringKEOther},
         {h0pPionScatteringKECorrect, h0pPionScatteringKENpScatter, h0pPionScatteringKE0pAbs, h0pPionScatteringKENpAbs, h0pPionScatteringKEChEx, h0pPionScatteringKEMuons, h0pPionScatteringKEElectrons, h0pPionScatteringKEOther},
-        {hNpPionScatteringKECorrect, hNpPionScatteringKE0pScatter, hNpPionScatteringKE0pAbs, hNpPionScatteringKENpAbs, hNpPionScatteringKEChEx, hNpPionScatteringKEMuons, hNpPionScatteringKEElectrons, hNpPionScatteringKEOther}
+        {hNpPionScatteringKECorrect, hNpPionScatteringKE0pScatter, hNpPionScatteringKE0pAbs, hNpPionScatteringKENpAbs, hNpPionScatteringKEChEx, hNpPionScatteringKEMuons, hNpPionScatteringKEElectrons, hNpPionScatteringKEOther},
+
+        // Bin-by-bin efficiency/purity
+        {hAbsEff, hAbsPur},
+        {hAbs0pEff, hAbs0pPur},
+        {hAbsNpEff, hAbsNpPur},
+        {hScatterEff, hScatterPur},
+        {hScatter0pEff, hScatter0pPur},
+        {hScatterNpEff, hScatterNpPur}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2531,8 +2568,15 @@ void RecoAllAnalysis() {
         {"All scatter", "0p Scatter", "Np scatter"},
         {"Scatter", "0p abs", "Np abs", "Ch. exch.", "Muon", "Electron", "Other"},
         {"0p scatter", "Np scatter", "0p abs", "Np abs", "Ch. exch.", "Muon", "Electron", "Other"},
-        {"Np scatter", "0p scatter", "0p abs", "Np abs", "Ch. exch.", "Muon", "Electron", "Other"}
+        {"Np scatter", "0p scatter", "0p abs", "Np abs", "Ch. exch.", "Muon", "Electron", "Other"},
 
+        // Bin-by-bin efficiency/purity
+        {"Eff", "Pur"},
+        {"Eff", "Pur"},
+        {"Eff", "Pur"},
+        {"Eff", "Pur"},
+        {"Eff", "Pur"},
+        {"Eff", "Pur"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -2597,7 +2641,15 @@ void RecoAllAnalysis() {
         "CrossSection/ScatteringInteractingKE",
         "CrossSection/ScatteringInteractingKEBreakdown",
         "CrossSection/0pScatteringInteractingKEBreakdown",
-        "CrossSection/NpScatteringInteractingKEBreakdown"
+        "CrossSection/NpScatteringInteractingKEBreakdown",
+
+        // Bin-by-bin efficiency/purity
+        "EffPur/PionAbsorption",
+        "EffPur/Pion0pAbsorption",
+        "EffPur/PionNpAbsorption",
+        "EffPur/PionScattering",
+        "EffPur/Pion0pScattering",
+        "EffPur/PionNpScattering"
     };
 
     std::vector<TString> XLabels = {
@@ -2659,6 +2711,14 @@ void RecoAllAnalysis() {
         "Kinetic Energy [MeV]",
 
         // Scattering interacting slices
+        "Kinetic Energy [MeV]",
+        "Kinetic Energy [MeV]",
+        "Kinetic Energy [MeV]",
+        "Kinetic Energy [MeV]",
+
+        // Bin-by-bin efficiency/purity
+        "Kinetic Energy [MeV]",
+        "Kinetic Energy [MeV]",
         "Kinetic Energy [MeV]",
         "Kinetic Energy [MeV]",
         "Kinetic Energy [MeV]",
@@ -2727,7 +2787,15 @@ void RecoAllAnalysis() {
         "Counts",
         "Counts",
         "Counts",
-        "Counts"
+        "Counts",
+
+        // Bin-by-bin efficiency/purity
+        "Eff/Pur",
+        "Eff/Pur",
+        "Eff/Pur",
+        "Eff/Pur",
+        "Eff/Pur",
+        "Eff/Pur"
     };
 
     std::vector<bool> PlotStacked = {
@@ -2792,7 +2860,15 @@ void RecoAllAnalysis() {
         false,
         true,
         true,
-        true
+        true,
+
+        // Bin-by-bin efficiency/purity
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
     };
 
     printOneDPlots(
@@ -3528,6 +3604,18 @@ void printOneDPlots(
         }
         delete PlotCanvas;
     }
+}
+
+std::pair<TH1*, TH1*> getBinEfficiencyAndPurity(TH1* hTrue, TH1* hReco, TH1* hRecoTrue) {
+    TH1* hEfficiency = (TH1*) hTrue->Clone("Efficiency"); hEfficiency->Reset("ICE");
+    TH1* hPurity     = (TH1*) hTrue->Clone("Purity");     hPurity->Reset("ICE");
+
+    for (int iBin = 1; iBin <= hTrue->GetNbinsX(); ++iBin) {
+        if (hTrue->GetBinContent(iBin) == 0 || hReco->GetBinContent(iBin) == 0) { hEfficiency->SetBinContent(iBin, 0); hPurity->SetBinContent(iBin, 0); continue; }
+        hEfficiency->SetBinContent(iBin, hRecoTrue->GetBinContent(iBin) / hTrue->GetBinContent(iBin));
+        hPurity->SetBinContent(iBin, hRecoTrue->GetBinContent(iBin) / hReco->GetBinContent(iBin));
+    }
+    return std::make_pair(hEfficiency, hPurity);
 }
 
 void printTwoDPlots(TString dir, std::vector<TH2*> plots, std::vector<TString> titles) {

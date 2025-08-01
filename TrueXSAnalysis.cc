@@ -37,6 +37,10 @@ void TrueXSAnalysis() {
     TH1D* hPionAbs0pKE = (TH1D*) Directory->Get("hInteractingKEPionAbs0p");
     TH1D* hPionAbsNpKE = (TH1D*) Directory->Get("hInteractingKEPionAbsNp");
 
+    TH1D* hScatteringKE   = (TH1D*) Directory->Get("hInteractingKEScattering");
+    TH1D* h0pScatteringKE = (TH1D*) Directory->Get("hInteractingKE0pScattering");
+    TH1D* hNpScatteringKE = (TH1D*) Directory->Get("hInteractingKENpScattering");
+
     // All hadronic pion cross section
     TH1D* hCrossSection          = (TH1D*) Directory->Get("hCrossSection");
 
@@ -46,13 +50,18 @@ void TrueXSAnalysis() {
     TH1D* hCrossSectionPionAbsNp = (TH1D*) Directory->Get("hCrossSectionPionAbsNp");
 
     // Background cross sections
-    TH1D* hCrossSectionPionInelastic       = (TH1D*) Directory->Get("hCrossSectionPionInelastic");
-    TH1D* hCrossSectionPionElastic         = (TH1D*) Directory->Get("hCrossSectionPionElastic");
-    TH1D* hCrossSectionChargeExchange      = (TH1D*) Directory->Get("hCrossSectionChargeExchange");
+    TH1D* hCrossSectionPionInelastic        = (TH1D*) Directory->Get("hCrossSectionPionInelastic");
+    TH1D* hCrossSectionPionElastic          = (TH1D*) Directory->Get("hCrossSectionPionElastic");
+    TH1D* hCrossSectionChargeExchange       = (TH1D*) Directory->Get("hCrossSectionChargeExchange");
     TH1D* hCrossSectionDoubleChargeExchange = (TH1D*) Directory->Get("hCrossSectionDoubleChargeExchange");
-    TH1D* hCrossSectionCaptureAtRest       = (TH1D*) Directory->Get("hCrossSectionCaptureAtRest");
-    TH1D* hCrossSectionDecay               = (TH1D*) Directory->Get("hCrossSectionDecay");
-    TH1D* hCrossSectionOther               = (TH1D*) Directory->Get("hCrossSectionOther");
+    TH1D* hCrossSectionCaptureAtRest        = (TH1D*) Directory->Get("hCrossSectionCaptureAtRest");
+    TH1D* hCrossSectionDecay                = (TH1D*) Directory->Get("hCrossSectionDecay");
+    TH1D* hCrossSectionOther                = (TH1D*) Directory->Get("hCrossSectionOther");
+
+    // Scattering cross sections
+    TH1D* hCrossSectionScattering   = (TH1D*) Directory->Get("hCrossSectionScattering");
+    TH1D* hCrossSection0pScattering = (TH1D*) Directory->Get("hCrossSection0pScattering");
+    TH1D* hCrossSectionNpScattering = (TH1D*) Directory->Get("hCrossSectionNpScattering");
 
     std::vector<TH1D*> Histograms = {
         hCrossSection, 
@@ -66,10 +75,16 @@ void TrueXSAnalysis() {
         hCrossSectionCaptureAtRest,
         hCrossSectionDecay,
         hCrossSectionOther,
+        hCrossSectionScattering,
+        hCrossSection0pScattering,
+        hCrossSectionNpScattering,
         hIncidentKE,
         hPionAbsKE,
         hPionAbs0pKE,
-        hPionAbsNpKE
+        hPionAbsNpKE,
+        hScatteringKE,
+        h0pScatteringKE,
+        hNpScatteringKE
     };
 
     ///////////////////////////
