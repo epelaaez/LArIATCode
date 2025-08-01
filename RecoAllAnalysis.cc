@@ -2508,8 +2508,8 @@ void RecoAllAnalysis() {
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         // Stitching
-        {"Detected vertex distance", "Original distance"},
-        {"Stitched MIP-proton", "Bragg pion", "MIP", "Proton"},
+        {"Detected", "Original"},
+        {"Stitched", "Bragg pion", "MIP", "Proton"},
         {"Stitched tracks"},
 
         // Secondary PID
@@ -2518,20 +2518,20 @@ void RecoAllAnalysis() {
         {"Pions", "Protons", "Others"},
 
         // Scattering
-        {"All background", "0p background", "Np background"},
-        {"All background", "0p background", "Np background"},
-        {"All background", "0p background", "Np background"},
-        {"All background", "0p background", "Np background"},
-        {"All background", "0p background", "Np background"},
-        {"All background", "0p background", "Np background"},
-        {"All background", "0p background", "Np background"},
-        {"All background", "0p background", "Np background"},
+        {"All bkg", "0p bkg", "Np bkg"},
+        {"All bkg", "0p bkg", "Np bkg"},
+        {"All bkg", "0p bkg", "Np bkg"},
+        {"All bkg", "0p bkg", "Np bkg"},
+        {"All bkg", "0p bkg", "Np bkg"},
+        {"All bkg", "0p bkg", "Np bkg"},
+        {"All bkg", "0p bkg", "Np bkg"},
+        {"All bkg", "0p bkg", "Np bkg"},
         {"Original to primary", "Original to secondary", "Detected to primary", "Detected to secondary"},
 
         // Hit clustering
-        {"Reco 0p true", "Reco 0p background", "Reco Np true", "Reco Np background"},
-        {"Reco 0p true", "Reco 0p background", "Reco Np true", "Reco Np background"},
-        {"Reco 0p true", "Reco 0p background", "Reco Np true", "Reco Np background"},
+        {"Reco 0p true", "Reco 0p bkg", "Reco Np true", "Reco Np bkg"},
+        {"Reco 0p true", "Reco 0p bkg", "Reco Np true", "Reco Np bkg"},
+        {"Reco 0p true", "Reco 0p bkg", "Reco Np true", "Reco Np bkg"},
 
         // Scattering reconstruction
         {"All", "Reconstructed"},
@@ -2540,12 +2540,12 @@ void RecoAllAnalysis() {
         {"All", "Reconstructed"},
 
         // Local linearity
-        {"Reco 0p true", "Reco 0p background"},
-        {"Reco 0p true", "Reco 0p background"},
-        {"Reco 0p true", "Reco 0p background"},
-        {"Reco Np true", "Reco Np background"},
-        {"Reco 0p true", "Reco 0p background"},
-        {"Reco 0p true", "Reco 0p background"},
+        {"Reco 0p true", "Reco 0p bkg"},
+        {"Reco 0p true", "Reco 0p bkg"},
+        {"Reco 0p true", "Reco 0p bkg"},
+        {"Reco Np true", "Reco Np bkg"},
+        {"Reco 0p true", "Reco 0p bkg"},
+        {"Reco 0p true", "Reco 0p bkg"},
         {"Purity", "Efficiency"},
         {"Purity", "Efficiency"},
         {"Purity", "Efficiency"},
@@ -2571,12 +2571,12 @@ void RecoAllAnalysis() {
         {"Np scatter", "0p scatter", "0p abs", "Np abs", "Ch. exch.", "Muon", "Electron", "Other"},
 
         // Bin-by-bin efficiency/purity
-        {"Eff", "Pur"},
-        {"Eff", "Pur"},
-        {"Eff", "Pur"},
-        {"Eff", "Pur"},
-        {"Eff", "Pur"},
-        {"Eff", "Pur"}
+        {"Efficiency", "Purity"},
+        {"Efficiency", "Purity"},
+        {"Efficiency", "Purity"},
+        {"Efficiency", "Purity"},
+        {"Efficiency", "Purity"},
+        {"Efficiency", "Purity"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -3487,15 +3487,25 @@ void printOneDPlots(
     int numPlots = groups.size();
     for (int iPlot = 0; iPlot < numPlots; ++iPlot) {
         // Set up canvas
-        TCanvas* PlotCanvas = new TCanvas("Canvas","Canvas",205,34,1024,768);
-        PlotCanvas->cd();
-        PlotCanvas->SetLeftMargin(0.15);
-        PlotCanvas->SetBottomMargin(0.15);
+        TCanvas* PlotCanvas = new TCanvas("Canvas", "Canvas", 205, 34, 1300, 768);
 
-        TLegend* leg = new TLegend(0.60,0.50,0.85,0.80);
-        leg->SetBorderSize(0);
-        leg->SetTextSize(textSize * 0.8);
+        TPad* mainPad = new TPad("mainPad","",0.0, 0.0, 0.80, 1.0);
+        mainPad->SetRightMargin(0.05);
+        mainPad->SetLeftMargin(0.15);
+        mainPad->SetBottomMargin(0.15);
+        mainPad->Draw();
+        mainPad->cd();
+
+        TLegend* leg = new TLegend(0.0, 0.0, 1.0, 1.0);
+        leg->SetTextSize(textSize * 2.5);
         leg->SetTextFont(fontStyle);
+
+        TPad* legendPad = new TPad("legendPad", "", 0.80, 0.4, 1.0, 0.8);
+        legendPad->SetLeftMargin(0.05);
+        legendPad->SetRightMargin(0.05);
+        legendPad->SetBottomMargin(0.15);
+        legendPad->SetFillStyle(0);
+        legendPad->SetBorderMode(0);
 
         // Get histograms and labels
         std::vector<TH1*> Plots = groups.at(iPlot);
@@ -3553,7 +3563,11 @@ void printOneDPlots(
             gPad->Modified();
             gPad->Update();
 
+            PlotCanvas->cd();
+            legendPad->Draw();
+            legendPad->cd();
             leg->Draw();
+
             PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
         } 
         // If not stacked
@@ -3581,7 +3595,7 @@ void printOneDPlots(
 
             double imax;
             for (int iSubPlot = 0; iSubPlot < (int) Plots.size(); ++iSubPlot) {
-                leg->AddEntry(Plots[iSubPlot], Labels[iSubPlot], "l");
+                leg->AddEntry(Plots[iSubPlot], Labels[iSubPlot], "f");
                 Plots[iSubPlot]->SetLineWidth(2);
                 Plots[iSubPlot]->SetLineColor(colors.at(iSubPlot));
                 Plots[iSubPlot]->Draw("hist same");
@@ -3599,7 +3613,11 @@ void printOneDPlots(
             gPad->Modified();
             gPad->Update();
 
+            PlotCanvas->cd();
+            legendPad->Draw();
+            legendPad->cd();
             leg->Draw();
+
             PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
         }
         delete PlotCanvas;
