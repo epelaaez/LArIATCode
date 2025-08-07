@@ -32,10 +32,27 @@ std::map<int, std::string> backgroundTypes = {
     {12, "Elastic scattering"}
 };
 
-double SMALL_TRACK_LENGTH = 10.;
+int NUM_BACKGROUND_TYPES = 13;
+//    0:  0p pion absorption
+//    1:  Np pion absorption
+//    2:  primary muon event
+//    3:  primary electron event
+//    4:  other primary event
+//    5:  primary pion outside reduced volume
+//    6:  pion inelastic scattering
+//    7:  charge exchange
+//    8:  double charge exchange
+//    9:  capture at rest
+//    10: decay
+//    11: other
+//    12: elastic scattering
+
+double SMALL_TRACK_LENGTH = 33.;
 double LARGE_TRACK_LENGTH = 30.;
 double VERTEX_RADIUS      = 5.;
 double FAR_TRACK_DISTANCE = 5.;
+int    SMALL_TRACK_CUT    = 2;
+
 double SHOWER_PROB_CUT    = 0.6;
 
 double PION_CHI2_PION_VALUE     = 1.125;
@@ -45,6 +62,15 @@ double PROTON_CHI2_PROTON_VALUE = 0.125;
 
 double MEAN_DEDX_THRESHOLD       = 4.0;
 int    MEAN_DEDX_NUM_TRAJ_POINTS = 5;
+
+double HIT_WIRE_SEPARATION = 0.4; // converts wire # to cm
+
+const double RminX =  5.0;
+const double RmaxX = 42.0;
+const double RminY =-15.0; 
+const double RmaxY = 15.0;
+const double RminZ =  8.0;
+const double RmaxZ = 82.0;
 
 //////////////////////
 // Helper functions //
@@ -69,12 +95,26 @@ void printTwoDPlots(
     const std::vector<TString>& titles
 );
 
+bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold);
+bool isWithinReducedVolume(double x, double y, double z);
 double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData,  bool dataReversed, int nPoints, int nOutliersToDiscard = 0, int nTrim = 0);
 double meanDEDX(std::vector<double>& trackDEDX, bool isTrackReversed, int pointsToUse);
 double distance(double x1, double x2, double y1, double y2, double z1, double z2);
 void initializeProtonPoints(TGraph* gProton);
 void initializePionPoints(TGraph* gPion);
 void initializeMuonNoBraggPoints(TGraph* gMuonTG);
+
+/////////////////////
+// Data structures //
+/////////////////////
+
+struct HitCluster {
+    std::vector<int>   hitKeys;
+    std::vector<float> hitX;
+    std::vector<float> hitW;
+    std::vector<float> hitCharge;
+    std::vector<float> hitChargeCol;
+};
 
 ///////////////////
 // Main function //
@@ -112,6 +152,12 @@ void RecoNNShowers() {
     // Load tree and branches
     TTree* tree = (TTree*) Directory->Get<TTree>("RecoNNAllEvalTree");
 
+    int run, subrun, event; bool isData;
+    tree->SetBranchAddress("run", &run); 
+    tree->SetBranchAddress("subrun", &subrun); 
+    tree->SetBranchAddress("event", &event);
+    tree->SetBranchAddress("isData", &isData);
+
     // Signal information
     bool isPionAbsorptionSignal; int backgroundType, numVisibleProtons; 
     tree->SetBranchAddress("isPionAbsorptionSignal", &isPionAbsorptionSignal);
@@ -124,6 +170,16 @@ void RecoNNShowers() {
     tree->SetBranchAddress("trackProb", &trackProb);
     tree->SetBranchAddress("showerProb", &showerProb);
     tree->SetBranchAddress("obtainedProbabilities", &obtainedProbabilities);
+
+    double showerNoBoxProb;
+    bool obtainedNoBoxProbabilities;
+    tree->SetBranchAddress("showerNoBoxProb", &showerNoBoxProb);
+    tree->SetBranchAddress("obtainedNoBoxProbabilities", &obtainedNoBoxProbabilities);
+
+    double showerOutsideBoxProb;
+    bool obtainedOutsideBoxProbabilities;
+    tree->SetBranchAddress("showerOutsideBoxProb", &showerOutsideBoxProb);
+    tree->SetBranchAddress("obtainedOutsideBoxProbabilities", &obtainedOutsideBoxProbabilities);
 
     // WC match information
     int WC2TPCtrkID;
@@ -285,6 +341,13 @@ void RecoNNShowers() {
     // Create histograms //
     ///////////////////////
 
+    // Event counting
+    TH1D* hTotalEvents     = (TH1D*) Directory->Get<TH1D>("hTotalEvents");
+    TH1D* hPassShowerProb  = new TH1D("hPassShowerProb", "hPassShowerProb;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D* hPassTrackPID    = new TH1D("hPassTrackPID", "hPassTrackPID;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D* hPassSmallTracks = new TH1D("hPassSmallTracks", "hPassSmallTracks;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D* hChargeExchange  = new TH1D("hChargeExchange", "hChargeExchange;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+
     // Electron shower probability
     TH1D* hElectronShowerProb = new TH1D("hElectronShowerProb", "hElectronShowerProb;;", 20, 0., 1.);
     TH1D* hPionShowerProb     = new TH1D("hPionShowerProb", "hPionShowerProb;;", 20, 0., 1.);
@@ -296,6 +359,24 @@ void RecoNNShowers() {
     TH1D* hPionNpScatterShowerProb      = new TH1D("hPionNpScatterShowerProb", "hPionNpScatterShowerProb;;", 20, 0., 1.);
     TH1D* hPionChargeExchangeShowerProb = new TH1D("hPionChargeExchangeShowerProb", "hPionChargeExchangeShowerProb;;", 20, 0., 1.);
     TH1D* hPionOtherShowerProb          = new TH1D("hPionOtherShowerProb", "hPionOtherShowerProb;;", 20, 0., 1.);
+
+    TH1D* hElectronNoBoxShowerProb           = new TH1D("hElectronNoBoxShowerProb", "hElectronNoBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hMuonNoBoxShowerProb               = new TH1D("hMuonNoBoxShowerProb", "hMuonNoBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hPionChargeExchangeNoBoxShowerProb = new TH1D("hPionChargeExchangeNoBoxShowerProb", "hPionChargeExchangeNoBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hPionAbs0pNoBoxShowerProb          = new TH1D("hPionAbs0pNoBoxShowerProb", "hPionAbs0pNoBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hPionAbsNpNoBoxShowerProb          = new TH1D("hPionAbsNpNoBoxShowerProb", "hPionAbsNpNoBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hPion0pScatterNoBoxShowerProb      = new TH1D("hPion0pScatterNoBoxShowerProb", "hPion0pScatterNoBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hPionNpScatterNoBoxShowerProb      = new TH1D("hPionNpScatterNoBoxShowerProb", "hPionNpScatterNoBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hPionOtherNoBoxShowerProb          = new TH1D("hPionOtherNoBoxShowerProb", "hPionOtherNoBoxShowerProb;;", 20, 0., 1.);
+
+    TH1D* hElectronOutsideBoxShowerProb           = new TH1D("hElectronOutsideBoxShowerProb", "hElectronOutsideBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hMuonOutsideBoxShowerProb               = new TH1D("hMuonOutsideBoxShowerProb", "hMuonOutsideBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hPionChargeExchangeOutsideBoxShowerProb = new TH1D("hPionChargeExchangeOutsideBoxShowerProb", "hPionChargeExchangeOutsideBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hPionAbs0pOutsideBoxShowerProb          = new TH1D("hPionAbs0pOutsideBoxShowerProb", "hPionAbs0pOutsideBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hPionAbsNpOutsideBoxShowerProb          = new TH1D("hPionAbsNpOutsideBoxShowerProb", "hPionAbsNpOutsideBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hPion0pScatterOutsideBoxShowerProb      = new TH1D("hPion0pScatterOutsideBoxShowerProb", "hPion0pScatterOutsideBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hPionNpScatterOutsideBoxShowerProb      = new TH1D("hPionNpScatterOutsideBoxShowerProb", "hPionNpScatterOutsideBoxShowerProb;;", 20, 0., 1.);
+    TH1D* hPionOtherOutsideBoxShowerProb          = new TH1D("hPionOtherOutsideBoxShowerProb", "hPionOtherOutsideBoxShowerProb;;", 20, 0., 1.);
 
     // Tracks near vertex
     TH1D* hChargeExchangeTracksNVertex = new TH1D("hChargeExchangeTracksNVertex", "hChargeExchangeTracksNVertex;;", 5, 0, 5);
@@ -319,6 +400,10 @@ void RecoNNShowers() {
 
     // Track length analysis
     TH1D* hChargeExchangeTrackLengths = new TH1D("hChargeExchangeTrackLengths", "hChargeExchangeTrackLengths;;", 40, 0., 90.);
+    TH1D* hPionAbs0pTrackLengths     = new TH1D("hPionAbs0pTrackLengths", "hPionAbs0pTrackLengths;;", 40, 0., 90.);
+    TH1D* hPionAbsNpTrackLengths     = new TH1D("hPionAbsNpTrackLengths", "hPionAbsNpTrackLengths;;", 40, 0., 90.);
+    TH1D* hPion0pScatterTrackLengths = new TH1D("hPion0pScatterTrackLengths", "hPion0pScatterTrackLengths;;", 40, 0., 90.);
+    TH1D* hPionNpScatterTrackLengths = new TH1D("hPionNpScatterTrackLengths", "hPionNpScatterTrackLengths;;", 40, 0., 90.);
     TH1D* hOtherPionTrackLengths      = new TH1D("hOtherPionTrackLengths", "hOtherPionTrackLengths;;", 40, 0., 90.);
     TH1D* hElectronTrackLengths       = new TH1D("hElectronTrackLengths", "hElectronTrackLengths;;", 40, 0., 90.);
     TH1D* hMuonTrackLengths           = new TH1D("hMuonTrackLengths", "hMuonTrackLengths;;", 40, 0., 90.);
@@ -333,8 +418,8 @@ void RecoNNShowers() {
     TH1D* hElectronLargeTracksCount       = new TH1D("hElectronLargeTracksCount", "hElectronLargeTracksCount;;", 20, 0, 20);
     TH1D* hMuonLargeTracksCount           = new TH1D("hMuonLargeTracksCount", "hMuonLargeTracksCount;;", 20, 0, 20);
 
-    double TRACK_THRESHOLD_MIN  = 1;
-    double TRACK_THRESHOLD_MAX  = 30;
+    double TRACK_THRESHOLD_MIN  = 5;
+    double TRACK_THRESHOLD_MAX  = 50;
     double TRACK_THRESHOLD_STEP = 1;
 
     int NUMBER_TRACKS_MIN  = 1;
@@ -362,6 +447,25 @@ void RecoNNShowers() {
         (NUMBER_TRACKS_MAX - NUMBER_TRACKS_MIN) / NUMBER_TRACKS_STEP, NUMBER_TRACKS_MIN, NUMBER_TRACKS_MAX
     );
 
+    // Hit clusters
+    TH1D* hChargeExchangeHitClusters = new TH1D("hChargeExchangeHitClusters", "hChargeExchangeHitClusters;;", 20, 0, 20);
+    TH1D* hPionAbs0pHitClusters      = new TH1D("hPionAbs0pHitClusters", "hPionAbs0pHitClusters;;", 20, 0, 20);
+    TH1D* hPionAbsNpHitClusters      = new TH1D("hPionAbsNpHitClusters", "hPionAbsNpHitClusters;;", 20, 0, 20);
+    TH1D* hPion0pScatterHitClusters  = new TH1D("hPion0pScatterHitClusters", "hPion0pScatterHitClusters;;", 20, 0, 20);
+    TH1D* hPionNpScatterHitClusters  = new TH1D("hPionNpScatterHitClusters", "hPionNpScatterHitClusters;;", 20, 0, 20);
+    TH1D* hOtherPionHitClusters      = new TH1D("hOtherPionHitClusters", "hOtherPionHitClusters;;", 20, 0, 20);
+    TH1D* hElectronHitClusters       = new TH1D("hElectronHitClusters", "hElectronHitClusters;;", 20, 0, 20);
+    TH1D* hMuonHitClusters           = new TH1D("hMuonHitClusters", "hMuonHitClusters;;", 20, 0, 20);
+
+    TH1D* hChargeExchangeHitClustersSize = new TH1D("hChargeExchangeHitClustersSize", "hChargeExchangeHitClustersSize;;", 20, 0, 250);
+    TH1D* hPionAbs0pHitClustersSize      = new TH1D("hPionAbs0pHitClustersSize", "hPionAbs0pHitClustersSize;;", 20, 0, 250);
+    TH1D* hPionAbsNpHitClustersSize      = new TH1D("hPionAbsNpHitClustersSize", "hPionAbsNpHitClustersSize;;", 20, 0, 250);
+    TH1D* hPion0pScatterHitClustersSize  = new TH1D("hPion0pScatterHitClustersSize", "hPion0pScatterHitClustersSize;;", 20, 0, 250);
+    TH1D* hPionNpScatterHitClustersSize  = new TH1D("hPionNpScatterHitClustersSize", "hPionNpScatterHitClustersSize;;", 20, 0, 250);
+    TH1D* hOtherPionHitClustersSize      = new TH1D("hOtherPionHitClustersSize", "hOtherPionHitClustersSize;;", 20, 0, 250);
+    TH1D* hElectronHitClustersSize       = new TH1D("hElectronHitClustersSize", "hElectronHitClustersSize;;", 20, 0, 250);
+    TH1D* hMuonHitClustersSize           = new TH1D("hMuonHitClustersSize", "hMuonHitClustersSize;;", 20, 0, 250);
+
     //////////////////////
     // Loop over events //
     //////////////////////
@@ -387,30 +491,73 @@ void RecoNNShowers() {
         // If no shower probability obtained, skip
         if (!obtainedProbabilities) continue;
 
-        if (backgroundType == 2) {
-            hMuonShowerProb->Fill(showerProb);
-        } else if (backgroundType == 3) {
-            hElectronShowerProb->Fill(showerProb);
-        } else {
-            hPionShowerProb->Fill(showerProb);
-        }
+        if (obtainedProbabilities) {
+            if (backgroundType == 2) {
+                hMuonShowerProb->Fill(showerProb);
+            } else if (backgroundType == 3) {
+                hElectronShowerProb->Fill(showerProb);
+            } else {
+                hPionShowerProb->Fill(showerProb);
+            }
 
-        if (backgroundType == 7) {
-            hPionChargeExchangeShowerProb->Fill(showerProb);
-        } else if (backgroundType == 0) {
-            hPionAbs0pShowerProb->Fill(showerProb);
-        } else if (backgroundType == 1) {
-            hPionAbsNpShowerProb->Fill(showerProb);
-        } else if (scatteringType == 0) {
-            hPion0pScatterShowerProb->Fill(showerProb);
-        } else if (scatteringType == 1) {
-            hPionNpScatterShowerProb->Fill(showerProb);
-        } else if (backgroundType != 2 && backgroundType != 3) {
-            hPionOtherShowerProb->Fill(showerProb);
-        }
+            if (backgroundType == 7) {
+                hPionChargeExchangeShowerProb->Fill(showerProb);
+            } else if (backgroundType == 0) {
+                hPionAbs0pShowerProb->Fill(showerProb);
+            } else if (backgroundType == 1) {
+                hPionAbsNpShowerProb->Fill(showerProb);
+            } else if (scatteringType == 0) {
+                hPion0pScatterShowerProb->Fill(showerProb);
+            } else if (scatteringType == 1) {
+                hPionNpScatterShowerProb->Fill(showerProb);
+            } else if (backgroundType != 2 && backgroundType != 3) {
+                hPionOtherShowerProb->Fill(showerProb);
+            }
+        }       
 
         // Apply shower probability cut
         if (showerProb >= SHOWER_PROB_CUT) continue;
+        hPassShowerProb->Fill(backgroundType);
+
+        if (obtainedNoBoxProbabilities) {
+            if (backgroundType == 2) {
+                hMuonNoBoxShowerProb->Fill(showerNoBoxProb);
+            } else if (backgroundType == 3) {
+                hElectronNoBoxShowerProb->Fill(showerNoBoxProb);
+            } else if (backgroundType == 7) {
+                hPionChargeExchangeNoBoxShowerProb->Fill(showerNoBoxProb);
+            } else if (backgroundType == 0) {
+                hPionAbs0pNoBoxShowerProb->Fill(showerNoBoxProb);
+            } else if (backgroundType == 1) {
+                hPionAbsNpNoBoxShowerProb->Fill(showerNoBoxProb);
+            } else if (scatteringType == 0) {
+                hPion0pScatterNoBoxShowerProb->Fill(showerNoBoxProb);
+            } else if (scatteringType == 1) {
+                hPionNpScatterNoBoxShowerProb->Fill(showerNoBoxProb);
+            } else if (backgroundType != 2 && backgroundType != 3) {
+                hPionOtherNoBoxShowerProb->Fill(showerNoBoxProb);
+            }
+        } 
+
+        if (obtainedOutsideBoxProbabilities) {
+            if (backgroundType == 2) {
+                hMuonOutsideBoxShowerProb->Fill(showerOutsideBoxProb);
+            } else if (backgroundType == 3) {
+                hElectronOutsideBoxShowerProb->Fill(showerOutsideBoxProb);
+            } else if (backgroundType == 7) {
+                hPionChargeExchangeOutsideBoxShowerProb->Fill(showerOutsideBoxProb);
+            } else if (backgroundType == 0) {
+                hPionAbs0pOutsideBoxShowerProb->Fill(showerOutsideBoxProb);
+            } else if (backgroundType == 1) {
+                hPionAbsNpOutsideBoxShowerProb->Fill(showerOutsideBoxProb);
+            } else if (scatteringType == 0) {
+                hPion0pScatterOutsideBoxShowerProb->Fill(showerOutsideBoxProb);
+            } else if (scatteringType == 1) {
+                hPionNpScatterOutsideBoxShowerProb->Fill(showerOutsideBoxProb);
+            } else if (backgroundType != 2 && backgroundType != 3) {
+                hPionOtherOutsideBoxShowerProb->Fill(showerOutsideBoxProb);
+            }
+        }
 
         ///////////////////////
         // Primary track PID //
@@ -465,6 +612,8 @@ void RecoNNShowers() {
             breakPointY = wcMatchYPos->at(bestBreakPoint); 
             breakPointZ = wcMatchZPos->at(bestBreakPoint);    
         }
+
+        if (!isWithinReducedVolume(breakPointX, breakPointY, breakPointZ)) continue;
 
         /////////////////////////
         // Secondary track PID //
@@ -528,7 +677,7 @@ void RecoNNShowers() {
         }
 
         if (minChi2 == pionChi2) {
-            continue; 
+            continue;
         } else if (minChi2 == protonChi2) {
             continue; // reject events matching to proton primary
         }
@@ -556,6 +705,7 @@ void RecoNNShowers() {
 
         // Not charge exchange if we found a proton or pion near the vertex
         if (totalTaggedPions > 0 || totalTaggedProtons > 0) continue;
+        hPassTrackPID->Fill(backgroundType);
 
         ///////////////////////////
         // Track length analysis //
@@ -574,8 +724,11 @@ void RecoNNShowers() {
                 recoEndZ->at(iTrk), breakPointZ
             );
 
-            if ((distanceFromStart < FAR_TRACK_DISTANCE || distanceFromEnd < FAR_TRACK_DISTANCE)) continue;
-            numFarTracks++;
+            if (distanceFromStart > FAR_TRACK_DISTANCE && distanceFromEnd > FAR_TRACK_DISTANCE) {
+                numFarTracks++;
+            } else {
+                continue;
+            }
 
             double thisTrackLength = sqrt(
                 pow(recoBeginX->at(iTrk) - recoEndX->at(iTrk), 2) +
@@ -587,6 +740,14 @@ void RecoNNShowers() {
 
             if (backgroundType == 7) {
                 hChargeExchangeTrackLengths->Fill(thisTrackLength);
+            } else if (backgroundType == 0) {
+                hPionAbs0pTrackLengths->Fill(thisTrackLength);
+            } else if (backgroundType == 1) {
+                hPionAbsNpTrackLengths->Fill(thisTrackLength);
+            } else if (scatteringType == 0) {
+                hPion0pScatterTrackLengths->Fill(thisTrackLength);
+            } else if (scatteringType == 1) {
+                hPionNpScatterTrackLengths->Fill(thisTrackLength);
             } else if (backgroundType != 2 && backgroundType != 3) {
                 hOtherPionTrackLengths->Fill(thisTrackLength);
             } else if (backgroundType == 3) {
@@ -629,23 +790,38 @@ void RecoNNShowers() {
         } 
 
         // Fill misID histogram
+        int NUM_SMALL_TRACKS;
         for (double threshold = TRACK_THRESHOLD_MIN; threshold <= TRACK_THRESHOLD_MAX; threshold += TRACK_THRESHOLD_STEP) {
+            NUM_SMALL_TRACKS = 0;
             for (int iTrk = 0; iTrk < (int) recoTrkID->size(); ++iTrk) {
+                double distanceFromStart = distance(
+                    recoBeginX->at(iTrk), breakPointX, 
+                    recoBeginY->at(iTrk), breakPointY,
+                    recoBeginZ->at(iTrk), breakPointZ
+                );
+                double distanceFromEnd = distance(
+                    recoEndX->at(iTrk), breakPointX, 
+                    recoEndY->at(iTrk), breakPointY,
+                    recoEndZ->at(iTrk), breakPointZ
+                );
+
+                if ((distanceFromStart < FAR_TRACK_DISTANCE || distanceFromEnd < FAR_TRACK_DISTANCE)) continue;
+
                 double thisTrackLength = sqrt(
                     pow(recoBeginX->at(iTrk) - recoEndX->at(iTrk), 2) +
                     pow(recoBeginY->at(iTrk) - recoEndY->at(iTrk), 2) + 
                     pow(recoBeginZ->at(iTrk) - recoEndZ->at(iTrk), 2)
                 );
-                if (thisTrackLength < threshold) numSmallTracks++;
+                if (thisTrackLength < threshold) NUM_SMALL_TRACKS++;
             }
 
             for (int numTrksBound = NUMBER_TRACKS_MIN; numTrksBound <= NUMBER_TRACKS_MAX; numTrksBound += NUMBER_TRACKS_STEP) {
                 // Look for misidentifications
-                if (((numSmallTracks > numTrksBound) && (backgroundType != 7)) || ((numSmallTracks <= numTrksBound) && (backgroundType == 7))) {
+                if (((NUM_SMALL_TRACKS > numTrksBound) && (backgroundType != 7)) || ((NUM_SMALL_TRACKS <= numTrksBound) && (backgroundType == 7))) {
                     hChargeExchangeMisIDs->Fill(threshold, numTrksBound, 1. / NumEntries);
                 }
 
-                if (numSmallTracks > numTrksBound) {
+                if (NUM_SMALL_TRACKS > numTrksBound) {
                     hChargeExchangeReco->Fill(threshold, numTrksBound, 1);
                     if (backgroundType == 7) {
                         hChargeExchangeRecoTrue->Fill(threshold, numTrksBound, 1);
@@ -653,11 +829,202 @@ void RecoNNShowers() {
                 }
             }
         }
+
+        // Actually perform cut
+        if (numSmallTracks <= 2) continue;
+        hPassSmallTracks->Fill(backgroundType);
+
+        //////////////////
+        // Hit analysis //
+        //////////////////
+
+        const float xThreshold = 40.0;
+        const float wThreshold = 40.0 * HIT_WIRE_SEPARATION;
+        std::unordered_set<int> hitsInWC2TPC(hitWC2TPCKey->begin(), hitWC2TPCKey->end());
+        std::vector<int> candidateInductionHits;
+
+        int nTotalHits = fHitKey->size();
+        // std::cout << "hits in wc2tpc: " << hitsInWC2TPC.size() << std::endl;
+        for (size_t iHit = 0; iHit < nTotalHits; ++iHit) {
+            // Skip hits that make up WC2TPC track
+            // if (hitsInWC2TPC.count(fHitKey->at(iHit)) > 0) {
+            //     std::cout << "  hit x: " << fHitX->at(iHit) << ", w: " << fHitW->at(iHit)
+            //               << ", plane: " << fHitPlane->at(iHit) << ", key: " << fHitKey->at(iHit)  << std::endl;
+            // }
+
+            if (hitsInWC2TPC.count(fHitKey->at(iHit)) > 0 || fHitPlane->at(iHit) == 1) continue;
+
+            float hitX = fHitX->at(iHit);
+            float hitW = fHitW->at(iHit);
+
+            if (!isHitNearPrimary(
+                hitWC2TPCKey, 
+                fHitX, 
+                fHitW,
+                hitX, 
+                hitW,
+                xThreshold, 
+                wThreshold
+            )) { candidateInductionHits.push_back(iHit); }
+        }
+
+        // Now cluster using those hits as starting points
+        std::unordered_set<int> usedHits;
+        std::vector<HitCluster> hitClusters;
+        int nCandidateHits    = candidateInductionHits.size();
+
+        // Hits in the same cluster must be separated by at most some number of wires
+        float maxHitClusterSeparation = HIT_WIRE_SEPARATION * 2.0; 
+        float maxHitXSeparation       = 0.1;
+
+        for (int iHit = 0; iHit < nCandidateHits; ++iHit) {
+            // The candidate hits are only STARTING points, as this could make up 
+            // really long tracks in the induction plane that are no longer near 
+            // the ending point of the primary track
+            
+            // First, check if we have already used this hit
+            int   thisHitKey       = candidateInductionHits.at(iHit);
+            float thisHitW         = fHitW->at(thisHitKey);
+            float thisHitX         = fHitX->at(thisHitKey);
+            float thisHitCharge    = fHitCharge->at(thisHitKey);
+            float thisHitChargeCol = fHitChargeCol->at(thisHitKey);
+
+            if (usedHits.count(thisHitKey)) continue;
+            
+            std::vector<int>   clusterKeys;
+            std::vector<float> clusterX;
+            std::vector<float> clusterW;
+            std::vector<float> clusterCharge;
+            std::vector<float> clusterChargeCol;
+
+            clusterKeys.push_back(thisHitKey);
+            clusterX.push_back(thisHitX);
+            clusterW.push_back(thisHitW);
+            clusterCharge.push_back(thisHitCharge);
+            clusterChargeCol.push_back(thisHitChargeCol);
+            
+            for (int iAllHit = 0; iAllHit < nTotalHits; ++iAllHit) {
+                // Skip already used hits, those reconstructed in primary track, and those in collection plane
+                if (usedHits.count(iAllHit) > 0 || hitsInWC2TPC.count(iAllHit) > 0 || fHitPlane->at(iAllHit) == 1) continue;
+                float internalHitW  = fHitW->at(iAllHit);
+                float internalHitX  = fHitX->at(iAllHit);
+                float dW            = std::abs(internalHitW - thisHitW);
+                float dX            = std::abs(internalHitX - thisHitX);
+
+                int nClusterSoFar = clusterW.size();
+                for (int iCluster = 0; iCluster < nClusterSoFar; ++iCluster) {
+                    float tempdW = std::abs(internalHitW - clusterW.at(iCluster));
+                    if (tempdW < dW) dW = tempdW;
+                    float tempdX = std::abs(internalHitX - clusterX.at(iCluster));
+                    if (tempdX < dX) dX = tempdX;
+                }
+
+                if ((dW < maxHitClusterSeparation) && (dX < maxHitXSeparation)) {
+                    usedHits.insert(iAllHit);
+                    clusterKeys.push_back(iAllHit);
+                    clusterX.push_back(fHitX->at(iAllHit));
+                    clusterW.push_back(fHitW->at(iAllHit));
+                    clusterCharge.push_back(fHitCharge->at(iAllHit));
+                    clusterChargeCol.push_back(fHitChargeCol->at(iAllHit));
+                }
+            }
+
+            HitCluster thisCluster;
+            thisCluster.hitKeys      = clusterKeys;
+            thisCluster.hitX         = clusterX;
+            thisCluster.hitW         = clusterW;
+            thisCluster.hitCharge    = clusterCharge;
+            thisCluster.hitChargeCol = clusterChargeCol;
+            
+            usedHits.insert(thisHitKey);
+            hitClusters.push_back(thisCluster);
+        }
+
+        if (backgroundType == 7) {
+            hChargeExchangeHitClusters->Fill(hitClusters.size());
+        } else if (backgroundType == 0) {
+            hPionAbs0pHitClusters->Fill(hitClusters.size());
+        } else if (backgroundType == 1) {
+            hPionAbsNpHitClusters->Fill(hitClusters.size());
+        } else if (scatteringType == 0) {
+            hPion0pScatterHitClusters->Fill(hitClusters.size());
+        } else if (scatteringType == 1) {
+            hPionNpScatterHitClusters->Fill(hitClusters.size());
+        } else if (backgroundType == 3) {
+            hElectronHitClusters->Fill(hitClusters.size());
+        } else if (backgroundType == 2) {
+            hMuonHitClusters->Fill(hitClusters.size());
+        } else if (backgroundType != 2 && backgroundType != 3) {
+            hOtherPionHitClusters->Fill(hitClusters.size());
+        }
+
+        for (const auto& cluster : hitClusters) {
+            int clusterSize = cluster.hitKeys.size();
+            if (clusterSize < 20) continue;
+
+            if (backgroundType == 7) {
+                hChargeExchangeHitClustersSize->Fill(clusterSize);
+            } else if (backgroundType == 0) {
+                hPionAbs0pHitClustersSize->Fill(clusterSize);
+            } else if (backgroundType == 1) {
+                hPionAbsNpHitClustersSize->Fill(clusterSize);
+            } else if (scatteringType == 0) {
+                hPion0pScatterHitClustersSize->Fill(clusterSize);
+            } else if (scatteringType == 1) {
+                hPionNpScatterHitClustersSize->Fill(clusterSize);
+            } else if (backgroundType == 3) {
+                hElectronHitClustersSize->Fill(clusterSize);
+            } else if (backgroundType == 2) {
+                hMuonHitClustersSize->Fill(clusterSize);
+            } else if (backgroundType != 2 && backgroundType != 3) {
+                hOtherPionHitClustersSize->Fill(clusterSize);
+            }
+        }
+
+        hChargeExchange->Fill(backgroundType);
     }
+
+    /////////////////////////////////////////////
+    // Print purity and efficiency at each cut //
+    /////////////////////////////////////////////
+
+    std::cout << std::endl;
+    std::cout << "Purity and efficiency at each cut:" << std::endl;
+    std::cout << "  Shower probability cut: " << std::endl;
+    std::cout << "    Purity: " << hPassShowerProb->GetBinContent(8) / hPassShowerProb->Integral() << std::endl;
+    std::cout << "    Efficiency: " << hPassShowerProb->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
+    std::cout << "  Track PID cut: " << std::endl;
+    std::cout << "    Purity: " << hPassTrackPID->GetBinContent(8) / hPassTrackPID->Integral() << std::endl;
+    std::cout << "    Efficiency: " << hPassTrackPID->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
+    std::cout << "  Small track cut: " << std::endl;
+    std::cout << "    Purity: " << hPassSmallTracks->GetBinContent(8) / hPassSmallTracks->Integral() << std::endl;
+    std::cout << "    Efficiency: " << hPassSmallTracks->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
+    std::cout << "  Final: " << std::endl;
+    std::cout << "    Purity: " << hChargeExchange->GetBinContent(8) / hChargeExchange->Integral() << std::endl;
+    std::cout << "    Efficiency: " << hChargeExchange->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
+    std::cout << std::endl;
+
+    /////////////////////////////////
+    // Print charge exchange
+
+    /////////////////////////////////
+    // Get optimal small track cut //
+    /////////////////////////////////
     
     TH2D* hChargeExchangePurity = (TH2D*) hChargeExchangeRecoTrue->Clone("hChargeExchangePurity");
     hChargeExchangePurity->SetTitle(";Small Track Threshold; Number of small tracks;Purity");
     hChargeExchangePurity->Divide(hChargeExchangeRecoTrue, hChargeExchangeReco, 1.0, 1.0);
+
+    Int_t binXChEx, binYChEx, binZChEx;
+    Int_t globalBinChEx   = hChargeExchangePurity->GetMaximumBin(binXChEx, binYChEx, binZChEx);
+
+    double maxContentChEx = hChargeExchangePurity->GetBinContent(globalBinChEx);
+    double xAtMaxChEx     = hChargeExchangePurity->GetXaxis()->GetBinLowEdge(binXChEx);
+    double yAtMaxChEx     = hChargeExchangePurity->GetYaxis()->GetBinLowEdge(binYChEx);
+
+    std::cout << std::endl;
+    std::cout << "Small track cut max purity = " << maxContentChEx << " at (small track size, # of small tracks) = (" << xAtMaxChEx << ", " << yAtMaxChEx << ")" << std::endl;
+    std::cout << std::endl;
 
     /////////////////////////////////
     // Print one dimensional plots //
@@ -680,6 +1047,8 @@ void RecoNNShowers() {
         // Shower probability
         {hElectronShowerProb, hPionShowerProb, hMuonShowerProb},
         {hPionChargeExchangeShowerProb, hPionAbs0pShowerProb, hPionAbsNpShowerProb, hPion0pScatterShowerProb, hPionNpScatterShowerProb, hPionOtherShowerProb},
+        {hPionChargeExchangeNoBoxShowerProb, hPionAbs0pNoBoxShowerProb, hPionAbsNpNoBoxShowerProb, hPion0pScatterNoBoxShowerProb, hPionNpScatterNoBoxShowerProb, hPionOtherNoBoxShowerProb, hElectronNoBoxShowerProb, hMuonNoBoxShowerProb},
+        {hPionChargeExchangeOutsideBoxShowerProb, hPionAbs0pOutsideBoxShowerProb, hPionAbsNpOutsideBoxShowerProb, hPion0pScatterOutsideBoxShowerProb, hPionNpScatterOutsideBoxShowerProb, hPionOtherOutsideBoxShowerProb, hElectronOutsideBoxShowerProb, hMuonOutsideBoxShowerProb},
 
         // Tracks near vertex
         {hChargeExchangeTracksNVertex, hPionAbs0pTracksNVertex, hPionAbsNpTracksNVertex, hPion0pScatterTracksNVertex, hPionNpScatterTracksNVertex, hOtherPionTracksNVertex, hElectronTracksNVertex, hMuonTracksNVertex},
@@ -688,15 +1057,21 @@ void RecoNNShowers() {
         {hChargeExchangeTracksFarVertex, hPionAbs0pTracksFarVertex, hPionAbsNpTracksFarVertex, hPion0pScatterTracksFarVertex, hPionNpScatterTracksFarVertex, hOtherPionTracksFarVertex, hElectronTracksFarVertex, hMuonTracksFarVertex},
 
         // Track lengths
-        {hChargeExchangeTrackLengths, hOtherPionTrackLengths, hElectronTrackLengths, hMuonTrackLengths},
+        {hChargeExchangeTrackLengths, hPionAbs0pTrackLengths, hPionAbsNpTrackLengths, hPion0pScatterTrackLengths, hPionNpScatterTrackLengths, hOtherPionTrackLengths, hElectronTrackLengths, hMuonTrackLengths},
         {hChargeExchangeSmallTracksCount, hOtherPionSmallTracksCount, hElectronSmallTracksCount, hMuonSmallTracksCount},
-        {hChargeExchangeLargeTracksCount, hOtherPionLargeTracksCount, hElectronLargeTracksCount, hMuonLargeTracksCount}
+        {hChargeExchangeLargeTracksCount, hOtherPionLargeTracksCount, hElectronLargeTracksCount, hMuonLargeTracksCount},
+
+        // Hit clusters
+        {hChargeExchangeHitClusters, hPionAbs0pHitClusters, hPionAbsNpHitClusters, hPion0pScatterHitClusters, hPionNpScatterHitClusters, hOtherPionHitClusters, hElectronHitClusters, hMuonHitClusters},
+        {hChargeExchangeHitClustersSize, hPionAbs0pHitClustersSize, hPionAbsNpHitClustersSize, hPion0pScatterHitClustersSize, hPionNpScatterHitClustersSize, hOtherPionHitClustersSize, hElectronHitClustersSize, hMuonHitClustersSize}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         // Shower probability
         {"Electron", "Pion", "Muon"},
         {"Ch. exch.", "Abs. 0p", "Abs. Np", "0p scatter", "Np scatter", "Other"},
+        {"Ch. exch.", "Abs. 0p", "Abs. Np", "0p scatter", "Np scatter", "Other pion", "Electron", "Muon"},
+        {"Ch. exch.", "Abs. 0p", "Abs. Np", "0p scatter", "Np scatter", "Other pion", "Electron", "Muon"},
 
         // Tracks near vertex
         {"Ch. exch.", "Abs. 0p", "Abs. Np", "0p scatter", "Np scatter", "Other pion", "Electron", "Muon"},
@@ -705,15 +1080,21 @@ void RecoNNShowers() {
         {"Ch. exch.", "Abs. 0p", "Abs. Np", "0p scatter", "Np scatter", "Other pion", "Electron", "Muon"},
 
         // Track lengths
+        {"Ch. exch.", "Abs. 0p", "Abs. Np", "0p scatter", "Np scatter", "Other pion", "Electron", "Muon"},
         {"Ch. exch.", "Other pion", "Electron", "Muon"},
         {"Ch. exch.", "Other pion", "Electron", "Muon"},
-        {"Ch. exch.", "Other pion", "Electron", "Muon"}
+
+        // Hit clusters
+        {"Ch. exch.", "Abs. 0p", "Abs. Np", "0p scatter", "Np scatter", "Other pion", "Electron", "Muon"},
+        {"Ch. exch.", "Abs. 0p", "Abs. Np", "0p scatter", "Np scatter", "Other pion", "Electron", "Muon"}
     };
 
     std::vector<TString> PlotTitles = {
         // Shower probability
         "PrimaryTrackShowerProb",
         "PionInteractionShowerProb",
+        "PionInteractionNoBoxShowerProb",
+        "PionInteractionOutsideBoxShowerProb",
 
         // Tracks near vertex
         "TracksNearVertex",
@@ -724,11 +1105,17 @@ void RecoNNShowers() {
         // Track lengths
         "TrackLengths",
         "SmallTrackCounts",
-        "LargeTrackCounts"
+        "LargeTrackCounts",
+
+        // Hit clusters
+        "HitClustersCounts",
+        "HitClustersSize"
     };
 
     std::vector<TString> XLabels = {
         // Shower probability
+        "Shower probability",
+        "Shower probability",
         "Shower probability",
         "Shower probability",
 
@@ -741,11 +1128,17 @@ void RecoNNShowers() {
         // Track lengths
         "Track length (cm)",
         "Number of small tracks",
-        "Number of large tracks"
+        "Number of large tracks",
+
+        // Hit clusters
+        "Number of hit clusters",
+        "Size of hit clusters"
     };
 
     std::vector<TString> YLabels = {
         // Shower probability
+        "Number of events",
+        "Number of events",
         "Number of events",
         "Number of events",
 
@@ -758,11 +1151,17 @@ void RecoNNShowers() {
         // Track lengths
         "Number of tracks",
         "Number of events",
+        "Number of events",
+
+        // Hit clusters
+        "Number of events",
         "Number of events"
     };
 
     std::vector<bool> PlotStacked = {
         // Shower probability
+        true,
+        true,
         true,
         true,
 
@@ -774,6 +1173,10 @@ void RecoNNShowers() {
 
         // Track lengths
         true,
+        true,
+        true,
+
+        // Hit clusters
         true,
         true
     };
@@ -979,6 +1382,16 @@ void printTwoDPlots(
     }
 }
 
+bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold) {
+    int nPrimaryHits = primaryKey->size();
+    for (int iHit = 0; iHit < nPrimaryHits; ++iHit) {
+        float dX = std::abs(thisHitX - hitX->at(primaryKey->at(iHit)));
+        float dW = std::abs(thisHitW - hitW->at(primaryKey->at(iHit)));
+        if ((dX < xThreshold) && (dW < wThreshold)) return true;
+    }
+    return false;
+}
+
 double distance(double x1, double x2, double y1, double y2, double z1, double z2) {
     return sqrt(
         pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(z1 - z2, 2)
@@ -1016,6 +1429,14 @@ double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::
 
     // Return reduced chi²
     return nUsed > 0 ? chi2Sum / nUsed : 0.0;
+}
+
+bool isWithinReducedVolume(double x, double y, double z) {
+    return (
+        (x > RminX) && (x < RmaxX) && 
+        (y > RminY) && (y < RmaxY) && 
+        (z > RminZ) && (z < RmaxZ)
+    );
 }
 
 double meanDEDX(std::vector<double>& trackDEDX, bool isTrackReversed, int pointsToUse) {
