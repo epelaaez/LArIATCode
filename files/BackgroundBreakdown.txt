@@ -6,6 +6,7 @@ Overall starting background:
   Other primary: 0
   Outside reduced volume: 2629
   Inelastic scattering: 3932
+  Elastic scattering: 9
   Charge exchange: 1028
   Double charge exchange: 79
   Capture at rest: 715
@@ -20,6 +21,7 @@ Overall background after WC existence cut:
   Other primary: 0
   Outside reduced volume: 655
   Inelastic scattering: 1368
+  Elastic scattering: 6
   Charge exchange: 314
   Double charge exchange: 20
   Capture at rest: 463
@@ -34,6 +36,7 @@ Overall background after pion in reduced volume cut:
   Other primary: 0
   Outside reduced volume: 151
   Inelastic scattering: 1126
+  Elastic scattering: 6
   Charge exchange: 263
   Double charge exchange: 17
   Capture at rest: 197
@@ -48,6 +51,7 @@ Reco 0p background after no outgoing pion cut:
   Other primary: 0
   Outside reduced volume: 82
   Inelastic scattering: 466
+  Elastic scattering: 2
   Charge exchange: 214
   Double charge exchange: 8
   Capture at rest: 141
@@ -62,6 +66,7 @@ Reco Np background after no outgoing pion cut:
   Other primary: 0
   Outside reduced volume: 2
   Inelastic scattering: 19
+  Elastic scattering: 1
   Charge exchange: 3
   Double charge exchange: 0
   Capture at rest: 2
@@ -76,6 +81,7 @@ Reco 0p background after small tracks cut:
   Other primary: 0
   Outside reduced volume: 79
   Inelastic scattering: 462
+  Elastic scattering: 2
   Charge exchange: 194
   Double charge exchange: 8
   Capture at rest: 136
@@ -90,6 +96,7 @@ Reco Np background after small tracks cut:
   Other primary: 0
   Outside reduced volume: 2
   Inelastic scattering: 18
+  Elastic scattering: 0
   Charge exchange: 2
   Double charge exchange: 0
   Capture at rest: 2
@@ -104,6 +111,7 @@ Reco 0p background after mean curvature cut:
   Other primary: 0
   Outside reduced volume: 62
   Inelastic scattering: 367
+  Elastic scattering: 1
   Charge exchange: 174
   Double charge exchange: 7
   Capture at rest: 129
@@ -118,6 +126,7 @@ Reco Np background after mean curvature cut:
   Other primary: 0
   Outside reduced volume: 2
   Inelastic scattering: 10
+  Elastic scattering: 0
   Charge exchange: 1
   Double charge exchange: 0
   Capture at rest: 1

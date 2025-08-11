@@ -7,35 +7,23 @@
 
 #include <vector>
 
-void Overlay_dEdx_RR_Reference_PP(TGraph* gProton, TGraph* gPion, bool addLegend = true, TVirtualPad* pad = gPad);
-void initializeProtonPoints(TGraph* gProton);
-void initializePionPoints(TGraph* gPion);
-double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, int nPoints);
+#include "Helpers.cc"
 
 void RecoAnalysis() {
     // Set defaults
+    gStyle->SetOptStat(0); // get rid of stats box
     TH1D::SetDefaultSumw2();
     TH2D::SetDefaultSumw2();
     gStyle->SetPalette(kRainBow);
 
     TGraph* gProton = new TGraph();
     TGraph* gPion   = new TGraph();
+    TGraph* gMuonTG = new TGraph();
 
     // Initialize points
     initializeProtonPoints(gProton);
     initializePionPoints(gPion);
-
-    // Proton energy bounds
-    double PROTON_ENERGY_LOWER_BOUND = 0.075;
-    double PROTON_ENERGY_UPPER_BOUND = 1.0;
-
-    // Detector dimensions
-    const double minX =  0.0;
-    const double maxX = 47.0;
-    const double minY =-20.0; 
-    const double maxY = 20.0; 
-    const double minZ =  3.0;
-    const double maxZ = 87.0;
+    initializeMuonNoBraggPoints(gMuonTG);
 
     // Vertex radius
     double fVertexRadius = 4.;
@@ -346,7 +334,7 @@ void RecoAnalysis() {
                 hDEDXProfile->SetMinimum(0);
                 hDEDXProfile->SetMaximum(1);
                 hDEDXProfile->Draw("COLZ");
-                Overlay_dEdx_RR_Reference_PP(gProton, gPion);
+                Overlay_dEdx_RR_Reference_PP(gProton, gPion, gMuonTG);
                 c1->SaveAs(SaveDir +  "dEdxProfiles/" + event + "_" + iParticle + "_" + matchedIdentity->at(iParticle) + ".png");
                 
                 delete c1;
@@ -400,8 +388,8 @@ void RecoAnalysis() {
             if (isSecondaryTrack) {
                 // Get chi^2 fit to a pion and proton
                 int caloPoints    = thisTrackDEDX.size();
-                double protonChi2 = computeReducedChi2(gProton, thisTrackRecoResR, thisTrackDEDX, caloPoints);
-                double pionChi2   = computeReducedChi2(gPion, thisTrackRecoResR, thisTrackDEDX, caloPoints);
+                double protonChi2 = computeReducedChi2(gProton, thisTrackRecoResR, thisTrackDEDX, false, caloPoints);
+                double pionChi2   = computeReducedChi2(gPion, thisTrackRecoResR, thisTrackDEDX, false, caloPoints);
 
                 hProtonChi2All->Fill(protonChi2);
                 hPionChi2All->Fill(pionChi2);
@@ -911,31 +899,31 @@ void RecoAnalysis() {
     hEnergyLossAll->SetMinimum(0);
     hEnergyLossAll->SetMaximum(hEnergyLossAll->GetMaximum());
     hEnergyLossAll->Draw("COLZ");
-    Overlay_dEdx_RR_Reference_PP(gProton, gPion);
+    Overlay_dEdx_RR_Reference_PP(gProton, gPion, gMuonTG);
     c1->SaveAs(SaveDir + "EnergyLossAll.png");
 
     hEnergyLossProtons->SetMinimum(0);
     hEnergyLossProtons->SetMaximum(hEnergyLossProtons->GetMaximum());
     hEnergyLossProtons->Draw("COLZ");
-    Overlay_dEdx_RR_Reference_PP(gProton, gPion);
+    Overlay_dEdx_RR_Reference_PP(gProton, gPion, gMuonTG);
     c1->SaveAs(SaveDir + "EnergyLossProtons.png");
 
     hEnergyLossPions->SetMinimum(0);
     hEnergyLossPions->SetMaximum(hEnergyLossPions->GetMaximum());
     hEnergyLossPions->Draw("COLZ");
-    Overlay_dEdx_RR_Reference_PP(gProton, gPion);
+    Overlay_dEdx_RR_Reference_PP(gProton, gPion, gMuonTG);
     c1->SaveAs(SaveDir + "EnergyLossPions.png");
 
     hEnergyLossUncontainedProtons->SetMinimum(0);
     hEnergyLossUncontainedProtons->SetMaximum(hEnergyLossUncontainedProtons->GetMaximum());
     hEnergyLossUncontainedProtons->Draw("COLZ");
-    Overlay_dEdx_RR_Reference_PP(gProton, gPion);
+    Overlay_dEdx_RR_Reference_PP(gProton, gPion, gMuonTG);
     c1->SaveAs(SaveDir + "EnergyLossUncontainedProtons.png");
 
     hEnergyLossContainedProtons->SetMinimum(0);
     hEnergyLossContainedProtons->SetMaximum(hEnergyLossContainedProtons->GetMaximum());
     hEnergyLossContainedProtons->Draw("COLZ");
-    Overlay_dEdx_RR_Reference_PP(gProton, gPion);
+    Overlay_dEdx_RR_Reference_PP(gProton, gPion, gMuonTG);
     c1->SaveAs(SaveDir + "EnergyLossContainedProtons.png");
 
     hProtonChi2TruePositives->SetMinimum(0);
@@ -1065,115 +1053,4 @@ void RecoAnalysis() {
     std::cout << "[PROTON] Max‑FOM = " << maxContentProt
             << " at (χ²_p, χ²_π) = (" << xAtMaxProt << ", " << yAtMaxProt << ")\n";
     std::cout << std::endl;
-}
-
-double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, int nPoints) {
-    double chi2 = 0.0;
-
-    for (int i = 0; i < nPoints; ++i) {
-        double theoryY = theory->Eval(xData[i]); // interpolate the theory at xData[i]
-        double deltaY = yData[i] - theoryY;
-        chi2 += (deltaY * deltaY) / theoryY;
-    }
-
-    // Currently, no fixed parameters, so dof = nPoints
-    int dof = nPoints;
-    return dof > 0 ? chi2 / dof : 0.0; 
-}
-
-void Overlay_dEdx_RR_Reference_PP(
-    TGraph* gProton,
-    TGraph* gPion,
-    bool addLegend = true, 
-    TVirtualPad* pad = gPad
-) {
-    const int N = 107;
-
-    /* ---------- Proton ---------- */
-    gProton->SetLineColor(kRed+1);
-    gProton->SetLineWidth(3);
-    gProton->SetName("Proton");
-
-    /* ---------- Pion ---------- */
-    gPion->SetLineColor(kRed+3);
-    gPion->SetLineWidth(3);
-    gPion->SetName("Pion");
-
-    if (pad) pad->cd();
-    gProton->Draw("L same");
-    gPion  ->Draw("L same");
-    
-    if (addLegend) {
-        static TLegend *leg = nullptr;
-        if (!leg) {
-            leg = new TLegend(0.50,0.80,0.75,0.88);
-            leg->AddEntry(gProton, "Proton", "l");
-            leg->AddEntry(gPion,   "Pion",   "l");
-            leg->SetFillStyle(1001);
-            leg->SetBorderSize(0);
-        }
-        leg->Draw();
-    }
-}
-
-void initializeProtonPoints(TGraph* gProton) {
-    double protonData[107][2] = {
-        {31.95, 4.14}, {31.65, 4.16}, {31.35, 4.17}, {31.05, 4.18}, {30.75, 4.20},
-        {30.45, 4.21}, {30.15, 4.23}, {29.85, 4.25}, {29.55, 4.26}, {29.25, 4.28},
-        {28.95, 4.29}, {28.65, 4.31}, {28.35, 4.33}, {28.05, 4.34}, {27.75, 4.36},
-        {27.45, 4.38}, {27.15, 4.40}, {26.85, 4.42}, {26.55, 4.43}, {26.25, 4.45},
-        {25.95, 4.47}, {25.65, 4.49}, {25.35, 4.51}, {25.05, 4.53}, {24.75, 4.55},
-        {24.45, 4.57}, {24.15, 4.60}, {23.85, 4.62}, {23.55, 4.64}, {23.25, 4.66},
-        {22.95, 4.69}, {22.65, 4.71}, {22.35, 4.73}, {22.05, 4.76}, {21.75, 4.78},
-        {21.45, 4.81}, {21.15, 4.83}, {20.85, 4.86}, {20.55, 4.89}, {20.25, 4.92},
-        {19.95, 4.94}, {19.65, 4.97}, {19.35, 5.00}, {19.05, 5.03}, {18.75, 5.07},
-        {18.45, 5.10}, {18.15, 5.13}, {17.85, 5.16}, {17.55, 5.20}, {17.25, 5.23},
-        {16.95, 5.27}, {16.65, 5.31}, {16.35, 5.35}, {16.05, 5.39}, {15.75, 5.43},
-        {15.45, 5.47}, {15.15, 5.51}, {14.85, 5.56}, {14.55, 5.60}, {14.25, 5.65},
-        {13.95, 5.70}, {13.65, 5.75}, {13.35, 5.80}, {13.05, 5.85}, {12.75, 5.91},
-        {12.45, 5.97}, {12.15, 6.03}, {11.85, 6.09}, {11.55, 6.15}, {11.25, 6.22},
-        {10.95, 6.29}, {10.65, 6.36}, {10.35, 6.44}, {10.05, 6.52}, {9.75, 6.60},
-        {9.45, 6.68}, {9.15, 6.77}, {8.85, 6.87}, {8.55, 6.97}, {8.25, 7.08},
-        {7.95, 7.19}, {7.65, 7.30}, {7.35, 7.43}, {7.05, 7.56}, {6.75, 7.70},
-        {6.45, 7.85}, {6.15, 8.02}, {5.85, 8.19}, {5.55, 8.38}, {5.25, 8.58},
-        {4.95, 8.81}, {4.65, 9.05}, {4.35, 9.32}, {4.05, 9.61}, {3.75, 9.94},
-        {3.45, 10.32}, {3.15, 10.74}, {2.85, 11.23}, {2.55, 11.80}, {2.25, 12.48},
-        {1.95, 13.31}, {1.65, 14.35}, {1.35, 15.71}, {1.05, 17.59}, {0.75, 20.44},
-        {0.45, 25.48}, {0.15, 38.12}
-    };
-
-    for (int i = 0; i < 107; ++i) {
-        gProton->SetPoint(i, protonData[i][0], protonData[i][1]);
-    }
-}
-
-void initializePionPoints(TGraph* gPion) {
-    double pionData[107][2] = {
-        {31.95, 2.4}, {31.65, 2.4}, {31.35, 2.4}, {31.05, 2.4}, {30.75, 2.4},
-        {30.45, 2.4}, {30.15, 2.4}, {29.85, 2.4}, {29.55, 2.4}, {29.25, 2.4},
-        {28.95, 2.4}, {28.65, 2.4}, {28.35, 2.4}, {28.05, 2.4}, {27.75, 2.5},
-        {27.45, 2.5}, {27.15, 2.5}, {26.85, 2.5}, {26.55, 2.5}, {26.25, 2.5},
-        {25.95, 2.5}, {25.65, 2.5}, {25.35, 2.5}, {25.05, 2.5}, {24.75, 2.5},
-        {24.45, 2.5}, {24.15, 2.5}, {23.85, 2.5}, {23.55, 2.5}, {23.25, 2.6},
-        {22.95, 2.6}, {22.65, 2.6}, {22.35, 2.6}, {22.05, 2.6}, {21.75, 2.6},
-        {21.45, 2.6}, {21.15, 2.6}, {20.85, 2.6}, {20.55, 2.6}, {20.25, 2.6},
-        {19.95, 2.6}, {19.65, 2.7}, {19.35, 2.7}, {19.05, 2.7}, {18.75, 2.7},
-        {18.45, 2.7}, {18.15, 2.7}, {17.85, 2.7}, {17.55, 2.7}, {17.25, 2.8},
-        {16.95, 2.8}, {16.65, 2.8}, {16.35, 2.8}, {16.05, 2.8}, {15.75, 2.8},
-        {15.45, 2.8}, {15.15, 2.9}, {14.85, 2.9}, {14.55, 2.9}, {14.25, 2.9},
-        {13.95, 2.9}, {13.65, 2.9}, {13.35, 3.0}, {13.05, 3.0}, {12.75, 3.0},
-        {12.45, 3.0}, {12.15, 3.0}, {11.85, 3.1}, {11.55, 3.1}, {11.25, 3.1},
-        {10.95, 3.1}, {10.65, 3.2}, {10.35, 3.2}, {10.05, 3.2}, {9.75, 3.3},
-        {9.45, 3.3}, {9.15, 3.3}, {8.85, 3.4}, {8.55, 3.4}, {8.25, 3.4},
-        {7.95, 3.5}, {7.65, 3.5}, {7.35, 3.6}, {7.05, 3.6}, {6.75, 3.7},
-        {6.45, 3.7}, {6.15, 3.8}, {5.85, 3.9}, {5.55, 3.9}, {5.25, 4.0},
-        {4.95, 4.1}, {4.65, 4.2}, {4.35, 4.3}, {4.05, 4.4}, {3.75, 4.6},
-        {3.45, 4.7}, {3.15, 4.9}, {2.85, 5.1}, {2.55, 5.3}, {2.25, 5.6},
-        {1.95, 5.9}, {1.65, 6.4}, {1.35, 6.9}, {1.05, 7.7}, {0.75, 8.9},
-        {0.45, 11.0}, {0.15, 16.5}
-    };
-
-    for (int i = 0; i < 107; ++i) {
-        gPion->SetPoint(i, pionData[i][0], pionData[i][1]);
-    }
 }

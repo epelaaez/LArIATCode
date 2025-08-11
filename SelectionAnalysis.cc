@@ -8,39 +8,7 @@
 #include <vector>
 #include <map>
 
-std::map<int, std::string> backgroundTypes = {
-    {-1, "Not flagged as background"},
-    {0, "Abs 0p"},
-    {1, "Abs Np"},
-    {2, "Primary muon"},
-    {3, "Primary electron"},
-    {4, "Other primary"},
-    {5, "Outside reduced volume"},
-    {6, "Inelastic scattering"},
-    {7, "Charge exchange"},
-    {8, "Double charge exchange"},
-    {9, "Capture at rest"},
-    {10, "Decay"},
-    {11, "Other"}
-};
-
-struct EventInfo {
-    int run; int subrun; int event;
-    float vertexX; float vertexY; float vertexZ;
-
-    int                      wcMatchPDG;
-    std::string              wcMatchProcess;
-    std::vector<int>         wcMatchDaughtersPDG;
-    std::vector<std::string> wcMatchDaughtersProcess;
-
-    int                      truthPrimaryPDG;
-    std::vector<int>         truthPrimaryDaughtersPDG;
-    std::vector<std::string> truthPrimaryDaughtersProcess;
-
-    int                      visibleProtons;
-    int                      recoProtonCount;
-    int                      backgroundNum;
-};
+#include "Helpers.cc"
 
 void printBackgroundInfo(TH1D* background_histo, std::ostream& os);
 void printEventInfo(EventInfo event, std::ostream& os);
@@ -525,58 +493,4 @@ void SelectionAnalysis() {
     outFileBackgroundBreakdown << "Reco Np background after mean curvature cut:" << std::endl;
     printBackgroundInfo(hMeanCurvatureNpBackground, outFileBackgroundBreakdown);
     outFileBackgroundBreakdown << std::endl;
-}
-
-void printBackgroundInfo(TH1D* background_histo, std::ostream& os) {
-    int pionAbs0p            = background_histo->GetBinContent(1);
-    int pionAbsNp            = background_histo->GetBinContent(2);
-    int primaryMuon          = background_histo->GetBinContent(3);
-    int primaryElectron      = background_histo->GetBinContent(4);
-    int otherPrimary         = background_histo->GetBinContent(5);
-    int pionOutRedVol        = background_histo->GetBinContent(6);
-    int pionInelScatter      = background_histo->GetBinContent(7);
-    int chargeExchange       = background_histo->GetBinContent(8);
-    int doubleChargeExchange = background_histo->GetBinContent(9);
-    int captureAtRest        = background_histo->GetBinContent(10);
-    int pionDecay            = background_histo->GetBinContent(11);
-    int other                = background_histo->GetBinContent(12);
-
-    os << "  Abs 0p: " << pionAbs0p << std::endl;;
-    os << "  Abs Np: " << pionAbsNp << std::endl;;
-    os << "  Primary muon: " << primaryMuon << std::endl;;
-    os << "  Primary electron: " << primaryElectron << std::endl;;
-    os << "  Other primary: " << otherPrimary << std::endl;;
-    os << "  Outside reduced volume: " << pionOutRedVol << std::endl;;
-    os << "  Inelastic scattering: " << pionInelScatter << std::endl;;
-    os << "  Charge exchange: " << chargeExchange << std::endl;;
-    os << "  Double charge exchange: " << doubleChargeExchange << std::endl;;
-    os << "  Capture at rest: " << captureAtRest << std::endl;;
-    os << "  Decay: " << pionDecay << std::endl;;
-    os << "  Other: " << other << std::endl;
-}
-
-void printEventInfo(EventInfo event, std::ostream& os) {
-    os << "Run: " << event.run << " subrun: " << event.subrun << " event: " << event.event << std::endl;
-    os << "Background type: " << backgroundTypes[event.backgroundNum] << std::endl;
-    os << "WC match PDG: " << event.wcMatchPDG << std::endl;
-    os << "WC match process: " << event.wcMatchProcess << std::endl;
-    os << "WC match daughters: " << std::endl;
-    for (int n = 0; n < event.wcMatchDaughtersPDG.size(); ++n) {
-        if (event.wcMatchDaughtersPDG[n] == 11 && event.wcMatchDaughtersProcess[n] == "hIoni") continue;
-        os << "    PDG: " << event.wcMatchDaughtersPDG[n];
-        os << " Process: " << event.wcMatchDaughtersProcess[n];
-        os << std::endl;
-    }
-    os << "Primary PDG: " << event.truthPrimaryPDG << std::endl;
-    os << "Primary vertex: " << event.vertexX << ", " << event.vertexY << ", " << event.vertexZ << std::endl; 
-    os << "Primary daughters: " << std::endl;
-    for (int n = 0; n < event.truthPrimaryDaughtersPDG.size(); ++n) {
-        if (event.truthPrimaryDaughtersPDG[n] == 11 && event.truthPrimaryDaughtersProcess[n] == "hIoni") continue;
-        os << "    PDG: " << event.truthPrimaryDaughtersPDG[n];
-        os << " Process: " << event.truthPrimaryDaughtersProcess[n];
-        os << std::endl;
-    }
-    os << "Tracks reco'ed as protons: " << event.recoProtonCount << std::endl;
-    os << "True visible protons: " << event.visibleProtons << std::endl;
-    os << std::endl;
 }

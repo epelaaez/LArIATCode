@@ -1,406 +1,556 @@
 Events reconstructed as Np absorption but not absorption at truth level: 15
 
 Run: 1 subrun: 0 event: 200174
-Background type: Inelastic scattering
-WC match PDG: -211
-WC match process: pi-Inelastic
-WC match daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160380 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 28.2033, -6.325, 27.2858
-Primary daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000180400 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Inelastic scattering
+  WC match PDG: -211
+  WC match process: pi-Inelastic
+  WC match daughters: 
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000160380 Process: pi-Inelastic
+
+  Primary PDG: -211
+  Primary vertex: 28.2033, -6.325, 27.2858
+  Primary daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000180400 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 200772
-Background type: Inelastic scattering
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000170350 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 13.6408, 2.01346, 13.944
-Primary daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000170350 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Inelastic scattering
+  WC match PDG: -211
+  WC match process: primary
+  WC match daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000170350 Process: pi-Inelastic
+
+  Primary PDG: -211
+  Primary vertex: 13.6408, 2.01346, 13.944
+  Primary daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000170350 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 200887
-Background type: Inelastic scattering
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000180370 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 18.1421, 1.77961, 72.3118
-Primary daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000180370 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Inelastic scattering
+  WC match PDG: -211
+  WC match process: primary
+  WC match daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000180370 Process: pi-Inelastic
+
+  Primary PDG: -211
+  Primary vertex: 18.1421, 1.77961, 72.3118
+  Primary daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000180370 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 202359
-Background type: Outside reduced volume
-WC match PDG: 2212
-WC match process: pi-Inelastic
-WC match daughters: 
-    PDG: 2212 Process: protonInelastic
-    PDG: 2112 Process: protonInelastic
-    PDG: 22 Process: protonInelastic
-    PDG: 22 Process: protonInelastic
-    PDG: 22 Process: protonInelastic
-    PDG: 1000180390 Process: protonInelastic
-Primary PDG: -211
-Primary vertex: 13.7837, 1.16442, 4.5441
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160350 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Outside reduced volume
+  WC match PDG: 2212
+  WC match process: pi-Inelastic
+  WC match daughters: 
+      PDG: 2212 Process: protonInelastic
+      PDG: 2112 Process: protonInelastic
+      PDG: 22 Process: protonInelastic
+      PDG: 22 Process: protonInelastic
+      PDG: 22 Process: protonInelastic
+      PDG: 1000180390 Process: protonInelastic
+
+  Primary PDG: -211
+  Primary vertex: 13.7837, 1.16442, 4.5441
+  Primary daughters: 
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000160350 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 63161
-Background type: Inelastic scattering
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 2112 Process: pi-Inelastic
-    PDG: -211 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000180390 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 15.9273, -7.63797, 45.2549
-Primary daughters: 
-    PDG: 2112 Process: pi-Inelastic
-    PDG: -211 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000180390 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Inelastic scattering
+  WC match PDG: -211
+  WC match process: primary
+  WC match daughters: 
+      PDG: 2112 Process: pi-Inelastic
+      PDG: -211 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000180390 Process: pi-Inelastic
+
+  Primary PDG: -211
+  Primary vertex: 15.9273, -7.63797, 45.2549
+  Primary daughters: 
+      PDG: 2112 Process: pi-Inelastic
+      PDG: -211 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000180390 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 65631
-Background type: Primary electron
-WC match PDG: 11
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: eBrem
-    PDG: 22 Process: eBrem
-    PDG: 11 Process: eIoni
-    PDG: 22 Process: eBrem
-    PDG: 11 Process: eIoni
-    PDG: 22 Process: eBrem
-Primary PDG: 11
-Primary vertex: 30.4776, 3.49525, -9.36978
-Primary daughters: 
-    PDG: 22 Process: eBrem
-    PDG: 22 Process: eBrem
-    PDG: 11 Process: eIoni
-    PDG: 22 Process: eBrem
-    PDG: 11 Process: eIoni
-    PDG: 22 Process: eBrem
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Primary electron
+  WC match PDG: 11
+  WC match process: primary
+  WC match daughters: 
+      PDG: 22 Process: eBrem
+      PDG: 22 Process: eBrem
+      PDG: 11 Process: eIoni
+      PDG: 22 Process: eBrem
+      PDG: 11 Process: eIoni
+      PDG: 22 Process: eBrem
+
+  Primary PDG: 11
+  Primary vertex: 30.4776, 3.49525, -9.36978
+  Primary daughters: 
+      PDG: 22 Process: eBrem
+      PDG: 22 Process: eBrem
+      PDG: 11 Process: eIoni
+      PDG: 22 Process: eBrem
+      PDG: 11 Process: eIoni
+      PDG: 22 Process: eBrem
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 230860
-Background type: Inelastic scattering
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160340 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 9.28704, -4.06599, 42.9588
-Primary daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160340 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Inelastic scattering
+  WC match PDG: -211
+  WC match process: primary
+  WC match daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000160340 Process: pi-Inelastic
+
+  Primary PDG: -211
+  Primary vertex: 9.28704, -4.06599, 42.9588
+  Primary daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000160340 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 231459
-Background type: Inelastic scattering
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000180370 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 10.8573, 0.987377, 23.5312
-Primary daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000180370 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Inelastic scattering
+  WC match PDG: -211
+  WC match process: primary
+  WC match daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000180370 Process: pi-Inelastic
+
+  Primary PDG: -211
+  Primary vertex: 10.8573, 0.987377, 23.5312
+  Primary daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000180370 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 232700
-Background type: Inelastic scattering
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 1000170370 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 14.8914, 7.92257, 32.1054
-Primary daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 1000170370 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Inelastic scattering
+  WC match PDG: -211
+  WC match process: primary
+  WC match daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 1000170370 Process: pi-Inelastic
+
+  Primary PDG: -211
+  Primary vertex: 14.8914, 7.92257, 32.1054
+  Primary daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 1000170370 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 8081
-Background type: Inelastic scattering
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000020040 Process: pi-Inelastic
-    PDG: 1000020040 Process: pi-Inelastic
-    PDG: 1000140300 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 16.1034, -1.93915, 23.0503
-Primary daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000020040 Process: pi-Inelastic
-    PDG: 1000020040 Process: pi-Inelastic
-    PDG: 1000140300 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Inelastic scattering
+  WC match PDG: -211
+  WC match process: primary
+  WC match daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000020040 Process: pi-Inelastic
+      PDG: 1000020040 Process: pi-Inelastic
+      PDG: 1000140300 Process: pi-Inelastic
+
+  Primary PDG: -211
+  Primary vertex: 16.1034, -1.93915, 23.0503
+  Primary daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000020040 Process: pi-Inelastic
+      PDG: 1000020040 Process: pi-Inelastic
+      PDG: 1000140300 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 82994
-Background type: Charge exchange
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 111 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000170360 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 12.8438, 2.80879, 42.3234
-Primary daughters: 
-    PDG: 111 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000170360 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Charge exchange
+  WC match PDG: -211
+  WC match process: primary
+  WC match daughters: 
+      PDG: 111 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000170360 Process: pi-Inelastic
+
+  Primary PDG: -211
+  Primary vertex: 12.8438, 2.80879, 42.3234
+  Primary daughters: 
+      PDG: 111 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000170360 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 83246
-Background type: Outside reduced volume
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160350 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 17.4687, 13.4448, 82.505
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160350 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Outside reduced volume
+  WC match PDG: -211
+  WC match process: primary
+  WC match daughters: 
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000160350 Process: pi-Inelastic
+
+  Primary PDG: -211
+  Primary vertex: 17.4687, 13.4448, 82.505
+  Primary daughters: 
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000160350 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 83751
-Background type: Inelastic scattering
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 1000180370 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 16.6904, -5.59916, 26.058
-Primary daughters: 
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 1000180370 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Inelastic scattering
+  WC match PDG: -211
+  WC match process: primary
+  WC match daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 1000180370 Process: pi-Inelastic
+
+  Primary PDG: -211
+  Primary vertex: 16.6904, -5.59916, 26.058
+  Primary daughters: 
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 1000180370 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 84740
-Background type: Inelastic scattering
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160320 Process: pi-Inelastic
-Primary PDG: -211
-Primary vertex: 14.9391, -0.120491, 19.3573
-Primary daughters: 
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: -211 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 2212 Process: pi-Inelastic
-    PDG: 2112 Process: pi-Inelastic
-    PDG: 22 Process: pi-Inelastic
-    PDG: 1000160320 Process: pi-Inelastic
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Inelastic scattering
+  WC match PDG: -211
+  WC match process: primary
+  WC match daughters: 
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000160320 Process: pi-Inelastic
+
+  Primary PDG: -211
+  Primary vertex: 14.9391, -0.120491, 19.3573
+  Primary daughters: 
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: -211 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 2212 Process: pi-Inelastic
+      PDG: 2112 Process: pi-Inelastic
+      PDG: 22 Process: pi-Inelastic
+      PDG: 1000160320 Process: pi-Inelastic
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
 Run: 1 subrun: 0 event: 85671
-Background type: Capture at rest
-WC match PDG: -211
-WC match process: primary
-WC match daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150350 Process: hBertiniCaptureAtRest
-Primary PDG: -211
-Primary vertex: 24.4769, -5.794, 80.9772
-Primary daughters: 
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2212 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 22 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 2112 Process: hBertiniCaptureAtRest
-    PDG: 1000150350 Process: hBertiniCaptureAtRest
-Tracks reco'ed as protons: 1
-True visible protons: 0
+  Background type: Capture at rest
+  WC match PDG: -211
+  WC match process: primary
+  WC match daughters: 
+      PDG: 22 Process: hBertiniCaptureAtRest
+      PDG: 22 Process: hBertiniCaptureAtRest
+      PDG: 2212 Process: hBertiniCaptureAtRest
+      PDG: 2212 Process: hBertiniCaptureAtRest
+      PDG: 2112 Process: hBertiniCaptureAtRest
+      PDG: 22 Process: hBertiniCaptureAtRest
+      PDG: 2112 Process: hBertiniCaptureAtRest
+      PDG: 2112 Process: hBertiniCaptureAtRest
+      PDG: 1000150350 Process: hBertiniCaptureAtRest
+
+  Primary PDG: -211
+  Primary vertex: 24.4769, -5.794, 80.9772
+  Primary daughters: 
+      PDG: 22 Process: hBertiniCaptureAtRest
+      PDG: 22 Process: hBertiniCaptureAtRest
+      PDG: 2212 Process: hBertiniCaptureAtRest
+      PDG: 2212 Process: hBertiniCaptureAtRest
+      PDG: 2112 Process: hBertiniCaptureAtRest
+      PDG: 22 Process: hBertiniCaptureAtRest
+      PDG: 2112 Process: hBertiniCaptureAtRest
+      PDG: 2112 Process: hBertiniCaptureAtRest
+      PDG: 1000150350 Process: hBertiniCaptureAtRest
+  Secondary pion daughters: 
+  Secondary interaction tagged as: 
+
+  Tracks reco'ed near vertex: 0
+  Tracks reco'ed as protons: 1
+  True visible protons: 0
+
+  Number of hit clusters found near primary track: 32622
+
+  Minimum primary track linearity: 2.76677e-322
+  Maximum primary track linearity derivative: 6.12641e-322 above threshold: 0
 
