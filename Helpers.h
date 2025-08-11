@@ -163,6 +163,7 @@ double meanDEDX(std::vector<double> trackDEDX, bool isTrackReversed, int pointsT
 double energyLossCalculation();
 double energyLossCalculation(double x, double px, bool isData);
 double getClusterElongation(HitCluster cluster);
+double getClusterWidth(HitCluster cluster);
 
 int isSecondaryInteractionAbsorption(std::vector<int> daughtersPDG, std::vector<string> daughtersProcess, std::vector<double> daughtersKE);
 int getCorrespondingBin(double value, int num_bins, double low, double high);

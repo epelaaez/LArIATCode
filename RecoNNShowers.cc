@@ -347,14 +347,14 @@ void RecoNNShowers() {
     );
 
     // Hit clusters
-    TH1D* hChargeExchangeHitClusters = new TH1D("hChargeExchangeHitClusters", "hChargeExchangeHitClusters;;", 20, 0, 20);
-    TH1D* hPionAbs0pHitClusters      = new TH1D("hPionAbs0pHitClusters", "hPionAbs0pHitClusters;;", 20, 0, 20);
-    TH1D* hPionAbsNpHitClusters      = new TH1D("hPionAbsNpHitClusters", "hPionAbsNpHitClusters;;", 20, 0, 20);
-    TH1D* hPion0pScatterHitClusters  = new TH1D("hPion0pScatterHitClusters", "hPion0pScatterHitClusters;;", 20, 0, 20);
-    TH1D* hPionNpScatterHitClusters  = new TH1D("hPionNpScatterHitClusters", "hPionNpScatterHitClusters;;", 20, 0, 20);
-    TH1D* hOtherPionHitClusters      = new TH1D("hOtherPionHitClusters", "hOtherPionHitClusters;;", 20, 0, 20);
-    TH1D* hElectronHitClusters       = new TH1D("hElectronHitClusters", "hElectronHitClusters;;", 20, 0, 20);
-    TH1D* hMuonHitClusters           = new TH1D("hMuonHitClusters", "hMuonHitClusters;;", 20, 0, 20);
+    TH1D* hChargeExchangeHitClusters = new TH1D("hChargeExchangeHitClusters", "hChargeExchangeHitClusters;;", 20, 0, 40);
+    TH1D* hPionAbs0pHitClusters      = new TH1D("hPionAbs0pHitClusters", "hPionAbs0pHitClusters;;", 20, 0, 40);
+    TH1D* hPionAbsNpHitClusters      = new TH1D("hPionAbsNpHitClusters", "hPionAbsNpHitClusters;;", 20, 0, 40);
+    TH1D* hPion0pScatterHitClusters  = new TH1D("hPion0pScatterHitClusters", "hPion0pScatterHitClusters;;", 20, 0, 40);
+    TH1D* hPionNpScatterHitClusters  = new TH1D("hPionNpScatterHitClusters", "hPionNpScatterHitClusters;;", 20, 0, 40);
+    TH1D* hOtherPionHitClusters      = new TH1D("hOtherPionHitClusters", "hOtherPionHitClusters;;", 20, 0, 40);
+    TH1D* hElectronHitClusters       = new TH1D("hElectronHitClusters", "hElectronHitClusters;;", 20, 0, 40);
+    TH1D* hMuonHitClusters           = new TH1D("hMuonHitClusters", "hMuonHitClusters;;", 20, 0, 40);
 
     TH1D* hChargeExchangeHitClustersSize = new TH1D("hChargeExchangeHitClustersSize", "hChargeExchangeHitClustersSize;;", 20, 0, 250);
     TH1D* hPionAbs0pHitClustersSize      = new TH1D("hPionAbs0pHitClustersSize", "hPionAbs0pHitClustersSize;;", 20, 0, 250);
@@ -366,14 +366,14 @@ void RecoNNShowers() {
     TH1D* hMuonHitClustersSize           = new TH1D("hMuonHitClustersSize", "hMuonHitClustersSize;;", 20, 0, 250);
 
     // Cluster elongation
-    TH1D* hChargeExchangeClusterElong = new TH1D("hChargeExchangeClusterElong", "hChargeExchangeClusterElong", 20, 0, 1);
-    TH1D* hPionAbs0pClusterElong      = new TH1D("hPionAbs0pClusterElong", "hPionAbs0pClusterElong", 20, 0, 1);
-    TH1D* hPionAbsNpClusterElong      = new TH1D("hPionAbsNpClusterElong", "hPionAbsNpClusterElong", 20, 0, 1);
-    TH1D* hPion0pScatterClusterElong  = new TH1D("hPion0pScatterClusterElong", "hPion0pScatterClusterElong", 20, 0, 1);
-    TH1D* hPionNpScatterClusterElong  = new TH1D("hPionNpScatterClusterElong", "hPionNpScatterClusterElong", 20, 0, 1);
-    TH1D* hOtherPionClusterElong      = new TH1D("hOtherPionClusterElong", "hOtherPionClusterElong", 20, 0, 1);
-    TH1D* hElectronClusterElong       = new TH1D("hElectronClusterElong", "hElectronClusterElong", 20, 0, 1);
-    TH1D* hMuonClusterElong           = new TH1D("hMuonClusterElong", "hMuonClusterElong", 20, 0, 1);
+    TH1D* hChargeExchangeClusterElong = new TH1D("hChargeExchangeClusterElong", "hChargeExchangeClusterElong", 20, 0, 0.5);
+    TH1D* hPionAbs0pClusterElong      = new TH1D("hPionAbs0pClusterElong", "hPionAbs0pClusterElong", 20, 0, 0.5);
+    TH1D* hPionAbsNpClusterElong      = new TH1D("hPionAbsNpClusterElong", "hPionAbsNpClusterElong", 20, 0, 0.5);
+    TH1D* hPion0pScatterClusterElong  = new TH1D("hPion0pScatterClusterElong", "hPion0pScatterClusterElong", 20, 0, 0.5);
+    TH1D* hPionNpScatterClusterElong  = new TH1D("hPionNpScatterClusterElong", "hPionNpScatterClusterElong", 20, 0, 0.5);
+    TH1D* hOtherPionClusterElong      = new TH1D("hOtherPionClusterElong", "hOtherPionClusterElong", 20, 0, 0.5);
+    TH1D* hElectronClusterElong       = new TH1D("hElectronClusterElong", "hElectronClusterElong", 20, 0, 0.5);
+    TH1D* hMuonClusterElong           = new TH1D("hMuonClusterElong", "hMuonClusterElong", 20, 0, 0.5);
 
     //////////////////////
     // Loop over events //
@@ -747,8 +747,8 @@ void RecoNNShowers() {
         // Hit analysis //
         //////////////////
 
-        const float xThreshold = 20.0; // 40
-        const float wThreshold = 20.0 * HIT_WIRE_SEPARATION; // 40
+        const float xThreshold = 20.0;
+        const float wThreshold = 20.0 * HIT_WIRE_SEPARATION;
         std::unordered_set<int> hitsInWC2TPC(hitWC2TPCKey->begin(), hitWC2TPCKey->end());
         std::unordered_set<int> hitsInRecoTrack(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
         std::unordered_set<int> hitsInThroughTrack(hitThroughTrack->begin(), hitThroughTrack->end());
@@ -763,12 +763,13 @@ void RecoNNShowers() {
             //               << ", plane: " << fHitPlane->at(iHit) << ", key: " << fHitKey->at(iHit)  << std::endl;
             // }
 
+            if (hitsInWC2TPC.count(fHitKey->at(iHit)) > 0 || fHitPlane->at(iHit) == 1) continue;
             // if (hitsInRecoTrack.count(fHitKey->at(iHit)) > 0 || fHitPlane->at(iHit) == 1) continue;
-            if (
-                hitsInWC2TPC.count(fHitKey->at(iHit)) > 0 ||
-                fHitPlane->at(iHit) == 1 ||
-                hitsInThroughTrack.count(fHitKey->at(iHit)) > 0
-            ) continue;
+            // if (
+            //     hitsInWC2TPC.count(fHitKey->at(iHit)) > 0 ||
+            //     fHitPlane->at(iHit) == 1 ||
+            //     hitsInThroughTrack.count(fHitKey->at(iHit)) > 0
+            // ) continue;
 
             float hitX = fHitX->at(iHit);
             float hitW = fHitW->at(iHit);
@@ -790,7 +791,7 @@ void RecoNNShowers() {
         int nCandidateHits    = candidateInductionHits.size();
 
         // Hits in the same cluster must be separated by at most some number of wires
-        float maxHitClusterSeparation = HIT_WIRE_SEPARATION * 5.0;
+        float maxHitClusterSeparation = HIT_WIRE_SEPARATION * 3.0;
         float maxHitXSeparation       = 3.0;
 
         for (int iHit = 0; iHit < nCandidateHits; ++iHit) {
@@ -800,13 +801,13 @@ void RecoNNShowers() {
             
             // First, check if we have already used this hit
             int   thisHitKey       = candidateInductionHits.at(iHit);
+            if (usedHits.count(thisHitKey)) continue;
+
             float thisHitW         = fHitW->at(thisHitKey);
             float thisHitX         = fHitX->at(thisHitKey);
             float thisHitCharge    = fHitCharge->at(thisHitKey);
             float thisHitChargeCol = fHitChargeCol->at(thisHitKey);
 
-            if (usedHits.count(thisHitKey)) continue;
-            
             std::vector<int>   clusterKeys;
             std::vector<float> clusterX;
             std::vector<float> clusterW;
@@ -821,13 +822,14 @@ void RecoNNShowers() {
             
             for (int iAllHit = 0; iAllHit < nTotalHits; ++iAllHit) {
                 // Skip already used hits, those reconstructed in primary track, and those in collection plane
+                if (usedHits.count(iAllHit) > 0 || hitsInWC2TPC.count(iAllHit) > 0 || fHitPlane->at(iAllHit) == 1) continue;
                 // if (usedHits.count(iAllHit) > 0 || hitsInRecoTrack.count(iAllHit) > 0 || fHitPlane->at(iAllHit) == 1) continue;
-                if (
-                    usedHits.count(iAllHit) > 0 || 
-                    hitsInWC2TPC.count(iAllHit) > 0 || 
-                    hitsInThroughTrack.count(iAllHit) > 0 ||
-                    fHitPlane->at(iAllHit) == 1
-                ) continue;
+                // if (
+                //     usedHits.count(iAllHit) > 0 || 
+                //     hitsInWC2TPC.count(iAllHit) > 0 || 
+                //     hitsInThroughTrack.count(iAllHit) > 0 ||
+                //     fHitPlane->at(iAllHit) == 1
+                // ) continue;
 
                 float internalHitW  = fHitW->at(iAllHit);
                 float internalHitX  = fHitX->at(iAllHit);
@@ -885,9 +887,10 @@ void RecoNNShowers() {
         for (const auto& cluster : hitClusters) {
             int clusterSize = cluster.hitKeys.size();
 
-            if (clusterSize < 10) continue;
+            if (clusterSize < 20) continue;
 
-            clusterElongation = getClusterElongation(cluster);
+            // clusterElongation = getClusterElongation(cluster);
+            clusterElongation = getClusterWidth(cluster);
             if (maxElong < clusterElongation) maxElong = clusterElongation;
 
             if (backgroundType == 7) {
@@ -929,30 +932,10 @@ void RecoNNShowers() {
             hOtherPionClusterElong->Fill(maxElong);
         }
 
-        if (hitClusters.size() > 4) continue;
+        if (hitClusters.size() > 6) continue;
 
         hChargeExchange->Fill(backgroundType);
     }
-
-    /////////////////////////////////////////////
-    // Print purity and efficiency at each cut //
-    /////////////////////////////////////////////
-
-    std::cout << std::endl;
-    std::cout << "Purity and efficiency at each cut:" << std::endl;
-    std::cout << "  Shower probability cut: " << std::endl;
-    std::cout << "    Purity: " << hPassShowerProb->GetBinContent(8) / hPassShowerProb->Integral() << std::endl;
-    std::cout << "    Efficiency: " << hPassShowerProb->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
-    std::cout << "  Track PID cut: " << std::endl;
-    std::cout << "    Purity: " << hPassTrackPID->GetBinContent(8) / hPassTrackPID->Integral() << std::endl;
-    std::cout << "    Efficiency: " << hPassTrackPID->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
-    std::cout << "  Small track cut: " << std::endl;
-    std::cout << "    Purity: " << hPassSmallTracks->GetBinContent(8) / hPassSmallTracks->Integral() << std::endl;
-    std::cout << "    Efficiency: " << hPassSmallTracks->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
-    std::cout << "  Final: " << std::endl;
-    std::cout << "    Purity: " << hChargeExchange->GetBinContent(8) / hChargeExchange->Integral() << std::endl;
-    std::cout << "    Efficiency: " << hChargeExchange->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
-    std::cout << std::endl;
 
     /////////////////////////////////
     // Get optimal small track cut //
@@ -971,6 +954,41 @@ void RecoNNShowers() {
 
     std::cout << std::endl;
     std::cout << "Small track cut max purity = " << maxContentChEx << " at (small track size, # of small tracks) = (" << xAtMaxChEx << ", " << yAtMaxChEx << ")" << std::endl;
+    std::cout << std::endl;
+
+    /////////////////////////////////////////////
+    // Print purity and efficiency at each cut //
+    /////////////////////////////////////////////
+
+    std::cout << std::endl;
+    std::cout << "Charge exchange in original sample: " << hTotalEvents->GetBinContent(8) << " out of " << hTotalEvents->Integral() << " total events (" << (hTotalEvents->GetBinContent(8) / hTotalEvents->Integral()) * 100 << "%)" << std::endl;
+    printBackgroundInfo(hTotalEvents, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Purity and efficiency at each cut:" << std::endl;
+    std::cout << "  Shower probability cut: " << std::endl;
+    std::cout << "    Total reco: " << hPassShowerProb->Integral() << std::endl;
+    std::cout << "    Purity: " << hPassShowerProb->GetBinContent(8) / hPassShowerProb->Integral() << std::endl;
+    std::cout << "    Efficiency: " << hPassShowerProb->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
+    printBackgroundInfo(hPassShowerProb, std::cout);
+    std::cout << std::endl;
+    std::cout << "  Track PID cut: " << std::endl;
+    std::cout << "    Total reco: " << hPassTrackPID->Integral() << std::endl;
+    std::cout << "    Purity: " << hPassTrackPID->GetBinContent(8) / hPassTrackPID->Integral() << std::endl;
+    std::cout << "    Efficiency: " << hPassTrackPID->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
+    printBackgroundInfo(hPassTrackPID, std::cout);
+    std::cout << std::endl;
+    std::cout << "  Small track cut: " << std::endl;
+    std::cout << "    Total reco: " << hPassSmallTracks->Integral() << std::endl;
+    std::cout << "    Purity: " << hPassSmallTracks->GetBinContent(8) / hPassSmallTracks->Integral() << std::endl;
+    std::cout << "    Efficiency: " << hPassSmallTracks->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
+    printBackgroundInfo(hPassSmallTracks, std::cout);
+    std::cout << std::endl;
+    std::cout << "  Final: " << std::endl;
+    std::cout << "    Total reco: " << hChargeExchange->Integral() << std::endl;
+    std::cout << "    Purity: " << hChargeExchange->GetBinContent(8) / hChargeExchange->Integral() << std::endl;
+    std::cout << "    Efficiency: " << hChargeExchange->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
+    printBackgroundInfo(hChargeExchange, std::cout);
     std::cout << std::endl;
 
     /////////////////////////////////

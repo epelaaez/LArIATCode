@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 #include "TGraph.h"
 
 int getCorrespondingBin(double value, int num_bins, double low, double high) {
@@ -395,6 +396,42 @@ double getClusterElongation(HitCluster cluster) {
     if (lambda2 > lambda1) std::swap(lambda1, lambda2);
 
     return lambda2 / lambda1;
+}
+
+double getClusterWidth(HitCluster cluster) {
+    const auto& X = cluster.hitX;
+    const auto& W = cluster.hitW;
+    const std::size_t N = (X.size() < W.size()) ? X.size() : W.size();
+    if (N < 2) return 0.0;
+
+    // Means
+    double mx = 0.0, mw = 0.0;
+    for (std::size_t i = 0; i < N; ++i) { mx += X[i]; mw += W[i]; }
+    mx /= double(N); mw /= double(N);
+
+    // Covariance (unbiased)
+    double Sxx = 0.0, Sww = 0.0, Sxw = 0.0;
+    for (std::size_t i = 0; i < N; ++i) {
+        const double dx = double(X[i]) - mx;
+        const double dw = double(W[i]) - mw;
+        Sxx += dx*dx; Sww += dw*dw; Sxw += dx*dw;
+    }
+    const double d = double(N - 1);
+    Sxx /= d; Sww /= d; Sxw /= d;
+
+    // Eigenvalues of 2x2 symmetric matrix
+    const double T = Sxx + Sww;
+    const double D = Sxx*Sww - Sxw*Sxw;
+    const double h = 0.5 * T;
+    double disc2 = h*h - D;
+    if (disc2 < 0.0 && disc2 > -1e-18) disc2 = 0.0; // clamp tiny negative
+    const double disc = std::sqrt(disc2 > 0.0 ? disc2 : 0.0);
+
+    const double lambda1 = h + disc;
+    const double lambda2 = h - disc; // minor eigenvalue = variance ⟂ to principal axis
+
+    // RMS width orthogonal to the principal axis
+    return (lambda2 > 0.0) ? std::sqrt(lambda2) : 0.0;
 }
 
 double distance(double x1, double x2, double y1, double y2, double z1, double z2) {
