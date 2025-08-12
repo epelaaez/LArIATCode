@@ -13,10 +13,6 @@
 
 #include "Helpers.cc"
 
-///////////////////
-// Main function //
-///////////////////
-
 void RecoAllAnalysis() {
     // Set defaults
     gStyle->SetOptStat(0); // get rid of stats box
@@ -411,9 +407,6 @@ void RecoAllAnalysis() {
         CLUSTER_SIZE_NUM_STEPS, STARTING_CLUSTER_SIZE, STARTING_CLUSTER_SIZE + (CLUSTER_SIZE_STEP * CLUSTER_SIZE_NUM_STEPS), 
         NUM_CLUSTERS_NUM_STEPS, STARTING_NUM_CLUSTERS, STARTING_NUM_CLUSTERS + (NUM_CLUSTERS_STEP * NUM_CLUSTERS_NUM_STEPS)
     );
-
-    int    NUM_CLUSTERS_THRESHOLD  = 2;
-    double LARGE_CLUSTER_THRESHOLD = HIT_WIRE_SEPARATION * 3;
 
     TH1D *hHitClusters0p           = new TH1D("hHitClusters0p", "hHitClusters0p;;", 10, 0, 10);
     TH1D *hHitClusters0pBackground = new TH1D("hHitClusters0pBackground", "hHitClusters0pBackground;;", 10, 0, 10);
@@ -2845,7 +2838,6 @@ void RecoAllAnalysis() {
     for (const auto& entry : backgroundTypes) {
         int bin = entry.first;
         const std::string& label = entry.second;
-        if ((bin + 1 == 0) || (bin + 1 == 14)) continue; // extra bins, hacky
         hBackgroundTypesStack->GetXaxis()->SetBinLabel(bin + 1, label.c_str());
     }
 

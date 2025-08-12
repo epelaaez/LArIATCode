@@ -13,10 +13,6 @@
 
 #include "Helpers.cc"
 
-///////////////////
-// Main function //
-///////////////////
-
 void RecoNNShowers() {
     // Set defaults
     gStyle->SetOptStat(0); // get rid of stats box
@@ -585,6 +581,32 @@ void RecoNNShowers() {
             }
         }
 
+        // For particles where we stitched, we also need to analyze the second part of the primary track
+        if (minChi2 == minStitchedChi2) {
+            std::vector<double> newSecondaryResR(wcMatchResR->begin(), wcMatchResR->begin() + bestBreakPoint);
+            std::vector<double> newSecondaryDEDX(wcMatchDEDX->begin(), wcMatchDEDX->begin() + bestBreakPoint);
+
+            double newPionChi2   = computeReducedChi2(gPion, newSecondaryResR, newSecondaryDEDX, false, newSecondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
+            double newProtonChi2 = computeReducedChi2(gProton, newSecondaryResR, newSecondaryDEDX, false, newSecondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
+            double newMeanDEDX   = meanDEDX(newSecondaryDEDX, false, MEAN_DEDX_NUM_TRAJ_POINTS);
+
+            if ((newPionChi2 < PION_CHI2_PION_VALUE) && (newProtonChi2 > PROTON_CHI2_PION_VALUE)) {
+                // Tagged as pion
+                secondaryTaggedPion++;
+            } else if ((newPionChi2 > PION_CHI2_PROTON_VALUE) && (newProtonChi2 < PROTON_CHI2_PROTON_VALUE)) {
+                // Tagged as proton
+                secondaryTaggedProton++;
+            } else {
+                // Not tagged with chi^2, use mean dE/dx
+                secondaryTaggedOther++;
+                if (newMeanDEDX <= MEAN_DEDX_THRESHOLD) {
+                    otherTaggedPion++;
+                } else {
+                    otherTaggedProton++;
+                }
+            }
+        }
+
         if (minChi2 == pionChi2) {
             continue;
         } else if (minChi2 == protonChi2) {
@@ -635,8 +657,6 @@ void RecoNNShowers() {
 
             if (distanceFromStart > FAR_TRACK_DISTANCE_CHEX && distanceFromEnd > FAR_TRACK_DISTANCE_CHEX) {
                 numFarTracks++;
-            } else {
-                continue;
             }
 
             double thisTrackLength = sqrt(
@@ -714,7 +734,7 @@ void RecoNNShowers() {
                     recoEndZ->at(iTrk), breakPointZ
                 );
 
-                if ((distanceFromStart < FAR_TRACK_DISTANCE_CHEX || distanceFromEnd < FAR_TRACK_DISTANCE_CHEX)) continue;
+                // if ((distanceFromStart < FAR_TRACK_DISTANCE_CHEX || distanceFromEnd < FAR_TRACK_DISTANCE_CHEX)) continue;
 
                 double thisTrackLength = sqrt(
                     pow(recoBeginX->at(iTrk) - recoEndX->at(iTrk), 2) +
@@ -932,7 +952,7 @@ void RecoNNShowers() {
             hOtherPionClusterElong->Fill(maxElong);
         }
 
-        if (hitClusters.size() > 6) continue;
+        if (hitClusters.size() > 10) continue;
 
         hChargeExchange->Fill(backgroundType);
     }

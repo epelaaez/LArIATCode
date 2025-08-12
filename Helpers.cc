@@ -689,19 +689,26 @@ void printBackgroundInfo(TH1D* background_histo, std::ostream& os) {
     int pionDecay            = background_histo->GetBinContent(11);
     int other                = background_histo->GetBinContent(12);
     int elasticScattering    = background_histo->GetBinContent(13);
+    int scattering0p         = background_histo->GetBinContent(14);
+    int scatteringNp         = background_histo->GetBinContent(15);
 
-    os << "  Abs 0p: " << pionAbs0p << std::endl;;
-    os << "  Abs Np: " << pionAbsNp << std::endl;;
-    os << "  Primary muon: " << primaryMuon << std::endl;;
-    os << "  Primary electron: " << primaryElectron << std::endl;;
-    os << "  Other primary: " << otherPrimary << std::endl;;
-    os << "  Outside reduced volume: " << pionOutRedVol << std::endl;;
-    os << "  Inelastic scattering: " << pionInelScatter << std::endl;;
-    os << "  Elastic scattering: " << elasticScattering << std::endl;;
-    os << "  Charge exchange: " << chargeExchange << std::endl;;
-    os << "  Double charge exchange: " << doubleChargeExchange << std::endl;;
-    os << "  Capture at rest: " << captureAtRest << std::endl;;
-    os << "  Decay: " << pionDecay << std::endl;;
+    os << "  Abs 0p: " << pionAbs0p << std::endl;
+    os << "  Abs Np: " << pionAbsNp << std::endl;
+    os << "  Primary muon: " << primaryMuon << std::endl;
+    os << "  Primary electron: " << primaryElectron << std::endl;
+    os << "  Other primary: " << otherPrimary << std::endl;
+    os << "  Outside reduced volume: " << pionOutRedVol << std::endl;
+    if (scattering0p + scatteringNp == 0) {
+        os << "  Inelastic scattering: " << pionInelScatter << std::endl;
+        os << "  Elastic scattering: " << elasticScattering << std::endl;
+    } else {
+        os << "  Scattering 0p: " << scattering0p << std::endl;
+        os << "  Scattering Np: " << scatteringNp << std::endl;
+    }
+    os << "  Charge exchange: " << chargeExchange << std::endl;
+    os << "  Double charge exchange: " << doubleChargeExchange << std::endl;
+    os << "  Capture at rest: " << captureAtRest << std::endl;
+    os << "  Decay: " << pionDecay << std::endl;
     os << "  Other: " << other << std::endl;
 }
 

@@ -9,7 +9,6 @@
 //////////////////////
 
 std::map<int, std::string> backgroundTypes = {
-    {-1, "Not flagged as background"},
     {0, "Abs 0p"},
     {1, "Abs Np"},
     {2, "Primary muon"},
@@ -22,8 +21,13 @@ std::map<int, std::string> backgroundTypes = {
     {9, "Capture at rest"},
     {10, "Decay"},
     {11, "Other"},
-    {12, "Elastic scattering"}
+    {12, "Elastic scattering"},
+    {13, "Scattering 0p"},
+    {14, "Scattering Np"}
 };
+
+// Background types
+int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 
 struct EventInfo {
     int run; int subrun; int event; bool isData;
@@ -77,22 +81,6 @@ const double maxY = 20.0;
 const double minZ =  3.0;
 const double maxZ = 87.0;
 
-// Background types
-int NUM_BACKGROUND_TYPES = 13;
-//    0:  0p pion absorption
-//    1:  Np pion absorption
-//    2:  primary muon event
-//    3:  primary electron event
-//    4:  other primary event
-//    5:  primary pion outside reduced volume
-//    6:  pion inelastic scattering
-//    7:  charge exchange
-//    8:  double charge exchange
-//    9:  capture at rest
-//    10: decay
-//    11: other
-//    12: elastic scattering
-
 // Values for chi^2 secondary fits
 double PION_CHI2_PION_VALUE     = 1.125;
 double PION_CHI2_PROTON_VALUE   = 1.125;
@@ -119,13 +107,17 @@ double HIT_WIRE_SEPARATION = 0.4; // converts wire # to cm
 int WINDOW_SIZE_LINEARITY = 8;
 
 // Shower probability cut
-double SHOWER_PROB_CUT    = 0.6;
+double SHOWER_PROB_CUT = 0.5;
 
 // Track length cuts charge exchange
-double SMALL_TRACK_LENGTH_CHEX = 33.;
+double SMALL_TRACK_LENGTH_CHEX = 28.;
 double LARGE_TRACK_LENGTH_CHEX = 30.;
 double FAR_TRACK_DISTANCE_CHEX = 5.;
-int    SMALL_TRACK_CUT_CHEX    = 2;
+int    SMALL_TRACK_CUT_CHEX    = 3;
+
+// Hit cluster cut
+int    NUM_CLUSTERS_THRESHOLD  = 2;
+double LARGE_CLUSTER_THRESHOLD = HIT_WIRE_SEPARATION * 3;
 
 // Threshold(s) used to cut based on primary track local linearity
 double LINEARITY_DERIVATIVE_THRESHOLD = 0.06e-3;
