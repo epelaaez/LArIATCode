@@ -324,6 +324,10 @@ void RecoClassifyAll() {
     TH1D* hTrueAbs0pKEAsChExch    = new TH1D("hTrueAbs0pKEAsChExch", "hTrueAbs0pKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueAbs0pKERejected    = new TH1D("hTrueAbs0pKERejected", "hTrueAbs0pKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
+    std::vector<TH1*> TrueAbs0pAs = {
+        hTrueAbs0pKEAsAbs0p, hTrueAbs0pKEAsAbsNp, hTrueAbs0pKEAsScatter0p, hTrueAbs0pKEAsScatterNp, hTrueAbs0pKEAsChExch, hTrueAbs0pKERejected
+    };
+
     // True abs Np
     TH1D* hTrueAbsNpKE            = new TH1D("hTrueAbsNpKE", "hTrueAbsNpKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueAbsNpKEAsAbs0p     = new TH1D("hTrueAbsNpKEAsAbs0p", "hTrueAbsNpKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -332,6 +336,10 @@ void RecoClassifyAll() {
     TH1D* hTrueAbsNpKEAsScatterNp = new TH1D("hTrueAbsNpKEAsScatterNp", "hTrueAbsNpKEAsScatterNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueAbsNpKEAsChExch    = new TH1D("hTrueAbsNpKEAsChExch", "hTrueAbsNpKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueAbsNpKERejected    = new TH1D("hTrueAbsNpKERejected", "hTrueAbsNpKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    std::vector<TH1*> TrueAbsNpAs = {
+        hTrueAbsNpKEAsAbs0p, hTrueAbsNpKEAsAbsNp, hTrueAbsNpKEAsScatter0p, hTrueAbsNpKEAsScatterNp, hTrueAbsNpKEAsChExch, hTrueAbsNpKERejected
+    };
 
     // True scatter 0p
     TH1D* hTrueScatter0pKE            = new TH1D("hTrueScatter0pKE", "hTrueScatter0pKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -342,6 +350,10 @@ void RecoClassifyAll() {
     TH1D* hTrueScatter0pKEAsChExch    = new TH1D("hTrueScatter0pKEAsChExch", "hTrueScatter0pKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueScatter0pKERejected    = new TH1D("hTrueScatter0pKERejected", "hTrueScatter0pKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
+    std::vector<TH1*> TrueScatter0pAs = {
+        hTrueScatter0pKEAsAbs0p, hTrueScatter0pKEAsAbsNp, hTrueScatter0pKEAsScatter0p, hTrueScatter0pKEAsScatterNp, hTrueScatter0pKEAsChExch, hTrueScatter0pKERejected
+    };
+
     // True scatter Np
     TH1D* hTrueScatterNpKE            = new TH1D("hTrueScatterNpKE", "hTrueScatterNpKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueScatterNpKEAsAbs0p     = new TH1D("hTrueScatterNpKEAsAbs0p", "hTrueScatterNpKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -351,6 +363,10 @@ void RecoClassifyAll() {
     TH1D* hTrueScatterNpKEAsChExch    = new TH1D("hTrueScatterNpKEAsChExch", "hTrueScatterNpKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueScatterNpKERejected    = new TH1D("hTrueScatterNpKERejected", "hTrueScatterNpKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
+    std::vector<TH1*> TrueScatterNpAs = {
+        hTrueScatterNpKEAsAbs0p, hTrueScatterNpKEAsAbsNp, hTrueScatterNpKEAsScatter0p, hTrueScatterNpKEAsScatterNp, hTrueScatterNpKEAsChExch, hTrueScatterNpKERejected
+    };
+
     // True charge exchange
     TH1D* hTrueChExchKE            = new TH1D("hTrueChExchKE", "hTrueChExchKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueChExchKEAsAbs0p     = new TH1D("hTrueChExchKEAsAbs0p", "hTrueChExchKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -359,6 +375,34 @@ void RecoClassifyAll() {
     TH1D* hTrueChExchKEAsScatterNp = new TH1D("hTrueChExchKEAsScatterNp", "hTrueChExchKEAsScatterNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueChExchKEAsChExch    = new TH1D("hTrueChExchKEAsChExch", "hTrueChExchKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueChExchKERejected    = new TH1D("hTrueChExchKERejected", "hTrueChExchKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    std::vector<TH1*> TrueChExchAs = {
+        hTrueChExchKEAsAbs0p, hTrueChExchKEAsAbsNp, hTrueChExchKEAsScatter0p, hTrueChExchKEAsScatterNp, hTrueChExchKEAsChExch, hTrueChExchKERejected
+    };
+
+    //////////////
+    // Matrices //
+    //////////////
+
+    std::vector<TH2*> ProbabilityMatrices;
+    for (int i = 1; i <= NUM_BINS_KE; ++i) {
+        double low_bin  = LOWER_BOUND_KE + (i - 1) * (UPPER_BOUND_KE - LOWER_BOUND_KE) / NUM_BINS_KE;
+        double high_bin = LOWER_BOUND_KE + i * (UPPER_BOUND_KE - LOWER_BOUND_KE) / NUM_BINS_KE;
+        TH2D* hPMatrix = new TH2D(
+            Form("hPMatrix_Bin_%d_%d", (int)low_bin, (int)high_bin), Form("hPMatrix_Bin_%d_%d;True interaction;Reco interaction", (int)low_bin, (int)high_bin), 
+            NUM_SIGNAL_TYPES, 0, NUM_SIGNAL_TYPES, 
+            NUM_SIGNAL_TYPES, 0, NUM_SIGNAL_TYPES
+        );
+        ProbabilityMatrices.push_back(hPMatrix);
+    }
+
+    std::vector<TH1*> TotalEventsHistos = {
+        hTrueAbs0pKE, hTrueAbsNpKE, hTrueScatter0pKE, hTrueScatterNpKE, hTrueChExchKE
+    };
+
+    std::vector<std::vector<TH1*>> TrueRecoAs = {
+        TrueAbs0pAs, TrueAbsNpAs, TrueScatter0pAs, TrueScatterNpAs, TrueChExchAs
+    };
 
     //////////////////////
     // Loop over events //
@@ -1040,6 +1084,22 @@ void RecoClassifyAll() {
     std::cout << "Purity: " << hPionChExch->GetBinContent(8) / hPionChExch->Integral() << std::endl;
     std::cout << "Efficiency: " << hPionChExch->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
 
+    ////////////////////////////////
+    // Compute probability matrix //
+    ////////////////////////////////
+
+    std::vector<TH2D*> TotalEventsMatrices;
+    for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
+        TH2* currentMatrix = ProbabilityMatrices.at(iBin - 1);
+        for (int column = 0; column < NUM_SIGNAL_TYPES; ++column) {
+            double denom = TotalEventsHistos.at(column)->GetBinContent(iBin);
+            for (int row = 0; row < NUM_SIGNAL_TYPES; ++row) {
+                double num = TrueRecoAs.at(column).at(row)->GetBinContent(iBin);
+                currentMatrix->SetBinContent(column + 1, row + 1, num / denom);
+            }
+        }
+    }
+
     //////////////////
     // Create plots //
     //////////////////
@@ -1181,4 +1241,22 @@ void RecoClassifyAll() {
         YLabels,
         PlotStacked
     );
+
+    ///////////////////////////
+    // Two-dimensional plots //
+    ///////////////////////////
+
+    std::vector<TH2*> TwoDPlots;
+    std::vector<TString> TwoDTitles;
+    std::vector<std::pair<double,double>> TwoDRanges;
+    std::vector<bool> TwoDDisplayNumbers;
+
+    for (int i = 0; i < NUM_BINS_KE; ++i) {
+        TwoDPlots.push_back(ProbabilityMatrices.at(i));
+        TwoDTitles.push_back("ProbMatrices/ProbabilityMatrix_Bin" + std::to_string(i+1));
+        TwoDRanges.push_back({0, 1});
+        TwoDDisplayNumbers.push_back(true);
+    }
+
+    printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles, TwoDRanges, TwoDDisplayNumbers);
 }

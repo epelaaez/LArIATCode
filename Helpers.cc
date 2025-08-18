@@ -661,16 +661,32 @@ std::pair<TH1*, TH1*> getBinEfficiencyAndPurity(TH1* hTrue, TH1* hReco, TH1* hRe
     return std::make_pair(hEfficiency, hPurity);
 }
 
-void printTwoDPlots(TString dir, std::vector<TH2*> plots, std::vector<TString> titles) {
+void printTwoDPlots(
+    const TString& dir, 
+    const std::vector<TH2*>& plots, 
+    const std::vector<TString>& titles, 
+    const std::vector<std::pair<double,double>>& zRanges,
+    const std::vector<bool>& displayNumbers
+) {
     int nPlots = plots.size();
 
-    // gStyle->SetOptStat(0);
     TCanvas* c1 = new TCanvas("c1", "EnergyLossPlots", 800, 600);
     for (int iPlot = 0; iPlot < nPlots; ++iPlot) {
         TH1* hPlot = plots.at(iPlot);
-        hPlot->SetMinimum(0);
-        hPlot->SetMaximum(hPlot->GetMaximum());
-        hPlot->Draw("COLZ");
+
+        if (iPlot < (int)zRanges.size() && zRanges[iPlot].first < zRanges[iPlot].second) {
+            hPlot->GetZaxis()->SetRangeUser(zRanges[iPlot].first, zRanges[iPlot].second);
+        } else {
+            hPlot->SetMinimum(0);
+            hPlot->SetMaximum(hPlot->GetMaximum());
+        }
+
+        if (iPlot < (int)displayNumbers.size() && displayNumbers[iPlot]) {
+            hPlot->Draw("COLZ TEXT");
+        } else {
+            hPlot->Draw("COLZ");
+        }
+
         c1->SaveAs(dir + titles.at(iPlot) + ".png");
     }
 }

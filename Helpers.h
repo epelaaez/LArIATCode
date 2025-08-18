@@ -29,6 +29,17 @@ std::map<int, std::string> backgroundTypes = {
 // Background types
 int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 
+// Signal types
+int NUM_SIGNAL_TYPES = 5; // for now: 0p abs, Np abs, 0p scatter, Np scatter, charge exchange
+
+std::map<int, int> signalToBackgroundMap = {
+    {0, 0},  // 0p abs -> Abs 0p
+    {1, 1},  // Np abs -> Abs Np
+    {2, 13}, // 0p scatter -> Scattering 0p
+    {3, 14}, // Np scatter -> Scattering Np
+    {4, 7}   // Charge exchange -> Charge exchange
+};
+
 struct EventInfo {
     int run; int subrun; int event; bool isData;
     float vertexX; float vertexY; float vertexZ;
@@ -145,7 +156,7 @@ void initializePionPoints(TGraph* gPion);
 void initializeMuonNoBraggPoints(TGraph* gMuonTG);
 void printEventInfo(EventInfo event, std::ostream& os);
 void printOneDPlots(const TString& dir, int fontStyle, double textSize, std::vector<std::vector<TH1*>>& groups, std::vector<int>& colors, std::vector<std::vector<TString>>& labels, std::vector<TString>& titles, std::vector<TString>& xlabels, std::vector<TString>& ylabels, std::vector<bool>& stack);
-void printTwoDPlots(TString dir, std::vector<TH2*> plots, std::vector<TString> titles);
+void printTwoDPlots(const TString& dir, const std::vector<TH2*>& plots, const std::vector<TString>& titles, const std::vector<std::pair<double,double>>& zRanges = {}, const std::vector<bool>& displayNumbers = {});
 void Overlay_dEdx_RR_Reference_PP(TGraph* gProton, TGraph* gPion, TGraph* gMIP, bool truncate = false, double MIPStart = 0., bool addLegend = true, TVirtualPad* pad = gPad);
 void printEfficiencyPlots(TString dir, int fontStyle, double textSize, std::vector<TEfficiency*> efficiencies, std::vector<TString> titles, std::vector<TString> xlabels);
 void printBackgroundInfo(TH1D* background_histo, std::ostream& os);
