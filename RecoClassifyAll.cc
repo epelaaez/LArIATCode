@@ -254,6 +254,67 @@ void RecoClassifyAll() {
     TH1D* hNotChExch          = new TH1D("hNotChExch", "hNotChExch;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D* hNotPionAbs0p       = new TH1D("hNotPionAbs0p", "hNotPionAbs0p;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
+    // Incident kinetic energy
+    TH1D* hIncidentKE         = new TH1D("hIncidentKE", "hIncidentKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hIncidentKEPion     = new TH1D("hIncidentKEPion", "hIncidentKEPion;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hIncidentKEElectron = new TH1D("hIncidentKEElectron", "hIncidentKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hIncidentKEMuon     = new TH1D("hIncidentKEMuon", "hIncidentKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // Interacting pion abs 0p energy
+    TH1D* hPionAbs0pKE          = new TH1D("hPionAbs0pKE", "hPionAbs0pKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbs0pKETrue      = new TH1D("hPionAbs0PKETrue", "hPionAbs0PKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbs0pKEAbsNp     = new TH1D("hPionAbs0pKEAbsNp", "hPionAbs0pKEAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbs0pKE0pScatter = new TH1D("hPionAbs0pKE0pScatter", "hPionAbs0pKE0pScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbs0pKENpScatter = new TH1D("hPionAbs0pKENpScatter", "hPionAbs0pKENpScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbs0pKEChExch    = new TH1D("hPionAbs0pKEChExch", "hPionAbs0pKEChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbs0pKEMuon      = new TH1D("hPionAbs0pKEMuon", "hPionAbs0pKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbs0pKEElectron  = new TH1D("hPionAbs0pKEElectron", "hPionAbs0pKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbs0pKEOther     = new TH1D("hPionAbs0pKEOther", "hPionAbs0pKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // Interacting pion abs Np energy
+    TH1D* hPionAbsNpKE          = new TH1D("hPionAbsNpKE", "hPionAbsNpKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbsNpKETrue      = new TH1D("hPionAbsNpKETrue", "hPionAbsNpKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbsNpKEAbs0p     = new TH1D("hPionAbsNpKEAbs0p", "hPionAbsNpKEAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbsNpKE0pScatter = new TH1D("hPionAbsNpKE0pScatter", "hPionAbsNpKE0pScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbsNpKENpScatter = new TH1D("hPionAbsNpKENpScatter", "hPionAbsNpKENpScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbsNpKEChExch    = new TH1D("hPionAbsNpKEChExch", "hPionAbsNpKEChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbsNpKEMuon      = new TH1D("hPionAbsNpKEMuon", "hPionAbsNpKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbsNpKEElectron  = new TH1D("hPionAbsNpKEElectron", "hPionAbsNpKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbsNpKEOther     = new TH1D("hPionAbsNpKEOther", "hPionAbsNpKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // Interacting pion 0p scattering energy
+    TH1D* hPion0pScatterKE          = new TH1D("hPion0pScatterKE", "hPion0pScatterKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPion0pScatterKETrue      = new TH1D("hPion0pScatterKETrue", "hPion0pScatterKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPion0pScatterKEAbs0p     = new TH1D("hPion0pScatterKEAbs0p", "hPion0pScatterKEAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPion0pScatterKEAbsNp     = new TH1D("hPion0pScatterKEAbsNp", "hPion0pScatterKEAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPion0pScatterKENpScatter = new TH1D("hPion0pScatterKENpScatter", "hPion0pScatterKENpScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPion0pScatterKEChExch    = new TH1D("hPion0pScatterKEChExch", "hPion0pScatterKEChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPion0pScatterKEMuon      = new TH1D("hPion0pScatterKEMuon", "hPion0pScatterKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPion0pScatterKEElectron  = new TH1D("hPion0pScatterKEElectron", "hPion0pScatterKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPion0pScatterKEOther     = new TH1D("hPion0pScatterKEOther", "hPion0pScatterKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // Interacting pion Np scattering energy
+    TH1D* hPionNpScatterKE          = new TH1D("hPionNpScatterKE", "hPionNpScatterKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionNpScatterKETrue      = new TH1D("hPionNpScatterKETrue", "hPionNpScatterKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionNpScatterKEAbs0p     = new TH1D("hPionNpScatterKEAbs0p", "hPionNpScatterKEAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionNpScatterKEAbsNp     = new TH1D("hPionNpScatterKEAbsNp", "hPionNpScatterKEAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionNpScatterKE0pScatter = new TH1D("hPionNpScatterKE0pScatter", "hPionNpScatterKE0pScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionNpScatterKEChExch    = new TH1D("hPionNpScatterKEChExch", "hPionNpScatterKEChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionNpScatterKEMuon      = new TH1D("hPionNpScatterKEMuon", "hPionNpScatterKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionNpScatterKEElectron  = new TH1D("hPionNpScatterKEElectron", "hPionNpScatterKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionNpScatterKEOther     = new TH1D("hPionNpScatterKEOther", "hPionNpScatterKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // Interacting pion charge exchange energy
+    TH1D* hPionChExchKE          = new TH1D("hPionChExchKE", "hPionChExchKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionChExchKETrue      = new TH1D("hPionChExchKETrue", "hPionChExchKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionChExchKEAbs0p     = new TH1D("hPionChExchKEAbs0p", "hPionChExchKEAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionChExchKEAbsNp     = new TH1D("hPionChExchKEAbsNp", "hPionChExchKEAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionChExchKE0pScatter = new TH1D("hPionChExchKE0pScatter", "hPionChExchKE0pScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionChExchKENpScatter = new TH1D("hPionChExchKENpScatter", "hPionChExchKENpScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionChExchKEMuon      = new TH1D("hPionChExchKEMuon", "hPionChExchKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionChExchKEElectron  = new TH1D("hPionChExchKEElectron", "hPionChExchKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionChExchKEOther     = new TH1D("hPionChExchKEOther", "hPionChExchKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
     //////////////////////
     // Loop over events //
     //////////////////////
@@ -339,6 +400,46 @@ void RecoClassifyAll() {
             breakPointY = wcMatchYPos->at(bestBreakPoint); 
             breakPointZ = wcMatchZPos->at(bestBreakPoint);    
         }
+
+        // At this point, we want to fill the incident kinetic energy histograms
+        double WCKE             = TMath::Sqrt(WCTrackMomentum * WCTrackMomentum + PionMass * PionMass) - PionMass;
+        double calculatedEnLoss = energyLossCalculation(); 
+        if (isData) {
+            double tanThetaCosPhi = TMath::Tan(WCTheta) * TMath::Cos(WCPhi);
+            double tanThetaSinPhi = TMath::Tan(WCTheta) * TMath::Sin(WCPhi);
+            double den            = TMath::Sqrt(1 + tanThetaCosPhi * tanThetaCosPhi);
+            double onTheFlyPz     = WCTrackMomentum / den;
+            double onTheFlyPx     = onTheFlyPz * tanThetaSinPhi;
+            calculatedEnLoss      = energyLossCalculation(WC4PrimaryX, onTheFlyPx, isData);
+        } else { calculatedEnLoss = energyLossCalculation(WC4PrimaryX, trajectoryInitialMomentumX, isData); }
+        const double initialKE = WCKE - calculatedEnLoss;
+
+        double energyDeposited = 0;
+        for (size_t iDep = 0; iDep < wcMatchDEDX->size(); ++iDep) {
+            // If we are past detected breaking point, exit loop
+            if (wcMatchZPos->at(iDep) > breakPointZ) break;
+
+            // If larger than threshold, continue
+            if (wcMatchDEDX->at(iDep) > HIT_DEDX_THRESHOLD) continue;
+
+            // Else, add to energy deposited so far
+            energyDeposited += wcMatchEDep->at(iDep);
+            
+            // Add to incident KE if inside reduced volume
+            if (isWithinReducedVolume(wcMatchXPos->at(iDep), wcMatchYPos->at(iDep), wcMatchZPos->at(iDep))) {
+                hIncidentKE->Fill(initialKE - energyDeposited);
+
+                // Background breakdown
+                if (truthPrimaryPDG == -211) {
+                    hIncidentKEPion->Fill(initialKE - energyDeposited);
+                } else if (truthPrimaryPDG == 13) {
+                    hIncidentKEMuon->Fill(initialKE - energyDeposited);
+                } else if (truthPrimaryPDG == 11) {
+                    hIncidentKEElectron->Fill(initialKE - energyDeposited);
+                }
+            }
+        }
+        double energyAtVertex = initialKE - energyDeposited;
 
         if (!isWithinReducedVolume(breakPointX, breakPointY, breakPointZ)) continue;
         hPrimaryInRedVol->Fill(scatteringType);
@@ -451,9 +552,48 @@ void RecoClassifyAll() {
             if (totalTaggedProtons == 0) {
                 // Select as 0p scatter
                 hPion0pScatter->Fill(backgroundType);
+
+                hPion0pScatterKE->Fill(energyAtVertex);
+                if (backgroundType == 0) {
+                    hPion0pScatterKEAbs0p->Fill(energyAtVertex);
+                } else if (backgroundType == 1) {
+                    hPion0pScatterKEAbsNp->Fill(energyAtVertex);
+                } else if (backgroundType == 7) {
+                    hPion0pScatterKEChExch->Fill(energyAtVertex);
+                } else if (backgroundType == 13) {
+                    hPion0pScatterKETrue->Fill(energyAtVertex);
+                } else if (backgroundType == 14) {
+                    hPion0pScatterKENpScatter->Fill(energyAtVertex);
+                } else if (backgroundType == 2) {
+                    hPion0pScatterKEMuon->Fill(energyAtVertex);
+                } else if (backgroundType == 3) {
+                    hPion0pScatterKEElectron->Fill(energyAtVertex);
+                } else {
+                    hPion0pScatterKEOther->Fill(energyAtVertex);
+                }
+
             } else if (totalTaggedProtons > 0) {
                 // Select as Np scatter
                 hPionNpScatter->Fill(backgroundType);
+
+                hPionNpScatterKE->Fill(energyAtVertex);
+                if (backgroundType == 0) {
+                    hPionNpScatterKEAbs0p->Fill(energyAtVertex);
+                } else if (backgroundType == 1) {
+                    hPionNpScatterKEAbsNp->Fill(energyAtVertex);
+                } else if (backgroundType == 7) {
+                    hPionNpScatterKEChExch->Fill(energyAtVertex);
+                } else if (backgroundType == 13) {
+                    hPionNpScatterKE0pScatter->Fill(energyAtVertex);
+                } else if (backgroundType == 14) {
+                    hPionNpScatterKETrue->Fill(energyAtVertex);
+                } else if (backgroundType == 2) {
+                    hPionNpScatterKEMuon->Fill(energyAtVertex);
+                } else if (backgroundType == 3) {
+                    hPionNpScatterKEElectron->Fill(energyAtVertex);
+                } else {
+                    hPionNpScatterKEOther->Fill(energyAtVertex);
+                }
             }
 
             // TODO: maybe check not rejecting more than 1 pion, and consider
@@ -465,7 +605,28 @@ void RecoClassifyAll() {
         hNotScatter->Fill(backgroundType);
 
         if (totalTaggedProtons > 0) {
+            // Select as Np absorption
             hPionAbsNp->Fill(backgroundType);
+
+            hPionAbsNpKE->Fill(energyAtVertex);
+            if (backgroundType == 0) {
+                hPionAbsNpKEAbs0p->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hPionAbsNpKETrue->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hPionAbsNpKEChExch->Fill(energyAtVertex);
+            } else if (backgroundType == 13) {
+                hPionAbsNpKE0pScatter->Fill(energyAtVertex);
+            } else if (backgroundType == 14) {
+                hPionAbsNpKENpScatter->Fill(energyAtVertex);
+            } else if (backgroundType == 2) {
+                hPionAbsNpKEMuon->Fill(energyAtVertex);
+            } else if (backgroundType == 3) {
+                hPionAbsNpKEElectron->Fill(energyAtVertex);
+            } else {
+                hPionAbsNpKEOther->Fill(energyAtVertex);
+            }
+
             continue;
         }
         hNotPionAbsNp->Fill(backgroundType);
@@ -477,6 +638,27 @@ void RecoClassifyAll() {
         if (numSmallTracks > SMALL_TRACK_CUT_CHEX) {
             // Tag as charge exchange
             hPionChExch->Fill(backgroundType);
+
+            hPionChExchKE->Fill(energyAtVertex);
+            if (backgroundType == 0) {
+                hPionChExchKEAbs0p->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hPionChExchKEAbsNp->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hPionChExchKETrue->Fill(energyAtVertex);
+            } else if (backgroundType == 13) {
+                hPionChExchKE0pScatter->Fill(energyAtVertex);
+            } else if (backgroundType == 14) {
+                hPionChExchKENpScatter->Fill(energyAtVertex);
+            } else if (backgroundType == 2) {
+                hPionChExchKEMuon->Fill(energyAtVertex);
+            } else if (backgroundType == 3) {
+                hPionChExchKEElectron->Fill(energyAtVertex);
+            } else {
+                hPionChExchKEOther->Fill(energyAtVertex);
+            }
+
+            continue;
         }
         hNotChExch->Fill(backgroundType);
 
@@ -594,6 +776,27 @@ void RecoClassifyAll() {
 
         if (numLargeClusters < NUM_CLUSTERS_THRESHOLD) {
             hPionAbs0p->Fill(backgroundType);
+
+            hPionAbs0pKE->Fill(energyAtVertex);
+            if (backgroundType == 0) {
+                hPionAbs0pKETrue->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hPionAbs0pKEAbsNp->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hPionAbs0pKEChExch->Fill(energyAtVertex);
+            } else if (backgroundType == 13) {
+                hPionAbs0pKE0pScatter->Fill(energyAtVertex);
+            } else if (backgroundType == 14) {
+                hPionAbs0pKENpScatter->Fill(energyAtVertex);
+            } else if (backgroundType == 2) {
+                hPionAbs0pKEMuon->Fill(energyAtVertex);
+            } else if (backgroundType == 3) {
+                hPionAbs0pKEElectron->Fill(energyAtVertex);
+            } else {
+                hPionAbs0pKEOther->Fill(energyAtVertex);
+            }
+
+            continue;
         }
         hNotPionAbs0p->Fill(backgroundType);
     }
@@ -635,4 +838,104 @@ void RecoClassifyAll() {
     printBackgroundInfo(hPionChExch, std::cout);
     std::cout << "Purity: " << hPionChExch->GetBinContent(8) / hPionChExch->Integral() << std::endl;
     std::cout << "Efficiency: " << hPionChExch->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
+
+    //////////////////
+    // Create plots //
+    //////////////////
+
+    std::vector<int> Colors = {
+        kBlack,
+        kBlue,
+        kRed,
+        kGreen,
+        kOrange+1,
+        kMagenta,
+        kCyan+1,
+        kViolet+1,
+        kAzure+1,
+        kPink+6
+    };
+
+    std::vector<std::vector<TH1*>> PlotGroups = {
+        // Incident KE
+        {hIncidentKEPion, hIncidentKEMuon, hIncidentKEElectron},
+
+        // Interacting KE
+        {hPionAbs0pKETrue, hPionAbs0pKEAbsNp, hPionAbs0pKE0pScatter, hPionAbs0pKENpScatter, hPionAbs0pKEChExch, hPionAbs0pKEMuon, hPionAbs0pKEElectron, hPionAbs0pKEOther},
+        {hPionAbsNpKETrue, hPionAbsNpKEAbs0p, hPionAbsNpKE0pScatter, hPionAbsNpKENpScatter, hPionAbsNpKEChExch, hPionAbsNpKEMuon, hPionAbsNpKEElectron, hPionAbsNpKEOther},
+        {hPion0pScatterKETrue, hPion0pScatterKEAbs0p, hPion0pScatterKEAbsNp, hPion0pScatterKENpScatter, hPion0pScatterKEChExch, hPion0pScatterKEMuon, hPion0pScatterKEElectron, hPion0pScatterKEOther},
+        {hPionNpScatterKETrue, hPionNpScatterKEAbs0p, hPionNpScatterKEAbsNp, hPionNpScatterKE0pScatter, hPionNpScatterKEChExch, hPionNpScatterKEMuon, hPionNpScatterKEElectron, hPionNpScatterKEOther},
+        {hPionChExchKETrue, hPionChExchKEAbs0p, hPionChExchKEAbsNp, hPionChExchKE0pScatter, hPionChExchKENpScatter, hPionChExchKEMuon, hPionChExchKEElectron, hPionChExchKEOther}
+    };
+
+    std::vector<std::vector<TString>> PlotLabelGroups = {
+        // Incident KE
+        {"Pions", "Muons", "Electrons"},
+
+        // Interacting KE
+        {"True", "Abs Np", "Scatter 0p", "Scatter Np", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"True", "Abs 0p", "Scatter 0p", "Scatter Np", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"True", "Abs 0p", "Abs Np", "Scatter Np", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"True", "Abs 0p", "Abs Np", "Scatter 0p", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"True", "Abs 0p", "Abs Np", "Scatter 0p", "Scatter Np", "Muon", "Electron", "Other"}
+    };
+
+    std::vector<TString> PlotTitles = {
+        // Incident KE
+        "IncidentKE",
+
+        // Interacting KE
+        "Abs0pInteractingKE",
+        "AbsNpInteractingKE",
+        "Scatter0pInteractingKE",
+        "ScatterNpInteractingKE",
+        "ChExchInteractingKE"
+    };
+
+    std::vector<TString> XLabels = {
+        // Incident KE
+        "Kinetic energy [MeV]",
+
+        // Interacting KE
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]"
+    };
+
+    std::vector<TString> YLabels = {
+        // Incident KE
+        "Counts",
+
+        // Interacting KE
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts"
+    };
+
+    std::vector<bool> PlotStacked = {
+        // Incident KE
+        true,
+
+        // Interacting KE
+        true,
+        true,
+        true,
+        true,
+        true
+    };
+
+    printOneDPlots(
+        SaveDir, FontStyle, TextSize,
+        PlotGroups,
+        Colors,
+        PlotLabelGroups,
+        PlotTitles,
+        XLabels,
+        YLabels,
+        PlotStacked
+    );
 }

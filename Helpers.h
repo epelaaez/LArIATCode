@@ -131,6 +131,10 @@ const double NeutronMass = 939.5654133;  // in MeV
 // Threshold for individual dE/dx hits
 double HIT_DEDX_THRESHOLD = 40.;
 
+// Bins for energy bins
+double LOWER_BOUND_KE = 0.;
+double UPPER_BOUND_KE = 600.;
+int    NUM_BINS_KE    = 12;
 
 //////////////////////
 // Helper functions //

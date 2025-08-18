@@ -605,11 +605,6 @@ void RecoAllAnalysis() {
     TH1D* hPion0pAbsTrueCrossSection = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbs0p");
     TH1D* hPionNpAbsTrueCrossSection = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbsNp");
 
-    // Numbers for bins
-    double LOWER_BOUND_KE = 0.;
-    double UPPER_BOUND_KE = 600.;
-    int    NUM_BINS_KE    = 12;
-
     // Reco cross sections
     TH1D *hIncidentKE  = new TH1D("hRecoIncidentKE", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D *hPionAbsKE   = new TH1D("hPionAbsKE", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
