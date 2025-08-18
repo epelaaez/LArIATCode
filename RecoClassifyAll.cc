@@ -315,6 +315,51 @@ void RecoClassifyAll() {
     TH1D* hPionChExchKEElectron  = new TH1D("hPionChExchKEElectron", "hPionChExchKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hPionChExchKEOther     = new TH1D("hPionChExchKEOther", "hPionChExchKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
+    // True abs 0p
+    TH1D* hTrueAbs0pKE            = new TH1D("hTrueAbs0pKE", "hTrueAbs0pKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKEAsAbs0p     = new TH1D("hTrueAbs0pKEAsAbs0p", "hTrueAbs0pKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKEAsAbsNp     = new TH1D("hTrueAbs0pKEAsAbsNp", "hTrueAbs0pKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKEAsScatter0p = new TH1D("hTrueAbs0pKEAsScatter0p", "hTrueAbs0pKEAsScatter0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKEAsScatterNp = new TH1D("hTrueAbs0pKEAsScatterNp", "hTrueAbs0pKEAsScatterNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKEAsChExch    = new TH1D("hTrueAbs0pKEAsChExch", "hTrueAbs0pKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKERejected    = new TH1D("hTrueAbs0pKERejected", "hTrueAbs0pKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // True abs Np
+    TH1D* hTrueAbsNpKE            = new TH1D("hTrueAbsNpKE", "hTrueAbsNpKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKEAsAbs0p     = new TH1D("hTrueAbsNpKEAsAbs0p", "hTrueAbsNpKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKEAsAbsNp     = new TH1D("hTrueAbsNpKEAsAbsNp", "hTrueAbsNpKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKEAsScatter0p = new TH1D("hTrueAbsNpKEAsScatter0p", "hTrueAbsNpKEAsScatter0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKEAsScatterNp = new TH1D("hTrueAbsNpKEAsScatterNp", "hTrueAbsNpKEAsScatterNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKEAsChExch    = new TH1D("hTrueAbsNpKEAsChExch", "hTrueAbsNpKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKERejected    = new TH1D("hTrueAbsNpKERejected", "hTrueAbsNpKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // True scatter 0p
+    TH1D* hTrueScatter0pKE            = new TH1D("hTrueScatter0pKE", "hTrueScatter0pKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatter0pKEAsAbs0p     = new TH1D("hTrueScatter0pKEAsAbs0p", "hTrueScatter0pKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatter0pKEAsAbsNp     = new TH1D("hTrueScatter0pKEAsAbsNp", "hTrueScatter0pKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatter0pKEAsScatter0p = new TH1D("hTrueScatter0pKEAsScatter0p", "hTrueScatter0pKEAsScatter0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatter0pKEAsScatterNp = new TH1D("hTrueScatter0pKEAsScatterNp", "hTrueScatter0pKEAsScatterNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatter0pKEAsChExch    = new TH1D("hTrueScatter0pKEAsChExch", "hTrueScatter0pKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatter0pKERejected    = new TH1D("hTrueScatter0pKERejected", "hTrueScatter0pKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // True scatter Np
+    TH1D* hTrueScatterNpKE            = new TH1D("hTrueScatterNpKE", "hTrueScatterNpKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterNpKEAsAbs0p     = new TH1D("hTrueScatterNpKEAsAbs0p", "hTrueScatterNpKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterNpKEAsAbsNp     = new TH1D("hTrueScatterNpKEAsAbsNp", "hTrueScatterNpKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterNpKEAsScatter0p = new TH1D("hTrueScatterNpKEAsScatter0p", "hTrueScatterNpKEAsScatter0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterNpKEAsScatterNp = new TH1D("hTrueScatterNpKEAsScatterNp", "hTrueScatterNpKEAsScatterNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterNpKEAsChExch    = new TH1D("hTrueScatterNpKEAsChExch", "hTrueScatterNpKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterNpKERejected    = new TH1D("hTrueScatterNpKERejected", "hTrueScatterNpKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // True charge exchange
+    TH1D* hTrueChExchKE            = new TH1D("hTrueChExchKE", "hTrueChExchKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKEAsAbs0p     = new TH1D("hTrueChExchKEAsAbs0p", "hTrueChExchKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKEAsAbsNp     = new TH1D("hTrueChExchKEAsAbsNp", "hTrueChExchKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKEAsScatter0p = new TH1D("hTrueChExchKEAsScatter0p", "hTrueChExchKEAsScatter0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKEAsScatterNp = new TH1D("hTrueChExchKEAsScatterNp", "hTrueChExchKEAsScatterNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKEAsChExch    = new TH1D("hTrueChExchKEAsChExch", "hTrueChExchKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKERejected    = new TH1D("hTrueChExchKERejected", "hTrueChExchKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
     //////////////////////
     // Loop over events //
     //////////////////////
@@ -337,15 +382,6 @@ void RecoClassifyAll() {
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
         hDataProdsAndWC2TPC->Fill(scatteringType);
-
-        ////////////////////////////
-        // NN electron shower cut //
-        ////////////////////////////
-
-        // If did not obtain probabilities, skip 
-        if (!obtainedProbabilities) continue;
-        if (showerProb >= SHOWER_PROB_CUT) continue;
-        hNotAnElectron->Fill(scatteringType);
 
         ///////////////////////
         // Primary track PID //
@@ -441,12 +477,91 @@ void RecoClassifyAll() {
         }
         double energyAtVertex = initialKE - energyDeposited;
 
-        if (!isWithinReducedVolume(breakPointX, breakPointY, breakPointZ)) continue;
+        // Fill in true interaction energy histograms
+        if (backgroundType == 0) {
+            hTrueAbs0pKE->Fill(energyAtVertex);
+        } else if (backgroundType == 1) {
+            hTrueAbsNpKE->Fill(energyAtVertex);
+        } else if (backgroundType == 13) {
+            hTrueScatter0pKE->Fill(energyAtVertex);
+        } else if (backgroundType == 14) {
+            hTrueScatterNpKE->Fill(energyAtVertex);
+        } else if (backgroundType == 7) {
+            hTrueChExchKE->Fill(energyAtVertex);
+        }
+
+        // If did not obtain neural network electron shower probabilities, skip 
+        if (!obtainedProbabilities) {
+            if (backgroundType == 0) {
+                hTrueAbs0pKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 13) {
+                hTrueScatter0pKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 14) {
+                hTrueScatterNpKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKERejected->Fill(energyAtVertex);
+            }
+            continue;
+        }
+        if (showerProb >= SHOWER_PROB_CUT){
+            if (backgroundType == 0) {
+                hTrueAbs0pKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 13) {
+                hTrueScatter0pKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 14) {
+                hTrueScatterNpKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKERejected->Fill(energyAtVertex);
+            }
+            continue;
+        }
+        hNotAnElectron->Fill(scatteringType);
+
+        if (!isWithinReducedVolume(breakPointX, breakPointY, breakPointZ)) {
+            if (backgroundType == 0) {
+                hTrueAbs0pKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 13) {
+                hTrueScatter0pKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 14) {
+                hTrueScatterNpKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKERejected->Fill(energyAtVertex);
+            }
+            continue;
+        }
         hPrimaryInRedVol->Fill(scatteringType);
 
         if (minChi2 == pionChi2) {
+            if (backgroundType == 0) {
+                hTrueAbs0pKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 13) {
+                hTrueScatter0pKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 14) {
+                hTrueScatterNpKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKERejected->Fill(energyAtVertex);
+            }
             continue;
         } else if (minChi2 == protonChi2) {
+            if (backgroundType == 0) {
+                hTrueAbs0pKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 13) {
+                hTrueScatter0pKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 14) {
+                hTrueScatterNpKERejected->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKERejected->Fill(energyAtVertex);
+            }
             continue; // reject events matching to proton primary
         }
         hPrimaryPID->Fill(scatteringType);
@@ -547,7 +662,21 @@ void RecoClassifyAll() {
         int totalTaggedProtons = secondaryTaggedProton + otherTaggedProton;
 
         if (totalTaggedPions > 0) {
-            if (totalTaggedPions > 1) continue; // reject events with > 1 tagged pion
+            if (totalTaggedPions > 1) {
+                // reject events with > 1 tagged pion
+                if (backgroundType == 0) {
+                    hTrueAbs0pKERejected->Fill(energyAtVertex);
+                } else if (backgroundType == 1) {
+                    hTrueAbsNpKERejected->Fill(energyAtVertex);
+                } else if (backgroundType == 13) {
+                    hTrueScatter0pKERejected->Fill(energyAtVertex);
+                } else if (backgroundType == 14) {
+                    hTrueScatterNpKERejected->Fill(energyAtVertex);
+                } else if (backgroundType == 7) {
+                    hTrueChExchKERejected->Fill(energyAtVertex);
+                }
+                continue;
+            }
 
             if (totalTaggedProtons == 0) {
                 // Select as 0p scatter
@@ -572,6 +701,17 @@ void RecoClassifyAll() {
                     hPion0pScatterKEOther->Fill(energyAtVertex);
                 }
 
+                if (backgroundType == 0) {
+                    hTrueAbs0pKEAsScatter0p->Fill(energyAtVertex);
+                } else if (backgroundType == 1) {
+                    hTrueAbsNpKEAsScatter0p->Fill(energyAtVertex);
+                } else if (backgroundType == 13) {
+                    hTrueScatter0pKEAsScatter0p->Fill(energyAtVertex);
+                } else if (backgroundType == 14) {
+                    hTrueScatterNpKEAsScatter0p->Fill(energyAtVertex);
+                } else if (backgroundType == 7) {
+                    hTrueChExchKEAsScatter0p->Fill(energyAtVertex);
+                }
             } else if (totalTaggedProtons > 0) {
                 // Select as Np scatter
                 hPionNpScatter->Fill(backgroundType);
@@ -593,6 +733,18 @@ void RecoClassifyAll() {
                     hPionNpScatterKEElectron->Fill(energyAtVertex);
                 } else {
                     hPionNpScatterKEOther->Fill(energyAtVertex);
+                }
+
+                if (backgroundType == 0) {
+                    hTrueAbs0pKEAsScatterNp->Fill(energyAtVertex);
+                } else if (backgroundType == 1) {
+                    hTrueAbsNpKEAsScatterNp->Fill(energyAtVertex);
+                } else if (backgroundType == 13) {
+                    hTrueScatter0pKEAsScatterNp->Fill(energyAtVertex);
+                } else if (backgroundType == 14) {
+                    hTrueScatterNpKEAsScatterNp->Fill(energyAtVertex);
+                } else if (backgroundType == 7) {
+                    hTrueChExchKEAsScatterNp->Fill(energyAtVertex);
                 }
             }
 
@@ -627,6 +779,18 @@ void RecoClassifyAll() {
                 hPionAbsNpKEOther->Fill(energyAtVertex);
             }
 
+            if (backgroundType == 0) {
+                hTrueAbs0pKEAsAbsNp->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKEAsAbsNp->Fill(energyAtVertex);
+            } else if (backgroundType == 13) {
+                hTrueScatter0pKEAsAbsNp->Fill(energyAtVertex);
+            } else if (backgroundType == 14) {
+                hTrueScatterNpKEAsAbsNp->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKEAsAbsNp->Fill(energyAtVertex);
+            }
+
             continue;
         }
         hNotPionAbsNp->Fill(backgroundType);
@@ -656,6 +820,18 @@ void RecoClassifyAll() {
                 hPionChExchKEElectron->Fill(energyAtVertex);
             } else {
                 hPionChExchKEOther->Fill(energyAtVertex);
+            }
+
+            if (backgroundType == 0) {
+                hTrueAbs0pKEAsChExch->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKEAsChExch->Fill(energyAtVertex);
+            } else if (backgroundType == 13) {
+                hTrueScatter0pKEAsChExch->Fill(energyAtVertex);
+            } else if (backgroundType == 14) {
+                hTrueScatterNpKEAsChExch->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKEAsChExch->Fill(energyAtVertex);
             }
 
             continue;
@@ -796,9 +972,34 @@ void RecoClassifyAll() {
                 hPionAbs0pKEOther->Fill(energyAtVertex);
             }
 
+            if (backgroundType == 0) {
+                hTrueAbs0pKEAsAbs0p->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKEAsAbs0p->Fill(energyAtVertex);
+            } else if (backgroundType == 13) {
+                hTrueScatter0pKEAsAbs0p->Fill(energyAtVertex);
+            } else if (backgroundType == 14) {
+                hTrueScatterNpKEAsAbs0p->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKEAsAbs0p->Fill(energyAtVertex);
+            }
+
             continue;
         }
         hNotPionAbs0p->Fill(backgroundType);
+
+        // Anything left here is rejected
+        if (backgroundType == 0) {
+            hTrueAbs0pKERejected->Fill(energyAtVertex);
+        } else if (backgroundType == 1) {
+            hTrueAbsNpKERejected->Fill(energyAtVertex);
+        } else if (backgroundType == 13) {
+            hTrueScatter0pKERejected->Fill(energyAtVertex);
+        } else if (backgroundType == 14) {
+            hTrueScatterNpKERejected->Fill(energyAtVertex);
+        } else if (backgroundType == 7) {
+            hTrueChExchKERejected->Fill(energyAtVertex);
+        }
     }
 
     ///////////////////////////////////////////
@@ -865,7 +1066,14 @@ void RecoClassifyAll() {
         {hPionAbsNpKETrue, hPionAbsNpKEAbs0p, hPionAbsNpKE0pScatter, hPionAbsNpKENpScatter, hPionAbsNpKEChExch, hPionAbsNpKEMuon, hPionAbsNpKEElectron, hPionAbsNpKEOther},
         {hPion0pScatterKETrue, hPion0pScatterKEAbs0p, hPion0pScatterKEAbsNp, hPion0pScatterKENpScatter, hPion0pScatterKEChExch, hPion0pScatterKEMuon, hPion0pScatterKEElectron, hPion0pScatterKEOther},
         {hPionNpScatterKETrue, hPionNpScatterKEAbs0p, hPionNpScatterKEAbsNp, hPionNpScatterKE0pScatter, hPionNpScatterKEChExch, hPionNpScatterKEMuon, hPionNpScatterKEElectron, hPionNpScatterKEOther},
-        {hPionChExchKETrue, hPionChExchKEAbs0p, hPionChExchKEAbsNp, hPionChExchKE0pScatter, hPionChExchKENpScatter, hPionChExchKEMuon, hPionChExchKEElectron, hPionChExchKEOther}
+        {hPionChExchKETrue, hPionChExchKEAbs0p, hPionChExchKEAbsNp, hPionChExchKE0pScatter, hPionChExchKENpScatter, hPionChExchKEMuon, hPionChExchKEElectron, hPionChExchKEOther},
+
+        // True events classified breakdown
+        {hTrueAbs0pKEAsAbs0p, hTrueAbs0pKEAsAbsNp, hTrueAbs0pKEAsScatter0p, hTrueAbs0pKEAsScatterNp, hTrueAbs0pKEAsChExch, hTrueAbs0pKERejected},
+        {hTrueAbsNpKEAsAbs0p, hTrueAbsNpKEAsAbsNp, hTrueAbsNpKEAsScatter0p, hTrueAbsNpKEAsScatterNp, hTrueAbsNpKEAsChExch, hTrueAbsNpKERejected},
+        {hTrueScatter0pKEAsAbs0p, hTrueScatter0pKEAsAbsNp, hTrueScatter0pKEAsScatter0p, hTrueScatter0pKEAsScatterNp, hTrueScatter0pKEAsChExch, hTrueScatter0pKERejected},
+        {hTrueScatterNpKEAsAbs0p, hTrueScatterNpKEAsAbsNp, hTrueScatterNpKEAsScatter0p, hTrueScatterNpKEAsScatterNp, hTrueScatterNpKEAsChExch, hTrueScatterNpKERejected},
+        {hTrueChExchKEAsAbs0p, hTrueChExchKEAsAbsNp, hTrueChExchKEAsScatter0p, hTrueChExchKEAsScatterNp, hTrueChExchKEAsChExch, hTrueChExchKERejected}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -877,7 +1085,14 @@ void RecoClassifyAll() {
         {"True", "Abs 0p", "Scatter 0p", "Scatter Np", "Ch. exch.", "Muon", "Electron", "Other"},
         {"True", "Abs 0p", "Abs Np", "Scatter Np", "Ch. exch.", "Muon", "Electron", "Other"},
         {"True", "Abs 0p", "Abs Np", "Scatter 0p", "Ch. exch.", "Muon", "Electron", "Other"},
-        {"True", "Abs 0p", "Abs Np", "Scatter 0p", "Scatter Np", "Muon", "Electron", "Other"}
+        {"True", "Abs 0p", "Abs Np", "Scatter 0p", "Scatter Np", "Muon", "Electron", "Other"},
+
+        // True events classified breakdown
+        {"Abs 0p", "Abs Np", "Scatter 0p", "Scatter Np", "Ch. exch.", "Rejected"},
+        {"Abs 0p", "Abs Np", "Scatter 0p", "Scatter Np", "Ch. exch.", "Rejected"},
+        {"Abs 0p", "Abs Np", "Scatter 0p", "Scatter Np", "Ch. exch.", "Rejected"},
+        {"Abs 0p", "Abs Np", "Scatter 0p", "Scatter Np", "Ch. exch.", "Rejected"},
+        {"Abs 0p", "Abs Np", "Scatter 0p", "Scatter Np", "Ch. exch.", "Rejected"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -889,7 +1104,14 @@ void RecoClassifyAll() {
         "AbsNpInteractingKE",
         "Scatter0pInteractingKE",
         "ScatterNpInteractingKE",
-        "ChExchInteractingKE"
+        "ChExchInteractingKE",
+
+        // True events classified breakdown
+        "TrueAbs0pBreakdown",
+        "TrueAbsNpBreakdown",
+        "TrueScatter0pBreakdown",
+        "TrueScatterNpBreakdown",
+        "TrueChExchBreakdown"
     };
 
     std::vector<TString> XLabels = {
@@ -897,6 +1119,13 @@ void RecoClassifyAll() {
         "Kinetic energy [MeV]",
 
         // Interacting KE
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+
+        // True events classified breakdown
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
@@ -913,6 +1142,13 @@ void RecoClassifyAll() {
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
+
+        // True events classified breakdown
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
         "Counts"
     };
 
@@ -921,6 +1157,13 @@ void RecoClassifyAll() {
         true,
 
         // Interacting KE
+        true,
+        true,
+        true,
+        true,
+        true,
+
+        // True events classified breakdown
         true,
         true,
         true,
