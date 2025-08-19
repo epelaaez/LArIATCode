@@ -393,7 +393,7 @@ void RecoClassifyAll() {
         double low_bin  = LOWER_BOUND_KE + (i - 1) * (UPPER_BOUND_KE - LOWER_BOUND_KE) / NUM_BINS_KE;
         double high_bin = LOWER_BOUND_KE + i * (UPPER_BOUND_KE - LOWER_BOUND_KE) / NUM_BINS_KE;
         TH2D* hPMatrix = new TH2D(
-            Form("hPMatrix_Bin_%d_%d", (int)low_bin, (int)high_bin), Form("hPMatrix_Bin_%d_%d;True interaction;Reco interaction", (int)low_bin, (int)high_bin), 
+            Form("hPMatrix_Bin_%d_%d", (int)low_bin, (int)high_bin), Form("hPMatrix_Bin_%d_%d;Reco interaction;True interaction", (int)low_bin, (int)high_bin), 
             NUM_SIGNAL_TYPES, 0, NUM_SIGNAL_TYPES, 
             NUM_SIGNAL_TYPES, 0, NUM_SIGNAL_TYPES
         );
@@ -420,16 +420,15 @@ void RecoClassifyAll() {
 
         // In this script, we replace background types 6 and 12 with background types 13 and 14,
         // because we are interested in contamination across the bins that we are measuring
-        int scatteringType = -1; // -1 = not scattering, 0 = 0p scattering, 1 = Np scattering
         if (backgroundType == 12 || (backgroundType == 6 && numVisibleProtons == 0)) {
-            scatteringType = 0; backgroundType = 13;
+            backgroundType = 13;
         } else if (backgroundType == 6 && numVisibleProtons > 0) {
-            scatteringType = 1; backgroundType = 14;
+            backgroundType = 14;
         }
 
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
-        hDataProdsAndWC2TPC->Fill(scatteringType);
+        hDataProdsAndWC2TPC->Fill(backgroundType);
 
         ///////////////////////
         // Primary track PID //
@@ -567,7 +566,7 @@ void RecoClassifyAll() {
             }
             continue;
         }
-        hNotAnElectron->Fill(scatteringType);
+        hNotAnElectron->Fill(backgroundType);
 
         if (!isWithinReducedVolume(breakPointX, breakPointY, breakPointZ)) {
             if (backgroundType == 0) {
@@ -583,7 +582,7 @@ void RecoClassifyAll() {
             }
             continue;
         }
-        hPrimaryInRedVol->Fill(scatteringType);
+        hPrimaryInRedVol->Fill(backgroundType);
 
         if (minChi2 == pionChi2) {
             if (backgroundType == 0) {
@@ -612,7 +611,7 @@ void RecoClassifyAll() {
             }
             continue; // reject events matching to proton primary
         }
-        hPrimaryPID->Fill(scatteringType);
+        hPrimaryPID->Fill(backgroundType);
 
         /////////////////////////
         // Secondary track PID //
@@ -1092,7 +1091,6 @@ void RecoClassifyAll() {
     // Compute probability matrix //
     ////////////////////////////////
 
-    std::vector<TH2*> TotalEventsMatrices;
     for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
         TH2* currentMatrix = ProbabilityMatrices.at(iBin - 1);
         for (int column = 0; column < NUM_SIGNAL_TYPES; ++column) {
@@ -1100,8 +1098,8 @@ void RecoClassifyAll() {
             for (int row = 0; row < NUM_SIGNAL_TYPES; ++row) {
                 double num = TrueRecoAs.at(column).at(row)->GetBinContent(iBin);
 
-                if (denom == 0) currentMatrix->SetBinContent(column + 1, row + 1, 0);
-                else currentMatrix->SetBinContent(column + 1, row + 1, num / denom);
+                if (denom == 0) currentMatrix->SetBinContent(row + 1, column + 1, 0);
+                else currentMatrix->SetBinContent(row + 1, column + 1, num / denom);
             }
         }
     }
@@ -1300,8 +1298,8 @@ void RecoClassifyAll() {
         };
 
         for (size_t i = 0; i < UnfHistograms.size(); ++i) {
-            PlotGroups.push_back({UnfHistograms[i]});
-            PlotLabelGroups.push_back({""});
+            PlotGroups.push_back({UnfHistograms[i], TotalEventsHistos[i]});
+            PlotLabelGroups.push_back({"Unfolded", "True signal"});
             PlotTitles.push_back("Unfolded/" + UnfHistTitles[i]);
             XLabels.push_back("Kinetic energy [MeV]");
             YLabels.push_back("Counts");
