@@ -315,6 +315,10 @@ void RecoClassifyAll() {
     TH1D* hPionChExchKEElectron  = new TH1D("hPionChExchKEElectron", "hPionChExchKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hPionChExchKEOther     = new TH1D("hPionChExchKEOther", "hPionChExchKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
+    std::vector<TH1*> RecoSignals = {
+        hPionAbs0pKE, hPionAbsNpKE, hPion0pScatterKE, hPionNpScatterKE, hPionChExchKE
+    };
+
     // True abs 0p
     TH1D* hTrueAbs0pKE            = new TH1D("hTrueAbs0pKE", "hTrueAbs0pKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueAbs0pKEAsAbs0p     = new TH1D("hTrueAbs0pKEAsAbs0p", "hTrueAbs0pKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -1088,16 +1092,71 @@ void RecoClassifyAll() {
     // Compute probability matrix //
     ////////////////////////////////
 
-    std::vector<TH2D*> TotalEventsMatrices;
+    std::vector<TH2*> TotalEventsMatrices;
     for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
         TH2* currentMatrix = ProbabilityMatrices.at(iBin - 1);
         for (int column = 0; column < NUM_SIGNAL_TYPES; ++column) {
             double denom = TotalEventsHistos.at(column)->GetBinContent(iBin);
             for (int row = 0; row < NUM_SIGNAL_TYPES; ++row) {
                 double num = TrueRecoAs.at(column).at(row)->GetBinContent(iBin);
-                currentMatrix->SetBinContent(column + 1, row + 1, num / denom);
+
+                if (denom == 0) currentMatrix->SetBinContent(column + 1, row + 1, 0);
+                else currentMatrix->SetBinContent(column + 1, row + 1, num / denom);
             }
         }
+    }
+
+    // Convert TH2 into TMatrix
+    std::vector<TMatrixD> PInvMatrices;
+    std::vector<TH2*>     PInvMatricesHistos;
+    for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
+        TMatrixD mat(NUM_SIGNAL_TYPES, NUM_SIGNAL_TYPES);
+        for (int i = 1; i <= NUM_SIGNAL_TYPES; ++i) {
+            for (int j = 1; j <= NUM_SIGNAL_TYPES; ++j) {
+            mat(i-1, j-1) = ProbabilityMatrices.at(iBin - 1)->GetBinContent(i, j);
+            }
+        }
+
+        TMatrixD inv = mat.Invert();
+        PInvMatrices.push_back(inv);
+
+        // Save the inverse matrix as a histogram for plots
+        double low_bin  = LOWER_BOUND_KE + (iBin - 1) * (UPPER_BOUND_KE - LOWER_BOUND_KE) / NUM_BINS_KE;
+        double high_bin = LOWER_BOUND_KE + iBin * (UPPER_BOUND_KE - LOWER_BOUND_KE) / NUM_BINS_KE;
+        TH2D* hPInv = new TH2D(
+            Form("hPInvMatrix_Bin_%d_%d", (int)low_bin, (int)high_bin),
+            Form("hPInvMatrix_Bin_%d_%d;Reco interaction;True interaction", (int)low_bin, (int)high_bin),
+            NUM_SIGNAL_TYPES, 0, NUM_SIGNAL_TYPES,
+            NUM_SIGNAL_TYPES, 0, NUM_SIGNAL_TYPES
+        );
+        for (int i = 0; i < NUM_SIGNAL_TYPES; ++i) {
+            for (int j = 0; j < NUM_SIGNAL_TYPES; ++j) {
+                hPInv->SetBinContent(i + 1, j + 1, inv(i, j));
+            }
+        }
+        PInvMatricesHistos.push_back(hPInv);
+    }
+
+    // Get vectors from reconstructed signals
+    std::vector<TVectorD> SignalUnfVectors;
+    for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
+        TVectorD vec(NUM_SIGNAL_TYPES);
+        for (int i = 0; i < NUM_SIGNAL_TYPES; ++i) {
+            vec(i) = RecoSignals[i]->GetBinContent(iBin);
+        }
+        
+        TVectorD unfoldedVec = PInvMatrices.at(iBin - 1) * vec;
+        SignalUnfVectors.push_back(unfoldedVec);
+    }
+
+    // Organize unfolded results
+    std::vector<TH1*> UnfHistograms;
+    for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
+        TH1* hist = new TH1D(Form("hUnfSignal_%d", iSignal), Form("Unfolded Signal %d", iSignal), NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+        for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
+            hist->SetBinContent(iBin, SignalUnfVectors.at(iBin - 1)(iSignal));
+        }
+        UnfHistograms.push_back(hist);
     }
 
     //////////////////
@@ -1157,21 +1216,21 @@ void RecoClassifyAll() {
 
     std::vector<TString> PlotTitles = {
         // Incident KE
-        "IncidentKE",
+        "Incident/IncidentKE",
 
         // Interacting KE
-        "Abs0pInteractingKE",
-        "AbsNpInteractingKE",
-        "Scatter0pInteractingKE",
-        "ScatterNpInteractingKE",
-        "ChExchInteractingKE",
+        "RecoInteracting/Abs0pInteractingKE",
+        "RecoInteracting/AbsNpInteractingKE",
+        "RecoInteracting/Scatter0pInteractingKE",
+        "RecoInteracting/ScatterNpInteractingKE",
+        "RecoInteracting/ChExchInteractingKE",
 
         // True events classified breakdown
-        "TrueAbs0pBreakdown",
-        "TrueAbsNpBreakdown",
-        "TrueScatter0pBreakdown",
-        "TrueScatterNpBreakdown",
-        "TrueChExchBreakdown"
+        "TrueInteracting/TrueAbs0pBreakdown",
+        "TrueInteracting/TrueAbsNpBreakdown",
+        "TrueInteracting/TrueScatter0pBreakdown",
+        "TrueInteracting/TrueScatterNpBreakdown",
+        "TrueInteracting/TrueChExchBreakdown"
     };
 
     std::vector<TString> XLabels = {
@@ -1231,6 +1290,24 @@ void RecoClassifyAll() {
         true
     };
 
+        // Add each unfolded histogram as a single plot group for plotting
+        std::vector<TString> UnfHistTitles = {
+            "UnfoldedAbs0p",
+            "UnfoldedAbsNp",
+            "UnfoldedScatter0p",
+            "UnfoldedScatterNp",
+            "UnfoldedChExch"
+        };
+
+        for (size_t i = 0; i < UnfHistograms.size(); ++i) {
+            PlotGroups.push_back({UnfHistograms[i]});
+            PlotLabelGroups.push_back({""});
+            PlotTitles.push_back("Unfolded/" + UnfHistTitles[i]);
+            XLabels.push_back("Kinetic energy [MeV]");
+            YLabels.push_back("Counts");
+            PlotStacked.push_back(false);
+        }
+
     printOneDPlots(
         SaveDir, FontStyle, TextSize,
         PlotGroups,
@@ -1254,6 +1331,11 @@ void RecoClassifyAll() {
     for (int i = 0; i < NUM_BINS_KE; ++i) {
         TwoDPlots.push_back(ProbabilityMatrices.at(i));
         TwoDTitles.push_back("ProbMatrices/ProbabilityMatrix_Bin" + std::to_string(i+1));
+        TwoDRanges.push_back({0, 1});
+        TwoDDisplayNumbers.push_back(true);
+
+        TwoDPlots.push_back(PInvMatricesHistos.at(i));
+        TwoDTitles.push_back("ProbInvMatrices/PInvMatrix_Bin" + std::to_string(i+1));
         TwoDRanges.push_back({0, 1});
         TwoDDisplayNumbers.push_back(true);
     }
