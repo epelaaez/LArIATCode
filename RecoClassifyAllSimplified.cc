@@ -233,6 +233,12 @@ void RecoClassifyAllSimplified() {
     tree->SetBranchAddress("hitWC2TPCKey", &hitWC2TPCKey);
     tree->SetBranchAddress("hitThroughTrack", &hitThroughTrack);
 
+    /////////////////////////////////
+    // Files for event information //
+    /////////////////////////////////
+
+    std::ofstream outFileChExchBkg("files/ClassifyAll/ChExchBackground.txt");
+
     ///////////////////////
     // Create histograms //
     ///////////////////////
@@ -785,6 +791,10 @@ void RecoClassifyAllSimplified() {
             } else if (backgroundType == 7) {
                 hTrueChExchKEAsChExch->Fill(energyAtVertex);
             }
+
+            outFileChExchBkg << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
+            outFileChExchBkg << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << energyAtVertex << std::endl;
+            outFileChExchBkg << std::endl;
 
             continue;
         }
