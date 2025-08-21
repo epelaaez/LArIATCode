@@ -147,6 +147,9 @@ double LOWER_BOUND_KE = 0.;
 double UPPER_BOUND_KE = 600.;
 int    NUM_BINS_KE    = 12;
 
+// TOF mass cut
+double PI_MU_EL_MASS_CUTOFF = 350.;
+
 //////////////////////
 // Helper functions //
 //////////////////////
