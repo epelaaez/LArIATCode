@@ -41,5 +41,23 @@ int main() {
     nn_list_file.close();
     std::cout << "NN file list saved to " << output_nn_file << std::endl;
 
+    std::string nn_data_directory_path = "/pnfs/lariat/persistent/users/epelaez/data_nn_files/";
+    std::string output_nn_data_file = "nn_data_files.list";
+
+    std::ofstream nn_data_list_file(output_nn_data_file);
+    if (!nn_data_list_file) {
+        std::cerr << "Error opening NN data output file." << std::endl;
+        return 1;
+    }
+
+    for (const auto& entry : fs::directory_iterator(nn_data_directory_path)) {
+        if (entry.is_regular_file()) {
+            nn_data_list_file << nn_data_directory_path + entry.path().filename().string() << std::endl;
+        }
+    }
+
+    nn_data_list_file.close();
+    std::cout << "NN data file list saved to " << output_nn_data_file << std::endl;
+
     return 0;
 }
