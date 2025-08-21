@@ -1049,13 +1049,59 @@ void RecoClassifyAll() {
         }
     }
 
+    std::cout << std::endl;
+    std::cout << "Original sample composition: " << std::endl;
+    printBackgroundInfo(hTotalEvents, std::cout);
+
+    //////////////////////////////////
+    // Breakdown of rejected events //
+    //////////////////////////////////
+
+    std::cout << std::endl;
+    std::cout << "=======================================================" << std::endl;
+    std::cout << "Rejection breakdown" << std::endl;
+    std::cout << "=======================================================" << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "Events with sufficiency data products and WC to TPC match: " << std::endl;
+    printBackgroundInfo(hDataProdsAndWC2TPC, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events not classified as electron: " << std::endl;
+    printBackgroundInfo(hNotAnElectron, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events with vertex identified inside reduced volume: " << std::endl;
+    printBackgroundInfo(hPrimaryInRedVol, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events with primary matched to a negative pion: " << std::endl;
+    printBackgroundInfo(hPrimaryPID, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events not classified as scatter (no secondary pion): " << std::endl;
+    printBackgroundInfo(hNotScatter, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events not classified as pion Np absorption (no secondary particles): " << std::endl;
+    printBackgroundInfo(hNotPionAbsNp, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events not classified as charge exchange (not enough small tracks): " << std::endl;
+    printBackgroundInfo(hNotChExch, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events not classified as pion 0p absorption (too many non-reconstructed hit clusters): " << std::endl;
+    printBackgroundInfo(hNotPionAbs0p, std::cout);
+
     ///////////////////////////////////////////
     // Information about events at each step //
     ///////////////////////////////////////////
 
     std::cout << std::endl;
-    std::cout << "Original sample composition: " << std::endl;
-    printBackgroundInfo(hTotalEvents, std::cout);
+    std::cout << "=======================================================" << std::endl;
+    std::cout << "Final classification breakdown" << std::endl;
+    std::cout << "=======================================================" << std::endl;
 
     std::cout << std::endl;
     std::cout << "Pion abs 0p total reco " <<  hPionAbs0p->Integral() << " with composition: " << std::endl;
