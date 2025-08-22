@@ -317,6 +317,13 @@ void RecoClassifyAllSimplified() {
     TH1D* hTrueAbs0pKEAsChExch    = new TH1D("hTrueAbs0pKEAsChExch", "hTrueAbs0pKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueAbs0pKERejected    = new TH1D("hTrueAbs0pKERejected", "hTrueAbs0pKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
+    TH1D* hTrueAbs0pKERejDataProds = new TH1D("hTrueAbs0pKERejDataProds", "hTrueAbs0pKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKERejElectron  = new TH1D("hTrueAbs0pKERejElectron", "hTrueAbs0pKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKERejRedVol    = new TH1D("hTrueAbs0pKERejRedVol", "hTrueAbs0pKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKERejPID       = new TH1D("hTrueAbs0pKERejPID", "hTrueAbs0pKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKERejManyPions = new TH1D("hTrueAbs0pKERejManyPions", "hTrueAbs0pKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKERejClusters  = new TH1D("hTrueAbs0pKERejClusters", "hTrueAbs0pKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
     std::vector<TH1*> TrueAbs0pAs = {
         hTrueAbs0pKEAsAbs0p, hTrueAbs0pKEAsAbsNp, hTrueAbs0pKEAsScatter, hTrueAbs0pKEAsChExch, hTrueAbs0pKERejected
     };
@@ -328,6 +335,13 @@ void RecoClassifyAllSimplified() {
     TH1D* hTrueAbsNpKEAsScatter = new TH1D("hTrueAbsNpKEAsScatter", "hTrueAbsNpKEAsScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueAbsNpKEAsChExch  = new TH1D("hTrueAbsNpKEAsChExch", "hTrueAbsNpKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueAbsNpKERejected  = new TH1D("hTrueAbsNpKERejected", "hTrueAbsNpKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    TH1D* hTrueAbsNpKERejDataProds = new TH1D("hTrueAbsNpKERejDataProds", "hTrueAbsNpKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKERejElectron  = new TH1D("hTrueAbsNpKERejElectron", "hTrueAbsNpKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKERejRedVol    = new TH1D("hTrueAbsNpKERejRedVol", "hTrueAbsNpKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKERejPID       = new TH1D("hTrueAbsNpKERejPID", "hTrueAbsNpKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKERejManyPions = new TH1D("hTrueAbsNpKERejManyPions", "hTrueAbsNpKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKERejClusters  = new TH1D("hTrueAbsNpKERejClusters", "hTrueAbsNpKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
     std::vector<TH1*> TrueAbsNpAs = {
         hTrueAbsNpKEAsAbs0p, hTrueAbsNpKEAsAbsNp, hTrueAbsNpKEAsScatter, hTrueAbsNpKEAsChExch, hTrueAbsNpKERejected
@@ -341,6 +355,13 @@ void RecoClassifyAllSimplified() {
     TH1D* hTrueScatterKEAsChExch  = new TH1D("hTrueScatterKEAsChExch", "hTrueScatterKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueScatterKERejected  = new TH1D("hTrueScatterKERejected", "hTrueScatterKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
+    TH1D* hTrueScatterKERejDataProds = new TH1D("hTrueScatterKERejDataProds", "hTrueScatterKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterKERejElectron  = new TH1D("hTrueScatterKERejElectron", "hTrueScatterKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterKERejRedVol    = new TH1D("hTrueScatterKERejRedVol", "hTrueScatterKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterKERejPID       = new TH1D("hTrueScatterKERejPID", "hTrueScatterKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterKERejManyPions = new TH1D("hTrueScatterKERejManyPions", "hTrueScatterKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterKERejClusters  = new TH1D("hTrueScatterKERejClusters", "hTrueScatterKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
     std::vector<TH1*> TrueScatterAs = {
         hTrueScatterKEAsAbs0p, hTrueScatterKEAsAbsNp, hTrueScatterKEAsScatter, hTrueScatterKEAsChExch, hTrueScatterKERejected
     };
@@ -352,6 +373,13 @@ void RecoClassifyAllSimplified() {
     TH1D* hTrueChExchKEAsScatter = new TH1D("hTrueChExchKEAsScatter", "hTrueChExchKEAsScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueChExchKEAsChExch  = new TH1D("hTrueChExchKEAsChExch", "hTrueChExchKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueChExchKERejected  = new TH1D("hTrueChExchKERejected", "hTrueChExchKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    TH1D* hTrueChExchKERejDataProds = new TH1D("hTrueChExchKERejDataProds", "hTrueChExchKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKERejElectron  = new TH1D("hTrueChExchKERejElectron", "hTrueChExchKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKERejRedVol    = new TH1D("hTrueChExchKERejRedVol", "hTrueChExchKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKERejPID       = new TH1D("hTrueChExchKERejPID", "hTrueChExchKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKERejManyPions = new TH1D("hTrueChExchKERejManyPions", "hTrueChExchKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKERejClusters  = new TH1D("hTrueChExchKERejClusters", "hTrueChExchKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
     std::vector<TH1*> TrueChExchAs = {
         hTrueChExchKEAsAbs0p, hTrueChExchKEAsAbsNp, hTrueChExchKEAsScatter, hTrueChExchKEAsChExch, hTrueChExchKERejected
@@ -393,6 +421,11 @@ void RecoClassifyAllSimplified() {
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
+        // Set correct primary vertex KE for elastic scattering
+        if (backgroundType == 12) {
+            truthPrimaryVertexKE = trajectoryInteractionKE;
+        }
+
         // In this script, we replace background types 6 and 12 with background types 13 and 14,
         // because we are interested in contamination across the bins that we are measuring
         if (backgroundType == 12 || (backgroundType == 6 && numVisibleProtons == 0)) {
@@ -401,8 +434,35 @@ void RecoClassifyAllSimplified() {
             backgroundType = 14;
         }
 
+        // Fill in true interaction energy histograms
+        if (backgroundType == 0) {
+            hTrueAbs0pKE->Fill(truthPrimaryVertexKE * 1000);
+        } else if (backgroundType == 1) {
+            hTrueAbsNpKE->Fill(truthPrimaryVertexKE * 1000);
+        } else if (backgroundType == 13 || backgroundType == 14) {
+            hTrueScatterKE->Fill(truthPrimaryVertexKE * 1000);
+        } else if (backgroundType == 7) {
+            hTrueChExchKE->Fill(truthPrimaryVertexKE * 1000);
+        }
+
         // If no track matched to wire-chamber, skip
-        if (WC2TPCtrkID == -99999) continue;
+        if (WC2TPCtrkID == -99999) {
+            if (backgroundType == 0) {
+                hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbs0pKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbsNpKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
+            } else if (backgroundType == 13 || backgroundType == 14) {
+                hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueScatterKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
+            } else if (backgroundType == 7) {
+                hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueChExchKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
+            }
+
+            continue;
+        }
         hDataProdsAndWC2TPC->Fill(backgroundType);
 
         ///////////////////////
@@ -499,39 +559,21 @@ void RecoClassifyAllSimplified() {
         }
         double energyAtVertex = initialKE - energyDeposited;
 
-        // Fill in true interaction energy histograms
-        if (backgroundType == 0) {
-            hTrueAbs0pKE->Fill(energyAtVertex);
-        } else if (backgroundType == 1) {
-            hTrueAbsNpKE->Fill(energyAtVertex);
-        } else if (backgroundType == 13 || backgroundType == 14) {
-            hTrueScatterKE->Fill(energyAtVertex);
-        } else if (backgroundType == 7) {
-            hTrueChExchKE->Fill(energyAtVertex);
-        }
-
         // If did not obtain neural network electron shower probabilities, skip 
-        if (!obtainedProbabilities) {
-            if (backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(energyAtVertex);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(energyAtVertex);
-            } else if (backgroundType == 13 || backgroundType == 14) {
-                hTrueScatterKERejected->Fill(energyAtVertex);
-            } else if (backgroundType == 7) {
-                hTrueChExchKERejected->Fill(energyAtVertex);
-            }
-            continue;
-        }
+        if (!obtainedProbabilities) showerProb = 1.;
         if (showerProb >= SHOWER_PROB_CUT){
             if (backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(energyAtVertex);
+                hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbs0pKERejElectron->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(energyAtVertex);
+                hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbsNpKERejElectron->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 13 || backgroundType == 14) {
-                hTrueScatterKERejected->Fill(energyAtVertex);
+                hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueScatterKERejElectron->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 7) {
-                hTrueChExchKERejected->Fill(energyAtVertex);
+                hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueChExchKERejElectron->Fill(truthPrimaryVertexKE * 1000);
             }
             continue;
         }
@@ -539,40 +581,37 @@ void RecoClassifyAllSimplified() {
 
         if (!isWithinReducedVolume(breakPointX, breakPointY, breakPointZ)) {
             if (backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(energyAtVertex);
+                hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbs0pKERejRedVol->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(energyAtVertex);
+                hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbsNpKERejRedVol->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 13 || backgroundType == 14) {
-                hTrueScatterKERejected->Fill(energyAtVertex);
+                hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueScatterKERejRedVol->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 7) {
-                hTrueChExchKERejected->Fill(energyAtVertex);
+                hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueChExchKERejRedVol->Fill(truthPrimaryVertexKE * 1000);
             }
             continue;
         }
         hPrimaryInRedVol->Fill(backgroundType);
 
-        if (minChi2 == pionChi2) {
+        if (minChi2 == pionChi2 || minChi2 == protonChi2) {
             if (backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(energyAtVertex);
+                hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbs0pKERejPID->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(energyAtVertex);
+                hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbsNpKERejPID->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 13 || backgroundType == 14) {
-                hTrueScatterKERejected->Fill(energyAtVertex);
+                hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueScatterKERejPID->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 7) {
-                hTrueChExchKERejected->Fill(energyAtVertex);
+                hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueChExchKERejPID->Fill(truthPrimaryVertexKE * 1000);
             }
             continue;
-        } else if (minChi2 == protonChi2) {
-            if (backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(energyAtVertex);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(energyAtVertex);
-            } else if (backgroundType == 13 || backgroundType == 14) {
-                hTrueScatterKERejected->Fill(energyAtVertex);
-            } else if (backgroundType == 7) {
-                hTrueChExchKERejected->Fill(energyAtVertex);
-            }
-            continue; // reject events matching to proton primary
         }
         hPrimaryPID->Fill(backgroundType);
 
@@ -675,13 +714,17 @@ void RecoClassifyAllSimplified() {
             if (totalTaggedPions > 1) {
                 // reject events with > 1 tagged pion
                 if (backgroundType == 0) {
-                    hTrueAbs0pKERejected->Fill(energyAtVertex);
+                    hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
+                    hTrueAbs0pKERejManyPions->Fill(truthPrimaryVertexKE * 1000);
                 } else if (backgroundType == 1) {
-                    hTrueAbsNpKERejected->Fill(energyAtVertex);
+                    hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
+                    hTrueAbsNpKERejManyPions->Fill(truthPrimaryVertexKE * 1000);
                 } else if (backgroundType == 13 || backgroundType == 14) {
-                    hTrueScatterKERejected->Fill(energyAtVertex);
+                    hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
+                    hTrueScatterKERejManyPions->Fill(truthPrimaryVertexKE * 1000);
                 } else if (backgroundType == 7) {
-                    hTrueChExchKERejected->Fill(energyAtVertex);
+                    hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
+                    hTrueChExchKERejManyPions->Fill(truthPrimaryVertexKE * 1000);
                 }
                 continue;
             }
@@ -707,13 +750,13 @@ void RecoClassifyAllSimplified() {
             }
 
             if (backgroundType == 0) {
-                hTrueAbs0pKEAsScatter->Fill(energyAtVertex);
+                hTrueAbs0pKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 1) {
-                hTrueAbsNpKEAsScatter->Fill(energyAtVertex);
+                hTrueAbsNpKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 13 || backgroundType == 14) {
-                hTrueScatterKEAsScatter->Fill(energyAtVertex);
+                hTrueScatterKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 7) {
-                hTrueChExchKEAsScatter->Fill(energyAtVertex);
+                hTrueChExchKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
             }
 
             // TODO: maybe check not rejecting more than 1 pion
@@ -744,13 +787,13 @@ void RecoClassifyAllSimplified() {
             }
 
             if (backgroundType == 0) {
-                hTrueAbs0pKEAsAbsNp->Fill(energyAtVertex);
+                hTrueAbs0pKEAsAbsNp->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 1) {
-                hTrueAbsNpKEAsAbsNp->Fill(energyAtVertex);
+                hTrueAbsNpKEAsAbsNp->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 13 || backgroundType == 14) {
-                hTrueScatterKEAsAbsNp->Fill(energyAtVertex);
+                hTrueScatterKEAsAbsNp->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 7) {
-                hTrueChExchKEAsAbsNp->Fill(energyAtVertex);
+                hTrueChExchKEAsAbsNp->Fill(truthPrimaryVertexKE * 1000);
             }
 
             continue;
@@ -783,13 +826,13 @@ void RecoClassifyAllSimplified() {
             }
 
             if (backgroundType == 0) {
-                hTrueAbs0pKEAsChExch->Fill(energyAtVertex);
+                hTrueAbs0pKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 1) {
-                hTrueAbsNpKEAsChExch->Fill(energyAtVertex);
+                hTrueAbsNpKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 13 || backgroundType == 14) {
-                hTrueScatterKEAsChExch->Fill(energyAtVertex);
+                hTrueScatterKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 7) {
-                hTrueChExchKEAsChExch->Fill(energyAtVertex);
+                hTrueChExchKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
             }
 
             outFileChExchBkg << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
@@ -933,13 +976,13 @@ void RecoClassifyAllSimplified() {
             }
 
             if (backgroundType == 0) {
-                hTrueAbs0pKEAsAbs0p->Fill(energyAtVertex);
+                hTrueAbs0pKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 1) {
-                hTrueAbsNpKEAsAbs0p->Fill(energyAtVertex);
+                hTrueAbsNpKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 13 || backgroundType == 14) {
-                hTrueScatterKEAsAbs0p->Fill(energyAtVertex);
+                hTrueScatterKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 7) {
-                hTrueChExchKEAsAbs0p->Fill(energyAtVertex);
+                hTrueChExchKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
             }
 
             continue;
@@ -948,23 +991,68 @@ void RecoClassifyAllSimplified() {
 
         // Anything left here is rejected
         if (backgroundType == 0) {
-            hTrueAbs0pKERejected->Fill(energyAtVertex);
+            hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
+            hTrueAbs0pKERejClusters->Fill(truthPrimaryVertexKE * 1000);
         } else if (backgroundType == 1) {
-            hTrueAbsNpKERejected->Fill(energyAtVertex);
+            hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
+            hTrueAbsNpKERejClusters->Fill(truthPrimaryVertexKE * 1000);
         } else if (backgroundType == 13 || backgroundType == 14) {
-            hTrueScatterKERejected->Fill(energyAtVertex);
+            hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
+            hTrueScatterKERejClusters->Fill(truthPrimaryVertexKE * 1000);
         } else if (backgroundType == 7) {
-            hTrueChExchKERejected->Fill(energyAtVertex);
+            hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
+            hTrueChExchKERejClusters->Fill(truthPrimaryVertexKE * 1000);
         }
     }
-
-    ///////////////////////////////////////////
-    // Information about events at each step //
-    ///////////////////////////////////////////
 
     std::cout << std::endl;
     std::cout << "Original sample composition: " << std::endl;
     printBackgroundInfo(hTotalEvents, std::cout);
+
+    //////////////////////////////////
+    // Breakdown of rejected events //
+    //////////////////////////////////
+
+    std::cout << std::endl;
+    std::cout << "=======================================================" << std::endl;
+    std::cout << "Rejection breakdown" << std::endl;
+    std::cout << "=======================================================" << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "Events with sufficiency data products and WC to TPC match: " << std::endl;
+    printBackgroundInfo(hDataProdsAndWC2TPC, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events not classified as electron: " << std::endl;
+    printBackgroundInfo(hNotAnElectron, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events with vertex identified inside reduced volume: " << std::endl;
+    printBackgroundInfo(hPrimaryInRedVol, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events with primary matched to a negative pion: " << std::endl;
+    printBackgroundInfo(hPrimaryPID, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events not classified as scatter (no secondary pion): " << std::endl;
+    printBackgroundInfo(hNotScatter, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events not classified as pion Np absorption (no secondary particles): " << std::endl;
+    printBackgroundInfo(hNotPionAbsNp, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events not classified as charge exchange (not enough small tracks): " << std::endl;
+    printBackgroundInfo(hNotChExch, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events not classified as pion 0p absorption (too many non-reconstructed hit clusters): " << std::endl;
+    printBackgroundInfo(hNotPionAbs0p, std::cout);
+
+    ///////////////////////////////////////////
+    // Information about events at each step //
+    ///////////////////////////////////////////
 
     std::cout << std::endl;
     std::cout << "Pion abs 0p total reco " <<  hPionAbs0p->Integral() << " with composition: " << std::endl;
@@ -1091,7 +1179,13 @@ void RecoClassifyAllSimplified() {
         {hTrueAbs0pKEAsAbs0p, hTrueAbs0pKEAsAbsNp, hTrueAbs0pKEAsScatter, hTrueAbs0pKEAsChExch, hTrueAbs0pKERejected},
         {hTrueAbsNpKEAsAbs0p, hTrueAbsNpKEAsAbsNp, hTrueAbsNpKEAsScatter, hTrueAbsNpKEAsChExch, hTrueAbsNpKERejected},
         {hTrueScatterKEAsAbs0p, hTrueScatterKEAsAbsNp, hTrueScatterKEAsScatter, hTrueScatterKEAsChExch, hTrueScatterKERejected},
-        {hTrueChExchKEAsAbs0p, hTrueChExchKEAsAbsNp, hTrueChExchKEAsScatter, hTrueChExchKEAsChExch, hTrueChExchKERejected}
+        {hTrueChExchKEAsAbs0p, hTrueChExchKEAsAbsNp, hTrueChExchKEAsScatter, hTrueChExchKEAsChExch, hTrueChExchKERejected},
+
+        // Rejected events
+        {hTrueAbs0pKERejDataProds, hTrueAbs0pKERejElectron, hTrueAbs0pKERejRedVol, hTrueAbs0pKERejPID, hTrueAbs0pKERejManyPions, hTrueAbs0pKERejClusters},
+        {hTrueAbsNpKERejDataProds, hTrueAbsNpKERejElectron, hTrueAbsNpKERejRedVol, hTrueAbsNpKERejPID, hTrueAbsNpKERejManyPions, hTrueAbsNpKERejClusters},
+        {hTrueScatterKERejDataProds, hTrueScatterKERejElectron, hTrueScatterKERejRedVol, hTrueScatterKERejPID, hTrueScatterKERejManyPions, hTrueScatterKERejClusters},
+        {hTrueChExchKERejDataProds, hTrueChExchKERejElectron, hTrueChExchKERejRedVol, hTrueChExchKERejPID, hTrueChExchKERejManyPions, hTrueChExchKERejClusters}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -1108,7 +1202,13 @@ void RecoClassifyAllSimplified() {
         {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Rejected"},
         {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Rejected"},
         {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Rejected"},
-        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Rejected"}
+        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Rejected"},
+
+        // Rejected events
+        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
+        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
+        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
+        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -1125,7 +1225,13 @@ void RecoClassifyAllSimplified() {
         "TrueInteracting/TrueAbs0pBreakdown",
         "TrueInteracting/TrueAbsNpBreakdown",
         "TrueInteracting/TrueScatterBreakdown",
-        "TrueInteracting/TrueChExchBreakdown"
+        "TrueInteracting/TrueChExchBreakdown",
+
+        // Rejected events
+        "Rejected/TrueAbs0pRej",
+        "Rejected/TrueAbsNpRej",
+        "Rejected/TrueScatterRej",
+        "Rejected/TrueChExchRej"
     };
 
     std::vector<TString> XLabels = {
@@ -1139,6 +1245,12 @@ void RecoClassifyAllSimplified() {
         "Kinetic energy [MeV]",
 
         // True events classified breakdown
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+
+        // Rejected events
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
@@ -1159,6 +1271,12 @@ void RecoClassifyAllSimplified() {
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
+
+        // Rejected events
+        "Counts",
+        "Counts",
+        "Counts",
         "Counts"
     };
 
@@ -1176,25 +1294,31 @@ void RecoClassifyAllSimplified() {
         true,
         true,
         true,
+        true,
+
+        // Rejected events
+        true,
+        true,
+        true,
         true
     };
 
-        // Add each unfolded histogram as a single plot group for plotting
-        std::vector<TString> UnfHistTitles = {
-            "UnfoldedAbs0p",
-            "UnfoldedAbsNp",
-            "UnfoldedScatter",
-            "UnfoldedChExch"
-        };
+    // Add each unfolded histogram as a single plot group for plotting
+    std::vector<TString> UnfHistTitles = {
+        "UnfoldedAbs0p",
+        "UnfoldedAbsNp",
+        "UnfoldedScatter",
+        "UnfoldedChExch"
+    };
 
-        for (size_t i = 0; i < UnfHistograms.size(); ++i) {
-            PlotGroups.push_back({UnfHistograms[i], TotalEventsHistos[i]});
-            PlotLabelGroups.push_back({"Unfolded", "True signal"});
-            PlotTitles.push_back("Unfolded/" + UnfHistTitles[i]);
-            XLabels.push_back("Kinetic energy [MeV]");
-            YLabels.push_back("Counts");
-            PlotStacked.push_back(false);
-        }
+    for (size_t i = 0; i < UnfHistograms.size(); ++i) {
+        PlotGroups.push_back({UnfHistograms[i], TotalEventsHistos[i]});
+        PlotLabelGroups.push_back({"Unfolded", "True signal"});
+        PlotTitles.push_back("Unfolded/" + UnfHistTitles[i]);
+        XLabels.push_back("Kinetic energy [MeV]");
+        YLabels.push_back("Counts");
+        PlotStacked.push_back(false);
+    }
 
     printOneDPlots(
         SaveDir, FontStyle, TextSize,
