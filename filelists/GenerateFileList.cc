@@ -59,5 +59,23 @@ int main() {
     nn_data_list_file.close();
     std::cout << "NN data file list saved to " << output_nn_data_file << std::endl;
 
-    return 0;
+    std::string nn_reco_all_directory_path = "/pnfs/lariat/persistent/users/epelaez/reco_nn_all_files/";
+    std::string output_nn_reco_all_file = "nn_reco_all_files.list";
+
+    std::ofstream nn_reco_all_list_file(output_nn_reco_all_file);
+    if (!nn_reco_all_list_file) {
+        std::cerr << "Error opening NN reco all output file." << std::endl;
+        return 1;
+    }
+
+    for (const auto& entry : fs::directory_iterator(nn_reco_all_directory_path)) {
+        if (entry.is_regular_file()) {
+            nn_reco_all_list_file << nn_reco_all_directory_path + entry.path().filename().string() << std::endl;
+        }
+    }
+
+    nn_reco_all_list_file.close();
+    std::cout << "NN reco all file list saved to " << output_nn_reco_all_file << std::endl;
+
+    return 0;   
 }
