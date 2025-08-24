@@ -123,7 +123,7 @@ double SHOWER_PROB_CUT = 0.5;
 // Track length cuts charge exchange
 double SMALL_TRACK_LENGTH_CHEX = 28.;
 double LARGE_TRACK_LENGTH_CHEX = 30.;
-double FAR_TRACK_DISTANCE_CHEX = 5.;
+double FAR_TRACK_DISTANCE_CHEX = 10.;
 int    SMALL_TRACK_CUT_CHEX    = 3;
 
 // Hit cluster cut

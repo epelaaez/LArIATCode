@@ -734,7 +734,11 @@ void RecoNNShowers() {
                     recoEndZ->at(iTrk), breakPointZ
                 );
 
+                // Only consider tracks away from vertex
                 // if ((distanceFromStart < FAR_TRACK_DISTANCE_CHEX || distanceFromEnd < FAR_TRACK_DISTANCE_CHEX)) continue;
+
+                // Only consider tracks near the vertex
+                // if ((distanceFromStart > FAR_TRACK_DISTANCE_CHEX && distanceFromEnd > FAR_TRACK_DISTANCE_CHEX)) continue;
 
                 double thisTrackLength = sqrt(
                     pow(recoBeginX->at(iTrk) - recoEndX->at(iTrk), 2) +

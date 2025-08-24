@@ -1055,6 +1055,11 @@ void RecoClassifyAllSimplified() {
     ///////////////////////////////////////////
 
     std::cout << std::endl;
+    std::cout << "=======================================================" << std::endl;
+    std::cout << "Final classification breakdown" << std::endl;
+    std::cout << "=======================================================" << std::endl;
+
+    std::cout << std::endl;
     std::cout << "Pion abs 0p total reco " <<  hPionAbs0p->Integral() << " with composition: " << std::endl;
     printBackgroundInfo(hPionAbs0p, std::cout);
     std::cout << "Purity: " << hPionAbs0p->GetBinContent(1) / hPionAbs0p->Integral() << std::endl;

@@ -233,6 +233,12 @@ void RecoClassifyAll() {
     tree->SetBranchAddress("hitWC2TPCKey", &hitWC2TPCKey);
     tree->SetBranchAddress("hitThroughTrack", &hitThroughTrack);
 
+    /////////////////////////////////
+    // Files for event information //
+    /////////////////////////////////
+
+    std::ofstream outFileRejClusters("files/ClassifyAll/RejectedClusterHits.txt");
+
     ///////////////////////
     // Create histograms //
     ///////////////////////
@@ -1088,6 +1094,10 @@ void RecoClassifyAll() {
             continue;
         }
         hNotPionAbs0p->Fill(backgroundType);
+
+        outFileRejClusters << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
+        outFileRejClusters << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << energyAtVertex << std::endl;
+        outFileRejClusters << std::endl;
 
         // Anything left here is rejected
         if (backgroundType == 0) {
