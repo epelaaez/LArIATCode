@@ -178,6 +178,7 @@ double getClusterWidth(HitCluster cluster);
 int isSecondaryInteractionAbsorption(std::vector<int> daughtersPDG, std::vector<string> daughtersProcess, std::vector<double> daughtersKE);
 int getCorrespondingBin(double value, int num_bins, double low, double high);
 int flattenIndex (int beta, int j, int S);
+std::pair<int,int> unflattenIndex(int f, int S);
 
 std::vector<double> calcLinearityProfile(std::vector<double>& vx, std::vector<double>& vy, std::vector<double>& vz, int nb);
 std::pair<TH1*, TH1*> getBinEfficiencyAndPurity(TH1* hTrue, TH1* hReco, TH1* hRecoTrue);

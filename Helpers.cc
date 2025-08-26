@@ -682,6 +682,7 @@ void printTwoDPlots(
         }
 
         if (iPlot < (int)displayNumbers.size() && displayNumbers[iPlot]) {
+            gStyle->SetPaintTextFormat(".2g");
             hPlot->Draw("COLZ TEXT");
         } else {
             hPlot->Draw("COLZ");
@@ -772,6 +773,12 @@ void printEventInfo(EventInfo event, std::ostream& os) {
 
 int flattenIndex (int beta, int j, int S) { 
     return beta * S + j; 
+}
+
+std::pair<int,int> unflattenIndex(int f, int S) {
+    int beta = f / S;
+    int j    = f % S;
+    return {beta, j};
 }
 
 void H2M(const TH2D* histo, TMatrixD& mat, bool rowcolumn) {
