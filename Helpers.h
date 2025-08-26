@@ -87,7 +87,7 @@ const double RmaxZ = 82.0;
 // Detector dimensions
 const double minX =  0.0;
 const double maxX = 47.0;
-const double minY =-20.0; 
+const double minY =-20.0;
 const double maxY = 20.0;
 const double minZ =  3.0;
 const double maxZ = 87.0;
@@ -143,9 +143,9 @@ const double NeutronMass = 939.5654133;  // in MeV
 double HIT_DEDX_THRESHOLD = 40.;
 
 // Bins for energy bins
-double LOWER_BOUND_KE = 0.;
-double UPPER_BOUND_KE = 600.;
-int    NUM_BINS_KE    = 12;
+double LOWER_BOUND_KE = 100.;
+double UPPER_BOUND_KE = 500.;
+int    NUM_BINS_KE    = 8;
 
 // TOF mass cut
 double PI_MU_EL_MASS_CUTOFF = 350.;
@@ -177,6 +177,26 @@ double getClusterWidth(HitCluster cluster);
 
 int isSecondaryInteractionAbsorption(std::vector<int> daughtersPDG, std::vector<string> daughtersProcess, std::vector<double> daughtersKE);
 int getCorrespondingBin(double value, int num_bins, double low, double high);
+int flattenIndex (int beta, int j, int S);
 
 std::vector<double> calcLinearityProfile(std::vector<double>& vx, std::vector<double>& vy, std::vector<double>& vz, int nb);
 std::pair<TH1*, TH1*> getBinEfficiencyAndPurity(TH1* hTrue, TH1* hReco, TH1* hRecoTrue);
+
+void H2M(const TH2D* histo, TMatrixD& mat, bool rowcolumn);
+void H2V(const TH1D* histo, TVectorD& vec);
+void M2H(const TMatrixD mat, TH2D* histo);
+void V2H(const TVectorD vec, TH1D* histo);
+
+//////////////////////////
+// Wiener SVD unfolding //
+// Author: Hanyu WEI    //
+//////////////////////////
+
+TMatrixD Matrix_C(Int_t n, Int_t type);
+
+// Wiener filter unfolding:
+//   - first five parameters are inputs as names read
+//   - AddSmear is additional smearing matrix after unfolding
+//   - WF is the elements of Wiener Filter
+//   - Covariance matrix of the unfolded spectrum
+TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrixD Covariance, Int_t C_type, Float_t Norm_type, TMatrixD& AddSmear, TVectorD& WF, TMatrixD& UnfoldCov, TMatrixD& CovRotation);
