@@ -32,14 +32,6 @@ int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 // Signal types
 int NUM_SIGNAL_TYPES = 5; // for now: 0p abs, Np abs, 0p scatter, Np scatter, charge exchange
 
-std::map<int, int> signalToBackgroundMap = {
-    {0, 0},  // 0p abs -> Abs 0p
-    {1, 1},  // Np abs -> Abs Np
-    {2, 13}, // 0p scatter -> Scattering 0p
-    {3, 14}, // Np scatter -> Scattering Np
-    {4, 7}   // Charge exchange -> Charge exchange
-};
-
 struct EventInfo {
     int run; int subrun; int event; bool isData;
     float vertexX; float vertexY; float vertexZ;

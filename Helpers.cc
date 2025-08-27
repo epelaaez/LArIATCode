@@ -812,6 +812,20 @@ void V2H(const TVectorD vec, TH1D* histo) {
     }
 }
 
+int getBin(double data, double lower, double upper, int nBins) {
+    if (data < lower || data >= upper) {
+        return -1;
+    }
+
+    double binWidth = (upper - lower) / nBins;
+    int bin = static_cast<int>((data - lower) / binWidth);
+
+    // Safety check in case of edge case at upper bound
+    if (bin >= nBins) bin = nBins - 1;
+
+    return bin; // 0-based index
+}
+
 //////////////////////////
 // Wiener SVD unfolding //
 // Author: Hanyu WEI    //
