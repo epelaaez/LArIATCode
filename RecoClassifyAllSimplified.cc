@@ -275,6 +275,11 @@ void RecoClassifyAllSimplified() {
     TH1D* hPionAbs0pKEElectron = new TH1D("hPionAbs0pKEElectron", "hPionAbs0pKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hPionAbs0pKEOther    = new TH1D("hPionAbs0pKEOther", "hPionAbs0pKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
+    // Estimated backgrounds for pion abs 0p
+    std::vector<TH1*> PionAbs0pBkg = {
+        hPionAbs0pKEMuon, hPionAbs0pKEElectron, hPionAbs0pKEOther
+    };
+
     // Interacting pion abs Np energy
     TH1D* hPionAbsNpKE         = new TH1D("hPionAbsNpKE", "hPionAbsNpKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hPionAbsNpKETrue     = new TH1D("hPionAbsNpKETrue", "hPionAbsNpKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -284,6 +289,11 @@ void RecoClassifyAllSimplified() {
     TH1D* hPionAbsNpKEMuon     = new TH1D("hPionAbsNpKEMuon", "hPionAbsNpKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hPionAbsNpKEElectron = new TH1D("hPionAbsNpKEElectron", "hPionAbsNpKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hPionAbsNpKEOther    = new TH1D("hPionAbsNpKEOther", "hPionAbsNpKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    // Estimated backgrounds for pion abs Np
+    std::vector<TH1*> PionAbsNpBkg = {
+        hPionAbsNpKEMuon, hPionAbsNpKEElectron, hPionAbsNpKEOther
+    };
 
     // Interacting pion scattering energy
     TH1D* hPionScatterKE         = new TH1D("hPionScatterKE", "hPionScatterKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -295,6 +305,11 @@ void RecoClassifyAllSimplified() {
     TH1D* hPionScatterKEElectron = new TH1D("hPionScatterKEElectron", "hPionScatterKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hPionScatterKEOther    = new TH1D("hPionScatterKEOther", "hPionScatterKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
+    // Estimated backgrounds for pion scattering
+    std::vector<TH1*> PionScatterBkg = {
+        hPionScatterKEMuon, hPionScatterKEElectron, hPionScatterKEOther
+    };
+
     // Interacting pion charge exchange energy
     TH1D* hPionChExchKE         = new TH1D("hPionChExchKE", "hPionChExchKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hPionChExchKETrue     = new TH1D("hPionChExchKETrue", "hPionChExchKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -305,6 +320,17 @@ void RecoClassifyAllSimplified() {
     TH1D* hPionChExchKEElectron = new TH1D("hPionChExchKEElectron", "hPionChExchKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hPionChExchKEOther    = new TH1D("hPionChExchKEOther", "hPionChExchKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
+    // Estimated backgrounds for pion charge exchange
+    std::vector<TH1*> PionChExchBkg = {
+        hPionChExchKEMuon, hPionChExchKEElectron, hPionChExchKEOther
+    };
+
+    // All our reconstructed backgrounds 
+    std::vector<std::vector<TH1*>> RecoSignalBackgrounds = {
+        PionAbs0pBkg, PionAbsNpBkg, PionScatterBkg, PionChExchBkg
+    };
+
+    // All our reconstructed signals
     std::vector<TH1*> RecoSignals = {
         hPionAbs0pKE, hPionAbsNpKE, hPionScatterKE, hPionChExchKE
     };
@@ -335,10 +361,6 @@ void RecoClassifyAllSimplified() {
     TH1D* hTrueAbs0pKERejManyPions = new TH1D("hTrueAbs0pKERejManyPions", "hTrueAbs0pKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueAbs0pKERejClusters  = new TH1D("hTrueAbs0pKERejClusters", "hTrueAbs0pKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
-    std::vector<TH1*> TrueAbs0pAs = {
-        hTrueAbs0pKEAsAbs0p, hTrueAbs0pKEAsAbsNp, hTrueAbs0pKEAsScatter, hTrueAbs0pKEAsChExch
-    };
-
     // True abs Np
     TH1D* hTrueAbsNpKE          = new TH1D("hTrueAbsNpKE", "hTrueAbsNpKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueAbsNpKEAsAbs0p   = new TH1D("hTrueAbsNpKEAsAbs0p", "hTrueAbsNpKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -364,10 +386,6 @@ void RecoClassifyAllSimplified() {
     TH1D* hTrueAbsNpKERejPID       = new TH1D("hTrueAbsNpKERejPID", "hTrueAbsNpKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueAbsNpKERejManyPions = new TH1D("hTrueAbsNpKERejManyPions", "hTrueAbsNpKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueAbsNpKERejClusters  = new TH1D("hTrueAbsNpKERejClusters", "hTrueAbsNpKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-
-    std::vector<TH1*> TrueAbsNpAs = {
-        hTrueAbsNpKEAsAbs0p, hTrueAbsNpKEAsAbsNp, hTrueAbsNpKEAsScatter, hTrueAbsNpKEAsChExch
-    };
 
     // True scatter
     TH1D* hTrueScatterKE          = new TH1D("hTrueScatterKE", "hTrueScatterKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -395,10 +413,6 @@ void RecoClassifyAllSimplified() {
     TH1D* hTrueScatterKERejManyPions = new TH1D("hTrueScatterKERejManyPions", "hTrueScatterKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueScatterKERejClusters  = new TH1D("hTrueScatterKERejClusters", "hTrueScatterKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
-    std::vector<TH1*> TrueScatterAs = {
-        hTrueScatterKEAsAbs0p, hTrueScatterKEAsAbsNp, hTrueScatterKEAsScatter, hTrueScatterKEAsChExch
-    };
-
     // True charge exchange
     TH1D* hTrueChExchKE          = new TH1D("hTrueChExchKE", "hTrueChExchKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueChExchKEAsAbs0p   = new TH1D("hTrueChExchKEAsAbs0p", "hTrueChExchKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -425,10 +439,6 @@ void RecoClassifyAllSimplified() {
     TH1D* hTrueChExchKERejManyPions = new TH1D("hTrueChExchKERejManyPions", "hTrueChExchKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hTrueChExchKERejClusters  = new TH1D("hTrueChExchKERejClusters", "hTrueChExchKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
-    std::vector<TH1*> TrueChExchAs = {
-        hTrueChExchKEAsAbs0p, hTrueChExchKEAsAbsNp, hTrueChExchKEAsScatter, hTrueChExchKEAsChExch
-    };
-
     //////////////
     // Matrices //
     //////////////
@@ -437,10 +447,6 @@ void RecoClassifyAllSimplified() {
 
     std::vector<TH1*> TotalEventsHistos = {
         hTrueAbs0pKE, hTrueAbsNpKE, hTrueScatterKE, hTrueChExchKE
-    };
-
-    std::vector<std::vector<TH1*>> TrueRecoAs = {
-        TrueAbs0pAs, TrueAbsNpAs, TrueScatterAs, TrueChExchAs
     };
 
     std::vector<std::vector<std::vector<TH1*>>> TrueRecoAsByBin = {
@@ -1179,22 +1185,30 @@ void RecoClassifyAllSimplified() {
         }
     }
 
-    // Before unfolding, we have to remove the estimated backgrounds
-    hPionAbs0pKE->Add(hPionAbs0pKEOther, -1);
-    hPionAbs0pKE->Add(hPionAbs0pKEElectron, -1);
-    hPionAbs0pKE->Add(hPionAbs0pKEMuon, -1);
+    // Before unfolding, we have to remove the estimated backgrounds using ratios
+    std::vector<TH1D*> hSubtractEstimatedBkgs(NUM_SIGNAL_TYPES);
+    for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
+        hSubtractEstimatedBkgs[iSignal] = (TH1D*) RecoSignals[iSignal]->Clone(Form("hSubtractEstimatedBkgs_%d", iSignal));
+        hSubtractEstimatedBkgs[iSignal]->SetTitle(Form("Ratio for non-bkgs for signal %d", iSignal));
+        for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
+            double total = RecoSignals[iSignal]->GetBinContent(iBin);
 
-    hPionAbsNpKE->Add(hPionAbsNpKEOther, -1);
-    hPionAbsNpKE->Add(hPionAbsNpKEElectron, -1);
-    hPionAbsNpKE->Add(hPionAbsNpKEMuon, -1);
+            double bkg = 0;
+            for (int iBkg = 0; iBkg < RecoSignalBackgrounds[iSignal].size(); ++iBkg) {
+                bkg += RecoSignalBackgrounds[iSignal][iBkg]->GetBinContent(iBin);
+            }
 
-    hPionScatterKE->Add(hPionScatterKEOther, -1);
-    hPionScatterKE->Add(hPionScatterKEElectron, -1);
-    hPionScatterKE->Add(hPionScatterKEMuon, -1);
+            double ratio = (total > 0) ? (total - bkg) / total : 0;
+            hSubtractEstimatedBkgs[iSignal]->SetBinContent(iBin, ratio);
+        }
 
-    hPionChExchKE->Add(hPionChExchKEOther, -1);
-    hPionChExchKE->Add(hPionChExchKEElectron, -1);
-    hPionChExchKE->Add(hPionChExchKEMuon, -1);
+        // Apply ratio to reco signal
+        for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
+            double reco  = RecoSignals[iSignal]->GetBinContent(iBin);
+            double ratio = hSubtractEstimatedBkgs[iSignal]->GetBinContent(iBin);
+            RecoSignals[iSignal]->SetBinContent(iBin, reco * ratio);
+        }
+    }
 
     // Construct large measured vector
     TVectorD Measure(NUM_SIGNAL_TYPES * NUM_BINS_KE);
@@ -1264,7 +1278,12 @@ void RecoClassifyAllSimplified() {
 
     for (int iFlatIndex = 0; iFlatIndex < NUM_SIGNAL_TYPES * NUM_BINS_KE; ++iFlatIndex) {
         auto [signalBin, energyBin] = unflattenIndex(iFlatIndex, NUM_BINS_KE);
+
+        // Get error for unfolded reco histogram from unfolded covariance
+        double err = std::sqrt(UnfoldCov[iFlatIndex][iFlatIndex]);
         UnfoldedRecoHistos[signalBin]->SetBinContent(energyBin + 1, UnfoldedReco(iFlatIndex));
+        UnfoldedRecoHistos[signalBin]->SetBinError(energyBin + 1, err);
+
         SmearedTrueHistos[signalBin]->SetBinContent(energyBin + 1, SmearedTrue(iFlatIndex));
     }
 
@@ -1435,6 +1454,29 @@ void RecoClassifyAllSimplified() {
         true
     };
 
+    std::vector<std::vector<bool>> PlotsAsPoints = {
+        // Incident KE
+        {false, false, false},
+
+        // Interacting KE
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+
+        // True events classified breakdown
+        {false, false, false, false, false},
+        {false, false, false, false, false},
+        {false, false, false, false, false},
+        {false, false, false, false, false},
+
+        // Rejected events
+        {false, false, false, false, false, false},
+        {false, false, false, false, false, false},
+        {false, false, false, false, false, false},
+        {false, false, false, false, false, false}
+    };
+
     // Add each unfolded histogram as a single plot group for plotting
     std::vector<TString> UnfHistTitles = {
         "UnfoldedAbs0p",
@@ -1444,8 +1486,9 @@ void RecoClassifyAllSimplified() {
     };
 
     for (size_t i = 0; i < UnfoldedRecoHistos.size(); ++i) {
-        PlotGroups.push_back({UnfoldedRecoHistos[i], SmearedTrueHistos[i]});
-        PlotLabelGroups.push_back({"Unfolded", "Smeared true"});
+        PlotGroups.push_back({SmearedTrueHistos[i], UnfoldedRecoHistos[i]});
+        PlotsAsPoints.push_back({false, true});
+        PlotLabelGroups.push_back({"Smeared true", "Unfolded"});
         PlotTitles.push_back("Unfolded/" + UnfHistTitles[i]);
         XLabels.push_back("Kinetic energy [MeV]");
         YLabels.push_back("Counts");
@@ -1460,7 +1503,8 @@ void RecoClassifyAllSimplified() {
         PlotTitles,
         XLabels,
         YLabels,
-        PlotStacked
+        PlotStacked,
+        PlotsAsPoints
     );
 
     ///////////////////////////

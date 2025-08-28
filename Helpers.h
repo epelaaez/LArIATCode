@@ -135,9 +135,9 @@ const double NeutronMass = 939.5654133;  // in MeV
 double HIT_DEDX_THRESHOLD = 40.;
 
 // Bins for energy bins
-double LOWER_BOUND_KE = 100.;
+double LOWER_BOUND_KE = 0.;
 double UPPER_BOUND_KE = 500.;
-int    NUM_BINS_KE    = 8;
+int    NUM_BINS_KE    = 10;
 
 // TOF mass cut
 double PI_MU_EL_MASS_CUTOFF = 350.;
@@ -150,7 +150,7 @@ void initializeProtonPoints(TGraph* gProton);
 void initializePionPoints(TGraph* gPion);
 void initializeMuonNoBraggPoints(TGraph* gMuonTG);
 void printEventInfo(EventInfo event, std::ostream& os);
-void printOneDPlots(const TString& dir, int fontStyle, double textSize, std::vector<std::vector<TH1*>>& groups, std::vector<int>& colors, std::vector<std::vector<TString>>& labels, std::vector<TString>& titles, std::vector<TString>& xlabels, std::vector<TString>& ylabels, std::vector<bool>& stack);
+void printOneDPlots(const TString& dir, int fontStyle, double textSize, std::vector<std::vector<TH1*>>& groups, std::vector<int>& colors, std::vector<std::vector<TString>>& labels, std::vector<TString>& titles, std::vector<TString>& xlabels, std::vector<TString>& ylabels, std::vector<bool>& stack, std::vector<std::vector<bool>> asPoints = {});
 void printTwoDPlots(const TString& dir, const std::vector<TH2*>& plots, const std::vector<TString>& titles, const std::vector<std::pair<double,double>>& zRanges = {}, const std::vector<bool>& displayNumbers = {});
 void Overlay_dEdx_RR_Reference_PP(TGraph* gProton, TGraph* gPion, TGraph* gMIP, bool truncate = false, double MIPStart = 0., bool addLegend = true, TVirtualPad* pad = gPad);
 void printEfficiencyPlots(TString dir, int fontStyle, double textSize, std::vector<TEfficiency*> efficiencies, std::vector<TString> titles, std::vector<TString> xlabels);

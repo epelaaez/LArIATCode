@@ -507,14 +507,72 @@ void printOneDPlots(
     std::vector<TString>& titles, 
     std::vector<TString>& xlabels, 
     std::vector<TString>& ylabels,
-    std::vector<bool>& stack
+    std::vector<bool>& stack,
+    std::vector<std::vector<bool>> asPoints
 ) {
     int numPlots = groups.size();
-    for (int iPlot = 0; iPlot < numPlots; ++iPlot) {
-        // Set up canvas
-        TCanvas* PlotCanvas = new TCanvas("Canvas", "Canvas", 205, 34, 1300, 768);
 
-        TPad* mainPad = new TPad("mainPad","",0.0, 0.0, 0.80, 1.0);
+    if (asPoints.empty()) {
+        asPoints.resize(numPlots);
+        for (size_t i = 0; i < numPlots; ++i) {
+            asPoints[i].assign(groups[i].size(), false);
+        }
+    }
+
+    auto styleAxes = [&](TH1* h, int iPlot){
+        h->SetTitle(titles.at(iPlot));
+        h->GetXaxis()->SetTitleFont(fontStyle);
+        h->GetXaxis()->SetLabelFont(fontStyle);
+        h->GetXaxis()->SetNdivisions(8);
+        h->GetXaxis()->SetLabelSize(textSize);
+        h->GetXaxis()->SetTitleSize(textSize);
+        h->GetXaxis()->SetTitle(xlabels.at(iPlot));
+        h->GetXaxis()->SetTitleOffset(1.1);
+        h->GetXaxis()->CenterTitle();
+
+        h->GetYaxis()->SetTitleFont(fontStyle);
+        h->GetYaxis()->SetLabelFont(fontStyle);
+        h->GetYaxis()->SetNdivisions(6);
+        h->GetYaxis()->SetLabelSize(textSize);
+        h->GetYaxis()->SetTitleSize(textSize);
+        h->GetYaxis()->SetTitle(ylabels.at(iPlot));
+        h->GetYaxis()->SetTitleOffset(1.1);
+        h->GetYaxis()->CenterTitle();
+    };
+
+    auto styleFilled = [&](TH1* h, int color){
+        h->SetLineWidth(2);
+        h->SetLineColor(color);
+        h->SetFillColor(color);
+        h->SetFillColorAlpha(color, 0.2);
+        h->SetFillStyle(3001);
+    };
+
+    auto styleLineOnly = [&](TH1* h, int color){
+        h->SetLineWidth(2);
+        h->SetLineColor(color);
+        h->SetFillStyle(0);     // no fill
+        h->SetFillColor(0);
+    };
+
+    auto stylePoints = [&](TH1* h, int color){
+        h->SetLineColor(color);
+        h->SetMarkerColor(color);
+        h->SetMarkerStyle(20);
+        h->SetMarkerSize(1.0);
+        h->Sumw2(kTRUE);
+    };
+
+    auto getGlobalMax = [&](const std::vector<TH1*>& vv){
+        double mx = 0.0;
+        for (auto* h : vv) if (h) mx = std::max(mx, h->GetMaximum());
+        return mx;
+    };
+
+    for (int iPlot = 0; iPlot < numPlots; ++iPlot) {
+        TCanvas* PlotCanvas = new TCanvas(Form("Canvas_%d", iPlot), Form("Canvas_%d", iPlot), 205, 34, 1300, 768);
+
+        TPad* mainPad = new TPad(Form("mainPad_%d", iPlot), "", 0.0, 0.0, 0.80, 1.0);
         mainPad->SetRightMargin(0.05);
         mainPad->SetLeftMargin(0.15);
         mainPad->SetBottomMargin(0.15);
@@ -524,128 +582,121 @@ void printOneDPlots(
         TLegend* leg = new TLegend(0.0, 0.0, 1.0, 1.0);
         leg->SetTextSize(textSize * 2.5);
         leg->SetTextFont(fontStyle);
+        leg->SetBorderSize(1);
+        leg->SetLineColor(kBlack);
 
-        TPad* legendPad = new TPad("legendPad", "", 0.80, 0.4, 1.0, 0.8);
+        TPad* legendPad = new TPad(Form("legendPad_%d", iPlot), "", 0.80, 0.4, 1.0, 0.8);
         legendPad->SetLeftMargin(0.05);
         legendPad->SetRightMargin(0.05);
         legendPad->SetBottomMargin(0.15);
         legendPad->SetFillStyle(0);
         legendPad->SetBorderMode(0);
 
-        // Get histograms and labels
         std::vector<TH1*> Plots = groups.at(iPlot);
-        std::vector<TString> Labels = labels.at(iPlot);	
+        std::vector<TString> Labels = labels.at(iPlot);
+        std::vector<bool> AsPts = asPoints.at(iPlot);
 
-        // If stacked
         if (stack.at(iPlot)) {
-            THStack stack("stack", titles.at(iPlot));
+            // Stacked: non-points -> filled stack; points -> overlay
+            THStack hs("hs", titles.at(iPlot));
+            std::vector<TH1*> overlayPoints;
 
-            // Style and add each histogram to the stack
-            for (int iSubPlot = 0; iSubPlot < (int) Plots.size(); ++iSubPlot) {
-                TH1* h = Plots[iSubPlot];
-                leg->AddEntry(h, Labels[iSubPlot], "f");
-                h->SetLineWidth(2);
-                h->SetLineColor(colors.at(iSubPlot));
-                h->SetFillColor(colors.at(iSubPlot));
-                h->SetFillColorAlpha(colors.at(iSubPlot), 0.2);
-                h->SetFillStyle(3001);
-                stack.Add(h, "H");
+            for (size_t k = 0; k < Plots.size(); ++k) {
+                TH1* h = Plots[k];
+                if (!h) continue;
+
+                if (AsPts[k]) {
+                    stylePoints(h, colors.at(k));
+                    overlayPoints.push_back(h);
+                    leg->AddEntry(h, Labels[k], "lep");
+                } else {
+                    styleFilled(h, colors.at(k));
+                    hs.Add(h, "HIST");
+                    leg->AddEntry(h, Labels[k], "f");
+                }
             }
 
-            // Style the stack
-            stack.SetTitle(titles.at(iPlot));
+            // Draw stack or create frame if only points
+            TH1* frameForAxes = nullptr;
+            if (hs.GetHists() && hs.GetHists()->GetSize() > 0) {
+                hs.Draw("HIST");
+                frameForAxes = (TH1*)hs.GetHistogram();
+            } else if (!Plots.empty() && Plots[0]) {
+                frameForAxes = (TH1*)Plots[0]->Clone(Form("frame_%d", iPlot));
+                frameForAxes->Reset();
+                frameForAxes->Draw("AXIS");
+            }
 
-            // Draw stack
-            stack.Draw("hist");
+            if (frameForAxes) styleAxes(frameForAxes, iPlot);
 
-            stack.GetXaxis()->SetTitleFont(fontStyle);
-            stack.GetXaxis()->SetLabelFont(fontStyle);
-            stack.GetXaxis()->SetNdivisions(8);
-            stack.GetXaxis()->SetLabelSize(textSize);
-            stack.GetXaxis()->SetTitleSize(textSize);
-            stack.GetXaxis()->SetTitle(xlabels.at(iPlot));
-            stack.GetXaxis()->SetTitleOffset(1.1);
-            stack.GetXaxis()->CenterTitle();
+            // Y range
+            double ymax = std::max(getGlobalMax(Plots), frameForAxes ? frameForAxes->GetMaximum() : 0.0);
+            double yr = 1.15 * (ymax > 0 ? ymax : 1.0);
+            if (frameForAxes) frameForAxes->GetYaxis()->SetRangeUser(0., yr);
+            if (hs.GetHistogram()) hs.SetMaximum(yr);
 
-            stack.GetYaxis()->SetTitleFont(fontStyle);
-            stack.GetYaxis()->SetLabelFont(fontStyle);
-            stack.GetYaxis()->SetNdivisions(6);
-            stack.GetYaxis()->SetLabelSize(textSize);
-            stack.GetYaxis()->SetTitleSize(textSize);
-            stack.GetYaxis()->SetTitle(ylabels.at(iPlot));
-            stack.GetYaxis()->SetTitleOffset(1.1);
-            stack.GetYaxis()->CenterTitle();
-
-            // Determine proper max from stack object
-            double stackMax = stack.GetMaximum();
-            double YAxisRange = 1.15 * stackMax;
-            stack.SetMaximum(YAxisRange);
-            stack.SetMinimum(0.0);
+            // Re-draw stack (ROOT quirk) and overlay points
+            if (hs.GetHists() && hs.GetHists()->GetSize() > 0) hs.Draw("HIST SAME");
+            for (auto* h : overlayPoints) h->Draw("E1P SAME");
 
             gPad->Update();
-            TAxis *x = Plots[0]->GetXaxis();
-            x->SetMaxDigits(3);
-            gPad->Modified();
-            gPad->Update();
+            if (frameForAxes) frameForAxes->GetXaxis()->SetMaxDigits(3);
+            gPad->Modified(); gPad->Update();
 
             PlotCanvas->cd();
-            legendPad->Draw();
-            legendPad->cd();
-            leg->Draw();
-
+            legendPad->Draw(); legendPad->cd(); leg->Draw();
             PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
-        } 
-        // If not stacked
-        else {
-            // Style the first plot
-            Plots[0]->SetTitle(titles.at(iPlot));
+        } else {
+            // Unstacked: non-points -> line-only; points -> E1P
+            // Find first non-null to set axes
+            int firstIdx = -1;
+            for (size_t k = 0; k < Plots.size(); ++k) if (Plots[k]) { firstIdx = (int)k; break; }
+            if (firstIdx < 0) { delete PlotCanvas; continue; }
 
-            Plots[0]->GetXaxis()->SetTitleFont(fontStyle);
-            Plots[0]->GetXaxis()->SetLabelFont(fontStyle);
-            Plots[0]->GetXaxis()->SetNdivisions(8);
-            Plots[0]->GetXaxis()->SetLabelSize(textSize);
-            Plots[0]->GetXaxis()->SetTitleSize(textSize);
-            Plots[0]->GetXaxis()->SetTitle(xlabels.at(iPlot));
-            Plots[0]->GetXaxis()->SetTitleOffset(1.1);
-            Plots[0]->GetXaxis()->CenterTitle();
+            TH1* h0 = Plots[firstIdx];
+            styleAxes(h0, iPlot);
 
-            Plots[0]->GetYaxis()->SetTitleFont(fontStyle);
-            Plots[0]->GetYaxis()->SetLabelFont(fontStyle);
-            Plots[0]->GetYaxis()->SetNdivisions(6);
-            Plots[0]->GetYaxis()->SetLabelSize(textSize);
-            Plots[0]->GetYaxis()->SetTitleSize(textSize);
-            Plots[0]->GetYaxis()->SetTitle(ylabels.at(iPlot));
-            Plots[0]->GetYaxis()->SetTitleOffset(1.1);
-            Plots[0]->GetYaxis()->CenterTitle();
-
-            double imax;
-            for (int iSubPlot = 0; iSubPlot < (int) Plots.size(); ++iSubPlot) {
-                leg->AddEntry(Plots[iSubPlot], Labels[iSubPlot], "f");
-                Plots[iSubPlot]->SetLineWidth(2);
-                Plots[iSubPlot]->SetLineColor(colors.at(iSubPlot));
-                Plots[iSubPlot]->Draw("hist same");
-
-                imax = TMath::Max(Plots[iSubPlot]->GetMaximum(), Plots[0]->GetMaximum());
-
-                double YAxisRange = 1.15 * imax;
-                Plots[iSubPlot]->GetYaxis()->SetRangeUser(0., YAxisRange);
-                Plots[0]->GetYaxis()->SetRangeUser(0., YAxisRange);	
+            if (AsPts[firstIdx]) {
+                stylePoints(h0, colors.at(firstIdx));
+                h0->Draw("E1P");
+                leg->AddEntry(h0, Labels[firstIdx], "lep");
+            } else {
+                styleLineOnly(h0, colors.at(firstIdx));
+                h0->Draw("HIST");                 // line only (no fill because FillStyle=0)
+                leg->AddEntry(h0, Labels[firstIdx], "l");
             }
 
+            for (size_t k = 0; k < Plots.size(); ++k) {
+                if ((int)k == firstIdx) continue;
+                TH1* h = Plots[k];
+                if (!h) continue;
+
+                if (AsPts[k]) {
+                    stylePoints(h, colors.at(k));
+                    h->Draw("E1P SAME");
+                    leg->AddEntry(h, Labels[k], "lep");
+                } else {
+                    styleLineOnly(h, colors.at(k));
+                    h->Draw("HIST SAME");
+                    leg->AddEntry(h, Labels[k], "l");
+                }
+            }
+
+            // Unified Y range
+            double ymax = getGlobalMax(Plots);
+            double yr = 1.15 * (ymax > 0 ? ymax : 1.0);
+            h0->GetYaxis()->SetRangeUser(0., yr);
+
             gPad->Update();
-            TAxis *x = Plots[0]->GetXaxis();
-            x->SetMaxDigits(3);
-            gPad->Modified();
-            gPad->Update();
+            h0->GetXaxis()->SetMaxDigits(3);
+            gPad->Modified(); gPad->Update();
 
             PlotCanvas->cd();
-            legendPad->Draw();
-            legendPad->cd();
-            leg->Draw();
-
+            legendPad->Draw(); legendPad->cd(); leg->Draw();
             PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
         }
-        delete PlotCanvas;
+
+        delete PlotCanvas; // cleans pads too
     }
 }
 
