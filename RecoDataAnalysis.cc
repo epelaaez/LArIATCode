@@ -38,6 +38,10 @@ void RecoDataAnalysis() {
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNDataEval");
 
+    // Load file with MC comparison histograms
+    TString MCCompFilePath = "/exp/lariat/app/users/epelaez/files/DataMCComparisons.root";
+    std::unique_ptr<TFile> MCFile(TFile::Open(MCCompFilePath));
+
     ///////////////////
     // Load branches //
     ///////////////////
@@ -162,13 +166,23 @@ void RecoDataAnalysis() {
     double TOFMass;
     tree->SetBranchAddress("TOFMass", &TOFMass);
 
+    /////////////////////
+    // Load histograms //
+    /////////////////////
+
+    TH1D* hMCTGSmallTracks          = (TH1D*) MCFile->Get("hMCTGSmallTracks");
+    TH1D* hMCTracksNearVertex       = (TH1D*) MCFile->Get("hMCTracksNearVertex");
+    TH1D* hMCTrackLengthsNearVertex = (TH1D*) MCFile->Get("hMCTrackLengthsNearVertex");
+
     ///////////////////////
     // Create histograms //
     ///////////////////////
 
     TH1D* hTOFMass = new TH1D("hTOFMass", "TOF Mass Distribution", 50, 0, 1200);
 
-    TH1D* hSmallTracks = new TH1D("hSmallTracks", "Small Tracks Distribution", 20, 0, 10);
+    TH1D* hTGSmallTracks          = new TH1D("hTGSmallTracks", "Small Tracks Distribution", 10, 0, 10);
+    TH1D* hTracksNearVertex       = new TH1D("hTracksNearVertex", "Tracks Near Vertex Distribution", 10, 0, 10);
+    TH1D* hTrackLengthsNearVertex = new TH1D("hTrackLengthsNearVertex", "Track Lengths Near Vertex Distribution", 50, 0, 100);
 
     //////////////////////
     // Loop over events //
@@ -195,8 +209,45 @@ void RecoDataAnalysis() {
         // If high shower probability, reject
         if (showerProb >= SHOWER_PROB_CUT) continue;
 
+        // Loop over reconstructed tracks
+        int numSmallTracks      = 0; int numTracksNearVertex = 0;
+        for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+            double distanceFromStart = distance(
+                recoBeginX->at(trk_idx), WC2TPCPrimaryEndX, 
+                recoBeginY->at(trk_idx), WC2TPCPrimaryEndY,
+                recoBeginZ->at(trk_idx), WC2TPCPrimaryEndZ
+            );
+            double distanceFromEnd = distance(
+                recoEndX->at(trk_idx), WC2TPCPrimaryEndX, 
+                recoEndY->at(trk_idx), WC2TPCPrimaryEndY,
+                recoEndZ->at(trk_idx), WC2TPCPrimaryEndZ
+            );
+
+            double trackLength = sqrt(
+                pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
+                pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
+                pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+            );
+
+            if ((distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS)) {
+                numTracksNearVertex++;
+                hTrackLengthsNearVertex->Fill(trackLength);
+            }
+            if (trackLength < SMALL_TRACK_LENGTH_CHEX) numSmallTracks++;
+        }
+
+        hTracksNearVertex->Fill(numTracksNearVertex);
+
+        // Add to histogram of small tracks if primary is throughgoing
+        if (!isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) {
+            hTGSmallTracks->Fill(numSmallTracks);
+        }
     }
-    std::cout << pions << std::endl;
+
+    // Scale MC histograms to data histograms
+    hMCTGSmallTracks->Scale(hTGSmallTracks->Integral() / hMCTGSmallTracks->Integral());
+    hMCTracksNearVertex->Scale(hTracksNearVertex->Integral() / hMCTracksNearVertex->Integral());
+    hMCTrackLengthsNearVertex->Scale(hTrackLengthsNearVertex->Integral() / hMCTrackLengthsNearVertex->Integral());
 
     //////////////////
     // Create plots //
@@ -216,27 +267,45 @@ void RecoDataAnalysis() {
     };
 
     std::vector<std::vector<TH1*>> PlotGroups = {
-        {hTOFMass}
+        {hTOFMass},
+        {hTGSmallTracks, hMCTGSmallTracks},
+        {hTracksNearVertex, hMCTracksNearVertex},
+        {hTrackLengthsNearVertex, hMCTrackLengthsNearVertex}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
-        {"Mass"}
+        {"Data"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"}
     };
 
     std::vector<TString> PlotTitles = {
-        "TOFMass"
+        "TOFMass",
+        "TGSmallTracks",
+        "TracksNearVertex",
+        "TrackLengthsNearVertex"
     };
 
     std::vector<TString> XLabels = {
-        "Mass [MeV/c^2]"
+        "Mass [MeV/c^2]",
+        "# of small tracks",
+        "# of tracks near vertex",
+        "Track length [cm]"
     };
 
     std::vector<TString> YLabels = {
+        "Counts",
+        "Counts",
+        "Counts",
         "Counts"
     };
 
     std::vector<bool> PlotStacked = {
         false,
+        false,
+        false,
+        false
     };
 
     printOneDPlots(

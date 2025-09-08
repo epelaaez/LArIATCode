@@ -165,6 +165,7 @@ void printEfficiencyPlots(TString dir, int fontStyle, double textSize, std::vect
 void printBackgroundInfo(TH1D* background_histo, std::ostream& os);
 
 bool isWithinReducedVolume(double x, double y, double z);
+bool isWithinActiveVolume(double x, double y, double z);
 bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold);
 
 double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData,  bool dataReversed, int nPoints, int nOutliersToDiscard = 0, int nTrim = 0);

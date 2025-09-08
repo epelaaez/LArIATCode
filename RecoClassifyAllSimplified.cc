@@ -244,6 +244,7 @@ void RecoClassifyAllSimplified() {
     /////////////////////////////////
 
     std::ofstream outFileChExchBkg("files/ClassifyAll/ChExchBackground.txt");
+    TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "UPDATE");
 
     ///////////////////////
     // Create histograms //
@@ -460,6 +461,14 @@ void RecoClassifyAllSimplified() {
         TrueAbs0pAsByBin, TrueAbsNpAsByBin, TrueScatterAsByBin, TrueChExchAsByBin
     };
 
+    ///////////////////////////////////
+    // Data-MC comparison histograms //
+    ///////////////////////////////////
+
+    TH1D* hMCTGSmallTracks          = new TH1D("hMCTGSmallTracks", "hMCTGSmallTracks;;", 10, 0, 10);
+    TH1D* hMCTracksNearVertex       = new TH1D("hMCTracksNearVertex", "hMCTracksNearVertex;;", 10, 0, 10);
+    TH1D* hMCTrackLengthsNearVertex = new TH1D("hMCTrackLengthsNearVertex", "hMCTrackLengthsNearVertex;;", 50, 0, 100);
+
     //////////////////////
     // Loop over events //
     //////////////////////
@@ -472,6 +481,51 @@ void RecoClassifyAllSimplified() {
 
         // Make script go faster
         // if (i > 10000) break;
+
+        ////////////////////////////////////////
+        // Histograms for data-MC comparisons //
+        ////////////////////////////////////////
+
+        // For data-MC comparisons
+        if (
+            WC2TPCtrkID != -99999 &&
+            obtainedProbabilities &&
+            showerProb < SHOWER_PROB_CUT
+        ) {
+            int smallTracksComp = 0; int tracksNearVertexComp = 0;
+            for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+                double distanceFromStart = distance(
+                    recoBeginX->at(trk_idx), WC2TPCPrimaryEndX, 
+                    recoBeginY->at(trk_idx), WC2TPCPrimaryEndY,
+                    recoBeginZ->at(trk_idx), WC2TPCPrimaryEndZ
+                );
+                double distanceFromEnd = distance(
+                    recoEndX->at(trk_idx), WC2TPCPrimaryEndX, 
+                    recoEndY->at(trk_idx), WC2TPCPrimaryEndY,
+                    recoEndZ->at(trk_idx), WC2TPCPrimaryEndZ
+                );
+
+                double trackLength = sqrt(
+                    pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
+                    pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
+                    pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+                );
+
+                if (distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS) {
+                    tracksNearVertexComp++;
+                    hMCTrackLengthsNearVertex->Fill(trackLength);
+                }
+                if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksComp++;
+            }
+
+            hMCTracksNearVertex->Fill(tracksNearVertexComp);
+            if (!isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) {
+                hMCTGSmallTracks->Fill(smallTracksComp);
+            }
+        }
+
+        // Back to classification algorithm //
+        /////////////
 
         // Set correct primary vertex KE for elastic scattering
         if (backgroundType == 12) {
@@ -1159,6 +1213,19 @@ void RecoClassifyAllSimplified() {
     printBackgroundInfo(hPionChExch, std::cout);
     std::cout << "Purity: " << hPionChExch->GetBinContent(8) / hPionChExch->Integral() << std::endl;
     std::cout << "Efficiency: " << hPionChExch->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
+
+    ////////////////////////////////
+    // Save comparison histograms //
+    ////////////////////////////////
+
+    hMCTGSmallTracks->SetDirectory(comparisonsFile);
+    hMCTGSmallTracks->Write();
+
+    hMCTracksNearVertex->SetDirectory(comparisonsFile);
+    hMCTracksNearVertex->Write();
+
+    hMCTrackLengthsNearVertex->SetDirectory(comparisonsFile);
+    hMCTrackLengthsNearVertex->Write();
 
     //////////////////////////////////////////////
     // Perform unfolding for interacting slices //

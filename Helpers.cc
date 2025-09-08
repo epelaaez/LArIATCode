@@ -448,6 +448,14 @@ bool isWithinReducedVolume(double x, double y, double z) {
     );
 }
 
+bool isWithinActiveVolume(double x, double y, double z) {
+    return (
+        (x > minX) && (x < maxX) && 
+        (y > minY) && (y < maxY) && 
+        (z > minZ) && (z < maxZ)
+    );
+}
+
 void printEfficiencyPlots(
     TString dir, int fontStyle, double textSize,
     std::vector<TEfficiency*> efficiencies,
