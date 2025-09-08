@@ -233,6 +233,12 @@ void RecoClassifyAllSimplified() {
     tree->SetBranchAddress("hitWC2TPCKey", &hitWC2TPCKey);
     tree->SetBranchAddress("hitThroughTrack", &hitThroughTrack);
 
+    // Truth level incident KE information
+    bool validTrueIncidentKE;
+    std::vector<double>* trueIncidentKEContributions = nullptr;
+    tree->SetBranchAddress("validTrueIncidentKE", &validTrueIncidentKE);
+    tree->SetBranchAddress("trueIncidentKEContributions", &trueIncidentKEContributions);
+
     /////////////////////////////////
     // Files for event information //
     /////////////////////////////////
@@ -264,6 +270,7 @@ void RecoClassifyAllSimplified() {
     TH1D* hIncidentKEPion     = new TH1D("hIncidentKEPion", "hIncidentKEPion;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hIncidentKEElectron = new TH1D("hIncidentKEElectron", "hIncidentKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
     TH1D* hIncidentKEMuon     = new TH1D("hIncidentKEMuon", "hIncidentKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueIncidentKE     = new TH1D("hTrueIncidentKE", "hTrueIncidentKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
 
     // Interacting pion abs 0p energy
     TH1D* hPionAbs0pKE         = new TH1D("hPionAbs0pKE", "hPionAbs0pKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
@@ -473,6 +480,13 @@ void RecoClassifyAllSimplified() {
 
         // Get true energy bin
         int TrueEnergyBin = getBin(truthPrimaryVertexKE * 1000, LOWER_BOUND_KE, UPPER_BOUND_KE, NUM_BINS_KE);
+
+        // Add true incident KE
+        if (validTrueIncidentKE) {
+            for (double x : *trueIncidentKEContributions) {
+                hTrueIncidentKE->Fill(x);
+            }
+        }
 
         // In this script, we replace background types 6 and 12 with background types 13 and 14,
         // because we are interested in contamination across the bins that we are measuring
@@ -1146,9 +1160,9 @@ void RecoClassifyAllSimplified() {
     std::cout << "Purity: " << hPionChExch->GetBinContent(8) / hPionChExch->Integral() << std::endl;
     std::cout << "Efficiency: " << hPionChExch->GetBinContent(8) / hTotalEvents->GetBinContent(8) << std::endl;
 
-    ///////////////////////
-    // Perform unfolding //
-    ///////////////////////
+    //////////////////////////////////////////////
+    // Perform unfolding for interacting slices //
+    //////////////////////////////////////////////
 
     // Response matrix with components: 
     //    R[(i, \alpha), (j, \beta)] = P(reco signal \beta in reco energy bin j | true signal \alpha in true energy bin i)
@@ -1167,8 +1181,6 @@ void RecoClassifyAllSimplified() {
             // Get total number of true events of true signal type \alpha with true energy bin i
             double denom = TotalEventsHistos.at(iOuterSignalBin)->GetBinContent(iOuterEnergyBin + 1);
 
-            // std::cout << "Signal: " << iOuterSignalBin << ", Energy: " << iOuterEnergyBin << ", True count: " << denom << std::endl;
-            // std::cout << "  Reco as: " << std::endl;
             for (int iInnerSignalBin = 0; iInnerSignalBin < NUM_SIGNAL_TYPES; ++iInnerSignalBin) {
                 for (int iInnerEnergyBin = 0; iInnerEnergyBin < NUM_BINS_KE; ++iInnerEnergyBin) {
                     // Get index for column (j, \beta) -> l
@@ -1178,8 +1190,6 @@ void RecoClassifyAllSimplified() {
                     // Get total number of true (i, \alpha) events that were reconstructed as (j, \beta)
                     if (denom > 0) prob = TrueRecoAsByBin.at(iOuterSignalBin).at(iOuterEnergyBin).at(iInnerSignalBin)->GetBinContent(iInnerEnergyBin + 1) / denom;
                     hResponseMatrix->SetBinContent(column + 1, row + 1, prob);
-
-                    // std::cout << "   Signal: " << iInnerSignalBin << ", Energy: " << iInnerEnergyBin << ", Reco count: " << TrueRecoAsByBin.at(iOuterSignalBin).at(iOuterEnergyBin).at(iInnerSignalBin)->GetBinContent(iInnerEnergyBin + 1) << std::endl;
                 }
             }
         }
@@ -1233,10 +1243,11 @@ void RecoClassifyAllSimplified() {
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
             int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
-            double N  = RecoSignals[iSignal]->GetBinContent(iBin + 1);
+            double N    = RecoSignals[iSignal]->GetBinContent(iBin + 1);
+            double Ninc = hIncidentKE->GetBinContent(iBin + 1);
 
             if (N > 0) {
-                Covariance(index, index) = N; // variance = N
+                Covariance(index, index) = N * (1 - (N / Ninc)); // variance = N_int(1-N_int/N_inc)
             } else {
                 Covariance(index, index) = 1.0; // small floor to avoid zero variance
             }
@@ -1299,6 +1310,88 @@ void RecoClassifyAllSimplified() {
     );
     M2H(Covariance, hCovariance); M2H(AddSmear, hSmearing);
 
+    ///////////////////////////////////
+    // Corrections for incident flux //
+    ///////////////////////////////////
+
+    // Set errors to original incident KE histogram
+    for (int iBin = 1; iBin <= hIncidentKE->GetNbinsX(); ++iBin) {
+        double entries = hIncidentKE->GetBinContent(iBin);
+        hIncidentKE->SetBinError(iBin, std::sqrt(entries)); // stat error
+    }
+
+    // Compute corrections for use when computing cross-section
+    TH1D* hPsiInc = (TH1D*) hIncidentKEPion->Clone("hPsiInc");
+    hPsiInc->Divide(hTrueIncidentKE);
+
+    TH1D* hCInc = (TH1D*) hIncidentKEPion->Clone("hCInc");
+    hCInc->Divide(hIncidentKE);
+
+    // Only for plotting corrected incident KE
+    TH1D* hIncidentKECorrected = (TH1D*) hIncidentKE->Clone("hIncidentKECorrected");
+    hIncidentKECorrected->Divide(hPsiInc);
+    hIncidentKECorrected->Multiply(hCInc);
+
+    ///////////////////////////////////////////////
+    // Get cross-section using corrrected fluxes //
+    ///////////////////////////////////////////////
+
+    TH1D* hPionAbs0pCrossSection     = new TH1D("hPionAbs0pCrossSection", "hPionAbs0pCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTruePionAbs0pCrossSection = new TH1D("hTruePionAbs0pCrossSection", "hTruePionAbs0pCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    TH1D* hPionAbsNpCrossSection     = new TH1D("hPionAbsNpCrossSection", "hPionAbsNpCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTruePionAbsNpCrossSection = new TH1D("hTruePionAbsNpCrossSection", "hTruePionAbsNpCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    TH1D* hPionScatterCrossSection     = new TH1D("hPionScatterCrossSection", "hPionScatterCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTruePionScatterCrossSection = new TH1D("hTruePionScatterCrossSection", "hTruePionScatterCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    TH1D* hPionChExchCrossSection     = new TH1D("hPionChExchCrossSection", "hPionChExchCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTruePionChExchCrossSection = new TH1D("hTruePionChExchCrossSection", "hTruePionChExchCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+
+    std::vector<TH1D*> UnfoldedCrossSections = {
+        hPionAbs0pCrossSection,
+        hPionAbsNpCrossSection,
+        hPionScatterCrossSection,
+        hPionChExchCrossSection
+    };
+
+    std::vector<TH1D*> TrueCrossSections = {
+        hTruePionAbs0pCrossSection,
+        hTruePionAbsNpCrossSection,
+        hTruePionScatterCrossSection,
+        hTruePionChExchCrossSection
+    };
+
+    for (int i = 0; i < UnfoldedCrossSections.size(); ++i) {
+        TH1D* unfXSec  = UnfoldedCrossSections[i];
+        TH1D* trueXSec = TrueCrossSections[i];
+
+        for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
+            double incidentErr     = hIncidentKE->GetBinError(iBin);
+            double incidentContent = hIncidentKE->GetBinContent(iBin);
+
+            double interactingErr     = UnfoldedRecoHistos[i]->GetBinError(iBin);
+            double interactingContent = UnfoldedRecoHistos[i]->GetBinContent(iBin);
+
+            // we compute error as δσ / σ = δN_int / N_int + δN_inc / N_inc (conservative upper bound)
+            double crossSection    = interactingContent / incidentContent;
+            double crossSectionErr = crossSection * ((interactingErr / interactingContent) + (incidentErr / incidentContent));
+            unfXSec->SetBinContent(iBin, crossSection);
+            unfXSec->SetBinError(iBin, crossSectionErr);
+
+            // True cross-section, no error bars
+            trueXSec->SetBinContent(iBin, SmearedTrueHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin));
+        }
+
+        // Incident KE corrections
+        unfXSec->Multiply(hPsiInc);
+        unfXSec->Divide(hCInc);
+
+        // Scale units
+        unfXSec->Scale(1.0 / (number_density * slab_width * 1e-28));
+        trueXSec->Scale(1.0 / (number_density * slab_width * 1e-28));
+    }
+
     //////////////////
     // Create plots //
     //////////////////
@@ -1319,6 +1412,7 @@ void RecoClassifyAllSimplified() {
     std::vector<std::vector<TH1*>> PlotGroups = {
         // Incident KE
         {hIncidentKEPion, hIncidentKEMuon, hIncidentKEElectron},
+        {hIncidentKECorrected, hTrueIncidentKE},
 
         // Interacting KE
         {hPionAbs0pKETrue, hPionAbs0pKEAbsNp, hPionAbs0pKEScatter, hPionAbs0pKEChExch, hPionAbs0pKEMuon, hPionAbs0pKEElectron, hPionAbs0pKEOther},
@@ -1336,12 +1430,19 @@ void RecoClassifyAllSimplified() {
         {hTrueAbs0pKERejDataProds, hTrueAbs0pKERejElectron, hTrueAbs0pKERejRedVol, hTrueAbs0pKERejPID, hTrueAbs0pKERejManyPions, hTrueAbs0pKERejClusters},
         {hTrueAbsNpKERejDataProds, hTrueAbsNpKERejElectron, hTrueAbsNpKERejRedVol, hTrueAbsNpKERejPID, hTrueAbsNpKERejManyPions, hTrueAbsNpKERejClusters},
         {hTrueScatterKERejDataProds, hTrueScatterKERejElectron, hTrueScatterKERejRedVol, hTrueScatterKERejPID, hTrueScatterKERejManyPions, hTrueScatterKERejClusters},
-        {hTrueChExchKERejDataProds, hTrueChExchKERejElectron, hTrueChExchKERejRedVol, hTrueChExchKERejPID, hTrueChExchKERejManyPions, hTrueChExchKERejClusters}
+        {hTrueChExchKERejDataProds, hTrueChExchKERejElectron, hTrueChExchKERejRedVol, hTrueChExchKERejPID, hTrueChExchKERejManyPions, hTrueChExchKERejClusters},
+
+        // Cross-sections
+        {hTruePionAbs0pCrossSection, hPionAbs0pCrossSection},
+        {hTruePionAbsNpCrossSection, hPionAbsNpCrossSection},
+        {hTruePionScatterCrossSection, hPionScatterCrossSection},
+        {hTruePionChExchCrossSection, hPionChExchCrossSection}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         // Incident KE
         {"Pions", "Muons", "Electrons"},
+        {"Corrected", "True"},
 
         // Interacting KE
         {"True", "Abs Np", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
@@ -1359,12 +1460,19 @@ void RecoClassifyAllSimplified() {
         {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
         {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
         {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
-        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"}
+        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
+
+        // Cross-sections
+        {"True", "Unfolded"},
+        {"True", "Unfolded"},
+        {"True", "Unfolded"},
+        {"True", "Unfolded"}
     };
 
     std::vector<TString> PlotTitles = {
         // Incident KE
         "Incident/IncidentKE",
+        "Incident/IncidentKECorrected",
 
         // Interacting KE
         "RecoInteracting/Abs0pInteractingKE",
@@ -1382,11 +1490,18 @@ void RecoClassifyAllSimplified() {
         "Rejected/TrueAbs0pRej",
         "Rejected/TrueAbsNpRej",
         "Rejected/TrueScatterRej",
-        "Rejected/TrueChExchRej"
+        "Rejected/TrueChExchRej",
+
+        // Cross-sections
+        "CrossSection/PionAbs0pCrossSection",
+        "CrossSection/PionAbsNpCrossSection",
+        "CrossSection/PionScatterCrossSection",
+        "CrossSection/PionChExchCrossSection"
     };
 
     std::vector<TString> XLabels = {
         // Incident KE
+        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
 
         // Interacting KE
@@ -1402,6 +1517,12 @@ void RecoClassifyAllSimplified() {
         "Kinetic energy [MeV]",
 
         // Rejected events
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+
+        // Cross-sections
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
@@ -1411,6 +1532,7 @@ void RecoClassifyAllSimplified() {
     std::vector<TString> YLabels = {
         // Incident KE
         "Counts",
+        "Counts",
 
         // Interacting KE
         "Counts",
@@ -1428,12 +1550,19 @@ void RecoClassifyAllSimplified() {
         "Counts",
         "Counts",
         "Counts",
-        "Counts"
+        "Counts",
+
+        // Cross-sections
+        "Cross section [barn]",
+        "Cross section [barn]",
+        "Cross section [barn]",
+        "Cross section [barn]"
     };
 
     std::vector<bool> PlotStacked = {
         // Incident KE
         true,
+        false,
 
         // Interacting KE
         true,
@@ -1451,12 +1580,19 @@ void RecoClassifyAllSimplified() {
         true,
         true,
         true,
-        true
+        true,
+
+        // Cross-sections
+        false,
+        false,
+        false,
+        false
     };
 
     std::vector<std::vector<bool>> PlotsAsPoints = {
         // Incident KE
         {false, false, false},
+        {true, false},
 
         // Interacting KE
         {false, false, false, false, false, false, false},
@@ -1474,7 +1610,13 @@ void RecoClassifyAllSimplified() {
         {false, false, false, false, false, false},
         {false, false, false, false, false, false},
         {false, false, false, false, false, false},
-        {false, false, false, false, false, false}
+        {false, false, false, false, false, false},
+
+        // Cross-sections
+        {false, true},
+        {false, true},
+        {false, true},
+        {false, true}
     };
 
     // Add each unfolded histogram as a single plot group for plotting

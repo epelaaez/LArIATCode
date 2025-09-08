@@ -142,6 +142,14 @@ int    NUM_BINS_KE    = 10;
 // TOF mass cut
 double PI_MU_EL_MASS_CUTOFF = 350.;
 
+// Cross section calculation
+double rho            = 1396; // kg / m^3
+double molar_mass     = 39.95; // g / mol
+double g_per_kg       = 1000; 
+double avogadro       = 6.022e+23; // number / mol
+double number_density = rho * g_per_kg / molar_mass * avogadro;
+double slab_width     = 0.0047; // in m
+
 //////////////////////
 // Helper functions //
 //////////////////////
