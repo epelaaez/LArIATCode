@@ -469,6 +469,10 @@ void RecoClassifyAllSimplified() {
     TH1D* hMCTracksNearVertex       = new TH1D("hMCTracksNearVertex", "hMCTracksNearVertex;;", 10, 0, 10);
     TH1D* hMCTrackLengthsNearVertex = new TH1D("hMCTrackLengthsNearVertex", "hMCTrackLengthsNearVertex;;", 50, 0, 100);
     TH1D* hMCNumTGTracks            = new TH1D("hMCNumTGTracks", "hMCNumTGTracks;;", 10, 0, 10);
+    TH1D* hMCShowerProb            = new TH1D("hMCShowerProb", "hMCShowerProb;;", 20, 0, 1.);
+
+    TH1D* hMCBeforeShowerCutSmallTracks = new TH1D("hMCBeforeShowerCutSmallTracks", "hMCBeforeShowerCutSmallTracks;;", 10, 0, 10);
+    TH1D* hMCAfterShowerCutSmallTracks  = new TH1D("hMCAfterShowerCutSmallTracks", "hMCAfterShowerCutSmallTracks;;", 10, 0, 10);
 
     TH2D* hMCSmallVsTGTracks = new TH2D("hMCSmallVsTGTracks", "SmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
 
@@ -490,6 +494,26 @@ void RecoClassifyAllSimplified() {
         ////////////////////////////////////////
 
         // For data-MC comparisons
+        if (WC2TPCtrkID != -99999 && obtainedProbabilities) {
+            hMCShowerProb->Fill(showerProb);
+            int smallTracksTPCStart = 0;
+            for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+                if (
+                    recoEndZ->at(trk_idx) < 30.0 && 
+                    recoBeginZ->at(trk_idx) < 30.0
+                ) {
+                    double trackLength = sqrt(
+                        pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
+                        pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
+                        pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+                    );
+                    if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksTPCStart++;
+                }
+            }
+            hMCBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
+            if (showerProb < SHOWER_PROB_CUT) hMCAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
+        }
+
         if (
             WC2TPCtrkID != -99999 &&
             obtainedProbabilities &&
@@ -1248,6 +1272,15 @@ void RecoClassifyAllSimplified() {
 
     hMCSmallVsTGTracks->SetDirectory(comparisonsFile);
     hMCSmallVsTGTracks->Write();
+
+    hMCShowerProb->SetDirectory(comparisonsFile);
+    hMCShowerProb->Write();
+
+    hMCBeforeShowerCutSmallTracks->SetDirectory(comparisonsFile);
+    hMCBeforeShowerCutSmallTracks->Write();
+
+    hMCAfterShowerCutSmallTracks->SetDirectory(comparisonsFile);
+    hMCAfterShowerCutSmallTracks->Write();
 
     //////////////////////////////////////////////
     // Perform unfolding for interacting slices //
