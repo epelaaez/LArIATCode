@@ -244,7 +244,7 @@ void RecoClassifyAllSimplified() {
     /////////////////////////////////
 
     std::ofstream outFileChExchBkg("files/ClassifyAll/ChExchBackground.txt");
-    TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "UPDATE");
+    TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "RECREATE");
 
     ///////////////////////
     // Create histograms //
@@ -468,6 +468,9 @@ void RecoClassifyAllSimplified() {
     TH1D* hMCTGSmallTracks          = new TH1D("hMCTGSmallTracks", "hMCTGSmallTracks;;", 10, 0, 10);
     TH1D* hMCTracksNearVertex       = new TH1D("hMCTracksNearVertex", "hMCTracksNearVertex;;", 10, 0, 10);
     TH1D* hMCTrackLengthsNearVertex = new TH1D("hMCTrackLengthsNearVertex", "hMCTrackLengthsNearVertex;;", 50, 0, 100);
+    TH1D* hMCNumTGTracks            = new TH1D("hMCNumTGTracks", "hMCNumTGTracks;;", 10, 0, 10);
+
+    TH2D* hMCSmallVsTGTracks = new TH2D("hMCSmallVsTGTracks", "SmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
 
     //////////////////////
     // Loop over events //
@@ -492,8 +495,18 @@ void RecoClassifyAllSimplified() {
             obtainedProbabilities &&
             showerProb < SHOWER_PROB_CUT
         ) {
-            int smallTracksComp = 0; int tracksNearVertexComp = 0;
+            int smallTracksComp = 0; 
+            int tracksNearVertexComp = 0;
+            int numTGTracksComp = 0;
+
             for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+                if (
+                    !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
+                    !isWithinReducedVolume(recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx))
+                ) {
+                    numTGTracksComp++;
+                }
+
                 double distanceFromStart = distance(
                     recoBeginX->at(trk_idx), WC2TPCPrimaryEndX, 
                     recoBeginY->at(trk_idx), WC2TPCPrimaryEndY,
@@ -519,13 +532,16 @@ void RecoClassifyAllSimplified() {
             }
 
             hMCTracksNearVertex->Fill(tracksNearVertexComp);
+            hMCNumTGTracks->Fill(numTGTracksComp);
             if (!isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) {
                 hMCTGSmallTracks->Fill(smallTracksComp);
             }
+            hMCSmallVsTGTracks->Fill(smallTracksComp, numTGTracksComp);
         }
 
+        //////////////////////////////////////
         // Back to classification algorithm //
-        /////////////
+        //////////////////////////////////////
 
         // Set correct primary vertex KE for elastic scattering
         if (backgroundType == 12) {
@@ -1227,6 +1243,12 @@ void RecoClassifyAllSimplified() {
     hMCTrackLengthsNearVertex->SetDirectory(comparisonsFile);
     hMCTrackLengthsNearVertex->Write();
 
+    hMCNumTGTracks->SetDirectory(comparisonsFile);
+    hMCNumTGTracks->Write();
+
+    hMCSmallVsTGTracks->SetDirectory(comparisonsFile);
+    hMCSmallVsTGTracks->Write();
+
     //////////////////////////////////////////////
     // Perform unfolding for interacting slices //
     //////////////////////////////////////////////
@@ -1398,6 +1420,12 @@ void RecoClassifyAllSimplified() {
     TH1D* hIncidentKECorrected = (TH1D*) hIncidentKE->Clone("hIncidentKECorrected");
     hIncidentKECorrected->Divide(hPsiInc);
     hIncidentKECorrected->Multiply(hCInc);
+
+    // Set errors to corrected incident KE histogram (TODO: errors on corrections)
+    for (int iBin = 1; iBin <= hIncidentKECorrected->GetNbinsX(); ++iBin) {
+        double entries = hIncidentKECorrected->GetBinContent(iBin);
+        hIncidentKECorrected->SetBinError(iBin, std::sqrt(entries));
+    }
 
     ///////////////////////////////////////////////
     // Get cross-section using corrrected fluxes //

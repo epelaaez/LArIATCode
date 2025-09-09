@@ -577,6 +577,12 @@ void printOneDPlots(
         return mx;
     };
 
+    auto getGlobalMin = [&](const std::vector<TH1*>& vv){
+        double mi = 0.0;
+        for (auto* h : vv) if (h) mi = std::min(mi, h->GetMinimum());
+        return mi;
+    };
+
     for (int iPlot = 0; iPlot < numPlots; ++iPlot) {
         TCanvas* PlotCanvas = new TCanvas(Form("Canvas_%d", iPlot), Form("Canvas_%d", iPlot), 205, 34, 1300, 768);
 
@@ -639,9 +645,17 @@ void printOneDPlots(
 
             // Y range
             double ymax = std::max(getGlobalMax(Plots), frameForAxes ? frameForAxes->GetMaximum() : 0.0);
-            double yr = 1.15 * (ymax > 0 ? ymax : 1.0);
-            if (frameForAxes) frameForAxes->GetYaxis()->SetRangeUser(0., yr);
-            if (hs.GetHistogram()) hs.SetMaximum(yr);
+            double ymin = std::min(getGlobalMin(Plots), frameForAxes ? frameForAxes->GetMinimum() : 0.0);
+
+            // Expand the range with a 15% buffer
+            double yr_high = 1.15 * (ymax > 0 ? ymax : 1.0);
+            double yr_low  = (ymin < 0) ? 1.15 * ymin : 0.0;
+
+            if (frameForAxes) frameForAxes->GetYaxis()->SetRangeUser(yr_low, yr_high);
+            if (hs.GetHistogram()) {
+                hs.SetMaximum(yr_high);
+                hs.SetMinimum(yr_low);
+            }
 
             // Re-draw stack (ROOT quirk) and overlay points
             if (hs.GetHists() && hs.GetHists()->GetSize() > 0) hs.Draw("HIST SAME");
@@ -692,8 +706,12 @@ void printOneDPlots(
 
             // Unified Y range
             double ymax = getGlobalMax(Plots);
-            double yr = 1.15 * (ymax > 0 ? ymax : 1.0);
-            h0->GetYaxis()->SetRangeUser(0., yr);
+            double ymin = getGlobalMin(Plots);
+
+            double yr_high = 1.15 * (ymax > 0 ? ymax : 1.0);
+            double yr_low  = (ymin < 0) ? 1.15 * ymin : 0.0;
+
+            h0->GetYaxis()->SetRangeUser(yr_low, yr_high);
 
             gPad->Update();
             h0->GetXaxis()->SetMaxDigits(3);
