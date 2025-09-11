@@ -465,16 +465,18 @@ void RecoClassifyAllSimplified() {
     // Data-MC comparison histograms //
     ///////////////////////////////////
 
+    TH1D* hMCTGTrackLengths         = new TH1D("hMCTGTrackLengths", "hMCTGTrackLengths;;", 50, 0, 100);
     TH1D* hMCTGSmallTracks          = new TH1D("hMCTGSmallTracks", "hMCTGSmallTracks;;", 10, 0, 10);
     TH1D* hMCTracksNearVertex       = new TH1D("hMCTracksNearVertex", "hMCTracksNearVertex;;", 10, 0, 10);
     TH1D* hMCTrackLengthsNearVertex = new TH1D("hMCTrackLengthsNearVertex", "hMCTrackLengthsNearVertex;;", 50, 0, 100);
     TH1D* hMCNumTGTracks            = new TH1D("hMCNumTGTracks", "hMCNumTGTracks;;", 10, 0, 10);
-    TH1D* hMCShowerProb            = new TH1D("hMCShowerProb", "hMCShowerProb;;", 20, 0, 1.);
+    TH1D* hMCShowerProb             = new TH1D("hMCShowerProb", "hMCShowerProb;;", 20, 0, 1.);
 
     TH1D* hMCBeforeShowerCutSmallTracks = new TH1D("hMCBeforeShowerCutSmallTracks", "hMCBeforeShowerCutSmallTracks;;", 10, 0, 10);
     TH1D* hMCAfterShowerCutSmallTracks  = new TH1D("hMCAfterShowerCutSmallTracks", "hMCAfterShowerCutSmallTracks;;", 10, 0, 10);
 
-    TH2D* hMCSmallVsTGTracks = new TH2D("hMCSmallVsTGTracks", "SmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
+    TH2D* hMCSmallVsTGTracks          = new TH2D("hMCSmallVsTGTracks", "MCSmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
+    TH2D* hMCTGNumSmallTracksVsThresh = new TH2D("hMCTGNumSmallTracksVsThresh", "MCTGNumSmallTracksVsThresh;Small Track Length Threshold (cm);Num Small Tracks", 10, 0, 40, 15, 0, 15);
 
     //////////////////////
     // Loop over events //
@@ -508,6 +510,9 @@ void RecoClassifyAllSimplified() {
                         pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
                     );
                     if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksTPCStart++;
+                    if (!isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) {
+                        hMCTGTrackLengths->Fill(trackLength);
+                    }
                 }
             }
             hMCBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
@@ -516,8 +521,8 @@ void RecoClassifyAllSimplified() {
 
         if (
             WC2TPCtrkID != -99999 &&
-            obtainedProbabilities &&
-            showerProb < SHOWER_PROB_CUT
+            obtainedProbabilities // &&
+            // showerProb < SHOWER_PROB_CUT
         ) {
             int smallTracksComp = 0; 
             int tracksNearVertexComp = 0;
@@ -559,8 +564,23 @@ void RecoClassifyAllSimplified() {
             hMCNumTGTracks->Fill(numTGTracksComp);
             if (!isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) {
                 hMCTGSmallTracks->Fill(smallTracksComp);
+                hMCSmallVsTGTracks->Fill(smallTracksComp, numTGTracksComp);
+
+                // Scan over small track length thresholds and fill 2D histogram
+                for (int threshBin = 1; threshBin <= hMCTGNumSmallTracksVsThresh->GetNbinsX(); ++threshBin) {
+                    double threshold = hMCTGNumSmallTracksVsThresh->GetXaxis()->GetBinCenter(threshBin);
+                    int nSmallTracks = 0;
+                    for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+                        double trackLength = sqrt(
+                            pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
+                            pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
+                            pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+                        );
+                        if (trackLength < threshold) nSmallTracks++;
+                    }
+                    hMCTGNumSmallTracksVsThresh->Fill(threshold, nSmallTracks);
+                }
             }
-            hMCSmallVsTGTracks->Fill(smallTracksComp, numTGTracksComp);
         }
 
         //////////////////////////////////////
@@ -1281,6 +1301,12 @@ void RecoClassifyAllSimplified() {
 
     hMCAfterShowerCutSmallTracks->SetDirectory(comparisonsFile);
     hMCAfterShowerCutSmallTracks->Write();
+
+    hMCTGTrackLengths->SetDirectory(comparisonsFile);
+    hMCTGTrackLengths->Write();
+
+    hMCTGNumSmallTracksVsThresh->SetDirectory(comparisonsFile);
+    hMCTGNumSmallTracksVsThresh->Write();
 
     //////////////////////////////////////////////
     // Perform unfolding for interacting slices //
