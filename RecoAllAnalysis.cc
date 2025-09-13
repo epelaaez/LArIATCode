@@ -34,9 +34,9 @@ void RecoAllAnalysis() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/RecoAllAnalysis/";
 
     // Load root file
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAllEval_histo.root"; 
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo.root"; 
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
-    TDirectory* Directory = (TDirectory*)File->Get("RecoAllEval");
+    TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
     // Load root file with true cross sections
     TString TrueXSRootFilePath = "/exp/lariat/app/users/epelaez/files/TrueXSPionAbs_histo.root";
@@ -48,7 +48,7 @@ void RecoAllAnalysis() {
     ///////////////////
 
     // Load tree and branches
-    TTree* tree = (TTree*) Directory->Get<TTree>("RecoAllEvalTree");
+    TTree* tree = (TTree*) Directory->Get<TTree>("RecoNNAllEvalTree");
 
     int run, subrun, event; bool isData;
     tree->SetBranchAddress("run", &run); 
@@ -68,6 +68,13 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("passesNoOutgoingPion", &passesNoOutgoingPion);
     tree->SetBranchAddress("passesSmallTracksCut", &passesSmallTracksCut);
     tree->SetBranchAddress("passesMeanCurvatureCut", &passesMeanCurvatureCut);
+
+    // Shower probability information
+    double trackProb, showerProb;
+    bool obtainedProbabilities;
+    tree->SetBranchAddress("trackProb", &trackProb);
+    tree->SetBranchAddress("showerProb", &showerProb);
+    tree->SetBranchAddress("obtainedProbabilities", &obtainedProbabilities);
 
     // WC match information
     int WC2TPCtrkID;
@@ -155,18 +162,21 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("recoDEDX", &recoDEDX);
 
     // Truth-level information
-    int truthPrimaryPDG;
+    int truthPrimaryPDG, truthPrimaryID;
     double truthPrimaryVertexX, truthPrimaryVertexY, truthPrimaryVertexZ;
     double truthPrimaryIncidentKE, truthPrimaryVertexKE;
+    std::vector<int>*         truthPrimaryDaughtersID      = nullptr;
     std::vector<int>*         truthPrimaryDaughtersPDG     = nullptr;
     std::vector<std::string>* truthPrimaryDaughtersProcess = nullptr;
     std::vector<double>*      truthPrimaryDaughtersKE      = nullptr;
     tree->SetBranchAddress("truthPrimaryPDG", &truthPrimaryPDG);
+    tree->SetBranchAddress("truthPrimaryID", &truthPrimaryID);
     tree->SetBranchAddress("truthPrimaryIncidentKE", &truthPrimaryIncidentKE);
     tree->SetBranchAddress("truthPrimaryVertexKE", &truthPrimaryVertexKE);
     tree->SetBranchAddress("truthPrimaryVertexX", &truthPrimaryVertexX);
     tree->SetBranchAddress("truthPrimaryVertexY", &truthPrimaryVertexY);
     tree->SetBranchAddress("truthPrimaryVertexZ", &truthPrimaryVertexZ);
+    tree->SetBranchAddress("truthPrimaryDaughtersID", &truthPrimaryDaughtersID);
     tree->SetBranchAddress("truthPrimaryDaughtersPDG", &truthPrimaryDaughtersPDG);
     tree->SetBranchAddress("truthPrimaryDaughtersProcess", &truthPrimaryDaughtersProcess);
     tree->SetBranchAddress("truthPrimaryDaughtersKE", &truthPrimaryDaughtersKE);
@@ -201,6 +211,16 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("truthSecondaryVertexX", &truthSecondaryVertexX);
     tree->SetBranchAddress("truthSecondaryVertexY", &truthSecondaryVertexY);
     tree->SetBranchAddress("truthSecondaryVertexZ", &truthSecondaryVertexZ);
+
+    // Truth-level charge exchange information
+    std::vector<int>* chExchShowerIDs = nullptr;
+    std::vector<std::string>* chExchShowerProcesses = nullptr;
+    std::vector<int>* chExchShowerPDGs = nullptr;
+    std::vector<double>* chExchShowerLengths = nullptr;
+    tree->SetBranchAddress("chExchShowerIDs", &chExchShowerIDs);
+    tree->SetBranchAddress("chExchShowerProcesses", &chExchShowerProcesses);
+    tree->SetBranchAddress("chExchShowerPDGs", &chExchShowerPDGs);
+    tree->SetBranchAddress("chExchShowerLengths", &chExchShowerLengths);
 
     // Individual hit information
     double primaryEndPointHitW, primaryEndPointHitX;
@@ -587,6 +607,13 @@ void RecoAllAnalysis() {
     TH1D *h0pBackgroundAllScatteringVertexKE    = new TH1D("h0pBackgroundAllScatteringVertexKE", "h0pBackgroundAllScatteringVertexKE;;", 20, 0, 0.5);
     TH1D *hNpBackgroundAllScatteringVertexKE    = new TH1D("hNpBackgroundAllScatteringVertexKE", "hNpBackgroundAllScatteringVertexKE;;", 20, 0, 0.5);
 
+    /////////////////////////////////////
+    // Data for charge exchange events //
+    /////////////////////////////////////
+
+    TH1D* hChExchShowerRecoTrkLengths  = new TH1D("hChExchShowerRecoTrkLengths", "Charge Exchange Shower Reconstructed Track Lengths;Length (cm);Entries", 20, 0, 40);
+    TH1D* hChExchShowerTruthTrkLengths = new TH1D("hChExchShowerTruthTrkLengths", "Charge Exchange Shower Truth Track Lengths;Length (cm);Entries", 20, 0, 40);
+
     //////////////////////////////
     // Cross-section histograms //
     //////////////////////////////
@@ -819,6 +846,32 @@ void RecoAllAnalysis() {
                     hAllScatteringRecoAngle->Fill(truthScatteringAngle * (180. / TMath::Pi()));
                     hAllScatteringRecoVertexKE->Fill(truthScatteredPionKE);
                     break;
+                }
+            }
+        }
+
+        // Study charge exchange events
+        if (backgroundType == 7) {
+            // Look at truth tracks that make up the shower
+            for (int iTruthTrk = 0; iTruthTrk < chExchShowerIDs->size(); ++iTruthTrk) {
+                // electrons and positrons longer than 4 mm
+                if (
+                    (chExchShowerPDGs->at(iTruthTrk) == 11 || chExchShowerPDGs->at(iTruthTrk) == -11) &&
+                    chExchShowerLengths->at(iTruthTrk) > 0.4
+                ) {
+                    hChExchShowerTruthTrkLengths->Fill(chExchShowerLengths->at(iTruthTrk));
+                }
+            }
+
+            // Look at reco tracks that match to tracks in the shower
+            for (int iRecoTrk = 0; iRecoTrk < matchedTrkID->size(); ++iRecoTrk) {
+                if (std::find(chExchShowerIDs->begin(), chExchShowerIDs->end(), matchedTrkID->at(iRecoTrk)) != chExchShowerIDs->end()) {
+                    double trk_length = TMath::Sqrt(
+                        TMath::Power(recoEndX->at(iRecoTrk) - recoBeginX->at(iRecoTrk), 2) +
+                        TMath::Power(recoEndY->at(iRecoTrk) - recoBeginY->at(iRecoTrk), 2) +
+                        TMath::Power(recoEndZ->at(iRecoTrk) - recoBeginZ->at(iRecoTrk), 2)
+                    );
+                    hChExchShowerRecoTrkLengths->Fill(trk_length);
                 }
             }
         }
@@ -2331,7 +2384,10 @@ void RecoAllAnalysis() {
         {hAbsNpEff, hAbsNpPur},
         {hScatterEff, hScatterPur},
         {hScatter0pEff, hScatter0pPur},
-        {hScatterNpEff, hScatterNpPur}
+        {hScatterNpEff, hScatterNpPur},
+
+        // Charge exchange events
+        {hChExchShowerRecoTrkLengths, hChExchShowerTruthTrkLengths}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2404,7 +2460,10 @@ void RecoAllAnalysis() {
         {"Efficiency", "Purity"},
         {"Efficiency", "Purity"},
         {"Efficiency", "Purity"},
-        {"Efficiency", "Purity"}
+        {"Efficiency", "Purity"},
+
+        // Charge exchange events
+        {"Reco", "Truth"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -2477,7 +2536,10 @@ void RecoAllAnalysis() {
         "EffPur/PionNpAbsorption",
         "EffPur/PionScattering",
         "EffPur/Pion0pScattering",
-        "EffPur/PionNpScattering"
+        "EffPur/PionNpScattering",
+
+        // Charge exchange events
+        "ChExch/ShowerTrksLengths"
     };
 
     std::vector<TString> XLabels = {
@@ -2550,7 +2612,10 @@ void RecoAllAnalysis() {
         "Kinetic Energy [MeV]",
         "Kinetic Energy [MeV]",
         "Kinetic Energy [MeV]",
-        "Kinetic Energy [MeV]"
+        "Kinetic Energy [MeV]",
+
+        // Charge exchange events
+        "Track length (cm)"
     };
 
     std::vector<TString> YLabels = {
@@ -2623,7 +2688,10 @@ void RecoAllAnalysis() {
         "Eff/Pur",
         "Eff/Pur",
         "Eff/Pur",
-        "Eff/Pur"
+        "Eff/Pur",
+
+        // Charge exchange events
+        "Counts"
     };
 
     std::vector<bool> PlotStacked = {
@@ -2696,6 +2764,9 @@ void RecoAllAnalysis() {
         false,
         false,
         false,
+        false,
+
+        // Charge exchange events
         false
     };
 
