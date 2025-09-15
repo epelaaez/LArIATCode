@@ -393,37 +393,6 @@ void RecoNNShowers() {
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
 
-        // If no shower probability obtained, skip
-        if (!obtainedProbabilities) continue;
-
-        if (obtainedProbabilities) {
-            if (backgroundType == 2) {
-                hMuonShowerProb->Fill(showerProb);
-            } else if (backgroundType == 3) {
-                hElectronShowerProb->Fill(showerProb);
-            } else {
-                hPionShowerProb->Fill(showerProb);
-            }
-
-            if (backgroundType == 7) {
-                hPionChargeExchangeShowerProb->Fill(showerProb);
-            } else if (backgroundType == 0) {
-                hPionAbs0pShowerProb->Fill(showerProb);
-            } else if (backgroundType == 1) {
-                hPionAbsNpShowerProb->Fill(showerProb);
-            } else if (scatteringType == 0) {
-                hPion0pScatterShowerProb->Fill(showerProb);
-            } else if (scatteringType == 1) {
-                hPionNpScatterShowerProb->Fill(showerProb);
-            } else if (backgroundType != 2 && backgroundType != 3) {
-                hPionOtherShowerProb->Fill(showerProb);
-            }
-        }       
-
-        // Apply shower probability cut
-        if (showerProb >= SHOWER_PROB_CUT) continue;
-        hPassShowerProb->Fill(backgroundType);
-
         if (obtainedNoBoxProbabilities) {
             if (backgroundType == 2) {
                 hMuonNoBoxShowerProb->Fill(showerNoBoxProb);
@@ -463,6 +432,37 @@ void RecoNNShowers() {
                 hPionOtherOutsideBoxShowerProb->Fill(showerOutsideBoxProb);
             }
         }
+
+        // If no shower probability obtained, skip
+        if (!obtainedProbabilities) continue;
+
+        if (obtainedProbabilities) {
+            if (backgroundType == 2) {
+                hMuonShowerProb->Fill(showerProb);
+            } else if (backgroundType == 3) {
+                hElectronShowerProb->Fill(showerProb);
+            } else {
+                hPionShowerProb->Fill(showerProb);
+            }
+
+            if (backgroundType == 7) {
+                hPionChargeExchangeShowerProb->Fill(showerProb);
+            } else if (backgroundType == 0) {
+                hPionAbs0pShowerProb->Fill(showerProb);
+            } else if (backgroundType == 1) {
+                hPionAbsNpShowerProb->Fill(showerProb);
+            } else if (scatteringType == 0) {
+                hPion0pScatterShowerProb->Fill(showerProb);
+            } else if (scatteringType == 1) {
+                hPionNpScatterShowerProb->Fill(showerProb);
+            } else if (backgroundType != 2 && backgroundType != 3) {
+                hPionOtherShowerProb->Fill(showerProb);
+            }
+        }       
+
+        // Apply shower probability cut
+        if (showerProb >= SHOWER_PROB_CUT) continue;
+        hPassShowerProb->Fill(backgroundType);
 
         ///////////////////////
         // Primary track PID //
@@ -534,6 +534,8 @@ void RecoNNShowers() {
 
         int numTracksNearVertex = 0;
         for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
             // Have to re-check track ordering for stitched case
             double distanceFromStart = distance(
                 recoBeginX->at(trk_idx), breakPointX, 
@@ -644,6 +646,8 @@ void RecoNNShowers() {
 
         int numSmallTracks = 0; int numLargeTracks = 0; int numFarTracks = 0;
         for (int iTrk = 0; iTrk < (int) recoTrkID->size(); ++iTrk) {
+            if (recoTrkID->at(iTrk) == WC2TPCtrkID) continue;
+
             double distanceFromStart = distance(
                 recoBeginX->at(iTrk), breakPointX, 
                 recoBeginY->at(iTrk), breakPointY,
@@ -723,6 +727,8 @@ void RecoNNShowers() {
         for (double threshold = TRACK_THRESHOLD_MIN; threshold <= TRACK_THRESHOLD_MAX; threshold += TRACK_THRESHOLD_STEP) {
             NUM_SMALL_TRACKS = 0;
             for (int iTrk = 0; iTrk < (int) recoTrkID->size(); ++iTrk) {
+                if (recoTrkID->at(iTrk) == WC2TPCtrkID) continue;
+
                 double distanceFromStart = distance(
                     recoBeginX->at(iTrk), breakPointX, 
                     recoBeginY->at(iTrk), breakPointY,
@@ -1035,7 +1041,7 @@ void RecoNNShowers() {
     std::vector<std::vector<TH1*>> PlotGroups = {
         // Shower probability
         {hElectronShowerProb, hPionShowerProb, hMuonShowerProb},
-        {hPionChargeExchangeShowerProb, hPionAbs0pShowerProb, hPionAbsNpShowerProb, hPion0pScatterShowerProb, hPionNpScatterShowerProb, hPionOtherShowerProb},
+        {hPionChargeExchangeShowerProb, hPionAbs0pShowerProb, hPionAbsNpShowerProb, hPion0pScatterShowerProb, hPionNpScatterShowerProb, hPionOtherShowerProb, hElectronShowerProb, hMuonShowerProb},
         {hPionChargeExchangeNoBoxShowerProb, hPionAbs0pNoBoxShowerProb, hPionAbsNpNoBoxShowerProb, hPion0pScatterNoBoxShowerProb, hPionNpScatterNoBoxShowerProb, hPionOtherNoBoxShowerProb, hElectronNoBoxShowerProb, hMuonNoBoxShowerProb},
         {hPionChargeExchangeOutsideBoxShowerProb, hPionAbs0pOutsideBoxShowerProb, hPionAbsNpOutsideBoxShowerProb, hPion0pScatterOutsideBoxShowerProb, hPionNpScatterOutsideBoxShowerProb, hPionOtherOutsideBoxShowerProb, hElectronOutsideBoxShowerProb, hMuonOutsideBoxShowerProb},
 
@@ -1059,7 +1065,7 @@ void RecoNNShowers() {
     std::vector<std::vector<TString>> PlotLabelGroups = {
         // Shower probability
         {"Electron", "Pion", "Muon"},
-        {"Ch. exch.", "Abs. 0p", "Abs. Np", "0p scatter", "Np scatter", "Other"},
+        {"Ch. exch.", "Abs. 0p", "Abs. Np", "0p scatter", "Np scatter", "Other pion", "Electron", "Muon"},
         {"Ch. exch.", "Abs. 0p", "Abs. Np", "0p scatter", "Np scatter", "Other pion", "Electron", "Muon"},
         {"Ch. exch.", "Abs. 0p", "Abs. Np", "0p scatter", "Np scatter", "Other pion", "Electron", "Muon"},
 
