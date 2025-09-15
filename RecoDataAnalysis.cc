@@ -163,8 +163,9 @@ void RecoDataAnalysis() {
     tree->SetBranchAddress("hitThroughTrack", &hitThroughTrack);
 
     // TOF information
-    double TOFMass;
+    double TOFMass, tofObject;
     tree->SetBranchAddress("TOFMass", &TOFMass);
+    tree->SetBranchAddress("tofObject", &tofObject);
 
     /////////////////////
     // Load histograms //
@@ -188,8 +189,9 @@ void RecoDataAnalysis() {
     ///////////////////////
 
     TH1D* hTOFMass = new TH1D("hTOFMass", "TOF Mass Distribution", 50, 0, 1200);
+    TH1D* hTOF     = new TH1D("hTOF", "TOF Distribution", 50, 0, 80);
 
-    TH1D* hTGTrackLengths         = new TH1D("hTGTrackLengths", "TGTrackLengths", 50, 0, 100);
+    TH1D* hTGTrackLengths         = new TH1D("hTGTrackLengths", "TGTrackLengths", 25, 0, 50);
     TH1D* hTGSmallTracks          = new TH1D("hTGSmallTracks", "TGSmallTracks", 10, 0, 10);
     TH1D* hTracksNearVertex       = new TH1D("hTracksNearVertex", "TracksNearVertex", 10, 0, 10);
     TH1D* hTrackLengthsNearVertex = new TH1D("hTrackLengthsNearVertex", "TrackLengthsNearVertex", 50, 0, 100);
@@ -213,6 +215,8 @@ void RecoDataAnalysis() {
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
         hTOFMass->Fill(std::abs(TOFMass));
+        // std::cout << tofObject << std::endl;
+        hTOF->Fill(tofObject);
 
         if (std::abs(TOFMass) > PI_MU_EL_MASS_CUTOFF) {
             // Not a candidate pion, muon, or electron
@@ -223,52 +227,41 @@ void RecoDataAnalysis() {
         if (WC2TPCtrkID == -99999) continue;
 
         // If did not obtain shower probabilities, skip
-        if (!obtainedProbabilities) continue;
+        // if (!obtainedProbabilities) continue;
 
         // Check if WC2TPC is through-going
         bool isPrimaryTG = !isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ);
 
-        // Look at small tracks in first 30 cm before shower cut
-        int smallTracksTPCStart = 0;
-        for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+        // Tracks in first 14 cm of upstream TPC
+        int countEarlyTracks = 0;
+        for (size_t trk_idx = 0; trk_idx < recoTrkID->size(); ++trk_idx) {
+            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
             if (
-                recoEndZ->at(trk_idx) < 30.0 && 
-                recoBeginZ->at(trk_idx) < 30.0
+                recoBeginZ->at(trk_idx) < 14.0 ||
+                recoEndZ->at(trk_idx) < 14.0
             ) {
-                double trackLength = sqrt(
-                    pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
-                    pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
-                    pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
-                );
-                if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksTPCStart++;
-                if (isPrimaryTG) hTGTrackLengths->Fill(trackLength);
+                // std::cout << "Event " << event << ", trk " << trk_idx << ": beginZ = " << recoBeginZ->at(trk_idx) << ", endZ = " << recoEndZ->at(trk_idx) << std::endl;
+                // std::cout << "     begin x = " << recoBeginX->at(trk_idx) << ", y = " << recoBeginY->at(trk_idx) << ", z = " << recoBeginZ->at(trk_idx) << std::endl;
+                // std::cout << "     end   x = " << recoEndX->at(trk_idx) << ", y = " << recoEndY->at(trk_idx) << ", z = " << recoEndZ->at(trk_idx) << std::endl;
+
+                countEarlyTracks++;
             }
         }
-        hBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
+        // std::cout << "Event " << event << " has " << countEarlyTracks << " tracks in first 14 cm of TPC" << std::endl;
+        // std::cout << std::endl;
+        // if (countEarlyTracks > 4) continue;
 
         // If high shower probability, reject
         // if (showerProb >= SHOWER_PROB_CUT) continue;
-        if (showerProb < SHOWER_PROB_CUT) hAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
+        if (obtainedProbabilities) hShowerProb->Fill(showerProb);
         numValidEvents++;
 
-        // Reject any event that has a throughgoing track
-        int numTGTracks = 0;
-        for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
-            if (
-                !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
-                !isWithinReducedVolume(recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx))
-            ) {
-                numTGTracks++;
-            }
-        }
-        hNumTGTracks->Fill(numTGTracks);
-        if (numTGTracks < 1) {
-            hShowerProb->Fill(showerProb);
-        }
-
         // Loop over reconstructed tracks
-        int numSmallTracks = 0; int numTracksNearVertex = 0;
+        int numSmallTracks = 0; int numTracksNearVertex = 0; int smallTracksTPCStart = 0; int numTGTracks = 0;
         for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
             double distanceFromStart = distance(
                 recoBeginX->at(trk_idx), WC2TPCPrimaryEndX, 
                 recoBeginY->at(trk_idx), WC2TPCPrimaryEndY,
@@ -285,15 +278,35 @@ void RecoDataAnalysis() {
                 pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
                 pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
             );
+            if (isPrimaryTG) hTGTrackLengths->Fill(trackLength);
 
-            if ((distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS)) {
+            if (
+                recoEndZ->at(trk_idx) < 30.0 && 
+                recoBeginZ->at(trk_idx) < 30.0
+            ) {
+                if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksTPCStart++;
+            }
+
+            if (
+                !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
+                !isWithinReducedVolume(recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx))
+            ) {
+                numTGTracks++;
+            }
+
+            if (
+                !isPrimaryTG &&
+                (distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS)
+            ) {
                 numTracksNearVertex++;
                 hTrackLengthsNearVertex->Fill(trackLength);
             }
             if (trackLength < SMALL_TRACK_LENGTH_CHEX) numSmallTracks++;
         }
-
+        hBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
+        hNumTGTracks->Fill(numTGTracks);
         hTracksNearVertex->Fill(numTracksNearVertex);
+        if (obtainedProbabilities && showerProb < SHOWER_PROB_CUT) hAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
 
         // Add to histogram of small tracks if primary is throughgoing
         if (isPrimaryTG) {
@@ -349,6 +362,7 @@ void RecoDataAnalysis() {
     std::vector<std::vector<TH1*>> PlotGroups = {
         // Data plots
         {hTOFMass},
+        {hTOF},
 
         // Comparisons with MC
         {hTGSmallTracks, hMCTGSmallTracks},
@@ -363,6 +377,7 @@ void RecoDataAnalysis() {
     std::vector<std::vector<TString>> PlotLabelGroups = {
         // Data plots
         {"Data"},
+        {"Data"},
 
         // Comparisons with MC
         {"Data", "MC (scaled)"},
@@ -376,7 +391,8 @@ void RecoDataAnalysis() {
 
     std::vector<TString> PlotTitles = {
         // Data plots
-        "Mass/TOFMass",
+        "TOF/TOFMass",
+        "TOF/TOF",
 
         // Comparisons with MC
         "TGPrimary/TGSmallTracks",
@@ -391,6 +407,7 @@ void RecoDataAnalysis() {
     std::vector<TString> XLabels = {
         // Data plots
         "Mass [MeV/c^2]",
+        "Time of flight [ns]",
 
         // Comparisons with MC
         "# of small tracks",
@@ -404,6 +421,7 @@ void RecoDataAnalysis() {
 
     std::vector<TString> YLabels = {
         // Data plots
+        "Counts",
         "Counts",
 
         // Comparisons with MC
@@ -419,6 +437,7 @@ void RecoDataAnalysis() {
     std::vector<bool> PlotStacked = {
         // Data plots
         false,
+        false,
 
         // Comparisons with MC
         false,
@@ -432,6 +451,7 @@ void RecoDataAnalysis() {
 
     std::vector<std::vector<bool>> PlotsAsPoints = {
         // Data plots
+        {true},
         {true},
 
         // Comparisons with MC

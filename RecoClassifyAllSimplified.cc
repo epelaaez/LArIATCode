@@ -465,7 +465,7 @@ void RecoClassifyAllSimplified() {
     // Data-MC comparison histograms //
     ///////////////////////////////////
 
-    TH1D* hMCTGTrackLengths         = new TH1D("hMCTGTrackLengths", "hMCTGTrackLengths;;", 50, 0, 100);
+    TH1D* hMCTGTrackLengths         = new TH1D("hMCTGTrackLengths", "hMCTGTrackLengths;;", 25, 0, 50);
     TH1D* hMCTGSmallTracks          = new TH1D("hMCTGSmallTracks", "hMCTGSmallTracks;;", 10, 0, 10);
     TH1D* hMCTracksNearVertex       = new TH1D("hMCTracksNearVertex", "hMCTracksNearVertex;;", 10, 0, 10);
     TH1D* hMCTrackLengthsNearVertex = new TH1D("hMCTrackLengthsNearVertex", "hMCTrackLengthsNearVertex;;", 50, 0, 100);
@@ -496,39 +496,18 @@ void RecoClassifyAllSimplified() {
         ////////////////////////////////////////
 
         // For data-MC comparisons
-        if (WC2TPCtrkID != -99999 && obtainedProbabilities) {
-            hMCShowerProb->Fill(showerProb);
-            int smallTracksTPCStart = 0;
-            for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
-                if (
-                    recoEndZ->at(trk_idx) < 30.0 && 
-                    recoBeginZ->at(trk_idx) < 30.0
-                ) {
-                    double trackLength = sqrt(
-                        pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
-                        pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
-                        pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
-                    );
-                    if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksTPCStart++;
-                    if (!isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) {
-                        hMCTGTrackLengths->Fill(trackLength);
-                    }
-                }
-            }
-            hMCBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
-            if (showerProb < SHOWER_PROB_CUT) hMCAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
-        }
+        if (WC2TPCtrkID != -99999) {
+            if (obtainedProbabilities) hMCShowerProb->Fill(showerProb);
 
-        if (
-            WC2TPCtrkID != -99999 &&
-            obtainedProbabilities // &&
-            // showerProb < SHOWER_PROB_CUT
-        ) {
             int smallTracksComp = 0; 
             int tracksNearVertexComp = 0;
             int numTGTracksComp = 0;
+            int smallTracksTPCStart = 0;
 
             for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+                // Skip WC2TPC match itself
+                if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
                 if (
                     !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
                     !isWithinReducedVolume(recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx))
@@ -552,16 +531,32 @@ void RecoClassifyAllSimplified() {
                     pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
                     pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
                 );
+                if (!isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) {
+                    hMCTGTrackLengths->Fill(trackLength);
+                }
 
-                if (distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS) {
+                // Start of TPC
+                if (
+                    recoEndZ->at(trk_idx) < 30.0 && 
+                    recoBeginZ->at(trk_idx) < 30.0
+                ) {
+                    if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksTPCStart++;
+                }
+
+                if (
+                    isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ) &&
+                    (distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS)
+                ) {
                     tracksNearVertexComp++;
                     hMCTrackLengthsNearVertex->Fill(trackLength);
                 }
                 if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksComp++;
             }
-
+            hMCBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
+            if (obtainedProbabilities && showerProb < SHOWER_PROB_CUT) hMCAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
             hMCTracksNearVertex->Fill(tracksNearVertexComp);
             hMCNumTGTracks->Fill(numTGTracksComp);
+
             if (!isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) {
                 hMCTGSmallTracks->Fill(smallTracksComp);
                 hMCSmallVsTGTracks->Fill(smallTracksComp, numTGTracksComp);
@@ -803,6 +798,8 @@ void RecoClassifyAllSimplified() {
 
         int numSmallTracks = 0;
         for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
             // Have to re-check track ordering for stitched case
             double distanceFromStart = distance(
                 recoBeginX->at(trk_idx), breakPointX, 
