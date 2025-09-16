@@ -135,9 +135,8 @@ const double NeutronMass = 939.5654133;  // in MeV
 double HIT_DEDX_THRESHOLD = 40.;
 
 // Bins for energy bins
-double LOWER_BOUND_KE = 0.;
-double UPPER_BOUND_KE = 500.;
-int    NUM_BINS_KE    = 10;
+static const std::vector<double> ARRAY_KE_BINS = {0., 100., 150., 200., 250., 300., 350., 400., 450., 500., 600.};
+static const int                   NUM_BINS_KE = ARRAY_KE_BINS.size() - 1;
 
 // TOF mass cut
 double PI_MU_EL_MASS_CUTOFF = 350.;
@@ -163,6 +162,7 @@ void printTwoDPlots(const TString& dir, const std::vector<TH2*>& plots, const st
 void Overlay_dEdx_RR_Reference_PP(TGraph* gProton, TGraph* gPion, TGraph* gMIP, bool truncate = false, double MIPStart = 0., bool addLegend = true, TVirtualPad* pad = gPad);
 void printEfficiencyPlots(TString dir, int fontStyle, double textSize, std::vector<TEfficiency*> efficiencies, std::vector<TString> titles, std::vector<TString> xlabels);
 void printBackgroundInfo(TH1D* background_histo, std::ostream& os);
+void reweightOneDHisto(TH1D* histo, double weight);
 
 bool isWithinReducedVolume(double x, double y, double z);
 bool isWithinActiveVolume(double x, double y, double z);
@@ -177,8 +177,9 @@ double getClusterElongation(HitCluster cluster);
 double getClusterWidth(HitCluster cluster);
 
 int isSecondaryInteractionAbsorption(std::vector<int> daughtersPDG, std::vector<string> daughtersProcess, std::vector<double> daughtersKE);
-int getCorrespondingBin(double value, int num_bins, double low, double high);
 int flattenIndex (int beta, int j, int S);
+int getBin(double data, const std::vector<double>& edges);
+
 std::pair<int,int> unflattenIndex(int f, int S);
 
 std::vector<double> calcLinearityProfile(std::vector<double>& vx, std::vector<double>& vy, std::vector<double>& vz, int nb);
@@ -201,4 +202,4 @@ TMatrixD Matrix_C(Int_t n, Int_t type);
 //   - AddSmear is additional smearing matrix after unfolding
 //   - WF is the elements of Wiener Filter
 //   - Covariance matrix of the unfolded spectrum
-TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrixD Covariance, Int_t C_type, Float_t Norm_type, TMatrixD& AddSmear, TVectorD& WF, TMatrixD& UnfoldCov, TMatrixD& CovRotation);
+TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrixD Covariance, Int_t C_type, Float_t Norm_type, TMatrixD& AddSmear, TVectorD& WF, TMatrixD& UnfoldCov, TMatrixD& CovRotation, TMatrixD& AddSmearInverse);

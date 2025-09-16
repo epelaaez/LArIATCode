@@ -267,21 +267,21 @@ void RecoClassifyAllSimplified() {
     TH1D* hNotPionAbs0p       = new TH1D("hNotPionAbs0p", "hNotPionAbs0p;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
     // Incident kinetic energy
-    TH1D* hIncidentKE         = new TH1D("hIncidentKE", "hIncidentKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hIncidentKEPion     = new TH1D("hIncidentKEPion", "hIncidentKEPion;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hIncidentKEElectron = new TH1D("hIncidentKEElectron", "hIncidentKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hIncidentKEMuon     = new TH1D("hIncidentKEMuon", "hIncidentKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueIncidentKE     = new TH1D("hTrueIncidentKE", "hTrueIncidentKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hIncidentKE         = new TH1D("hIncidentKE", "hIncidentKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hIncidentKEPion     = new TH1D("hIncidentKEPion", "hIncidentKEPion;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hIncidentKEElectron = new TH1D("hIncidentKEElectron", "hIncidentKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hIncidentKEMuon     = new TH1D("hIncidentKEMuon", "hIncidentKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueIncidentKE     = new TH1D("hTrueIncidentKE", "hTrueIncidentKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Interacting pion abs 0p energy
-    TH1D* hPionAbs0pKE         = new TH1D("hPionAbs0pKE", "hPionAbs0pKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKETrue     = new TH1D("hPionAbs0PKETrue", "hPionAbs0PKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKEAbsNp    = new TH1D("hPionAbs0pKEAbsNp", "hPionAbs0pKEAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKEScatter  = new TH1D("hPionAbs0pKEScatter", "hPionAbs0pKEScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKEChExch   = new TH1D("hPionAbs0pKEChExch", "hPionAbs0pKEChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKEMuon     = new TH1D("hPionAbs0pKEMuon", "hPionAbs0pKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKEElectron = new TH1D("hPionAbs0pKEElectron", "hPionAbs0pKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKEOther    = new TH1D("hPionAbs0pKEOther", "hPionAbs0pKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbs0pKE         = new TH1D("hPionAbs0pKE", "hPionAbs0pKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKETrue     = new TH1D("hPionAbs0PKETrue", "hPionAbs0PKETrue;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEAbsNp    = new TH1D("hPionAbs0pKEAbsNp", "hPionAbs0pKEAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEScatter  = new TH1D("hPionAbs0pKEScatter", "hPionAbs0pKEScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEChExch   = new TH1D("hPionAbs0pKEChExch", "hPionAbs0pKEChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEMuon     = new TH1D("hPionAbs0pKEMuon", "hPionAbs0pKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEElectron = new TH1D("hPionAbs0pKEElectron", "hPionAbs0pKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEOther    = new TH1D("hPionAbs0pKEOther", "hPionAbs0pKEOther;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Estimated backgrounds for pion abs 0p
     std::vector<TH1*> PionAbs0pBkg = {
@@ -289,14 +289,14 @@ void RecoClassifyAllSimplified() {
     };
 
     // Interacting pion abs Np energy
-    TH1D* hPionAbsNpKE         = new TH1D("hPionAbsNpKE", "hPionAbsNpKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKETrue     = new TH1D("hPionAbsNpKETrue", "hPionAbsNpKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKEAbs0p    = new TH1D("hPionAbsNpKEAbs0p", "hPionAbsNpKEAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKEScatter  = new TH1D("hPionAbsNpKEScatter", "hPionAbsNpKEScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKEChExch   = new TH1D("hPionAbsNpKEChExch", "hPionAbsNpKEChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKEMuon     = new TH1D("hPionAbsNpKEMuon", "hPionAbsNpKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKEElectron = new TH1D("hPionAbsNpKEElectron", "hPionAbsNpKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKEOther    = new TH1D("hPionAbsNpKEOther", "hPionAbsNpKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbsNpKE         = new TH1D("hPionAbsNpKE", "hPionAbsNpKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKETrue     = new TH1D("hPionAbsNpKETrue", "hPionAbsNpKETrue;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKEAbs0p    = new TH1D("hPionAbsNpKEAbs0p", "hPionAbsNpKEAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKEScatter  = new TH1D("hPionAbsNpKEScatter", "hPionAbsNpKEScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKEChExch   = new TH1D("hPionAbsNpKEChExch", "hPionAbsNpKEChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKEMuon     = new TH1D("hPionAbsNpKEMuon", "hPionAbsNpKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKEElectron = new TH1D("hPionAbsNpKEElectron", "hPionAbsNpKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKEOther    = new TH1D("hPionAbsNpKEOther", "hPionAbsNpKEOther;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Estimated backgrounds for pion abs Np
     std::vector<TH1*> PionAbsNpBkg = {
@@ -304,14 +304,14 @@ void RecoClassifyAllSimplified() {
     };
 
     // Interacting pion scattering energy
-    TH1D* hPionScatterKE         = new TH1D("hPionScatterKE", "hPionScatterKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionScatterKETrue     = new TH1D("hPionScatterKETrue", "hPionScatterKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionScatterKEAbs0p    = new TH1D("hPionScatterKEAbs0p", "hPionScatterKEAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionScatterKEAbsNp    = new TH1D("hPionScatterKEAbsNp", "hPionScatterKEAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionScatterKEChExch   = new TH1D("hPionScatterKEChExch", "hPionScatterKEChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionScatterKEMuon     = new TH1D("hPionScatterKEMuon", "hPionScatterKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionScatterKEElectron = new TH1D("hPionScatterKEElectron", "hPionScatterKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionScatterKEOther    = new TH1D("hPionScatterKEOther", "hPionScatterKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionScatterKE         = new TH1D("hPionScatterKE", "hPionScatterKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionScatterKETrue     = new TH1D("hPionScatterKETrue", "hPionScatterKETrue;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionScatterKEAbs0p    = new TH1D("hPionScatterKEAbs0p", "hPionScatterKEAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionScatterKEAbsNp    = new TH1D("hPionScatterKEAbsNp", "hPionScatterKEAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionScatterKEChExch   = new TH1D("hPionScatterKEChExch", "hPionScatterKEChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionScatterKEMuon     = new TH1D("hPionScatterKEMuon", "hPionScatterKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionScatterKEElectron = new TH1D("hPionScatterKEElectron", "hPionScatterKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionScatterKEOther    = new TH1D("hPionScatterKEOther", "hPionScatterKEOther;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Estimated backgrounds for pion scattering
     std::vector<TH1*> PionScatterBkg = {
@@ -319,14 +319,14 @@ void RecoClassifyAllSimplified() {
     };
 
     // Interacting pion charge exchange energy
-    TH1D* hPionChExchKE         = new TH1D("hPionChExchKE", "hPionChExchKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKETrue     = new TH1D("hPionChExchKETrue", "hPionChExchKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKEAbs0p    = new TH1D("hPionChExchKEAbs0p", "hPionChExchKEAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKEAbsNp    = new TH1D("hPionChExchKEAbsNp", "hPionChExchKEAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKEScatter  = new TH1D("hPionChExchKEScatter", "hPionChExchKEScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKEMuon     = new TH1D("hPionChExchKEMuon", "hPionChExchKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKEElectron = new TH1D("hPionChExchKEElectron", "hPionChExchKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKEOther    = new TH1D("hPionChExchKEOther", "hPionChExchKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionChExchKE         = new TH1D("hPionChExchKE", "hPionChExchKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKETrue     = new TH1D("hPionChExchKETrue", "hPionChExchKETrue;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKEAbs0p    = new TH1D("hPionChExchKEAbs0p", "hPionChExchKEAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKEAbsNp    = new TH1D("hPionChExchKEAbsNp", "hPionChExchKEAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKEScatter  = new TH1D("hPionChExchKEScatter", "hPionChExchKEScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKEMuon     = new TH1D("hPionChExchKEMuon", "hPionChExchKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKEElectron = new TH1D("hPionChExchKEElectron", "hPionChExchKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKEOther    = new TH1D("hPionChExchKEOther", "hPionChExchKEOther;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Estimated backgrounds for pion charge exchange
     std::vector<TH1*> PionChExchBkg = {
@@ -344,108 +344,108 @@ void RecoClassifyAllSimplified() {
     };
 
     // True abs 0p
-    TH1D* hTrueAbs0pKE            = new TH1D("hTrueAbs0pKE", "hTrueAbs0pKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKEAsAbs0p     = new TH1D("hTrueAbs0pKEAsAbs0p", "hTrueAbs0pKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKEAsAbsNp     = new TH1D("hTrueAbs0pKEAsAbsNp", "hTrueAbs0pKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKEAsScatter   = new TH1D("hTrueAbs0pKEAsScatter", "hTrueAbs0pKEAsScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKEAsChExch    = new TH1D("hTrueAbs0pKEAsChExch", "hTrueAbs0pKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKERejected    = new TH1D("hTrueAbs0pKERejected", "hTrueAbs0pKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKE            = new TH1D("hTrueAbs0pKE", "hTrueAbs0pKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKEAsAbs0p     = new TH1D("hTrueAbs0pKEAsAbs0p", "hTrueAbs0pKEAsAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKEAsAbsNp     = new TH1D("hTrueAbs0pKEAsAbsNp", "hTrueAbs0pKEAsAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKEAsScatter   = new TH1D("hTrueAbs0pKEAsScatter", "hTrueAbs0pKEAsScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKEAsChExch    = new TH1D("hTrueAbs0pKEAsChExch", "hTrueAbs0pKEAsChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejected    = new TH1D("hTrueAbs0pKERejected", "hTrueAbs0pKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // For each TRUE energy bin, what are abs 0p events reconstructed as?
     std::vector<std::vector<TH1*>> TrueAbs0pAsByBin;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
         std::vector<TH1*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueAbs0p_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs 0p KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+            TH1* hTempHist = new TH1D(Form("hTrueAbs0p_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs 0p KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueAbs0pAsByBin.push_back(TempVec);
     }
 
-    TH1D* hTrueAbs0pKERejDataProds = new TH1D("hTrueAbs0pKERejDataProds", "hTrueAbs0pKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKERejElectron  = new TH1D("hTrueAbs0pKERejElectron", "hTrueAbs0pKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKERejRedVol    = new TH1D("hTrueAbs0pKERejRedVol", "hTrueAbs0pKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKERejPID       = new TH1D("hTrueAbs0pKERejPID", "hTrueAbs0pKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKERejManyPions = new TH1D("hTrueAbs0pKERejManyPions", "hTrueAbs0pKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKERejClusters  = new TH1D("hTrueAbs0pKERejClusters", "hTrueAbs0pKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKERejDataProds = new TH1D("hTrueAbs0pKERejDataProds", "hTrueAbs0pKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejElectron  = new TH1D("hTrueAbs0pKERejElectron", "hTrueAbs0pKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejRedVol    = new TH1D("hTrueAbs0pKERejRedVol", "hTrueAbs0pKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejPID       = new TH1D("hTrueAbs0pKERejPID", "hTrueAbs0pKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejManyPions = new TH1D("hTrueAbs0pKERejManyPions", "hTrueAbs0pKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejClusters  = new TH1D("hTrueAbs0pKERejClusters", "hTrueAbs0pKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // True abs Np
-    TH1D* hTrueAbsNpKE          = new TH1D("hTrueAbsNpKE", "hTrueAbsNpKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKEAsAbs0p   = new TH1D("hTrueAbsNpKEAsAbs0p", "hTrueAbsNpKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKEAsAbsNp   = new TH1D("hTrueAbsNpKEAsAbsNp", "hTrueAbsNpKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKEAsScatter = new TH1D("hTrueAbsNpKEAsScatter", "hTrueAbsNpKEAsScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKEAsChExch  = new TH1D("hTrueAbsNpKEAsChExch", "hTrueAbsNpKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKERejected  = new TH1D("hTrueAbsNpKERejected", "hTrueAbsNpKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKE          = new TH1D("hTrueAbsNpKE", "hTrueAbsNpKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKEAsAbs0p   = new TH1D("hTrueAbsNpKEAsAbs0p", "hTrueAbsNpKEAsAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKEAsAbsNp   = new TH1D("hTrueAbsNpKEAsAbsNp", "hTrueAbsNpKEAsAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKEAsScatter = new TH1D("hTrueAbsNpKEAsScatter", "hTrueAbsNpKEAsScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKEAsChExch  = new TH1D("hTrueAbsNpKEAsChExch", "hTrueAbsNpKEAsChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejected  = new TH1D("hTrueAbsNpKERejected", "hTrueAbsNpKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // For each TRUE energy bin, what are abs Np events reconstructed as?
     std::vector<std::vector<TH1*>> TrueAbsNpAsByBin;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
         std::vector<TH1*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueAbsNp_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Np KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+            TH1* hTempHist = new TH1D(Form("hTrueAbsNp_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Np KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueAbsNpAsByBin.push_back(TempVec);
     }
 
-    TH1D* hTrueAbsNpKERejDataProds = new TH1D("hTrueAbsNpKERejDataProds", "hTrueAbsNpKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKERejElectron  = new TH1D("hTrueAbsNpKERejElectron", "hTrueAbsNpKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKERejRedVol    = new TH1D("hTrueAbsNpKERejRedVol", "hTrueAbsNpKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKERejPID       = new TH1D("hTrueAbsNpKERejPID", "hTrueAbsNpKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKERejManyPions = new TH1D("hTrueAbsNpKERejManyPions", "hTrueAbsNpKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKERejClusters  = new TH1D("hTrueAbsNpKERejClusters", "hTrueAbsNpKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKERejDataProds = new TH1D("hTrueAbsNpKERejDataProds", "hTrueAbsNpKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejElectron  = new TH1D("hTrueAbsNpKERejElectron", "hTrueAbsNpKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejRedVol    = new TH1D("hTrueAbsNpKERejRedVol", "hTrueAbsNpKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejPID       = new TH1D("hTrueAbsNpKERejPID", "hTrueAbsNpKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejManyPions = new TH1D("hTrueAbsNpKERejManyPions", "hTrueAbsNpKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejClusters  = new TH1D("hTrueAbsNpKERejClusters", "hTrueAbsNpKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // True scatter
-    TH1D* hTrueScatterKE          = new TH1D("hTrueScatterKE", "hTrueScatterKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterKEAsAbs0p   = new TH1D("hTrueScatterKEAsAbs0p", "hTrueScatterKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterKEAsAbsNp   = new TH1D("hTrueScatterKEAsAbsNp", "hTrueScatterKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterKEAsScatter = new TH1D("hTrueScatterKEAsScatter", "hTrueScatterKEAsScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterKEAsChExch  = new TH1D("hTrueScatterKEAsChExch", "hTrueScatterKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterKERejected  = new TH1D("hTrueScatterKERejected", "hTrueScatterKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterKE          = new TH1D("hTrueScatterKE", "hTrueScatterKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKEAsAbs0p   = new TH1D("hTrueScatterKEAsAbs0p", "hTrueScatterKEAsAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKEAsAbsNp   = new TH1D("hTrueScatterKEAsAbsNp", "hTrueScatterKEAsAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKEAsScatter = new TH1D("hTrueScatterKEAsScatter", "hTrueScatterKEAsScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKEAsChExch  = new TH1D("hTrueScatterKEAsChExch", "hTrueScatterKEAsChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejected  = new TH1D("hTrueScatterKERejected", "hTrueScatterKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // For each TRUE energy bin, what are scatter events reconstructed as?
     std::vector<std::vector<TH1*>> TrueScatterAsByBin;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
         std::vector<TH1*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueAbsScatter_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Scatter KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+            TH1* hTempHist = new TH1D(Form("hTrueAbsScatter_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Scatter KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueScatterAsByBin.push_back(TempVec);
     }
 
-    TH1D* hTrueScatterKERejDataProds = new TH1D("hTrueScatterKERejDataProds", "hTrueScatterKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterKERejElectron  = new TH1D("hTrueScatterKERejElectron", "hTrueScatterKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterKERejRedVol    = new TH1D("hTrueScatterKERejRedVol", "hTrueScatterKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterKERejPID       = new TH1D("hTrueScatterKERejPID", "hTrueScatterKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterKERejManyPions = new TH1D("hTrueScatterKERejManyPions", "hTrueScatterKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterKERejClusters  = new TH1D("hTrueScatterKERejClusters", "hTrueScatterKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterKERejDataProds = new TH1D("hTrueScatterKERejDataProds", "hTrueScatterKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejElectron  = new TH1D("hTrueScatterKERejElectron", "hTrueScatterKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejRedVol    = new TH1D("hTrueScatterKERejRedVol", "hTrueScatterKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejPID       = new TH1D("hTrueScatterKERejPID", "hTrueScatterKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejManyPions = new TH1D("hTrueScatterKERejManyPions", "hTrueScatterKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejClusters  = new TH1D("hTrueScatterKERejClusters", "hTrueScatterKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // True charge exchange
-    TH1D* hTrueChExchKE          = new TH1D("hTrueChExchKE", "hTrueChExchKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKEAsAbs0p   = new TH1D("hTrueChExchKEAsAbs0p", "hTrueChExchKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKEAsAbsNp   = new TH1D("hTrueChExchKEAsAbsNp", "hTrueChExchKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKEAsScatter = new TH1D("hTrueChExchKEAsScatter", "hTrueChExchKEAsScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKEAsChExch  = new TH1D("hTrueChExchKEAsChExch", "hTrueChExchKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKERejected  = new TH1D("hTrueChExchKERejected", "hTrueChExchKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKE          = new TH1D("hTrueChExchKE", "hTrueChExchKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsAbs0p   = new TH1D("hTrueChExchKEAsAbs0p", "hTrueChExchKEAsAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsAbsNp   = new TH1D("hTrueChExchKEAsAbsNp", "hTrueChExchKEAsAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsScatter = new TH1D("hTrueChExchKEAsScatter", "hTrueChExchKEAsScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsChExch  = new TH1D("hTrueChExchKEAsChExch", "hTrueChExchKEAsChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejected  = new TH1D("hTrueChExchKERejected", "hTrueChExchKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // For each TRUE energy bin, what are charge exchange events reconstructed as?
     std::vector<std::vector<TH1*>> TrueChExchAsByBin;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
         std::vector<TH1*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueChExch_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Ch Exch KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+            TH1* hTempHist = new TH1D(Form("hTrueChExch_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Ch Exch KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueChExchAsByBin.push_back(TempVec);
     }
 
-    TH1D* hTrueChExchKERejDataProds = new TH1D("hTrueChExchKERejDataProds", "hTrueChExchKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKERejElectron  = new TH1D("hTrueChExchKERejElectron", "hTrueChExchKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKERejRedVol    = new TH1D("hTrueChExchKERejRedVol", "hTrueChExchKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKERejPID       = new TH1D("hTrueChExchKERejPID", "hTrueChExchKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKERejManyPions = new TH1D("hTrueChExchKERejManyPions", "hTrueChExchKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKERejClusters  = new TH1D("hTrueChExchKERejClusters", "hTrueChExchKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKERejDataProds = new TH1D("hTrueChExchKERejDataProds", "hTrueChExchKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejElectron  = new TH1D("hTrueChExchKERejElectron", "hTrueChExchKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejRedVol    = new TH1D("hTrueChExchKERejRedVol", "hTrueChExchKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejPID       = new TH1D("hTrueChExchKERejPID", "hTrueChExchKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejManyPions = new TH1D("hTrueChExchKERejManyPions", "hTrueChExchKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejClusters  = new TH1D("hTrueChExchKERejClusters", "hTrueChExchKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     //////////////
     // Matrices //
@@ -489,7 +489,7 @@ void RecoClassifyAllSimplified() {
         tree->GetEntry(i);
 
         // Make script go faster
-        // if (i > 10000) break;
+        // if (i > 20000) break;
 
         ////////////////////////////////////////
         // Histograms for data-MC comparisons //
@@ -566,6 +566,7 @@ void RecoClassifyAllSimplified() {
                     double threshold = hMCTGNumSmallTracksVsThresh->GetXaxis()->GetBinCenter(threshBin);
                     int nSmallTracks = 0;
                     for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+                        if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
                         double trackLength = sqrt(
                             pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
                             pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
@@ -588,7 +589,7 @@ void RecoClassifyAllSimplified() {
         }
 
         // Get true energy bin
-        int TrueEnergyBin = getBin(truthPrimaryVertexKE * 1000, LOWER_BOUND_KE, UPPER_BOUND_KE, NUM_BINS_KE);
+        int TrueEnergyBin = getBin(truthPrimaryVertexKE * 1000, ARRAY_KE_BINS);
 
         // Add true incident KE
         if (validTrueIncidentKE) {
@@ -1404,6 +1405,7 @@ void RecoClassifyAllSimplified() {
 
     // Objects to store stuff
     TMatrixD AddSmear(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    TMatrixD AddSmearInverse(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
     TVectorD WF(NUM_SIGNAL_TYPES * NUM_BINS_KE);
     TMatrixD UnfoldCov(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
     TMatrixD CovRotation(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
@@ -1413,22 +1415,27 @@ void RecoClassifyAllSimplified() {
         Signal,
         Measure,
         Covariance,
-        2,
-        0.5,
+        2, // 0: unit, 2: second derivative
+        0.5, // smoothing parameter
         AddSmear,
         WF,
         UnfoldCov,
-        CovRotation
+        CovRotation,
+        AddSmearInverse
     );
-    TVectorD SmearedTrue = AddSmear * Signal;
+    TVectorD SmearedTrue  = AddSmear * Signal;
+    TVectorD UnSmearedUnf = AddSmearInverse * UnfoldedReco;
 
     // Organize results
     std::vector<TH1*> UnfoldedRecoHistos;
+    std::vector<TH1*> UnSmearedUnfRecoHistos;
     std::vector<TH1*> SmearedTrueHistos;
     for (int iBin = 0; iBin < NUM_SIGNAL_TYPES; ++iBin) {
-        TH1D* unfoldedHist = new TH1D(Form("hUnfoldedRecoVec_%d", iBin), Form("Unfolded Reco Vec %d", iBin), NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-        TH1D* smearedHist = new TH1D(Form("hSmearedTrueVec_%d", iBin), Form("Smeared True Vec %d", iBin), NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+        TH1D* unfoldedHist          = new TH1D(Form("hUnfoldedRecoVec_%d", iBin), Form("Unfolded Reco Vec %d", iBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+        TH1D* unSmearedUnfoldedHist = new TH1D(Form("hUnSmearedUnfoldedRecoVec_%d", iBin), Form("Unsmeared Unfolded Reco Vec %d", iBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+        TH1D* smearedHist           = new TH1D(Form("hSmearedTrueVec_%d", iBin), Form("Smeared True Vec %d", iBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
         UnfoldedRecoHistos.push_back(unfoldedHist);
+        UnSmearedUnfRecoHistos.push_back(unSmearedUnfoldedHist);
         SmearedTrueHistos.push_back(smearedHist);
     }
 
@@ -1439,6 +1446,9 @@ void RecoClassifyAllSimplified() {
         double err = std::sqrt(UnfoldCov[iFlatIndex][iFlatIndex]);
         UnfoldedRecoHistos[signalBin]->SetBinContent(energyBin + 1, UnfoldedReco(iFlatIndex));
         UnfoldedRecoHistos[signalBin]->SetBinError(energyBin + 1, err);
+
+        // TODO: get error for un-smeared histos
+        UnSmearedUnfRecoHistos[signalBin]->SetBinContent(energyBin + 1, UnSmearedUnf(iFlatIndex));
 
         SmearedTrueHistos[signalBin]->SetBinContent(energyBin + 1, SmearedTrue(iFlatIndex));
     }
@@ -1453,7 +1463,11 @@ void RecoClassifyAllSimplified() {
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
     );
-    M2H(Covariance, hCovariance); M2H(AddSmear, hSmearing);
+    TH2D* hSmearingInv = new TH2D("hSmearingInverse", "Smearing Inverse Matrix;True (i, #alpha); Reco (j, #beta)", 
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
+    );
+    M2H(Covariance, hCovariance); M2H(AddSmear, hSmearing); M2H(AddSmearInverse, hSmearingInv);
 
     ///////////////////////////////////
     // Corrections for incident flux //
@@ -1487,23 +1501,45 @@ void RecoClassifyAllSimplified() {
     // Get cross-section using corrrected fluxes //
     ///////////////////////////////////////////////
 
-    TH1D* hPionAbs0pCrossSection     = new TH1D("hPionAbs0pCrossSection", "hPionAbs0pCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTruePionAbs0pCrossSection = new TH1D("hTruePionAbs0pCrossSection", "hTruePionAbs0pCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbs0pCrossSection            = new TH1D("hPionAbs0pCrossSection", "hPionAbs0pCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hUnSmearedPionAbs0pCrossSection   = new TH1D("hUnSmearedPionAbs0pCrossSection", "hUnSmearedPionAbs0pCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hSmearedTruePionAbs0pCrossSection = new TH1D("hSmearedTruePionAbs0pCrossSection", "hSmearedTruePionAbs0pCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTruePionAbs0pCrossSection        = new TH1D("hTruePionAbs0pCrossSection", "hTruePionAbs0pCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D* hPionAbsNpCrossSection     = new TH1D("hPionAbsNpCrossSection", "hPionAbsNpCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTruePionAbsNpCrossSection = new TH1D("hTruePionAbsNpCrossSection", "hTruePionAbsNpCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbsNpCrossSection            = new TH1D("hPionAbsNpCrossSection", "hPionAbsNpCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hUnSmearedPionAbsNpCrossSection   = new TH1D("hUnSmearedPionAbsNpCrossSection", "hUnSmearedPionAbsNpCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hSmearedTruePionAbsNpCrossSection = new TH1D("hSmearedTruePionAbsNpCrossSection", "hSmearedTruePionAbsNpCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTruePionAbsNpCrossSection        = new TH1D("hTruePionAbsNpCrossSection", "hTruePionAbsNpCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D* hPionScatterCrossSection     = new TH1D("hPionScatterCrossSection", "hPionScatterCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTruePionScatterCrossSection = new TH1D("hTruePionScatterCrossSection", "hTruePionScatterCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionScatterCrossSection            = new TH1D("hPionScatterCrossSection", "hPionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hUnSmearedPionScatterCrossSection   = new TH1D("hUnSmearedPionScatterCrossSection", "hUnSmearedPionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hSmearedTruePionScatterCrossSection = new TH1D("hSmearedTruePionScatterCrossSection", "hSmearedTruePionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTruePionScatterCrossSection        = new TH1D("hTruePionScatterCrossSection", "hTruePionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D* hPionChExchCrossSection     = new TH1D("hPionChExchCrossSection", "hPionChExchCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTruePionChExchCrossSection = new TH1D("hTruePionChExchCrossSection", "hTruePionChExchCrossSection;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionChExchCrossSection            = new TH1D("hPionChExchCrossSection", "hPionChExchCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hUnSmearedPionChExchCrossSection   = new TH1D("hUnSmearedPionChExchCrossSection", "hUnSmearedPionChExchCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hSmearedTruePionChExchCrossSection = new TH1D("hSmearedTruePionChExchCrossSection", "hSmearedTruePionChExchCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTruePionChExchCrossSection        = new TH1D("hTruePionChExchCrossSection", "hTruePionChExchCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     std::vector<TH1D*> UnfoldedCrossSections = {
         hPionAbs0pCrossSection,
         hPionAbsNpCrossSection,
         hPionScatterCrossSection,
         hPionChExchCrossSection
+    };
+
+    std::vector<TH1D*> UnSmearedUnfoldedCrossSections = {
+        hUnSmearedPionAbs0pCrossSection,
+        hUnSmearedPionAbsNpCrossSection,
+        hUnSmearedPionScatterCrossSection,
+        hUnSmearedPionChExchCrossSection
+    };
+
+    std::vector<TH1D*> SmearedTrueCrossSections = {
+        hSmearedTruePionAbs0pCrossSection,
+        hSmearedTruePionAbsNpCrossSection,
+        hSmearedTruePionScatterCrossSection,
+        hSmearedTruePionChExchCrossSection
     };
 
     std::vector<TH1D*> TrueCrossSections = {
@@ -1514,8 +1550,10 @@ void RecoClassifyAllSimplified() {
     };
 
     for (int i = 0; i < UnfoldedCrossSections.size(); ++i) {
-        TH1D* unfXSec  = UnfoldedCrossSections[i];
-        TH1D* trueXSec = TrueCrossSections[i];
+        TH1D* unfXSec          = UnfoldedCrossSections[i];
+        TH1D* unSmearedUnfXSec = UnSmearedUnfoldedCrossSections[i];
+        TH1D* smearedTrueXSec  = SmearedTrueCrossSections[i];
+        TH1D* trueXSec         = TrueCrossSections[i];
 
         for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
             double incidentErr     = hIncidentKE->GetBinError(iBin);
@@ -1524,24 +1562,48 @@ void RecoClassifyAllSimplified() {
             double interactingErr     = UnfoldedRecoHistos[i]->GetBinError(iBin);
             double interactingContent = UnfoldedRecoHistos[i]->GetBinContent(iBin);
 
+            double unSmearedInteractingContent = UnSmearedUnfRecoHistos[i]->GetBinContent(iBin);
+
             // we compute error as δσ / σ = δN_int / N_int + δN_inc / N_inc (conservative upper bound)
             double crossSection    = interactingContent / incidentContent;
             double crossSectionErr = crossSection * ((interactingErr / interactingContent) + (incidentErr / incidentContent));
             unfXSec->SetBinContent(iBin, crossSection);
             unfXSec->SetBinError(iBin, crossSectionErr);
 
-            // True cross-section, no error bars
-            trueXSec->SetBinContent(iBin, SmearedTrueHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin));
+            // TODO: error
+            double unsmearedCrossSection = unSmearedInteractingContent / incidentContent;
+            unSmearedUnfXSec->SetBinContent(iBin, unsmearedCrossSection);
+
+            // True cross-sections, no error bars
+            smearedTrueXSec->SetBinContent(iBin, SmearedTrueHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin));
+            trueXSec->SetBinContent(iBin, TotalEventsHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin));
         }
 
         // Incident KE corrections
         unfXSec->Multiply(hPsiInc);
         unfXSec->Divide(hCInc);
 
+        unSmearedUnfXSec->Multiply(hPsiInc);
+        unSmearedUnfXSec->Divide(hCInc);
+
         // Scale units
         unfXSec->Scale(1.0 / (number_density * slab_width * 1e-28));
+        unSmearedUnfXSec->Scale(1.0 / (number_density * slab_width * 1e-28));
+        smearedTrueXSec->Scale(1.0 / (number_density * slab_width * 1e-28));
         trueXSec->Scale(1.0 / (number_density * slab_width * 1e-28));
+
+        // Make contents per 50 MeV
+        reweightOneDHisto(unfXSec, 50.);
+        reweightOneDHisto(unSmearedUnfXSec, 50.);
+        reweightOneDHisto(smearedTrueXSec, 50.);
+        reweightOneDHisto(trueXSec, 50.);
     }
+
+    ///////////////////////////
+    // Make plots per 50 MeV //
+    ///////////////////////////
+
+    // TODO: create function that scales histogram bins per 50 MeV
 
     //////////////////
     // Create plots //
@@ -1583,11 +1645,23 @@ void RecoClassifyAllSimplified() {
         {hTrueScatterKERejDataProds, hTrueScatterKERejElectron, hTrueScatterKERejRedVol, hTrueScatterKERejPID, hTrueScatterKERejManyPions, hTrueScatterKERejClusters},
         {hTrueChExchKERejDataProds, hTrueChExchKERejElectron, hTrueChExchKERejRedVol, hTrueChExchKERejPID, hTrueChExchKERejManyPions, hTrueChExchKERejClusters},
 
-        // Cross-sections
-        {hTruePionAbs0pCrossSection, hPionAbs0pCrossSection},
-        {hTruePionAbsNpCrossSection, hPionAbsNpCrossSection},
-        {hTruePionScatterCrossSection, hPionScatterCrossSection},
-        {hTruePionChExchCrossSection, hPionChExchCrossSection}
+        // True cross-section comparison (reg vs true space)
+        {hTruePionAbs0pCrossSection, hSmearedTruePionAbs0pCrossSection},
+        {hTruePionAbsNpCrossSection, hSmearedTruePionAbsNpCrossSection},
+        {hTruePionScatterCrossSection, hSmearedTruePionScatterCrossSection},
+        {hTruePionChExchCrossSection, hSmearedTruePionChExchCrossSection},
+
+        // Cross-sections (reg space)
+        {hSmearedTruePionAbs0pCrossSection, hPionAbs0pCrossSection},
+        {hSmearedTruePionAbsNpCrossSection, hPionAbsNpCrossSection},
+        {hSmearedTruePionScatterCrossSection, hPionScatterCrossSection},
+        {hSmearedTruePionChExchCrossSection, hPionChExchCrossSection},
+
+        // Cross-sections (true space)
+        {hTruePionAbs0pCrossSection, hUnSmearedPionAbs0pCrossSection},
+        {hTruePionAbsNpCrossSection, hUnSmearedPionAbsNpCrossSection},
+        {hTruePionScatterCrossSection, hUnSmearedPionScatterCrossSection},
+        {hTruePionChExchCrossSection, hUnSmearedPionChExchCrossSection}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -1613,11 +1687,23 @@ void RecoClassifyAllSimplified() {
         {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
         {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
 
-        // Cross-sections
-        {"True", "Unfolded"},
-        {"True", "Unfolded"},
-        {"True", "Unfolded"},
-        {"True", "Unfolded"}
+        // True cross-section comparison (reg vs true space)
+        {"True (t)", "True (r)"},
+        {"True (t)", "True (r)"},
+        {"True (t)", "True (r)"},
+        {"True (t)", "True (r)"},
+
+        // Cross-sections (reg space)
+        {"True (r)", "Unf. (r)"},
+        {"True (r)", "Unf. (r)"},
+        {"True (r)", "Unf. (r)"},
+        {"True (r)", "Unf. (r)"},
+
+        // Cross-sections (true space)
+        {"True (t)", "Unf. (t)"},
+        {"True (t)", "Unf. (t)"},
+        {"True (t)", "Unf. (t)"},
+        {"True (t)", "Unf. (t)"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -1643,11 +1729,23 @@ void RecoClassifyAllSimplified() {
         "Rejected/TrueScatterRej",
         "Rejected/TrueChExchRej",
 
-        // Cross-sections
+        // True cross-section comparison (reg vs true space)
+        "CrossSection/ComparePionAbs0pCrossSection",
+        "CrossSection/ComparePionAbsNpCrossSection",
+        "CrossSection/ComparePionScatterCrossSection",
+        "CrossSection/ComparePionChExchCrossSection",
+
+        // Cross-sections (reg space)
         "CrossSection/PionAbs0pCrossSection",
         "CrossSection/PionAbsNpCrossSection",
         "CrossSection/PionScatterCrossSection",
-        "CrossSection/PionChExchCrossSection"
+        "CrossSection/PionChExchCrossSection",
+
+        // Cross-sections (true space)
+        "CrossSection/UnSmearedPionAbs0pCrossSection",
+        "CrossSection/UnSmearedPionAbsNpCrossSection",
+        "CrossSection/UnSmearedPionScatterCrossSection",
+        "CrossSection/UnSmearedPionChExchCrossSection"
     };
 
     std::vector<TString> XLabels = {
@@ -1673,7 +1771,19 @@ void RecoClassifyAllSimplified() {
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
 
-        // Cross-sections
+        // True cross-section comparison (reg vs true space)
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+
+        // Cross-sections (reg space)
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+
+        // Cross-sections (true space)
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
@@ -1703,11 +1813,23 @@ void RecoClassifyAllSimplified() {
         "Counts",
         "Counts",
 
-        // Cross-sections
-        "Cross section [barn]",
-        "Cross section [barn]",
-        "Cross section [barn]",
-        "Cross section [barn]"
+        // True cross-section comparison (reg vs true space)
+        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 50 MeV",
+
+        // Cross-sections (reg space)
+        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 50 MeV",
+
+        // Cross-sections (true space)
+        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 50 MeV"
     };
 
     std::vector<bool> PlotStacked = {
@@ -1733,7 +1855,19 @@ void RecoClassifyAllSimplified() {
         true,
         true,
 
-        // Cross-sections
+        // True cross-section comparison (reg vs true space)
+        false,
+        false,
+        false,
+        false,
+
+        // Cross-sections (reg space)
+        false,
+        false,
+        false,
+        false,
+
+        // Cross-sections (true space)
         false,
         false,
         false,
@@ -1763,7 +1897,19 @@ void RecoClassifyAllSimplified() {
         {false, false, false, false, false, false},
         {false, false, false, false, false, false},
 
-        // Cross-sections
+        // True cross-section comparison (reg vs true space)
+        {false, false},
+        {false, false},
+        {false, false},
+        {false, false},
+
+        // Cross-sections (reg space)
+        {false, true},
+        {false, true},
+        {false, true},
+        {false, true},
+
+        // Cross-sections (true space)
         {false, true},
         {false, true},
         {false, true},
@@ -1781,8 +1927,16 @@ void RecoClassifyAllSimplified() {
     for (size_t i = 0; i < UnfoldedRecoHistos.size(); ++i) {
         PlotGroups.push_back({SmearedTrueHistos[i], UnfoldedRecoHistos[i]});
         PlotsAsPoints.push_back({false, true});
-        PlotLabelGroups.push_back({"Smeared true", "Unfolded"});
+        PlotLabelGroups.push_back({"True (r)", "Unf. (r)"});
         PlotTitles.push_back("Unfolded/" + UnfHistTitles[i]);
+        XLabels.push_back("Kinetic energy [MeV]");
+        YLabels.push_back("Counts");
+        PlotStacked.push_back(false);
+
+        PlotGroups.push_back({TotalEventsHistos[i], UnSmearedUnfRecoHistos[i]});
+        PlotsAsPoints.push_back({false, true});
+        PlotLabelGroups.push_back({"True (t)", "Unf. (t)"});
+        PlotTitles.push_back("Unfolded/UnSmeared" + UnfHistTitles[i] );
         XLabels.push_back("Kinetic energy [MeV]");
         YLabels.push_back("Counts");
         PlotStacked.push_back(false);
@@ -1807,22 +1961,26 @@ void RecoClassifyAllSimplified() {
     std::vector<TH2*> TwoDPlots = {
         hResponseMatrix,
         hCovariance, 
-        hSmearing
+        hSmearing,
+        hSmearingInv
     };
 
     std::vector<TString> TwoDTitles = {
         "Response/ResponseMatrix",
         "Covariance/UnfoldedCovariance",
-        "Smearing/AddSmearing"
+        "Smearing/AddSmearing",
+        "Smearing/AddSmearingInverse"
     };
 
     std::vector<std::pair<double,double>> TwoDRanges = {
+        {0, 0},
         {0, 0},
         {0, 0},
         {0, 0}
     };
 
     std::vector<bool> TwoDDisplayNumbers = {
+        false,
         false,
         false,
         false

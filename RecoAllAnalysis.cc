@@ -633,91 +633,91 @@ void RecoAllAnalysis() {
     TH1D* hPionNpAbsTrueCrossSection = (TH1D*) TrueXSDirectory->Get("hCrossSectionPionAbsNp");
 
     // Reco cross sections
-    TH1D *hIncidentKE  = new TH1D("hRecoIncidentKE", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKE   = new TH1D("hPionAbsKE", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionAbsKE = new TH1D("h0pPionAbsKE", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionAbsKE = new TH1D("hNpPionAbsKE", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hIncidentKE  = new TH1D("hRecoIncidentKE", "Incident KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionAbsKE   = new TH1D("hPionAbsKE", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionAbsKE = new TH1D("h0pPionAbsKE", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionAbsKE = new TH1D("hNpPionAbsKE", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
     
-    TH1D *hIncidentKECorrect   = new TH1D("hRecoIncidentKECorrect", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hIncidentKEMuons     = new TH1D("hIncidentKEMuons", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hIncidentKEElectrons = new TH1D("hIncidentKEElectrons", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hIncidentKECorrect   = new TH1D("hRecoIncidentKECorrect", "Incident KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hIncidentKEMuons     = new TH1D("hIncidentKEMuons", "Incident KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hIncidentKEElectrons = new TH1D("hIncidentKEElectrons", "Incident KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Background breakdown for all absorption
-    TH1D *hPionAbsKECorrect      = new TH1D("hPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKE0pScattering = new TH1D("hPionAbsKE0pScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKENpScattering = new TH1D("hPionAbsKENpScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKEChEx         = new TH1D("hPionAbsKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKEMuons        = new TH1D("hPionAbsKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKEElectrons    = new TH1D("hPionAbsKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionAbsKEOther        = new TH1D("hPionAbsKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKECorrect      = new TH1D("hPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionAbsKE0pScattering = new TH1D("hPionAbsKE0pScattering", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionAbsKENpScattering = new TH1D("hPionAbsKENpScattering", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionAbsKEChEx         = new TH1D("hPionAbsKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionAbsKEMuons        = new TH1D("hPionAbsKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionAbsKEElectrons    = new TH1D("hPionAbsKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionAbsKEOther        = new TH1D("hPionAbsKEOther", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Background breakdown for 0p absorption
-    TH1D *h0pPionAbsKECorrect      = new TH1D("h0pPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionAbsKENpAbs        = new TH1D("h0pPionAbsKENpAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionAbsKE0pScattering = new TH1D("h0pPionAbsKE0pScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionAbsKENpScattering = new TH1D("h0pPionAbsKENpScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionAbsKEChEx         = new TH1D("h0pPionAbsKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionAbsKEMuons        = new TH1D("h0pPionAbsKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionAbsKEElectrons    = new TH1D("h0pPionAbsKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionAbsKEOther        = new TH1D("h0pPionAbsKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionAbsKECorrect      = new TH1D("h0pPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionAbsKENpAbs        = new TH1D("h0pPionAbsKENpAbs", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionAbsKE0pScattering = new TH1D("h0pPionAbsKE0pScattering", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionAbsKENpScattering = new TH1D("h0pPionAbsKENpScattering", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionAbsKEChEx         = new TH1D("h0pPionAbsKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionAbsKEMuons        = new TH1D("h0pPionAbsKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionAbsKEElectrons    = new TH1D("h0pPionAbsKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionAbsKEOther        = new TH1D("h0pPionAbsKEOther", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Background breakdown for Np absorption
-    TH1D *hNpPionAbsKECorrect      = new TH1D("hNpPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionAbsKE0pAbs        = new TH1D("hNpPionAbsKE0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionAbsKE0pScattering = new TH1D("hNpPionAbsKE0pScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionAbsKENpScattering = new TH1D("hNpPionAbsKENpScattering", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionAbsKEChEx         = new TH1D("hNpPionAbsKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionAbsKEMuons        = new TH1D("hNpPionAbsKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionAbsKEElectrons    = new TH1D("hNpPionAbsKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionAbsKEOther        = new TH1D("hNpPionAbsKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionAbsKECorrect      = new TH1D("hNpPionAbsKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionAbsKE0pAbs        = new TH1D("hNpPionAbsKE0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionAbsKE0pScattering = new TH1D("hNpPionAbsKE0pScattering", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionAbsKENpScattering = new TH1D("hNpPionAbsKENpScattering", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionAbsKEChEx         = new TH1D("hNpPionAbsKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionAbsKEMuons        = new TH1D("hNpPionAbsKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionAbsKEElectrons    = new TH1D("hNpPionAbsKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionAbsKEOther        = new TH1D("hNpPionAbsKEOther", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D *hPionAbsRecoCrossSection   = new TH1D("hPionAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPion0pAbsRecoCrossSection = new TH1D("hPion0pAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionNpAbsRecoCrossSection = new TH1D("hPionNpAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsRecoCrossSection   = new TH1D("hPionAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPion0pAbsRecoCrossSection = new TH1D("hPion0pAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionNpAbsRecoCrossSection = new TH1D("hPionNpAbsRecoCrossSection", "Cross section [barn]", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Histograms for corrections
-    TH1D *hIncidentKEOnlyPions  = new TH1D("hIncidentKEOnlyPions", "Incident KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hIncidentKEOnlyPions  = new TH1D("hIncidentKEOnlyPions", "Incident KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D *hPionAbsKEOnlyAbs     = new TH1D("hPionAbsKEOnlyAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionAbsKEOnly0pAbs = new TH1D("h0pPionAbsKEOnly0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionAbsKEOnlyNpAbs = new TH1D("hNpPionAbsKEOnlyNpAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionAbsKEOnlyAbs     = new TH1D("hPionAbsKEOnlyAbs", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionAbsKEOnly0pAbs = new TH1D("h0pPionAbsKEOnly0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionAbsKEOnlyNpAbs = new TH1D("hNpPionAbsKEOnlyNpAbs", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     ///////////////////////////
     // Scattering histograms //
     ///////////////////////////
 
-    TH1D *hPionScatteringKE   = new TH1D("hPionScatteringKE", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionScatteringKE0p = new TH1D("hPionScatteringKE0p", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionScatteringKENp = new TH1D("hPionScatteringKENp", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionScatteringKE   = new TH1D("hPionScatteringKE", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionScatteringKE0p = new TH1D("hPionScatteringKE0p", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionScatteringKENp = new TH1D("hPionScatteringKENp", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Background breakdown for all scattering
-    TH1D *hPionScatteringKECorrect   = new TH1D("hPionScatteringKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionScatteringKE0pAbs     = new TH1D("hPionScatteringKE0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionScatteringKENpAbs     = new TH1D("hPionScatteringKENpAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionScatteringKEChEx      = new TH1D("hPionScatteringKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionScatteringKEMuons     = new TH1D("hPionScatteringKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionScatteringKEElectrons = new TH1D("hPionScatteringKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hPionScatteringKEOther     = new TH1D("hPionScatteringKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hPionScatteringKECorrect   = new TH1D("hPionScatteringKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionScatteringKE0pAbs     = new TH1D("hPionScatteringKE0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionScatteringKENpAbs     = new TH1D("hPionScatteringKENpAbs", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionScatteringKEChEx      = new TH1D("hPionScatteringKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionScatteringKEMuons     = new TH1D("hPionScatteringKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionScatteringKEElectrons = new TH1D("hPionScatteringKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hPionScatteringKEOther     = new TH1D("hPionScatteringKEOther", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Background breakdown for 0p scattering
-    TH1D *h0pPionScatteringKECorrect   = new TH1D("h0pPionScatteringKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionScatteringKENpScatter = new TH1D("h0pPionScatteringKENpScatter", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionScatteringKE0pAbs     = new TH1D("h0pPionScatteringKE0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionScatteringKENpAbs     = new TH1D("h0pPionScatteringKENpAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionScatteringKEChEx      = new TH1D("h0pPionScatteringKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionScatteringKEMuons     = new TH1D("h0pPionScatteringKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionScatteringKEElectrons = new TH1D("h0pPionScatteringKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *h0pPionScatteringKEOther     = new TH1D("h0pPionScatteringKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *h0pPionScatteringKECorrect   = new TH1D("h0pPionScatteringKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionScatteringKENpScatter = new TH1D("h0pPionScatteringKENpScatter", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionScatteringKE0pAbs     = new TH1D("h0pPionScatteringKE0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionScatteringKENpAbs     = new TH1D("h0pPionScatteringKENpAbs", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionScatteringKEChEx      = new TH1D("h0pPionScatteringKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionScatteringKEMuons     = new TH1D("h0pPionScatteringKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionScatteringKEElectrons = new TH1D("h0pPionScatteringKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *h0pPionScatteringKEOther     = new TH1D("h0pPionScatteringKEOther", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
     
     // Background breakdown for Np scattering
-    TH1D *hNpPionScatteringKECorrect   = new TH1D("hNpPionScatteringKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionScatteringKE0pScatter = new TH1D("hNpPionScatteringKE0pScatter", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionScatteringKE0pAbs     = new TH1D("hNpPionScatteringKE0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionScatteringKENpAbs     = new TH1D("hNpPionScatteringKENpAbs", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionScatteringKEChEx      = new TH1D("hNpPionScatteringKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionScatteringKEMuons     = new TH1D("hNpPionScatteringKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionScatteringKEElectrons = new TH1D("hNpPionScatteringKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D *hNpPionScatteringKEOther     = new TH1D("hNpPionScatteringKEOther", "Interacting KE [MeV]", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D *hNpPionScatteringKECorrect   = new TH1D("hNpPionScatteringKECorrect", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionScatteringKE0pScatter = new TH1D("hNpPionScatteringKE0pScatter", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionScatteringKE0pAbs     = new TH1D("hNpPionScatteringKE0pAbs", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionScatteringKENpAbs     = new TH1D("hNpPionScatteringKENpAbs", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionScatteringKEChEx      = new TH1D("hNpPionScatteringKEChEx", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionScatteringKEMuons     = new TH1D("hNpPionScatteringKEMuons", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionScatteringKEElectrons = new TH1D("hNpPionScatteringKEElectrons", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D *hNpPionScatteringKEOther     = new TH1D("hNpPionScatteringKEOther", "Interacting KE [MeV]", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     /////////////////////////////////
     // Files for event information //
@@ -802,6 +802,8 @@ void RecoAllAnalysis() {
             hAllScatteringVertexKE->Fill(trajectoryInteractionKE);
 
             for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
+                if (recoTrkID->at(iRecoTrk) == WC2TPCtrkID) continue;
+
                 if (
                     (matchedIdentity->at(iRecoTrk) == -211) && // pion
                     (distance(
@@ -835,6 +837,8 @@ void RecoAllAnalysis() {
             InelasticScatteringOutgoingKE.push_back(truthScatteredPionKE);
 
             for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
+                if (recoTrkID->at(iRecoTrk) == WC2TPCtrkID) continue;
+                
                 if (
                     (matchedIdentity->at(iRecoTrk) == -211) &&       // pion
                     (matchedProcess->at(iRecoTrk) == "pi-Inelastic") // inelastic process
@@ -865,6 +869,8 @@ void RecoAllAnalysis() {
 
             // Look at reco tracks that match to tracks in the shower
             for (int iRecoTrk = 0; iRecoTrk < matchedTrkID->size(); ++iRecoTrk) {
+                if (recoTrkID->at(iRecoTrk) == WC2TPCtrkID) continue;
+
                 if (std::find(chExchShowerIDs->begin(), chExchShowerIDs->end(), matchedTrkID->at(iRecoTrk)) != chExchShowerIDs->end()) {
                     double trk_length = TMath::Sqrt(
                         TMath::Power(recoEndX->at(iRecoTrk) - recoBeginX->at(iRecoTrk), 2) +
@@ -1731,6 +1737,8 @@ void RecoAllAnalysis() {
 
                 // If reco'ed
                 for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
+                    if (recoTrkID->at(iRecoTrk) == WC2TPCtrkID) continue;
+
                     if ((matchedIdentity->at(iRecoTrk) == -211) && (matchedTrkID->at(iRecoTrk) != WC2TPCtrkID) && (matchedProcess->at(iRecoTrk) == "pi-Inelastic")) {
                         hInelasticScatteringReconstructed0pBkg->Fill(truthScatteredPionKE);
                         break;
@@ -1753,6 +1761,8 @@ void RecoAllAnalysis() {
 
                 // If reco'ed
                 for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
+                    if (recoTrkID->at(iRecoTrk) == WC2TPCtrkID) continue;
+
                     if ((matchedIdentity->at(iRecoTrk) == -211) && (matchedTrkID->at(iRecoTrk) != WC2TPCtrkID) && (matchedProcess->at(iRecoTrk) == "pi-Inelastic")) {
                         hInelasticScatteringReconstructedNpBkg->Fill(truthScatteredPionKE);
                         break;

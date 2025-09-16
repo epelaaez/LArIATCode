@@ -5,11 +5,6 @@
 #include <algorithm>
 #include "TGraph.h"
 
-int getCorrespondingBin(double value, int num_bins, double low, double high) {
-    double bin_size = (high - low) / (double) num_bins;
-    return std::ceil(value / bin_size); // 1 is first bin, 2 second, etc.
-}
-
 double energyLossCalculation() { return 40.; }
 
 double energyLossCalculation(double x, double px, bool isData) {
@@ -708,6 +703,9 @@ void printOneDPlots(
             double ymax = getGlobalMax(Plots);
             double ymin = getGlobalMin(Plots);
 
+            double origYmin = h0->GetYaxis()->GetXmin();
+            double origYmax = h0->GetYaxis()->GetXmax();
+
             double yr_high = 1.15 * (ymax > 0 ? ymax : 1.0);
             double yr_low  = (ymin < 0) ? 1.15 * ymin : 0.0;
 
@@ -720,6 +718,9 @@ void printOneDPlots(
             PlotCanvas->cd();
             legendPad->Draw(); legendPad->cd(); leg->Draw();
             PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
+
+            // Reset min and max for future plotting
+            h0->GetYaxis()->SetRangeUser(origYmin, origYmax);
         }
 
         delete PlotCanvas; // cleans pads too
@@ -889,18 +890,50 @@ void V2H(const TVectorD vec, TH1D* histo) {
     }
 }
 
-int getBin(double data, double lower, double upper, int nBins) {
-    if (data < lower || data >= upper) {
+int getBin(double data, const std::vector<double>& edges) {
+    // edges should be sorted ascending and have size nBins+1
+    if (edges.size() < 2) return -1;
+
+    // Out of range
+    if (data < edges.front() || data >= edges.back()) {
         return -1;
     }
 
-    double binWidth = (upper - lower) / nBins;
-    int bin = static_cast<int>((data - lower) / binWidth);
+    // Find bin index
+    for (size_t i = 0; i + 1 < edges.size(); ++i) {
+        if (data >= edges[i] && data < edges[i+1]) {
+            return static_cast<int>(i); // 0-based index
+        }
+    }
 
-    // Safety check in case of edge case at upper bound
-    if (bin >= nBins) bin = nBins - 1;
+    // Edge case: exactly equal to last edge
+    if (data == edges.back()) {
+        return static_cast<int>(edges.size() - 2);
+    }
 
-    return bin; // 0-based index
+    return -1; // Shouldn’t happen
+}
+
+void reweightOneDHisto(TH1D* histo, double weight) {
+    // Safety checks
+    if (!histo || weight == 0) return;
+
+    for (int i = 1; i <= histo->GetNbinsX(); ++i) {
+        double content = histo->GetBinContent(i);
+        double error   = histo->GetBinError(i);
+        double width   = histo->GetBinWidth(i);
+
+        // scaling factor = width / weight
+        double factor = width / weight;
+
+        if (factor != 0) {
+            content /= factor;
+            error   /= factor;  // scale errors consistently
+        }
+
+        histo->SetBinContent(i, content);
+        histo->SetBinError(i, error);
+    }
 }
 
 //////////////////////////
@@ -977,7 +1010,8 @@ TVectorD WienerSVD(
     TMatrixD& AddSmear,    // 
     TVectorD& WF,          //
     TMatrixD& UnfoldCov,   //
-    TMatrixD& CovRotation  //
+    TMatrixD& CovRotation,  //
+    TMatrixD& AddSmearInverse
 ) {
     Int_t m = Response.GetNrows(); // measure, M
     Int_t n = Response.GetNcols(); // signal, S
@@ -1043,7 +1077,7 @@ TVectorD WienerSVD(
     TVectorD S = V_t*Signal;
     // Wiener Filter 
     TMatrixD W(n, n);
-    TMatrixD W0(n, n);
+    TMatrixD W0(n, n);    
     for(Int_t i=0; i<n; i++) {
         for(Int_t j=0; j<n; j++) {
             W(i, j)  = 0;
@@ -1058,8 +1092,15 @@ TVectorD WienerSVD(
         }
     }
 
+    // Inverse of smearing matrix
+    TMatrixD W0_inv = W0;
+    for (int i = 0; i < W0_inv.GetNrows(); ++i) {
+        W0_inv(i,i ) = 1.0 / W0(i,i);
+    }
+    AddSmearInverse = C_inv * V * W0_inv * V_t * C;
+    AddSmear        = C_inv * V * W0 * V_t * C;
+
     TVectorD unfold = C_inv*V*W*D_t*U_t*M;
-    AddSmear = C_inv*V*W0*V_t*C;
 
     // covariance matrix of the unfolded spectrum
     TMatrixD covRotation = C_inv*V*W*D_t*U_t*Q;

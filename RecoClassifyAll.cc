@@ -261,165 +261,165 @@ void RecoClassifyAll() {
     TH1D* hNotPionAbs0p       = new TH1D("hNotPionAbs0p", "hNotPionAbs0p;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
     // Incident kinetic energy
-    TH1D* hIncidentKE         = new TH1D("hIncidentKE", "hIncidentKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hIncidentKEPion     = new TH1D("hIncidentKEPion", "hIncidentKEPion;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hIncidentKEElectron = new TH1D("hIncidentKEElectron", "hIncidentKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hIncidentKEMuon     = new TH1D("hIncidentKEMuon", "hIncidentKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hIncidentKE         = new TH1D("hIncidentKE", "hIncidentKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hIncidentKEPion     = new TH1D("hIncidentKEPion", "hIncidentKEPion;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hIncidentKEElectron = new TH1D("hIncidentKEElectron", "hIncidentKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hIncidentKEMuon     = new TH1D("hIncidentKEMuon", "hIncidentKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Interacting pion abs 0p energy
-    TH1D* hPionAbs0pKE          = new TH1D("hPionAbs0pKE", "hPionAbs0pKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKETrue      = new TH1D("hPionAbs0PKETrue", "hPionAbs0PKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKEAbsNp     = new TH1D("hPionAbs0pKEAbsNp", "hPionAbs0pKEAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKE0pScatter = new TH1D("hPionAbs0pKE0pScatter", "hPionAbs0pKE0pScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKENpScatter = new TH1D("hPionAbs0pKENpScatter", "hPionAbs0pKENpScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKEChExch    = new TH1D("hPionAbs0pKEChExch", "hPionAbs0pKEChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKEMuon      = new TH1D("hPionAbs0pKEMuon", "hPionAbs0pKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKEElectron  = new TH1D("hPionAbs0pKEElectron", "hPionAbs0pKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbs0pKEOther     = new TH1D("hPionAbs0pKEOther", "hPionAbs0pKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbs0pKE          = new TH1D("hPionAbs0pKE", "hPionAbs0pKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKETrue      = new TH1D("hPionAbs0PKETrue", "hPionAbs0PKETrue;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEAbsNp     = new TH1D("hPionAbs0pKEAbsNp", "hPionAbs0pKEAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKE0pScatter = new TH1D("hPionAbs0pKE0pScatter", "hPionAbs0pKE0pScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKENpScatter = new TH1D("hPionAbs0pKENpScatter", "hPionAbs0pKENpScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEChExch    = new TH1D("hPionAbs0pKEChExch", "hPionAbs0pKEChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEMuon      = new TH1D("hPionAbs0pKEMuon", "hPionAbs0pKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEElectron  = new TH1D("hPionAbs0pKEElectron", "hPionAbs0pKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEOther     = new TH1D("hPionAbs0pKEOther", "hPionAbs0pKEOther;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Interacting pion abs Np energy
-    TH1D* hPionAbsNpKE          = new TH1D("hPionAbsNpKE", "hPionAbsNpKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKETrue      = new TH1D("hPionAbsNpKETrue", "hPionAbsNpKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKEAbs0p     = new TH1D("hPionAbsNpKEAbs0p", "hPionAbsNpKEAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKE0pScatter = new TH1D("hPionAbsNpKE0pScatter", "hPionAbsNpKE0pScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKENpScatter = new TH1D("hPionAbsNpKENpScatter", "hPionAbsNpKENpScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKEChExch    = new TH1D("hPionAbsNpKEChExch", "hPionAbsNpKEChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKEMuon      = new TH1D("hPionAbsNpKEMuon", "hPionAbsNpKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKEElectron  = new TH1D("hPionAbsNpKEElectron", "hPionAbsNpKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionAbsNpKEOther     = new TH1D("hPionAbsNpKEOther", "hPionAbsNpKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionAbsNpKE          = new TH1D("hPionAbsNpKE", "hPionAbsNpKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKETrue      = new TH1D("hPionAbsNpKETrue", "hPionAbsNpKETrue;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKEAbs0p     = new TH1D("hPionAbsNpKEAbs0p", "hPionAbsNpKEAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKE0pScatter = new TH1D("hPionAbsNpKE0pScatter", "hPionAbsNpKE0pScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKENpScatter = new TH1D("hPionAbsNpKENpScatter", "hPionAbsNpKENpScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKEChExch    = new TH1D("hPionAbsNpKEChExch", "hPionAbsNpKEChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKEMuon      = new TH1D("hPionAbsNpKEMuon", "hPionAbsNpKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKEElectron  = new TH1D("hPionAbsNpKEElectron", "hPionAbsNpKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpKEOther     = new TH1D("hPionAbsNpKEOther", "hPionAbsNpKEOther;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Interacting pion 0p scattering energy
-    TH1D* hPion0pScatterKE          = new TH1D("hPion0pScatterKE", "hPion0pScatterKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPion0pScatterKETrue      = new TH1D("hPion0pScatterKETrue", "hPion0pScatterKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPion0pScatterKEAbs0p     = new TH1D("hPion0pScatterKEAbs0p", "hPion0pScatterKEAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPion0pScatterKEAbsNp     = new TH1D("hPion0pScatterKEAbsNp", "hPion0pScatterKEAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPion0pScatterKENpScatter = new TH1D("hPion0pScatterKENpScatter", "hPion0pScatterKENpScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPion0pScatterKEChExch    = new TH1D("hPion0pScatterKEChExch", "hPion0pScatterKEChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPion0pScatterKEMuon      = new TH1D("hPion0pScatterKEMuon", "hPion0pScatterKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPion0pScatterKEElectron  = new TH1D("hPion0pScatterKEElectron", "hPion0pScatterKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPion0pScatterKEOther     = new TH1D("hPion0pScatterKEOther", "hPion0pScatterKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPion0pScatterKE          = new TH1D("hPion0pScatterKE", "hPion0pScatterKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPion0pScatterKETrue      = new TH1D("hPion0pScatterKETrue", "hPion0pScatterKETrue;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPion0pScatterKEAbs0p     = new TH1D("hPion0pScatterKEAbs0p", "hPion0pScatterKEAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPion0pScatterKEAbsNp     = new TH1D("hPion0pScatterKEAbsNp", "hPion0pScatterKEAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPion0pScatterKENpScatter = new TH1D("hPion0pScatterKENpScatter", "hPion0pScatterKENpScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPion0pScatterKEChExch    = new TH1D("hPion0pScatterKEChExch", "hPion0pScatterKEChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPion0pScatterKEMuon      = new TH1D("hPion0pScatterKEMuon", "hPion0pScatterKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPion0pScatterKEElectron  = new TH1D("hPion0pScatterKEElectron", "hPion0pScatterKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPion0pScatterKEOther     = new TH1D("hPion0pScatterKEOther", "hPion0pScatterKEOther;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Interacting pion Np scattering energy
-    TH1D* hPionNpScatterKE          = new TH1D("hPionNpScatterKE", "hPionNpScatterKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionNpScatterKETrue      = new TH1D("hPionNpScatterKETrue", "hPionNpScatterKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionNpScatterKEAbs0p     = new TH1D("hPionNpScatterKEAbs0p", "hPionNpScatterKEAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionNpScatterKEAbsNp     = new TH1D("hPionNpScatterKEAbsNp", "hPionNpScatterKEAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionNpScatterKE0pScatter = new TH1D("hPionNpScatterKE0pScatter", "hPionNpScatterKE0pScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionNpScatterKEChExch    = new TH1D("hPionNpScatterKEChExch", "hPionNpScatterKEChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionNpScatterKEMuon      = new TH1D("hPionNpScatterKEMuon", "hPionNpScatterKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionNpScatterKEElectron  = new TH1D("hPionNpScatterKEElectron", "hPionNpScatterKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionNpScatterKEOther     = new TH1D("hPionNpScatterKEOther", "hPionNpScatterKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionNpScatterKE          = new TH1D("hPionNpScatterKE", "hPionNpScatterKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionNpScatterKETrue      = new TH1D("hPionNpScatterKETrue", "hPionNpScatterKETrue;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionNpScatterKEAbs0p     = new TH1D("hPionNpScatterKEAbs0p", "hPionNpScatterKEAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionNpScatterKEAbsNp     = new TH1D("hPionNpScatterKEAbsNp", "hPionNpScatterKEAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionNpScatterKE0pScatter = new TH1D("hPionNpScatterKE0pScatter", "hPionNpScatterKE0pScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionNpScatterKEChExch    = new TH1D("hPionNpScatterKEChExch", "hPionNpScatterKEChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionNpScatterKEMuon      = new TH1D("hPionNpScatterKEMuon", "hPionNpScatterKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionNpScatterKEElectron  = new TH1D("hPionNpScatterKEElectron", "hPionNpScatterKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionNpScatterKEOther     = new TH1D("hPionNpScatterKEOther", "hPionNpScatterKEOther;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Interacting pion charge exchange energy
-    TH1D* hPionChExchKE          = new TH1D("hPionChExchKE", "hPionChExchKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKETrue      = new TH1D("hPionChExchKETrue", "hPionChExchKETrue;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKEAbs0p     = new TH1D("hPionChExchKEAbs0p", "hPionChExchKEAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKEAbsNp     = new TH1D("hPionChExchKEAbsNp", "hPionChExchKEAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKE0pScatter = new TH1D("hPionChExchKE0pScatter", "hPionChExchKE0pScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKENpScatter = new TH1D("hPionChExchKENpScatter", "hPionChExchKENpScatter;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKEMuon      = new TH1D("hPionChExchKEMuon", "hPionChExchKEMuon;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKEElectron  = new TH1D("hPionChExchKEElectron", "hPionChExchKEElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hPionChExchKEOther     = new TH1D("hPionChExchKEOther", "hPionChExchKEOther;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hPionChExchKE          = new TH1D("hPionChExchKE", "hPionChExchKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKETrue      = new TH1D("hPionChExchKETrue", "hPionChExchKETrue;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKEAbs0p     = new TH1D("hPionChExchKEAbs0p", "hPionChExchKEAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKEAbsNp     = new TH1D("hPionChExchKEAbsNp", "hPionChExchKEAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKE0pScatter = new TH1D("hPionChExchKE0pScatter", "hPionChExchKE0pScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKENpScatter = new TH1D("hPionChExchKENpScatter", "hPionChExchKENpScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKEMuon      = new TH1D("hPionChExchKEMuon", "hPionChExchKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKEElectron  = new TH1D("hPionChExchKEElectron", "hPionChExchKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionChExchKEOther     = new TH1D("hPionChExchKEOther", "hPionChExchKEOther;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     std::vector<TH1*> RecoSignals = {
         hPionAbs0pKE, hPionAbsNpKE, hPion0pScatterKE, hPionNpScatterKE, hPionChExchKE
     };
 
     // True abs 0p
-    TH1D* hTrueAbs0pKE            = new TH1D("hTrueAbs0pKE", "hTrueAbs0pKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKEAsAbs0p     = new TH1D("hTrueAbs0pKEAsAbs0p", "hTrueAbs0pKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKEAsAbsNp     = new TH1D("hTrueAbs0pKEAsAbsNp", "hTrueAbs0pKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKEAsScatter0p = new TH1D("hTrueAbs0pKEAsScatter0p", "hTrueAbs0pKEAsScatter0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKEAsScatterNp = new TH1D("hTrueAbs0pKEAsScatterNp", "hTrueAbs0pKEAsScatterNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKEAsChExch    = new TH1D("hTrueAbs0pKEAsChExch", "hTrueAbs0pKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKERejected    = new TH1D("hTrueAbs0pKERejected", "hTrueAbs0pKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKE            = new TH1D("hTrueAbs0pKE", "hTrueAbs0pKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKEAsAbs0p     = new TH1D("hTrueAbs0pKEAsAbs0p", "hTrueAbs0pKEAsAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKEAsAbsNp     = new TH1D("hTrueAbs0pKEAsAbsNp", "hTrueAbs0pKEAsAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKEAsScatter0p = new TH1D("hTrueAbs0pKEAsScatter0p", "hTrueAbs0pKEAsScatter0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKEAsScatterNp = new TH1D("hTrueAbs0pKEAsScatterNp", "hTrueAbs0pKEAsScatterNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKEAsChExch    = new TH1D("hTrueAbs0pKEAsChExch", "hTrueAbs0pKEAsChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejected    = new TH1D("hTrueAbs0pKERejected", "hTrueAbs0pKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D* hTrueAbs0pKERejDataProds = new TH1D("hTrueAbs0pKERejDataProds", "hTrueAbs0pKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKERejElectron  = new TH1D("hTrueAbs0pKERejElectron", "hTrueAbs0pKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKERejRedVol    = new TH1D("hTrueAbs0pKERejRedVol", "hTrueAbs0pKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKERejPID       = new TH1D("hTrueAbs0pKERejPID", "hTrueAbs0pKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKERejManyPions = new TH1D("hTrueAbs0pKERejManyPions", "hTrueAbs0pKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbs0pKERejClusters  = new TH1D("hTrueAbs0pKERejClusters", "hTrueAbs0pKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbs0pKERejDataProds = new TH1D("hTrueAbs0pKERejDataProds", "hTrueAbs0pKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejElectron  = new TH1D("hTrueAbs0pKERejElectron", "hTrueAbs0pKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejRedVol    = new TH1D("hTrueAbs0pKERejRedVol", "hTrueAbs0pKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejPID       = new TH1D("hTrueAbs0pKERejPID", "hTrueAbs0pKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejManyPions = new TH1D("hTrueAbs0pKERejManyPions", "hTrueAbs0pKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejClusters  = new TH1D("hTrueAbs0pKERejClusters", "hTrueAbs0pKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     std::vector<TH1*> TrueAbs0pAs = {
         hTrueAbs0pKEAsAbs0p, hTrueAbs0pKEAsAbsNp, hTrueAbs0pKEAsScatter0p, hTrueAbs0pKEAsScatterNp, hTrueAbs0pKEAsChExch, hTrueAbs0pKERejected
     };
 
     // True abs Np
-    TH1D* hTrueAbsNpKE            = new TH1D("hTrueAbsNpKE", "hTrueAbsNpKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKEAsAbs0p     = new TH1D("hTrueAbsNpKEAsAbs0p", "hTrueAbsNpKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKEAsAbsNp     = new TH1D("hTrueAbsNpKEAsAbsNp", "hTrueAbsNpKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKEAsScatter0p = new TH1D("hTrueAbsNpKEAsScatter0p", "hTrueAbsNpKEAsScatter0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKEAsScatterNp = new TH1D("hTrueAbsNpKEAsScatterNp", "hTrueAbsNpKEAsScatterNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKEAsChExch    = new TH1D("hTrueAbsNpKEAsChExch", "hTrueAbsNpKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKERejected    = new TH1D("hTrueAbsNpKERejected", "hTrueAbsNpKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKE            = new TH1D("hTrueAbsNpKE", "hTrueAbsNpKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKEAsAbs0p     = new TH1D("hTrueAbsNpKEAsAbs0p", "hTrueAbsNpKEAsAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKEAsAbsNp     = new TH1D("hTrueAbsNpKEAsAbsNp", "hTrueAbsNpKEAsAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKEAsScatter0p = new TH1D("hTrueAbsNpKEAsScatter0p", "hTrueAbsNpKEAsScatter0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKEAsScatterNp = new TH1D("hTrueAbsNpKEAsScatterNp", "hTrueAbsNpKEAsScatterNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKEAsChExch    = new TH1D("hTrueAbsNpKEAsChExch", "hTrueAbsNpKEAsChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejected    = new TH1D("hTrueAbsNpKERejected", "hTrueAbsNpKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D* hTrueAbsNpKERejDataProds = new TH1D("hTrueAbsNpKERejDataProds", "hTrueAbsNpKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKERejElectron  = new TH1D("hTrueAbsNpKERejElectron", "hTrueAbsNpKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKERejRedVol    = new TH1D("hTrueAbsNpKERejRedVol", "hTrueAbsNpKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKERejPID       = new TH1D("hTrueAbsNpKERejPID", "hTrueAbsNpKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKERejManyPions = new TH1D("hTrueAbsNpKERejManyPions", "hTrueAbsNpKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueAbsNpKERejClusters  = new TH1D("hTrueAbsNpKERejClusters", "hTrueAbsNpKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueAbsNpKERejDataProds = new TH1D("hTrueAbsNpKERejDataProds", "hTrueAbsNpKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejElectron  = new TH1D("hTrueAbsNpKERejElectron", "hTrueAbsNpKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejRedVol    = new TH1D("hTrueAbsNpKERejRedVol", "hTrueAbsNpKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejPID       = new TH1D("hTrueAbsNpKERejPID", "hTrueAbsNpKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejManyPions = new TH1D("hTrueAbsNpKERejManyPions", "hTrueAbsNpKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejClusters  = new TH1D("hTrueAbsNpKERejClusters", "hTrueAbsNpKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     std::vector<TH1*> TrueAbsNpAs = {
         hTrueAbsNpKEAsAbs0p, hTrueAbsNpKEAsAbsNp, hTrueAbsNpKEAsScatter0p, hTrueAbsNpKEAsScatterNp, hTrueAbsNpKEAsChExch, hTrueAbsNpKERejected
     };
 
     // True scatter 0p
-    TH1D* hTrueScatter0pKE            = new TH1D("hTrueScatter0pKE", "hTrueScatter0pKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatter0pKEAsAbs0p     = new TH1D("hTrueScatter0pKEAsAbs0p", "hTrueScatter0pKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatter0pKEAsAbsNp     = new TH1D("hTrueScatter0pKEAsAbsNp", "hTrueScatter0pKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatter0pKEAsScatter0p = new TH1D("hTrueScatter0pKEAsScatter0p", "hTrueScatter0pKEAsScatter0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatter0pKEAsScatterNp = new TH1D("hTrueScatter0pKEAsScatterNp", "hTrueScatter0pKEAsScatterNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatter0pKEAsChExch    = new TH1D("hTrueScatter0pKEAsChExch", "hTrueScatter0pKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatter0pKERejected    = new TH1D("hTrueScatter0pKERejected", "hTrueScatter0pKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatter0pKE            = new TH1D("hTrueScatter0pKE", "hTrueScatter0pKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatter0pKEAsAbs0p     = new TH1D("hTrueScatter0pKEAsAbs0p", "hTrueScatter0pKEAsAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatter0pKEAsAbsNp     = new TH1D("hTrueScatter0pKEAsAbsNp", "hTrueScatter0pKEAsAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatter0pKEAsScatter0p = new TH1D("hTrueScatter0pKEAsScatter0p", "hTrueScatter0pKEAsScatter0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatter0pKEAsScatterNp = new TH1D("hTrueScatter0pKEAsScatterNp", "hTrueScatter0pKEAsScatterNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatter0pKEAsChExch    = new TH1D("hTrueScatter0pKEAsChExch", "hTrueScatter0pKEAsChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatter0pKERejected    = new TH1D("hTrueScatter0pKERejected", "hTrueScatter0pKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D* hTrueScatter0pKERejDataProds = new TH1D("hTrueScatter0pKERejDataProds", "hTrueScatter0pKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatter0pKERejElectron  = new TH1D("hTrueScatter0pKERejElectron", "hTrueScatter0pKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatter0pKERejRedVol    = new TH1D("hTrueScatter0pKERejRedVol", "hTrueScatter0pKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatter0pKERejPID       = new TH1D("hTrueScatter0pKERejPID", "hTrueScatter0pKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatter0pKERejManyPions = new TH1D("hTrueScatter0pKERejManyPions", "hTrueScatter0pKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatter0pKERejClusters  = new TH1D("hTrueScatter0pKERejClusters", "hTrueScatter0pKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatter0pKERejDataProds = new TH1D("hTrueScatter0pKERejDataProds", "hTrueScatter0pKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatter0pKERejElectron  = new TH1D("hTrueScatter0pKERejElectron", "hTrueScatter0pKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatter0pKERejRedVol    = new TH1D("hTrueScatter0pKERejRedVol", "hTrueScatter0pKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatter0pKERejPID       = new TH1D("hTrueScatter0pKERejPID", "hTrueScatter0pKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatter0pKERejManyPions = new TH1D("hTrueScatter0pKERejManyPions", "hTrueScatter0pKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatter0pKERejClusters  = new TH1D("hTrueScatter0pKERejClusters", "hTrueScatter0pKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     std::vector<TH1*> TrueScatter0pAs = {
         hTrueScatter0pKEAsAbs0p, hTrueScatter0pKEAsAbsNp, hTrueScatter0pKEAsScatter0p, hTrueScatter0pKEAsScatterNp, hTrueScatter0pKEAsChExch, hTrueScatter0pKERejected
     };
 
     // True scatter Np
-    TH1D* hTrueScatterNpKE            = new TH1D("hTrueScatterNpKE", "hTrueScatterNpKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterNpKEAsAbs0p     = new TH1D("hTrueScatterNpKEAsAbs0p", "hTrueScatterNpKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterNpKEAsAbsNp     = new TH1D("hTrueScatterNpKEAsAbsNp", "hTrueScatterNpKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterNpKEAsScatter0p = new TH1D("hTrueScatterNpKEAsScatter0p", "hTrueScatterNpKEAsScatter0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterNpKEAsScatterNp = new TH1D("hTrueScatterNpKEAsScatterNp", "hTrueScatterNpKEAsScatterNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterNpKEAsChExch    = new TH1D("hTrueScatterNpKEAsChExch", "hTrueScatterNpKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterNpKERejected    = new TH1D("hTrueScatterNpKERejected", "hTrueScatterNpKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterNpKE            = new TH1D("hTrueScatterNpKE", "hTrueScatterNpKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterNpKEAsAbs0p     = new TH1D("hTrueScatterNpKEAsAbs0p", "hTrueScatterNpKEAsAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterNpKEAsAbsNp     = new TH1D("hTrueScatterNpKEAsAbsNp", "hTrueScatterNpKEAsAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterNpKEAsScatter0p = new TH1D("hTrueScatterNpKEAsScatter0p", "hTrueScatterNpKEAsScatter0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterNpKEAsScatterNp = new TH1D("hTrueScatterNpKEAsScatterNp", "hTrueScatterNpKEAsScatterNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterNpKEAsChExch    = new TH1D("hTrueScatterNpKEAsChExch", "hTrueScatterNpKEAsChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterNpKERejected    = new TH1D("hTrueScatterNpKERejected", "hTrueScatterNpKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D* hTrueScatterNpKERejDataProds = new TH1D("hTrueScatterNpKERejDataProds", "hTrueScatterNpKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterNpKERejElectron  = new TH1D("hTrueScatterNpKERejElectron", "hTrueScatterNpKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterNpKERejRedVol    = new TH1D("hTrueScatterNpKERejRedVol", "hTrueScatterNpKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterNpKERejPID       = new TH1D("hTrueScatterNpKERejPID", "hTrueScatterNpKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterNpKERejManyPions = new TH1D("hTrueScatterNpKERejManyPions", "hTrueScatterNpKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueScatterNpKERejClusters  = new TH1D("hTrueScatterNpKERejClusters", "hTrueScatterNpKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueScatterNpKERejDataProds = new TH1D("hTrueScatterNpKERejDataProds", "hTrueScatterNpKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterNpKERejElectron  = new TH1D("hTrueScatterNpKERejElectron", "hTrueScatterNpKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterNpKERejRedVol    = new TH1D("hTrueScatterNpKERejRedVol", "hTrueScatterNpKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterNpKERejPID       = new TH1D("hTrueScatterNpKERejPID", "hTrueScatterNpKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterNpKERejManyPions = new TH1D("hTrueScatterNpKERejManyPions", "hTrueScatterNpKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterNpKERejClusters  = new TH1D("hTrueScatterNpKERejClusters", "hTrueScatterNpKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     std::vector<TH1*> TrueScatterNpAs = {
         hTrueScatterNpKEAsAbs0p, hTrueScatterNpKEAsAbsNp, hTrueScatterNpKEAsScatter0p, hTrueScatterNpKEAsScatterNp, hTrueScatterNpKEAsChExch, hTrueScatterNpKERejected
     };
 
     // True charge exchange
-    TH1D* hTrueChExchKE            = new TH1D("hTrueChExchKE", "hTrueChExchKE;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKEAsAbs0p     = new TH1D("hTrueChExchKEAsAbs0p", "hTrueChExchKEAsAbs0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKEAsAbsNp     = new TH1D("hTrueChExchKEAsAbsNp", "hTrueChExchKEAsAbsNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKEAsScatter0p = new TH1D("hTrueChExchKEAsScatter0p", "hTrueChExchKEAsScatter0p;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKEAsScatterNp = new TH1D("hTrueChExchKEAsScatterNp", "hTrueChExchKEAsScatterNp;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKEAsChExch    = new TH1D("hTrueChExchKEAsChExch", "hTrueChExchKEAsChExch;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKERejected    = new TH1D("hTrueChExchKERejected", "hTrueChExchKERejected;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKE            = new TH1D("hTrueChExchKE", "hTrueChExchKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsAbs0p     = new TH1D("hTrueChExchKEAsAbs0p", "hTrueChExchKEAsAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsAbsNp     = new TH1D("hTrueChExchKEAsAbsNp", "hTrueChExchKEAsAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsScatter0p = new TH1D("hTrueChExchKEAsScatter0p", "hTrueChExchKEAsScatter0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsScatterNp = new TH1D("hTrueChExchKEAsScatterNp", "hTrueChExchKEAsScatterNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsChExch    = new TH1D("hTrueChExchKEAsChExch", "hTrueChExchKEAsChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejected    = new TH1D("hTrueChExchKERejected", "hTrueChExchKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D* hTrueChExchKERejDataProds = new TH1D("hTrueChExchKERejDataProds", "hTrueChExchKERejDataProds;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKERejElectron  = new TH1D("hTrueChExchKERejElectron", "hTrueChExchKERejElectron;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKERejRedVol    = new TH1D("hTrueChExchKERejRedVol", "hTrueChExchKERejRedVol;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKERejPID       = new TH1D("hTrueChExchKERejPID", "hTrueChExchKERejPID;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKERejManyPions = new TH1D("hTrueChExchKERejManyPions", "hTrueChExchKERejManyPions;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
-    TH1D* hTrueChExchKERejClusters  = new TH1D("hTrueChExchKERejClusters", "hTrueChExchKERejClusters;;", NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+    TH1D* hTrueChExchKERejDataProds = new TH1D("hTrueChExchKERejDataProds", "hTrueChExchKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejElectron  = new TH1D("hTrueChExchKERejElectron", "hTrueChExchKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejRedVol    = new TH1D("hTrueChExchKERejRedVol", "hTrueChExchKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejPID       = new TH1D("hTrueChExchKERejPID", "hTrueChExchKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejManyPions = new TH1D("hTrueChExchKERejManyPions", "hTrueChExchKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejClusters  = new TH1D("hTrueChExchKERejClusters", "hTrueChExchKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     std::vector<TH1*> TrueChExchAs = {
         hTrueChExchKEAsAbs0p, hTrueChExchKEAsAbsNp, hTrueChExchKEAsScatter0p, hTrueChExchKEAsScatterNp, hTrueChExchKEAsChExch, hTrueChExchKERejected
@@ -431,8 +431,8 @@ void RecoClassifyAll() {
 
     std::vector<TH2*> ProbabilityMatrices;
     for (int i = 1; i <= NUM_BINS_KE; ++i) {
-        double low_bin  = LOWER_BOUND_KE + (i - 1) * (UPPER_BOUND_KE - LOWER_BOUND_KE) / NUM_BINS_KE;
-        double high_bin = LOWER_BOUND_KE + i * (UPPER_BOUND_KE - LOWER_BOUND_KE) / NUM_BINS_KE;
+        double low_bin  = ARRAY_KE_BINS.at(i - 1);
+        double high_bin = ARRAY_KE_BINS.at(i);
         TH2D* hPMatrix = new TH2D(
             Form("hPMatrix_Bin_%d_%d", (int)low_bin, (int)high_bin), Form("hPMatrix_Bin_%d_%d;Reco interaction;True interaction", (int)low_bin, (int)high_bin), 
             NUM_SIGNAL_TYPES, 0, NUM_SIGNAL_TYPES, 
@@ -681,6 +681,8 @@ void RecoClassifyAll() {
 
         int numSmallTracks = 0;
         for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
             // Have to re-check track ordering for stitched case
             double distanceFromStart = distance(
                 recoBeginX->at(trk_idx), breakPointX, 
@@ -1234,8 +1236,8 @@ void RecoClassifyAll() {
         PInvMatrices.push_back(inv);
 
         // Save the inverse matrix as a histogram for plots
-        double low_bin  = LOWER_BOUND_KE + (iBin - 1) * (UPPER_BOUND_KE - LOWER_BOUND_KE) / NUM_BINS_KE;
-        double high_bin = LOWER_BOUND_KE + iBin * (UPPER_BOUND_KE - LOWER_BOUND_KE) / NUM_BINS_KE;
+        double low_bin  = ARRAY_KE_BINS.at(iBin - 1);
+        double high_bin = ARRAY_KE_BINS.at(iBin);
         TH2D* hPInv = new TH2D(
             Form("hPInvMatrix_Bin_%d_%d", (int)low_bin, (int)high_bin),
             Form("hPInvMatrix_Bin_%d_%d;Reco interaction;True interaction", (int)low_bin, (int)high_bin),
@@ -1265,7 +1267,7 @@ void RecoClassifyAll() {
     // Organize unfolded results
     std::vector<TH1*> UnfHistograms;
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
-        TH1* hist = new TH1D(Form("hUnfSignal_%d", iSignal), Form("Unfolded Signal %d", iSignal), NUM_BINS_KE, LOWER_BOUND_KE, UPPER_BOUND_KE);
+        TH1* hist = new TH1D(Form("hUnfSignal_%d", iSignal), Form("Unfolded Signal %d", iSignal), NUM_BINS_KE, ARRAY_KE_BINS.data());
         for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
             hist->SetBinContent(iBin, SignalUnfVectors.at(iBin - 1)(iSignal));
         }

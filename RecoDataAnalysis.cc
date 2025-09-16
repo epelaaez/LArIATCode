@@ -203,6 +203,7 @@ void RecoDataAnalysis() {
 
     TH2D* hSmallVsTGTracks          = new TH2D("hSmallVsTGTracks", "SmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
     TH2D* hTGNumSmallTracksVsThresh = new TH2D("hTGNumSmallTracksVsThresh", "TGNumSmallTracksVsThresh;Small Track Length Threshold (cm);Num Small Tracks", 10, 0, 40, 15, 0, 15);
+    TH2D* hTOFVsTOFMass             = new TH2D("hTOFVsTOFMass", "TOFVsTOFMass;TOF [ns];TOF Mass [MeV/c^2]", 35, 10, 80, 50, 0, 1200);
 
     //////////////////////
     // Loop over events //
@@ -217,6 +218,7 @@ void RecoDataAnalysis() {
         hTOFMass->Fill(std::abs(TOFMass));
         // std::cout << tofObject << std::endl;
         hTOF->Fill(tofObject);
+        hTOFVsTOFMass->Fill(tofObject, std::abs(TOFMass));
 
         if (std::abs(TOFMass) > PI_MU_EL_MASS_CUTOFF) {
             // Not a candidate pion, muon, or electron
@@ -318,6 +320,7 @@ void RecoDataAnalysis() {
                 double threshold = hTGNumSmallTracksVsThresh->GetXaxis()->GetBinCenter(threshBin);
                 int nSmallTracks = 0;
                 for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+                    if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
                     double trackLength = sqrt(
                         pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
                         pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
@@ -553,16 +556,19 @@ void RecoDataAnalysis() {
         hSmallVsTGTracks,
         hMCSmallVsTGTracks,
         hTGNumSmallTracksVsThresh,
-        hMCTGNumSmallTracksVsThresh
+        hMCTGNumSmallTracksVsThresh,
+        hTOFVsTOFMass
     };
 
     std::vector<TString> TwoDTitles = {
         "TGTracks/SmallVsTGTracks",
         "TGTracks/MCSmallVsTGTracks",
         "TGTracks/TGNumSmallTracksVsThresh",
-        "TGTracks/MCTGNumSmallTracksVsThresh"
+        "TGTracks/MCTGNumSmallTracksVsThresh",
+        "TOF/TOFVsTOFMass"
     };
     std::vector<std::pair<double,double>> TwoDRanges = {
+        {0, 0},
         {0, 0},
         {0, 0},
         {0, 0},
@@ -573,7 +579,8 @@ void RecoDataAnalysis() {
         true,
         true,
         true,
-        true
+        true,
+        false
     };
 
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles, TwoDRanges, TwoDDisplayNumbers);
