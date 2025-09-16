@@ -554,7 +554,7 @@ void RecoClassifyAllSimplified() {
             }
             hMCBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
             if (obtainedProbabilities && showerProb < SHOWER_PROB_CUT) hMCAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
-            hMCTracksNearVertex->Fill(tracksNearVertexComp);
+            if (isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) hMCTracksNearVertex->Fill(tracksNearVertexComp);
             hMCNumTGTracks->Fill(numTGTracksComp);
 
             if (!isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) {

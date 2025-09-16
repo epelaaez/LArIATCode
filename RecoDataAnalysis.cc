@@ -227,9 +227,7 @@ void RecoDataAnalysis() {
 
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
-
-        // If did not obtain shower probabilities, skip
-        // if (!obtainedProbabilities) continue;
+        numValidEvents++;
 
         // Check if WC2TPC is through-going
         bool isPrimaryTG = !isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ);
@@ -257,7 +255,6 @@ void RecoDataAnalysis() {
         // If high shower probability, reject
         // if (showerProb >= SHOWER_PROB_CUT) continue;
         if (obtainedProbabilities) hShowerProb->Fill(showerProb);
-        numValidEvents++;
 
         // Loop over reconstructed tracks
         int numSmallTracks = 0; int numTracksNearVertex = 0; int smallTracksTPCStart = 0; int numTGTracks = 0;
@@ -307,7 +304,7 @@ void RecoDataAnalysis() {
         }
         hBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
         hNumTGTracks->Fill(numTGTracks);
-        hTracksNearVertex->Fill(numTracksNearVertex);
+        if (!isPrimaryTG) hTracksNearVertex->Fill(numTracksNearVertex);
         if (obtainedProbabilities && showerProb < SHOWER_PROB_CUT) hAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
 
         // Add to histogram of small tracks if primary is throughgoing
@@ -333,17 +330,43 @@ void RecoDataAnalysis() {
         }
     }
     
-    std::cout << "Num valid events: " << numValidEvents << std::endl;
+    double numMCEvents   = hMCNumTGTracks->Integral(0, hMCNumTGTracks->GetNbinsX() + 1);
+    double numDataEvents = hNumTGTracks->Integral(0, hNumTGTracks->GetNbinsX() + 1);
+    double scaling       = numDataEvents / numMCEvents;
+    std::cout << "Num valid MC events: " << numMCEvents << std::endl;
+    std::cout << "Num valid data events: " << numDataEvents << std::endl;
+    std::cout << "Scaling: " << scaling << std::endl;
+    std::cout << std::endl;
 
-    // Scale MC histograms to data histograms
-    hMCTGSmallTracks->Scale(hTGSmallTracks->Integral() / hMCTGSmallTracks->Integral());
-    hMCTracksNearVertex->Scale(hTracksNearVertex->Integral() / hMCTracksNearVertex->Integral());
-    hMCTrackLengthsNearVertex->Scale(hTrackLengthsNearVertex->Integral() / hMCTrackLengthsNearVertex->Integral());
-    hMCNumTGTracks->Scale(hNumTGTracks->Integral() / hMCNumTGTracks->Integral());
+    double numMCTGEvents   = hMCTGSmallTracks->Integral(0, hMCTGSmallTracks->GetNbinsX() + 1);
+    double numDataTGEvents = hTGSmallTracks->Integral(0, hTGSmallTracks->GetNbinsX() + 1);
+    double scalingTG       = numDataTGEvents / numMCTGEvents;
+    std::cout << "Num valid MC TG events: " << numMCTGEvents << std::endl;
+    std::cout << "Num valid data TG events: " << numDataTGEvents << std::endl;
+    std::cout << "Scaling TG: " << scalingTG << std::endl;
+    std::cout << std::endl;
+
+    double numMCNotTGEvents = hMCTracksNearVertex->Integral(0, hMCTracksNearVertex->GetNbinsX() + 1);
+    double numDataNoTGvents = hTracksNearVertex->Integral(0, hTracksNearVertex->GetNbinsX() + 1);
+    double scalingNoTG      = numDataNoTGvents / numMCNotTGEvents;
+    std::cout << "Num valid MC not TG events: " << numMCNotTGEvents << std::endl;
+    std::cout << "Num valid data not TG events: " << numDataNoTGvents << std::endl;
+    std::cout << "Scaling not TG: " << scalingNoTG << std::endl;
+    std::cout << std::endl;
+
+    // Scale MC histograms to data histograms using event counts
+    hMCNumTGTracks->Scale(scaling);
+    hMCBeforeShowerCutSmallTracks->Scale(scaling);
+    hMCAfterShowerCutSmallTracks->Scale(scaling); // not sure
+
+    hMCTGSmallTracks->Scale(scalingTG);
+    hMCTGTrackLengths->Scale(scalingTG);
+    
+    hMCTracksNearVertex->Scale(scalingNoTG);
+    hMCTrackLengthsNearVertex->Scale(scalingNoTG);
+
+    // Have to account only for events with valid NN probability
     hMCShowerProb->Scale(hShowerProb->Integral() / hMCShowerProb->Integral());
-    hMCBeforeShowerCutSmallTracks->Scale(hBeforeShowerCutSmallTracks->Integral() / hMCBeforeShowerCutSmallTracks->Integral());
-    hMCAfterShowerCutSmallTracks->Scale(hAfterShowerCutSmallTracks->Integral() / hMCAfterShowerCutSmallTracks->Integral());
-    hMCTGTrackLengths->Scale(hTGTrackLengths->Integral() / hMCTGTrackLengths->Integral());
 
     //////////////////
     // Create plots //
@@ -549,8 +572,8 @@ void RecoDataAnalysis() {
     // Two-dimensional plots //
     ///////////////////////////
 
-    hMCSmallVsTGTracks->Scale(hSmallVsTGTracks->Integral() / hMCSmallVsTGTracks->Integral());
-    hMCTGNumSmallTracksVsThresh->Scale(hTGNumSmallTracksVsThresh->Integral() / hMCTGNumSmallTracksVsThresh->Integral());
+    hMCSmallVsTGTracks->Scale(scalingTG);
+    hMCTGNumSmallTracksVsThresh->Scale(scalingTG);
 
     std::vector<TH2*> TwoDPlots = {
         hSmallVsTGTracks,
