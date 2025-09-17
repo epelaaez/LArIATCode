@@ -73,7 +73,7 @@ void RecoDataAnalysis() {
     tree->SetBranchAddress("obtainedOutsideBoxProbabilities", &obtainedOutsideBoxProbabilities);
 
     // WC match information
-    int WC2TPCtrkID;
+    int WC2TPCtrkID, WC2TPCsize;
     double WCTrackMomentum, WCTheta, WCPhi, WC4PrimaryX;
     double WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY, WC2TPCPrimaryBeginZ;
     double WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ;
@@ -84,6 +84,7 @@ void RecoDataAnalysis() {
     std::vector<double>* wcMatchYPos = nullptr;
     std::vector<double>* wcMatchZPos = nullptr;
     tree->SetBranchAddress("WC2TPCtrkID", &WC2TPCtrkID);
+    tree->SetBranchAddress("WC2TPCsize", &WC2TPCsize);
     tree->SetBranchAddress("WCTrackMomentum", &WCTrackMomentum);
     tree->SetBranchAddress("WCTheta", &WCTheta);
     tree->SetBranchAddress("WCPhi", &WCPhi);
@@ -171,6 +172,7 @@ void RecoDataAnalysis() {
     // Load histograms //
     /////////////////////
 
+    TH1D* hMCNumWC2TPCMatch         = (TH1D*) MCFile->Get("hMCNumWC2TPCMatch");
     TH1D* hMCTGTrackLengths         = (TH1D*) MCFile->Get("hMCTGTrackLengths");
     TH1D* hMCTGSmallTracks          = (TH1D*) MCFile->Get("hMCTGSmallTracks");
     TH1D* hMCTracksNearVertex       = (TH1D*) MCFile->Get("hMCTracksNearVertex");
@@ -190,6 +192,8 @@ void RecoDataAnalysis() {
 
     TH1D* hTOFMass = new TH1D("hTOFMass", "TOF Mass Distribution", 50, 0, 1200);
     TH1D* hTOF     = new TH1D("hTOF", "TOF Distribution", 50, 0, 80);
+    
+    TH1D* hNumWC2TPCMatch = new TH1D("hNumWC2TPCMatch", "NumWC2TPCMatch", 10, 0, 10);
 
     TH1D* hTGTrackLengths         = new TH1D("hTGTrackLengths", "TGTrackLengths", 25, 0, 50);
     TH1D* hTGSmallTracks          = new TH1D("hTGSmallTracks", "TGSmallTracks", 10, 0, 10);
@@ -215,8 +219,10 @@ void RecoDataAnalysis() {
     int numValidEvents = 0;
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
+
+        // Fill for all events
         hTOFMass->Fill(std::abs(TOFMass));
-        // std::cout << tofObject << std::endl;
+        hNumWC2TPCMatch->Fill(WC2TPCsize);
         hTOF->Fill(tofObject);
         hTOFVsTOFMass->Fill(tofObject, std::abs(TOFMass));
 
@@ -368,6 +374,8 @@ void RecoDataAnalysis() {
     // Have to account only for events with valid NN probability
     hMCShowerProb->Scale(hShowerProb->Integral() / hMCShowerProb->Integral());
 
+    hMCNumWC2TPCMatch->Scale(hNumWC2TPCMatch->Integral() / hMCNumWC2TPCMatch->Integral());
+
     //////////////////
     // Create plots //
     //////////////////
@@ -386,9 +394,12 @@ void RecoDataAnalysis() {
     };
 
     std::vector<std::vector<TH1*>> PlotGroups = {
-        // Data plots
+        // TOF
         {hTOFMass},
         {hTOF},
+
+        // WC2TPC
+        {hNumWC2TPCMatch, hMCNumWC2TPCMatch},
 
         // Comparisons with MC
         {hTGSmallTracks, hMCTGSmallTracks},
@@ -401,9 +412,12 @@ void RecoDataAnalysis() {
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
-        // Data plots
+        // TOF
         {"Data"},
         {"Data"},
+
+        // WC2TPC
+        {"Data", "MC (scaled)"},
 
         // Comparisons with MC
         {"Data", "MC (scaled)"},
@@ -416,9 +430,12 @@ void RecoDataAnalysis() {
     };
 
     std::vector<TString> PlotTitles = {
-        // Data plots
+        // TOF
         "TOF/TOFMass",
         "TOF/TOF",
+
+        // WC2TPC
+        "WC2TPC/NumMatches",
 
         // Comparisons with MC
         "TGPrimary/TGSmallTracks",
@@ -431,9 +448,12 @@ void RecoDataAnalysis() {
     };
 
     std::vector<TString> XLabels = {
-        // Data plots
+        // TOF
         "Mass [MeV/c^2]",
         "Time of flight [ns]",
+
+        // WC2TPC
+        "# of WC to TPC matches",
 
         // Comparisons with MC
         "# of small tracks",
@@ -446,8 +466,11 @@ void RecoDataAnalysis() {
     };
 
     std::vector<TString> YLabels = {
-        // Data plots
+        // TOF
         "Counts",
+        "Counts",
+
+        // WC2TPC
         "Counts",
 
         // Comparisons with MC
@@ -461,8 +484,11 @@ void RecoDataAnalysis() {
     };
 
     std::vector<bool> PlotStacked = {
-        // Data plots
+        // TOF
         false,
+        false,
+
+        // WC2TPC
         false,
 
         // Comparisons with MC
@@ -479,6 +505,9 @@ void RecoDataAnalysis() {
         // Data plots
         {true},
         {true},
+
+        // WC2TPC
+        {true, false},
 
         // Comparisons with MC
         {true, false},

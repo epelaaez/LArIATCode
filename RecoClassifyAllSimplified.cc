@@ -76,7 +76,7 @@ void RecoClassifyAllSimplified() {
     tree->SetBranchAddress("obtainedOutsideBoxProbabilities", &obtainedOutsideBoxProbabilities);
 
     // WC match information
-    int WC2TPCtrkID;
+    int WC2TPCtrkID, WC2TPCsize;
     double WCTrackMomentum, WCTheta, WCPhi, WC4PrimaryX;
     double WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY, WC2TPCPrimaryBeginZ;
     double WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ;
@@ -87,6 +87,7 @@ void RecoClassifyAllSimplified() {
     std::vector<double>* wcMatchYPos = nullptr;
     std::vector<double>* wcMatchZPos = nullptr;
     tree->SetBranchAddress("WC2TPCtrkID", &WC2TPCtrkID);
+    tree->SetBranchAddress("WC2TPCsize", &WC2TPCsize);
     tree->SetBranchAddress("WCTrackMomentum", &WCTrackMomentum);
     tree->SetBranchAddress("WCTheta", &WCTheta);
     tree->SetBranchAddress("WCPhi", &WCPhi);
@@ -465,6 +466,8 @@ void RecoClassifyAllSimplified() {
     // Data-MC comparison histograms //
     ///////////////////////////////////
 
+    TH1D* hMCNumWC2TPCMatch = new TH1D("hMCNumWC2TPCMatch", "hMCNumWC2TPCMatch", 10, 0, 10);
+
     TH1D* hMCTGTrackLengths         = new TH1D("hMCTGTrackLengths", "hMCTGTrackLengths;;", 25, 0, 50);
     TH1D* hMCTGSmallTracks          = new TH1D("hMCTGSmallTracks", "hMCTGSmallTracks;;", 10, 0, 10);
     TH1D* hMCTracksNearVertex       = new TH1D("hMCTracksNearVertex", "hMCTracksNearVertex;;", 10, 0, 10);
@@ -496,6 +499,7 @@ void RecoClassifyAllSimplified() {
         ////////////////////////////////////////
 
         // For data-MC comparisons
+        hMCNumWC2TPCMatch->Fill(WC2TPCsize);
         if (WC2TPCtrkID != -99999) {
             if (obtainedProbabilities) hMCShowerProb->Fill(showerProb);
 
@@ -1305,6 +1309,9 @@ void RecoClassifyAllSimplified() {
 
     hMCTGNumSmallTracksVsThresh->SetDirectory(comparisonsFile);
     hMCTGNumSmallTracksVsThresh->Write();
+
+    hMCNumWC2TPCMatch->SetDirectory(comparisonsFile);
+    hMCNumWC2TPCMatch->Write();
 
     //////////////////////////////////////////////
     // Perform unfolding for interacting slices //
