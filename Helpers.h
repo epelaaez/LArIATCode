@@ -152,6 +152,22 @@ double avogadro       = 6.022e+23; // number / mol
 double number_density = rho * g_per_kg / molar_mass * avogadro;
 double slab_width     = 0.0047; // in m
 
+// For each "collimator", the bounds of the face of both aperatures [xlow_frontface, xhigh_frontface, xlow_backface, xhigh_backface], 
+// similarly for y. In cm, in TPC coordinates. Taken from survey.
+double xboundMagnet1[4] = {45.74, 75.52, 35.09, 64.87};
+double yboundMagnet1[4] = {-13.12, 13.59, -13.16, 13.55};
+
+double xboundMagnet2[4] = {34.88, 65.12, 27.90, 58.15};
+double yboundMagnet2[4] = {-13.10, 13.61, -13.08, 13.63};
+
+double xboundDSCol[4] = {30.33, 45.42, 26.65, 41.73};
+double yboundDSCol[4] = {-15.70, 14.91, -15.53, 15.08};
+
+// Z Position of the center of the aperatures of each collimator, found by taking the average of the z bounds of the aperature. [zcent_US, zcent_DS]
+double zcentMagnet1[2] = { (-501.95-494.98)/2, (-449.49-456.46)/2};
+double zcentMagnet2[2] = { (-432.04-427.50)/2, (-381.27-385.81)/2};
+double zcentDSCol[2]   = { (-296.67-297.36)/2, (-205.94-206.63)/2};
+
 //////////////////////
 // Helper functions //
 //////////////////////
@@ -211,6 +227,16 @@ std::tuple<double, double> azimuth_polar_from_points(
     double xs, double ys, double zs,
     double xe, double ye, double ze
 );
+
+std::vector<double> projToZ(const std::vector<double>& hit0, const std::vector<double>& hit1, double zpos);
+
+///////////////
+// WC checks //
+///////////////
+
+bool CheckUpstreamMagnetAperture(const std::vector<double>& hit1, const std::vector<double>& hit2);
+bool CheckDownstreamMagnetAperture(const std::vector<double>& hit1, const std::vector<double>& hit2);
+bool CheckDownstreamCollimatorAperture(const std::vector<double>& hit1, const std::vector<double>& hit2);
 
 //////////////////////////
 // Wiener SVD unfolding //

@@ -1067,6 +1067,71 @@ std::tuple<double,double> azimuth_polar_from_points(
     return {phi, theta};
 }
 
+std::vector<double> projToZ(const std::vector<double>& hit0, const std::vector<double>& hit1, double zpos) {
+  // This is used to find the point at z = zpos along the line created by hit0 and hit1. 
+  // Uses the parameterized vector form of a line
+  //
+  // <x, y, z> = <sx, sy, sz> * t + <startx, starty, startz>
+  //             sx, sy, sz are all slopes
+  //
+  // (z - startz) / sz = t
+  // x = sx * t + startx
+  // y = sx * t + srarty
+      
+  double sx = hit1[0] - hit0[0];
+  double sy = hit1[1] - hit0[1];
+  double sz = hit1[2] - hit0[2];
+
+  double t = (zpos - hit0[2]) / sz;
+
+  std::vector<double> result {sx * t + hit0[0], sy * t + hit0[1], zpos};
+
+  return result;
+}
+
+///////////////
+// WC checks //
+///////////////
+
+// Magnet 1
+bool CheckUpstreamMagnetAperture(const std::vector<double>& hit1, const std::vector<double>& hit2) {
+   std::vector<double> USHit = projToZ(hit1, hit2, zcentMagnet1[0]);
+   std::vector<double> DSHit = projToZ(hit1, hit2, zcentMagnet1[1]);
+   
+   if (USHit[0] < xboundMagnet1[0] || USHit[0] > xboundMagnet1[1]) return false;      // Upstream Aperture X Check
+   else if (USHit[1] < yboundMagnet1[0] || USHit[1] > yboundMagnet1[1]) return false; // Upstream Aperture Y Check
+   else if (DSHit[0] < xboundMagnet1[2] || DSHit[0] > xboundMagnet1[3]) return false; // Downstream Aperture X check
+   else if (DSHit[1] < yboundMagnet1[2] || DSHit[1] > yboundMagnet1[3]) return false; // Downstream Aperture Y Check
+   
+   return true;
+}
+
+// Magnet 2
+bool CheckDownstreamMagnetAperture(const std::vector<double>& hit1, const std::vector<double>& hit2) {
+   std::vector<double> USHit = projToZ(hit1,hit2,zcentMagnet2[0]);
+   std::vector<double> DSHit = projToZ(hit1,hit2,zcentMagnet2[1]);
+   
+    if (USHit[0] < xboundMagnet2[0] || USHit[0] > xboundMagnet2[1]) return false;      // Upstream Aperture X check
+    else if (USHit[1] < yboundMagnet2[0] || USHit[1] > yboundMagnet2[1]) return false; // Upstream Aperture Y Check
+    else if (DSHit[0] < xboundMagnet2[2] || DSHit[0] > xboundMagnet2[3]) return false; // Downstream Aperture X Check   
+    else if (DSHit[1] < yboundMagnet2[2] || DSHit[1] > yboundMagnet2[3]) return false; // Downstream Aperture Y Check
+
+   return true;
+}
+
+// Downstream collimator
+bool CheckDownstreamCollimatorAperture(const std::vector<double>& hit1, const std::vector<double>& hit2) {
+   std::vector<double> USHit = projToZ(hit1,hit2,zcentDSCol[0]);
+   std::vector<double> DSHit = projToZ(hit1,hit2,zcentDSCol[1]);
+   
+   if (USHit[0] < xboundDSCol[0] || USHit[0] > xboundDSCol[1]) return false;      // Upstream Aperture X Check
+   else if (USHit[1] < yboundDSCol[0] || USHit[1] > yboundDSCol[1]) return false; // Upstream Aperture Y Check
+   else if (DSHit[0] < xboundDSCol[2] || DSHit[0] > xboundDSCol[3]) return false; // Downstream Aperture X Check   
+   else if (DSHit[1] < yboundDSCol[2] || DSHit[1] > yboundDSCol[3]) return false; // Downstream Aperture Y Check
+
+   return true;
+}
+
 //////////////////////////
 // Wiener SVD unfolding //
 // Author: Hanyu WEI    //

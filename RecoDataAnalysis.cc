@@ -110,6 +110,18 @@ void RecoDataAnalysis() {
     tree->SetBranchAddress("WC2TPCLocationsY", &WC2TPCLocationsY);
     tree->SetBranchAddress("WC2TPCLocationsZ", &WC2TPCLocationsZ);
 
+    // WC quality data
+    int wcNumHits;
+    std::vector<double>* wcHit0 = nullptr;
+    std::vector<double>* wcHit1 = nullptr;
+    std::vector<double>* wcHit2 = nullptr;
+    std::vector<double>* wcHit3 = nullptr;
+    tree->SetBranchAddress("wcNumHits", &wcNumHits);
+    tree->SetBranchAddress("wcHit0", &wcHit0);
+    tree->SetBranchAddress("wcHit1", &wcHit1);
+    tree->SetBranchAddress("wcHit2", &wcHit2);
+    tree->SetBranchAddress("wcHit3", &wcHit3);
+
     // Reco information
     std::vector<double>* recoMeanDEDX      = nullptr;
     std::vector<double>* recoEndX          = nullptr;
@@ -172,43 +184,57 @@ void RecoDataAnalysis() {
     // Load histograms //
     /////////////////////
 
-    TH1D* hMCNumWC2TPCMatch         = (TH1D*) MCFile->Get("hMCNumWC2TPCMatch");
-    TH1D* hMCNumTracksInCylinder    = (TH1D*) MCFile->Get("hMCNumTracksInCylinder");
-    TH1D* hMCTGTrackLengths         = (TH1D*) MCFile->Get("hMCTGTrackLengths");
-    TH1D* hMCTGSmallTracks          = (TH1D*) MCFile->Get("hMCTGSmallTracks");
-    TH1D* hMCTracksNearVertex       = (TH1D*) MCFile->Get("hMCTracksNearVertex");
-    TH1D* hMCTrackLengthsNearVertex = (TH1D*) MCFile->Get("hMCTrackLengthsNearVertex");
-    TH1D* hMCNumTGTracks            = (TH1D*) MCFile->Get("hMCNumTGTracks");
-    TH1D* hMCShowerProb             = (TH1D*) MCFile->Get("hMCShowerProb");
-
+    TH1D* hMCNumWC2TPCMatch             = (TH1D*) MCFile->Get("hMCNumWC2TPCMatch");
+    TH1D* hMCNumTracksInCylinder        = (TH1D*) MCFile->Get("hMCNumTracksInCylinder");
+    TH1D* hMCTGTrackLengths             = (TH1D*) MCFile->Get("hMCTGTrackLengths");
+    TH1D* hMCTGSmallTracks              = (TH1D*) MCFile->Get("hMCTGSmallTracks");
+    TH1D* hMCTracksNearVertex           = (TH1D*) MCFile->Get("hMCTracksNearVertex");
+    TH1D* hMCTrackLengthsNearVertex     = (TH1D*) MCFile->Get("hMCTrackLengthsNearVertex");
+    TH1D* hMCNumTGTracks                = (TH1D*) MCFile->Get("hMCNumTGTracks");
+    TH1D* hMCShowerProb                 = (TH1D*) MCFile->Get("hMCShowerProb");
     TH1D* hMCBeforeShowerCutSmallTracks = (TH1D*) MCFile->Get("hMCBeforeShowerCutSmallTracks");
     TH1D* hMCAfterShowerCutSmallTracks  = (TH1D*) MCFile->Get("hMCAfterShowerCutSmallTracks");
-
-    TH2D* hMCSmallVsTGTracks          = (TH2D*) MCFile->Get("hMCSmallVsTGTracks");
-    TH2D* hMCTGNumSmallTracksVsThresh = (TH2D*) MCFile->Get("hMCTGNumSmallTracksVsThresh");
-
-    TH2D* hMCPrimaryTrackPosition = (TH2D*) MCFile->Get("hMCPrimaryTrackPosition");
+    TH2D* hMCSmallVsTGTracks            = (TH2D*) MCFile->Get("hMCSmallVsTGTracks");
+    TH2D* hMCTGNumSmallTracksVsThresh   = (TH2D*) MCFile->Get("hMCTGNumSmallTracksVsThresh");
+    TH2D* hMCPrimaryTrackPosition       = (TH2D*) MCFile->Get("hMCPrimaryTrackPosition");
 
     ///////////////////////
     // Create histograms //
     ///////////////////////
 
+    // TOF
     TH1D* hTOFMass = new TH1D("hTOFMass", "TOF Mass Distribution", 50, 0, 1200);
     TH1D* hTOF     = new TH1D("hTOF", "TOF Distribution", 50, 0, 80);
     
-    TH1D* hNumWC2TPCMatch      = new TH1D("hNumWC2TPCMatch", "NumWC2TPCMatch", 10, 0, 10);
-    TH1D* hNumTracksInCylinder = new TH1D("hNumTracksInCylinder", "NumTracksInCylinder", 10, 0, 10);
+    // WC
+    TH1D* hNumWC2TPCMatch = new TH1D("hNumWC2TPCMatch", "NumWC2TPCMatch", 10, 0, 10);
+    TH1D* hNumWCHits      = new TH1D("hNumWCHits", "hNumWCHits", 10, 0, 10);
 
-    TH1D* hTGTrackLengths         = new TH1D("hTGTrackLengths", "TGTrackLengths", 25, 0, 50);
-    TH1D* hTGSmallTracks          = new TH1D("hTGSmallTracks", "TGSmallTracks", 10, 0, 10);
-    TH1D* hTracksNearVertex       = new TH1D("hTracksNearVertex", "TracksNearVertex", 10, 0, 10);
-    TH1D* hTrackLengthsNearVertex = new TH1D("hTrackLengthsNearVertex", "TrackLengthsNearVertex", 50, 0, 100);
-    TH1D* hNumTGTracks            = new TH1D("hNumTGTracks", "NumTGTracks", 10, 0, 10);
-    TH1D* hShowerProb             = new TH1D("hShowerProb", "ShowerProb", 20, 0, 1.);
-
+    // Shower cut
+    TH1D* hShowerProb                 = new TH1D("hShowerProb", "ShowerProb", 20, 0, 1.);
     TH1D* hBeforeShowerCutSmallTracks = new TH1D("hBeforeShowerCutSmallTracks", "BeforeShowerCutSmallTracks", 10, 0, 10);
     TH1D* hAfterShowerCutSmallTracks  = new TH1D("hAfterShowerCutSmallTracks", "AfterShowerCutSmallTracks", 10, 0, 10);
 
+    // With primary TG
+    TH1D* hNumTracksInCylinder = new TH1D("hNumTracksInCylinder", "NumTracksInCylinder", 10, 0, 10);
+    TH1D* hTGTrackLengths      = new TH1D("hTGTrackLengths", "TGTrackLengths", 25, 0, 50);
+    TH1D* hTGSmallTracks       = new TH1D("hTGSmallTracks", "TGSmallTracks", 10, 0, 10);
+
+    TH1D* hNumTracksInCylinder0TG = new TH1D("hNumTracksInCylinder0TG", "NumTracksInCylinder0TG", 10, 0, 10);
+    TH1D* hTGSmallTracks0TG       = new TH1D("hTGSmallTracks0TG", "TGSmallTracks0TG", 10, 0, 10);
+
+    TH1D* hNumTracksInCylinder1TG = new TH1D("hNumTracksInCylinder1TG", "NumTracksInCylinder1TG", 10, 0, 10);
+    TH1D* hTGSmallTracks1TG       = new TH1D("hTGSmallTracks1TG", "TGSmallTracks1TG", 10, 0, 10);
+
+    TH1D* hNumTracksInCylinder2TG = new TH1D("hNumTracksInCylinder2TG", "NumTracksInCylinder2TG", 10, 0, 10);
+    TH1D* hTGSmallTracks2TG       = new TH1D("hTGSmallTracks2TG", "TGSmallTracks2TG", 10, 0, 10);
+
+    // With primary interacting
+    TH1D* hTracksNearVertex       = new TH1D("hTracksNearVertex", "TracksNearVertex", 10, 0, 10);
+    TH1D* hTrackLengthsNearVertex = new TH1D("hTrackLengthsNearVertex", "TrackLengthsNearVertex", 50, 0, 100);
+
+    // TG and small tracks
+    TH1D* hNumTGTracks              = new TH1D("hNumTGTracks", "NumTGTracks", 10, 0, 10);
     TH2D* hSmallVsTGTracks          = new TH2D("hSmallVsTGTracks", "SmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
     TH2D* hTGNumSmallTracksVsThresh = new TH2D("hTGNumSmallTracksVsThresh", "TGNumSmallTracksVsThresh;Small Track Length Threshold (cm);Num Small Tracks", 10, 0, 40, 15, 0, 15);
     TH2D* hTOFVsTOFMass             = new TH2D("hTOFVsTOFMass", "TOFVsTOFMass;TOF [ns];TOF Mass [MeV/c^2]", 35, 10, 80, 50, 0, 1200);
@@ -239,6 +265,24 @@ void RecoDataAnalysis() {
         20, 0, TMath::Pi() / 2
     );
 
+    /////////////////////////////
+    // Distribution of WC hits //
+    /////////////////////////////
+
+    TH2D* hProjVsRealWC4 = new TH2D(
+        "hProjVsRealWC4", "ProjVsRealWC4;p_{x} - WC_{x};p_{y} - WC_{y}",
+        100, -40., 40.,
+        100, -15., 15.
+    );
+    TH1D* hRadDistWC4 = new TH1D("hRadDistWC4", "RadDistWC4", 80, 0.0, 40.);
+
+    TH2D* hMidPlaneCoinc = new TH2D(
+        "hMidPlaneCoinc", "MidPlaneCoinc;up_{x} - down_{x};up_{y} - down_{y}",
+        100, -20., 20.,
+        100, -5., 5.
+    );
+    TH1D* hRadDistMidPlane = new TH1D("hRadDistMidPlane", "RadDistMidPlane", 60, 0.0, 30.);
+
     //////////////////////
     // Loop over events //
     //////////////////////
@@ -253,18 +297,59 @@ void RecoDataAnalysis() {
         // Fill for all events
         hTOFMass->Fill(std::abs(TOFMass));
         hNumWC2TPCMatch->Fill(WC2TPCsize);
+        hNumWCHits->Fill(wcNumHits);
         hTOF->Fill(tofObject);
         hTOFVsTOFMass->Fill(tofObject, std::abs(TOFMass));
 
-        if (std::abs(TOFMass) > PI_MU_EL_MASS_CUTOFF) {
-            // Not a candidate pion, muon, or electron
-            continue;
-        }
+        /////////////////////////////////////////
+        // Wire-chamber and other initial cuts //
+        /////////////////////////////////////////
+
+        if (wcNumHits != 8) continue;
+
+        // Project downstream to midplane @ -437.97 (without angular corrections)
+        std::vector<double> midUp = projToZ(*wcHit0, *wcHit1, -437.97);
+        // Use this point and WC3 to project up to WC4
+        std::vector<double> projDown = projToZ(midUp, *wcHit2, -95.0);
+        // Requires some corrections because magnets are not the same
+        projDown[0] -= tan(1.32 * TMath::Pi() / 180.0) * (-95.0 - -437.97);
+
+        // Compare x and y coordinate in projection and real hit for WC4
+        hProjVsRealWC4->Fill(projDown[0] - wcHit3->at(0), projDown[1] - wcHit3->at(1));
+        double radDistWC4 = TMath::Sqrt(pow(projDown[0] - wcHit3->at(0), 2.) + pow(projDown[1] - wcHit3->at(1), 2.));
+        hRadDistWC4->Fill(radDistWC4);
+
+        // if (radDistWC4 > 8.0) continue; // TODO: figure out number
+
+        // Project upstream to midplane @ -437.97
+        std::vector<double> midDown = projToZ(*wcHit3, *wcHit2, -437.97);
+        midDown[0] -= tan(1.32 * TMath::Pi() / 180.0) * (-339.57 - -437.97);
+
+        hMidPlaneCoinc->Fill(midUp[0] - midDown[0], midUp[1] - midDown[1]);
+        double midPlaneDist = TMath::Sqrt(pow(midUp[0] - midDown[0], 2) + pow(midUp[1] - midDown[1], 2));
+        hRadDistMidPlane->Fill(midPlaneDist);
+
+        // if (midPlaneDist > 3.0) continue;
+
+        // Check projected tracks go through all apertures
+        bool Magnet1ApertureCheck = CheckUpstreamMagnetAperture(*wcHit0, *wcHit1);
+        bool Magnet2ApertureCheck = CheckDownstreamMagnetAperture(*wcHit3, *wcHit2);
+        bool DSColApertureCheck   = CheckDownstreamCollimatorAperture(*wcHit3, *wcHit2);
+
+        if (!Magnet1ApertureCheck || !Magnet2ApertureCheck || !DSColApertureCheck) continue;
+
+        // Candidate mass cut, keep pions, muons and electrons
+        if (std::abs(TOFMass) > PI_MU_EL_MASS_CUTOFF) continue;
 
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
-        hPrimaryTrackPosition->Fill(WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY);
+
+        //////////////////////////
+        // Analyze valid events //
+        //////////////////////////
+
         numValidEvents++;
+        hPrimaryTrackPosition->Fill(WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY);
 
         // Check if WC2TPC is through-going
         bool isPrimaryTG = !isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ);
@@ -278,15 +363,9 @@ void RecoDataAnalysis() {
                 recoBeginZ->at(trk_idx) < 14.0 ||
                 recoEndZ->at(trk_idx) < 14.0
             ) {
-                // std::cout << "Event " << event << ", trk " << trk_idx << ": beginZ = " << recoBeginZ->at(trk_idx) << ", endZ = " << recoEndZ->at(trk_idx) << std::endl;
-                // std::cout << "     begin x = " << recoBeginX->at(trk_idx) << ", y = " << recoBeginY->at(trk_idx) << ", z = " << recoBeginZ->at(trk_idx) << std::endl;
-                // std::cout << "     end   x = " << recoEndX->at(trk_idx) << ", y = " << recoEndY->at(trk_idx) << ", z = " << recoEndZ->at(trk_idx) << std::endl;
-
                 countEarlyTracks++;
             }
         }
-        // std::cout << "Event " << event << " has " << countEarlyTracks << " tracks in first 14 cm of TPC" << std::endl;
-        // std::cout << std::endl;
         // if (countEarlyTracks > 4) continue;
 
         // If high shower probability, reject
@@ -379,8 +458,22 @@ void RecoDataAnalysis() {
             if (trackLength < SMALL_TRACK_LENGTH_CHEX) numSmallTracks++;
         }
 
+        // Look at relevant quantities with different number of TG tracks
+        if (numTGTracks == 0 && isPrimaryTG) {
+            hNumTracksInCylinder0TG->Fill(numTracksInCylinder);
+            hTGSmallTracks0TG->Fill(numSmallTracks);
+        } 
+        if (numTGTracks <= 1 && isPrimaryTG) {
+            hNumTracksInCylinder1TG->Fill(numTracksInCylinder);
+            hTGSmallTracks1TG->Fill(numSmallTracks);
+        }
+        if (numTGTracks <= 2 && isPrimaryTG) {
+            hNumTracksInCylinder2TG->Fill(numTracksInCylinder);
+            hTGSmallTracks2TG->Fill(numSmallTracks);
+        }
+
         hBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
-        hNumTracksInCylinder->Fill(numTracksInCylinder);
+        hNumTGTracks->Fill(numTGTracks);
 
         if (!isPrimaryTG) hTracksNearVertex->Fill(numTracksNearVertex);
         if (obtainedProbabilities && showerProb < SHOWER_PROB_CUT) hAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
@@ -388,8 +481,8 @@ void RecoDataAnalysis() {
         // Add to histogram of small tracks if primary is throughgoing
         if (isPrimaryTG) {
             hTGSmallTracks->Fill(numSmallTracks);
-            hNumTGTracks->Fill(numTGTracks);
             hSmallVsTGTracks->Fill(numSmallTracks, numTGTracks);
+            hNumTracksInCylinder->Fill(numTracksInCylinder);
 
             // Scan over small track length thresholds and fill 2D histogram
             for (int threshBin = 1; threshBin <= hTGNumSmallTracksVsThresh->GetNbinsX(); ++threshBin) {
@@ -433,10 +526,14 @@ void RecoDataAnalysis() {
     std::cout << "Scaling not TG: " << scalingNoTG << std::endl;
     std::cout << std::endl;
 
+    std::cout << "Num valid data TG events with no other TG: " << hNumTracksInCylinder0TG->Integral() << std::endl;
+    std::cout << "Num valid data TG events with at most one more TG: " << hNumTracksInCylinder1TG->Integral() << std::endl;
+    std::cout << "Num valid data TG events with at most two more TG: " << hNumTracksInCylinder2TG->Integral() << std::endl;
+
     // Scale MC histograms to data histograms using event counts
     hMCNumTGTracks->Scale(scaling);
     hMCBeforeShowerCutSmallTracks->Scale(scaling);
-    hMCAfterShowerCutSmallTracks->Scale(scaling); // not sure
+    hMCAfterShowerCutSmallTracks->Scale(hAfterShowerCutSmallTracks->Integral() / hMCAfterShowerCutSmallTracks->Integral()); // not sure
 
     hMCTGSmallTracks->Scale(scalingTG);
     hMCTGTrackLengths->Scale(scalingTG);
@@ -447,8 +544,24 @@ void RecoDataAnalysis() {
 
     // Have to account only for events with valid NN probability
     hMCShowerProb->Scale(hShowerProb->Integral() / hMCShowerProb->Integral());
-
     hMCNumWC2TPCMatch->Scale(hNumWC2TPCMatch->Integral() / hMCNumWC2TPCMatch->Integral());
+
+    // Have to account for cutting off more events
+    TH1D* hMCTGSmallTracks0TG = (TH1D*) hMCTGSmallTracks->Clone("hMCTGSmallTracks0TG");
+    TH1D* hMCTGSmallTracks1TG = (TH1D*) hMCTGSmallTracks->Clone("hMCTGSmallTracks1TG");
+    TH1D* hMCTGSmallTracks2TG = (TH1D*) hMCTGSmallTracks->Clone("hMCTGSmallTracks2TG");
+
+    hMCTGSmallTracks0TG->Scale(hTGSmallTracks0TG->Integral() / hMCTGSmallTracks0TG->Integral());
+    hMCTGSmallTracks1TG->Scale(hTGSmallTracks1TG->Integral() / hMCTGSmallTracks1TG->Integral());
+    hMCTGSmallTracks2TG->Scale(hTGSmallTracks2TG->Integral() / hMCTGSmallTracks2TG->Integral());
+
+    TH1D* hMCNumTracksInCylinder0TG = (TH1D*) hMCNumTracksInCylinder->Clone("hMCNumTracksInCylinder0TG");
+    TH1D* hMCNumTracksInCylinder1TG = (TH1D*) hMCNumTracksInCylinder->Clone("hMCNumTracksInCylinder1TG");
+    TH1D* hMCNumTracksInCylinder2TG = (TH1D*) hMCNumTracksInCylinder->Clone("hMCNumTracksInCylinder2TG");
+
+    hMCNumTracksInCylinder0TG->Scale(hNumTracksInCylinder0TG->Integral() / hMCNumTracksInCylinder0TG->Integral());
+    hMCNumTracksInCylinder1TG->Scale(hNumTracksInCylinder1TG->Integral() / hMCNumTracksInCylinder1TG->Integral());
+    hMCNumTracksInCylinder2TG->Scale(hNumTracksInCylinder2TG->Integral() / hMCNumTracksInCylinder2TG->Integral());
 
     //////////////////
     // Create plots //
@@ -472,8 +585,11 @@ void RecoDataAnalysis() {
         {hTOFMass},
         {hTOF},
 
-        // WC2TPC
+        // WC quality
         {hNumWC2TPCMatch, hMCNumWC2TPCMatch},
+        {hNumWCHits},
+        {hRadDistWC4},
+        {hRadDistMidPlane},
 
         // Cylinder
         {hNumTracksInCylinder, hMCNumTracksInCylinder},
@@ -485,7 +601,15 @@ void RecoDataAnalysis() {
         {hNumTGTracks, hMCNumTGTracks},
         {hShowerProb, hMCShowerProb},
         {hBeforeShowerCutSmallTracks, hAfterShowerCutSmallTracks, hMCBeforeShowerCutSmallTracks, hMCAfterShowerCutSmallTracks},
-        {hTGTrackLengths, hMCTGTrackLengths}
+        {hTGTrackLengths, hMCTGTrackLengths},
+
+        // Comparing TG threshold
+        {hTGSmallTracks0TG, hMCTGSmallTracks0TG},
+        {hTGSmallTracks1TG, hMCTGSmallTracks1TG},
+        {hTGSmallTracks2TG, hMCTGSmallTracks2TG},
+        {hNumTracksInCylinder0TG, hMCNumTracksInCylinder0TG},
+        {hNumTracksInCylinder1TG, hMCNumTracksInCylinder1TG},
+        {hNumTracksInCylinder2TG, hMCNumTracksInCylinder2TG}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -493,8 +617,11 @@ void RecoDataAnalysis() {
         {"Data"},
         {"Data"},
 
-        // WC2TPC
+        // WC quality
         {"Data", "MC (scaled)"},
+        {"Data"},
+        {"Data"},
+        {"Data"},
 
         // Cylinder
         {"Data", "MC (scaled)"},
@@ -506,6 +633,14 @@ void RecoDataAnalysis() {
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data before", "Data after", "MC before (scaled)", "MC after (scaled)"},
+        {"Data", "MC (scaled)"},
+
+        // Comparing TG threshold
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"}
     };
 
@@ -514,8 +649,11 @@ void RecoDataAnalysis() {
         "TOF/TOFMass",
         "TOF/TOF",
 
-        // WC2TPC
-        "WC2TPC/NumMatches",
+        // WC quality
+        "WCQuality/NumMatches",
+        "WCQuality/NumWCHits",
+        "WCQuality/RadDistWC4Proj",
+        "WCQuality/RadDistMidPlane",
 
         // Cylinder
         "Cylinder/NumTracksInCylinder",
@@ -527,7 +665,15 @@ void RecoDataAnalysis() {
         "TGTracks/NumTGTracks",
         "ShowerCut/ShowerProb",
         "ShowerCut/SmallTracksShowerCut",
-        "TGPrimary/TGTrackLengths"
+        "TGPrimary/TGTrackLengths",
+
+        // Comparing TG threshold
+        "TGThreshold/TGSmallTracks0TG",
+        "TGThreshold/TGSmallTracks1TG",
+        "TGThreshold/TGSmallTracks2TG",
+        "TGThreshold/NumTracksInCylinder0TG",
+        "TGThreshold/NumTracksInCylinder1TG",
+        "TGThreshold/NumTracksInCylinder2TG"
     };
 
     std::vector<TString> XLabels = {
@@ -535,8 +681,11 @@ void RecoDataAnalysis() {
         "Mass [MeV/c^2]",
         "Time of flight [ns]",
 
-        // WC2TPC
+        // WC quality
         "# of WC to TPC matches",
+        "# of WC hits",
+        "Proj. to WC hit distance [cm]",
+        "Upstream to downstream proj. distance [cm]",
 
         // Cylinder
         "# of tracks",
@@ -548,7 +697,15 @@ void RecoDataAnalysis() {
         "# of throughgoing tracks",
         "Shower probability",
         "# of small tracks (first 30 cm)",
-        "Track length [cm]"
+        "Track length [cm]",
+
+        // Comparing TG threshold
+        "# of small tracks",
+        "# of small tracks",
+        "# of small tracks",
+        "# of tracks",
+        "# of tracks",
+        "# of tracks",
     };
 
     std::vector<TString> YLabels = {
@@ -556,7 +713,10 @@ void RecoDataAnalysis() {
         "Counts",
         "Counts",
 
-        // WC2TPC
+        // WC quality
+        "Counts",
+        "Counts",
+        "Counts",
         "Counts",
 
         // Cylinder
@@ -564,6 +724,14 @@ void RecoDataAnalysis() {
 
         // Comparisons with MC
         "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+
+        // Comparing TG threshold
         "Counts",
         "Counts",
         "Counts",
@@ -577,7 +745,10 @@ void RecoDataAnalysis() {
         false,
         false,
 
-        // WC2TPC
+        // WC quality
+        false,
+        false,
+        false,
         false,
 
         // Cylinder
@@ -585,6 +756,14 @@ void RecoDataAnalysis() {
 
         // Comparisons with MC
         false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+
+        // Comparing TG threshold
         false,
         false,
         false,
@@ -598,8 +777,11 @@ void RecoDataAnalysis() {
         {true},
         {true},
 
-        // WC2TPC
+        // WC quality
         {true, false},
+        {true},
+        {true},
+        {true},
 
         // Cylinder
         {true, false},
@@ -611,6 +793,14 @@ void RecoDataAnalysis() {
         {true, false},
         {true, false},
         {true, true, false, false},
+        {true, false},
+
+        // Comparing TG threshold
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
         {true, false}
     };
 
@@ -625,7 +815,7 @@ void RecoDataAnalysis() {
         {hNumTGTracks, hMCNumTGTracks},
         {hBeforeShowerCutSmallTracks, hMCBeforeShowerCutSmallTracks},
         {hAfterShowerCutSmallTracks, hMCAfterShowerCutSmallTracks},
-        {hTGTrackLengths, hMCTGTrackLengths}
+        {hTGTrackLengths, hMCTGTrackLengths},
     };
 
     std::vector<std::string> FracDiffDirectory = {
@@ -708,7 +898,9 @@ void RecoDataAnalysis() {
         hPrimaryTrackPosition,
         hMCPrimaryTrackPosition,
         hBackgroundTracksPosition,
-        hBackgroundTracksDirection
+        hBackgroundTracksDirection,
+        hProjVsRealWC4,
+        hMidPlaneCoinc
     };
 
     std::vector<TString> TwoDTitles = {
@@ -721,8 +913,12 @@ void RecoDataAnalysis() {
         "PrimaryTrack/MCIncidentPosition",
         "BkgTracks/IncidentPosition",
         "BkgTracks/IncidentDirection",
+        "WCQuality/ProjVsRealWC4",
+        "WCQuality/MidPlaneCoinc"
     };
     std::vector<std::pair<double,double>> TwoDRanges = {
+        {0, 0},
+        {0, 0},
         {0, 0},
         {0, 0},
         {0, 0},
@@ -738,6 +934,8 @@ void RecoDataAnalysis() {
         true,
         true,
         true,
+        false,
+        false,
         false,
         false,
         false,
