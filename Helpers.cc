@@ -936,6 +936,137 @@ void reweightOneDHisto(TH1D* histo, double weight) {
     }
 }
 
+////////////////////
+// Geometry stuff //
+////////////////////
+
+static double pointToSegmentDist2(
+    double px, double py, double pz, // point to check
+    double ax, double ay, double az, // segment start
+    double bx, double by, double bz, // segment end
+    double* cx = nullptr, double* cy = nullptr, double* cz = nullptr, // closest point in AB
+    double* t_out = nullptr // t in (C, or) Q = A + t AB
+) {
+    // Get AB = B - A
+    const double abx = bx - ax;
+    const double aby = by - ay;
+    const double abz = bz - az;
+
+    // Get AP = P - A
+    const double apx = px - ax;
+    const double apy = py - ay;
+    const double apz = pz - az;
+
+    // Get magntiude of AB
+    const double ab2 = abx*abx + aby*aby + abz*abz;
+
+    // Find t by projecting AP into AB
+    double t = 0.0;
+    if (ab2 > 0.0) {
+        t = (apx*abx + apy*aby + apz*abz) / ab2; // projection parameter
+        if (t < 0.0) t = 0.0;
+        else if (t > 1.0) t = 1.0;
+    } // else A==B (degenerate), keep t=0 => closest to A
+
+    // Compute Q = A + t AB, point in AB closest to P
+    const double qx = ax + t * abx;
+    const double qy = ay + t * aby;
+    const double qz = az + t * abz;
+
+    // Save optional outputs
+    if (cx) *cx = qx;
+    if (cy) *cy = qy;
+    if (cz) *cz = qz;
+    if (t_out) *t_out = t;
+
+    // Get distance between Q and P
+    const double dx = px - qx;
+    const double dy = py - qy;
+    const double dz = pz - qz;
+    return dx*dx + dy*dy + dz*dz;
+}
+
+bool IsPointInsideTrackCylinder(
+    const std::vector<double>* primaryX,
+    const std::vector<double>* primaryY,
+    const std::vector<double>* primaryZ,
+    double x, double y, double z,
+    double radius,
+    double* minDist2_out = nullptr,
+    std::size_t* segIndex_out = nullptr
+) {
+    if (!primaryX || !primaryY || !primaryZ) {
+        return false; // invalid inputs
+    }
+    const auto& X = *primaryX;
+    const auto& Y = *primaryY;
+    const auto& Z = *primaryZ;
+
+    const std::size_t n = X.size();
+    if (Y.size() != n || Z.size() != n || n == 0) {
+        return false; // size mismatch or empty track
+    }
+
+    // If only one point, treat the "track" as a sphere around that point
+    const double r2 = radius * radius;
+    double best = std::numeric_limits<double>::infinity();
+    std::size_t bestSeg = static_cast<std::size_t>(-1);
+
+    if (n == 1) {
+        // Just compute distance to point
+        const double dx = x - X[0], dy = y - Y[0], dz = z - Z[0];
+        best    = dx*dx + dy*dy + dz*dz;
+        bestSeg = 0;
+    } else {
+        // Find minimum distance from point to segment in track
+        for (std::size_t i = 0; i + 1 < n; ++i) {
+            double d2 = pointToSegmentDist2(
+                x, y, z,
+                X[i], Y[i], Z[i],
+                X[i+1], Y[i+1], Z[i+1]
+            );
+            if (d2 < best) {
+                best = d2;
+                bestSeg = i;
+                if (best <= r2) {
+                    // Exit if already inside
+                    if (minDist2_out) *minDist2_out = best;
+                    if (segIndex_out) *segIndex_out = bestSeg;
+                    return true;
+                }
+            }
+        }
+    }
+
+    if (minDist2_out) *minDist2_out = best;
+    if (segIndex_out) *segIndex_out = bestSeg;
+    return best <= r2;
+}
+
+std::tuple<double,double> azimuth_polar_from_points(
+    double xs, double ys, double zs,
+    double xe, double ye, double ze
+) {
+    const double dx = xe - xs;
+    const double dy = ye - ys;
+    const double dz = ze - zs;
+    const double r  = std::sqrt(dx*dx + dy*dy + dz*dz);
+
+    if (r == 0.0) {
+        return {std::numeric_limits<double>::quiet_NaN(),
+                std::numeric_limits<double>::quiet_NaN()};
+    }
+
+    double phi = std::atan2(dy, dx); // (-pi, pi]
+
+    // Clamp to avoid tiny numeric drift outside [-1,1]
+    double c = dz / r;
+    c = std::max(-1.0, std::min(1.0, c));
+    double theta = std::acos(c); // [0, pi]
+
+    return {phi, theta};
+}
+
 //////////////////////////
 // Wiener SVD unfolding //
 // Author: Hanyu WEI    //

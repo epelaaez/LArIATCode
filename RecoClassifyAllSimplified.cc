@@ -245,7 +245,7 @@ void RecoClassifyAllSimplified() {
     /////////////////////////////////
 
     std::ofstream outFileChExchBkg("files/ClassifyAll/ChExchBackground.txt");
-    TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "RECREATE");
+    TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "UPDATE");
 
     ///////////////////////
     // Create histograms //
@@ -466,7 +466,8 @@ void RecoClassifyAllSimplified() {
     // Data-MC comparison histograms //
     ///////////////////////////////////
 
-    TH1D* hMCNumWC2TPCMatch = new TH1D("hMCNumWC2TPCMatch", "hMCNumWC2TPCMatch", 10, 0, 10);
+    TH1D* hMCNumWC2TPCMatch      = new TH1D("hMCNumWC2TPCMatch", "hMCNumWC2TPCMatch", 10, 0, 10);
+    TH1D* hMCNumTracksInCylinder = new TH1D("hMCNumTracksInCylinder", "hMCNumTracksInCylinder", 10, 0, 10);
 
     TH1D* hMCTGTrackLengths         = new TH1D("hMCTGTrackLengths", "hMCTGTrackLengths;;", 25, 0, 50);
     TH1D* hMCTGSmallTracks          = new TH1D("hMCTGSmallTracks", "hMCTGSmallTracks;;", 10, 0, 10);
@@ -480,6 +481,16 @@ void RecoClassifyAllSimplified() {
 
     TH2D* hMCSmallVsTGTracks          = new TH2D("hMCSmallVsTGTracks", "MCSmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
     TH2D* hMCTGNumSmallTracksVsThresh = new TH2D("hMCTGNumSmallTracksVsThresh", "MCTGNumSmallTracksVsThresh;Small Track Length Threshold (cm);Num Small Tracks", 10, 0, 40, 15, 0, 15);
+
+    ///////////////////////////////////
+    // Distribution of primary track //
+    ///////////////////////////////////
+
+    TH2D* hMCPrimaryTrackPosition = new TH2D(
+        "hMCPrimaryTrackPosition", "MCPrimaryTrackPosition;x-position;y-position",
+        20, minX, maxX,
+        20, minY, maxY
+    );
 
     //////////////////////
     // Loop over events //
@@ -501,16 +512,34 @@ void RecoClassifyAllSimplified() {
         // For data-MC comparisons
         hMCNumWC2TPCMatch->Fill(WC2TPCsize);
         if (WC2TPCtrkID != -99999) {
+            hMCPrimaryTrackPosition->Fill(WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY);
+
+            bool isPrimaryTG = !isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ);
+
             if (obtainedProbabilities) hMCShowerProb->Fill(showerProb);
 
             int smallTracksComp = 0; 
             int tracksNearVertexComp = 0;
             int numTGTracksComp = 0;
             int smallTracksTPCStart = 0;
+            int numTracksInCylinder = 0;
 
             for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
                 // Skip WC2TPC match itself
                 if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
+                // Is track contained in 10 cm cylinder?
+                bool startInCylinder = IsPointInsideTrackCylinder(
+                    WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                    recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
+                    CYLINDER_RADIUS
+                );
+                bool endInCylinder = IsPointInsideTrackCylinder(
+                    WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                    recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
+                    CYLINDER_RADIUS
+                );
+                if (startInCylinder && endInCylinder) numTracksInCylinder++;
 
                 if (
                     !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
@@ -535,7 +564,7 @@ void RecoClassifyAllSimplified() {
                     pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
                     pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
                 );
-                if (!isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) {
+                if (isPrimaryTG) {
                     hMCTGTrackLengths->Fill(trackLength);
                 }
 
@@ -548,7 +577,7 @@ void RecoClassifyAllSimplified() {
                 }
 
                 if (
-                    isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ) &&
+                    !isPrimaryTG &&
                     (distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS)
                 ) {
                     tracksNearVertexComp++;
@@ -556,14 +585,17 @@ void RecoClassifyAllSimplified() {
                 }
                 if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksComp++;
             }
+
             hMCBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
-            if (obtainedProbabilities && showerProb < SHOWER_PROB_CUT) hMCAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
-            if (isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) hMCTracksNearVertex->Fill(tracksNearVertexComp);
             hMCNumTGTracks->Fill(numTGTracksComp);
 
-            if (!isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ)) {
+            if (obtainedProbabilities && showerProb < SHOWER_PROB_CUT) hMCAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
+            if (!isPrimaryTG) hMCTracksNearVertex->Fill(tracksNearVertexComp);
+
+            if (isPrimaryTG) {
                 hMCTGSmallTracks->Fill(smallTracksComp);
                 hMCSmallVsTGTracks->Fill(smallTracksComp, numTGTracksComp);
+                hMCNumTracksInCylinder->Fill(numTracksInCylinder);
 
                 // Scan over small track length thresholds and fill 2D histogram
                 for (int threshBin = 1; threshBin <= hMCTGNumSmallTracksVsThresh->GetNbinsX(); ++threshBin) {
@@ -1312,6 +1344,12 @@ void RecoClassifyAllSimplified() {
 
     hMCNumWC2TPCMatch->SetDirectory(comparisonsFile);
     hMCNumWC2TPCMatch->Write();
+
+    hMCNumTracksInCylinder->SetDirectory(comparisonsFile);
+    hMCNumTracksInCylinder->Write();
+
+    hMCPrimaryTrackPosition->SetDirectory(comparisonsFile);
+    hMCPrimaryTrackPosition->Write();
 
     //////////////////////////////////////////////
     // Perform unfolding for interacting slices //

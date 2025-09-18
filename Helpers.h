@@ -141,6 +141,9 @@ static const int                   NUM_BINS_KE = ARRAY_KE_BINS.size() - 1;
 // TOF mass cut
 double PI_MU_EL_MASS_CUTOFF = 350.;
 
+// Cylinder radius for shower identification
+double CYLINDER_RADIUS = 10.;
+
 // Cross section calculation
 double rho            = 1396; // kg / m^3
 double molar_mass     = 39.95; // g / mol
@@ -189,6 +192,25 @@ void H2M(const TH2D* histo, TMatrixD& mat, bool rowcolumn);
 void H2V(const TH1D* histo, TVectorD& vec);
 void M2H(const TMatrixD mat, TH2D* histo);
 void V2H(const TVectorD vec, TH1D* histo);
+
+////////////////////
+// Geometry stuff //
+////////////////////
+
+bool IsPointInsideTrackCylinder(
+    const std::vector<double>* primaryX,
+    const std::vector<double>* primaryY,
+    const std::vector<double>* primaryZ,
+    double x, double y, double z,
+    double radius,
+    double* minDist2_out = nullptr,
+    std::size_t* segIndex_out = nullptr
+);
+
+std::tuple<double, double> azimuth_polar_from_points(
+    double xs, double ys, double zs,
+    double xe, double ye, double ze
+);
 
 //////////////////////////
 // Wiener SVD unfolding //

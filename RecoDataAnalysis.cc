@@ -173,6 +173,7 @@ void RecoDataAnalysis() {
     /////////////////////
 
     TH1D* hMCNumWC2TPCMatch         = (TH1D*) MCFile->Get("hMCNumWC2TPCMatch");
+    TH1D* hMCNumTracksInCylinder    = (TH1D*) MCFile->Get("hMCNumTracksInCylinder");
     TH1D* hMCTGTrackLengths         = (TH1D*) MCFile->Get("hMCTGTrackLengths");
     TH1D* hMCTGSmallTracks          = (TH1D*) MCFile->Get("hMCTGSmallTracks");
     TH1D* hMCTracksNearVertex       = (TH1D*) MCFile->Get("hMCTracksNearVertex");
@@ -186,6 +187,8 @@ void RecoDataAnalysis() {
     TH2D* hMCSmallVsTGTracks          = (TH2D*) MCFile->Get("hMCSmallVsTGTracks");
     TH2D* hMCTGNumSmallTracksVsThresh = (TH2D*) MCFile->Get("hMCTGNumSmallTracksVsThresh");
 
+    TH2D* hMCPrimaryTrackPosition = (TH2D*) MCFile->Get("hMCPrimaryTrackPosition");
+
     ///////////////////////
     // Create histograms //
     ///////////////////////
@@ -193,7 +196,8 @@ void RecoDataAnalysis() {
     TH1D* hTOFMass = new TH1D("hTOFMass", "TOF Mass Distribution", 50, 0, 1200);
     TH1D* hTOF     = new TH1D("hTOF", "TOF Distribution", 50, 0, 80);
     
-    TH1D* hNumWC2TPCMatch = new TH1D("hNumWC2TPCMatch", "NumWC2TPCMatch", 10, 0, 10);
+    TH1D* hNumWC2TPCMatch      = new TH1D("hNumWC2TPCMatch", "NumWC2TPCMatch", 10, 0, 10);
+    TH1D* hNumTracksInCylinder = new TH1D("hNumTracksInCylinder", "NumTracksInCylinder", 10, 0, 10);
 
     TH1D* hTGTrackLengths         = new TH1D("hTGTrackLengths", "TGTrackLengths", 25, 0, 50);
     TH1D* hTGSmallTracks          = new TH1D("hTGSmallTracks", "TGSmallTracks", 10, 0, 10);
@@ -208,6 +212,32 @@ void RecoDataAnalysis() {
     TH2D* hSmallVsTGTracks          = new TH2D("hSmallVsTGTracks", "SmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
     TH2D* hTGNumSmallTracksVsThresh = new TH2D("hTGNumSmallTracksVsThresh", "TGNumSmallTracksVsThresh;Small Track Length Threshold (cm);Num Small Tracks", 10, 0, 40, 15, 0, 15);
     TH2D* hTOFVsTOFMass             = new TH2D("hTOFVsTOFMass", "TOFVsTOFMass;TOF [ns];TOF Mass [MeV/c^2]", 35, 10, 80, 50, 0, 1200);
+
+    ///////////////////////////////////
+    // Distribution of primary track //
+    ///////////////////////////////////
+
+    TH2D* hPrimaryTrackPosition = new TH2D(
+        "hPrimaryTrackPosition", "PrimaryTrackPosition;x-position;y-position",
+        20, minX, maxX,
+        20, minY, maxY
+    );
+
+    ///////////////////////////////////////
+    // Distribution of background tracks //
+    ///////////////////////////////////////
+
+    TH2D* hBackgroundTracksPosition = new TH2D(
+        "hBackgroundTracksPosition", "BackgroundTracksPosition;x-position;y-position",
+        20, minX, maxX,
+        20, minY, maxY
+    );
+
+    TH2D* hBackgroundTracksDirection = new TH2D(
+        "hBackgroundTracksDirection", "BackgroundTracksDirection;Azimuth;Polar",
+        20, -TMath::Pi(), -TMath::Pi(),
+        20, 0, TMath::Pi()
+    );
 
     //////////////////////
     // Loop over events //
@@ -233,6 +263,7 @@ void RecoDataAnalysis() {
 
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
+        hPrimaryTrackPosition->Fill(WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY);
         numValidEvents++;
 
         // Check if WC2TPC is through-going
@@ -263,9 +294,27 @@ void RecoDataAnalysis() {
         if (obtainedProbabilities) hShowerProb->Fill(showerProb);
 
         // Loop over reconstructed tracks
-        int numSmallTracks = 0; int numTracksNearVertex = 0; int smallTracksTPCStart = 0; int numTGTracks = 0;
+        int numSmallTracks = 0; 
+        int numTracksNearVertex = 0; 
+        int smallTracksTPCStart = 0; 
+        int numTGTracks = 0;
+        int numTracksInCylinder = 0;
+
         for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
             if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
+            // Is track contained in 10 cm cylinder?
+            bool startInCylinder = IsPointInsideTrackCylinder(
+                WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
+                CYLINDER_RADIUS
+            );
+            bool endInCylinder = IsPointInsideTrackCylinder(
+                WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
+                CYLINDER_RADIUS
+            );
+            if (startInCylinder && endInCylinder) numTracksInCylinder++;
 
             double distanceFromStart = distance(
                 recoBeginX->at(trk_idx), WC2TPCPrimaryEndX, 
@@ -297,6 +346,21 @@ void RecoDataAnalysis() {
                 !isWithinReducedVolume(recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx))
             ) {
                 numTGTracks++;
+
+                if (isPrimaryTG) {
+                    // Track information about background tracks
+                    bool isBeginTrue = recoBeginZ->at(trk_idx) < recoEndZ->at(trk_idx);
+                    double incidentX = isBeginTrue ? recoBeginX->at(trk_idx) : recoEndX->at(trk_idx);
+                    double incidentY = isBeginTrue ? recoBeginY->at(trk_idx) : recoEndY->at(trk_idx);
+
+                    hBackgroundTracksPosition->Fill(incidentX, incidentY);
+
+                    auto [phi, theta] = azimuth_polar_from_points(
+                        recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
+                        recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx)
+                    );
+                    hBackgroundTracksDirection->Fill(phi, theta);
+                }
             }
 
             if (
@@ -308,14 +372,17 @@ void RecoDataAnalysis() {
             }
             if (trackLength < SMALL_TRACK_LENGTH_CHEX) numSmallTracks++;
         }
+
         hBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
-        hNumTGTracks->Fill(numTGTracks);
+        hNumTracksInCylinder->Fill(numTracksInCylinder);
+
         if (!isPrimaryTG) hTracksNearVertex->Fill(numTracksNearVertex);
         if (obtainedProbabilities && showerProb < SHOWER_PROB_CUT) hAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
 
         // Add to histogram of small tracks if primary is throughgoing
         if (isPrimaryTG) {
             hTGSmallTracks->Fill(numSmallTracks);
+            hNumTGTracks->Fill(numTGTracks);
             hSmallVsTGTracks->Fill(numSmallTracks, numTGTracks);
 
             // Scan over small track length thresholds and fill 2D histogram
@@ -367,6 +434,7 @@ void RecoDataAnalysis() {
 
     hMCTGSmallTracks->Scale(scalingTG);
     hMCTGTrackLengths->Scale(scalingTG);
+    hMCNumTracksInCylinder->Scale(scalingTG);
     
     hMCTracksNearVertex->Scale(scalingNoTG);
     hMCTrackLengthsNearVertex->Scale(scalingNoTG);
@@ -401,6 +469,9 @@ void RecoDataAnalysis() {
         // WC2TPC
         {hNumWC2TPCMatch, hMCNumWC2TPCMatch},
 
+        // Cylinder
+        {hNumTracksInCylinder, hMCNumTracksInCylinder},
+
         // Comparisons with MC
         {hTGSmallTracks, hMCTGSmallTracks},
         {hTracksNearVertex, hMCTracksNearVertex},
@@ -417,6 +488,9 @@ void RecoDataAnalysis() {
         {"Data"},
 
         // WC2TPC
+        {"Data", "MC (scaled)"},
+
+        // Cylinder
         {"Data", "MC (scaled)"},
 
         // Comparisons with MC
@@ -437,6 +511,9 @@ void RecoDataAnalysis() {
         // WC2TPC
         "WC2TPC/NumMatches",
 
+        // Cylinder
+        "Cylinder/NumTracksInCylinder",
+
         // Comparisons with MC
         "TGPrimary/TGSmallTracks",
         "NearVertex/TracksNearVertex",
@@ -455,6 +532,9 @@ void RecoDataAnalysis() {
         // WC2TPC
         "# of WC to TPC matches",
 
+        // Cylinder
+        "# of tracks",
+
         // Comparisons with MC
         "# of small tracks",
         "# of tracks near vertex",
@@ -471,6 +551,9 @@ void RecoDataAnalysis() {
         "Counts",
 
         // WC2TPC
+        "Counts",
+
+        // Cylinder
         "Counts",
 
         // Comparisons with MC
@@ -491,6 +574,9 @@ void RecoDataAnalysis() {
         // WC2TPC
         false,
 
+        // Cylinder
+        false,
+
         // Comparisons with MC
         false,
         false,
@@ -507,6 +593,9 @@ void RecoDataAnalysis() {
         {true},
 
         // WC2TPC
+        {true, false},
+
+        // Cylinder
         {true, false},
 
         // Comparisons with MC
@@ -609,7 +698,11 @@ void RecoDataAnalysis() {
         hMCSmallVsTGTracks,
         hTGNumSmallTracksVsThresh,
         hMCTGNumSmallTracksVsThresh,
-        hTOFVsTOFMass
+        hTOFVsTOFMass,
+        hPrimaryTrackPosition,
+        hMCPrimaryTrackPosition,
+        hBackgroundTracksPosition,
+        hBackgroundTracksDirection
     };
 
     std::vector<TString> TwoDTitles = {
@@ -617,9 +710,16 @@ void RecoDataAnalysis() {
         "TGTracks/MCSmallVsTGTracks",
         "TGTracks/TGNumSmallTracksVsThresh",
         "TGTracks/MCTGNumSmallTracksVsThresh",
-        "TOF/TOFVsTOFMass"
+        "TOF/TOFVsTOFMass",
+        "PrimaryTrack/IncidentPosition",
+        "PrimaryTrack/MCIncidentPosition",
+        "BkgTracks/IncidentPosition",
+        "BkgTracks/IncidentDirection",
     };
     std::vector<std::pair<double,double>> TwoDRanges = {
+        {0, 0},
+        {0, 0},
+        {0, 0},
         {0, 0},
         {0, 0},
         {0, 0},
@@ -632,6 +732,9 @@ void RecoDataAnalysis() {
         true,
         true,
         true,
+        false,
+        false,
+        false,
         false
     };
 
