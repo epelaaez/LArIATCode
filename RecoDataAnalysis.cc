@@ -234,9 +234,9 @@ void RecoDataAnalysis() {
     );
 
     TH2D* hBackgroundTracksDirection = new TH2D(
-        "hBackgroundTracksDirection", "BackgroundTracksDirection;Azimuth;Polar",
-        20, -TMath::Pi(), -TMath::Pi(),
-        20, 0, TMath::Pi()
+        "hBackgroundTracksDirection", "BackgroundTracksDirection;#phi (x-y) [rad];#theta (forward) [rad]",
+        20, -TMath::Pi(), TMath::Pi(),
+        20, 0, TMath::Pi() / 2
     );
 
     //////////////////////
@@ -350,14 +350,20 @@ void RecoDataAnalysis() {
                 if (isPrimaryTG) {
                     // Track information about background tracks
                     bool isBeginTrue = recoBeginZ->at(trk_idx) < recoEndZ->at(trk_idx);
-                    double incidentX = isBeginTrue ? recoBeginX->at(trk_idx) : recoEndX->at(trk_idx);
-                    double incidentY = isBeginTrue ? recoBeginY->at(trk_idx) : recoEndY->at(trk_idx);
 
-                    hBackgroundTracksPosition->Fill(incidentX, incidentY);
+                    const double xs = isBeginTrue ? recoBeginX->at(trk_idx) : recoEndX->at(trk_idx);
+                    const double ys = isBeginTrue ? recoBeginY->at(trk_idx) : recoEndY->at(trk_idx);
+                    const double zs = isBeginTrue ? recoBeginZ->at(trk_idx) : recoEndZ->at(trk_idx);
+
+                    const double xe = isBeginTrue ? recoEndX->at(trk_idx)   : recoBeginX->at(trk_idx);
+                    const double ye = isBeginTrue ? recoEndY->at(trk_idx)   : recoBeginY->at(trk_idx);
+                    const double ze = isBeginTrue ? recoEndZ->at(trk_idx)   : recoBeginZ->at(trk_idx);
+
+                    hBackgroundTracksPosition->Fill(xs, ys);
 
                     auto [phi, theta] = azimuth_polar_from_points(
-                        recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
-                        recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx)
+                        xs, ys, zs,
+                        xe, ye, ze
                     );
                     hBackgroundTracksDirection->Fill(phi, theta);
                 }
