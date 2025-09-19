@@ -614,6 +614,29 @@ void RecoAllAnalysis() {
     TH1D* hChExchShowerRecoTrkLengths  = new TH1D("hChExchShowerRecoTrkLengths", "Charge Exchange Shower Reconstructed Track Lengths;Length (cm);Entries", 20, 0, 40);
     TH1D* hChExchShowerTruthTrkLengths = new TH1D("hChExchShowerTruthTrkLengths", "Charge Exchange Shower Truth Track Lengths;Length (cm);Entries", 20, 0, 40);
 
+    ///////////////////////////
+    // Data for cylinder cut //
+    ///////////////////////////
+
+    int numSurvivingPions     = 0;
+    int numSurvivingMuons     = 0;
+    int numSurvivingElectrons = 0;
+
+    TH1D* hNumTracksInCylinder          = new TH1D("hNumTracksInCylinder", "hNumTracksInCylinder", 10, 0, 10);
+    TH1D* hNumTracksInCylinderPions     = new TH1D("hNumTracksInCylinderPions", "hNumTracksInCylinderPions", 10, 0, 10);
+    TH1D* hNumTracksInCylinderMuons     = new TH1D("hNumTracksInCylinderMuons", "hNumTracksInCylinderMuons", 10, 0, 10);
+    TH1D* hNumTracksInCylinderElectrons = new TH1D("hNumTracksInCylinderElectrons", "hNumTracksInCylinderElectrons", 10, 0, 10);
+
+    TH1D* hTrkLengthsInCylinder          = new TH1D("hTrkLengthsInCylinder", "hTrkLengthsInCylinder", 50, 0, 5);
+    TH1D* hTrkLengthsInCylinderPions     = new TH1D("hTrkLengthsInCylinderPions", "hTrkLengthsInCylinderPions", 50, 0, 5);
+    TH1D* hTrkLengthsInCylinderMuons     = new TH1D("hTrkLengthsInCylinderMuons", "hTrkLengthsInCylinderMuons", 50, 0, 5);
+    TH1D* hTrkLengthsInCylinderElectrons = new TH1D("hTrkLengthsInCylinderElectrons", "hTrkLengthsInCylinderElectrons", 50, 0, 5);
+
+    TH1D* hSmallTrksInCylinder          = new TH1D("hSmallTrksInCylinder", "hSmallTrksInCylinder", 10, 0, 10);
+    TH1D* hSmallTrksInCylinderPions     = new TH1D("hSmallTrksInCylinderPions", "hSmallTrksInCylinderPions", 10, 0, 10);
+    TH1D* hSmallTrksInCylinderMuons     = new TH1D("hSmallTrksInCylinderMuons", "hSmallTrksInCylinderMuons", 10, 0, 10);
+    TH1D* hSmallTrksInCylinderElectrons = new TH1D("hSmallTrksInCylinderElectrons", "hSmallTrksInCylinderElectrons", 10, 0, 10);
+
     //////////////////////////////
     // Cross-section histograms //
     //////////////////////////////
@@ -777,6 +800,9 @@ void RecoAllAnalysis() {
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
+        // Make it go faster
+        // if (i > 10000) break;
+
         // Label background type as 0 for 0p signal and 1 for Np signal
         if (isPionAbsorptionSignal) {
             if (numVisibleProtons == 0) backgroundType = 0;
@@ -878,6 +904,68 @@ void RecoAllAnalysis() {
                         TMath::Power(recoEndZ->at(iRecoTrk) - recoBeginZ->at(iRecoTrk), 2)
                     );
                     hChExchShowerRecoTrkLengths->Fill(trk_length);
+                }
+            }
+        }
+
+        // Study tracks inside 10 cm cylinder around primary track
+        if (WC2TPCtrkID != -99999) {
+            int numTracksInCylinder = 0; int numSmallTracksInCylinder = 0;
+            for (int trk_idx = 0; trk_idx < matchedTrkID->size(); ++trk_idx) {
+                if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
+                double trackLength = sqrt(
+                    pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
+                    pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
+                    pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+                );
+
+                bool startInCylinder = IsPointInsideTrackCylinder(
+                    WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                    recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
+                    CYLINDER_RADIUS
+                );
+                bool endInCylinder = IsPointInsideTrackCylinder(
+                    WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                    recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
+                    CYLINDER_RADIUS
+                );
+                if (startInCylinder && endInCylinder) {
+                    numTracksInCylinder++;
+
+                    hTrkLengthsInCylinder->Fill(trackLength);
+                    if (backgroundType == 2) {
+                        hTrkLengthsInCylinderMuons->Fill(trackLength);
+                    } else if (backgroundType == 3) {
+                        hTrkLengthsInCylinderElectrons->Fill(trackLength);
+                    } else {
+                        hTrkLengthsInCylinderPions->Fill(trackLength);
+                    }
+
+                    if (trackLength < 10) numSmallTracksInCylinder++;
+                }
+            }
+            hNumTracksInCylinder->Fill(numTracksInCylinder);
+            hSmallTrksInCylinder->Fill(numSmallTracksInCylinder);
+            if (backgroundType == 2) {
+                hNumTracksInCylinderMuons->Fill(numTracksInCylinder);
+                hSmallTrksInCylinderMuons->Fill(numSmallTracksInCylinder);
+            } else if (backgroundType == 3) {
+                hNumTracksInCylinderElectrons->Fill(numTracksInCylinder);
+                hSmallTrksInCylinderElectrons->Fill(numSmallTracksInCylinder);
+            } else {
+                hNumTracksInCylinderPions->Fill(numTracksInCylinder);
+                hSmallTrksInCylinderPions->Fill(numSmallTracksInCylinder);
+            }
+            
+            // Characterize cut performance
+            if (numTracksInCylinder < 1) {
+                if (backgroundType == 2) {
+                    numSurvivingMuons++;
+                } else if (backgroundType == 3) {
+                    numSurvivingElectrons++;
+                } else {
+                    numSurvivingPions++;
                 }
             }
         }
@@ -2307,6 +2395,17 @@ void RecoAllAnalysis() {
     TH1* hScatterNpEff = ScatterNpEffPur.first;
     TH1* hScatterNpPur = ScatterNpEffPur.second;
 
+    ////////////////////////////////////////
+    // Print information for cylinder cut //
+    ////////////////////////////////////////
+
+    std::cout << std::endl;
+    std::cout << "Results from cylinder cut" << std::endl;
+    std::cout << "  Number of pions passing: " << numSurvivingPions << std::endl;
+    std::cout << "  Number of muons passing: " << numSurvivingMuons << std::endl;
+    std::cout << "  Number of electrons passing: " << numSurvivingElectrons << std::endl;
+    std::cout << std::endl;
+
     //////////////////
     // Create plots //
     //////////////////
@@ -2397,7 +2496,15 @@ void RecoAllAnalysis() {
         {hScatterNpEff, hScatterNpPur},
 
         // Charge exchange events
-        {hChExchShowerRecoTrkLengths, hChExchShowerTruthTrkLengths}
+        {hChExchShowerRecoTrkLengths, hChExchShowerTruthTrkLengths},
+
+        // Cylinder cuts
+        {hTrkLengthsInCylinder},
+        {hTrkLengthsInCylinderPions, hTrkLengthsInCylinderMuons, hTrkLengthsInCylinderElectrons},
+        {hNumTracksInCylinder},
+        {hNumTracksInCylinderPions, hNumTracksInCylinderMuons, hNumTracksInCylinderElectrons},
+        {hSmallTrksInCylinder},
+        {hSmallTrksInCylinderPions, hSmallTrksInCylinderMuons, hSmallTrksInCylinderElectrons}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2473,7 +2580,15 @@ void RecoAllAnalysis() {
         {"Efficiency", "Purity"},
 
         // Charge exchange events
-        {"Reco", "Truth"}
+        {"Reco", "Truth"},
+
+        // Cylinder cuts
+        {"All"},
+        {"Pions", "Muons", "Electrons"},
+        {"All"},
+        {"Pions", "Muons", "Electrons"},
+        {"All"},
+        {"Pions", "Muons", "Electrons"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -2549,7 +2664,15 @@ void RecoAllAnalysis() {
         "EffPur/PionNpScattering",
 
         // Charge exchange events
-        "ChExch/ShowerTrksLengths"
+        "ChExch/ShowerTrksLengths",
+
+        // Cylinder cuts
+        "Cylinder/TrackLengths",
+        "Cylinder/TrackLengthsBreakdown",
+        "Cylinder/NumTracks",
+        "Cylinder/NumTracksBreakdown",
+        "Cylinder/SmallTracks",
+        "Cylinder/SmallTracksBreakdown"
     };
 
     std::vector<TString> XLabels = {
@@ -2625,7 +2748,15 @@ void RecoAllAnalysis() {
         "Kinetic Energy [MeV]",
 
         // Charge exchange events
-        "Track length (cm)"
+        "Track length (cm)",
+
+        // Cylinder cuts
+        "Track length (cm)",
+        "Track length (cm)",
+        "Number of tracks",
+        "Number of tracks",
+        "Number of small tracks",
+        "Number of small tracks"
     };
 
     std::vector<TString> YLabels = {
@@ -2701,6 +2832,14 @@ void RecoAllAnalysis() {
         "Eff/Pur",
 
         // Charge exchange events
+        "Counts",
+
+        // Cylinder cuts
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
         "Counts"
     };
 
@@ -2777,7 +2916,15 @@ void RecoAllAnalysis() {
         false,
 
         // Charge exchange events
-        false
+        false,
+
+        // Cylinder cuts
+        false, 
+        true,
+        false,
+        true,
+        false,
+        true
     };
 
     printOneDPlots(
