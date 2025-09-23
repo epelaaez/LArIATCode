@@ -720,7 +720,7 @@ void printOneDPlots(
             PlotCanvas->SaveAs(dir + titles.at(iPlot) + ".png");
 
             // Reset min and max for future plotting
-            h0->GetYaxis()->SetRangeUser(origYmin, origYmax);
+            h0->SetMinimum(); h0->SetMaximum();
         }
 
         delete PlotCanvas; // cleans pads too

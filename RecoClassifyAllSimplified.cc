@@ -503,7 +503,7 @@ void RecoClassifyAllSimplified() {
         tree->GetEntry(i);
 
         // Make script go faster
-        // if (i > 20000) break;
+        // if (i > 10000) break;
 
         ////////////////////////////////////////
         // Histograms for data-MC comparisons //
@@ -615,9 +615,9 @@ void RecoClassifyAllSimplified() {
             }
         }
 
-        //////////////////////////////////////
-        // Back to classification algorithm //
-        //////////////////////////////////////
+        ////////////////////////////
+        // Save truth information //
+        ////////////////////////////
 
         // Set correct primary vertex KE for elastic scattering
         if (backgroundType == 12) {
@@ -671,6 +671,10 @@ void RecoClassifyAllSimplified() {
             continue;
         }
         hDataProdsAndWC2TPC->Fill(backgroundType);
+
+        //////////////////////////////////////
+        // Back to classification algorithm //
+        //////////////////////////////////////
 
         ///////////////////////
         // Primary track PID //
@@ -766,9 +770,41 @@ void RecoClassifyAllSimplified() {
         }
         double energyAtVertex = initialKE - energyDeposited;
 
-        // If did not obtain neural network electron shower probabilities, skip 
-        if (!obtainedProbabilities) showerProb = 1.;
-        if (showerProb >= SHOWER_PROB_CUT){
+        //////////////////
+        // Cylinder cut //
+        //////////////////
+
+        int numSmallTracksInCylinder = 0;
+        for (int trk_idx = 0; trk_idx < recoTrkID->size(); ++trk_idx) {
+            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
+            double trackLength = sqrt(
+                pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
+                pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
+                pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+            );
+
+            bool startInCylinder = IsPointInsideTrackCylinder(
+                WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
+                CYLINDER_RADIUS
+            );
+            bool endInCylinder = IsPointInsideTrackCylinder(
+                WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
+                CYLINDER_RADIUS
+            );
+
+            if (
+                startInCylinder && endInCylinder &&
+                trackLength < CYLINDER_SMALL_TRACK
+            ) {
+                numSmallTracksInCylinder++;
+            }
+        }
+
+        // Perform cut
+        if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) {
             if (backgroundType == 0) {
                 hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueAbs0pKERejElectron->Fill(truthPrimaryVertexKE * 1000);
@@ -785,6 +821,34 @@ void RecoClassifyAllSimplified() {
             continue;
         }
         hNotAnElectron->Fill(backgroundType);
+
+        ////////////////////////
+        // Neural network cut //
+        ////////////////////////
+
+        // If did not obtain neural network electron shower probabilities, skip 
+        // if (!obtainedProbabilities) showerProb = 1.;
+        // if (showerProb >= SHOWER_PROB_CUT){
+        //     if (backgroundType == 0) {
+        //         hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
+        //         hTrueAbs0pKERejElectron->Fill(truthPrimaryVertexKE * 1000);
+        //     } else if (backgroundType == 1) {
+        //         hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
+        //         hTrueAbsNpKERejElectron->Fill(truthPrimaryVertexKE * 1000);
+        //     } else if (backgroundType == 13 || backgroundType == 14) {
+        //         hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
+        //         hTrueScatterKERejElectron->Fill(truthPrimaryVertexKE * 1000);
+        //     } else if (backgroundType == 7) {
+        //         hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
+        //         hTrueChExchKERejElectron->Fill(truthPrimaryVertexKE * 1000);
+        //     }
+        //     continue;
+        // }
+        // hNotAnElectron->Fill(backgroundType);
+
+        ////////////////////////
+        // Reduced volume cut //
+        ////////////////////////
 
         if (!isWithinReducedVolume(breakPointX, breakPointY, breakPointZ)) {
             if (backgroundType == 0) {
@@ -1460,8 +1524,8 @@ void RecoClassifyAllSimplified() {
         Signal,
         Measure,
         Covariance,
-        2, // 0: unit, 2: second derivative
-        0.5, // smoothing parameter
+        0, // 0: unit, 2: second derivative
+        0, // smoothing parameter
         AddSmear,
         WF,
         UnfoldCov,
@@ -1982,6 +2046,16 @@ void RecoClassifyAllSimplified() {
         PlotsAsPoints.push_back({false, true});
         PlotLabelGroups.push_back({"True (t)", "Unf. (t)"});
         PlotTitles.push_back("Unfolded/UnSmeared" + UnfHistTitles[i] );
+        XLabels.push_back("Kinetic energy [MeV]");
+        YLabels.push_back("Counts");
+        PlotStacked.push_back(false);
+
+        PlotGroups.push_back({TotalEventsHistos[i], SmearedTrueHistos[i]});
+        PlotsAsPoints.push_back({false, false});
+        PlotLabelGroups.push_back({"True (t)", "True (r)"});
+        TString modifiedTitle = UnfHistTitles[i];
+        modifiedTitle.ReplaceAll("Unfolded", "");
+        PlotTitles.push_back("Unfolded/TrueComparison" + modifiedTitle);
         XLabels.push_back("Kinetic energy [MeV]");
         YLabels.push_back("Counts");
         PlotStacked.push_back(false);

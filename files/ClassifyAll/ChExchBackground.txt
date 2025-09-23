@@ -1,13 +1,13 @@
-Run: 1 subrun: 0 event: 1561
- Classified as: Scattering 0p with energy at vertex: 264.516
-
 Run: 1 subrun: 0 event: 1582
  Classified as: Charge exchange with energy at vertex: 324.218
 
-Run: 1 subrun: 0 event: 5013
+Run: 1 subrun: 0 event: 1592
  Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 5185
+Run: 1 subrun: 0 event: 2441
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 5040
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 5343
@@ -16,22 +16,85 @@ Run: 1 subrun: 0 event: 5343
 Run: 1 subrun: 0 event: 5346
  Classified as: Charge exchange with energy at vertex: 379.246
 
+Run: 1 subrun: 0 event: 5823
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 5855
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 5878
+ Classified as: Abs Np with energy at vertex: 262.301
+
+Run: 1 subrun: 0 event: 5940
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 5956
+ Classified as: Scattering 0p with energy at vertex: 277.774
+
+Run: 1 subrun: 0 event: 5978
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 5985
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 6083
  Classified as: Charge exchange with energy at vertex: 109.614
 
 Run: 1 subrun: 0 event: 6171
  Classified as: Abs Np with energy at vertex: 251.476
 
+Run: 1 subrun: 0 event: 6193
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 6295
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 8180
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 8707
  Classified as: Charge exchange with energy at vertex: 128.881
-
-Run: 1 subrun: 0 event: 8716
- Classified as: Charge exchange with energy at vertex: 261.344
 
 Run: 1 subrun: 0 event: 8819
  Classified as: Scattering 0p with energy at vertex: 312.426
 
-Run: 1 subrun: 0 event: 8854
+Run: 1 subrun: 0 event: 8964
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 9094
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 9106
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 10378
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 10401
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 10742
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 10882
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 10925
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 11032
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 11080
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 11144
+ Classified as: Charge exchange with energy at vertex: 233.633
+
+Run: 1 subrun: 0 event: 11333
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 12205
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 12332
@@ -40,8 +103,20 @@ Run: 1 subrun: 0 event: 12332
 Run: 1 subrun: 0 event: 13220
  Classified as: Charge exchange with energy at vertex: 213.718
 
+Run: 1 subrun: 0 event: 13225
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 14121
  Classified as: Charge exchange with energy at vertex: 254.557
+
+Run: 1 subrun: 0 event: 14129
+ Classified as: Primary muon with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 14771
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 15904
+ Classified as: Charge exchange with energy at vertex: 198.529
 
 Run: 1 subrun: 0 event: 15944
  Classified as: Primary electron with energy at vertex: 0
@@ -55,6 +130,9 @@ Run: 1 subrun: 0 event: 16455
 Run: 1 subrun: 0 event: 16557
  Classified as: Abs 0p with energy at vertex: 208.43
 
+Run: 1 subrun: 0 event: 16843
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 16876
  Classified as: Charge exchange with energy at vertex: 243.629
 
@@ -64,41 +142,62 @@ Run: 1 subrun: 0 event: 17018
 Run: 1 subrun: 0 event: 17089
  Classified as: Charge exchange with energy at vertex: 236.36
 
+Run: 1 subrun: 0 event: 17284
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 17403
  Classified as: Charge exchange with energy at vertex: 421.038
-
-Run: 1 subrun: 0 event: 17863
- Classified as: Scattering 0p with energy at vertex: 180.33
 
 Run: 1 subrun: 0 event: 18066
  Classified as: Charge exchange with energy at vertex: 271.681
 
+Run: 1 subrun: 0 event: 18148
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 19588
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 19731
  Classified as: Charge exchange with energy at vertex: 173.861
 
-Run: 1 subrun: 0 event: 19748
- Classified as: Abs 0p with energy at vertex: 291.072
+Run: 1 subrun: 0 event: 19801
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 22885
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 22901
  Classified as: Abs Np with energy at vertex: 212.859
 
+Run: 1 subrun: 0 event: 24074
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 24117
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 24261
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 24337
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 24400
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 24410
  Classified as: Abs 0p with energy at vertex: 186.951
+
+Run: 1 subrun: 0 event: 24555
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 26162
  Classified as: Charge exchange with energy at vertex: 270.489
 
-Run: 1 subrun: 0 event: 26194
- Classified as: Charge exchange with energy at vertex: 210.209
-
-Run: 1 subrun: 0 event: 26445
- Classified as: Scattering 0p with energy at vertex: 185.237
-
 Run: 1 subrun: 0 event: 26505
  Classified as: Scattering 0p with energy at vertex: 229.314
 
-Run: 1 subrun: 0 event: 26902
- Classified as: Primary electron with energy at vertex: 0
+Run: 1 subrun: 0 event: 26820
+ Classified as: Charge exchange with energy at vertex: 333.69
 
 Run: 1 subrun: 0 event: 27641
  Classified as: Charge exchange with energy at vertex: 220.286
@@ -115,20 +214,41 @@ Run: 1 subrun: 0 event: 27732
 Run: 1 subrun: 0 event: 27779
  Classified as: Scattering 0p with energy at vertex: 338.515
 
-Run: 1 subrun: 0 event: 52934
- Classified as: Charge exchange with energy at vertex: 482.467
+Run: 1 subrun: 0 event: 52957
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 53136
- Classified as: Abs Np with energy at vertex: 224.842
+Run: 1 subrun: 0 event: 52982
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 53029
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 53095
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 53524
  Classified as: Charge exchange with energy at vertex: 293.223
 
+Run: 1 subrun: 0 event: 53774
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 53818
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 53853
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 53961
  Classified as: Scattering 0p with energy at vertex: 319.378
+
+Run: 1 subrun: 0 event: 54147
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 54383
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 54461
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 54684
  Classified as: Abs Np with energy at vertex: 279.79
@@ -136,23 +256,62 @@ Run: 1 subrun: 0 event: 54684
 Run: 1 subrun: 0 event: 54691
  Classified as: Abs 0p with energy at vertex: 303.631
 
+Run: 1 subrun: 0 event: 54790
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 54941
  Classified as: Charge exchange with energy at vertex: 224.443
 
 Run: 1 subrun: 0 event: 55008
  Classified as: Charge exchange with energy at vertex: 146.146
 
+Run: 1 subrun: 0 event: 55170
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 55174
  Classified as: Charge exchange with energy at vertex: 362.162
 
-Run: 1 subrun: 0 event: 61812
- Classified as: Charge exchange with energy at vertex: 288.659
+Run: 1 subrun: 0 event: 55700
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 61895
+Run: 1 subrun: 0 event: 55758
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 61959
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 61985
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 61998
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 62320
  Classified as: Abs Np with energy at vertex: 154.869
+
+Run: 1 subrun: 0 event: 62340
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 62659
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 62668
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 62899
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 62995
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 63117
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 63220
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 63273
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 63348
  Classified as: Charge exchange with energy at vertex: 237.133
@@ -160,65 +319,119 @@ Run: 1 subrun: 0 event: 63348
 Run: 1 subrun: 0 event: 63401
  Classified as: Scattering 0p with energy at vertex: 242.019
 
-Run: 1 subrun: 0 event: 63584
- Classified as: Charge exchange with energy at vertex: 336.758
+Run: 1 subrun: 0 event: 63497
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 63698
  Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 63745
- Classified as: Abs 0p with energy at vertex: 149.547
+Run: 1 subrun: 0 event: 63737
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 63791
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 63820
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 63848
  Classified as: Charge exchange with energy at vertex: 410.192
 
+Run: 1 subrun: 0 event: 63898
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 63935
  Classified as: Charge exchange with energy at vertex: 132.936
+
+Run: 1 subrun: 0 event: 64017
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 64054
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 64139
  Classified as: Primary electron with energy at vertex: 0
 
+Run: 1 subrun: 0 event: 64374
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 64546
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 64590
+ Classified as: Scattering 0p with energy at vertex: 415.828
+
+Run: 1 subrun: 0 event: 64670
+ Classified as: Charge exchange with energy at vertex: 427.778
+
 Run: 1 subrun: 0 event: 64759
  Classified as: Abs 0p with energy at vertex: 172.912
+
+Run: 1 subrun: 0 event: 65018
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 65312
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 65435
  Classified as: Charge exchange with energy at vertex: 204.242
 
-Run: 1 subrun: 0 event: 65478
+Run: 1 subrun: 0 event: 65953
  Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 66056
- Classified as: Charge exchange with energy at vertex: 327.285
+Run: 1 subrun: 0 event: 65987
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 66076
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 66219
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 66544
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 66734
  Classified as: Scattering 0p with energy at vertex: 214.27
 
-Run: 1 subrun: 0 event: 66843
- Classified as: Charge exchange with energy at vertex: 253.258
-
-Run: 1 subrun: 0 event: 66880
- Classified as: Charge exchange with energy at vertex: 301.982
+Run: 1 subrun: 0 event: 66816
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 66881
  Classified as: Primary electron with energy at vertex: 0
 
+Run: 1 subrun: 0 event: 66956
+ Classified as: Charge exchange with energy at vertex: 259.471
+
 Run: 1 subrun: 0 event: 66977
  Classified as: Abs Np with energy at vertex: 118.993
 
-Run: 1 subrun: 0 event: 67240
- Classified as: Scattering 0p with energy at vertex: 241.802
+Run: 1 subrun: 0 event: 67002
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 67097
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 67343
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 67407
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 67516
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 67593
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 82816
  Classified as: Charge exchange with energy at vertex: 128.803
 
+Run: 1 subrun: 0 event: 82899
+ Classified as: Charge exchange with energy at vertex: 250.286
+
 Run: 1 subrun: 0 event: 83067
  Classified as: Abs 0p with energy at vertex: 304.703
-
-Run: 1 subrun: 0 event: 83266
- Classified as: Charge exchange with energy at vertex: 175.582
 
 Run: 1 subrun: 0 event: 83326
  Classified as: Charge exchange with energy at vertex: 288.514
@@ -226,11 +439,35 @@ Run: 1 subrun: 0 event: 83326
 Run: 1 subrun: 0 event: 83423
  Classified as: Abs Np with energy at vertex: 188.328
 
+Run: 1 subrun: 0 event: 83945
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 83970
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 83979
  Classified as: Charge exchange with energy at vertex: 223.044
 
-Run: 1 subrun: 0 event: 84337
- Classified as: Abs 0p with energy at vertex: 197.504
+Run: 1 subrun: 0 event: 84019
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 84264
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 84390
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 84737
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 85110
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 85111
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 85244
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 85308
  Classified as: Charge exchange with energy at vertex: 244.43
@@ -238,8 +475,17 @@ Run: 1 subrun: 0 event: 85308
 Run: 1 subrun: 0 event: 85362
  Classified as: Scattering 0p with energy at vertex: 183.863
 
+Run: 1 subrun: 0 event: 85532
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 85546
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 85558
  Classified as: Abs 0p with energy at vertex: 170.452
+
+Run: 1 subrun: 0 event: 85652
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 85692
  Classified as: Charge exchange with energy at vertex: 196.442
@@ -247,25 +493,34 @@ Run: 1 subrun: 0 event: 85692
 Run: 1 subrun: 0 event: 88995
  Classified as: Scattering 0p with energy at vertex: 239.865
 
+Run: 1 subrun: 0 event: 89032
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 89076
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 89211
  Classified as: Abs 0p with energy at vertex: 71.4659
 
-Run: 1 subrun: 0 event: 89344
- Classified as: Charge exchange with energy at vertex: 202.124
+Run: 1 subrun: 0 event: 89315
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 89472
  Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 89697
- Classified as: Abs Np with energy at vertex: 285.688
+Run: 1 subrun: 0 event: 89529
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 89837
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 90055
  Classified as: Scattering 0p with energy at vertex: 327.034
 
-Run: 1 subrun: 0 event: 90192
- Classified as: Scattering 0p with energy at vertex: 162.391
+Run: 1 subrun: 0 event: 90310
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 90323
+Run: 1 subrun: 0 event: 90373
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 90395
@@ -277,25 +532,37 @@ Run: 1 subrun: 0 event: 90776
 Run: 1 subrun: 0 event: 90857
  Classified as: Abs 0p with energy at vertex: 310.434
 
-Run: 1 subrun: 0 event: 90896
- Classified as: Abs 0p with energy at vertex: 165.557
-
 Run: 1 subrun: 0 event: 90919
  Classified as: Charge exchange with energy at vertex: 396.828
 
-Run: 1 subrun: 0 event: 91267
- Classified as: Abs Np with energy at vertex: 213.568
+Run: 1 subrun: 0 event: 90962
+ Classified as: Outside reduced volume with energy at vertex: 350.109
+
+Run: 1 subrun: 0 event: 90986
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 91626
  Classified as: Scattering 0p with energy at vertex: 314.425
 
-Run: 1 subrun: 0 event: 91700
+Run: 1 subrun: 0 event: 92036
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 92038
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 92095
  Classified as: Charge exchange with energy at vertex: 278.472
 
-Run: 1 subrun: 0 event: 92661
+Run: 1 subrun: 0 event: 92159
+ Classified as: Charge exchange with energy at vertex: 153.756
+
+Run: 1 subrun: 0 event: 92184
+ Classified as: Abs 0p with energy at vertex: 307.853
+
+Run: 1 subrun: 0 event: 92452
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 92625
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 92919
@@ -304,26 +571,41 @@ Run: 1 subrun: 0 event: 92919
 Run: 1 subrun: 0 event: 93106
  Classified as: Abs Np with energy at vertex: 334.48
 
-Run: 1 subrun: 0 event: 93251
+Run: 1 subrun: 0 event: 93259
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 93403
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 93470
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 93517
  Classified as: Charge exchange with energy at vertex: 484.829
 
-Run: 1 subrun: 0 event: 93674
- Classified as: Charge exchange with energy at vertex: 132.28
-
 Run: 1 subrun: 0 event: 93699
  Classified as: Abs Np with energy at vertex: 205.527
+
+Run: 1 subrun: 0 event: 93749
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 93909
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 93937
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 94261
  Classified as: Charge exchange with energy at vertex: 247.471
 
-Run: 1 subrun: 0 event: 103877
+Run: 1 subrun: 0 event: 94284
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 104078
  Classified as: Abs 0p with energy at vertex: 152.133
+
+Run: 1 subrun: 0 event: 104167
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 104200
  Classified as: Charge exchange with energy at vertex: 209.008
@@ -331,8 +613,8 @@ Run: 1 subrun: 0 event: 104200
 Run: 1 subrun: 0 event: 104248
  Classified as: Charge exchange with energy at vertex: 212.901
 
-Run: 1 subrun: 0 event: 104346
- Classified as: Charge exchange with energy at vertex: 384.579
+Run: 1 subrun: 0 event: 104352
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 104516
  Classified as: Scattering 0p with energy at vertex: 342.893
@@ -340,10 +622,22 @@ Run: 1 subrun: 0 event: 104516
 Run: 1 subrun: 0 event: 104766
  Classified as: Charge exchange with energy at vertex: 176.484
 
+Run: 1 subrun: 0 event: 104842
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 105085
+ Classified as: Charge exchange with energy at vertex: 345.909
+
 Run: 1 subrun: 0 event: 105145
  Classified as: Scattering 0p with energy at vertex: 261.5
 
+Run: 1 subrun: 0 event: 105410
+ Classified as: Charge exchange with energy at vertex: 208.495
+
 Run: 1 subrun: 0 event: 105591
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 105920
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 105977
@@ -352,8 +646,14 @@ Run: 1 subrun: 0 event: 105977
 Run: 1 subrun: 0 event: 106081
  Classified as: Abs 0p with energy at vertex: 231.153
 
+Run: 1 subrun: 0 event: 106093
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 106105
  Classified as: Abs Np with energy at vertex: 210.094
+
+Run: 1 subrun: 0 event: 106214
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 106336
  Classified as: Scattering 0p with energy at vertex: 206.21
@@ -361,8 +661,11 @@ Run: 1 subrun: 0 event: 106336
 Run: 1 subrun: 0 event: 106398
  Classified as: Scattering 0p with energy at vertex: 416.383
 
-Run: 1 subrun: 0 event: 106867
- Classified as: Charge exchange with energy at vertex: 221.425
+Run: 1 subrun: 0 event: 106551
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 106659
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 107023
  Classified as: Abs 0p with energy at vertex: 202.888
@@ -370,11 +673,11 @@ Run: 1 subrun: 0 event: 107023
 Run: 1 subrun: 0 event: 107125
  Classified as: Scattering Np with energy at vertex: 351.158
 
-Run: 1 subrun: 0 event: 107139
- Classified as: Scattering 0p with energy at vertex: 167.037
-
 Run: 1 subrun: 0 event: 107259
  Classified as: Scattering 0p with energy at vertex: 240.771
+
+Run: 1 subrun: 0 event: 107268
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 107281
  Classified as: Charge exchange with energy at vertex: 232.548
@@ -382,11 +685,29 @@ Run: 1 subrun: 0 event: 107281
 Run: 1 subrun: 0 event: 107298
  Classified as: Charge exchange with energy at vertex: 193.512
 
+Run: 1 subrun: 0 event: 107438
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 107448
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 107530
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 107716
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 107742
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 107764
  Classified as: Scattering 0p with energy at vertex: 157.572
 
 Run: 1 subrun: 0 event: 107872
  Classified as: Abs 0p with energy at vertex: 209.486
+
+Run: 1 subrun: 0 event: 107920
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 107932
  Classified as: Abs Np with energy at vertex: 391.887
@@ -394,14 +715,11 @@ Run: 1 subrun: 0 event: 107932
 Run: 1 subrun: 0 event: 107939
  Classified as: Charge exchange with energy at vertex: 262.228
 
-Run: 1 subrun: 0 event: 108036
- Classified as: Primary electron with energy at vertex: 0
-
 Run: 1 subrun: 0 event: 108065
  Classified as: Abs Np with energy at vertex: 166.507
 
-Run: 1 subrun: 0 event: 108125
- Classified as: Charge exchange with energy at vertex: 121.43
+Run: 1 subrun: 0 event: 108129
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 108149
  Classified as: Primary muon with energy at vertex: 49.1428
@@ -409,26 +727,38 @@ Run: 1 subrun: 0 event: 108149
 Run: 1 subrun: 0 event: 108428
  Classified as: Abs Np with energy at vertex: 184.646
 
+Run: 1 subrun: 0 event: 108507
+ Classified as: Charge exchange with energy at vertex: 269.217
+
 Run: 1 subrun: 0 event: 108728
  Classified as: Charge exchange with energy at vertex: 403.162
 
 Run: 1 subrun: 0 event: 108789
  Classified as: Outside reduced volume with energy at vertex: 230.61
 
-Run: 1 subrun: 0 event: 109008
- Classified as: Abs Np with energy at vertex: 117.409
+Run: 1 subrun: 0 event: 109059
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 109084
- Classified as: Charge exchange with energy at vertex: 209.872
+Run: 1 subrun: 0 event: 109062
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 109430
- Classified as: Abs Np with energy at vertex: 237.234
+Run: 1 subrun: 0 event: 109441
+ Classified as: Outside reduced volume with energy at vertex: 213.832
 
 Run: 1 subrun: 0 event: 109579
  Classified as: Charge exchange with energy at vertex: 234.933
 
+Run: 1 subrun: 0 event: 109588
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 109683
  Classified as: Charge exchange with energy at vertex: 350.239
+
+Run: 1 subrun: 0 event: 109881
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 109943
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 110103
  Classified as: Abs 0p with energy at vertex: 204.089
@@ -439,8 +769,14 @@ Run: 1 subrun: 0 event: 110107
 Run: 1 subrun: 0 event: 110116
  Classified as: Charge exchange with energy at vertex: 221.963
 
+Run: 1 subrun: 0 event: 110142
+ Classified as: Charge exchange with energy at vertex: 249.811
+
 Run: 1 subrun: 0 event: 110186
  Classified as: Charge exchange with energy at vertex: 357.377
+
+Run: 1 subrun: 0 event: 110251
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 110278
  Classified as: Charge exchange with energy at vertex: 364.255
@@ -451,8 +787,20 @@ Run: 1 subrun: 0 event: 110461
 Run: 1 subrun: 0 event: 110568
  Classified as: Charge exchange with energy at vertex: 162.97
 
+Run: 1 subrun: 0 event: 110570
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 110589
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 110815
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 111027
  Classified as: Scattering 0p with energy at vertex: 189.041
+
+Run: 1 subrun: 0 event: 111144
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 111241
  Classified as: Scattering 0p with energy at vertex: 216.928
@@ -460,34 +808,61 @@ Run: 1 subrun: 0 event: 111241
 Run: 1 subrun: 0 event: 111317
  Classified as: Charge exchange with energy at vertex: 237.928
 
+Run: 1 subrun: 0 event: 111375
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 111376
  Classified as: Charge exchange with energy at vertex: 205.802
+
+Run: 1 subrun: 0 event: 111571
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 111703
  Classified as: Abs Np with energy at vertex: 221.652
 
+Run: 1 subrun: 0 event: 111845
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 111918
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 112156
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 112229
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 112306
  Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 112314
- Classified as: Charge exchange with energy at vertex: 197.515
-
-Run: 1 subrun: 0 event: 112352
- Classified as: Double charge exchange with energy at vertex: 173.805
+Run: 1 subrun: 0 event: 112332
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 112355
  Classified as: Other with energy at vertex: 278.652
 
-Run: 1 subrun: 0 event: 112378
- Classified as: Primary electron with energy at vertex: 0
-
 Run: 1 subrun: 0 event: 112452
  Classified as: Abs Np with energy at vertex: 178.911
 
-Run: 1 subrun: 0 event: 112917
+Run: 1 subrun: 0 event: 112462
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 112546
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 112705
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 112846
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 112867
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 113076
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 113091
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 113178
@@ -496,13 +871,22 @@ Run: 1 subrun: 0 event: 113178
 Run: 1 subrun: 0 event: 113188
  Classified as: Scattering 0p with energy at vertex: 162.577
 
+Run: 1 subrun: 0 event: 113456
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 113758
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 114026
  Classified as: Charge exchange with energy at vertex: 147.924
 
-Run: 1 subrun: 0 event: 114053
- Classified as: Abs 0p with energy at vertex: 270.153
-
 Run: 1 subrun: 0 event: 114072
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 114232
+ Classified as: Scattering 0p with energy at vertex: 310.31
+
+Run: 1 subrun: 0 event: 114334
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 114398
@@ -514,8 +898,11 @@ Run: 1 subrun: 0 event: 114407
 Run: 1 subrun: 0 event: 114520
  Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 114951
- Classified as: Scattering 0p with energy at vertex: 323.324
+Run: 1 subrun: 0 event: 114844
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 115020
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 115058
  Classified as: Abs Np with energy at vertex: 340.52
@@ -523,26 +910,68 @@ Run: 1 subrun: 0 event: 115058
 Run: 1 subrun: 0 event: 115087
  Classified as: Capture at rest with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 125147
- Classified as: Charge exchange with energy at vertex: 89.4992
+Run: 1 subrun: 0 event: 115121
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 115186
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 115201
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 115720
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 124942
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 124991
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 125391
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 125597
  Classified as: Scattering 0p with energy at vertex: 228.319
 
+Run: 1 subrun: 0 event: 125603
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 125674
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 125687
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 125719
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 125732
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 125734
  Classified as: Charge exchange with energy at vertex: 113.116
+
+Run: 1 subrun: 0 event: 125781
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 125811
+ Classified as: Charge exchange with energy at vertex: 354.947
 
 Run: 1 subrun: 0 event: 125992
  Classified as: Abs 0p with energy at vertex: 134.206
 
+Run: 1 subrun: 0 event: 126201
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 126320
  Classified as: Charge exchange with energy at vertex: 202.283
 
+Run: 1 subrun: 0 event: 126333
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 126599
  Classified as: Primary muon with energy at vertex: 181.321
-
-Run: 1 subrun: 0 event: 126669
- Classified as: Abs 0p with energy at vertex: 230.689
 
 Run: 1 subrun: 0 event: 126755
  Classified as: Scattering 0p with energy at vertex: 254.618
@@ -550,23 +979,44 @@ Run: 1 subrun: 0 event: 126755
 Run: 1 subrun: 0 event: 127028
  Classified as: Abs 0p with energy at vertex: 298.511
 
+Run: 1 subrun: 0 event: 127173
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 127471
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 127518
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 127645
  Classified as: Outside reduced volume with energy at vertex: 149.642
+
+Run: 1 subrun: 0 event: 127709
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 134102
  Classified as: Abs 0p with energy at vertex: 194.583
 
-Run: 1 subrun: 0 event: 134145
- Classified as: Abs 0p with energy at vertex: 364.057
+Run: 1 subrun: 0 event: 134151
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 134196
- Classified as: Charge exchange with energy at vertex: 118.393
+Run: 1 subrun: 0 event: 134265
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 134318
  Classified as: Charge exchange with energy at vertex: 401.058
 
 Run: 1 subrun: 0 event: 134779
  Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 134832
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 134844
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 135080
+ Classified as: Abs Np with energy at vertex: 331.909
 
 Run: 1 subrun: 0 event: 135100
  Classified as: Scattering 0p with energy at vertex: 425.442
@@ -580,7 +1030,7 @@ Run: 1 subrun: 0 event: 135184
 Run: 1 subrun: 0 event: 135200
  Classified as: Charge exchange with energy at vertex: 172.506
 
-Run: 1 subrun: 0 event: 135462
+Run: 1 subrun: 0 event: 135821
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 135922
@@ -588,6 +1038,9 @@ Run: 1 subrun: 0 event: 135922
 
 Run: 1 subrun: 0 event: 136033
  Classified as: Abs Np with energy at vertex: 96.7772
+
+Run: 1 subrun: 0 event: 136251
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 136456
  Classified as: Charge exchange with energy at vertex: 321.751
@@ -598,17 +1051,50 @@ Run: 1 subrun: 0 event: 136628
 Run: 1 subrun: 0 event: 136650
  Classified as: Charge exchange with energy at vertex: 286.071
 
+Run: 1 subrun: 0 event: 136789
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 143013
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 143353
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 143702
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 143890
  Classified as: Scattering Np with energy at vertex: 352.696
 
 Run: 1 subrun: 0 event: 143969
  Classified as: Scattering 0p with energy at vertex: 106.034
 
+Run: 1 subrun: 0 event: 144236
+ Classified as: Outside reduced volume with energy at vertex: 420.885
+
 Run: 1 subrun: 0 event: 144314
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 144569
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 144903
  Classified as: Scattering 0p with energy at vertex: 256.26
+
+Run: 1 subrun: 0 event: 145222
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 145301
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 145389
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 145503
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 148831
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 148834
  Classified as: Abs 0p with energy at vertex: 223.054
@@ -616,34 +1102,58 @@ Run: 1 subrun: 0 event: 148834
 Run: 1 subrun: 0 event: 148842
  Classified as: Abs 0p with energy at vertex: 241.363
 
+Run: 1 subrun: 0 event: 148847
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 149056
  Classified as: Charge exchange with energy at vertex: 404.227
 
-Run: 1 subrun: 0 event: 149066
- Classified as: Scattering 0p with energy at vertex: 190.305
+Run: 1 subrun: 0 event: 149412
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 150112
- Classified as: Scattering 0p with energy at vertex: 316.984
+Run: 1 subrun: 0 event: 149893
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 149982
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 150136
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 150205
  Classified as: Charge exchange with energy at vertex: 227.05
 
-Run: 1 subrun: 0 event: 150266
- Classified as: Charge exchange with energy at vertex: 193.991
+Run: 1 subrun: 0 event: 150238
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 150404
  Classified as: Charge exchange with energy at vertex: 324.512
 
+Run: 1 subrun: 0 event: 150430
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 150473
  Classified as: Charge exchange with energy at vertex: 218.605
+
+Run: 1 subrun: 0 event: 150551
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 150793
  Classified as: Abs 0p with energy at vertex: 307.335
 
-Run: 1 subrun: 0 event: 150915
- Classified as: Other with energy at vertex: 376.512
+Run: 1 subrun: 0 event: 151093
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 151179
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 151641
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 151731
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 151758
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 151772
@@ -655,14 +1165,17 @@ Run: 1 subrun: 0 event: 151782
 Run: 1 subrun: 0 event: 160847
  Classified as: Charge exchange with energy at vertex: 251.852
 
-Run: 1 subrun: 0 event: 161008
- Classified as: Charge exchange with energy at vertex: 152.097
+Run: 1 subrun: 0 event: 160987
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 161009
  Classified as: Scattering 0p with energy at vertex: 118.934
 
-Run: 1 subrun: 0 event: 161037
- Classified as: Charge exchange with energy at vertex: 273.233
+Run: 1 subrun: 0 event: 161099
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 161121
+ Classified as: Charge exchange with energy at vertex: 451.972
 
 Run: 1 subrun: 0 event: 161422
  Classified as: Charge exchange with energy at vertex: 136.85
@@ -676,20 +1189,44 @@ Run: 1 subrun: 0 event: 161508
 Run: 1 subrun: 0 event: 161553
  Classified as: Primary electron with energy at vertex: 0
 
+Run: 1 subrun: 0 event: 161653
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 161735
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 161755
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 161796
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 161861
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 161977
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 162056
  Classified as: Charge exchange with energy at vertex: 228.318
+
+Run: 1 subrun: 0 event: 162160
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 162214
  Classified as: Scattering 0p with energy at vertex: 168.523
 
+Run: 1 subrun: 0 event: 162406
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 162421
  Classified as: Charge exchange with energy at vertex: 226.176
 
-Run: 1 subrun: 0 event: 162722
- Classified as: Charge exchange with energy at vertex: 121.093
+Run: 1 subrun: 0 event: 162447
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 162829
- Classified as: Charge exchange with energy at vertex: 171.727
+Run: 1 subrun: 0 event: 162496
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 162831
  Classified as: Charge exchange with energy at vertex: 235.506
@@ -697,26 +1234,23 @@ Run: 1 subrun: 0 event: 162831
 Run: 1 subrun: 0 event: 162857
  Classified as: Charge exchange with energy at vertex: 190.818
 
-Run: 1 subrun: 0 event: 163089
- Classified as: Charge exchange with energy at vertex: 433.217
-
 Run: 1 subrun: 0 event: 163160
  Classified as: Charge exchange with energy at vertex: 301.866
 
-Run: 1 subrun: 0 event: 163408
- Classified as: Scattering 0p with energy at vertex: 166.621
+Run: 1 subrun: 0 event: 163424
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 166931
+Run: 1 subrun: 0 event: 163638
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 163761
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 167024
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 167465
  Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 167648
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 167895
- Classified as: Scattering 0p with energy at vertex: 187.007
 
 Run: 1 subrun: 0 event: 167994
  Classified as: Scattering 0p with energy at vertex: 275.276
@@ -730,23 +1264,32 @@ Run: 1 subrun: 0 event: 168229
 Run: 1 subrun: 0 event: 168232
  Classified as: Primary muon with energy at vertex: 105.633
 
+Run: 1 subrun: 0 event: 168319
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 168450
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 168456
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 168486
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 168568
  Classified as: Charge exchange with energy at vertex: 286.948
 
-Run: 1 subrun: 0 event: 169152
+Run: 1 subrun: 0 event: 169033
  Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 169156
- Classified as: Charge exchange with energy at vertex: 164.175
+Run: 1 subrun: 0 event: 169152
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 169240
  Classified as: Charge exchange with energy at vertex: 137.026
 
-Run: 1 subrun: 0 event: 169834
- Classified as: Charge exchange with energy at vertex: 348.725
+Run: 1 subrun: 0 event: 169643
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 169954
  Classified as: Abs 0p with energy at vertex: 283.772
@@ -754,7 +1297,16 @@ Run: 1 subrun: 0 event: 169954
 Run: 1 subrun: 0 event: 169962
  Classified as: Primary electron with energy at vertex: 0
 
+Run: 1 subrun: 0 event: 170302
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 170429
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 170532
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 170623
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 170660
@@ -763,14 +1315,26 @@ Run: 1 subrun: 0 event: 170660
 Run: 1 subrun: 0 event: 170752
  Classified as: Charge exchange with energy at vertex: 190.106
 
-Run: 1 subrun: 0 event: 170814
- Classified as: Abs 0p with energy at vertex: 342.012
+Run: 1 subrun: 0 event: 170825
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 170957
  Classified as: Charge exchange with energy at vertex: 163.144
 
+Run: 1 subrun: 0 event: 171010
+ Classified as: Charge exchange with energy at vertex: 250.381
+
 Run: 1 subrun: 0 event: 171035
  Classified as: Scattering 0p with energy at vertex: 162.696
+
+Run: 1 subrun: 0 event: 171168
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 171177
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 171234
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 171327
  Classified as: Charge exchange with energy at vertex: 272.616
@@ -778,83 +1342,125 @@ Run: 1 subrun: 0 event: 171327
 Run: 1 subrun: 0 event: 171333
  Classified as: Charge exchange with energy at vertex: 190.273
 
-Run: 1 subrun: 0 event: 171553
- Classified as: Charge exchange with energy at vertex: 170.357
+Run: 1 subrun: 0 event: 171572
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 171591
- Classified as: Charge exchange with energy at vertex: 281.345
+Run: 1 subrun: 0 event: 171708
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 171727
  Classified as: Primary muon with energy at vertex: 204.895
 
+Run: 1 subrun: 0 event: 171742
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 172005
  Classified as: Abs 0p with energy at vertex: 92.0513
+
+Run: 1 subrun: 0 event: 172091
+ Classified as: Charge exchange with energy at vertex: 330.019
 
 Run: 1 subrun: 0 event: 172226
  Classified as: Charge exchange with energy at vertex: 336.31
 
-Run: 1 subrun: 0 event: 172227
- Classified as: Charge exchange with energy at vertex: 249.217
+Run: 1 subrun: 0 event: 172431
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 172906
- Classified as: Abs Np with energy at vertex: 263.594
+Run: 1 subrun: 0 event: 172707
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 173179
- Classified as: Scattering 0p with energy at vertex: 135.829
+Run: 1 subrun: 0 event: 173049
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 173912
+Run: 1 subrun: 0 event: 173113
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 173182
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 173413
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 173504
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 173644
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 173709
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 173933
  Classified as: Charge exchange with energy at vertex: 137.038
 
+Run: 1 subrun: 0 event: 174111
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 174259
  Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 174480
- Classified as: Scattering Np with energy at vertex: 415.768
+Run: 1 subrun: 0 event: 174441
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 174481
  Classified as: Scattering 0p with energy at vertex: 379.862
 
-Run: 1 subrun: 0 event: 174590
- Classified as: Scattering 0p with energy at vertex: 260.624
-
-Run: 1 subrun: 0 event: 174668
- Classified as: Scattering 0p with energy at vertex: 347.231
-
-Run: 1 subrun: 0 event: 174794
+Run: 1 subrun: 0 event: 174579
  Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 175188
+Run: 1 subrun: 0 event: 174677
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 174693
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 175106
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 175107
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 175120
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 175506
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 175695
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 175801
  Classified as: Charge exchange with energy at vertex: 203.345
 
-Run: 1 subrun: 0 event: 176329
- Classified as: Charge exchange with energy at vertex: 291.404
+Run: 1 subrun: 0 event: 176061
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 176248
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 176364
  Classified as: Abs Np with energy at vertex: 189.36
 
-Run: 1 subrun: 0 event: 176405
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 176424
+Run: 1 subrun: 0 event: 176527
  Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 176787
  Classified as: Charge exchange with energy at vertex: 272.246
 
+Run: 1 subrun: 0 event: 176819
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 176837
  Classified as: Abs 0p with energy at vertex: 173.034
 
-Run: 1 subrun: 0 event: 176946
+Run: 1 subrun: 0 event: 176905
  Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 176959
- Classified as: Scattering 0p with energy at vertex: 153.232
+Run: 1 subrun: 0 event: 176929
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 176946
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 177155
  Classified as: Charge exchange with energy at vertex: 265.144
@@ -865,14 +1471,14 @@ Run: 1 subrun: 0 event: 177170
 Run: 1 subrun: 0 event: 177241
  Classified as: Charge exchange with energy at vertex: 210.784
 
+Run: 1 subrun: 0 event: 177300
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 177412
+ Classified as: Primary electron with energy at vertex: 0
+
 Run: 1 subrun: 0 event: 177675
  Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 177691
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 177766
- Classified as: Charge exchange with energy at vertex: 150.598
 
 Run: 1 subrun: 0 event: 177956
  Classified as: Charge exchange with energy at vertex: 309.987
@@ -883,20 +1489,29 @@ Run: 1 subrun: 0 event: 177969
 Run: 1 subrun: 0 event: 178053
  Classified as: Abs 0p with energy at vertex: 178.681
 
-Run: 1 subrun: 0 event: 178339
- Classified as: Scattering 0p with energy at vertex: 160.804
+Run: 1 subrun: 0 event: 178599
+ Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 178508
- Classified as: Charge exchange with energy at vertex: 192.068
-
-Run: 1 subrun: 0 event: 178810
- Classified as: Scattering 0p with energy at vertex: 271.691
-
-Run: 1 subrun: 0 event: 178839
- Classified as: Abs 0p with energy at vertex: 293.393
+Run: 1 subrun: 0 event: 179101
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 179153
  Classified as: Charge exchange with energy at vertex: 322.784
+
+Run: 1 subrun: 0 event: 179348
+ Classified as: Charge exchange with energy at vertex: 136.982
+
+Run: 1 subrun: 0 event: 179666
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 179796
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 179854
+ Classified as: Primary electron with energy at vertex: 0
+
+Run: 1 subrun: 0 event: 179906
+ Classified as: Primary electron with energy at vertex: 0
 
 Run: 1 subrun: 0 event: 180118
  Classified as: Scattering 0p with energy at vertex: 203.605
@@ -916,501 +1531,9 @@ Run: 1 subrun: 0 event: 180564
 Run: 1 subrun: 0 event: 180994
  Classified as: Scattering 0p with energy at vertex: 123.083
 
-Run: 1 subrun: 0 event: 181027
+Run: 1 subrun: 0 event: 181272
  Classified as: Primary electron with energy at vertex: 0
 
-Run: 1 subrun: 0 event: 181116
- Classified as: Abs Np with energy at vertex: 146.073
-
-Run: 1 subrun: 0 event: 181631
- Classified as: Charge exchange with energy at vertex: 164.214
-
-Run: 1 subrun: 0 event: 181938
- Classified as: Abs 0p with energy at vertex: 207.212
-
-Run: 1 subrun: 0 event: 181953
+Run: 1 subrun: 0 event: 181327
  Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 182320
- Classified as: Abs 0p with energy at vertex: 204.436
-
-Run: 1 subrun: 0 event: 182339
- Classified as: Charge exchange with energy at vertex: 223.235
-
-Run: 1 subrun: 0 event: 182623
- Classified as: Charge exchange with energy at vertex: 186.39
-
-Run: 1 subrun: 0 event: 182959
- Classified as: Charge exchange with energy at vertex: 284.391
-
-Run: 1 subrun: 0 event: 182987
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 183234
- Classified as: Charge exchange with energy at vertex: 247.646
-
-Run: 1 subrun: 0 event: 183553
- Classified as: Charge exchange with energy at vertex: 229.672
-
-Run: 1 subrun: 0 event: 183940
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 183996
- Classified as: Charge exchange with energy at vertex: 164.803
-
-Run: 1 subrun: 0 event: 184015
- Classified as: Scattering 0p with energy at vertex: 126.569
-
-Run: 1 subrun: 0 event: 184225
- Classified as: Abs 0p with energy at vertex: 229.637
-
-Run: 1 subrun: 0 event: 184273
- Classified as: Abs Np with energy at vertex: 434.05
-
-Run: 1 subrun: 0 event: 184292
- Classified as: Scattering 0p with energy at vertex: 184.881
-
-Run: 1 subrun: 0 event: 184310
- Classified as: Scattering 0p with energy at vertex: 164.738
-
-Run: 1 subrun: 0 event: 184361
- Classified as: Scattering 0p with energy at vertex: 194.619
-
-Run: 1 subrun: 0 event: 184382
- Classified as: Charge exchange with energy at vertex: 184.365
-
-Run: 1 subrun: 0 event: 184434
- Classified as: Charge exchange with energy at vertex: 249.518
-
-Run: 1 subrun: 0 event: 184625
- Classified as: Charge exchange with energy at vertex: 420.17
-
-Run: 1 subrun: 0 event: 184729
- Classified as: Scattering 0p with energy at vertex: 260.37
-
-Run: 1 subrun: 0 event: 197067
- Classified as: Charge exchange with energy at vertex: 325.56
-
-Run: 1 subrun: 0 event: 197218
- Classified as: Double charge exchange with energy at vertex: 316.956
-
-Run: 1 subrun: 0 event: 197313
- Classified as: Scattering 0p with energy at vertex: 218.347
-
-Run: 1 subrun: 0 event: 197548
- Classified as: Abs 0p with energy at vertex: 134.626
-
-Run: 1 subrun: 0 event: 197675
- Classified as: Charge exchange with energy at vertex: 528.601
-
-Run: 1 subrun: 0 event: 198272
- Classified as: Charge exchange with energy at vertex: 258.542
-
-Run: 1 subrun: 0 event: 198339
- Classified as: Charge exchange with energy at vertex: 188.08
-
-Run: 1 subrun: 0 event: 198488
- Classified as: Charge exchange with energy at vertex: 227.76
-
-Run: 1 subrun: 0 event: 198529
- Classified as: Charge exchange with energy at vertex: 181.541
-
-Run: 1 subrun: 0 event: 198555
- Classified as: Charge exchange with energy at vertex: 119.758
-
-Run: 1 subrun: 0 event: 198580
- Classified as: Charge exchange with energy at vertex: 382.434
-
-Run: 1 subrun: 0 event: 198994
- Classified as: Scattering 0p with energy at vertex: 267.201
-
-Run: 1 subrun: 0 event: 199210
- Classified as: Other with energy at vertex: 274.204
-
-Run: 1 subrun: 0 event: 199341
- Classified as: Charge exchange with energy at vertex: 287.08
-
-Run: 1 subrun: 0 event: 200023
- Classified as: Scattering 0p with energy at vertex: 137.067
-
-Run: 1 subrun: 0 event: 200087
- Classified as: Charge exchange with energy at vertex: 128.423
-
-Run: 1 subrun: 0 event: 200208
- Classified as: Abs Np with energy at vertex: 150.943
-
-Run: 1 subrun: 0 event: 200210
- Classified as: Scattering 0p with energy at vertex: 211.683
-
-Run: 1 subrun: 0 event: 200338
- Classified as: Charge exchange with energy at vertex: 365.494
-
-Run: 1 subrun: 0 event: 200623
- Classified as: Charge exchange with energy at vertex: 351.406
-
-Run: 1 subrun: 0 event: 200651
- Classified as: Charge exchange with energy at vertex: 120.076
-
-Run: 1 subrun: 0 event: 200739
- Classified as: Scattering 0p with energy at vertex: 189.447
-
-Run: 1 subrun: 0 event: 200921
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 201159
- Classified as: Charge exchange with energy at vertex: 122.975
-
-Run: 1 subrun: 0 event: 201184
- Classified as: Charge exchange with energy at vertex: 148.787
-
-Run: 1 subrun: 0 event: 201349
- Classified as: Charge exchange with energy at vertex: 185.337
-
-Run: 1 subrun: 0 event: 201398
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 201779
- Classified as: Abs 0p with energy at vertex: 166.748
-
-Run: 1 subrun: 0 event: 202289
- Classified as: Scattering 0p with energy at vertex: 218.568
-
-Run: 1 subrun: 0 event: 202448
- Classified as: Charge exchange with energy at vertex: 269.68
-
-Run: 1 subrun: 0 event: 202771
- Classified as: Charge exchange with energy at vertex: 248.3
-
-Run: 1 subrun: 0 event: 229985
- Classified as: Scattering 0p with energy at vertex: 288.069
-
-Run: 1 subrun: 0 event: 229990
- Classified as: Charge exchange with energy at vertex: 295.187
-
-Run: 1 subrun: 0 event: 230054
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 230400
- Classified as: Abs 0p with energy at vertex: 213.718
-
-Run: 1 subrun: 0 event: 230530
- Classified as: Scattering 0p with energy at vertex: 233.886
-
-Run: 1 subrun: 0 event: 230863
- Classified as: Abs Np with energy at vertex: 170.451
-
-Run: 1 subrun: 0 event: 231026
- Classified as: Charge exchange with energy at vertex: 212.035
-
-Run: 1 subrun: 0 event: 231271
- Classified as: Charge exchange with energy at vertex: 321.306
-
-Run: 1 subrun: 0 event: 231317
- Classified as: Charge exchange with energy at vertex: 242.11
-
-Run: 1 subrun: 0 event: 231596
- Classified as: Scattering 0p with energy at vertex: 195.235
-
-Run: 1 subrun: 0 event: 231827
- Classified as: Charge exchange with energy at vertex: 236.426
-
-Run: 1 subrun: 0 event: 231944
- Classified as: Charge exchange with energy at vertex: 246.131
-
-Run: 1 subrun: 0 event: 232026
- Classified as: Charge exchange with energy at vertex: 174.456
-
-Run: 1 subrun: 0 event: 232218
- Classified as: Abs 0p with energy at vertex: 292.885
-
-Run: 1 subrun: 0 event: 232267
- Classified as: Charge exchange with energy at vertex: 278.8
-
-Run: 1 subrun: 0 event: 232591
- Classified as: Outside reduced volume with energy at vertex: 270.839
-
-Run: 1 subrun: 0 event: 232593
- Classified as: Charge exchange with energy at vertex: 233.01
-
-Run: 1 subrun: 0 event: 232844
- Classified as: Scattering 0p with energy at vertex: 165.997
-
-Run: 1 subrun: 0 event: 241995
- Classified as: Charge exchange with energy at vertex: 347.5
-
-Run: 1 subrun: 0 event: 242203
- Classified as: Charge exchange with energy at vertex: 191.368
-
-Run: 1 subrun: 0 event: 242293
- Classified as: Charge exchange with energy at vertex: 432.866
-
-Run: 1 subrun: 0 event: 242449
- Classified as: Abs 0p with energy at vertex: 280.571
-
-Run: 1 subrun: 0 event: 242535
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 242703
- Classified as: Abs 0p with energy at vertex: 156.945
-
-Run: 1 subrun: 0 event: 242926
- Classified as: Charge exchange with energy at vertex: 398.411
-
-Run: 1 subrun: 0 event: 243284
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 243322
- Classified as: Scattering 0p with energy at vertex: 260.489
-
-Run: 1 subrun: 0 event: 243428
- Classified as: Scattering 0p with energy at vertex: 279.042
-
-Run: 1 subrun: 0 event: 243648
- Classified as: Abs 0p with energy at vertex: 202.864
-
-Run: 1 subrun: 0 event: 244021
- Classified as: Charge exchange with energy at vertex: 173.331
-
-Run: 1 subrun: 0 event: 244487
- Classified as: Abs 0p with energy at vertex: 154.004
-
-Run: 1 subrun: 0 event: 245141
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 245304
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 245343
- Classified as: Abs Np with energy at vertex: 163.436
-
-Run: 1 subrun: 0 event: 245793
- Classified as: Primary muon with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 246063
- Classified as: Charge exchange with energy at vertex: 216.27
-
-Run: 1 subrun: 0 event: 246069
- Classified as: Charge exchange with energy at vertex: 268.697
-
-Run: 1 subrun: 0 event: 246342
- Classified as: Abs 0p with energy at vertex: 93.2488
-
-Run: 1 subrun: 0 event: 246490
- Classified as: Abs 0p with energy at vertex: 245.682
-
-Run: 1 subrun: 0 event: 246543
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 246816
- Classified as: Charge exchange with energy at vertex: 267.687
-
-Run: 1 subrun: 0 event: 246951
- Classified as: Scattering 0p with energy at vertex: 116.176
-
-Run: 1 subrun: 0 event: 247226
- Classified as: Abs 0p with energy at vertex: 264.384
-
-Run: 1 subrun: 0 event: 247353
- Classified as: Charge exchange with energy at vertex: 266.17
-
-Run: 1 subrun: 0 event: 247453
- Classified as: Charge exchange with energy at vertex: 263.291
-
-Run: 1 subrun: 0 event: 247504
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 263263
- Classified as: Abs Np with energy at vertex: 148.561
-
-Run: 1 subrun: 0 event: 263328
- Classified as: Abs 0p with energy at vertex: 218.338
-
-Run: 1 subrun: 0 event: 263450
- Classified as: Charge exchange with energy at vertex: 316.339
-
-Run: 1 subrun: 0 event: 264302
- Classified as: Scattering 0p with energy at vertex: 172.198
-
-Run: 1 subrun: 0 event: 264353
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 264707
- Classified as: Charge exchange with energy at vertex: 136.13
-
-Run: 1 subrun: 0 event: 264827
- Classified as: Scattering 0p with energy at vertex: 345.196
-
-Run: 1 subrun: 0 event: 264976
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 265005
- Classified as: Charge exchange with energy at vertex: 286.361
-
-Run: 1 subrun: 0 event: 265024
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 265290
- Classified as: Charge exchange with energy at vertex: 287.683
-
-Run: 1 subrun: 0 event: 265448
- Classified as: Charge exchange with energy at vertex: 214.226
-
-Run: 1 subrun: 0 event: 265524
- Classified as: Abs 0p with energy at vertex: 179.038
-
-Run: 1 subrun: 0 event: 265700
- Classified as: Scattering 0p with energy at vertex: 74.9149
-
-Run: 1 subrun: 0 event: 265763
- Classified as: Abs 0p with energy at vertex: 154.198
-
-Run: 1 subrun: 0 event: 265933
- Classified as: Charge exchange with energy at vertex: 415.508
-
-Run: 1 subrun: 0 event: 266273
- Classified as: Abs 0p with energy at vertex: 188.681
-
-Run: 1 subrun: 0 event: 266287
- Classified as: Abs 0p with energy at vertex: 322.366
-
-Run: 1 subrun: 0 event: 266372
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 266443
- Classified as: Charge exchange with energy at vertex: 152.295
-
-Run: 1 subrun: 0 event: 266930
- Classified as: Charge exchange with energy at vertex: 224.546
-
-Run: 1 subrun: 0 event: 266934
- Classified as: Charge exchange with energy at vertex: 317.546
-
-Run: 1 subrun: 0 event: 267021
- Classified as: Scattering 0p with energy at vertex: 164.825
-
-Run: 1 subrun: 0 event: 267189
- Classified as: Abs Np with energy at vertex: 247.678
-
-Run: 1 subrun: 0 event: 267252
- Classified as: Charge exchange with energy at vertex: 259.135
-
-Run: 1 subrun: 0 event: 267271
- Classified as: Charge exchange with energy at vertex: 253.951
-
-Run: 1 subrun: 0 event: 267291
- Classified as: Charge exchange with energy at vertex: 169.375
-
-Run: 1 subrun: 0 event: 267810
- Classified as: Charge exchange with energy at vertex: 245.369
-
-Run: 1 subrun: 0 event: 267869
- Classified as: Abs Np with energy at vertex: 206.865
-
-Run: 1 subrun: 0 event: 268076
- Classified as: Charge exchange with energy at vertex: 147.266
-
-Run: 1 subrun: 0 event: 268168
- Classified as: Outside reduced volume with energy at vertex: 252.608
-
-Run: 1 subrun: 0 event: 268384
- Classified as: Charge exchange with energy at vertex: 192.654
-
-Run: 1 subrun: 0 event: 268815
- Classified as: Other with energy at vertex: 337.515
-
-Run: 1 subrun: 0 event: 268855
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 269139
- Classified as: Scattering 0p with energy at vertex: 269.44
-
-Run: 1 subrun: 0 event: 269453
- Classified as: Charge exchange with energy at vertex: 168.293
-
-Run: 1 subrun: 0 event: 269480
- Classified as: Scattering 0p with energy at vertex: 130.864
-
-Run: 1 subrun: 0 event: 269683
- Classified as: Charge exchange with energy at vertex: 197.148
-
-Run: 1 subrun: 0 event: 270565
- Classified as: Charge exchange with energy at vertex: 146.66
-
-Run: 1 subrun: 0 event: 270907
- Classified as: Outside reduced volume with energy at vertex: 202.06
-
-Run: 1 subrun: 0 event: 271145
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 271226
- Classified as: Charge exchange with energy at vertex: 215.986
-
-Run: 1 subrun: 0 event: 271672
- Classified as: Charge exchange with energy at vertex: 262.009
-
-Run: 1 subrun: 0 event: 271877
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 271980
- Classified as: Charge exchange with energy at vertex: 150.111
-
-Run: 1 subrun: 0 event: 278147
- Classified as: Primary electron with energy at vertex: 0
-
-Run: 1 subrun: 0 event: 278372
- Classified as: Charge exchange with energy at vertex: 328.019
-
-Run: 1 subrun: 0 event: 278506
- Classified as: Scattering 0p with energy at vertex: 204.283
-
-Run: 1 subrun: 0 event: 278612
- Classified as: Scattering 0p with energy at vertex: 323.303
-
-Run: 1 subrun: 0 event: 278626
- Classified as: Charge exchange with energy at vertex: 240.719
-
-Run: 1 subrun: 0 event: 279179
- Classified as: Abs 0p with energy at vertex: 272.762
-
-Run: 1 subrun: 0 event: 279205
- Classified as: Scattering 0p with energy at vertex: 298.238
-
-Run: 1 subrun: 0 event: 279237
- Classified as: Charge exchange with energy at vertex: 243.772
-
-Run: 1 subrun: 0 event: 279271
- Classified as: Charge exchange with energy at vertex: 333.796
-
-Run: 1 subrun: 0 event: 279634
- Classified as: Charge exchange with energy at vertex: 350.075
-
-Run: 1 subrun: 0 event: 279809
- Classified as: Charge exchange with energy at vertex: 331.532
-
-Run: 1 subrun: 0 event: 279819
- Classified as: Abs 0p with energy at vertex: 259.539
-
-Run: 1 subrun: 0 event: 279877
- Classified as: Scattering 0p with energy at vertex: 113.148
-
-Run: 1 subrun: 0 event: 280062
- Classified as: Charge exchange with energy at vertex: 267.645
-
-Run: 1 subrun: 0 event: 280391
- Classified as: Charge exchange with energy at vertex: 224.354
-
-Run: 1 subrun: 0 event: 280423
- Classified as: Abs 0p with energy at vertex: 94.1076
-
-Run: 1 subrun: 0 event: 280612
- Classified as: Abs 0p with energy at vertex: 112.939
-
-Run: 1 subrun: 0 event: 280615
- Classified as: Charge exchange with energy at vertex: 185.215
-
-Run: 1 subrun: 0 event: 280717
- Classified as: Abs Np with energy at vertex: 194.292
-
-Run: 1 subrun: 0 event: 280797
- Classified as: Charge exchange with energy at vertex: 85.194
 

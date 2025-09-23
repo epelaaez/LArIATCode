@@ -142,7 +142,9 @@ static const int                   NUM_BINS_KE = ARRAY_KE_BINS.size() - 1;
 double PI_MU_EL_MASS_CUTOFF = 350.;
 
 // Cylinder radius for shower identification
-double CYLINDER_RADIUS = 10.;
+double CYLINDER_RADIUS               = 10.;
+double CYLINDER_SMALL_TRACK          = 5.;
+int    ALLOWED_CYLINDER_SMALL_TRACKS = 0;
 
 // Cross section calculation
 double rho            = 1396; // kg / m^3

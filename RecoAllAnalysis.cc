@@ -222,6 +222,42 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("chExchShowerPDGs", &chExchShowerPDGs);
     tree->SetBranchAddress("chExchShowerLengths", &chExchShowerLengths);
 
+    // Truth-level beamline electron shower information
+    std::vector<int>* electronShowerIDs = nullptr;
+    std::vector<std::string>* electronShowerProcesses = nullptr;
+    std::vector<int>* electronShowerPDGs = nullptr;
+    std::vector<double>* electronShowerLengths = nullptr;
+    std::vector<std::vector<double>>* electronShowerStart = nullptr;
+    std::vector<std::vector<double>>* electronShowerEnd = nullptr;
+    tree->SetBranchAddress("electronShowerIDs", &electronShowerIDs);
+    tree->SetBranchAddress("electronShowerProcesses", &electronShowerProcesses);
+    tree->SetBranchAddress("electronShowerPDGs", &electronShowerPDGs);
+    tree->SetBranchAddress("electronShowerLengths", &electronShowerLengths);
+    tree->SetBranchAddress("electronShowerStart", &electronShowerStart);
+    tree->SetBranchAddress("electronShowerEnd", &electronShowerEnd);
+
+    // Primaries information
+    int                  numPrimaries;
+    int                  numValidPrimaries;
+    std::vector<double>* primariesStartX = nullptr;
+    std::vector<double>* primariesStartY = nullptr;
+    std::vector<double>* primariesStartZ = nullptr;
+    std::vector<double>* primariesEndX = nullptr;
+    std::vector<double>* primariesEndY = nullptr;
+    std::vector<double>* primariesEndZ = nullptr;
+    std::vector<int>*    primariesPDG = nullptr;
+    std::vector<int>*    primariesID = nullptr;
+    tree->SetBranchAddress("numPrimaries", &numPrimaries);
+    tree->SetBranchAddress("numValidPrimaries", &numValidPrimaries);
+    tree->SetBranchAddress("primariesStartX", &primariesStartX);
+    tree->SetBranchAddress("primariesStartY", &primariesStartY);
+    tree->SetBranchAddress("primariesStartZ", &primariesStartZ);
+    tree->SetBranchAddress("primariesEndX", &primariesEndX);
+    tree->SetBranchAddress("primariesEndY", &primariesEndY);
+    tree->SetBranchAddress("primariesEndZ", &primariesEndZ);
+    tree->SetBranchAddress("primariesPDG", &primariesPDG);
+    tree->SetBranchAddress("primariesID", &primariesID);
+
     // Individual hit information
     double primaryEndPointHitW, primaryEndPointHitX;
     std::vector<int>*   fHitKey = nullptr;
@@ -637,6 +673,42 @@ void RecoAllAnalysis() {
     TH1D* hSmallTrksInCylinderMuons     = new TH1D("hSmallTrksInCylinderMuons", "hSmallTrksInCylinderMuons", 10, 0, 10);
     TH1D* hSmallTrksInCylinderElectrons = new TH1D("hSmallTrksInCylinderElectrons", "hSmallTrksInCylinderElectrons", 10, 0, 10);
 
+    TH1D* hSmallTrksInCylinderPionAbs0p      = new TH1D("hSmallTrksInCylinderPionAbs0p", "hSmallTrksInCylinderPionAbs0p", 10, 0, 10);
+    TH1D* hSmallTrksInCylinderPionAbsNp      = new TH1D("hSmallTrksInCylinderPionAbsNp", "hSmallTrksInCylinderPionAbsNp", 10, 0, 10);
+    TH1D* hSmallTrksInCylinderPionScattering = new TH1D("hSmallTrksInCylinderPionScattering", "hSmallTrksInCylinderPionScattering", 10, 0, 10);
+    TH1D* hSmallTrksInCylinderPionChExch     = new TH1D("hSmallTrksInCylinderPionChExch", "hSmallTrksInCylinderPionChExch", 10, 0, 10);
+    TH1D* hSmallTrksInCylinderPionOther      = new TH1D("hSmallTrksInCylinderPionOther", "hSmallTrksInCylinderPionOther", 10, 0, 10);
+
+    //////////////////////
+    // Beamline showers //
+    //////////////////////
+
+    TH1D* hElectronShowerTrueTrkLengths = new TH1D("hElectronShowerTrueTrkLengths", "Electron Shower Reconstructed Track Lengths;Length (cm);Entries", 20, 0, 20);
+    TH1D* hElectronShowerRecoTrkLengths = new TH1D("hElectronShowerRecoTrkLengths", "Electron Shower Reconstructed Track Lengths;Length (cm);Entries", 20, 0, 20);
+    TH1D* hElectronShowerTrkContained   = new TH1D("hElectronShowerTrkContained", "Electron Shower Reconstructed Track Contained;Length (cm);Entries", 20, 0, 20);
+    TH1D* hElectronShowerTrkUnContained = new TH1D("hElectronShowerTrkUnContained", "Electron Shower Reconstructed Track UnContained;Length (cm);Entries", 20, 0, 20);
+
+    TH2D* hElectronShowerDaughtersTrueIncident = new TH2D(
+        "hElectronShowerDaughtersTrueIncident",
+        "hElectronShowerDaughtersTrueIncident;true daughter_{x} - WC_{x};true daughter_{y} - WC_{y}",
+        50, -15, 15,
+        50, -15, 15
+    );
+
+    TH2D* hElectronShowerDaughtersRecoIncident = new TH2D(
+        "hElectronShowerDaughtersRecoIncident",
+        "hElectronShowerDaughtersRecoIncident;reco daughter_{x} - WC_{x};reco daughter_{y} - WC_{y}",
+        50, -15, 15,
+        50, -15, 15
+    );
+
+    ////////////////////////
+    // Multiple primaries //
+    ////////////////////////
+
+    TH1D* hNumPrimaries      = new TH1D("hNumPrimaries", "Number of Primaries;N_{primaries};Entries", 10, 0, 10);
+    TH1D* hNumValidPrimaries = new TH1D("hNumValidPrimaries", "Number of Valid Primaries;N_{valid primaries};Entries", 10, 0, 10);
+
     //////////////////////////////
     // Cross-section histograms //
     //////////////////////////////
@@ -818,6 +890,18 @@ void RecoAllAnalysis() {
             scatteringType = 1;
         }
 
+        // Multiple primaries
+        hNumPrimaries->Fill(numPrimaries);
+        hNumValidPrimaries->Fill(numValidPrimaries);
+
+        int validPrimaryIdx = -1;
+        for (size_t i = 0; i < primariesID->size(); ++i) {
+            if (primariesID->at(i) == truthPrimaryID) {
+                validPrimaryIdx = i;
+                break;
+            }
+        }
+
         // Study elastic and inelastic scattering events
         if (backgroundType == 12) {
             // Elastic scattering event
@@ -894,16 +978,67 @@ void RecoAllAnalysis() {
             }
 
             // Look at reco tracks that match to tracks in the shower
-            for (int iRecoTrk = 0; iRecoTrk < matchedTrkID->size(); ++iRecoTrk) {
-                if (recoTrkID->at(iRecoTrk) == WC2TPCtrkID) continue;
+            if (WC2TPCtrkID != -99999) {
+                for (int iRecoTrk = 0; iRecoTrk < matchedTrkID->size(); ++iRecoTrk) {
+                    if (recoTrkID->at(iRecoTrk) == WC2TPCtrkID) continue;
 
-                if (std::find(chExchShowerIDs->begin(), chExchShowerIDs->end(), matchedTrkID->at(iRecoTrk)) != chExchShowerIDs->end()) {
-                    double trk_length = TMath::Sqrt(
-                        TMath::Power(recoEndX->at(iRecoTrk) - recoBeginX->at(iRecoTrk), 2) +
-                        TMath::Power(recoEndY->at(iRecoTrk) - recoBeginY->at(iRecoTrk), 2) +
-                        TMath::Power(recoEndZ->at(iRecoTrk) - recoBeginZ->at(iRecoTrk), 2)
-                    );
-                    hChExchShowerRecoTrkLengths->Fill(trk_length);
+                    if (std::find(chExchShowerIDs->begin(), chExchShowerIDs->end(), matchedTrkID->at(iRecoTrk)) != chExchShowerIDs->end()) {
+                        double trk_length = TMath::Sqrt(
+                            TMath::Power(recoEndX->at(iRecoTrk) - recoBeginX->at(iRecoTrk), 2) +
+                            TMath::Power(recoEndY->at(iRecoTrk) - recoBeginY->at(iRecoTrk), 2) +
+                            TMath::Power(recoEndZ->at(iRecoTrk) - recoBeginZ->at(iRecoTrk), 2)
+                        );
+                        hChExchShowerRecoTrkLengths->Fill(trk_length);
+                    }
+                }
+            }
+        }
+
+        // Study electron showers
+        if (backgroundType == 3) {
+            // Start at iTruthTrk = 1 to avoid counting electron itself
+            for (int iTruthTrk = 1; iTruthTrk < electronShowerIDs->size(); ++iTruthTrk) {
+                hElectronShowerTrueTrkLengths->Fill(electronShowerLengths->at(iTruthTrk));
+                hElectronShowerDaughtersTrueIncident->Fill(
+                    electronShowerStart->at(iTruthTrk)[0] - primariesStartX->at(validPrimaryIdx), 
+                    electronShowerStart->at(iTruthTrk)[1] - primariesStartY->at(validPrimaryIdx)
+                );
+                
+                bool startInCylinder = IsPointInsideTrackCylinder(
+                    WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                    electronShowerStart->at(iTruthTrk)[0], electronShowerStart->at(iTruthTrk)[1], electronShowerStart->at(iTruthTrk)[2],
+                    CYLINDER_RADIUS
+                );
+                bool endInCylinder = IsPointInsideTrackCylinder(
+                    WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                    electronShowerEnd->at(iTruthTrk)[0], electronShowerEnd->at(iTruthTrk)[1], electronShowerEnd->at(iTruthTrk)[2],
+                    CYLINDER_RADIUS
+                );
+                if (startInCylinder && endInCylinder) {
+                    hElectronShowerTrkContained->Fill(electronShowerLengths->at(iTruthTrk));
+                } else {
+                    hElectronShowerTrkUnContained->Fill(electronShowerLengths->at(iTruthTrk));
+                }
+            }
+
+            // Look at reco tracks that match to tracks in the shower
+            if (WC2TPCtrkID != -99999) {
+                for (int iRecoTrk = 0; iRecoTrk < matchedTrkID->size(); ++iRecoTrk) {
+                    if (recoTrkID->at(iRecoTrk) == WC2TPCtrkID) continue;
+
+                    if (std::find(electronShowerIDs->begin(), electronShowerIDs->end(), matchedTrkID->at(iRecoTrk)) != electronShowerIDs->end()) {
+                        double trk_length = TMath::Sqrt(
+                            TMath::Power(recoEndX->at(iRecoTrk) - recoBeginX->at(iRecoTrk), 2) +
+                            TMath::Power(recoEndY->at(iRecoTrk) - recoBeginY->at(iRecoTrk), 2) +
+                            TMath::Power(recoEndZ->at(iRecoTrk) - recoBeginZ->at(iRecoTrk), 2)
+                        );
+                        hElectronShowerRecoTrkLengths->Fill(trk_length);
+
+                        hElectronShowerDaughtersRecoIncident->Fill(
+                            recoBeginX->at(iRecoTrk) - WC2TPCPrimaryBeginX,
+                            recoBeginY->at(iRecoTrk) - WC2TPCPrimaryBeginY
+                        );
+                    }
                 }
             }
         }
@@ -942,7 +1077,7 @@ void RecoAllAnalysis() {
                         hTrkLengthsInCylinderPions->Fill(trackLength);
                     }
 
-                    if (trackLength < 10) numSmallTracksInCylinder++;
+                    if (trackLength < CYLINDER_SMALL_TRACK) numSmallTracksInCylinder++;
                 }
             }
             hNumTracksInCylinder->Fill(numTracksInCylinder);
@@ -956,10 +1091,22 @@ void RecoAllAnalysis() {
             } else {
                 hNumTracksInCylinderPions->Fill(numTracksInCylinder);
                 hSmallTrksInCylinderPions->Fill(numSmallTracksInCylinder);
+
+                if (backgroundType == 0) {
+                    hSmallTrksInCylinderPionAbs0p->Fill(numSmallTracksInCylinder);
+                } else if (backgroundType == 1) {
+                    hSmallTrksInCylinderPionAbsNp->Fill(numSmallTracksInCylinder);
+                } else if (scatteringType == 0 || scatteringType == 1) {
+                    hSmallTrksInCylinderPionScattering->Fill(numSmallTracksInCylinder);
+                } else if (backgroundType == 7) {
+                    hSmallTrksInCylinderPionChExch->Fill(numSmallTracksInCylinder);
+                } else {
+                    hSmallTrksInCylinderPionOther->Fill(numSmallTracksInCylinder);
+                }
             }
             
             // Characterize cut performance
-            if (numTracksInCylinder < 1) {
+            if (numTracksInCylinder <= ALLOWED_CYLINDER_SMALL_TRACKS) {
                 if (backgroundType == 2) {
                     numSurvivingMuons++;
                 } else if (backgroundType == 3) {
@@ -2504,7 +2651,15 @@ void RecoAllAnalysis() {
         {hNumTracksInCylinder},
         {hNumTracksInCylinderPions, hNumTracksInCylinderMuons, hNumTracksInCylinderElectrons},
         {hSmallTrksInCylinder},
-        {hSmallTrksInCylinderPions, hSmallTrksInCylinderMuons, hSmallTrksInCylinderElectrons}
+        {hSmallTrksInCylinderPions, hSmallTrksInCylinderMuons, hSmallTrksInCylinderElectrons},
+        {hSmallTrksInCylinderPionAbs0p, hSmallTrksInCylinderPionAbsNp, hSmallTrksInCylinderPionScattering, hSmallTrksInCylinderPionChExch, hSmallTrksInCylinderPionOther, hSmallTrksInCylinderMuons, hSmallTrksInCylinderElectrons},
+
+        // Beamline showers
+        {hElectronShowerRecoTrkLengths, hElectronShowerTrueTrkLengths},
+        {hElectronShowerTrkContained, hElectronShowerTrkUnContained},
+
+        // Multiple primaries
+        {hNumPrimaries, hNumValidPrimaries}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2588,7 +2743,15 @@ void RecoAllAnalysis() {
         {"All"},
         {"Pions", "Muons", "Electrons"},
         {"All"},
-        {"Pions", "Muons", "Electrons"}
+        {"Pions", "Muons", "Electrons"},
+        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other", "Muon", "Electron"},
+
+        // Beamline showers
+        {"Reco", "Truth"},
+        {"Uncontained", "Contained"},
+
+        // Multiple primaries
+        {"Total", "Valid"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -2672,7 +2835,15 @@ void RecoAllAnalysis() {
         "Cylinder/NumTracks",
         "Cylinder/NumTracksBreakdown",
         "Cylinder/SmallTracks",
-        "Cylinder/SmallTracksBreakdown"
+        "Cylinder/SmallTracksBreakdown",
+        "Cylinder/SmallTracksPiBreakdown",
+
+        // Beamline showers
+        "BeamlineShower/ElectronShowerTrkLengths",
+        "BeamlineShower/ElectronShowerCylinderContainedTrks",
+
+        // Multiple primaries
+        "Primaries/NumPrimaries"
     };
 
     std::vector<TString> XLabels = {
@@ -2756,7 +2927,15 @@ void RecoAllAnalysis() {
         "Number of tracks",
         "Number of tracks",
         "Number of small tracks",
-        "Number of small tracks"
+        "Number of small tracks",
+        "Number of small tracks",
+
+        // Beamline showers
+        "Track length (cm)",
+        "Track length (cm)",
+
+        // Multiple primaries
+        "# of primaries"
     };
 
     std::vector<TString> YLabels = {
@@ -2840,6 +3019,14 @@ void RecoAllAnalysis() {
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
+        "Counts",
+
+        // Beamline showers
+        "Counts",
+        "Counts",
+
+        // Multiple primaries
         "Counts"
     };
 
@@ -2924,7 +3111,15 @@ void RecoAllAnalysis() {
         false,
         true,
         false,
-        true
+        true,
+        true,
+
+        // Beamline showers
+        false,
+        true,
+
+        // Multiple primaries
+        false
     };
 
     printOneDPlots(
@@ -2971,7 +3166,11 @@ void RecoAllAnalysis() {
         // Hit clustering
         hHitClusterCut0pReco,
         hHitClusterCut0pRecoTrue,
-        hHitClusterCut0pPurity
+        hHitClusterCut0pPurity,
+
+        // Beamline shower
+        hElectronShowerDaughtersTrueIncident,
+        hElectronShowerDaughtersRecoIncident
     };
 
     std::vector<TString> TwoDTitles = {
@@ -3003,7 +3202,11 @@ void RecoAllAnalysis() {
         // Hit clustering
         "HitClustering/2DHitClusterCut0pReco",
         "HitClustering/2DHitClusterCut0pRecoTrue",
-        "HitClustering/2DHitClusterCut0pPurity"
+        "HitClustering/2DHitClusterCut0pPurity",
+
+        // Beamline shower
+        "BeamlineShower/2DElectronShowerDaughtersTrueIncident",
+        "BeamlineShower/2DElectronShowerDaughtersRecoIncident"
     };
 
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles);
