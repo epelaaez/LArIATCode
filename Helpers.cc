@@ -1043,6 +1043,46 @@ bool IsPointInsideTrackCylinder(
     return best <= r2;
 }
 
+bool IsPointInsideSlicedCone(
+    double px, double py, double pz,
+    double ax, double ay, double az,
+    double vx, double vy, double vz,
+    double height,
+    double r0,
+    double r1
+) {
+    // Compute direction vector norm and normalize
+    double vnorm = std::sqrt(vx*vx + vy*vy + vz*vz);
+    if (vnorm == 0.0 || height <= 0.0) return false;
+    double dx = vx / vnorm;
+    double dy = vy / vnorm;
+    double dz = vz / vnorm;
+
+    // Vector from base to point
+    double apx = px - ax;
+    double apy = py - ay;
+    double apz = pz - az;
+
+    // Project AP onto direction vector to get t (distance along axis)
+    double t = apx*dx + apy*dy + apz*dz;
+
+    // Check if point projects within [0, height] along axis
+    if (t < 0.0 || t > height) return false;
+
+    // Find axis point at t
+    double cx = ax + t*dx;
+    double cy = ay + t*dy;
+    double cz = az + t*dz;
+
+    // Compute radius at this height (linear interpolation)
+    double r = r0 + (r1 - r0) * (t / height);
+
+    // Distance squared from axis
+    double dist2 = (px - cx)*(px - cx) + (py - cy)*(py - cy) + (pz - cz)*(pz - cz);
+
+    return dist2 <= r*r;
+}
+
 std::tuple<double,double> azimuth_polar_from_points(
     double xs, double ys, double zs,
     double xe, double ye, double ze

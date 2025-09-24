@@ -181,6 +181,14 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("truthPrimaryDaughtersProcess", &truthPrimaryDaughtersProcess);
     tree->SetBranchAddress("truthPrimaryDaughtersKE", &truthPrimaryDaughtersKE);
 
+    // True particle location information
+    // std::vector<double>* truthPrimaryLocationX = nullptr;
+    // std::vector<double>* truthPrimaryLocationY = nullptr;
+    // std::vector<double>* truthPrimaryLocationZ = nullptr;
+    // tree->SetBranchAddress("truthPrimaryLocationX", &truthPrimaryLocationX);
+    // tree->SetBranchAddress("truthPrimaryLocationY", &truthPrimaryLocationY);
+    // tree->SetBranchAddress("truthPrimaryLocationZ", &truthPrimaryLocationZ);
+
     // Truth-level interaction information
     bool         interactionInTrajectory;
     std::string* trajectoryInteractionLabel = new std::string();
@@ -217,10 +225,18 @@ void RecoAllAnalysis() {
     std::vector<std::string>* chExchShowerProcesses = nullptr;
     std::vector<int>* chExchShowerPDGs = nullptr;
     std::vector<double>* chExchShowerLengths = nullptr;
+    std::vector<std::vector<double>>* chExchShowerStart = nullptr;
+    std::vector<std::vector<double>>* chExchShowerEnd = nullptr;
+    std::vector<int>* chExchShowerNeutralPionDaughtersID = nullptr;
+    std::vector<std::vector<double>>* chExchShowerNeutralPionDaughtersMom = nullptr;
     tree->SetBranchAddress("chExchShowerIDs", &chExchShowerIDs);
     tree->SetBranchAddress("chExchShowerProcesses", &chExchShowerProcesses);
     tree->SetBranchAddress("chExchShowerPDGs", &chExchShowerPDGs);
     tree->SetBranchAddress("chExchShowerLengths", &chExchShowerLengths);
+    tree->SetBranchAddress("chExchShowerStart", &chExchShowerStart);
+    tree->SetBranchAddress("chExchShowerEnd", &chExchShowerEnd);
+    tree->SetBranchAddress("chExchShowerNeutralPionDaughtersID", &chExchShowerNeutralPionDaughtersID);
+    tree->SetBranchAddress("chExchShowerNeutralPionDaughtersMom", &chExchShowerNeutralPionDaughtersMom);
 
     // Truth-level beamline electron shower information
     std::vector<int>* electronShowerIDs = nullptr;
@@ -650,6 +666,34 @@ void RecoAllAnalysis() {
     TH1D* hChExchShowerRecoTrkLengths  = new TH1D("hChExchShowerRecoTrkLengths", "Charge Exchange Shower Reconstructed Track Lengths;Length (cm);Entries", 20, 0, 40);
     TH1D* hChExchShowerTruthTrkLengths = new TH1D("hChExchShowerTruthTrkLengths", "Charge Exchange Shower Truth Track Lengths;Length (cm);Entries", 20, 0, 40);
 
+    TH2D* hChExchShowerDaughtersTrueIncident = new TH2D(
+        "hChExchShowerDaughtersTrueIncident",
+        "hChExchShowerDaughtersTrueIncident;true daughter_{x} - WC_{x};true daughter_{y} - WC_{y}",
+        50, -15, 15,
+        50, -15, 15
+    );
+
+    TH2D* hChExchShowerDaughtersRecoIncident = new TH2D(
+        "hChExchShowerDaughtersRecoIncident",
+        "hChExchShowerDaughtersRecoIncident;reco daughter_{x} - WC_{x};reco daughter_{y} - WC_{y}",
+        50, -15, 15,
+        50, -15, 15
+    );
+
+    TH2D* hChExchShowerDaughtersExitAngles = new TH2D(
+        "hChExchShowerDaughtersExitAngles",
+        "hChExchShowerDaughtersExitAngles;Azimuth (x-y plane) [rad];Polar (away from z)",
+        50, -TMath::Pi(), TMath::Pi(),
+        50, 0, TMath::Pi()
+    );
+    TH1D* hChExchShowerDaughtersForwardMom = new TH1D("hChExchShowerDaughtersForwardMom", "hChExchShowerDaughtersForwardMom", 20, 0, 0.5);
+
+    // Sliced cone cut
+    TH1D* hChExchShowerTrksConeContained       = new TH1D("hChExchShowerTrksConeContained", "hChExchShowerTrksConeContained", 30, 0, 20);
+    TH1D* hChExchShowerTrksConeUnContained     = new TH1D("hChExchShowerTrksConeUnContained", "hChExchShowerTrksConeUnContained", 30, 0, 20);
+    TH1D* hChExchShowerRecoTrksConeContained   = new TH1D("hChExchShowerRecoTrksConeContained", "hChExchShowerRecoTrksConeContained", 30, 0, 20);
+    TH1D* hChExchShowerRecoTrksConeUnContained = new TH1D("hChExchShowerRecoTrksConeUnContained", "hChExchShowerRecoTrksConeUnContained", 30, 0, 20);
+
     ///////////////////////////
     // Data for cylinder cut //
     ///////////////////////////
@@ -663,10 +707,16 @@ void RecoAllAnalysis() {
     TH1D* hNumTracksInCylinderMuons     = new TH1D("hNumTracksInCylinderMuons", "hNumTracksInCylinderMuons", 10, 0, 10);
     TH1D* hNumTracksInCylinderElectrons = new TH1D("hNumTracksInCylinderElectrons", "hNumTracksInCylinderElectrons", 10, 0, 10);
 
-    TH1D* hTrkLengthsInCylinder          = new TH1D("hTrkLengthsInCylinder", "hTrkLengthsInCylinder", 50, 0, 5);
-    TH1D* hTrkLengthsInCylinderPions     = new TH1D("hTrkLengthsInCylinderPions", "hTrkLengthsInCylinderPions", 50, 0, 5);
-    TH1D* hTrkLengthsInCylinderMuons     = new TH1D("hTrkLengthsInCylinderMuons", "hTrkLengthsInCylinderMuons", 50, 0, 5);
-    TH1D* hTrkLengthsInCylinderElectrons = new TH1D("hTrkLengthsInCylinderElectrons", "hTrkLengthsInCylinderElectrons", 50, 0, 5);
+    TH1D* hTrkLengthsInCylinder          = new TH1D("hTrkLengthsInCylinder", "hTrkLengthsInCylinder", 50, 0, 10);
+    TH1D* hTrkLengthsInCylinderPions     = new TH1D("hTrkLengthsInCylinderPions", "hTrkLengthsInCylinderPions", 50, 0, 10);
+    TH1D* hTrkLengthsInCylinderMuons     = new TH1D("hTrkLengthsInCylinderMuons", "hTrkLengthsInCylinderMuons", 50, 0, 10);
+    TH1D* hTrkLengthsInCylinderElectrons = new TH1D("hTrkLengthsInCylinderElectrons", "hTrkLengthsInCylinderElectrons", 50, 0, 10);
+
+    TH1D* hTrkLengthsInCylinderPionAbs0p      = new TH1D("hTrkLengthsInCylinderPionAbs0p", "hTrkLengthsInCylinderPionAbs0p", 50, 0, 10);
+    TH1D* hTrkLengthsInCylinderPionAbsNp      = new TH1D("hTrkLengthsInCylinderPionAbsNp", "hTrkLengthsInCylinderPionAbsNp", 50, 0, 10);
+    TH1D* hTrkLengthsInCylinderPionScattering = new TH1D("hTrkLengthsInCylinderPionScattering", "hTrkLengthsInCylinderPionScattering", 50, 0, 10);
+    TH1D* hTrkLengthsInCylinderPionChExch     = new TH1D("hTrkLengthsInCylinderPionChExch", "hTrkLengthsInCylinderPionChExch", 50, 0, 10);
+    TH1D* hTrkLengthsInCylinderPionOther      = new TH1D("hTrkLengthsInCylinderPionOther", "hTrkLengthsInCylinderPionOther", 50, 0, 10);
 
     TH1D* hSmallTrksInCylinder          = new TH1D("hSmallTrksInCylinder", "hSmallTrksInCylinder", 10, 0, 10);
     TH1D* hSmallTrksInCylinderPions     = new TH1D("hSmallTrksInCylinderPions", "hSmallTrksInCylinderPions", 10, 0, 10);
@@ -683,10 +733,11 @@ void RecoAllAnalysis() {
     // Beamline showers //
     //////////////////////
 
-    TH1D* hElectronShowerTrueTrkLengths = new TH1D("hElectronShowerTrueTrkLengths", "Electron Shower Reconstructed Track Lengths;Length (cm);Entries", 20, 0, 20);
-    TH1D* hElectronShowerRecoTrkLengths = new TH1D("hElectronShowerRecoTrkLengths", "Electron Shower Reconstructed Track Lengths;Length (cm);Entries", 20, 0, 20);
-    TH1D* hElectronShowerTrkContained   = new TH1D("hElectronShowerTrkContained", "Electron Shower Reconstructed Track Contained;Length (cm);Entries", 20, 0, 20);
-    TH1D* hElectronShowerTrkUnContained = new TH1D("hElectronShowerTrkUnContained", "Electron Shower Reconstructed Track UnContained;Length (cm);Entries", 20, 0, 20);
+    TH1D* hElectronShowerTrueTrkLengths    = new TH1D("hElectronShowerTrueTrkLengths", "Electron Shower Reconstructed Track Lengths;Length (cm);Entries", 20, 0, 20);
+    TH1D* hElectronShowerRecoTrkLengths    = new TH1D("hElectronShowerRecoTrkLengths", "Electron Shower Reconstructed Track Lengths;Length (cm);Entries", 20, 0, 20);
+    TH1D* hElectronShowerTrkContained      = new TH1D("hElectronShowerTrkContained", "Electron Shower Reconstructed Track Contained;Length (cm);Entries", 20, 0, 20);
+    TH1D* hElectronShowerTrkUnContained    = new TH1D("hElectronShowerTrkUnContained", "Electron Shower Reconstructed Track UnContained;Length (cm);Entries", 20, 0, 20);
+    TH1D* hElectronShowerTrkContainedRatio = new TH1D("hElectronShowerTrkContainedRatio", "Electron Shower Reconstructed Track Contained Ratio;Length (cm);Entries", 20, 0, 20);
 
     TH2D* hElectronShowerDaughtersTrueIncident = new TH2D(
         "hElectronShowerDaughtersTrueIncident",
@@ -968,13 +1019,52 @@ void RecoAllAnalysis() {
         if (backgroundType == 7) {
             // Look at truth tracks that make up the shower
             for (int iTruthTrk = 0; iTruthTrk < chExchShowerIDs->size(); ++iTruthTrk) {
-                // electrons and positrons longer than 4 mm
-                if (
-                    (chExchShowerPDGs->at(iTruthTrk) == 11 || chExchShowerPDGs->at(iTruthTrk) == -11) &&
-                    chExchShowerLengths->at(iTruthTrk) > 0.4
-                ) {
+                hChExchShowerDaughtersTrueIncident->Fill(
+                    chExchShowerStart->at(iTruthTrk)[0] - primariesStartX->at(validPrimaryIdx), 
+                    chExchShowerStart->at(iTruthTrk)[1] - primariesStartY->at(validPrimaryIdx)
+                );
+
+                // check if track is contained inside sliced cone
+                double coneDirX = primariesEndX->at(validPrimaryIdx) - primariesStartX->at(validPrimaryIdx);
+                double coneDirY = primariesEndY->at(validPrimaryIdx) - primariesStartY->at(validPrimaryIdx);
+                double coneDirZ = primariesEndZ->at(validPrimaryIdx) - primariesStartZ->at(validPrimaryIdx);
+
+                bool isStartInCone = IsPointInsideSlicedCone(
+                    chExchShowerStart->at(iTruthTrk)[0], chExchShowerStart->at(iTruthTrk)[1], chExchShowerStart->at(iTruthTrk)[2],
+                    primariesEndX->at(validPrimaryIdx), primariesEndY->at(validPrimaryIdx), primariesEndZ->at(validPrimaryIdx),
+                    coneDirX, coneDirY, coneDirZ,
+                    20, 10, 30
+                );
+
+                bool isEndInCone = IsPointInsideSlicedCone(
+                    chExchShowerEnd->at(iTruthTrk)[0], chExchShowerEnd->at(iTruthTrk)[1], chExchShowerEnd->at(iTruthTrk)[2],
+                    primariesEndX->at(validPrimaryIdx), primariesEndY->at(validPrimaryIdx), primariesEndZ->at(validPrimaryIdx),
+                    coneDirX, coneDirY, coneDirZ,
+                    20, 10, 30
+                );
+
+                // We do not care about photons because they won't give us anything to reconstruct themselves
+                if (chExchShowerPDGs->at(iTruthTrk) != 22) {
                     hChExchShowerTruthTrkLengths->Fill(chExchShowerLengths->at(iTruthTrk));
+
+                    if (isStartInCone) {
+                        hChExchShowerTrksConeContained->Fill(chExchShowerLengths->at(iTruthTrk));
+                    } else {
+                        hChExchShowerTrksConeUnContained->Fill(chExchShowerLengths->at(iTruthTrk));
+                    }
                 }
+            }
+
+            for (int iNeutralPionDaughter = 0; iNeutralPionDaughter < chExchShowerNeutralPionDaughtersID->size(); ++iNeutralPionDaughter) {
+                double px = chExchShowerNeutralPionDaughtersMom->at(iNeutralPionDaughter)[0];
+                double py = chExchShowerNeutralPionDaughtersMom->at(iNeutralPionDaughter)[1];
+                double pz = chExchShowerNeutralPionDaughtersMom->at(iNeutralPionDaughter)[2];
+
+                double azimuth = TMath::ATan2(py, px);
+                double polar   = TMath::ATan2(TMath::Sqrt(px*px + py*py), pz);
+
+                hChExchShowerDaughtersExitAngles->Fill(azimuth, polar);
+                hChExchShowerDaughtersForwardMom->Fill(pz);
             }
 
             // Look at reco tracks that match to tracks in the shower
@@ -989,6 +1079,24 @@ void RecoAllAnalysis() {
                             TMath::Power(recoEndZ->at(iRecoTrk) - recoBeginZ->at(iRecoTrk), 2)
                         );
                         hChExchShowerRecoTrkLengths->Fill(trk_length);
+
+                        hChExchShowerDaughtersRecoIncident->Fill(
+                            recoBeginX->at(iRecoTrk) - WC2TPCPrimaryBeginX,
+                            recoBeginY->at(iRecoTrk) - WC2TPCPrimaryBeginY
+                        );
+
+                        bool isStartInCone = IsPointInsideSlicedCone(
+                            recoBeginX->at(iRecoTrk), recoEndY->at(iRecoTrk), recoEndZ->at(iRecoTrk),
+                            WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ,
+                            WC2TPCPrimaryEndX - WC2TPCPrimaryBeginX, WC2TPCPrimaryEndY - WC2TPCPrimaryBeginY, WC2TPCPrimaryEndZ - WC2TPCPrimaryBeginZ,
+                            20, 10, 30
+                        );
+
+                        if (isStartInCone) {
+                            hChExchShowerRecoTrksConeContained->Fill(trk_length);
+                        } else {
+                            hChExchShowerRecoTrksConeUnContained->Fill(trk_length);
+                        }
                     }
                 }
             }
@@ -998,26 +1106,31 @@ void RecoAllAnalysis() {
         if (backgroundType == 3) {
             // Start at iTruthTrk = 1 to avoid counting electron itself
             for (int iTruthTrk = 1; iTruthTrk < electronShowerIDs->size(); ++iTruthTrk) {
-                hElectronShowerTrueTrkLengths->Fill(electronShowerLengths->at(iTruthTrk));
                 hElectronShowerDaughtersTrueIncident->Fill(
                     electronShowerStart->at(iTruthTrk)[0] - primariesStartX->at(validPrimaryIdx), 
                     electronShowerStart->at(iTruthTrk)[1] - primariesStartY->at(validPrimaryIdx)
                 );
                 
                 bool startInCylinder = IsPointInsideTrackCylinder(
+                    // truthPrimaryLocationX, truthPrimaryLocationY, truthPrimaryLocationZ,
                     WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
                     electronShowerStart->at(iTruthTrk)[0], electronShowerStart->at(iTruthTrk)[1], electronShowerStart->at(iTruthTrk)[2],
                     CYLINDER_RADIUS
                 );
                 bool endInCylinder = IsPointInsideTrackCylinder(
+                    // truthPrimaryLocationX, truthPrimaryLocationY, truthPrimaryLocationZ,
                     WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
                     electronShowerEnd->at(iTruthTrk)[0], electronShowerEnd->at(iTruthTrk)[1], electronShowerEnd->at(iTruthTrk)[2],
                     CYLINDER_RADIUS
                 );
-                if (startInCylinder && endInCylinder) {
-                    hElectronShowerTrkContained->Fill(electronShowerLengths->at(iTruthTrk));
-                } else {
-                    hElectronShowerTrkUnContained->Fill(electronShowerLengths->at(iTruthTrk));
+
+                if (electronShowerPDGs->at(iTruthTrk) != 22) {
+                    hElectronShowerTrueTrkLengths->Fill(electronShowerLengths->at(iTruthTrk));
+                    if (startInCylinder && endInCylinder) {
+                        hElectronShowerTrkContained->Fill(electronShowerLengths->at(iTruthTrk));
+                    } else {
+                        hElectronShowerTrkUnContained->Fill(electronShowerLengths->at(iTruthTrk));
+                    }
                 }
             }
 
@@ -1044,8 +1157,8 @@ void RecoAllAnalysis() {
         }
 
         // Study tracks inside 10 cm cylinder around primary track
+        int numTracksInCylinder = 0; int numSmallTracksInCylinder = 0;
         if (WC2TPCtrkID != -99999) {
-            int numTracksInCylinder = 0; int numSmallTracksInCylinder = 0;
             for (int trk_idx = 0; trk_idx < matchedTrkID->size(); ++trk_idx) {
                 if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
 
@@ -1075,6 +1188,18 @@ void RecoAllAnalysis() {
                         hTrkLengthsInCylinderElectrons->Fill(trackLength);
                     } else {
                         hTrkLengthsInCylinderPions->Fill(trackLength);
+
+                        if (backgroundType == 0) {
+                            hTrkLengthsInCylinderPionAbs0p->Fill(trackLength);
+                        } else if (backgroundType == 1) {
+                            hTrkLengthsInCylinderPionAbsNp->Fill(trackLength);
+                        } else if (scatteringType == 0 || scatteringType == 1) {
+                            hTrkLengthsInCylinderPionScattering->Fill(trackLength);
+                        } else if (backgroundType == 7) {
+                            hTrkLengthsInCylinderPionChExch->Fill(trackLength);
+                        } else {
+                            hTrkLengthsInCylinderPionOther->Fill(trackLength);
+                        }
                     }
 
                     if (trackLength < CYLINDER_SMALL_TRACK) numSmallTracksInCylinder++;
@@ -2553,6 +2678,19 @@ void RecoAllAnalysis() {
     std::cout << "  Number of electrons passing: " << numSurvivingElectrons << std::endl;
     std::cout << std::endl;
 
+
+    for (int i = 1; i <= hElectronShowerTrkContained->GetNbinsX(); ++i) {
+        double contained   = hElectronShowerTrkContained->GetBinContent(i);
+        double uncontained = hElectronShowerTrkUnContained->GetBinContent(i);
+        double total = contained + uncontained;
+        double ratio = (total > 0) ? (contained / total) * 100.0 : 0.0;
+        hElectronShowerTrkContainedRatio->SetBinContent(i, ratio);
+        
+        // Set error using binomial error propagation
+        double err = (total > 0) ? 100.0 * std::sqrt(contained * (total - contained)) / (total * total) : 0.0;
+        hElectronShowerTrkContainedRatio->SetBinError(i, err);
+    }
+
     //////////////////
     // Create plots //
     //////////////////
@@ -2644,10 +2782,14 @@ void RecoAllAnalysis() {
 
         // Charge exchange events
         {hChExchShowerRecoTrkLengths, hChExchShowerTruthTrkLengths},
+        {hChExchShowerDaughtersForwardMom},
+        {hChExchShowerTrksConeContained, hChExchShowerTrksConeUnContained},
+        {hChExchShowerRecoTrksConeContained, hChExchShowerRecoTrksConeUnContained},
 
         // Cylinder cuts
         {hTrkLengthsInCylinder},
         {hTrkLengthsInCylinderPions, hTrkLengthsInCylinderMuons, hTrkLengthsInCylinderElectrons},
+        {hTrkLengthsInCylinderPionAbs0p, hTrkLengthsInCylinderPionAbsNp, hTrkLengthsInCylinderPionScattering, hTrkLengthsInCylinderPionChExch, hTrkLengthsInCylinderPionOther, hTrkLengthsInCylinderMuons, hTrkLengthsInCylinderElectrons},
         {hNumTracksInCylinder},
         {hNumTracksInCylinderPions, hNumTracksInCylinderMuons, hNumTracksInCylinderElectrons},
         {hSmallTrksInCylinder},
@@ -2657,6 +2799,7 @@ void RecoAllAnalysis() {
         // Beamline showers
         {hElectronShowerRecoTrkLengths, hElectronShowerTrueTrkLengths},
         {hElectronShowerTrkContained, hElectronShowerTrkUnContained},
+        {hElectronShowerTrkContainedRatio},
 
         // Multiple primaries
         {hNumPrimaries, hNumValidPrimaries}
@@ -2736,10 +2879,14 @@ void RecoAllAnalysis() {
 
         // Charge exchange events
         {"Reco", "Truth"},
+        {"#pi^{0} daughters"},
+        {"Contained", "Uncontained"},
+        {"Contained", "Uncontained"},
 
         // Cylinder cuts
         {"All"},
         {"Pions", "Muons", "Electrons"},
+        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other", "Muon", "Electron"},
         {"All"},
         {"Pions", "Muons", "Electrons"},
         {"All"},
@@ -2748,7 +2895,8 @@ void RecoAllAnalysis() {
 
         // Beamline showers
         {"Reco", "Truth"},
-        {"Uncontained", "Contained"},
+        {"Contained", "Uncontained"},
+        {"\% contained"},
 
         // Multiple primaries
         {"Total", "Valid"}
@@ -2828,10 +2976,14 @@ void RecoAllAnalysis() {
 
         // Charge exchange events
         "ChExch/ShowerTrksLengths",
+        "ChExch/NeutralPionDaughtersMom",
+        "ChExch/ShowerTrueTrksConeContainment",
+        "ChExch/ShowerRecoTrksConeContainment",
 
         // Cylinder cuts
         "Cylinder/TrackLengths",
         "Cylinder/TrackLengthsBreakdown",
+        "Cylinder/TrackLengthsPiBreakdown",
         "Cylinder/NumTracks",
         "Cylinder/NumTracksBreakdown",
         "Cylinder/SmallTracks",
@@ -2841,6 +2993,7 @@ void RecoAllAnalysis() {
         // Beamline showers
         "BeamlineShower/ElectronShowerTrkLengths",
         "BeamlineShower/ElectronShowerCylinderContainedTrks",
+        "BeamlineShower/ElectronShowerCylinderContainedRatio",
 
         // Multiple primaries
         "Primaries/NumPrimaries"
@@ -2920,8 +3073,12 @@ void RecoAllAnalysis() {
 
         // Charge exchange events
         "Track length (cm)",
+        "Forward momentum [GeV/c]",
+        "Track length (cm)",
+        "Track length (cm)",
 
         // Cylinder cuts
+        "Track length (cm)",
         "Track length (cm)",
         "Track length (cm)",
         "Number of tracks",
@@ -2931,6 +3088,7 @@ void RecoAllAnalysis() {
         "Number of small tracks",
 
         // Beamline showers
+        "Track length (cm)",
         "Track length (cm)",
         "Track length (cm)",
 
@@ -3012,8 +3170,12 @@ void RecoAllAnalysis() {
 
         // Charge exchange events
         "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
 
         // Cylinder cuts
+        "Counts",
         "Counts",
         "Counts",
         "Counts",
@@ -3025,6 +3187,7 @@ void RecoAllAnalysis() {
         // Beamline showers
         "Counts",
         "Counts",
+        "Counts",
 
         // Multiple primaries
         "Counts"
@@ -3033,7 +3196,7 @@ void RecoAllAnalysis() {
     std::vector<bool> PlotStacked = {
         // Stitching
         false,
-        false,
+        true,
         false,
 
         // Secondary PID
@@ -3104,9 +3267,13 @@ void RecoAllAnalysis() {
 
         // Charge exchange events
         false,
+        false,
+        true,
+        true,
 
         // Cylinder cuts
         false, 
+        true,
         true,
         false,
         true,
@@ -3117,6 +3284,7 @@ void RecoAllAnalysis() {
         // Beamline showers
         false,
         true,
+        false,
 
         // Multiple primaries
         false
@@ -3170,7 +3338,12 @@ void RecoAllAnalysis() {
 
         // Beamline shower
         hElectronShowerDaughtersTrueIncident,
-        hElectronShowerDaughtersRecoIncident
+        hElectronShowerDaughtersRecoIncident,
+
+        // Charge exchange
+        hChExchShowerDaughtersTrueIncident,
+        hChExchShowerDaughtersRecoIncident,
+        hChExchShowerDaughtersExitAngles
     };
 
     std::vector<TString> TwoDTitles = {
@@ -3206,73 +3379,21 @@ void RecoAllAnalysis() {
 
         // Beamline shower
         "BeamlineShower/2DElectronShowerDaughtersTrueIncident",
-        "BeamlineShower/2DElectronShowerDaughtersRecoIncident"
+        "BeamlineShower/2DElectronShowerDaughtersRecoIncident",
+
+        // Charge exchange
+        "ChExch/2DChExchShowerDaughtersTrueIncident",
+        "ChExch/2DChExchShowerDaughtersRecoIncident",
+        "ChExch/2DChExchShowerNeutralPiDaughtersAngles",
     };
 
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles);
 
-    //////////////////////////
-    // Create stacked plots //
-    //////////////////////////
-
-    THStack* hBackgroundTypesStack = new THStack("hBackgroundTypesStack", "BackgroundTypesStack");
-
-    double alpha = 0.2;
-    hStitchAsPionAndProton->SetTitle("Stitched MIP-proton");
-    hStitchAsPionBraggPeak->SetTitle("Bragg pion");
-    hStitchAsMIP->SetTitle("MIP");
-    hStitchAsProton->SetTitle("Bragg proton");
-
-    hStitchAsPionAndProton->SetFillColorAlpha(Colors[0], alpha);
-    hStitchAsPionBraggPeak->SetFillColorAlpha(Colors[1], alpha);
-    hStitchAsMIP->SetFillColorAlpha(Colors[2], alpha);
-    hStitchAsProton->SetFillColorAlpha(Colors[3], alpha);
-
-    hStitchAsPionAndProton->SetLineColor(Colors[0]);
-    hStitchAsPionBraggPeak->SetLineColor(Colors[1]);
-    hStitchAsMIP->SetLineColor(Colors[2]);
-    hStitchAsProton->SetLineColor(Colors[3]);
-
-    hBackgroundTypesStack->Add(hStitchAsMIP);
-    hBackgroundTypesStack->Add(hStitchAsPionAndProton);
-    hBackgroundTypesStack->Add(hStitchAsPionBraggPeak);
-    hBackgroundTypesStack->Add(hStitchAsProton);
-
-    TCanvas* c = new TCanvas("Canvas", "Canvas", 205, 34, 1024, 768);
-    c->SetLeftMargin(0.15);
-    c->SetBottomMargin(0.15);
-    hBackgroundTypesStack->Draw("HIST");
-    c->BuildLegend(0.65, 0.7, 0.95, 0.85);
-
-    hBackgroundTypesStack->GetXaxis()->SetTitleFont(FontStyle);
-    hBackgroundTypesStack->GetXaxis()->SetLabelFont(FontStyle);
-    hBackgroundTypesStack->GetXaxis()->SetNdivisions(8);
-    hBackgroundTypesStack->GetXaxis()->SetLabelSize(TextSize);
-    hBackgroundTypesStack->GetXaxis()->SetTitleSize(TextSize);
-    hBackgroundTypesStack->GetXaxis()->SetTitleOffset(1.1);
-    hBackgroundTypesStack->GetXaxis()->CenterTitle();
-
-    hBackgroundTypesStack->GetYaxis()->SetTitleFont(FontStyle);
-    hBackgroundTypesStack->GetYaxis()->SetLabelFont(FontStyle);
-    hBackgroundTypesStack->GetYaxis()->SetNdivisions(6);
-    hBackgroundTypesStack->GetYaxis()->SetLabelSize(TextSize);
-    hBackgroundTypesStack->GetYaxis()->SetTitleSize(TextSize);
-    hBackgroundTypesStack->GetYaxis()->SetTitle("Number of tracks");
-    hBackgroundTypesStack->GetYaxis()->SetTitleOffset(1.1);
-    hBackgroundTypesStack->GetYaxis()->CenterTitle();
-
-    for (const auto& entry : backgroundTypes) {
-        int bin = entry.first;
-        const std::string& label = entry.second;
-        hBackgroundTypesStack->GetXaxis()->SetBinLabel(bin + 1, label.c_str());
-    }
-
-    c->Update();
-    c->SaveAs(SaveDir + "PrimaryStitching/StitchedBackgroundTypesStacked.png");
-
     //////////////////////////////////////////////////////
     // Create scatter plots for inelastic scattering KE //
     //////////////////////////////////////////////////////
+
+    TCanvas* c = new TCanvas("Canvas", "Canvas", 205, 34, 1024, 768);
 
     int nDataPoints               = InelasticScatteringIncidentKE.size();
     TGraph *gIncidentVSOutgoingKE = new TGraph(nDataPoints, InelasticScatteringIncidentKE.data(), InelasticScatteringOutgoingKE.data());

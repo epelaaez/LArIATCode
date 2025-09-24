@@ -225,6 +225,15 @@ bool IsPointInsideTrackCylinder(
     std::size_t* segIndex_out = nullptr
 );
 
+bool IsPointInsideSlicedCone(
+    double px, double py, double pz,
+    double ax, double ay, double az,
+    double vx, double vy, double vz,
+    double height,
+    double r0,
+    double r1
+);
+
 std::tuple<double, double> azimuth_polar_from_points(
     double xs, double ys, double zs,
     double xe, double ye, double ze
