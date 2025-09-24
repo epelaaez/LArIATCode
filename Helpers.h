@@ -146,6 +146,13 @@ double CYLINDER_RADIUS               = 10.;
 double CYLINDER_SMALL_TRACK          = 5.;
 int    ALLOWED_CYLINDER_SMALL_TRACKS = 0;
 
+// Sliced cone for ch exch events parameters
+double SLICED_CONE_MIN_RADIUS           = 10.0;
+double SLICED_CONE_MAX_RADIUS           = 30.0;
+double SLICED_CONE_HEIGHT               = 30.0;
+double SLICED_CONE_SMALL_TRACK          = 5.0;
+int    SLICED_CONE_ALLOWED_SMALL_TRACKS = 0;
+
 // Cross section calculation
 double rho            = 1396; // kg / m^3
 double molar_mass     = 39.95; // g / mol

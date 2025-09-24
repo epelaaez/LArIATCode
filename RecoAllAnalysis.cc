@@ -688,11 +688,39 @@ void RecoAllAnalysis() {
     );
     TH1D* hChExchShowerDaughtersForwardMom = new TH1D("hChExchShowerDaughtersForwardMom", "hChExchShowerDaughtersForwardMom", 20, 0, 0.5);
 
-    // Sliced cone cut
-    TH1D* hChExchShowerTrksConeContained       = new TH1D("hChExchShowerTrksConeContained", "hChExchShowerTrksConeContained", 30, 0, 20);
-    TH1D* hChExchShowerTrksConeUnContained     = new TH1D("hChExchShowerTrksConeUnContained", "hChExchShowerTrksConeUnContained", 30, 0, 20);
-    TH1D* hChExchShowerRecoTrksConeContained   = new TH1D("hChExchShowerRecoTrksConeContained", "hChExchShowerRecoTrksConeContained", 30, 0, 20);
-    TH1D* hChExchShowerRecoTrksConeUnContained = new TH1D("hChExchShowerRecoTrksConeUnContained", "hChExchShowerRecoTrksConeUnContained", 30, 0, 20);
+    // Sliced cone 
+    TH1D* hChExchShowerTrksConeContained       = new TH1D("hChExchShowerTrksConeContained", "hChExchShowerTrksConeContained", 20, 0, 20);
+    TH1D* hChExchShowerTrksConeUnContained     = new TH1D("hChExchShowerTrksConeUnContained", "hChExchShowerTrksConeUnContained", 20, 0, 20);
+    TH1D* hChExchShowerRecoTrksConeContained   = new TH1D("hChExchShowerRecoTrksConeContained", "hChExchShowerRecoTrksConeContained", 20, 0, 20);
+    TH1D* hChExchShowerRecoTrksConeUnContained = new TH1D("hChExchShowerRecoTrksConeUnContained", "hChExchShowerRecoTrksConeUnContained", 20, 0, 20);
+
+    //////////////////////////////
+    // Data for sliced cone cut //
+    //////////////////////////////
+
+    TH1D* hSlicedConeTracksPiAbs0p = new TH1D("hSlicedConeTracksPiAbs0p", "hSlicedConeTracksPiAbs0p", 20, 0, 20);
+    TH1D* hSlicedConeTracksPiAbsNp = new TH1D("hSlicedConeTracksPiAbsNp", "hSlicedConeTracksPiAbsNp", 20, 0, 20);
+    TH1D* hSlicedConeTracksPiScat  = new TH1D("hSlicedConeTracksPiScat", "hSlicedConeTracksPiScat", 20, 0, 20);
+    TH1D* hSlicedConeTracksPiChEx  = new TH1D("hSlicedConeTracksPiChEx", "hSlicedConeTracksPiChEx", 20, 0, 20);
+    TH1D* hSlicedConeTracksPiOther = new TH1D("hSlicedConeTracksPiOther", "hSlicedConeTracksPiOther", 20, 0, 20);
+    TH1D* hSlicedConeTracksMu      = new TH1D("hSlicedConeTracksMu", "hSlicedConeTracksMu", 20, 0, 20);
+    TH1D* hSlicedConeTracksE       = new TH1D("hSlicedConeTracksE", "hSlicedConeTracksE", 20, 0, 20);
+
+    TH1D* hSlicedConeNumTrksPiAbs0p = new TH1D("hSlicedConeNumTrksPiAbs0p", "hSlicedConeNumTrksPiAbs0p", 10, 0, 10);
+    TH1D* hSlicedConeNumTrksPiAbsNp = new TH1D("hSlicedConeNumTrksPiAbsNp", "hSlicedConeNumTrksPiAbsNp", 10, 0, 10);
+    TH1D* hSlicedConeNumTrksPiScat  = new TH1D("hSlicedConeNumTrksPiScat", "hSlicedConeNumTrksPiScat", 10, 0, 10);
+    TH1D* hSlicedConeNumTrksPiChEx  = new TH1D("hSlicedConeNumTrksPiChEx", "hSlicedConeNumTrksPiChEx", 10, 0, 10);
+    TH1D* hSlicedConeNumTrksPiOther = new TH1D("hSlicedConeNumTrksPiOther", "hSlicedConeNumTrksPiOther", 10, 0, 10);
+    TH1D* hSlicedConeNumTrksMu      = new TH1D("hSlicedConeNumTrksMu", "hSlicedConeNumTrksMu", 10, 0, 10);
+    TH1D* hSlicedConeNumTrksE       = new TH1D("hSlicedConeNumTrksE", "hSlicedConeNumTrksE", 10, 0, 10);
+
+    TH1D* hSlicedConeNumSmallTrksPiAbs0p = new TH1D("hSlicedConeNumSmallTrksPiAbs0p", "hSlicedConeNumSmallTrksPiAbs0p", 10, 0, 10);
+    TH1D* hSlicedConeNumSmallTrksPiAbsNp = new TH1D("hSlicedConeNumSmallTrksPiAbsNp", "hSlicedConeNumSmallTrksPiAbsNp", 10, 0, 10);
+    TH1D* hSlicedConeNumSmallTrksPiScat  = new TH1D("hSlicedConeNumSmallTrksPiScat", "hSlicedConeNumSmallTrksPiScat", 10, 0, 10);
+    TH1D* hSlicedConeNumSmallTrksPiChEx  = new TH1D("hSlicedConeNumSmallTrksPiChEx", "hSlicedConeNumSmallTrksPiChEx", 10, 0, 10);
+    TH1D* hSlicedConeNumSmallTrksPiOther = new TH1D("hSlicedConeNumSmallTrksPiOther", "hSlicedConeNumSmallTrksPiOther", 10, 0, 10);
+    TH1D* hSlicedConeNumSmallTrksMu      = new TH1D("hSlicedConeNumSmallTrksMu", "hSlicedConeNumSmallTrksMu", 10, 0, 10);
+    TH1D* hSlicedConeNumSmallTrksE       = new TH1D("hSlicedConeNumSmallTrksE", "hSlicedConeNumSmallTrksE", 10, 0, 10);
 
     ///////////////////////////
     // Data for cylinder cut //
@@ -1029,25 +1057,25 @@ void RecoAllAnalysis() {
                 double coneDirY = primariesEndY->at(validPrimaryIdx) - primariesStartY->at(validPrimaryIdx);
                 double coneDirZ = primariesEndZ->at(validPrimaryIdx) - primariesStartZ->at(validPrimaryIdx);
 
-                bool isStartInCone = IsPointInsideSlicedCone(
+                bool startsInCone = IsPointInsideSlicedCone(
                     chExchShowerStart->at(iTruthTrk)[0], chExchShowerStart->at(iTruthTrk)[1], chExchShowerStart->at(iTruthTrk)[2],
                     primariesEndX->at(validPrimaryIdx), primariesEndY->at(validPrimaryIdx), primariesEndZ->at(validPrimaryIdx),
                     coneDirX, coneDirY, coneDirZ,
-                    20, 10, 30
+                    SLICED_CONE_HEIGHT, SLICED_CONE_MIN_RADIUS, SLICED_CONE_MAX_RADIUS
                 );
 
-                bool isEndInCone = IsPointInsideSlicedCone(
+                bool endsInCone = IsPointInsideSlicedCone(
                     chExchShowerEnd->at(iTruthTrk)[0], chExchShowerEnd->at(iTruthTrk)[1], chExchShowerEnd->at(iTruthTrk)[2],
                     primariesEndX->at(validPrimaryIdx), primariesEndY->at(validPrimaryIdx), primariesEndZ->at(validPrimaryIdx),
                     coneDirX, coneDirY, coneDirZ,
-                    20, 10, 30
+                    SLICED_CONE_HEIGHT, SLICED_CONE_MIN_RADIUS, SLICED_CONE_MAX_RADIUS
                 );
 
                 // We do not care about photons because they won't give us anything to reconstruct themselves
                 if (chExchShowerPDGs->at(iTruthTrk) != 22) {
                     hChExchShowerTruthTrkLengths->Fill(chExchShowerLengths->at(iTruthTrk));
 
-                    if (isStartInCone) {
+                    if (startsInCone && endsInCone) {
                         hChExchShowerTrksConeContained->Fill(chExchShowerLengths->at(iTruthTrk));
                     } else {
                         hChExchShowerTrksConeUnContained->Fill(chExchShowerLengths->at(iTruthTrk));
@@ -1085,14 +1113,21 @@ void RecoAllAnalysis() {
                             recoBeginY->at(iRecoTrk) - WC2TPCPrimaryBeginY
                         );
 
-                        bool isStartInCone = IsPointInsideSlicedCone(
-                            recoBeginX->at(iRecoTrk), recoEndY->at(iRecoTrk), recoEndZ->at(iRecoTrk),
+                        bool startsInCone = IsPointInsideSlicedCone(
+                            recoBeginX->at(iRecoTrk), recoBeginY->at(iRecoTrk), recoBeginZ->at(iRecoTrk),
                             WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ,
                             WC2TPCPrimaryEndX - WC2TPCPrimaryBeginX, WC2TPCPrimaryEndY - WC2TPCPrimaryBeginY, WC2TPCPrimaryEndZ - WC2TPCPrimaryBeginZ,
-                            20, 10, 30
+                            SLICED_CONE_HEIGHT, SLICED_CONE_MIN_RADIUS, SLICED_CONE_MAX_RADIUS
                         );
 
-                        if (isStartInCone) {
+                        bool endsInCone = IsPointInsideSlicedCone(
+                            recoEndX->at(iRecoTrk), recoEndY->at(iRecoTrk), recoEndZ->at(iRecoTrk),
+                            WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ,
+                            WC2TPCPrimaryEndX - WC2TPCPrimaryBeginX, WC2TPCPrimaryEndY - WC2TPCPrimaryBeginY, WC2TPCPrimaryEndZ - WC2TPCPrimaryBeginZ,
+                            SLICED_CONE_HEIGHT, SLICED_CONE_MIN_RADIUS, SLICED_CONE_MAX_RADIUS
+                        );
+
+                        if (startsInCone && endsInCone) {
                             hChExchShowerRecoTrksConeContained->Fill(trk_length);
                         } else {
                             hChExchShowerRecoTrksConeUnContained->Fill(trk_length);
@@ -1155,6 +1190,39 @@ void RecoAllAnalysis() {
                 }
             }
         }
+
+        // Look at energy profile for events we are interested in
+        if (event == 200920) {
+            int caloPoints = wcMatchResR->size();
+
+            TH2D *hDEDXProfile = new TH2D(
+                "hDEDXProfile", 
+                "hDEDXProfile;Residual range (cm);dE/dx (MeV/cm)",
+                caloPoints, 0, 0, 
+                caloPoints, 0, 0
+            );
+
+            if (event == 200920) {
+                std::cout << "Event " << event << " has breakpoint at " << wcMatchResR->at(73) << " rr (cm)" << std::endl; 
+            }
+
+            for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
+                hDEDXProfile->Fill(wcMatchResR->at(iCalo), wcMatchDEDX->at(iCalo));
+            }
+
+            TCanvas* c1 = new TCanvas("c1", "DEDXProfiles", 800, 600);
+            hDEDXProfile->SetMinimum(0);
+            hDEDXProfile->SetMaximum(1);
+            hDEDXProfile->Draw("COLZ");
+            Overlay_dEdx_RR_Reference_PP(gProton, gPion, gMuonTG, true, wcMatchResR->at(73));
+            c1->SaveAs(SaveDir +  "dEdxProfiles/" + event + ".png");
+            
+            delete c1;
+            delete hDEDXProfile;
+        }
+
+        // If no track matched to wire-chamber, skip
+        if (WC2TPCtrkID == -99999) continue;
 
         // Study tracks inside 10 cm cylinder around primary track
         int numTracksInCylinder = 0; int numSmallTracksInCylinder = 0;
@@ -1242,39 +1310,6 @@ void RecoAllAnalysis() {
             }
         }
 
-        // Look at energy profile for events we are interested in
-        if (event == 200920) {
-            int caloPoints = wcMatchResR->size();
-
-            TH2D *hDEDXProfile = new TH2D(
-                "hDEDXProfile", 
-                "hDEDXProfile;Residual range (cm);dE/dx (MeV/cm)",
-                caloPoints, 0, 0, 
-                caloPoints, 0, 0
-            );
-
-            if (event == 200920) {
-                std::cout << "Event " << event << " has breakpoint at " << wcMatchResR->at(73) << " rr (cm)" << std::endl; 
-            }
-
-            for (int iCalo = 0; iCalo < caloPoints; iCalo++) {
-                hDEDXProfile->Fill(wcMatchResR->at(iCalo), wcMatchDEDX->at(iCalo));
-            }
-
-            TCanvas* c1 = new TCanvas("c1", "DEDXProfiles", 800, 600);
-            hDEDXProfile->SetMinimum(0);
-            hDEDXProfile->SetMaximum(1);
-            hDEDXProfile->Draw("COLZ");
-            Overlay_dEdx_RR_Reference_PP(gProton, gPion, gMuonTG, true, wcMatchResR->at(73));
-            c1->SaveAs(SaveDir +  "dEdxProfiles/" + event + ".png");
-            
-            delete c1;
-            delete hDEDXProfile;
-        }
-
-        // If no track matched to wire-chamber, skip
-        if (WC2TPCtrkID == -99999) continue;
-
         // Get linearity profile for wire-chamber match
         std::vector<double> WC2TPCLinearity = calcLinearityProfile(*WC2TPCLocationsX, *WC2TPCLocationsY, *WC2TPCLocationsZ, WINDOW_SIZE_LINEARITY);
 
@@ -1300,9 +1335,10 @@ void RecoAllAnalysis() {
             delete gLinearity;
         }
 
-        // Apply small tracks cut
+        // Apply beamline electron shower cut
         // We can do this before incident KE is added since we do not care about electrons
-        if (!passesSmallTracksCut)  continue;
+        // if (!passesSmallTracksCut)  continue;
+        if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) continue;
 
         // Perform chi^2 stitching for primary track
         // For this analysis, we get the following chi^2 values:
@@ -1495,6 +1531,10 @@ void RecoAllAnalysis() {
         int otherTaggedProton = 0;
 
         int numTracksNearVertex = 0;
+
+        int numTracksInSlicedCone      = 0;
+        int numSmallTracksInSlicedCone = 0;
+
         for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); trk_idx++) {
             if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
 
@@ -1605,12 +1645,73 @@ void RecoAllAnalysis() {
                         otherTaggedProton++;
                     }
                 }
-            } else {
-                // TODO: if track is not near vertex
-                //       First, check at least one of the two endpoints is inside reduced volume
-                //       Then, we want to check that this track is not a pion
-                //       If pion, reject event
+            } 
+
+            // Apart from checking if track is near vertex, check if it is in ROI for ch exch
+            bool startsInCone = IsPointInsideSlicedCone(
+                recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
+                breakPointX, breakPointY, breakPointZ,
+                breakPointX - WC2TPCPrimaryBeginX, breakPointY - WC2TPCPrimaryBeginY, breakPointZ - WC2TPCPrimaryBeginZ,
+                SLICED_CONE_HEIGHT, SLICED_CONE_MIN_RADIUS, SLICED_CONE_MAX_RADIUS
+            );
+
+            bool endsInCone = IsPointInsideSlicedCone(
+                recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
+                breakPointX, breakPointY, breakPointZ,
+                breakPointX - WC2TPCPrimaryBeginX, breakPointY - WC2TPCPrimaryBeginY, breakPointZ - WC2TPCPrimaryBeginZ,
+                SLICED_CONE_HEIGHT, SLICED_CONE_MIN_RADIUS, SLICED_CONE_MAX_RADIUS
+            );
+
+            double trackLength = sqrt(
+                pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
+                pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
+                pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+            );
+
+            if (startsInCone && endsInCone) {
+                numTracksInSlicedCone++;
+                if (trackLength < 5) numSmallTracksInSlicedCone++;
+
+                if (backgroundType == 0) {
+                    hSlicedConeTracksPiAbs0p->Fill(trackLength);
+                } else if (backgroundType == 1) {
+                    hSlicedConeTracksPiAbsNp->Fill(trackLength);
+                } else if (scatteringType == 0 || scatteringType == 1) {
+                    hSlicedConeTracksPiScat->Fill(trackLength);
+                } else if (backgroundType == 7) {
+                    hSlicedConeTracksPiChEx->Fill(trackLength);
+                } else if (backgroundType == 2) {
+                    hSlicedConeTracksMu->Fill(trackLength);
+                } else if (backgroundType == 3) {
+                    hSlicedConeTracksE->Fill(trackLength);
+                } else {
+                    hSlicedConeTracksPiOther->Fill(trackLength);
+                }
             }
+        }
+
+        // Fill data for tracks in sliced cone
+        if (backgroundType == 0) {
+            hSlicedConeNumTrksPiAbs0p->Fill(numTracksInSlicedCone);
+            hSlicedConeNumSmallTrksPiAbs0p->Fill(numSmallTracksInSlicedCone);
+        } else if (backgroundType == 1) {
+            hSlicedConeNumTrksPiAbsNp->Fill(numTracksInSlicedCone);
+            hSlicedConeNumSmallTrksPiAbsNp->Fill(numSmallTracksInSlicedCone);
+        } else if (scatteringType == 0 || scatteringType == 1) {
+            hSlicedConeNumTrksPiScat->Fill(numTracksInSlicedCone);
+            hSlicedConeNumSmallTrksPiScat->Fill(numSmallTracksInSlicedCone);
+        } else if (backgroundType == 7) {
+            hSlicedConeNumTrksPiChEx->Fill(numTracksInSlicedCone);
+            hSlicedConeNumSmallTrksPiChEx->Fill(numSmallTracksInSlicedCone);
+        } else if (backgroundType == 2) {
+            hSlicedConeNumTrksMu->Fill(numTracksInSlicedCone);
+            hSlicedConeNumSmallTrksMu->Fill(numSmallTracksInSlicedCone);
+        } else if (backgroundType == 3) {
+            hSlicedConeNumTrksE->Fill(numTracksInSlicedCone);
+            hSlicedConeNumSmallTrksE->Fill(numSmallTracksInSlicedCone);
+        } else {
+            hSlicedConeNumTrksPiOther->Fill(numTracksInSlicedCone);
+            hSlicedConeNumSmallTrksPiOther->Fill(numSmallTracksInSlicedCone);
         }
 
         // For particles where we stitched, we also need to analyze the second part of the primary track
@@ -2796,6 +2897,11 @@ void RecoAllAnalysis() {
         {hSmallTrksInCylinderPions, hSmallTrksInCylinderMuons, hSmallTrksInCylinderElectrons},
         {hSmallTrksInCylinderPionAbs0p, hSmallTrksInCylinderPionAbsNp, hSmallTrksInCylinderPionScattering, hSmallTrksInCylinderPionChExch, hSmallTrksInCylinderPionOther, hSmallTrksInCylinderMuons, hSmallTrksInCylinderElectrons},
 
+        // Sliced cone cut
+        {hSlicedConeTracksPiAbs0p, hSlicedConeTracksPiAbsNp, hSlicedConeTracksPiScat, hSlicedConeTracksPiChEx, hSlicedConeTracksPiOther, hSlicedConeTracksMu, hSlicedConeTracksE},
+        {hSlicedConeNumTrksPiAbs0p, hSlicedConeNumTrksPiAbsNp, hSlicedConeNumTrksPiScat, hSlicedConeNumTrksPiChEx, hSlicedConeNumTrksPiOther, hSlicedConeNumTrksMu, hSlicedConeNumTrksE},
+        {hSlicedConeNumSmallTrksPiAbs0p, hSlicedConeNumSmallTrksPiAbsNp, hSlicedConeNumSmallTrksPiScat, hSlicedConeNumSmallTrksPiChEx, hSlicedConeNumSmallTrksPiOther, hSlicedConeNumSmallTrksMu, hSlicedConeNumSmallTrksE},
+
         // Beamline showers
         {hElectronShowerRecoTrkLengths, hElectronShowerTrueTrkLengths},
         {hElectronShowerTrkContained, hElectronShowerTrkUnContained},
@@ -2891,6 +2997,11 @@ void RecoAllAnalysis() {
         {"Pions", "Muons", "Electrons"},
         {"All"},
         {"Pions", "Muons", "Electrons"},
+        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other", "Muon", "Electron"},
+
+        // Sliced cone cut
+        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other", "Muon", "Electron"},
+        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other", "Muon", "Electron"},
         {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other", "Muon", "Electron"},
 
         // Beamline showers
@@ -2990,6 +3101,11 @@ void RecoAllAnalysis() {
         "Cylinder/SmallTracksBreakdown",
         "Cylinder/SmallTracksPiBreakdown",
 
+        // Sliced cone cut
+        "SlicedCone/SlicedConeTracksPiBreakdown",
+        "SlicedCone/SlicedConeNumTracksPiBreakdown",
+        "SlicedCone/SlicedConeNumSmallTracksPiBreakdown",
+
         // Beamline showers
         "BeamlineShower/ElectronShowerTrkLengths",
         "BeamlineShower/ElectronShowerCylinderContainedTrks",
@@ -3086,6 +3202,11 @@ void RecoAllAnalysis() {
         "Number of small tracks",
         "Number of small tracks",
         "Number of small tracks",
+
+        // Sliced cone cut
+        "Track length (cm)",
+        "# of tracks",
+        "# of small tracks",
 
         // Beamline showers
         "Track length (cm)",
@@ -3184,6 +3305,11 @@ void RecoAllAnalysis() {
         "Counts",
         "Counts",
 
+        // Sliced cone cut
+        "Counts",
+        "Counts",
+        "Counts",
+
         // Beamline showers
         "Counts",
         "Counts",
@@ -3278,6 +3404,11 @@ void RecoAllAnalysis() {
         false,
         true,
         false,
+        true,
+        true,
+
+        // Sliced cone cut
+        true,
         true,
         true,
 
