@@ -528,14 +528,40 @@ void RecoClassifyAllSimplified() {
                 // Skip WC2TPC match itself
                 if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
 
+                // Copy WC2TPCLocations
+                std::vector<double>* wcX = new std::vector<double>(*WC2TPCLocationsX);
+                std::vector<double>* wcY = new std::vector<double>(*WC2TPCLocationsY);
+                std::vector<double>* wcZ = new std::vector<double>(*WC2TPCLocationsZ);
+
+                // Get direction to end cylinder
+                int numPoints = wcX->size();
+                int numTail   = std::min(10, numPoints - 1);
+                std::vector<std::vector<double>> points;
+                for (int j = numPoints - numTail; j < numPoints; ++j) {
+                    points.push_back({
+                        wcX->at(j),
+                        wcY->at(j),
+                        wcZ->at(j)
+                    });
+                }
+                if (numTail > 0) {
+                    std::vector<double> avgDir = getAverageDir(points);
+
+                    // Extrapolate track to end
+                    double scale = (maxZ - points.back()[2]) / avgDir[2];
+                    wcX->push_back(points.back()[0] + scale * avgDir[0]);
+                    wcY->push_back(points.back()[1] + scale * avgDir[1]);
+                    wcZ->push_back(points.back()[2] + scale * avgDir[2]);
+                }
+
                 // Is track contained in 10 cm cylinder?
                 bool startInCylinder = IsPointInsideTrackCylinder(
-                    WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                    wcX, wcY, wcZ,
                     recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
                     CYLINDER_RADIUS
                 );
                 bool endInCylinder = IsPointInsideTrackCylinder(
-                    WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                    wcX, wcY, wcZ,
                     recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
                     CYLINDER_RADIUS
                 );
@@ -775,6 +801,7 @@ void RecoClassifyAllSimplified() {
         //////////////////
 
         int numSmallTracksInCylinder = 0;
+        int numTracksInCylinder      = 0;
         for (int trk_idx = 0; trk_idx < recoTrkID->size(); ++trk_idx) {
             if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
 
@@ -784,16 +811,44 @@ void RecoClassifyAllSimplified() {
                 pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
             );
 
+            // Copy WC2TPCLocations
+            std::vector<double>* wcX = new std::vector<double>(*WC2TPCLocationsX);
+            std::vector<double>* wcY = new std::vector<double>(*WC2TPCLocationsY);
+            std::vector<double>* wcZ = new std::vector<double>(*WC2TPCLocationsZ);
+
+            // Get direction to end cylinder
+            int numPoints = wcX->size();
+            int numTail   = std::min(10, numPoints - 1);
+            std::vector<std::vector<double>> points;
+            for (int j = numPoints - numTail; j < numPoints; ++j) {
+                points.push_back({
+                    wcX->at(j),
+                    wcY->at(j),
+                    wcZ->at(j)
+                });
+            }
+            if (numTail > 0) {
+                std::vector<double> avgDir = getAverageDir(points);
+
+                // Extrapolate track to end
+                double scale = (maxZ - points.back()[2]) / avgDir[2];
+                wcX->push_back(points.back()[0] + scale * avgDir[0]);
+                wcY->push_back(points.back()[1] + scale * avgDir[1]);
+                wcZ->push_back(points.back()[2] + scale * avgDir[2]);
+            }
+
             bool startInCylinder = IsPointInsideTrackCylinder(
-                WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                wcX, wcY, wcZ,
                 recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
                 CYLINDER_RADIUS
             );
             bool endInCylinder = IsPointInsideTrackCylinder(
-                WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                wcX, wcY, wcZ,
                 recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
                 CYLINDER_RADIUS
             );
+
+            if (startInCylinder && endInCylinder) numTracksInCylinder++;
 
             if (
                 startInCylinder && endInCylinder &&
@@ -804,7 +859,11 @@ void RecoClassifyAllSimplified() {
         }
 
         // Perform cut
-        if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) {
+
+        // Cut on tracks
+        if (numTracksInCylinder > ALLOWED_CYLINDER_TRACKS) {
+        // Cut on small tracks
+        // if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) {
             if (backgroundType == 0) {
                 hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueAbs0pKERejElectron->Fill(truthPrimaryVertexKE * 1000);

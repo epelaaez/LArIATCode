@@ -182,12 +182,12 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("truthPrimaryDaughtersKE", &truthPrimaryDaughtersKE);
 
     // True particle location information
-    // std::vector<double>* truthPrimaryLocationX = nullptr;
-    // std::vector<double>* truthPrimaryLocationY = nullptr;
-    // std::vector<double>* truthPrimaryLocationZ = nullptr;
-    // tree->SetBranchAddress("truthPrimaryLocationX", &truthPrimaryLocationX);
-    // tree->SetBranchAddress("truthPrimaryLocationY", &truthPrimaryLocationY);
-    // tree->SetBranchAddress("truthPrimaryLocationZ", &truthPrimaryLocationZ);
+    std::vector<double>* truthPrimaryLocationX = nullptr;
+    std::vector<double>* truthPrimaryLocationY = nullptr;
+    std::vector<double>* truthPrimaryLocationZ = nullptr;
+    tree->SetBranchAddress("truthPrimaryLocationX", &truthPrimaryLocationX);
+    tree->SetBranchAddress("truthPrimaryLocationY", &truthPrimaryLocationY);
+    tree->SetBranchAddress("truthPrimaryLocationZ", &truthPrimaryLocationZ);
 
     // Truth-level interaction information
     bool         interactionInTrajectory;
@@ -954,6 +954,9 @@ void RecoAllAnalysis() {
         // Make it go faster
         // if (i > 10000) break;
 
+        // Sanity check
+        removeRepeatedPoints(WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ);
+
         // Label background type as 0 for 0p signal and 1 for Np signal
         if (isPionAbsorptionSignal) {
             if (numVisibleProtons == 0) backgroundType = 0;
@@ -979,6 +982,22 @@ void RecoAllAnalysis() {
                 validPrimaryIdx = i;
                 break;
             }
+        }
+
+        // In this case, the trajectory object does not have information, so we 
+        // just use the start and end
+        if (truthPrimaryLocationX->size() == 0) {
+            truthPrimaryLocationX->push_back(primariesStartX->at(validPrimaryIdx));
+            truthPrimaryLocationY->push_back(primariesStartY->at(validPrimaryIdx));
+            truthPrimaryLocationZ->push_back(primariesStartZ->at(validPrimaryIdx));
+
+            truthPrimaryLocationX->push_back(primariesEndX->at(validPrimaryIdx));
+            truthPrimaryLocationY->push_back(primariesEndY->at(validPrimaryIdx));
+            truthPrimaryLocationZ->push_back(primariesEndZ->at(validPrimaryIdx));
+        }
+
+        if (truthPrimaryLocationX->size() == 0) {
+            std::cout << "AAAA" << std::endl;
         }
 
         // Study elastic and inelastic scattering events
@@ -1145,16 +1164,36 @@ void RecoAllAnalysis() {
                     electronShowerStart->at(iTruthTrk)[0] - primariesStartX->at(validPrimaryIdx), 
                     electronShowerStart->at(iTruthTrk)[1] - primariesStartY->at(validPrimaryIdx)
                 );
-                
+
+                // Get direction to end cylinder
+                int numPoints = truthPrimaryLocationX->size();
+                int numTail   = std::min(10, numPoints - 1);
+                std::vector<std::vector<double>> points;
+                for (int j = numPoints - numTail; j < numPoints; ++j) {
+                    points.push_back({
+                        truthPrimaryLocationX->at(j),
+                        truthPrimaryLocationY->at(j),
+                        truthPrimaryLocationZ->at(j)
+                    });
+                }
+
+                if (numTail > 0) {
+                    std::vector<double> avgDir = getAverageDir(points);
+
+                    // Extrapolate track to end
+                    double scale = (maxZ - points.back()[2]) / avgDir[2];
+                    truthPrimaryLocationX->push_back(points.back()[0] + scale * avgDir[0]);
+                    truthPrimaryLocationY->push_back(points.back()[1] + scale * avgDir[1]);
+                    truthPrimaryLocationZ->push_back(points.back()[2] + scale * avgDir[2]);
+                }
+
                 bool startInCylinder = IsPointInsideTrackCylinder(
-                    // truthPrimaryLocationX, truthPrimaryLocationY, truthPrimaryLocationZ,
-                    WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                    truthPrimaryLocationX, truthPrimaryLocationY, truthPrimaryLocationZ,
                     electronShowerStart->at(iTruthTrk)[0], electronShowerStart->at(iTruthTrk)[1], electronShowerStart->at(iTruthTrk)[2],
                     CYLINDER_RADIUS
                 );
                 bool endInCylinder = IsPointInsideTrackCylinder(
-                    // truthPrimaryLocationX, truthPrimaryLocationY, truthPrimaryLocationZ,
-                    WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                    truthPrimaryLocationX, truthPrimaryLocationY, truthPrimaryLocationZ,
                     electronShowerEnd->at(iTruthTrk)[0], electronShowerEnd->at(iTruthTrk)[1], electronShowerEnd->at(iTruthTrk)[2],
                     CYLINDER_RADIUS
                 );
@@ -1236,13 +1275,39 @@ void RecoAllAnalysis() {
                     pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
                 );
 
+                // Copy WC2TPCLocations
+                std::vector<double>* wcX = new std::vector<double>(*WC2TPCLocationsX);
+                std::vector<double>* wcY = new std::vector<double>(*WC2TPCLocationsY);
+                std::vector<double>* wcZ = new std::vector<double>(*WC2TPCLocationsZ);
+
+                // Get direction to end cylinder
+                int numPoints = wcX->size();
+                int numTail   = std::min(10, numPoints - 1);
+                std::vector<std::vector<double>> points;
+                for (int j = numPoints - numTail; j < numPoints; ++j) {
+                    points.push_back({
+                        wcX->at(j),
+                        wcY->at(j),
+                        wcZ->at(j)
+                    });
+                }
+                if (numTail > 0) {
+                    std::vector<double> avgDir = getAverageDir(points);
+
+                    // Extrapolate track to end
+                    double scale = (maxZ - points.back()[2]) / avgDir[2];
+                    wcX->push_back(points.back()[0] + scale * avgDir[0]);
+                    wcY->push_back(points.back()[1] + scale * avgDir[1]);
+                    wcZ->push_back(points.back()[2] + scale * avgDir[2]);
+                }
+
                 bool startInCylinder = IsPointInsideTrackCylinder(
-                    WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                    wcX, wcY, wcZ,
                     recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
                     CYLINDER_RADIUS
                 );
                 bool endInCylinder = IsPointInsideTrackCylinder(
-                    WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+                    wcX, wcY, wcZ,
                     recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
                     CYLINDER_RADIUS
                 );

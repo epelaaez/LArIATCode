@@ -936,6 +936,30 @@ void reweightOneDHisto(TH1D* histo, double weight) {
     }
 }
 
+void removeRepeatedPoints(std::vector<double>* x, std::vector<double>* y, std::vector<double>* z) {
+    int repeat_count = 0;
+    int num_points = x->size();
+    if (num_points > 1) {
+        double last_x = x->at(num_points - 1);
+        double last_y = y->at(num_points - 1);
+        double last_z = z->at(num_points - 1);
+        for (int j = num_points - 2; j >= 0; --j) {
+            if (x->at(j) == last_x &&
+                y->at(j) == last_y &&
+                z->at(j) == last_z) {
+                repeat_count++;
+            } else {
+                break;
+            }
+        }
+    }
+    if (repeat_count > 0) {
+        x->erase(x->begin() + (num_points - repeat_count), x->end() - 1);
+        y->erase(y->begin() + (num_points - repeat_count), y->end() - 1);
+        z->erase(z->begin() + (num_points - repeat_count), z->end() - 1);
+    }
+}
+
 ////////////////////
 // Geometry stuff //
 ////////////////////
@@ -1127,6 +1151,16 @@ std::vector<double> projToZ(const std::vector<double>& hit0, const std::vector<d
   std::vector<double> result {sx * t + hit0[0], sy * t + hit0[1], zpos};
 
   return result;
+}
+
+std::vector<double> getAverageDir(const std::vector<std::vector<double>>& points) {
+    std::vector<double> avgDir(3, 0.0);
+    for (size_t i = 0; i < points.size() - 1; ++i) {
+        avgDir[0] += (points[i + 1][0] - points[i][0]) / points.size();
+        avgDir[1] += (points[i + 1][1] - points[i][1]) / points.size();
+        avgDir[2] += (points[i + 1][2] - points[i][2]) / points.size();
+    }
+    return avgDir;
 }
 
 ///////////////

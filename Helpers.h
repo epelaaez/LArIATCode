@@ -145,6 +145,7 @@ double PI_MU_EL_MASS_CUTOFF = 350.;
 double CYLINDER_RADIUS               = 10.;
 double CYLINDER_SMALL_TRACK          = 5.;
 int    ALLOWED_CYLINDER_SMALL_TRACKS = 0;
+int    ALLOWED_CYLINDER_TRACKS       = 1;
 
 // Sliced cone for ch exch events parameters
 double SLICED_CONE_MIN_RADIUS           = 10.0;
@@ -218,6 +219,8 @@ void H2V(const TH1D* histo, TVectorD& vec);
 void M2H(const TMatrixD mat, TH2D* histo);
 void V2H(const TVectorD vec, TH1D* histo);
 
+void removeRepeatedPoints(std::vector<double>* x, std::vector<double>* y, std::vector<double>* z);
+
 ////////////////////
 // Geometry stuff //
 ////////////////////
@@ -247,6 +250,8 @@ std::tuple<double, double> azimuth_polar_from_points(
 );
 
 std::vector<double> projToZ(const std::vector<double>& hit0, const std::vector<double>& hit1, double zpos);
+
+std::vector<double> getAverageDir(const std::vector<double>& points);
 
 ///////////////
 // WC checks //
