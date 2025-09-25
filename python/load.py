@@ -149,12 +149,6 @@ def clean_up(df):
         else:
             avg_direction = np.array([np.nan, np.nan, np.nan])
         
-        if (avg_direction[2] == 0):
-            print(num_points,  n_tail)
-            print(wcX)
-            print(wcY)
-            print(wcZ)
-        
         # Extrapolate WC2TPC track to end
         if num_points > 0:
             last_point = np.array([wcX[-1], wcY[-1], wcZ[-1]])
