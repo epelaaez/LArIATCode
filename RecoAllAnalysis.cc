@@ -676,15 +676,15 @@ void RecoAllAnalysis() {
     TH2D* hChExchShowerDaughtersRecoIncident = new TH2D(
         "hChExchShowerDaughtersRecoIncident",
         "hChExchShowerDaughtersRecoIncident;reco daughter_{x} - WC_{x};reco daughter_{y} - WC_{y}",
-        50, -15, 15,
-        50, -15, 15
+        30, -15, 15,
+        30, -15, 15
     );
 
     TH2D* hChExchShowerDaughtersExitAngles = new TH2D(
         "hChExchShowerDaughtersExitAngles",
         "hChExchShowerDaughtersExitAngles;Azimuth (x-y plane) [rad];Polar (away from z)",
-        50, -TMath::Pi(), TMath::Pi(),
-        50, 0, TMath::Pi()
+        20, -TMath::Pi(), TMath::Pi(),
+        20, 0, TMath::Pi()
     );
     TH1D* hChExchShowerDaughtersForwardMom = new TH1D("hChExchShowerDaughtersForwardMom", "hChExchShowerDaughtersForwardMom", 20, 0, 0.5);
 
@@ -693,6 +693,12 @@ void RecoAllAnalysis() {
     TH1D* hChExchShowerTrksConeUnContained     = new TH1D("hChExchShowerTrksConeUnContained", "hChExchShowerTrksConeUnContained", 20, 0, 20);
     TH1D* hChExchShowerRecoTrksConeContained   = new TH1D("hChExchShowerRecoTrksConeContained", "hChExchShowerRecoTrksConeContained", 20, 0, 20);
     TH1D* hChExchShowerRecoTrksConeUnContained = new TH1D("hChExchShowerRecoTrksConeUnContained", "hChExchShowerRecoTrksConeUnContained", 20, 0, 20);
+
+    // Cylinder
+    TH1D* hChExchShowerTrksCylinderContained       = new TH1D("hChExchShowerTrksCylinderContained", "hChExchShowerTrksCylinderContained", 20, 0, 20);
+    TH1D* hChExchShowerTrksCylinderUnContained     = new TH1D("hChExchShowerTrksCylinderUnContained", "hChExchShowerTrksCylinderUnContained", 20, 0, 20);
+    TH1D* hChExchShowerRecoTrksCylinderContained   = new TH1D("hChExchShowerRecoTrksCylinderContained", "hChExchShowerRecoTrksCylinderContained", 20, 0, 20);
+    TH1D* hChExchShowerRecoTrksCylinderUnContained = new TH1D("hChExchShowerRecoTrksCylinderUnContained", "hChExchShowerRecoTrksCylinderUnContained", 20, 0, 20);
 
     //////////////////////////////
     // Data for sliced cone cut //
@@ -984,21 +990,78 @@ void RecoAllAnalysis() {
             }
         }
 
-        // In this case, the trajectory object does not have information, so we 
-        // just use the start and end
-        if (truthPrimaryLocationX->size() == 0) {
-            truthPrimaryLocationX->push_back(primariesStartX->at(validPrimaryIdx));
-            truthPrimaryLocationY->push_back(primariesStartY->at(validPrimaryIdx));
-            truthPrimaryLocationZ->push_back(primariesStartZ->at(validPrimaryIdx));
+        /////////////////////////
+        // Construct cylinders //
+        /////////////////////////
 
-            truthPrimaryLocationX->push_back(primariesEndX->at(validPrimaryIdx));
-            truthPrimaryLocationY->push_back(primariesEndY->at(validPrimaryIdx));
-            truthPrimaryLocationZ->push_back(primariesEndZ->at(validPrimaryIdx));
+        // Get truth cylinder for cuts
+        std::vector<double>* truthCylinderLocationX = new std::vector<double>(*truthPrimaryLocationX);
+        std::vector<double>* truthCylinderLocationY = new std::vector<double>(*truthPrimaryLocationY);
+        std::vector<double>* truthCylinderLocationZ = new std::vector<double>(*truthPrimaryLocationZ);
+
+        if (truthCylinderLocationX->size() == 0) {
+            truthCylinderLocationX->push_back(primariesStartX->at(validPrimaryIdx));
+            truthCylinderLocationY->push_back(primariesStartY->at(validPrimaryIdx));
+            truthCylinderLocationZ->push_back(primariesStartZ->at(validPrimaryIdx));
+
+            truthCylinderLocationX->push_back(primariesEndX->at(validPrimaryIdx));
+            truthCylinderLocationY->push_back(primariesEndY->at(validPrimaryIdx));
+            truthCylinderLocationZ->push_back(primariesEndZ->at(validPrimaryIdx));
+        } 
+
+        // Get direction to end cylinder
+        int truthNumPoints = truthCylinderLocationX->size();
+        int truthNumTail   = std::min(10, truthNumPoints - 1);
+        std::vector<std::vector<double>> truth_points;
+        for (int j = truthNumPoints - truthNumTail; j < truthNumPoints; ++j) {
+            truth_points.push_back({
+                truthCylinderLocationX->at(j),
+                truthCylinderLocationY->at(j),
+                truthCylinderLocationZ->at(j)
+            });
         }
 
-        if (truthPrimaryLocationX->size() == 0) {
-            std::cout << "AAAA" << std::endl;
+        if (truthNumTail > 0) {
+            std::vector<double> avgDir = getAverageDir(truth_points);
+
+            // Extrapolate track to end
+            double scale = (maxZ - truth_points.back()[2]) / avgDir[2];
+            truthCylinderLocationX->push_back(truth_points.back()[0] + scale * avgDir[0]);
+            truthCylinderLocationY->push_back(truth_points.back()[1] + scale * avgDir[1]);
+            truthCylinderLocationZ->push_back(truth_points.back()[2] + scale * avgDir[2]);
         }
+
+        // Get reco cylinder for cuts 
+
+        // Copy WC2TPCLocations
+        std::vector<double>* wcX = new std::vector<double>(*WC2TPCLocationsX);
+        std::vector<double>* wcY = new std::vector<double>(*WC2TPCLocationsY);
+        std::vector<double>* wcZ = new std::vector<double>(*WC2TPCLocationsZ);
+
+        // Get direction to end cylinder
+        int wcNumPoints = wcX->size();
+        int wcNumTail   = std::min(10, wcNumPoints - 1);
+        std::vector<std::vector<double>> wc_points;
+        for (int j = wcNumPoints - wcNumTail; j < wcNumPoints; ++j) {
+            wc_points.push_back({
+                wcX->at(j),
+                wcY->at(j),
+                wcZ->at(j)
+            });
+        }
+        if (wcNumTail > 0) {
+            std::vector<double> avgDir = getAverageDir(wc_points);
+
+            // Extrapolate track to end
+            double scale = (maxZ - wc_points.back()[2]) / avgDir[2];
+            wcX->push_back(wc_points.back()[0] + scale * avgDir[0]);
+            wcY->push_back(wc_points.back()[1] + scale * avgDir[1]);
+            wcZ->push_back(wc_points.back()[2] + scale * avgDir[2]);
+        }
+
+        //////////////////////////////
+        // Study truth interactions //
+        //////////////////////////////
 
         // Study elastic and inelastic scattering events
         if (backgroundType == 12) {
@@ -1071,7 +1134,7 @@ void RecoAllAnalysis() {
                     chExchShowerStart->at(iTruthTrk)[1] - primariesStartY->at(validPrimaryIdx)
                 );
 
-                // check if track is contained inside sliced cone
+                // Check if track is contained inside sliced cone
                 double coneDirX = primariesEndX->at(validPrimaryIdx) - primariesStartX->at(validPrimaryIdx);
                 double coneDirY = primariesEndY->at(validPrimaryIdx) - primariesStartY->at(validPrimaryIdx);
                 double coneDirZ = primariesEndZ->at(validPrimaryIdx) - primariesStartZ->at(validPrimaryIdx);
@@ -1090,6 +1153,18 @@ void RecoAllAnalysis() {
                     SLICED_CONE_HEIGHT, SLICED_CONE_MIN_RADIUS, SLICED_CONE_MAX_RADIUS
                 );
 
+                // Check if track is contained inside cylinder
+                bool startInCylinder = IsPointInsideTrackCylinder(
+                    truthCylinderLocationX, truthCylinderLocationY, truthCylinderLocationZ,
+                    chExchShowerStart->at(iTruthTrk)[0], chExchShowerStart->at(iTruthTrk)[1], chExchShowerStart->at(iTruthTrk)[2],
+                    CYLINDER_RADIUS
+                );
+                bool endInCylinder = IsPointInsideTrackCylinder(
+                    truthCylinderLocationX, truthCylinderLocationY, truthCylinderLocationZ,
+                    chExchShowerEnd->at(iTruthTrk)[0], chExchShowerEnd->at(iTruthTrk)[1], chExchShowerEnd->at(iTruthTrk)[2],
+                    CYLINDER_RADIUS
+                );
+
                 // We do not care about photons because they won't give us anything to reconstruct themselves
                 if (chExchShowerPDGs->at(iTruthTrk) != 22) {
                     hChExchShowerTruthTrkLengths->Fill(chExchShowerLengths->at(iTruthTrk));
@@ -1098,6 +1173,12 @@ void RecoAllAnalysis() {
                         hChExchShowerTrksConeContained->Fill(chExchShowerLengths->at(iTruthTrk));
                     } else {
                         hChExchShowerTrksConeUnContained->Fill(chExchShowerLengths->at(iTruthTrk));
+                    }
+
+                    if (startInCylinder && endInCylinder) {
+                        hChExchShowerTrksCylinderContained->Fill(chExchShowerLengths->at(iTruthTrk));
+                    } else {
+                        hChExchShowerTrksCylinderUnContained->Fill(chExchShowerLengths->at(iTruthTrk));
                     }
                 }
             }
@@ -1131,26 +1212,6 @@ void RecoAllAnalysis() {
                             recoBeginX->at(iRecoTrk) - WC2TPCPrimaryBeginX,
                             recoBeginY->at(iRecoTrk) - WC2TPCPrimaryBeginY
                         );
-
-                        bool startsInCone = IsPointInsideSlicedCone(
-                            recoBeginX->at(iRecoTrk), recoBeginY->at(iRecoTrk), recoBeginZ->at(iRecoTrk),
-                            WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ,
-                            WC2TPCPrimaryEndX - WC2TPCPrimaryBeginX, WC2TPCPrimaryEndY - WC2TPCPrimaryBeginY, WC2TPCPrimaryEndZ - WC2TPCPrimaryBeginZ,
-                            SLICED_CONE_HEIGHT, SLICED_CONE_MIN_RADIUS, SLICED_CONE_MAX_RADIUS
-                        );
-
-                        bool endsInCone = IsPointInsideSlicedCone(
-                            recoEndX->at(iRecoTrk), recoEndY->at(iRecoTrk), recoEndZ->at(iRecoTrk),
-                            WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ,
-                            WC2TPCPrimaryEndX - WC2TPCPrimaryBeginX, WC2TPCPrimaryEndY - WC2TPCPrimaryBeginY, WC2TPCPrimaryEndZ - WC2TPCPrimaryBeginZ,
-                            SLICED_CONE_HEIGHT, SLICED_CONE_MIN_RADIUS, SLICED_CONE_MAX_RADIUS
-                        );
-
-                        if (startsInCone && endsInCone) {
-                            hChExchShowerRecoTrksConeContained->Fill(trk_length);
-                        } else {
-                            hChExchShowerRecoTrksConeUnContained->Fill(trk_length);
-                        }
                     }
                 }
             }
@@ -1165,35 +1226,13 @@ void RecoAllAnalysis() {
                     electronShowerStart->at(iTruthTrk)[1] - primariesStartY->at(validPrimaryIdx)
                 );
 
-                // Get direction to end cylinder
-                int numPoints = truthPrimaryLocationX->size();
-                int numTail   = std::min(10, numPoints - 1);
-                std::vector<std::vector<double>> points;
-                for (int j = numPoints - numTail; j < numPoints; ++j) {
-                    points.push_back({
-                        truthPrimaryLocationX->at(j),
-                        truthPrimaryLocationY->at(j),
-                        truthPrimaryLocationZ->at(j)
-                    });
-                }
-
-                if (numTail > 0) {
-                    std::vector<double> avgDir = getAverageDir(points);
-
-                    // Extrapolate track to end
-                    double scale = (maxZ - points.back()[2]) / avgDir[2];
-                    truthPrimaryLocationX->push_back(points.back()[0] + scale * avgDir[0]);
-                    truthPrimaryLocationY->push_back(points.back()[1] + scale * avgDir[1]);
-                    truthPrimaryLocationZ->push_back(points.back()[2] + scale * avgDir[2]);
-                }
-
                 bool startInCylinder = IsPointInsideTrackCylinder(
-                    truthPrimaryLocationX, truthPrimaryLocationY, truthPrimaryLocationZ,
+                    truthCylinderLocationX, truthCylinderLocationY, truthCylinderLocationZ,
                     electronShowerStart->at(iTruthTrk)[0], electronShowerStart->at(iTruthTrk)[1], electronShowerStart->at(iTruthTrk)[2],
                     CYLINDER_RADIUS
                 );
                 bool endInCylinder = IsPointInsideTrackCylinder(
-                    truthPrimaryLocationX, truthPrimaryLocationY, truthPrimaryLocationZ,
+                    truthCylinderLocationX, truthCylinderLocationY, truthCylinderLocationZ,
                     electronShowerEnd->at(iTruthTrk)[0], electronShowerEnd->at(iTruthTrk)[1], electronShowerEnd->at(iTruthTrk)[2],
                     CYLINDER_RADIUS
                 );
@@ -1260,6 +1299,10 @@ void RecoAllAnalysis() {
             delete hDEDXProfile;
         }
 
+        /////////////////////
+        // Start selection //
+        /////////////////////
+
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
 
@@ -1275,32 +1318,7 @@ void RecoAllAnalysis() {
                     pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
                 );
 
-                // Copy WC2TPCLocations
-                std::vector<double>* wcX = new std::vector<double>(*WC2TPCLocationsX);
-                std::vector<double>* wcY = new std::vector<double>(*WC2TPCLocationsY);
-                std::vector<double>* wcZ = new std::vector<double>(*WC2TPCLocationsZ);
-
-                // Get direction to end cylinder
-                int numPoints = wcX->size();
-                int numTail   = std::min(10, numPoints - 1);
-                std::vector<std::vector<double>> points;
-                for (int j = numPoints - numTail; j < numPoints; ++j) {
-                    points.push_back({
-                        wcX->at(j),
-                        wcY->at(j),
-                        wcZ->at(j)
-                    });
-                }
-                if (numTail > 0) {
-                    std::vector<double> avgDir = getAverageDir(points);
-
-                    // Extrapolate track to end
-                    double scale = (maxZ - points.back()[2]) / avgDir[2];
-                    wcX->push_back(points.back()[0] + scale * avgDir[0]);
-                    wcY->push_back(points.back()[1] + scale * avgDir[1]);
-                    wcZ->push_back(points.back()[2] + scale * avgDir[2]);
-                }
-
+                // Check if ends are inside cylinder
                 bool startInCylinder = IsPointInsideTrackCylinder(
                     wcX, wcY, wcZ,
                     recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
@@ -1311,6 +1329,8 @@ void RecoAllAnalysis() {
                     recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
                     CYLINDER_RADIUS
                 );
+
+                // Check cylinder
                 if (startInCylinder && endInCylinder) {
                     numTracksInCylinder++;
 
@@ -1330,12 +1350,17 @@ void RecoAllAnalysis() {
                             hTrkLengthsInCylinderPionScattering->Fill(trackLength);
                         } else if (backgroundType == 7) {
                             hTrkLengthsInCylinderPionChExch->Fill(trackLength);
+                            hChExchShowerRecoTrksCylinderContained->Fill(trackLength);
                         } else {
                             hTrkLengthsInCylinderPionOther->Fill(trackLength);
                         }
                     }
 
                     if (trackLength < CYLINDER_SMALL_TRACK) numSmallTracksInCylinder++;
+                } else {
+                    if (backgroundType == 7) {
+                        hChExchShowerRecoTrksCylinderUnContained->Fill(trackLength);
+                    }
                 }
             }
             hNumTracksInCylinder->Fill(numTracksInCylinder);
@@ -1736,6 +1761,7 @@ void RecoAllAnalysis() {
             if (startsInCone && endsInCone) {
                 numTracksInSlicedCone++;
                 if (trackLength < 5) numSmallTracksInSlicedCone++;
+                if (backgroundType == 7) hChExchShowerRecoTrksConeContained->Fill(trackLength);
 
                 if (backgroundType == 0) {
                     hSlicedConeTracksPiAbs0p->Fill(trackLength);
@@ -1752,6 +1778,8 @@ void RecoAllAnalysis() {
                 } else {
                     hSlicedConeTracksPiOther->Fill(trackLength);
                 }
+            } else {
+                if (backgroundType == 7) hChExchShowerRecoTrksConeUnContained->Fill(trackLength);
             }
         }
 
@@ -2951,6 +2979,8 @@ void RecoAllAnalysis() {
         {hChExchShowerDaughtersForwardMom},
         {hChExchShowerTrksConeContained, hChExchShowerTrksConeUnContained},
         {hChExchShowerRecoTrksConeContained, hChExchShowerRecoTrksConeUnContained},
+        {hChExchShowerTrksCylinderContained, hChExchShowerTrksCylinderUnContained},
+        {hChExchShowerRecoTrksCylinderContained, hChExchShowerRecoTrksCylinderUnContained},
 
         // Cylinder cuts
         {hTrkLengthsInCylinder},
@@ -3051,6 +3081,8 @@ void RecoAllAnalysis() {
         // Charge exchange events
         {"Reco", "Truth"},
         {"#pi^{0} daughters"},
+        {"Contained", "Uncontained"},
+        {"Contained", "Uncontained"},
         {"Contained", "Uncontained"},
         {"Contained", "Uncontained"},
 
@@ -3155,6 +3187,8 @@ void RecoAllAnalysis() {
         "ChExch/NeutralPionDaughtersMom",
         "ChExch/ShowerTrueTrksConeContainment",
         "ChExch/ShowerRecoTrksConeContainment",
+        "ChExch/ShowerTrueTrksCylinderContainment",
+        "ChExch/ShowerRecoTrksCylinderContainment",
 
         // Cylinder cuts
         "Cylinder/TrackLengths",
@@ -3255,6 +3289,8 @@ void RecoAllAnalysis() {
         // Charge exchange events
         "Track length (cm)",
         "Forward momentum [GeV/c]",
+        "Track length (cm)",
+        "Track length (cm)",
         "Track length (cm)",
         "Track length (cm)",
 
@@ -3359,6 +3395,8 @@ void RecoAllAnalysis() {
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
+        "Counts",
 
         // Cylinder cuts
         "Counts",
@@ -3459,6 +3497,8 @@ void RecoAllAnalysis() {
         // Charge exchange events
         false,
         false,
+        true,
+        true,
         true,
         true,
 
