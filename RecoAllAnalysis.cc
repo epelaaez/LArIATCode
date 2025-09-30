@@ -947,6 +947,10 @@ void RecoAllAnalysis() {
     c1->SaveAs(SaveDir +  "dEdxProfiles/AllProfiles.png");
     delete c1;
 
+    // Absorption Np vertex reco
+    int betterVertexNp = 0;
+    int worseVertexNp  = 0;
+
     //////////////////////
     // Loop over events //
     //////////////////////
@@ -1583,6 +1587,9 @@ void RecoAllAnalysis() {
             if (backgroundType == 1) {
                 hStitchedDistanceFromVertex->Fill(distanceFromVertex);
                 hStitchedOriginalDistanceFromVertex->Fill(originalDistanceFromVertex);
+
+                if (distanceFromVertex < originalDistanceFromVertex) { betterVertexNp++; }
+                else { worseVertexNp++; }
             }
             hStitchAsPionAndProton->Fill(backgroundType);
             hStitchFracBreakPoints->Fill(fracBreakPoint);
@@ -2884,6 +2891,14 @@ void RecoAllAnalysis() {
         double err = (total > 0) ? 100.0 * std::sqrt(contained * (total - contained)) / (total * total) : 0.0;
         hElectronShowerTrkContainedRatio->SetBinError(i, err);
     }
+
+    /////////////////////////////////////
+    // Print information for vertex Np //
+    /////////////////////////////////////
+
+    std::cout << std::endl;
+    std::cout << "Percentage of abs Np events with improved vertex: " << (((float) betterVertexNp) / ((float) betterVertexNp + (float) worseVertexNp) * 100.0) << "%" << std::endl;
+    std::cout << std::endl;
 
     //////////////////
     // Create plots //
