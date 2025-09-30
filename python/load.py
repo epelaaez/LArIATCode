@@ -5,23 +5,10 @@ import numpy as np
 import pandas as pd
 
 import variables
-
-RminX =  5.0
-RmaxX = 42.0
-RminY =-15.0
-RmaxY = 15.0
-RminZ =  8.0
-RmaxZ = 82.0
-
-minX =  0.0
-maxX = 47.0
-minY =-20.0
-maxY = 20.0
-minZ =  3.0
-maxZ = 87.0
+import constants
 
 def is_in_reduced_volume(x, y, z):
-    return (RminX < x < RmaxX) and (RminY < y < RmaxY) and (RminZ < z < RmaxZ)
+    return (constants.RminX < x < constants.RmaxX) and (constants.RminY < y < constants.RmaxY) and (constants.RminZ < z < constants.RmaxZ)
 
 def compute_track_length(row):
     xs = np.array(row["WC2TPCLocationsX"])
@@ -120,6 +107,9 @@ def clean_up(df):
     df["WC2TPCEndY"] = df["WC2TPCLocationsY"].apply(lambda x: x[-1] if len(x) > 0 else np.nan)
     df["WC2TPCEndZ"] = df["WC2TPCLocationsZ"].apply(lambda x: x[-1] if len(x) > 0 else np.nan)
 
+    # Keep track of events tagged as beamline electrons with current selection
+    is_beamline_electron_idx = []
+
     for i, row in df.iterrows():
         # Get WC2TPC positions
         wcX = row["WC2TPCLocationsX"]
@@ -152,12 +142,13 @@ def clean_up(df):
         # Extrapolate WC2TPC track to end
         if num_points > 0:
             last_point = np.array([wcX[-1], wcY[-1], wcZ[-1]])
-            extrapolated = last_point + avg_direction * (maxZ - last_point[2]) / avg_direction[2]
+            extrapolated = last_point + avg_direction * (constants.maxZ - last_point[2]) / avg_direction[2]
             np.append(wcX, extrapolated[0])
             np.append(wcY, extrapolated[1])
             np.append(wcZ, extrapolated[2])
 
         trks_in_cylinder = 0
+        small_trks_in_cylinder = 0
         num_reco_trks = len(row["recoTrkID"])
 
         trk_idx_len = []
@@ -177,19 +168,25 @@ def clean_up(df):
             start_in_cylinder = is_point_inside_cylinder(
                 wcX, wcY, wcZ,
                 bx, by, bz,
-                10
+                constants.CYLINDER_RADIUS
             )
 
             end_in_cylinder = is_point_inside_cylinder(
                 wcX, wcY, wcZ,
                 ex, ey, ez,
-                10
+                constants.CYLINDER_RADIUS
             )
 
             trk_len = np.sqrt((bx - ex) * (bx - ex) + (by - ey) * (by - ey) + (bz - ez) * (bz - ez))
             if start_in_cylinder and end_in_cylinder:
                 trks_in_cylinder += 1
                 trk_idx_len.append((i_trk, trk_len))
+                if trk_len < constants.CYLINDER_SMALL_TRACK:
+                    small_trks_in_cylinder += 1
+
+        # Check if we would tag it as beamline electron
+        if (small_trks_in_cylinder > constants.ALLOWED_CYLINDER_SMALL_TRACKS):
+            is_beamline_electron_idx.append(i)
         
         trk_idx_len.sort(key=lambda x: x[1], reverse=True)
         for j in range(10):
@@ -220,6 +217,9 @@ def clean_up(df):
                 df.at[i, f"recoTrkLen_{j}"]  = np.nan
                 df.at[i, f"recoTrkdEdx_{j}"] = np.nan
         row["numRecoTrksInCylinder"] = trks_in_cylinder
+    
+    # Drop events tagged as beamline electrons
+    df = df.drop(index=is_beamline_electron_idx)
 
     # Drop variables not needed for training
     df = df.drop(columns=[var for var in variables.bdt_import_variables if var in df.columns])
@@ -232,19 +232,17 @@ if (__name__ == "__main__"):
     filename = "RecoNNAllEval_histo.root:RecoNNAllEval"
     treename = "RecoNNAllEvalTree"
 
-    EVENTS_TO_READ = 50_000
-
     with uproot.open(f"{filepath}/{filename}") as file:
         ttree         = file[treename]
         total_entries = ttree.num_entries
         
         print(f"Opened tree {treename} successfully.")
         print(f"Total entries: {total_entries}")
-        print(f"Entries to read: {min(EVENTS_TO_READ, total_entries)}")
+        print(f"Entries to read: {min(constants.EVENTS_TO_READ, total_entries)}")
 
         # Create dataframe with selected variables
         keep_vars = variables.bdt_import_variables + variables.bdt_keep_variables
-        arrays    = ttree.arrays(keep_vars, library="np", entry_stop=min(EVENTS_TO_READ, total_entries))
+        arrays    = ttree.arrays(keep_vars, library="np", entry_stop=min(constants.EVENTS_TO_READ, total_entries))
         df        = pd.DataFrame(arrays)
         
         # Clean up dataframe to get rid of events we reject

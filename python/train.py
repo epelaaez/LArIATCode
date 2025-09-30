@@ -9,6 +9,8 @@ from sklearn.metrics import roc_curve, auc
 from sklearn.preprocessing import label_binarize
 from sklearn.utils.class_weight import compute_class_weight
 
+import convert
+
 def plot_classification_error(history, metric):
     epochs = len(history["validation_0"][metric])
     x_axis = range(epochs)
@@ -20,7 +22,7 @@ def plot_classification_error(history, metric):
     plt.ylabel(f"Classification Error ({metric})")
     plt.xlabel("Boosting Round")
     plt.title("XGBoost Classification Error")
-    plt.savefig("classification_error.png", dpi=300, bbox_inches="tight")
+    plt.savefig("figs/classification_error.png", dpi=300, bbox_inches="tight")
     plt.close()
 
 def plot_confusion_matrix(model, X_test, y_test):
@@ -29,13 +31,13 @@ def plot_confusion_matrix(model, X_test, y_test):
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=model.classes_)
     disp.plot(cmap="Blues")
     plt.title("Confusion Matrix")
-    plt.savefig("confusion_matrix.png", dpi=300, bbox_inches="tight")
+    plt.savefig("figs/confusion_matrix.png", dpi=300, bbox_inches="tight")
     plt.close()
 
 def plot_feature_importance(model):
     xgb.plot_importance(model, importance_type="gain")
     plt.title("Feature Importance by Gain")
-    plt.savefig("feature_importance.png", dpi=300, bbox_inches="tight")
+    plt.savefig("figs/feature_importance.png", dpi=300, bbox_inches="tight")
     plt.close()
 
 def plot_roc_curves(model, X_test, y_test, classes):
@@ -84,19 +86,22 @@ def plot_roc_curves(model, X_test, y_test, classes):
         plt.ylabel("True Positive Rate")
         plt.title("ROC Curves by Class")
         plt.legend()
-        plt.savefig("roc_curves.png", dpi=300, bbox_inches="tight")
+        plt.savefig("figs/roc_curves.png", dpi=300, bbox_inches="tight")
         plt.close()
 
 if (__name__ == "__main__"):
     # Load DataFrame from pickle file
     df = pd.read_pickle("files/train_data.pkl")
 
-    # Map backgroundType to new target: 0 for unclassified, 1 for electron shower, 2 for charge exchange
+    # Keep only pion abs 0p, charge exchange, electron showers
+    df = df[df["backgroundType"].isin([0, 3, 7])]
+
+    # Map backgroundType to new target: 0 for pion abs 0p, 1 for electron shower, 2 for charge exchange
     df["target"] = df["backgroundType"].apply(lambda x: 2 if x == 7 else (1 if x == 3 else 0))
     
     # Select features and target
     X = df.drop(columns=["backgroundType", "target"])
-    y = df["target"]
+    y = df["target"]  
 
     # Split into train and test sets
     print("Splitting data into train and test sets")
@@ -126,6 +131,24 @@ if (__name__ == "__main__"):
         verbose=20
     )
     evals_result = model.evals_result() 
+
+    # Convert to xml
+    variables = []
+    dtype_map = {
+        'int64': 'I',
+        'float64': 'F',
+        'float32': 'F',
+        'int32': 'I'
+    }
+    for col, dtype in X.dtypes.items():
+        variables.append((col, dtype_map.get(str(dtype), 'F')))
+
+    dump = model.get_booster().get_dump()
+    convert.convert_model(
+        dump,
+        input_variables=variables,
+        output_xml="model/model.xml"
+    )
 
     # Evaluate the model
     accuracy = model.score(X_test, y_test)
