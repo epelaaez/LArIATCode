@@ -22,3 +22,6 @@ ALLOWED_CYLINDER_TRACKS = 1
 
 # Events to read in 
 EVENTS_TO_READ = 100_000
+
+# Parameters for BDT training variables
+RECO_TRKS_SAVE = 5

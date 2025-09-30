@@ -189,7 +189,7 @@ def clean_up(df):
             is_beamline_electron_idx.append(i)
         
         trk_idx_len.sort(key=lambda x: x[1], reverse=True)
-        for j in range(10):
+        for j in range(constants.RECO_TRKS_SAVE):
             if j < len(trk_idx_len):
                 df.at[i, f"recoTrkBeginX_{j}"] = row["recoBeginX"][trk_idx_len[j][0]]
                 df.at[i, f"recoTrkBeginY_{j}"] = row["recoBeginY"][trk_idx_len[j][0]]
@@ -216,7 +216,7 @@ def clean_up(df):
 
                 df.at[i, f"recoTrkLen_{j}"]  = np.nan
                 df.at[i, f"recoTrkdEdx_{j}"] = np.nan
-        row["numRecoTrksInCylinder"] = trks_in_cylinder
+        df.at[i, "numRecoTrksInCylinder"] = trks_in_cylinder
     
     # Drop events tagged as beamline electrons
     df = df.drop(index=is_beamline_electron_idx)

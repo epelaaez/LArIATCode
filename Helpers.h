@@ -154,6 +154,9 @@ double SLICED_CONE_HEIGHT               = 30.0;
 double SLICED_CONE_SMALL_TRACK          = 5.0;
 int    SLICED_CONE_ALLOWED_SMALL_TRACKS = 0;
 
+// Parameters for BDT model
+int BDT_NUM_RECO_TRKS = 5;
+
 // Cross section calculation
 double rho            = 1396; // kg / m^3
 double molar_mass     = 39.95; // g / mol
@@ -220,10 +223,40 @@ void M2H(const TMatrixD mat, TH2D* histo);
 void V2H(const TVectorD vec, TH1D* histo);
 
 void removeRepeatedPoints(std::vector<double>* x, std::vector<double>* y, std::vector<double>* z);
+void getBDTVariables(
+    int WC2TPCtrkID,
+    const std::vector<double>* wcX,
+    const std::vector<double>* wcY,
+    const std::vector<double>* wcZ,
+    const std::vector<double>* recoBeginX,
+    const std::vector<double>* recoBeginY,
+    const std::vector<double>* recoBeginZ,
+    const std::vector<double>* recoEndX,
+    const std::vector<double>* recoEndY,
+    const std::vector<double>* recoEndZ,
+    const std::vector<double>* recoMeanDEDX,
+    const std::vector<int>*    recoTrkID,
+    int maxRecoTrks,
 
-////////////////////
-// Geometry stuff //
-////////////////////
+    Float_t& bdt_WC2TPCTrackLength,
+    Float_t& bdt_WC2TPCBeginX,
+    Float_t& bdt_WC2TPCBeginY,
+    Float_t& bdt_WC2TPCBeginZ,
+    Float_t& bdt_WC2TPCEndX,
+    Float_t& bdt_WC2TPCEndY,
+    Float_t& bdt_WC2TPCEndZ,
+    Float_t& bdt_WC2TPCdEdx,
+
+    Float_t* bdt_recoTrkBeginX,
+    Float_t* bdt_recoTrkBeginY,
+    Float_t* bdt_recoTrkBeginZ,
+    Float_t* bdt_recoTrkEndX,
+    Float_t* bdt_recoTrkEndY,
+    Float_t* bdt_recoTrkEndZ,
+    Float_t* bdt_recoTrkLen,
+    Float_t* bdt_recoTrkdEdx,
+    Float_t& bdt_numRecoTrksInCylinder
+);
 
 bool IsPointInsideTrackCylinder(
     const std::vector<double>* primaryX,

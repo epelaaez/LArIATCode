@@ -1010,7 +1010,7 @@ static double pointToSegmentDist2(
     return dx*dx + dy*dy + dz*dz;
 }
 
-bool IsPointInsideTrackCylinder(
+bool IsPointInsideTrackCylinder (
     const std::vector<double>* primaryX,
     const std::vector<double>* primaryY,
     const std::vector<double>* primaryZ,
@@ -1379,4 +1379,144 @@ TVectorD WienerSVD(
     UnfoldCov = covRotation*Covariance*covRotation_t;  
 
     return unfold;
+}
+
+///////////////////////////
+// Get variables for BDT //
+///////////////////////////
+
+void getBDTVariables(
+    int WC2TPCtrkID,
+    const std::vector<double>* wcX,
+    const std::vector<double>* wcY,
+    const std::vector<double>* wcZ,
+    const std::vector<double>* recoBeginX,
+    const std::vector<double>* recoBeginY,
+    const std::vector<double>* recoBeginZ,
+    const std::vector<double>* recoEndX,
+    const std::vector<double>* recoEndY,
+    const std::vector<double>* recoEndZ,
+    const std::vector<double>* recoMeanDEDX,
+    const std::vector<int>*    recoTrkID,
+    int maxRecoTrks,
+
+    Float_t* bdt_WC2TPCTrackLength,
+    Float_t* bdt_WC2TPCBeginX,
+    Float_t* bdt_WC2TPCBeginY,
+    Float_t* bdt_WC2TPCBeginZ,
+    Float_t* bdt_WC2TPCEndX,
+    Float_t* bdt_WC2TPCEndY,
+    Float_t* bdt_WC2TPCEndZ,
+    Float_t* bdt_WC2TPCdEdx,
+
+    Float_t* bdt_recoTrkBeginX,
+    Float_t* bdt_recoTrkBeginY,
+    Float_t* bdt_recoTrkBeginZ,
+    Float_t* bdt_recoTrkEndX,
+    Float_t* bdt_recoTrkEndY,
+    Float_t* bdt_recoTrkEndZ,
+    Float_t* bdt_recoTrkLen,
+    Float_t* bdt_recoTrkdEdx,
+    Float_t* bdt_numRecoTrksInCylinder
+) {
+    if (
+        wcX && 
+        wcY && 
+        wcZ &&
+        wcX->size() > 0 &&
+        wcY->size() > 0 &&
+        wcZ->size() > 0
+    ) {
+        // Track length: sum of segment distances
+        double length = 0.0;
+        for (size_t i = 1; i < wcX->size(); ++i) {
+            double dx = wcX->at(i) - wcX->at(i - 1);
+            double dy = wcY->at(i) - wcY->at(i - 1);
+            double dz = wcZ->at(i) - wcZ->at(i - 1);
+            length += std::sqrt(dx * dx + dy * dy + dz * dz);
+        }
+        *bdt_WC2TPCTrackLength = length;
+
+        *bdt_WC2TPCBeginX = wcX->at(0);
+        *bdt_WC2TPCBeginY = wcY->at(0);
+        *bdt_WC2TPCBeginZ = wcZ->at(0);
+
+        *bdt_WC2TPCEndX = wcX->at(wcX->size() - 1);
+        *bdt_WC2TPCEndY = wcY->at(wcY->size() - 1);
+        *bdt_WC2TPCEndZ = wcZ->at(wcZ->size() - 1);
+    } else {
+        *bdt_WC2TPCTrackLength = -1;
+        *bdt_WC2TPCBeginX = -1;
+        *bdt_WC2TPCBeginY = -1;
+        *bdt_WC2TPCBeginZ = -1;
+        *bdt_WC2TPCEndX = -1;
+        *bdt_WC2TPCEndY = -1;
+        *bdt_WC2TPCEndZ = -1;
+        *bdt_WC2TPCdEdx = -1;
+    }
+
+    // Clean up entries
+    for (int i = 0; i < maxRecoTrks; ++i) {
+        bdt_recoTrkBeginX[i] = 0; bdt_recoTrkBeginY[i] = 0; bdt_recoTrkBeginZ[i] = 0;
+        bdt_recoTrkEndX[i]   = 0; bdt_recoTrkEndY[i]   = 0; bdt_recoTrkEndZ[i]   = 0;
+        bdt_recoTrkLen[i]    = 0; bdt_recoTrkdEdx[i]   = 0;
+    }
+
+    int trks_in_cylinder = 0;
+    std::vector<std::pair<int, double>> trk_idx_len;
+
+    for (int trk_idx = 0; trk_idx < recoTrkID->size(); ++trk_idx) {
+        if (recoTrkID->at(trk_idx) == WC2TPCtrkID) {
+            if (recoMeanDEDX && recoMeanDEDX->size() > trk_idx) {
+                *bdt_WC2TPCdEdx = recoMeanDEDX->at(trk_idx);
+            } else {
+                *bdt_WC2TPCdEdx = -1;
+            }
+        }
+
+        double bx = recoBeginX->at(trk_idx);
+        double by = recoBeginY->at(trk_idx);
+        double bz = recoBeginZ->at(trk_idx);
+        double ex = recoEndX->at(trk_idx);
+        double ey = recoEndY->at(trk_idx);
+        double ez = recoEndZ->at(trk_idx);
+
+        bool startInCylinder = IsPointInsideTrackCylinder(
+            wcX, wcY, wcZ,
+            bx, by, bz,
+            CYLINDER_RADIUS
+        );
+        bool endInCylinder = IsPointInsideTrackCylinder(
+            wcX, wcY, wcZ,
+            ex, ey, ez,
+            CYLINDER_RADIUS
+        );
+
+        double trk_len = std::sqrt((bx - ex) * (bx - ex) + (by - ey) * (by - ey) + (bz - ez) * (bz - ez));
+
+        if (startInCylinder && endInCylinder) {
+            trks_in_cylinder += 1;
+            trk_idx_len.emplace_back(trk_idx, trk_len);
+        }
+    }
+
+    // Sort tracks by length, descending
+    std::sort(trk_idx_len.begin(), trk_idx_len.end(),
+    [](const std::pair<int, double>& a, const std::pair<int, double>& b) {
+        return a.second > b.second;
+    });
+
+    for (int i = 0; i < std::min<int>(maxRecoTrks, (int) trk_idx_len.size()); ++i) {
+        int idx = trk_idx_len[i].first;
+        bdt_recoTrkBeginX[i] = (Float_t)(*recoBeginX)[idx];
+        bdt_recoTrkBeginY[i] = (Float_t)(*recoBeginY)[idx];
+        bdt_recoTrkBeginZ[i] = (Float_t)(*recoBeginZ)[idx];
+        bdt_recoTrkEndX[i]   = (Float_t)(*recoEndX)[idx];
+        bdt_recoTrkEndY[i]   = (Float_t)(*recoEndY)[idx];
+        bdt_recoTrkEndZ[i]   = (Float_t)(*recoEndZ)[idx];
+        bdt_recoTrkLen[i]    = (Float_t)trk_idx_len[i].second;
+        bdt_recoTrkdEdx[i]   = (recoMeanDEDX && idx < (int)recoMeanDEDX->size())
+                            ? (Float_t)(*recoMeanDEDX)[idx] : 0;
+    }
+    *bdt_numRecoTrksInCylinder = trks_in_cylinder;
 }

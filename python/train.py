@@ -140,6 +140,8 @@ if (__name__ == "__main__"):
         'float32': 'F',
         'int32': 'I'
     }
+
+    print("Converting model to XML format")
     for col, dtype in X.dtypes.items():
         variables.append((col, dtype_map.get(str(dtype), 'F')))
 

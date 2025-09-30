@@ -8,6 +8,7 @@
 #include "TMatrixDSymEigen.h"
 #include "TVectorD.h"
 #include "TEfficiency.h"
+#include "TMVA/Reader.h"
 
 #include <vector>
 
@@ -492,6 +493,55 @@ void RecoClassifyAllSimplified() {
         20, minY, maxY
     );
 
+    ////////////////////
+    // Load BDT model //
+    ////////////////////
+
+    TMVA::Reader BDTReader;
+    
+    Float_t bdt_WC2TPCTrackLength;
+    Float_t bdt_WC2TPCBeginX;
+    Float_t bdt_WC2TPCBeginY;
+    Float_t bdt_WC2TPCBeginZ;
+    Float_t bdt_WC2TPCEndX;
+    Float_t bdt_WC2TPCEndY;
+    Float_t bdt_WC2TPCEndZ;
+    Float_t bdt_WC2TPCdEdx;
+
+    BDTReader.AddVariable("WC2TPCTrackLength", &bdt_WC2TPCTrackLength);
+    BDTReader.AddVariable("WC2TPCBeginX", &bdt_WC2TPCBeginX);
+    BDTReader.AddVariable("WC2TPCBeginY", &bdt_WC2TPCBeginY);
+    BDTReader.AddVariable("WC2TPCBeginZ", &bdt_WC2TPCBeginZ);
+    BDTReader.AddVariable("WC2TPCEndX", &bdt_WC2TPCEndX);
+    BDTReader.AddVariable("WC2TPCEndY", &bdt_WC2TPCEndY);
+    BDTReader.AddVariable("WC2TPCEndZ", &bdt_WC2TPCEndZ);
+    BDTReader.AddVariable("WC2TPCdEdx", &bdt_WC2TPCdEdx);
+
+    Float_t bdt_recoTrkBeginX[BDT_NUM_RECO_TRKS];
+    Float_t bdt_recoTrkBeginY[BDT_NUM_RECO_TRKS];
+    Float_t bdt_recoTrkBeginZ[BDT_NUM_RECO_TRKS];
+    Float_t bdt_recoTrkEndX[BDT_NUM_RECO_TRKS];
+    Float_t bdt_recoTrkEndY[BDT_NUM_RECO_TRKS];
+    Float_t bdt_recoTrkEndZ[BDT_NUM_RECO_TRKS];
+    Float_t bdt_recoTrkLen[BDT_NUM_RECO_TRKS];
+    Float_t bdt_recoTrkdEdx[BDT_NUM_RECO_TRKS];
+
+    for (int i = 0; i < BDT_NUM_RECO_TRKS; ++i) {
+        BDTReader.AddVariable(Form("recoTrkBeginX_%d", i), &bdt_recoTrkBeginX[i]);
+        BDTReader.AddVariable(Form("recoTrkBeginY_%d", i), &bdt_recoTrkBeginY[i]);
+        BDTReader.AddVariable(Form("recoTrkBeginZ_%d", i), &bdt_recoTrkBeginZ[i]);
+        BDTReader.AddVariable(Form("recoTrkEndX_%d", i), &bdt_recoTrkEndX[i]);
+        BDTReader.AddVariable(Form("recoTrkEndY_%d", i), &bdt_recoTrkEndY[i]);
+        BDTReader.AddVariable(Form("recoTrkEndZ_%d", i), &bdt_recoTrkEndZ[i]);
+        BDTReader.AddVariable(Form("recoTrkLen_%d", i), &bdt_recoTrkLen[i]);
+        BDTReader.AddVariable(Form("recoTrkdEdx_%d", i), &bdt_recoTrkdEdx[i]);
+    }
+
+    Float_t bdt_numRecoTrksInCylinder;
+    BDTReader.AddVariable("numRecoTrksInCylinder", &bdt_numRecoTrksInCylinder);
+
+    BDTReader.BookMVA("BDT", "/exp/lariat/app/users/epelaez/analysis/python/model/model.xml");
+
     //////////////////////
     // Loop over events //
     //////////////////////
@@ -504,6 +554,35 @@ void RecoClassifyAllSimplified() {
 
         // Make script go faster
         // if (i > 10000) break;
+
+        // Sanity check
+        removeRepeatedPoints(WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ);
+
+        // Extend cylinder
+        std::vector<double>* wcX = new std::vector<double>(*WC2TPCLocationsX);
+        std::vector<double>* wcY = new std::vector<double>(*WC2TPCLocationsY);
+        std::vector<double>* wcZ = new std::vector<double>(*WC2TPCLocationsZ);
+
+        // Get direction to end cylinder
+        int numPoints = wcX->size();
+        int numTail   = std::min(10, numPoints - 1);
+        std::vector<std::vector<double>> points;
+        for (int j = numPoints - numTail; j < numPoints; ++j) {
+            points.push_back({
+                wcX->at(j),
+                wcY->at(j),
+                wcZ->at(j)
+            });
+        }
+        if (numTail > 0) {
+            std::vector<double> avgDir = getAverageDir(points);
+
+            // Extrapolate track to end
+            double scale = (maxZ - points.back()[2]) / avgDir[2];
+            wcX->push_back(points.back()[0] + scale * avgDir[0]);
+            wcY->push_back(points.back()[1] + scale * avgDir[1]);
+            wcZ->push_back(points.back()[2] + scale * avgDir[2]);
+        }
 
         ////////////////////////////////////////
         // Histograms for data-MC comparisons //
@@ -527,32 +606,6 @@ void RecoClassifyAllSimplified() {
             for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
                 // Skip WC2TPC match itself
                 if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
-
-                // Copy WC2TPCLocations
-                std::vector<double>* wcX = new std::vector<double>(*WC2TPCLocationsX);
-                std::vector<double>* wcY = new std::vector<double>(*WC2TPCLocationsY);
-                std::vector<double>* wcZ = new std::vector<double>(*WC2TPCLocationsZ);
-
-                // Get direction to end cylinder
-                int numPoints = wcX->size();
-                int numTail   = std::min(10, numPoints - 1);
-                std::vector<std::vector<double>> points;
-                for (int j = numPoints - numTail; j < numPoints; ++j) {
-                    points.push_back({
-                        wcX->at(j),
-                        wcY->at(j),
-                        wcZ->at(j)
-                    });
-                }
-                if (numTail > 0) {
-                    std::vector<double> avgDir = getAverageDir(points);
-
-                    // Extrapolate track to end
-                    double scale = (maxZ - points.back()[2]) / avgDir[2];
-                    wcX->push_back(points.back()[0] + scale * avgDir[0]);
-                    wcY->push_back(points.back()[1] + scale * avgDir[1]);
-                    wcZ->push_back(points.back()[2] + scale * avgDir[2]);
-                }
 
                 // Is track contained in 10 cm cylinder?
                 bool startInCylinder = IsPointInsideTrackCylinder(
@@ -811,32 +864,6 @@ void RecoClassifyAllSimplified() {
                 pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
             );
 
-            // Copy WC2TPCLocations
-            std::vector<double>* wcX = new std::vector<double>(*WC2TPCLocationsX);
-            std::vector<double>* wcY = new std::vector<double>(*WC2TPCLocationsY);
-            std::vector<double>* wcZ = new std::vector<double>(*WC2TPCLocationsZ);
-
-            // Get direction to end cylinder
-            int numPoints = wcX->size();
-            int numTail   = std::min(10, numPoints - 1);
-            std::vector<std::vector<double>> points;
-            for (int j = numPoints - numTail; j < numPoints; ++j) {
-                points.push_back({
-                    wcX->at(j),
-                    wcY->at(j),
-                    wcZ->at(j)
-                });
-            }
-            if (numTail > 0) {
-                std::vector<double> avgDir = getAverageDir(points);
-
-                // Extrapolate track to end
-                double scale = (maxZ - points.back()[2]) / avgDir[2];
-                wcX->push_back(points.back()[0] + scale * avgDir[0]);
-                wcY->push_back(points.back()[1] + scale * avgDir[1]);
-                wcZ->push_back(points.back()[2] + scale * avgDir[2]);
-            }
-
             bool startInCylinder = IsPointInsideTrackCylinder(
                 wcX, wcY, wcZ,
                 recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
@@ -861,9 +888,9 @@ void RecoClassifyAllSimplified() {
         // Perform cut
 
         // Cut on tracks
-        if (numTracksInCylinder > ALLOWED_CYLINDER_TRACKS) {
+        // if (numTracksInCylinder > ALLOWED_CYLINDER_TRACKS) {
         // Cut on small tracks
-        // if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) {
+        if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) {
             if (backgroundType == 0) {
                 hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueAbs0pKERejElectron->Fill(truthPrimaryVertexKE * 1000);
@@ -904,6 +931,25 @@ void RecoClassifyAllSimplified() {
         //     continue;
         // }
         // hNotAnElectron->Fill(backgroundType);
+
+        ///////////////////////
+        // Setup BDT for use //
+        ///////////////////////
+
+        getBDTVariables(
+            WC2TPCtrkID, wcX, wcY, wcZ,
+            recoBeginX, recoBeginY, recoBeginZ,
+            recoEndX,   recoEndY,   recoEndZ,
+            recoMeanDEDX, recoTrkID, BDT_NUM_RECO_TRKS,
+            &bdt_WC2TPCTrackLength,
+            &bdt_WC2TPCBeginX, &bdt_WC2TPCBeginY, &bdt_WC2TPCBeginZ,
+            &bdt_WC2TPCEndX,   &bdt_WC2TPCEndY,   &bdt_WC2TPCEndZ,
+            &bdt_WC2TPCdEdx,
+            bdt_recoTrkBeginX, bdt_recoTrkBeginY, bdt_recoTrkBeginZ,
+            bdt_recoTrkEndX,   bdt_recoTrkEndY,   bdt_recoTrkEndZ,
+            bdt_recoTrkLen,    bdt_recoTrkdEdx,
+            &bdt_numRecoTrksInCylinder
+        );
 
         ////////////////////////
         // Reduced volume cut //
