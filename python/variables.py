@@ -17,5 +17,6 @@ bdt_import_variables = [
 
 # other variables we want to keep for bookkeping and truth-tagging results
 bdt_keep_variables = [
-    "backgroundType"
+    "backgroundType",
+    "event"
 ]

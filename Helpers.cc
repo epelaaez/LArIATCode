@@ -748,7 +748,7 @@ void printTwoDPlots(
 ) {
     int nPlots = plots.size();
 
-    TCanvas* c1 = new TCanvas("c1", "EnergyLossPlots", 800, 600);
+    TCanvas* c1 = new TCanvas("c1", "EnergyLossPlots", 850, 600);
     for (int iPlot = 0; iPlot < nPlots; ++iPlot) {
         TH1* hPlot = plots.at(iPlot);
 
@@ -1387,6 +1387,9 @@ TVectorD WienerSVD(
 
 void getBDTVariables(
     int WC2TPCtrkID,
+    const std::vector<double>* wcLocationsX,
+    const std::vector<double>* wcLocationsY,
+    const std::vector<double>* wcLocationsZ,
     const std::vector<double>* wcX,
     const std::vector<double>* wcY,
     const std::vector<double>* wcZ,
@@ -1396,7 +1399,7 @@ void getBDTVariables(
     const std::vector<double>* recoEndX,
     const std::vector<double>* recoEndY,
     const std::vector<double>* recoEndZ,
-    const std::vector<double>* recoMeanDEDX,
+    const std::vector<std::vector<double>>* recoDEDX,
     const std::vector<int>*    recoTrkID,
     int maxRecoTrks,
 
@@ -1420,58 +1423,64 @@ void getBDTVariables(
     Float_t* bdt_numRecoTrksInCylinder
 ) {
     if (
-        wcX && 
-        wcY && 
-        wcZ &&
-        wcX->size() > 0 &&
-        wcY->size() > 0 &&
-        wcZ->size() > 0
+        wcLocationsX && 
+        wcLocationsY && 
+        wcLocationsZ &&
+        wcLocationsX->size() > 0 &&
+        wcLocationsY->size() > 0 &&
+        wcLocationsZ->size() > 0
     ) {
         // Track length: sum of segment distances
         double length = 0.0;
-        for (size_t i = 1; i < wcX->size(); ++i) {
-            double dx = wcX->at(i) - wcX->at(i - 1);
-            double dy = wcY->at(i) - wcY->at(i - 1);
-            double dz = wcZ->at(i) - wcZ->at(i - 1);
+        for (size_t i = wcLocationsX->size() - 1; i > 0; --i) {
+            double dx = wcLocationsX->at(i) - wcLocationsX->at(i - 1);
+            double dy = wcLocationsY->at(i) - wcLocationsY->at(i - 1);
+            double dz = wcLocationsZ->at(i) - wcLocationsZ->at(i - 1);
             length += std::sqrt(dx * dx + dy * dy + dz * dz);
         }
         *bdt_WC2TPCTrackLength = length;
 
-        *bdt_WC2TPCBeginX = wcX->at(0);
-        *bdt_WC2TPCBeginY = wcY->at(0);
-        *bdt_WC2TPCBeginZ = wcZ->at(0);
+        *bdt_WC2TPCBeginX = wcLocationsX->at(0);
+        *bdt_WC2TPCBeginY = wcLocationsY->at(0);
+        *bdt_WC2TPCBeginZ = wcLocationsZ->at(0);
 
-        *bdt_WC2TPCEndX = wcX->at(wcX->size() - 1);
-        *bdt_WC2TPCEndY = wcY->at(wcY->size() - 1);
-        *bdt_WC2TPCEndZ = wcZ->at(wcZ->size() - 1);
+        *bdt_WC2TPCEndX = wcLocationsX->at(wcLocationsX->size() - 1);
+        *bdt_WC2TPCEndY = wcLocationsY->at(wcLocationsY->size() - 1);
+        *bdt_WC2TPCEndZ = wcLocationsZ->at(wcLocationsZ->size() - 1);
     } else {
-        *bdt_WC2TPCTrackLength = -1;
-        *bdt_WC2TPCBeginX = -1;
-        *bdt_WC2TPCBeginY = -1;
-        *bdt_WC2TPCBeginZ = -1;
-        *bdt_WC2TPCEndX = -1;
-        *bdt_WC2TPCEndY = -1;
-        *bdt_WC2TPCEndZ = -1;
-        *bdt_WC2TPCdEdx = -1;
+        *bdt_WC2TPCTrackLength = -9999;
+        *bdt_WC2TPCBeginX = -9999;
+        *bdt_WC2TPCBeginY = -9999;
+        *bdt_WC2TPCBeginZ = -9999;
+        *bdt_WC2TPCEndX = -9999;
+        *bdt_WC2TPCEndY = -9999;
+        *bdt_WC2TPCEndZ = -9999;
+        *bdt_WC2TPCdEdx = -9999;
     }
 
     // Clean up entries
     for (int i = 0; i < maxRecoTrks; ++i) {
-        bdt_recoTrkBeginX[i] = 0; bdt_recoTrkBeginY[i] = 0; bdt_recoTrkBeginZ[i] = 0;
-        bdt_recoTrkEndX[i]   = 0; bdt_recoTrkEndY[i]   = 0; bdt_recoTrkEndZ[i]   = 0;
-        bdt_recoTrkLen[i]    = 0; bdt_recoTrkdEdx[i]   = 0;
+        bdt_recoTrkBeginX[i] = -9999; bdt_recoTrkBeginY[i] = -9999; bdt_recoTrkBeginZ[i] = -9999;
+        bdt_recoTrkEndX[i]   = -9999; bdt_recoTrkEndY[i]   = -9999; bdt_recoTrkEndZ[i]   = -9999;
+        bdt_recoTrkLen[i]    = -9999; bdt_recoTrkdEdx[i]   = -9999;
     }
 
     int trks_in_cylinder = 0;
     std::vector<std::pair<int, double>> trk_idx_len;
 
     for (int trk_idx = 0; trk_idx < recoTrkID->size(); ++trk_idx) {
+        std::vector<double> thisTrackDEDX;
+        if (recoDEDX && recoDEDX->size() > trk_idx) {
+            thisTrackDEDX = recoDEDX->at(trk_idx);
+        }
+
         if (recoTrkID->at(trk_idx) == WC2TPCtrkID) {
-            if (recoMeanDEDX && recoMeanDEDX->size() > trk_idx) {
-                *bdt_WC2TPCdEdx = recoMeanDEDX->at(trk_idx);
+            if (thisTrackDEDX.size() > 0) {
+                *bdt_WC2TPCdEdx = (Float_t) std::accumulate(thisTrackDEDX.begin(), thisTrackDEDX.end(), 0.0) / thisTrackDEDX.size();
             } else {
-                *bdt_WC2TPCdEdx = -1;
+                *bdt_WC2TPCdEdx = -9999;
             }
+            continue;
         }
 
         double bx = recoBeginX->at(trk_idx);
@@ -1508,6 +1517,11 @@ void getBDTVariables(
 
     for (int i = 0; i < std::min<int>(maxRecoTrks, (int) trk_idx_len.size()); ++i) {
         int idx = trk_idx_len[i].first;
+
+        std::vector<double> thisTrackDEDX;
+        if (recoDEDX && recoDEDX->size() > idx) {
+            thisTrackDEDX = recoDEDX->at(idx);
+        }
         bdt_recoTrkBeginX[i] = (Float_t)(*recoBeginX)[idx];
         bdt_recoTrkBeginY[i] = (Float_t)(*recoBeginY)[idx];
         bdt_recoTrkBeginZ[i] = (Float_t)(*recoBeginZ)[idx];
@@ -1515,8 +1529,7 @@ void getBDTVariables(
         bdt_recoTrkEndY[i]   = (Float_t)(*recoEndY)[idx];
         bdt_recoTrkEndZ[i]   = (Float_t)(*recoEndZ)[idx];
         bdt_recoTrkLen[i]    = (Float_t)trk_idx_len[i].second;
-        bdt_recoTrkdEdx[i]   = (recoMeanDEDX && idx < (int)recoMeanDEDX->size())
-                            ? (Float_t)(*recoMeanDEDX)[idx] : 0;
+        bdt_recoTrkdEdx[i]   = (thisTrackDEDX.size() > 0) ? (Float_t)(std::accumulate(thisTrackDEDX.begin(), thisTrackDEDX.end(), 0.0) / thisTrackDEDX.size()) : -9999;
     }
     *bdt_numRecoTrksInCylinder = trks_in_cylinder;
 }

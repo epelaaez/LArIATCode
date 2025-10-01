@@ -225,6 +225,9 @@ void V2H(const TVectorD vec, TH1D* histo);
 void removeRepeatedPoints(std::vector<double>* x, std::vector<double>* y, std::vector<double>* z);
 void getBDTVariables(
     int WC2TPCtrkID,
+    const std::vector<double>* wcLocationX,
+    const std::vector<double>* wcLocationY,
+    const std::vector<double>* wcLocationZ,
     const std::vector<double>* wcX,
     const std::vector<double>* wcY,
     const std::vector<double>* wcZ,
@@ -234,7 +237,7 @@ void getBDTVariables(
     const std::vector<double>* recoEndX,
     const std::vector<double>* recoEndY,
     const std::vector<double>* recoEndZ,
-    const std::vector<double>* recoMeanDEDX,
+    const std::vector<std::vector<double>>* recoDEDX,
     const std::vector<int>*    recoTrkID,
     int maxRecoTrks,
 

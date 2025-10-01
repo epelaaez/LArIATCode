@@ -100,8 +100,8 @@ if (__name__ == "__main__"):
     df["target"] = df["backgroundType"].apply(lambda x: 2 if x == 7 else (1 if x == 3 else 0))
     
     # Select features and target
-    X = df.drop(columns=["backgroundType", "target"])
-    y = df["target"]  
+    X = df.drop(columns=["backgroundType", "target", "event"])
+    y = df["target"]
 
     # Split into train and test sets
     print("Splitting data into train and test sets")
@@ -140,21 +140,33 @@ if (__name__ == "__main__"):
         'float32': 'F',
         'int32': 'I'
     }
+    variables = [(col, dtype_map.get(str(dtype), 'F')) for col, dtype in X.dtypes.items()]
 
     print("Converting model to XML format")
-    for col, dtype in X.dtypes.items():
-        variables.append((col, dtype_map.get(str(dtype), 'F')))
-
+    
     dump = model.get_booster().get_dump()
-    convert.convert_model(
-        dump,
-        input_variables=variables,
-        output_xml="model/model.xml"
-    )
+    per_class_trees = [[] for _ in range(3)]
+    for idx, tree in enumerate(dump):
+        per_class_trees[idx % 3].append(tree)
+
+    for ci, trees in enumerate(per_class_trees):
+        convert.convert_model(
+            trees,
+            input_variables=variables,
+            output_xml=f"model/model_class_{ci}.xml"
+        )
 
     # Evaluate the model
     accuracy = model.score(X_test, y_test)
     print(f"Test accuracy: {accuracy:.4f}")
+
+    # Test events
+    events = df["event"].iloc[:10].values
+    test_probs = model.predict_proba(X.iloc[:10])
+    print("Test event probabilities:")
+    for i, probs in enumerate(test_probs):
+        probs_text = " ".join([f"{p:.5f}" for p in probs])
+        print(f"Event {events[i]}: Class probabilities: {probs_text}")
 
     plot_classification_error(evals_result, "mlogloss")
     plot_confusion_matrix(model, X_test, y_test)

@@ -497,7 +497,8 @@ void RecoClassifyAllSimplified() {
     // Load BDT model //
     ////////////////////
 
-    TMVA::Reader BDTReader;
+    TMVA::Reader BDTReader0, BDTReader1, BDTReader2;
+    std::vector<TMVA::Reader*> BDTReaders = {&BDTReader0, &BDTReader1, &BDTReader2};
     
     Float_t bdt_WC2TPCTrackLength;
     Float_t bdt_WC2TPCBeginX;
@@ -507,15 +508,18 @@ void RecoClassifyAllSimplified() {
     Float_t bdt_WC2TPCEndY;
     Float_t bdt_WC2TPCEndZ;
     Float_t bdt_WC2TPCdEdx;
+    Float_t bdt_numRecoTrksInCylinder;
 
-    BDTReader.AddVariable("WC2TPCTrackLength", &bdt_WC2TPCTrackLength);
-    BDTReader.AddVariable("WC2TPCBeginX", &bdt_WC2TPCBeginX);
-    BDTReader.AddVariable("WC2TPCBeginY", &bdt_WC2TPCBeginY);
-    BDTReader.AddVariable("WC2TPCBeginZ", &bdt_WC2TPCBeginZ);
-    BDTReader.AddVariable("WC2TPCEndX", &bdt_WC2TPCEndX);
-    BDTReader.AddVariable("WC2TPCEndY", &bdt_WC2TPCEndY);
-    BDTReader.AddVariable("WC2TPCEndZ", &bdt_WC2TPCEndZ);
-    BDTReader.AddVariable("WC2TPCdEdx", &bdt_WC2TPCdEdx);
+    for (int i = 0; i < BDTReaders.size(); ++i) {
+        BDTReaders[i]->AddVariable("WC2TPCTrackLength", &bdt_WC2TPCTrackLength);
+        BDTReaders[i]->AddVariable("WC2TPCBeginX", &bdt_WC2TPCBeginX);
+        BDTReaders[i]->AddVariable("WC2TPCBeginY", &bdt_WC2TPCBeginY);
+        BDTReaders[i]->AddVariable("WC2TPCBeginZ", &bdt_WC2TPCBeginZ);
+        BDTReaders[i]->AddVariable("WC2TPCEndX", &bdt_WC2TPCEndX);
+        BDTReaders[i]->AddVariable("WC2TPCEndY", &bdt_WC2TPCEndY);
+        BDTReaders[i]->AddVariable("WC2TPCEndZ", &bdt_WC2TPCEndZ);
+        BDTReaders[i]->AddVariable("WC2TPCdEdx", &bdt_WC2TPCdEdx);
+    }
 
     Float_t bdt_recoTrkBeginX[BDT_NUM_RECO_TRKS];
     Float_t bdt_recoTrkBeginY[BDT_NUM_RECO_TRKS];
@@ -526,21 +530,20 @@ void RecoClassifyAllSimplified() {
     Float_t bdt_recoTrkLen[BDT_NUM_RECO_TRKS];
     Float_t bdt_recoTrkdEdx[BDT_NUM_RECO_TRKS];
 
-    for (int i = 0; i < BDT_NUM_RECO_TRKS; ++i) {
-        BDTReader.AddVariable(Form("recoTrkBeginX_%d", i), &bdt_recoTrkBeginX[i]);
-        BDTReader.AddVariable(Form("recoTrkBeginY_%d", i), &bdt_recoTrkBeginY[i]);
-        BDTReader.AddVariable(Form("recoTrkBeginZ_%d", i), &bdt_recoTrkBeginZ[i]);
-        BDTReader.AddVariable(Form("recoTrkEndX_%d", i), &bdt_recoTrkEndX[i]);
-        BDTReader.AddVariable(Form("recoTrkEndY_%d", i), &bdt_recoTrkEndY[i]);
-        BDTReader.AddVariable(Form("recoTrkEndZ_%d", i), &bdt_recoTrkEndZ[i]);
-        BDTReader.AddVariable(Form("recoTrkLen_%d", i), &bdt_recoTrkLen[i]);
-        BDTReader.AddVariable(Form("recoTrkdEdx_%d", i), &bdt_recoTrkdEdx[i]);
+    for (int i = 0; i < BDTReaders.size(); ++i) {
+        for (int j = 0; j < BDT_NUM_RECO_TRKS; ++j) {
+            BDTReaders[i]->AddVariable(Form("recoTrkBeginX_%d", j), &bdt_recoTrkBeginX[j]);
+            BDTReaders[i]->AddVariable(Form("recoTrkBeginY_%d", j), &bdt_recoTrkBeginY[j]);
+            BDTReaders[i]->AddVariable(Form("recoTrkBeginZ_%d", j), &bdt_recoTrkBeginZ[j]);
+            BDTReaders[i]->AddVariable(Form("recoTrkEndX_%d", j), &bdt_recoTrkEndX[j]);
+            BDTReaders[i]->AddVariable(Form("recoTrkEndY_%d", j), &bdt_recoTrkEndY[j]);
+            BDTReaders[i]->AddVariable(Form("recoTrkEndZ_%d", j), &bdt_recoTrkEndZ[j]);
+            BDTReaders[i]->AddVariable(Form("recoTrkLen_%d", j), &bdt_recoTrkLen[j]);
+            BDTReaders[i]->AddVariable(Form("recoTrkdEdx_%d", j), &bdt_recoTrkdEdx[j]);
+        }
+        BDTReaders[i]->AddVariable("numRecoTrksInCylinder", &bdt_numRecoTrksInCylinder);
+        BDTReaders[i]->BookMVA("BDT", "/exp/lariat/app/users/epelaez/analysis/python/model/model_class_" + std::to_string(i) + ".xml");
     }
-
-    Float_t bdt_numRecoTrksInCylinder;
-    BDTReader.AddVariable("numRecoTrksInCylinder", &bdt_numRecoTrksInCylinder);
-
-    BDTReader.BookMVA("BDT", "/exp/lariat/app/users/epelaez/analysis/python/model/model.xml");
 
     //////////////////////
     // Loop over events //
@@ -937,10 +940,12 @@ void RecoClassifyAllSimplified() {
         ///////////////////////
 
         getBDTVariables(
-            WC2TPCtrkID, wcX, wcY, wcZ,
+            WC2TPCtrkID, 
+            WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+            wcX, wcY, wcZ,
             recoBeginX, recoBeginY, recoBeginZ,
             recoEndX,   recoEndY,   recoEndZ,
-            recoMeanDEDX, recoTrkID, BDT_NUM_RECO_TRKS,
+            recoDEDX, recoTrkID, BDT_NUM_RECO_TRKS,
             &bdt_WC2TPCTrackLength,
             &bdt_WC2TPCBeginX, &bdt_WC2TPCBeginY, &bdt_WC2TPCBeginZ,
             &bdt_WC2TPCEndX,   &bdt_WC2TPCEndY,   &bdt_WC2TPCEndZ,
@@ -950,6 +955,32 @@ void RecoClassifyAllSimplified() {
             bdt_recoTrkLen,    bdt_recoTrkdEdx,
             &bdt_numRecoTrksInCylinder
         );
+
+        // Test few events
+        if (
+            event == 1407 || 
+            event == 1451 ||
+            event == 1490 ||
+            event == 1501 ||
+            event == 1519 ||
+            event == 1523 ||
+            event == 1587 ||
+            event == 1604 ||
+            event == 1644 ||
+            event == 1665
+        ) {
+            double p0 = std::exp((double) BDTReader0.EvaluateMVA("BDT"));
+            double p1 = std::exp((double) BDTReader1.EvaluateMVA("BDT"));
+            double p2 = std::exp((double) BDTReader2.EvaluateMVA("BDT"));
+
+            double Z = p0 + p1 + p2;
+            if (Z == 0) Z = 1e-12;
+            p0 = p0 / Z;
+            p1 = p1 / Z;
+            p2 = p2 / Z;
+
+            std::cout << "Event " << event << " BDT scores: " << p0 << ", " << p1 << ", " << p2 << std::endl;
+        }
 
         ////////////////////////
         // Reduced volume cut //

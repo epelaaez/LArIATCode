@@ -10,12 +10,8 @@ import constants
 def is_in_reduced_volume(x, y, z):
     return (constants.RminX < x < constants.RmaxX) and (constants.RminY < y < constants.RmaxY) and (constants.RminZ < z < constants.RmaxZ)
 
-def compute_track_length(row):
-    xs = np.array(row["WC2TPCLocationsX"])
-    ys = np.array(row["WC2TPCLocationsY"])
-    zs = np.array(row["WC2TPCLocationsZ"])
-
-    points          = np.stack([xs, ys, zs], axis=1)
+def compute_track_length(wx, wy, wz):
+    points          = np.stack([wx, wy, wz], axis=1)
     diffs           = np.diff(points, axis=0)
     segment_lengths = np.linalg.norm(diffs, axis=1)
     return np.sum(segment_lengths)
@@ -97,15 +93,6 @@ def get_avg_direction(x, y, z):
 def clean_up(df):
     # Get rid of entries with no matched WC2TPC track
     df = df[df["WC2TPCtrkID"] != -99999].copy()
-    df["WC2TPCTrackLength"] = df.apply(compute_track_length, axis=1)
-
-    df["WC2TPCBeginX"] = df["WC2TPCLocationsX"].apply(lambda x: x[0] if len(x) > 0 else np.nan)
-    df["WC2TPCBeginY"] = df["WC2TPCLocationsY"].apply(lambda x: x[0] if len(x) > 0 else np.nan)
-    df["WC2TPCBeginZ"] = df["WC2TPCLocationsZ"].apply(lambda x: x[0] if len(x) > 0 else np.nan)
-
-    df["WC2TPCEndX"] = df["WC2TPCLocationsX"].apply(lambda x: x[-1] if len(x) > 0 else np.nan)
-    df["WC2TPCEndY"] = df["WC2TPCLocationsY"].apply(lambda x: x[-1] if len(x) > 0 else np.nan)
-    df["WC2TPCEndZ"] = df["WC2TPCLocationsZ"].apply(lambda x: x[-1] if len(x) > 0 else np.nan)
 
     # Keep track of events tagged as beamline electrons with current selection
     is_beamline_electron_idx = []
@@ -130,6 +117,15 @@ def clean_up(df):
             wcX = wcX[:num_points - repeat_count] + [wcX[-1]]
             wcY = wcY[:num_points - repeat_count] + [wcY[-1]]
             wcZ = wcZ[:num_points - repeat_count] + [wcZ[-1]]
+
+        # Get information for WC2TPC track, before extending
+        df.at[i, "WC2TPCTrackLength"] = compute_track_length(wcX, wcY, wcZ)
+        df.at[i, "WC2TPCBeginX"] = wcX[0] if len(wcX) > 0 else -9999
+        df.at[i, "WC2TPCBeginY"] = wcY[0] if len(wcY) > 0 else -9999
+        df.at[i, "WC2TPCBeginZ"] = wcZ[0] if len(wcZ) > 0 else -9999
+        df.at[i, "WC2TPCEndX"]   = wcX[-1] if len(wcX) > 0 else -9999
+        df.at[i, "WC2TPCEndY"]   = wcY[-1] if len(wcY) > 0 else -9999
+        df.at[i, "WC2TPCEndZ"]   = wcZ[-1] if len(wcZ) > 0 else -9999
 
         # Get direction towards end of track
         num_points = len(wcX)
@@ -201,21 +197,21 @@ def clean_up(df):
 
                 df.at[i, f"recoTrkLen_{j}"] = trk_len
                 if len(row["recoDEDX"][trk_idx_len[j][0]]) == 0:
-                    df.at[i, f"recoTrkdEdx_{j}"] = np.nan
+                    df.at[i, f"recoTrkdEdx_{j}"] = -9999
                 else:
                     df.at[i, f"recoTrkdEdx_{j}"] = np.mean(np.array(row["recoDEDX"][trk_idx_len[j][0]]))
 
             else:
-                df.at[i, f"recoTrkBeginX_{j}"] = np.nan
-                df.at[i, f"recoTrkBeginY_{j}"] = np.nan
-                df.at[i, f"recoTrkBeginZ_{j}"] = np.nan
+                df.at[i, f"recoTrkBeginX_{j}"] = -9999
+                df.at[i, f"recoTrkBeginY_{j}"] = -9999
+                df.at[i, f"recoTrkBeginZ_{j}"] = -9999
 
-                df.at[i, f"recoTrkEndX_{j}"] = np.nan
-                df.at[i, f"recoTrkEndY_{j}"] = np.nan
-                df.at[i, f"recoTrkEndZ_{j}"] = np.nan
+                df.at[i, f"recoTrkEndX_{j}"] = -9999
+                df.at[i, f"recoTrkEndY_{j}"] = -9999
+                df.at[i, f"recoTrkEndZ_{j}"] = -9999
 
-                df.at[i, f"recoTrkLen_{j}"]  = np.nan
-                df.at[i, f"recoTrkdEdx_{j}"] = np.nan
+                df.at[i, f"recoTrkLen_{j}"]  = -9999
+                df.at[i, f"recoTrkdEdx_{j}"] = -9999
         df.at[i, "numRecoTrksInCylinder"] = trks_in_cylinder
     
     # Drop events tagged as beamline electrons
