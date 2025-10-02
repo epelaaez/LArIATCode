@@ -570,15 +570,17 @@ void RecoClassifyAllSimplified() {
         int numPoints = wcX->size();
         int numTail   = std::min(10, numPoints - 1);
         std::vector<std::vector<double>> points;
-        for (int j = numPoints - numTail; j < numPoints; ++j) {
+        for (int j = numPoints - numTail - 1; j < numPoints; ++j) {
             points.push_back({
                 wcX->at(j),
                 wcY->at(j),
                 wcZ->at(j)
             });
         }
+
+        std::vector<double> avgDir(3, 0);
         if (numTail > 0) {
-            std::vector<double> avgDir = getAverageDir(points);
+            avgDir = getAverageDir(points);
 
             // Extrapolate track to end
             double scale = (maxZ - points.back()[2]) / avgDir[2];
@@ -959,27 +961,69 @@ void RecoClassifyAllSimplified() {
         // Test few events
         if (
             event == 1407 || 
+            event == 1415 ||
+            event == 1429 ||
+            event == 1437 ||
+            event == 1448 ||
             event == 1451 ||
+            event == 1470 ||
             event == 1490 ||
             event == 1501 ||
-            event == 1519 ||
-            event == 1523 ||
-            event == 1587 ||
-            event == 1604 ||
-            event == 1644 ||
-            event == 1665
+            event == 1507
         ) {
-            double p0 = std::exp((double) BDTReader0.EvaluateMVA("BDT"));
-            double p1 = std::exp((double) BDTReader1.EvaluateMVA("BDT"));
-            double p2 = std::exp((double) BDTReader2.EvaluateMVA("BDT"));
+            // s0,s1,s2 are the raw per-class TMVA scores in (-1,1).
+            double s0 = BDTReader0.EvaluateMVA("BDT");
+            double s1 = BDTReader1.EvaluateMVA("BDT");
+            double s2 = BDTReader2.EvaluateMVA("BDT");
 
-            double Z = p0 + p1 + p2;
+            // Map scores in (-1,1) -> margins in (-inf, +inf) via atanh
+            const double eps = 1e-12;  // clamp to avoid infinities
+            s0 = std::max(-1.0 + eps, std::min(1.0 - eps, s0));
+            s1 = std::max(-1.0 + eps, std::min(1.0 - eps, s1));
+            s2 = std::max(-1.0 + eps, std::min(1.0 - eps, s2));
+
+            double m0 = 0.5 * std::log((1.0 + s0) / (1.0 - s0)); // atanh(s0)
+            double m1 = 0.5 * std::log((1.0 + s1) / (1.0 - s1)); // atanh(s1)
+            double m2 = 0.5 * std::log((1.0 + s2) / (1.0 - s2)); // atanh(s2)
+
+            // Convert margins -> class probabilities via softmax
+            double mmax = std::max({m0, m1, m2});
+            double e0 = std::exp(m0 - mmax);
+            double e1 = std::exp(m1 - mmax);
+            double e2 = std::exp(m2 - mmax);
+            double Z  = e0 + e1 + e2;
             if (Z == 0) Z = 1e-12;
-            p0 = p0 / Z;
-            p1 = p1 / Z;
-            p2 = p2 / Z;
+
+            double p0 = e0 / Z;
+            double p1 = e1 / Z;
+            double p2 = e2 / Z;
 
             std::cout << "Event " << event << " BDT scores: " << p0 << ", " << p1 << ", " << p2 << std::endl;
+
+            // std::cout << "BDT input variables for event " << event << ":" << std::endl;
+            // std::cout << "  WC2TPCTrackLength: " << bdt_WC2TPCTrackLength << std::endl;
+            // std::cout << "  WC2TPCBeginX: " << bdt_WC2TPCBeginX << std::endl;
+            // std::cout << "  WC2TPCBeginY: " << bdt_WC2TPCBeginY << std::endl;
+            // std::cout << "  WC2TPCBeginZ: " << bdt_WC2TPCBeginZ << std::endl;
+            // std::cout << "  WC2TPCEndX: " << bdt_WC2TPCEndX << std::endl;
+            // std::cout << "  WC2TPCEndY: " << bdt_WC2TPCEndY << std::endl;
+            // std::cout << "  WC2TPCEndZ: " << bdt_WC2TPCEndZ << std::endl;
+            // std::cout << "  WC2TPCdEdx: " << bdt_WC2TPCdEdx << std::endl;
+            // for (int j = 0; j < BDT_NUM_RECO_TRKS; ++j) {
+            //     std::cout << "  recoTrkBeginX[" << j << "]: " << bdt_recoTrkBeginX[j] << std::endl;
+            //     std::cout << "  recoTrkBeginY[" << j << "]: " << bdt_recoTrkBeginY[j] << std::endl;
+            //     std::cout << "  recoTrkBeginZ[" << j << "]: " << bdt_recoTrkBeginZ[j] << std::endl;
+            //     std::cout << "  recoTrkEndX[" << j << "]: " << bdt_recoTrkEndX[j] << std::endl;
+            //     std::cout << "  recoTrkEndY[" << j << "]: " << bdt_recoTrkEndY[j] << std::endl;
+            //     std::cout << "  recoTrkEndZ[" << j << "]: " << bdt_recoTrkEndZ[j] << std::endl;
+            //     std::cout << "  recoTrkLen[" << j << "]: " << bdt_recoTrkLen[j] << std::endl;
+            //     std::cout << "  recoTrkdEdx[" << j << "]: " << bdt_recoTrkdEdx[j] << std::endl;
+            // }
+            // std::cout << "  numRecoTrksInCylinder: " << bdt_numRecoTrksInCylinder << std::endl;
+
+            // std::cout << avgDir[0] << " " << avgDir[1] << " " << avgDir[2] << std::endl;
+            // std::cout << wcX->size() << std::endl;
+            // std::cout << WC2TPCLocationsX->size() << std::endl;
         }
 
         ////////////////////////

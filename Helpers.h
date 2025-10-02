@@ -144,7 +144,7 @@ double PI_MU_EL_MASS_CUTOFF = 350.;
 // Cylinder radius for shower identification
 double CYLINDER_RADIUS               = 10.;
 double CYLINDER_SMALL_TRACK          = 5.;
-int    ALLOWED_CYLINDER_SMALL_TRACKS = 0;
+int    ALLOWED_CYLINDER_SMALL_TRACKS = 2;
 int    ALLOWED_CYLINDER_TRACKS       = 1;
 
 // Sliced cone for ch exch events parameters

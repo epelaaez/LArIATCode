@@ -953,6 +953,7 @@ void removeRepeatedPoints(std::vector<double>* x, std::vector<double>* y, std::v
             }
         }
     }
+    
     if (repeat_count > 0) {
         x->erase(x->begin() + (num_points - repeat_count), x->end() - 1);
         y->erase(y->begin() + (num_points - repeat_count), y->end() - 1);

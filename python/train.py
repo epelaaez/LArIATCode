@@ -167,6 +167,9 @@ if (__name__ == "__main__"):
     for i, probs in enumerate(test_probs):
         probs_text = " ".join([f"{p:.5f}" for p in probs])
         print(f"Event {events[i]}: Class probabilities: {probs_text}")
+        # for j, (col, _) in enumerate(variables):
+        #     value = X.iloc[i][col]
+        #     print(f"    {col}: {value}")
 
     plot_classification_error(evals_result, "mlogloss")
     plot_confusion_matrix(model, X_test, y_test)

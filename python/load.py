@@ -48,7 +48,11 @@ def point_to_segment_dist(
     qy = ay + t * ABy
     qz = az + t * ABz
 
-    return np.linalg.norm(np.array([px - qx, py - qy, pz - qz]))
+    dx = px - qx
+    dy = py - qy
+    dz = pz - qz
+
+    return dx * dx + dy * dy + dz * dz
 
 def is_point_inside_cylinder(
     primary_x, primary_y, primary_z,
@@ -57,7 +61,7 @@ def is_point_inside_cylinder(
 ):
     num_points = len(primary_x)
     r2 = radius * radius
-    best = float("-inf")
+    best = float("inf")
     if (num_points == 1):
         dx = x - primary_x[0]
         dy = y - primary_y[0]
@@ -139,9 +143,9 @@ def clean_up(df):
         if num_points > 0:
             last_point = np.array([wcX[-1], wcY[-1], wcZ[-1]])
             extrapolated = last_point + avg_direction * (constants.maxZ - last_point[2]) / avg_direction[2]
-            np.append(wcX, extrapolated[0])
-            np.append(wcY, extrapolated[1])
-            np.append(wcZ, extrapolated[2])
+            wcX = np.append(wcX, extrapolated[0])
+            wcY = np.append(wcY, extrapolated[1])
+            wcZ = np.append(wcZ, extrapolated[2])
 
         trks_in_cylinder = 0
         small_trks_in_cylinder = 0
@@ -187,15 +191,23 @@ def clean_up(df):
         trk_idx_len.sort(key=lambda x: x[1], reverse=True)
         for j in range(constants.RECO_TRKS_SAVE):
             if j < len(trk_idx_len):
-                df.at[i, f"recoTrkBeginX_{j}"] = row["recoBeginX"][trk_idx_len[j][0]]
-                df.at[i, f"recoTrkBeginY_{j}"] = row["recoBeginY"][trk_idx_len[j][0]]
-                df.at[i, f"recoTrkBeginZ_{j}"] = row["recoBeginZ"][trk_idx_len[j][0]]
+                bx = row["recoBeginX"][trk_idx_len[j][0]]
+                by = row["recoBeginY"][trk_idx_len[j][0]]
+                bz = row["recoBeginZ"][trk_idx_len[j][0]]
 
-                df.at[i, f"recoTrkEndX_{j}"] = row["recoEndX"][trk_idx_len[j][0]]
-                df.at[i, f"recoTrkEndY_{j}"] = row["recoEndY"][trk_idx_len[j][0]]
-                df.at[i, f"recoTrkEndZ_{j}"] = row["recoEndZ"][trk_idx_len[j][0]]
+                ex = row["recoEndX"][trk_idx_len[j][0]]
+                ey = row["recoEndY"][trk_idx_len[j][0]]
+                ez = row["recoEndZ"][trk_idx_len[j][0]]
 
-                df.at[i, f"recoTrkLen_{j}"] = trk_len
+                df.at[i, f"recoTrkBeginX_{j}"] = bx
+                df.at[i, f"recoTrkBeginY_{j}"] = by
+                df.at[i, f"recoTrkBeginZ_{j}"] = bz
+
+                df.at[i, f"recoTrkEndX_{j}"] = ex
+                df.at[i, f"recoTrkEndY_{j}"] = ey
+                df.at[i, f"recoTrkEndZ_{j}"] = ez
+
+                df.at[i, f"recoTrkLen_{j}"] = np.sqrt((bx - ex) * (bx - ex) + (by - ey) * (by - ey) + (bz - ez) * (bz - ez))
                 if len(row["recoDEDX"][trk_idx_len[j][0]]) == 0:
                     df.at[i, f"recoTrkdEdx_{j}"] = -9999
                 else:
