@@ -958,6 +958,34 @@ void RecoClassifyAllSimplified() {
             &bdt_numRecoTrksInCylinder
         );
 
+        // Compute BDT scores
+        double s0 = BDTReader0.EvaluateMVA("BDT");
+        double s1 = BDTReader1.EvaluateMVA("BDT");
+        double s2 = BDTReader2.EvaluateMVA("BDT");
+
+        // Make sure raw output is in (-1, 1)
+        const double eps = 1e-12; 
+        s0 = std::max(-1.0 + eps, std::min(1.0 - eps, s0));
+        s1 = std::max(-1.0 + eps, std::min(1.0 - eps, s1));
+        s2 = std::max(-1.0 + eps, std::min(1.0 - eps, s2));
+        
+        // Map scores in (-1,1) -> margins in (-inf, +inf) via atanh
+        double m0 = 0.5 * std::log((1.0 + s0) / (1.0 - s0)); // atanh(s0)
+        double m1 = 0.5 * std::log((1.0 + s1) / (1.0 - s1)); // atanh(s1)
+        double m2 = 0.5 * std::log((1.0 + s2) / (1.0 - s2)); // atanh(s2)
+
+        // Convert margins -> class probabilities via softmax
+        double mmax = std::max({m0, m1, m2});
+        double e0 = std::exp(m0 - mmax);
+        double e1 = std::exp(m1 - mmax);
+        double e2 = std::exp(m2 - mmax);
+        double Z  = e0 + e1 + e2;
+        if (Z == 0) Z = 1e-12;
+
+        double p0 = e0 / Z;
+        double p1 = e1 / Z;
+        double p2 = e2 / Z;
+
         // Test few events
         if (
             event == 1407 || 
@@ -971,33 +999,6 @@ void RecoClassifyAllSimplified() {
             event == 1501 ||
             event == 1507
         ) {
-            // s0,s1,s2 are the raw per-class TMVA scores in (-1,1).
-            double s0 = BDTReader0.EvaluateMVA("BDT");
-            double s1 = BDTReader1.EvaluateMVA("BDT");
-            double s2 = BDTReader2.EvaluateMVA("BDT");
-
-            // Map scores in (-1,1) -> margins in (-inf, +inf) via atanh
-            const double eps = 1e-12;  // clamp to avoid infinities
-            s0 = std::max(-1.0 + eps, std::min(1.0 - eps, s0));
-            s1 = std::max(-1.0 + eps, std::min(1.0 - eps, s1));
-            s2 = std::max(-1.0 + eps, std::min(1.0 - eps, s2));
-
-            double m0 = 0.5 * std::log((1.0 + s0) / (1.0 - s0)); // atanh(s0)
-            double m1 = 0.5 * std::log((1.0 + s1) / (1.0 - s1)); // atanh(s1)
-            double m2 = 0.5 * std::log((1.0 + s2) / (1.0 - s2)); // atanh(s2)
-
-            // Convert margins -> class probabilities via softmax
-            double mmax = std::max({m0, m1, m2});
-            double e0 = std::exp(m0 - mmax);
-            double e1 = std::exp(m1 - mmax);
-            double e2 = std::exp(m2 - mmax);
-            double Z  = e0 + e1 + e2;
-            if (Z == 0) Z = 1e-12;
-
-            double p0 = e0 / Z;
-            double p1 = e1 / Z;
-            double p2 = e2 / Z;
-
             std::cout << "Event " << event << " BDT scores: " << p0 << ", " << p1 << ", " << p2 << std::endl;
 
             // std::cout << "BDT input variables for event " << event << ":" << std::endl;
@@ -1261,12 +1262,50 @@ void RecoClassifyAllSimplified() {
         }
         hNotPionAbsNp->Fill(backgroundType);
 
-        /////////////////////
-        // Small track cut //
-        /////////////////////
+        //////////////////////////////////////////////
+        // Discriminate abs 0p from charge exchange //
+        //////////////////////////////////////////////
 
-        if (numSmallTracks > SMALL_TRACK_CUT_CHEX) {
-            // Tag as charge exchange
+        if (p0 > p1 && p0 > p2) {
+            // classify as pion abs 0p
+            hPionAbs0p->Fill(backgroundType);
+
+            hPionAbs0pKE->Fill(energyAtVertex);
+            if (backgroundType == 0) {
+                hPionAbs0pKETrue->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hPionAbs0pKEAbsNp->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hPionAbs0pKEChExch->Fill(energyAtVertex);
+            } else if (backgroundType == 13 || backgroundType == 14) {
+                hPionAbs0pKEScatter->Fill(energyAtVertex);
+            } else if (backgroundType == 2) {
+                hPionAbs0pKEMuon->Fill(energyAtVertex);
+            } else if (backgroundType == 3) {
+                hPionAbs0pKEElectron->Fill(energyAtVertex);
+            } else {
+                hPionAbs0pKEOther->Fill(energyAtVertex);
+            }
+
+            if (backgroundType == 0) {
+                hTrueAbs0pKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            } else if (backgroundType == 13 || backgroundType == 14) {
+                hTrueScatterKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            }
+
+            continue;
+        } else if (p1 > p0 && p1 > p2) {
+            // classify as electron shower
+        } else if (p2 > p0 && p2 > p1) {
+            // classify as charge exchange
             hPionChExch->Fill(backgroundType);
 
             hPionChExchKE->Fill(energyAtVertex);
@@ -1300,13 +1339,55 @@ void RecoClassifyAllSimplified() {
                 if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
             }
 
-            outFileChExchBkg << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
-            outFileChExchBkg << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
-            outFileChExchBkg << std::endl;
-
             continue;
         }
-        hNotChExch->Fill(backgroundType);
+
+        /////////////////////
+        // Small track cut //
+        /////////////////////
+
+        // if (numSmallTracks > SMALL_TRACK_CUT_CHEX) {
+        //     // Tag as charge exchange
+        //     hPionChExch->Fill(backgroundType);
+
+        //     hPionChExchKE->Fill(energyAtVertex);
+        //     if (backgroundType == 0) {
+        //         hPionChExchKEAbs0p->Fill(energyAtVertex);
+        //     } else if (backgroundType == 1) {
+        //         hPionChExchKEAbsNp->Fill(energyAtVertex);
+        //     } else if (backgroundType == 7) {
+        //         hPionChExchKETrue->Fill(energyAtVertex);
+        //     } else if (backgroundType == 13 || backgroundType == 14) {
+        //         hPionChExchKEScatter->Fill(energyAtVertex);
+        //     } else if (backgroundType == 2) {
+        //         hPionChExchKEMuon->Fill(energyAtVertex);
+        //     } else if (backgroundType == 3) {
+        //         hPionChExchKEElectron->Fill(energyAtVertex);
+        //     } else {
+        //         hPionChExchKEOther->Fill(energyAtVertex);
+        //     }
+
+        //     if (backgroundType == 0) {
+        //         hTrueAbs0pKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
+        //     } else if (backgroundType == 1) {
+        //         hTrueAbsNpKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
+        //     } else if (backgroundType == 13 || backgroundType == 14) {
+        //         hTrueScatterKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
+        //     } else if (backgroundType == 7) {
+        //         hTrueChExchKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
+        //     }
+
+        //     outFileChExchBkg << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
+        //     outFileChExchBkg << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
+        //     outFileChExchBkg << std::endl;
+
+        //     continue;
+        // }
+        // hNotChExch->Fill(backgroundType);
 
         /////////////////////////////////////////
         // Selection on non-reconstructed hits //
@@ -1413,50 +1494,50 @@ void RecoClassifyAllSimplified() {
         }
 
         // Get data for cut
-        int   numLargeClusters = 0;
+        int numLargeClusters = 0;
         for (int i = 0; i < hitClusters.size(); ++i) {
             float maxWire = *std::max_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
             float minWire = *std::min_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
             if (std::abs(maxWire - minWire) > LARGE_CLUSTER_THRESHOLD) numLargeClusters++;
         }
 
-        if (numLargeClusters < NUM_CLUSTERS_THRESHOLD) {
-            hPionAbs0p->Fill(backgroundType);
+        // if (numLargeClusters < NUM_CLUSTERS_THRESHOLD) {
+        //     hPionAbs0p->Fill(backgroundType);
 
-            hPionAbs0pKE->Fill(energyAtVertex);
-            if (backgroundType == 0) {
-                hPionAbs0pKETrue->Fill(energyAtVertex);
-            } else if (backgroundType == 1) {
-                hPionAbs0pKEAbsNp->Fill(energyAtVertex);
-            } else if (backgroundType == 7) {
-                hPionAbs0pKEChExch->Fill(energyAtVertex);
-            } else if (backgroundType == 13 || backgroundType == 14) {
-                hPionAbs0pKEScatter->Fill(energyAtVertex);
-            } else if (backgroundType == 2) {
-                hPionAbs0pKEMuon->Fill(energyAtVertex);
-            } else if (backgroundType == 3) {
-                hPionAbs0pKEElectron->Fill(energyAtVertex);
-            } else {
-                hPionAbs0pKEOther->Fill(energyAtVertex);
-            }
+        //     hPionAbs0pKE->Fill(energyAtVertex);
+        //     if (backgroundType == 0) {
+        //         hPionAbs0pKETrue->Fill(energyAtVertex);
+        //     } else if (backgroundType == 1) {
+        //         hPionAbs0pKEAbsNp->Fill(energyAtVertex);
+        //     } else if (backgroundType == 7) {
+        //         hPionAbs0pKEChExch->Fill(energyAtVertex);
+        //     } else if (backgroundType == 13 || backgroundType == 14) {
+        //         hPionAbs0pKEScatter->Fill(energyAtVertex);
+        //     } else if (backgroundType == 2) {
+        //         hPionAbs0pKEMuon->Fill(energyAtVertex);
+        //     } else if (backgroundType == 3) {
+        //         hPionAbs0pKEElectron->Fill(energyAtVertex);
+        //     } else {
+        //         hPionAbs0pKEOther->Fill(energyAtVertex);
+        //     }
 
-            if (backgroundType == 0) {
-                hTrueAbs0pKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-            } else if (backgroundType == 13 || backgroundType == 14) {
-                hTrueScatterKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-            } else if (backgroundType == 7) {
-                hTrueChExchKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-            }
+        //     if (backgroundType == 0) {
+        //         hTrueAbs0pKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+        //     } else if (backgroundType == 1) {
+        //         hTrueAbsNpKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+        //     } else if (backgroundType == 13 || backgroundType == 14) {
+        //         hTrueScatterKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+        //     } else if (backgroundType == 7) {
+        //         hTrueChExchKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+        //     }
 
-            continue;
-        }
-        hNotPionAbs0p->Fill(backgroundType);
+        //     continue;
+        // }
+        // hNotPionAbs0p->Fill(backgroundType);
 
         // Anything left here is rejected
         if (backgroundType == 0) {
@@ -1511,13 +1592,13 @@ void RecoClassifyAllSimplified() {
     std::cout << "Events not classified as pion Np absorption (no secondary particles): " << std::endl;
     printBackgroundInfo(hNotPionAbsNp, std::cout);
 
-    std::cout << std::endl;
-    std::cout << "Events not classified as charge exchange (not enough small tracks): " << std::endl;
-    printBackgroundInfo(hNotChExch, std::cout);
+    // std::cout << std::endl;
+    // std::cout << "Events not classified as charge exchange (not enough small tracks): " << std::endl;
+    // printBackgroundInfo(hNotChExch, std::cout);
 
-    std::cout << std::endl;
-    std::cout << "Events not classified as pion 0p absorption (too many non-reconstructed hit clusters): " << std::endl;
-    printBackgroundInfo(hNotPionAbs0p, std::cout);
+    // std::cout << std::endl;
+    // std::cout << "Events not classified as pion 0p absorption (too many non-reconstructed hit clusters): " << std::endl;
+    // printBackgroundInfo(hNotPionAbs0p, std::cout);
 
     ///////////////////////////////////////////
     // Information about events at each step //
