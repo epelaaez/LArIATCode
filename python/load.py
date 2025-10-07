@@ -227,7 +227,7 @@ def clean_up(df):
         df.at[i, "numRecoTrksInCylinder"] = trks_in_cylinder
     
     # Drop events tagged as beamline electrons
-    df = df.drop(index=is_beamline_electron_idx)
+    # df = df.drop(index=is_beamline_electron_idx)
 
     # Drop variables not needed for training
     df = df.drop(columns=[var for var in variables.bdt_import_variables if var in df.columns])
@@ -260,4 +260,4 @@ if (__name__ == "__main__"):
         print(f"Entries after cleanup: {df.shape[0]}")
 
         # Save the DataFrame to a pickle file
-        df.to_pickle("files/train_data.pkl")
+        df.to_pickle("files/train_initial_data.pkl")

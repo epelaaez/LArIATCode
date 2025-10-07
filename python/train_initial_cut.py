@@ -22,22 +22,22 @@ def plot_classification_error(history, metric):
     plt.ylabel(f"Classification Error ({metric})")
     plt.xlabel("Boosting Round")
     plt.title("XGBoost Classification Error")
-    plt.savefig("figs/classification_error.png", dpi=300, bbox_inches="tight")
+    plt.savefig("figs/initial/classification_error.png", dpi=300, bbox_inches="tight")
     plt.close()
 
-def plot_confusion_matrix(model, X_test, y_test):
+def plot_confusion_matrix(model, X_test, y_test, labels):
     y_pred = model.predict(X_test)
     cm = confusion_matrix(y_test, y_pred)
-    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=model.classes_)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
     disp.plot(cmap="Blues")
     plt.title("Confusion Matrix")
-    plt.savefig("figs/confusion_matrix.png", dpi=300, bbox_inches="tight")
+    plt.savefig("figs/initial/confusion_matrix.png", dpi=300, bbox_inches="tight")
     plt.close()
 
 def plot_feature_importance(model):
     xgb.plot_importance(model, importance_type="gain")
     plt.title("Feature Importance by Gain")
-    plt.savefig("figs/feature_importance.png", dpi=300, bbox_inches="tight")
+    plt.savefig("figs/initial/feature_importance.png", dpi=300, bbox_inches="tight")
     plt.close()
 
 def plot_roc_curves(model, X_test, y_test, classes):
@@ -66,7 +66,7 @@ def plot_roc_curves(model, X_test, y_test, classes):
         plt.ylabel("True Positive Rate")
         plt.title("ROC Curve (Binary)")
         plt.legend()
-        plt.savefig("roc_curves.png", dpi=300, bbox_inches="tight")
+        plt.savefig("figs/initial/roc_curves.png", dpi=300, bbox_inches="tight")
         plt.close()
 
     else:
@@ -86,18 +86,22 @@ def plot_roc_curves(model, X_test, y_test, classes):
         plt.ylabel("True Positive Rate")
         plt.title("ROC Curves by Class")
         plt.legend()
-        plt.savefig("figs/roc_curves.png", dpi=300, bbox_inches="tight")
+        plt.savefig("figs/initial/roc_curves.png", dpi=300, bbox_inches="tight")
         plt.close()
 
 if (__name__ == "__main__"):
     # Load DataFrame from pickle file
-    df = pd.read_pickle("files/train_data.pkl")
-
-    # Keep only pion abs 0p, charge exchange, electron showers
-    df = df[df["backgroundType"].isin([0, 3, 7])]
-
-    # Map backgroundType to new target: 0 for pion abs 0p, 1 for electron shower, 2 for charge exchange
-    df["target"] = df["backgroundType"].apply(lambda x: 2 if x == 7 else (1 if x == 3 else 0))
+    df = pd.read_pickle("files/train_initial_data.pkl")
+    
+    # Map background type to new target: 0 for pion, 1 for electron, 2 for muon
+    def bkg_to_target(x):
+        if x == 3:
+            return 1
+        elif x == 2:
+            return 2
+        else:
+            return 0
+    df["target"] = df["backgroundType"].apply(bkg_to_target)
     
     # Select features and target
     X = df.drop(columns=["backgroundType", "target", "event"])
@@ -105,7 +109,7 @@ if (__name__ == "__main__"):
 
     # Split into train and test sets
     print("Splitting data into train and test sets")
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15, random_state=42)
 
     # Compute class weights
     classes = np.array([0,1,2])
@@ -118,8 +122,14 @@ if (__name__ == "__main__"):
     # Three classes
     model = xgb.XGBClassifier(
         num_class=3,
-        n_estimators=200,
+        n_estimators=100,
+        objective='multi:softprob',
         eval_metric=['mlogloss', 'merror'],
+
+        # binary case
+        # n_estimators=200,
+        # objective='binary:logistic',
+        # eval_metric=['logloss', 'error']
     )
 
     print("Starting training")
@@ -127,7 +137,7 @@ if (__name__ == "__main__"):
         X_train,
         y_train,
         eval_set=[(X_train, y_train), (X_test, y_test)],
-        sample_weight_eval_set=[w_train, w_test],
+        # sample_weight_eval_set=[w_train, w_test],
         verbose=20
     )
     evals_result = model.evals_result() 
@@ -153,7 +163,7 @@ if (__name__ == "__main__"):
         convert.convert_model(
             trees,
             input_variables=variables,
-            output_xml=f"model/model_class_{ci}.xml"
+            output_xml=f"model/initial_model_class_{ci}.xml"
         )
 
     # Evaluate the model
@@ -172,6 +182,6 @@ if (__name__ == "__main__"):
         #     print(f"    {col}: {value}")
 
     plot_classification_error(evals_result, "mlogloss")
-    plot_confusion_matrix(model, X_test, y_test)
+    plot_confusion_matrix(model, X_test, y_test, ["pion", "electron", "muon"])
     plot_feature_importance(model)
     plot_roc_curves(model, X_test, y_test, classes=[0, 1, 2])
