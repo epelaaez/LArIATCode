@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Usage:
-#   sh ./run_chunks.sh /path/to/inputs.list your_fcl.fcl NUM_CHUNKS /path/to/outdir
+#   sh ./run_chunks.sh /path/to/inputs.list your_fcl.fcl NUM_CHUNKS /path/to/outdir output_name_prefix
 #
 # Each chunk runs 10,000 events, increases --nskip by 10,000, and
 # writes numbered event (-o) and histogram (-T) outputs.

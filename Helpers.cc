@@ -784,6 +784,8 @@ void printBackgroundInfo(TH1D* background_histo, std::ostream& os) {
     int pionDecay            = background_histo->GetBinContent(11);
     int other                = background_histo->GetBinContent(12);
     int elasticScattering    = background_histo->GetBinContent(13);
+
+    // extra scattering bins
     int scattering0p         = background_histo->GetBinContent(14);
     int scatteringNp         = background_histo->GetBinContent(15);
 

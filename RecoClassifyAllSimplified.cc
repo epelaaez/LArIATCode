@@ -285,6 +285,10 @@ void RecoClassifyAllSimplified() {
     TH1D* hPionAbs0pKEElectron = new TH1D("hPionAbs0pKEElectron", "hPionAbs0pKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hPionAbs0pKEOther    = new TH1D("hPionAbs0pKEOther", "hPionAbs0pKEOther;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
+    TH1D* hPionAbs0pKEMuonTG    = new TH1D("hPionAbs0pKEMuonTG", "hPionAbs0pKEMuonTG;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEMuonDecay = new TH1D("hPionAbs0pKEMuonDecay", "hPionAbs0pKEMuonDecay;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKEMuonCAR   = new TH1D("hPionAbs0pKEMuonCAR", "hPionAbs0pKEMuonCAR;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
     // Estimated backgrounds for pion abs 0p
     std::vector<TH1*> PionAbs0pBkg = {
         hPionAbs0pKEMuon, hPionAbs0pKEElectron, hPionAbs0pKEOther
@@ -314,6 +318,10 @@ void RecoClassifyAllSimplified() {
     TH1D* hPionScatterKEMuon     = new TH1D("hPionScatterKEMuon", "hPionScatterKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hPionScatterKEElectron = new TH1D("hPionScatterKEElectron", "hPionScatterKEElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hPionScatterKEOther    = new TH1D("hPionScatterKEOther", "hPionScatterKEOther;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
+    TH1D* hPionScatterKEMuonTG    = new TH1D("hPionScatterKEMuonTG", "hPionScatterKEMuonTG;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionScatterKEMuonDecay = new TH1D("hPionScatterKEMuonDecay", "hPionScatterKEMuonDecay;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionScatterKEMuonCAR   = new TH1D("hPionScatterKEMuonCAR", "hPionScatterKEMuonCAR;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Estimated backgrounds for pion scattering
     std::vector<TH1*> PionScatterBkg = {
@@ -493,6 +501,12 @@ void RecoClassifyAllSimplified() {
         20, minY, maxY
     );
 
+    ////////////////
+    // Muon types //
+    ////////////////
+
+    TH1D* hTrueMuonTypes = new TH1D("hTrueMuonTypes", "hTrueMuonTypes", 4, 0, 4);
+
     ////////////////////
     // Load BDT model //
     ////////////////////
@@ -542,7 +556,7 @@ void RecoClassifyAllSimplified() {
             BDTReaders[i]->AddVariable(Form("recoTrkdEdx_%d", j), &bdt_recoTrkdEdx[j]);
         }
         BDTReaders[i]->AddVariable("numRecoTrksInCylinder", &bdt_numRecoTrksInCylinder);
-        BDTReaders[i]->BookMVA("BDT", "/exp/lariat/app/users/epelaez/analysis/python/model/model_class_" + std::to_string(i) + ".xml");
+        BDTReaders[i]->BookMVA("BDT", "/exp/lariat/app/users/epelaez/analysis/python/model/chexch_abs_model_class_" + std::to_string(i) + ".xml");
     }
 
     //////////////////////
@@ -706,6 +720,39 @@ void RecoClassifyAllSimplified() {
         // Set correct primary vertex KE for elastic scattering
         if (backgroundType == 12) {
             truthPrimaryVertexKE = trajectoryInteractionKE;
+        }
+
+        // Further classify muon backgrounds
+        int muonType = -1; // 0: through-going, 1: decaying, 2: capture at rest
+        if (backgroundType == 2) {
+            if (!isWithinReducedVolume(truthPrimaryVertexX, truthPrimaryVertexY, truthPrimaryVertexZ)) {
+                // through-going muon
+                muonType = 0;
+            } else {
+                bool sawElectron = false;
+                for (int i = 0; i < truthPrimaryDaughtersPDG->size(); ++i) {
+                    if (truthPrimaryDaughtersProcess->at(i) == "muMinusCaptureAtRest") {
+                        // muon capture at rest
+                        muonType = 2;
+                        break;
+                    }
+                    if (truthPrimaryDaughtersPDG->at(i) == 11) {
+                        sawElectron = true;
+                    }
+                }
+
+                if (muonType == -1 && sawElectron) {
+                    // muon decay
+                    muonType = 1;
+                }
+            }
+            
+            if (muonType != 0 && muonType != 1 && muonType != 2) {
+                // I don't know what this event is
+                muonType = 3;
+            }
+
+            hTrueMuonTypes->Fill(muonType);
         }
 
         // Get true energy bin
@@ -1197,6 +1244,14 @@ void RecoClassifyAllSimplified() {
                 hPionScatterKETrue->Fill(energyAtVertex);
             } else if (backgroundType == 2) {
                 hPionScatterKEMuon->Fill(energyAtVertex);
+
+                if (muonType == 0) {
+                    hPionScatterKEMuonTG->Fill(energyAtVertex);
+                } else if (muonType == 1) {
+                    hPionScatterKEMuonDecay->Fill(energyAtVertex);
+                } else if (muonType == 2) {
+                    hPionScatterKEMuonCAR->Fill(energyAtVertex);
+                }
             } else if (backgroundType == 3) {
                 hPionScatterKEElectron->Fill(energyAtVertex);
             } else {
@@ -1281,6 +1336,14 @@ void RecoClassifyAllSimplified() {
                 hPionAbs0pKEScatter->Fill(energyAtVertex);
             } else if (backgroundType == 2) {
                 hPionAbs0pKEMuon->Fill(energyAtVertex);
+
+                if (muonType == 0) {
+                    hPionAbs0pKEMuonTG->Fill(energyAtVertex);
+                } else if (muonType == 1) {
+                    hPionAbs0pKEMuonDecay->Fill(energyAtVertex);
+                } else if (muonType == 2) {
+                    hPionAbs0pKEMuonCAR->Fill(energyAtVertex);
+                }
             } else if (backgroundType == 3) {
                 hPionAbs0pKEElectron->Fill(energyAtVertex);
             } else {
@@ -1558,6 +1621,14 @@ void RecoClassifyAllSimplified() {
     std::cout << std::endl;
     std::cout << "Original sample composition: " << std::endl;
     printBackgroundInfo(hTotalEvents, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Original muon event composition: " << std::endl;
+    std::cout << "  Total muon events: " << hTrueMuonTypes->Integral() << std::endl;
+    std::cout << "  Through-going:     " << hTrueMuonTypes->GetBinContent(1) << std::endl;
+    std::cout << "  Decay:             " << hTrueMuonTypes->GetBinContent(2) << std::endl;
+    std::cout << "  Capture at rest:   " << hTrueMuonTypes->GetBinContent(3) << std::endl;
+    std::cout << "  Other:             " << hTrueMuonTypes->GetBinContent(4) << std::endl;
 
     //////////////////////////////////
     // Breakdown of rejected events //
@@ -1999,8 +2070,10 @@ void RecoClassifyAllSimplified() {
 
         // Interacting KE
         {hPionAbs0pKETrue, hPionAbs0pKEAbsNp, hPionAbs0pKEScatter, hPionAbs0pKEChExch, hPionAbs0pKEMuon, hPionAbs0pKEElectron, hPionAbs0pKEOther},
+        {hPionAbs0pKETrue, hPionAbs0pKEAbsNp, hPionAbs0pKEScatter, hPionAbs0pKEChExch, hPionAbs0pKEMuonTG, hPionAbs0pKEMuonDecay, hPionAbs0pKEMuonCAR, hPionAbs0pKEElectron, hPionAbs0pKEOther},
         {hPionAbsNpKETrue, hPionAbsNpKEAbs0p, hPionAbsNpKEScatter, hPionAbsNpKEChExch, hPionAbsNpKEMuon, hPionAbsNpKEElectron, hPionAbsNpKEOther},
         {hPionScatterKETrue, hPionScatterKEAbs0p, hPionScatterKEAbsNp, hPionScatterKEChExch, hPionScatterKEMuon, hPionScatterKEElectron, hPionScatterKEOther},
+        {hPionScatterKETrue, hPionScatterKEAbs0p, hPionScatterKEAbsNp, hPionScatterKEChExch, hPionScatterKEMuonTG, hPionScatterKEMuonDecay, hPionScatterKEMuonCAR, hPionScatterKEElectron, hPionScatterKEOther},
         {hPionChExchKETrue, hPionChExchKEAbs0p, hPionChExchKEAbsNp, hPionChExchKEScatter, hPionChExchKEMuon, hPionChExchKEElectron, hPionChExchKEOther},
 
         // True events classified breakdown
@@ -2041,8 +2114,10 @@ void RecoClassifyAllSimplified() {
 
         // Interacting KE
         {"True", "Abs Np", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
-        {"True", "Abs Np", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"True", "Abs Np", "Scatter", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
+        {"True", "Abs 0p", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
         {"True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
         {"True", "Abs 0p", "Abs Np", "Scatter", "Muon", "Electron", "Other"},
 
         // True events classified breakdown
@@ -2083,8 +2158,10 @@ void RecoClassifyAllSimplified() {
 
         // Interacting KE
         "RecoInteracting/Abs0pInteractingKE",
+        "RecoInteracting/Abs0pInteractingKEDetailed",
         "RecoInteracting/AbsNpInteractingKE",
         "RecoInteracting/ScatterInteractingKE",
+        "RecoInteracting/ScatterInteractingKEDetailed",
         "RecoInteracting/ChExchInteractingKE",
 
         // True events classified breakdown
@@ -2124,6 +2201,8 @@ void RecoClassifyAllSimplified() {
         "Kinetic energy [MeV]",
 
         // Interacting KE
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
@@ -2170,6 +2249,8 @@ void RecoClassifyAllSimplified() {
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
+        "Counts",
 
         // True events classified breakdown
         "Counts",
@@ -2208,6 +2289,8 @@ void RecoClassifyAllSimplified() {
         false,
 
         // Interacting KE
+        true,
+        true,
         true,
         true,
         true,
@@ -2251,8 +2334,10 @@ void RecoClassifyAllSimplified() {
 
         // Interacting KE
         {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
 
         // True events classified breakdown
