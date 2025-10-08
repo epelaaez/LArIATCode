@@ -1140,7 +1140,6 @@ void RecoClassifyAllSimplified() {
                 recoEndY->at(trk_idx), breakPointY,
                 recoEndZ->at(trk_idx), breakPointZ
             );
-
             
             double thisTrackLength = sqrt(
                 pow(recoBeginX->at(trk_idx) - recoEndX->at(trk_idx), 2) +
@@ -1183,6 +1182,8 @@ void RecoClassifyAllSimplified() {
         }
 
         // For particles where we stitched, we also need to analyze the second part of the primary track
+        // If the new secondary track looks like a pion, the stitching is non-sensical, and we should revert
+        bool newSecondaryPion = false;
         if (minChi2 == minStitchedChi2) {
             std::vector<double> newSecondaryResR(wcMatchResR->begin(), wcMatchResR->begin() + bestBreakPoint);
             std::vector<double> newSecondaryDEDX(wcMatchDEDX->begin(), wcMatchDEDX->begin() + bestBreakPoint);
@@ -1193,6 +1194,7 @@ void RecoClassifyAllSimplified() {
 
             if ((newPionChi2 < PION_CHI2_PION_VALUE) && (newProtonChi2 > PROTON_CHI2_PION_VALUE)) {
                 // Tagged as pion
+                newSecondaryPion = true;
                 secondaryTaggedPion++;
             } else if ((newPionChi2 > PION_CHI2_PROTON_VALUE) && (newProtonChi2 < PROTON_CHI2_PROTON_VALUE)) {
                 // Tagged as proton
@@ -1201,6 +1203,7 @@ void RecoClassifyAllSimplified() {
                 // Not tagged with chi^2, use mean dE/dx
                 secondaryTaggedOther++;
                 if (newMeanDEDX <= MEAN_DEDX_THRESHOLD) {
+                    newSecondaryPion = true;
                     otherTaggedPion++;
                 } else {
                     otherTaggedProton++;
@@ -1212,7 +1215,7 @@ void RecoClassifyAllSimplified() {
         int totalTaggedProtons = secondaryTaggedProton + otherTaggedProton;
 
         if (totalTaggedPions > 0) {
-            if (totalTaggedPions > 1) {
+            if (totalTaggedPions > 1 || newSecondaryPion) {
                 // reject events with > 1 tagged pion
                 if (backgroundType == 0) {
                     hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
