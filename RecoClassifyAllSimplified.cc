@@ -241,6 +241,18 @@ void RecoClassifyAllSimplified() {
     tree->SetBranchAddress("validTrueIncidentKE", &validTrueIncidentKE);
     tree->SetBranchAddress("trueIncidentKEContributions", &trueIncidentKEContributions);
 
+    // Truth level charge exchange information
+    std::vector<int>* chExchShowerPDGs = nullptr;
+    std::vector<int>* chExchShowerIDs = nullptr;
+    std::vector<std::vector<double>>* chExchShowerStart = nullptr;
+    std::vector<std::vector<double>>* chExchShowerEnd = nullptr;
+    std::vector<int>* chExchShowerNeutralPionDaughtersID = nullptr;
+    tree->SetBranchAddress("chExchShowerPDGs", &chExchShowerPDGs);
+    tree->SetBranchAddress("chExchShowerIDs", &chExchShowerIDs);
+    tree->SetBranchAddress("chExchShowerStart", &chExchShowerStart);
+    tree->SetBranchAddress("chExchShowerEnd", &chExchShowerEnd);
+    tree->SetBranchAddress("chExchShowerNeutralPionDaughtersID", &chExchShowerNeutralPionDaughtersID);
+
     /////////////////////////////////
     // Files for event information //
     /////////////////////////////////
@@ -566,6 +578,13 @@ void RecoClassifyAllSimplified() {
     Int_t NumEntries = (Int_t) tree->GetEntries();
     std::cout << "Num entries: " << NumEntries << std::endl;
 
+    int chExchAll               = 0;
+    int chExchContainedRedVol   = 0;
+    int chExchContainedCylinder = 0;
+
+    int chExchContainedRedVolReco   = 0;
+    int chExchContainedCylinderReco = 0;
+
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
@@ -720,6 +739,58 @@ void RecoClassifyAllSimplified() {
         // Set correct primary vertex KE for elastic scattering
         if (backgroundType == 12) {
             truthPrimaryVertexKE = trajectoryInteractionKE;
+        }
+
+        // More information about charge exchange events
+        bool chExchInsideRedVol   = false;
+        bool chExchInsideCylinder = false;
+        if (backgroundType == 7) {
+            // If the photons end outside the TPC, there is no way for us to detect the charge exchange
+            // If the photons end outside the cylinder, it is also pretty hard for us to detect it reliably
+            chExchAll++;
+
+            bool firstPhotonInsideRedVol  = false;
+            bool secondPhotonInsideRedVol = false;
+
+            bool firstPhotonInsideCylinder  = false;
+            bool secondPhotonInsideCylinder = false;
+
+            int  photonCount = 0;
+
+            for (int i = 0; i < chExchShowerIDs->size(); ++i) {
+                if (std::find(chExchShowerNeutralPionDaughtersID->begin(), chExchShowerNeutralPionDaughtersID->end(), chExchShowerIDs->at(i)) != chExchShowerNeutralPionDaughtersID->end()) {
+                    // Found direct daughter of neutral pion
+                    if (chExchShowerPDGs->at(i) == 22) {
+                        // Found photon from neutral pion decay
+                        photonCount++;
+
+                        bool endInCylinder = IsPointInsideTrackCylinder(
+                            wcX, wcY, wcZ,
+                            chExchShowerEnd->at(i)[0], chExchShowerEnd->at(i)[1], chExchShowerEnd->at(i)[2],
+                            CYLINDER_RADIUS
+                        );
+                        bool endInRedVol = isWithinReducedVolume(chExchShowerEnd->at(i)[0], chExchShowerEnd->at(i)[1], chExchShowerEnd->at(i)[2]);
+
+                        if (photonCount == 1) {
+                            firstPhotonInsideCylinder = endInCylinder;
+                            firstPhotonInsideRedVol   = endInRedVol;
+                        } else if (photonCount == 2) {
+                            secondPhotonInsideCylinder = endInCylinder;
+                            secondPhotonInsideRedVol   = endInRedVol;
+                        }
+                    }
+                }
+            }
+
+            if (firstPhotonInsideRedVol || secondPhotonInsideRedVol) {
+                chExchContainedRedVol++;
+                chExchInsideRedVol = true;
+            }
+
+            if (firstPhotonInsideCylinder || secondPhotonInsideCylinder) {
+                chExchContainedCylinder++;
+                chExchInsideCylinder = true;
+            }
         }
 
         // Further classify muon backgrounds
@@ -1405,6 +1476,12 @@ void RecoClassifyAllSimplified() {
                 if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
             }
 
+            if (chExchInsideCylinder) {
+                chExchContainedCylinderReco++;
+            } else if (chExchInsideRedVol) {
+                chExchContainedRedVolReco++;
+            }
+
             continue;
         }
 
@@ -1632,6 +1709,14 @@ void RecoClassifyAllSimplified() {
     std::cout << "  Decay:             " << hTrueMuonTypes->GetBinContent(2) << std::endl;
     std::cout << "  Capture at rest:   " << hTrueMuonTypes->GetBinContent(3) << std::endl;
     std::cout << "  Other:             " << hTrueMuonTypes->GetBinContent(4) << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "Total charge exchange events: " << chExchAll << std::endl;
+    std::cout << "  At least one photon in reduced volume: " << chExchContainedRedVol << ", " << ((double) chExchContainedRedVol / (double) chExchAll) * 100 << "%" << std::endl;
+    std::cout << "  At least one photon in cylinder: " << chExchContainedCylinder << ", " << ((double) chExchContainedCylinder / (double) chExchAll) * 100 << "%" << std::endl;
+    std::cout << std::endl;
+    std::cout << "  At least one photon contained in reduced volume correctly tagged: " << chExchContainedRedVolReco << ", " << ((double) chExchContainedRedVolReco / (double) chExchContainedRedVol) * 100 << "%" << std::endl;
+    std::cout << "  At least one photon contained in cylinder correctly tagged: " << chExchContainedCylinderReco << ", " << ((double) chExchContainedCylinderReco / (double) chExchContainedCylinder) * 100 << "%" << std::endl;
 
     //////////////////////////////////
     // Breakdown of rejected events //
