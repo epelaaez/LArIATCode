@@ -122,7 +122,16 @@ if (__name__ == "__main__"):
     # Three classes
     model = xgb.XGBClassifier(
         num_class=3,
-        n_estimators=100,
+        n_estimators=5000,
+        learning_rate=0.03,
+        max_depth=3,
+        min_child_weight=5,
+        subsample=0.7,
+        colsample_bytree=0.7,
+        reg_lambda=2.0,
+        reg_alpha=0.5,
+        gamma=1.0,
+        early_stopping_rounds=200,
         objective='multi:softprob',
         eval_metric=['mlogloss', 'merror'],
 
@@ -136,8 +145,9 @@ if (__name__ == "__main__"):
     model.fit(
         X_train,
         y_train,
+        sample_weight=w_train,
         eval_set=[(X_train, y_train), (X_test, y_test)],
-        # sample_weight_eval_set=[w_train, w_test],
+        sample_weight_eval_set=[w_train, w_test],
         verbose=20
     )
     evals_result = model.evals_result() 

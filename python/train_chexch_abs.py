@@ -94,10 +94,23 @@ if (__name__ == "__main__"):
     df = pd.read_pickle("files/train_chexch_abs_data.pkl")
 
     # Keep only pion abs 0p, charge exchange, electron showers
-    df = df[df["backgroundType"].isin([0, 3, 7])]
+    df = df[df["backgroundType"].isin([0, 3, 7, 6, 12])]
 
     # Map backgroundType to new target: 0 for pion abs 0p, 1 for electron shower, 2 for charge exchange
-    df["target"] = df["backgroundType"].apply(lambda x: 2 if x == 7 else (1 if x == 3 else 0))
+    def bkg_to_code(x):
+        if (x == 7):
+            # charge exchange
+            return 2
+        elif (x == 3):
+            # shower
+            return 1
+        elif (x == 6 or x == 12):
+            return 3
+        elif (x == 0):
+            # pion abs 0p
+            return 0
+    df["target"] = df["backgroundType"].apply(bkg_to_code)
+    K = 4
     
     # Select features and target
     X = df.drop(columns=["backgroundType", "target", "event"])
@@ -108,7 +121,7 @@ if (__name__ == "__main__"):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15, random_state=42)
 
     # Compute class weights
-    classes = np.array([0,1,2])
+    classes = np.array([i for i in range(K)])
     cw = compute_class_weight("balanced", classes=classes, y=y_train)
     class_to_w = {c:w for c, w in zip(classes, cw)}
 
@@ -117,8 +130,14 @@ if (__name__ == "__main__"):
     
     # Three classes
     model = xgb.XGBClassifier(
-        num_class=3,
-        n_estimators=200,
+        num_class=K,
+        n_estimators=10000,
+        learning_rate=0.02,
+        early_stopping_rounds=400,
+        subsample=0.75,
+        reg_lambda=0.5,
+        reg_alpha=0.3,
+        gamma=0.5,
         objective='multi:softprob',
         eval_metric=['mlogloss', 'merror'],
     )
@@ -127,6 +146,7 @@ if (__name__ == "__main__"):
     model.fit(
         X_train,
         y_train,
+        sample_weight=w_train,
         eval_set=[(X_train, y_train), (X_test, y_test)],
         sample_weight_eval_set=[w_train, w_test],
         verbose=20
@@ -145,10 +165,14 @@ if (__name__ == "__main__"):
 
     print("Converting model to XML format")
     
-    dump = model.get_booster().get_dump()
-    per_class_trees = [[] for _ in range(3)]
+    best_iter       = model.best_iteration
+    bst             = model.get_booster()
+    n_trees_to_keep = (best_iter + 1) * K
+
+    dump = bst.get_dump()[:n_trees_to_keep]
+    per_class_trees = [[] for _ in range(K)]
     for idx, tree in enumerate(dump):
-        per_class_trees[idx % 3].append(tree)
+        per_class_trees[idx % K].append(tree)
 
     for ci, trees in enumerate(per_class_trees):
         convert.convert_model(
@@ -173,6 +197,6 @@ if (__name__ == "__main__"):
         #     print(f"    {col}: {value}")
 
     plot_classification_error(evals_result, "mlogloss")
-    plot_confusion_matrix(model, X_test, y_test, ["abs 0p", "ch. exch.", "electron"])
+    plot_confusion_matrix(model, X_test, y_test, ["abs 0p", "ch. exch.", "electron", "scatter"])
     plot_feature_importance(model)
-    plot_roc_curves(model, X_test, y_test, classes=[0, 1, 2])
+    plot_roc_curves(model, X_test, y_test, classes=[0, 1, 2, 3])

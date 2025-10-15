@@ -98,8 +98,9 @@ def clean_up(df):
     # Get rid of entries with no matched WC2TPC track
     df = df[df["WC2TPCtrkID"] != -99999].copy()
 
-    # Keep track of events tagged as beamline electrons with current selection
+    # Keep track of events we want to reject
     is_beamline_electron_idx = []
+    has_secondary_part_idx   = []
 
     for i, row in df.iterrows():
         # Get WC2TPC positions
@@ -118,9 +119,10 @@ def clean_up(df):
                 else:
                     break
         if repeat_count > 0:
-            wcX = wcX[:num_points - repeat_count] + [wcX[-1]]
-            wcY = wcY[:num_points - repeat_count] + [wcY[-1]]
-            wcZ = wcZ[:num_points - repeat_count] + [wcZ[-1]]
+            cut = num_points - repeat_count
+            wcX = np.concatenate((wcX[:cut], [wcX[-1]]))
+            wcY = np.concatenate((wcY[:cut], [wcY[-1]]))
+            wcZ = np.concatenate((wcZ[:cut], [wcZ[-1]]))
 
         # Get information for WC2TPC track, before extending
         df.at[i, "WC2TPCTrackLength"] = compute_track_length(wcX, wcY, wcZ)
@@ -151,6 +153,8 @@ def clean_up(df):
         small_trks_in_cylinder = 0
         num_reco_trks = len(row["recoTrkID"])
 
+        secondary_tracks = 0
+
         trk_idx_len = []
         for i_trk in range(num_reco_trks):
             if (row["recoTrkID"][i_trk] == row["WC2TPCtrkID"]):
@@ -164,6 +168,11 @@ def clean_up(df):
             ex = row["recoEndX"][i_trk]
             ey = row["recoEndY"][i_trk]
             ez = row["recoEndZ"][i_trk]
+
+            distance_b = np.sqrt((bx - wcX[-1])**2 + (by - wcY[-1])**2 + (bz - wcZ[-1])**2)
+            distance_e = np.sqrt((ex - wcX[-1])**2 + (ey - wcY[-1])**2 + (ez - wcZ[-1])**2)
+            if (distance_b < constants.VERTEX_RADIUS or distance_e < constants.VERTEX_RADIUS):
+                secondary_tracks += 1
 
             start_in_cylinder = is_point_inside_cylinder(
                 wcX, wcY, wcZ,
@@ -187,7 +196,11 @@ def clean_up(df):
         # Check if we would tag it as beamline electron
         if (small_trks_in_cylinder > constants.ALLOWED_CYLINDER_SMALL_TRACKS):
             is_beamline_electron_idx.append(i)
-        
+
+        # Check if it has secondary tracks
+        if (secondary_tracks > 0):
+            has_secondary_part_idx.append(i)
+
         trk_idx_len.sort(key=lambda x: x[1], reverse=True)
         for j in range(constants.RECO_TRKS_SAVE):
             if j < len(trk_idx_len):
@@ -226,8 +239,11 @@ def clean_up(df):
                 df.at[i, f"recoTrkdEdx_{j}"] = -9999
         df.at[i, "numRecoTrksInCylinder"] = trks_in_cylinder
     
-    # Drop events tagged as beamline electrons
-    # df = df.drop(index=is_beamline_electron_idx)
+    # Drop tagged events
+    all_indices = set(is_beamline_electron_idx + has_secondary_part_idx)
+
+    df = df.drop(index=is_beamline_electron_idx)
+    # df = df.drop(index=all_indices)
 
     # Drop variables not needed for training
     df = df.drop(columns=[var for var in variables.bdt_import_variables if var in df.columns])
@@ -250,8 +266,13 @@ if (__name__ == "__main__"):
 
         # Create dataframe with selected variables
         keep_vars = variables.bdt_import_variables + variables.bdt_keep_variables
-        arrays    = ttree.arrays(keep_vars, library="np", entry_stop=min(constants.EVENTS_TO_READ, total_entries))
-        df        = pd.DataFrame(arrays)
+        arrays    = ttree.arrays(
+            keep_vars, 
+            library="np", 
+            entry_start=constants.EVENTS_TO_SKIP, 
+            entry_stop=constants.EVENTS_TO_SKIP + min(constants.EVENTS_TO_READ, total_entries)
+        )
+        df = pd.DataFrame(arrays)
         
         # Clean up dataframe to get rid of events we reject
         # and put data in format suitable for BDT training
@@ -260,4 +281,4 @@ if (__name__ == "__main__"):
         print(f"Entries after cleanup: {df.shape[0]}")
 
         # Save the DataFrame to a pickle file
-        df.to_pickle("files/train_initial_data.pkl")
+        df.to_pickle("files/train_chexch_abs_data.pkl")
