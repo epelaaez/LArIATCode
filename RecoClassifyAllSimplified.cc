@@ -45,7 +45,6 @@ void RecoClassifyAllSimplified() {
 
     // Load tree and branches
     TTree* tree = (TTree*) Directory->Get<TTree>("RecoNNAllEvalTree");
-    TH1D* hTotalEvents = (TH1D*) Directory->Get<TH1D>("hTotalEvents");
 
     int run, subrun, event; bool isData;
     tree->SetBranchAddress("run", &run); 
@@ -163,13 +162,14 @@ void RecoClassifyAllSimplified() {
     tree->SetBranchAddress("recoDEDX", &recoDEDX);
 
     // Truth-level information
-    int truthPrimaryPDG;
+    int truthPrimaryPDG, truthPrimaryID;
     double truthPrimaryVertexX, truthPrimaryVertexY, truthPrimaryVertexZ;
     double truthPrimaryIncidentKE, truthPrimaryVertexKE;
     std::vector<int>*         truthPrimaryDaughtersPDG     = nullptr;
     std::vector<std::string>* truthPrimaryDaughtersProcess = nullptr;
     std::vector<double>*      truthPrimaryDaughtersKE      = nullptr;
     tree->SetBranchAddress("truthPrimaryPDG", &truthPrimaryPDG);
+    tree->SetBranchAddress("truthPrimaryID", &truthPrimaryID);
     tree->SetBranchAddress("truthPrimaryIncidentKE", &truthPrimaryIncidentKE);
     tree->SetBranchAddress("truthPrimaryVertexKE", &truthPrimaryVertexKE);
     tree->SetBranchAddress("truthPrimaryVertexX", &truthPrimaryVertexX);
@@ -178,6 +178,14 @@ void RecoClassifyAllSimplified() {
     tree->SetBranchAddress("truthPrimaryDaughtersPDG", &truthPrimaryDaughtersPDG);
     tree->SetBranchAddress("truthPrimaryDaughtersProcess", &truthPrimaryDaughtersProcess);
     tree->SetBranchAddress("truthPrimaryDaughtersKE", &truthPrimaryDaughtersKE);
+
+    // True particle location information
+    std::vector<double>* truthPrimaryLocationX = nullptr;
+    std::vector<double>* truthPrimaryLocationY = nullptr;
+    std::vector<double>* truthPrimaryLocationZ = nullptr;
+    tree->SetBranchAddress("truthPrimaryLocationX", &truthPrimaryLocationX);
+    tree->SetBranchAddress("truthPrimaryLocationY", &truthPrimaryLocationY);
+    tree->SetBranchAddress("truthPrimaryLocationZ", &truthPrimaryLocationZ);
 
     // Truth-level interaction information
     bool         interactionInTrajectory;
@@ -253,6 +261,22 @@ void RecoClassifyAllSimplified() {
     tree->SetBranchAddress("chExchShowerEnd", &chExchShowerEnd);
     tree->SetBranchAddress("chExchShowerNeutralPionDaughtersID", &chExchShowerNeutralPionDaughtersID);
 
+    // Primaries information
+    std::vector<double>* primariesStartX = nullptr;
+    std::vector<double>* primariesStartY = nullptr;
+    std::vector<double>* primariesStartZ = nullptr;
+    std::vector<double>* primariesEndX = nullptr;
+    std::vector<double>* primariesEndY = nullptr;
+    std::vector<double>* primariesEndZ = nullptr;
+    std::vector<int>*    primariesID = nullptr;
+    tree->SetBranchAddress("primariesStartX", &primariesStartX);
+    tree->SetBranchAddress("primariesStartY", &primariesStartY);
+    tree->SetBranchAddress("primariesStartZ", &primariesStartZ);
+    tree->SetBranchAddress("primariesEndX", &primariesEndX);
+    tree->SetBranchAddress("primariesEndY", &primariesEndY);
+    tree->SetBranchAddress("primariesEndZ", &primariesEndZ);
+    tree->SetBranchAddress("primariesID", &primariesID);
+
     /////////////////////////////////
     // Files for event information //
     /////////////////////////////////
@@ -263,6 +287,8 @@ void RecoClassifyAllSimplified() {
     ///////////////////////
     // Create histograms //
     ///////////////////////
+
+    TH1D* hTotalEvents = new TH1D("hTotalEvents", "hTotalEvents", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
     // Histograms with classified events
     TH1D* hPionAbs0p     = new TH1D("hPassShowerProb", "hPassShowerProb;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
@@ -469,6 +495,44 @@ void RecoClassifyAllSimplified() {
     TH1D* hTrueChExchKERejManyPions = new TH1D("hTrueChExchKERejManyPions", "hTrueChExchKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTrueChExchKERejClusters  = new TH1D("hTrueChExchKERejClusters", "hTrueChExchKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
+    ////////////////
+    // BDT scores //
+    ////////////////
+
+    int PROB_DIVISIONS = 30;
+
+    TH1D* hBestAbs0pAbs0p    = new TH1D("hBestAbs0pAbs0p", "hBestAbs0pAbs0p;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestAbs0pAbsNp    = new TH1D("hBestAbs0pAbsNp", "hBestAbs0pAbsNp;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestAbs0pMuon     = new TH1D("hBestAbs0pMuon", "hBestAbs0pMuon;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestAbs0pElectron = new TH1D("hBestAbs0pElectron", "hBestAbs0pElectron;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestAbs0pScatter  = new TH1D("hBestAbs0pScatter", "hBestAbs0pScatter;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestAbs0pChExch   = new TH1D("hBestAbs0pChExch", "hBestAbs0pChExch;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestAbs0pOther    = new TH1D("hBestAbs0pOther", "hBestAbs0pOther;;", PROB_DIVISIONS, 0, 1);
+
+    TH1D* hBestChExchAbs0p    = new TH1D("hBestChExchAbs0p", "hBestChExchAbs0p;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestChExchAbsNp    = new TH1D("hBestChExchAbsNp", "hBestChExchAbsNp;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestChExchMuon     = new TH1D("hBestChExchMuon", "hBestChExchMuon;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestChExchElectron = new TH1D("hBestChExchElectron", "hBestChExchElectron;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestChExchScatter  = new TH1D("hBestChExchScatter", "hBestChExchScatter;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestChExchChExch   = new TH1D("hBestChExchChExch", "hBestChExchChExch;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestChExchOther    = new TH1D("hBestChExchOther", "hBestChExchOther;;", PROB_DIVISIONS, 0, 1);
+
+    TH1D* hBestScatterAbs0p    = new TH1D("hBestScatterAbs0p", "hBestScatterAbs0p;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestScatterAbsNp    = new TH1D("hBestScatterAbsNp", "hBestScatterAbsNp;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestScatterMuon     = new TH1D("hBestScatterMuon", "hBestScatterMuon;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestScatterElectron = new TH1D("hBestScatterElectron", "hBestScatterElectron;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestScatterScatter  = new TH1D("hBestScatterScatter", "hBestScatterScatter;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestScatterChExch   = new TH1D("hBestScatterChExch", "hBestScatterChExch;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestScatterOther    = new TH1D("hBestScatterOther", "hBestScatterOther;;", PROB_DIVISIONS, 0, 1);
+
+    TH1D* hBestElectronAbs0p    = new TH1D("hBestElectronAbs0p", "hBestElectronAbs0p;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestElectronAbsNp    = new TH1D("hBestElectronAbsNp", "hBestElectronAbsNp;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestElectronMuon     = new TH1D("hBestElectronMuon", "hBestElectronMuon;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestElectronElectron = new TH1D("hBestElectronElectron", "hBestElectronElectron;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestElectronScatter  = new TH1D("hBestElectronScatter", "hBestElectronScatter;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestElectronChExch   = new TH1D("hBestElectronChExch", "hBestElectronChExch;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestElectronOther    = new TH1D("hBestElectronOther", "hBestElectronOther;;", PROB_DIVISIONS, 0, 1);
+
     //////////////
     // Matrices //
     //////////////
@@ -523,8 +587,7 @@ void RecoClassifyAllSimplified() {
     // Load BDT model //
     ////////////////////
 
-    TMVA::Reader BDTReader0, BDTReader1, BDTReader2;
-    std::vector<TMVA::Reader*> BDTReaders = {&BDTReader0, &BDTReader1, &BDTReader2};
+    TMVA::Reader BDTReader;
     
     Float_t bdt_WC2TPCTrackLength;
     Float_t bdt_WC2TPCBeginX;
@@ -536,16 +599,14 @@ void RecoClassifyAllSimplified() {
     Float_t bdt_WC2TPCdEdx;
     Float_t bdt_numRecoTrksInCylinder;
 
-    for (int i = 0; i < BDTReaders.size(); ++i) {
-        BDTReaders[i]->AddVariable("WC2TPCTrackLength", &bdt_WC2TPCTrackLength);
-        BDTReaders[i]->AddVariable("WC2TPCBeginX", &bdt_WC2TPCBeginX);
-        BDTReaders[i]->AddVariable("WC2TPCBeginY", &bdt_WC2TPCBeginY);
-        BDTReaders[i]->AddVariable("WC2TPCBeginZ", &bdt_WC2TPCBeginZ);
-        BDTReaders[i]->AddVariable("WC2TPCEndX", &bdt_WC2TPCEndX);
-        BDTReaders[i]->AddVariable("WC2TPCEndY", &bdt_WC2TPCEndY);
-        BDTReaders[i]->AddVariable("WC2TPCEndZ", &bdt_WC2TPCEndZ);
-        BDTReaders[i]->AddVariable("WC2TPCdEdx", &bdt_WC2TPCdEdx);
-    }
+    BDTReader.AddVariable("WC2TPCTrackLength", &bdt_WC2TPCTrackLength);
+    BDTReader.AddVariable("WC2TPCBeginX", &bdt_WC2TPCBeginX);
+    BDTReader.AddVariable("WC2TPCBeginY", &bdt_WC2TPCBeginY);
+    BDTReader.AddVariable("WC2TPCBeginZ", &bdt_WC2TPCBeginZ);
+    BDTReader.AddVariable("WC2TPCEndX", &bdt_WC2TPCEndX);
+    BDTReader.AddVariable("WC2TPCEndY", &bdt_WC2TPCEndY);
+    BDTReader.AddVariable("WC2TPCEndZ", &bdt_WC2TPCEndZ);
+    BDTReader.AddVariable("WC2TPCdEdx", &bdt_WC2TPCdEdx);
 
     Float_t bdt_recoTrkBeginX[BDT_NUM_RECO_TRKS];
     Float_t bdt_recoTrkBeginY[BDT_NUM_RECO_TRKS];
@@ -556,19 +617,21 @@ void RecoClassifyAllSimplified() {
     Float_t bdt_recoTrkLen[BDT_NUM_RECO_TRKS];
     Float_t bdt_recoTrkdEdx[BDT_NUM_RECO_TRKS];
 
-    for (int i = 0; i < BDTReaders.size(); ++i) {
-        for (int j = 0; j < BDT_NUM_RECO_TRKS; ++j) {
-            BDTReaders[i]->AddVariable(Form("recoTrkBeginX_%d", j), &bdt_recoTrkBeginX[j]);
-            BDTReaders[i]->AddVariable(Form("recoTrkBeginY_%d", j), &bdt_recoTrkBeginY[j]);
-            BDTReaders[i]->AddVariable(Form("recoTrkBeginZ_%d", j), &bdt_recoTrkBeginZ[j]);
-            BDTReaders[i]->AddVariable(Form("recoTrkEndX_%d", j), &bdt_recoTrkEndX[j]);
-            BDTReaders[i]->AddVariable(Form("recoTrkEndY_%d", j), &bdt_recoTrkEndY[j]);
-            BDTReaders[i]->AddVariable(Form("recoTrkEndZ_%d", j), &bdt_recoTrkEndZ[j]);
-            BDTReaders[i]->AddVariable(Form("recoTrkLen_%d", j), &bdt_recoTrkLen[j]);
-            BDTReaders[i]->AddVariable(Form("recoTrkdEdx_%d", j), &bdt_recoTrkdEdx[j]);
-        }
-        BDTReaders[i]->AddVariable("numRecoTrksInCylinder", &bdt_numRecoTrksInCylinder);
-        BDTReaders[i]->BookMVA("BDT", "/exp/lariat/app/users/epelaez/analysis/python/model/chexch_abs_model_class_" + std::to_string(i) + ".xml");
+    for (int j = 0; j < BDT_NUM_RECO_TRKS; ++j) {
+        BDTReader.AddVariable(Form("recoTrkBeginX_%d", j), &bdt_recoTrkBeginX[j]);
+        BDTReader.AddVariable(Form("recoTrkBeginY_%d", j), &bdt_recoTrkBeginY[j]);
+        BDTReader.AddVariable(Form("recoTrkBeginZ_%d", j), &bdt_recoTrkBeginZ[j]);
+        BDTReader.AddVariable(Form("recoTrkEndX_%d", j), &bdt_recoTrkEndX[j]);
+        BDTReader.AddVariable(Form("recoTrkEndY_%d", j), &bdt_recoTrkEndY[j]);
+        BDTReader.AddVariable(Form("recoTrkEndZ_%d", j), &bdt_recoTrkEndZ[j]);
+        BDTReader.AddVariable(Form("recoTrkLen_%d", j), &bdt_recoTrkLen[j]);
+        BDTReader.AddVariable(Form("recoTrkdEdx_%d", j), &bdt_recoTrkdEdx[j]);
+    }
+    
+    BDTReader.AddVariable("numRecoTrksInCylinder", &bdt_numRecoTrksInCylinder);
+
+    for (int i = 0; i < 4; ++i) {
+        BDTReader.BookMVA("BDT" + std::to_string(i), "/exp/lariat/app/users/epelaez/analysis/python/model/chexch_abs_model_class_" + std::to_string(i) + ".xml");
     }
 
     //////////////////////
@@ -588,13 +651,30 @@ void RecoClassifyAllSimplified() {
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
+        // Events to debug BDT
+        // if (!(
+        //     event == 149610 || 
+        //     event == 149626 ||
+        //     event == 149639 ||
+        //     event == 149650 ||
+        //     event == 149655 ||
+        //     event == 149666 ||
+        //     event == 149694 ||
+        //     event == 149696 ||
+        //     event == 149702 ||
+        //     event == 149706
+        // )) continue;
+
+        // Use first 50k events, last 50k events were used for BDT training
+        if (i > 50000) break;
+
         // Make script go faster
         // if (i > 10000) break;
 
         // Sanity check
         removeRepeatedPoints(WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ);
 
-        // Extend cylinder
+        // Extend reco cylinder
         std::vector<double>* wcX = new std::vector<double>(*WC2TPCLocationsX);
         std::vector<double>* wcY = new std::vector<double>(*WC2TPCLocationsY);
         std::vector<double>* wcZ = new std::vector<double>(*WC2TPCLocationsZ);
@@ -620,6 +700,41 @@ void RecoClassifyAllSimplified() {
             wcX->push_back(points.back()[0] + scale * avgDir[0]);
             wcY->push_back(points.back()[1] + scale * avgDir[1]);
             wcZ->push_back(points.back()[2] + scale * avgDir[2]);
+        }
+
+        int validPrimaryIdx = -1;
+        for (size_t i = 0; i < primariesID->size(); ++i) {
+            if (primariesID->at(i) == truthPrimaryID) {
+                validPrimaryIdx = i;
+                break;
+            }
+        }
+
+        // Extend truth cylinder
+        std::vector<double>* truthCylinderLocationX = new std::vector<double>(*truthPrimaryLocationX);
+        std::vector<double>* truthCylinderLocationY = new std::vector<double>(*truthPrimaryLocationY);
+        std::vector<double>* truthCylinderLocationZ = new std::vector<double>(*truthPrimaryLocationZ);
+
+        if (truthCylinderLocationX->size() == 0) {
+            truthCylinderLocationX->push_back(primariesStartX->at(validPrimaryIdx));
+            truthCylinderLocationY->push_back(primariesStartY->at(validPrimaryIdx));
+            truthCylinderLocationZ->push_back(primariesStartZ->at(validPrimaryIdx));
+
+            truthCylinderLocationX->push_back(primariesEndX->at(validPrimaryIdx));
+            truthCylinderLocationY->push_back(primariesEndY->at(validPrimaryIdx));
+            truthCylinderLocationZ->push_back(primariesEndZ->at(validPrimaryIdx));
+        } 
+
+        // Get direction to end cylinder
+        int truthNumPoints = truthCylinderLocationX->size();
+        int truthNumTail   = std::min(10, truthNumPoints - 1);
+        std::vector<std::vector<double>> truth_points;
+        for (int j = truthNumPoints - truthNumTail; j < truthNumPoints; ++j) {
+            truth_points.push_back({
+                truthCylinderLocationX->at(j),
+                truthCylinderLocationY->at(j),
+                truthCylinderLocationZ->at(j)
+            });
         }
 
         ////////////////////////////////////////
@@ -765,7 +880,7 @@ void RecoClassifyAllSimplified() {
                         photonCount++;
 
                         bool endInCylinder = IsPointInsideTrackCylinder(
-                            wcX, wcY, wcZ,
+                            truthCylinderLocationX, truthCylinderLocationY, truthCylinderLocationZ,
                             chExchShowerEnd->at(i)[0], chExchShowerEnd->at(i)[1], chExchShowerEnd->at(i)[2],
                             CYLINDER_RADIUS
                         );
@@ -782,14 +897,17 @@ void RecoClassifyAllSimplified() {
                 }
             }
 
-            if (firstPhotonInsideRedVol || secondPhotonInsideRedVol) {
-                chExchContainedRedVol++;
-                chExchInsideRedVol = true;
-            }
+            // We can only hope to reconstruct it if there is a WC2TPC match
+            if (WC2TPCtrkID != -99999) {
+                if (firstPhotonInsideRedVol || secondPhotonInsideRedVol) {
+                    chExchContainedRedVol++;
+                    chExchInsideRedVol = true;
+                }
 
-            if (firstPhotonInsideCylinder || secondPhotonInsideCylinder) {
-                chExchContainedCylinder++;
-                chExchInsideCylinder = true;
+                if (firstPhotonInsideCylinder || secondPhotonInsideCylinder) {
+                    chExchContainedCylinder++;
+                    chExchInsideCylinder = true;
+                }
             }
         }
 
@@ -854,6 +972,8 @@ void RecoClassifyAllSimplified() {
         } else if (backgroundType == 7) {
             hTrueChExchKE->Fill(truthPrimaryVertexKE * 1000);
         }
+
+        hTotalEvents->Fill(backgroundType);
 
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) {
@@ -1077,47 +1197,53 @@ void RecoClassifyAllSimplified() {
         );
 
         // Compute BDT scores
-        double s0 = BDTReader0.EvaluateMVA("BDT");
-        double s1 = BDTReader1.EvaluateMVA("BDT");
-        double s2 = BDTReader2.EvaluateMVA("BDT");
+        double s0 = BDTReader.EvaluateMVA("BDT0");
+        double s1 = BDTReader.EvaluateMVA("BDT1");
+        double s2 = BDTReader.EvaluateMVA("BDT2");
+        double s3 = BDTReader.EvaluateMVA("BDT3");
 
         // Make sure raw output is in (-1, 1)
         const double eps = 1e-12; 
         s0 = std::max(-1.0 + eps, std::min(1.0 - eps, s0));
         s1 = std::max(-1.0 + eps, std::min(1.0 - eps, s1));
         s2 = std::max(-1.0 + eps, std::min(1.0 - eps, s2));
+        s3 = std::max(-1.0 + eps, std::min(1.0 - eps, s3));
         
         // Map scores in (-1,1) -> margins in (-inf, +inf) via atanh
         double m0 = 0.5 * std::log((1.0 + s0) / (1.0 - s0)); // atanh(s0)
         double m1 = 0.5 * std::log((1.0 + s1) / (1.0 - s1)); // atanh(s1)
         double m2 = 0.5 * std::log((1.0 + s2) / (1.0 - s2)); // atanh(s2)
+        double m3 = 0.5 * std::log((1.0 + s3) / (1.0 - s3)); // atanh(s3)
 
         // Convert margins -> class probabilities via softmax
-        double mmax = std::max({m0, m1, m2});
+        double mmax = std::max({m0, m1, m2, m3});
         double e0 = std::exp(m0 - mmax);
         double e1 = std::exp(m1 - mmax);
         double e2 = std::exp(m2 - mmax);
-        double Z  = e0 + e1 + e2;
+        double e3 = std::exp(m3 - mmax);
+        double Z  = e0 + e1 + e2 + e3;
         if (Z == 0) Z = 1e-12;
 
         double p0 = e0 / Z;
         double p1 = e1 / Z;
         double p2 = e2 / Z;
+        double p3 = e3 / Z;
 
         // Test few events
         if (
-            event == 1407 || 
-            event == 1415 ||
-            event == 1429 ||
-            event == 1437 ||
-            event == 1448 ||
-            event == 1451 ||
-            event == 1470 ||
-            event == 1490 ||
-            event == 1501 ||
-            event == 1507
+            event == 149610 || 
+            event == 149626 ||
+            event == 149639 ||
+            event == 149650 ||
+            event == 149655 ||
+            event == 149666 ||
+            event == 149694 ||
+            event == 149696 ||
+            event == 149702 ||
+            event == 149706
         ) {
-            std::cout << "Event " << event << " BDT scores: " << p0 << ", " << p1 << ", " << p2 << std::endl;
+            // std::cout << "Event " << event << " BDT scores: " << p0 << ", " << p1 << ", " << p2 << ", " << p3 << std::endl;
+            // std::cout << "           " << "Raw scores: " << s0 << ", " << s1 << ", " << s2 << ", " << s3 << std::endl;
 
             // std::cout << "BDT input variables for event " << event << ":" << std::endl;
             // std::cout << "  WC2TPCTrackLength: " << bdt_WC2TPCTrackLength << std::endl;
@@ -1139,10 +1265,6 @@ void RecoClassifyAllSimplified() {
             //     std::cout << "  recoTrkdEdx[" << j << "]: " << bdt_recoTrkdEdx[j] << std::endl;
             // }
             // std::cout << "  numRecoTrksInCylinder: " << bdt_numRecoTrksInCylinder << std::endl;
-
-            // std::cout << avgDir[0] << " " << avgDir[1] << " " << avgDir[2] << std::endl;
-            // std::cout << wcX->size() << std::endl;
-            // std::cout << WC2TPCLocationsX->size() << std::endl;
         }
 
         ////////////////////////
@@ -1395,21 +1517,28 @@ void RecoClassifyAllSimplified() {
         // Discriminate abs 0p from charge exchange //
         //////////////////////////////////////////////
 
-        if (p0 > p1 && p0 > p2) {
+        double max_prob = std::max({p0, p1, p2, p3});
+
+        if (p0 == max_prob) {
             // classify as pion abs 0p
             hPionAbs0p->Fill(backgroundType);
 
             hPionAbs0pKE->Fill(energyAtVertex);
             if (backgroundType == 0) {
                 hPionAbs0pKETrue->Fill(energyAtVertex);
+                hBestAbs0pAbs0p->Fill(p0);
             } else if (backgroundType == 1) {
                 hPionAbs0pKEAbsNp->Fill(energyAtVertex);
+                hBestAbs0pAbsNp->Fill(p0);
             } else if (backgroundType == 7) {
                 hPionAbs0pKEChExch->Fill(energyAtVertex);
+                hBestAbs0pChExch->Fill(p0);
             } else if (backgroundType == 13 || backgroundType == 14) {
                 hPionAbs0pKEScatter->Fill(energyAtVertex);
+                hBestAbs0pScatter->Fill(p0);
             } else if (backgroundType == 2) {
                 hPionAbs0pKEMuon->Fill(energyAtVertex);
+                hBestAbs0pMuon->Fill(p0);
 
                 if (muonType == 0) {
                     hPionAbs0pKEMuonTG->Fill(energyAtVertex);
@@ -1420,8 +1549,10 @@ void RecoClassifyAllSimplified() {
                 }
             } else if (backgroundType == 3) {
                 hPionAbs0pKEElectron->Fill(energyAtVertex);
+                hBestAbs0pElectron->Fill(p0);
             } else {
                 hPionAbs0pKEOther->Fill(energyAtVertex);
+                hBestAbs0pOther->Fill(p0);
             }
 
             if (backgroundType == 0) {
@@ -1439,27 +1570,49 @@ void RecoClassifyAllSimplified() {
             }
 
             continue;
-        } else if (p1 > p0 && p1 > p2) {
+        } else if (p1 == max_prob) {
             // classify as electron shower
-        } else if (p2 > p0 && p2 > p1) {
+            if (backgroundType == 0) {
+                hBestElectronAbs0p->Fill(p1);
+            } else if (backgroundType == 1) {
+                hBestElectronAbsNp->Fill(p1);
+            } else if (backgroundType == 7) {
+                hBestElectronChExch->Fill(p1);
+            } else if (backgroundType == 13 || backgroundType == 14) {
+                hBestElectronScatter->Fill(p1);
+            } else if (backgroundType == 2) {
+                hBestElectronMuon->Fill(p1);
+            } else if (backgroundType == 3) {
+                hBestElectronElectron->Fill(p1);
+            } else {
+                hBestElectronOther->Fill(p1);
+            }
+        } else if (p2 == max_prob) {
             // classify as charge exchange
             hPionChExch->Fill(backgroundType);
 
             hPionChExchKE->Fill(energyAtVertex);
             if (backgroundType == 0) {
                 hPionChExchKEAbs0p->Fill(energyAtVertex);
+                hBestChExchAbs0p->Fill(p2);
             } else if (backgroundType == 1) {
                 hPionChExchKEAbsNp->Fill(energyAtVertex);
+                hBestChExchAbsNp->Fill(p2);
             } else if (backgroundType == 7) {
                 hPionChExchKETrue->Fill(energyAtVertex);
+                hBestChExchChExch->Fill(p2);
             } else if (backgroundType == 13 || backgroundType == 14) {
                 hPionChExchKEScatter->Fill(energyAtVertex);
+                hBestChExchScatter->Fill(p2);
             } else if (backgroundType == 2) {
                 hPionChExchKEMuon->Fill(energyAtVertex);
+                hBestChExchMuon->Fill(p2);
             } else if (backgroundType == 3) {
                 hPionChExchKEElectron->Fill(energyAtVertex);
+                hBestChExchElectron->Fill(p2);
             } else {
                 hPionChExchKEOther->Fill(energyAtVertex);
+                hBestChExchOther->Fill(p2);
             }
 
             if (backgroundType == 0) {
@@ -1483,6 +1636,23 @@ void RecoClassifyAllSimplified() {
             }
 
             continue;
+        } else if (p3 == max_prob) {
+            // classify as remaining scattering
+            if (backgroundType == 0) {
+                hBestScatterAbs0p->Fill(p3);
+            } else if (backgroundType == 1) {
+                hBestScatterAbsNp->Fill(p3);
+            } else if (backgroundType == 7) {
+                hBestScatterChExch->Fill(p3);
+            } else if (backgroundType == 13 || backgroundType == 14) {
+                hBestScatterScatter->Fill(p3);
+            } else if (backgroundType == 2) {
+                hBestScatterMuon->Fill(p3);
+            } else if (backgroundType == 3) {
+                hBestScatterElectron->Fill(p3);
+            } else {
+                hBestScatterOther->Fill(p3);
+            }
         }
 
         /////////////////////
@@ -1713,9 +1883,9 @@ void RecoClassifyAllSimplified() {
     std::cout << std::endl;
     std::cout << "Total charge exchange events: " << chExchAll << std::endl;
     std::cout << "  At least one photon in reduced volume: " << chExchContainedRedVol << ", " << ((double) chExchContainedRedVol / (double) chExchAll) * 100 << "%" << std::endl;
-    std::cout << "  At least one photon in cylinder: " << chExchContainedCylinder << ", " << ((double) chExchContainedCylinder / (double) chExchAll) * 100 << "%" << std::endl;
-    std::cout << std::endl;
     std::cout << "  At least one photon contained in reduced volume correctly tagged: " << chExchContainedRedVolReco << ", " << ((double) chExchContainedRedVolReco / (double) chExchContainedRedVol) * 100 << "%" << std::endl;
+    std::cout << std::endl;
+    std::cout << "  At least one photon in cylinder: " << chExchContainedCylinder << ", " << ((double) chExchContainedCylinder / (double) chExchAll) * 100 << "%" << std::endl;
     std::cout << "  At least one photon contained in cylinder correctly tagged: " << chExchContainedCylinderReco << ", " << ((double) chExchContainedCylinderReco / (double) chExchContainedCylinder) * 100 << "%" << std::endl;
 
     //////////////////////////////////
@@ -2192,7 +2362,13 @@ void RecoClassifyAllSimplified() {
         {hTruePionAbs0pCrossSection, hUnSmearedPionAbs0pCrossSection},
         {hTruePionAbsNpCrossSection, hUnSmearedPionAbsNpCrossSection},
         {hTruePionScatterCrossSection, hUnSmearedPionScatterCrossSection},
-        {hTruePionChExchCrossSection, hUnSmearedPionChExchCrossSection}
+        {hTruePionChExchCrossSection, hUnSmearedPionChExchCrossSection},
+
+        // BDT probabilities
+        {hBestAbs0pAbs0p, hBestAbs0pAbsNp, hBestAbs0pMuon, hBestAbs0pElectron, hBestAbs0pScatter, hBestAbs0pChExch, hBestAbs0pOther},
+        {hBestChExchAbs0p, hBestChExchAbsNp, hBestChExchMuon, hBestChExchElectron, hBestChExchScatter, hBestChExchChExch, hBestChExchOther},
+        {hBestScatterAbs0p, hBestScatterAbsNp, hBestScatterMuon, hBestScatterElectron, hBestScatterScatter, hBestScatterChExch, hBestScatterOther},
+        {hBestElectronAbs0p, hBestElectronAbsNp, hBestElectronMuon, hBestElectronElectron, hBestElectronScatter, hBestElectronChExch, hBestElectronOther}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2236,7 +2412,13 @@ void RecoClassifyAllSimplified() {
         {"True (t)", "Unf. (t)"},
         {"True (t)", "Unf. (t)"},
         {"True (t)", "Unf. (t)"},
-        {"True (t)", "Unf. (t)"}
+        {"True (t)", "Unf. (t)"},
+
+        // BDT probabilities
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -2280,7 +2462,13 @@ void RecoClassifyAllSimplified() {
         "CrossSection/UnSmearedPionAbs0pCrossSection",
         "CrossSection/UnSmearedPionAbsNpCrossSection",
         "CrossSection/UnSmearedPionScatterCrossSection",
-        "CrossSection/UnSmearedPionChExchCrossSection"
+        "CrossSection/UnSmearedPionChExchCrossSection",
+
+        // BDT probabilities
+        "BDTScores/Abs0pTrue",
+        "BDTScores/ChExchTrue",
+        "BDTScores/ScatterTrue",
+        "BDTScores/ElectronTrue"
     };
 
     std::vector<TString> XLabels = {
@@ -2324,7 +2512,13 @@ void RecoClassifyAllSimplified() {
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
-        "Kinetic energy [MeV]"
+        "Kinetic energy [MeV]",
+
+        // BDT probabilities
+        "Probability",
+        "Probability",
+        "Probability",
+        "Probability"
     };
 
     std::vector<TString> YLabels = {
@@ -2368,7 +2562,13 @@ void RecoClassifyAllSimplified() {
         "Cross section [barn] per 50 MeV",
         "Cross section [barn] per 50 MeV",
         "Cross section [barn] per 50 MeV",
-        "Cross section [barn] per 50 MeV"
+        "Cross section [barn] per 50 MeV",
+
+        // BDT probabilities
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts"
     };
 
     std::vector<bool> PlotStacked = {
@@ -2412,7 +2612,13 @@ void RecoClassifyAllSimplified() {
         false,
         false,
         false,
-        false
+        false,
+
+        // BDT probabilities
+        true,
+        true,
+        true,
+        true
     };
 
     std::vector<std::vector<bool>> PlotsAsPoints = {
@@ -2456,7 +2662,13 @@ void RecoClassifyAllSimplified() {
         {false, true},
         {false, true},
         {false, true},
-        {false, true}
+        {false, true},
+
+        // BDT probabilities
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false}
     };
 
     // Add each unfolded histogram as a single plot group for plotting

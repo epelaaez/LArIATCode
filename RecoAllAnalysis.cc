@@ -775,14 +775,14 @@ void RecoAllAnalysis() {
 
     TH2D* hElectronShowerDaughtersTrueIncident = new TH2D(
         "hElectronShowerDaughtersTrueIncident",
-        "hElectronShowerDaughtersTrueIncident;true daughter_{x} - WC_{x};true daughter_{y} - WC_{y}",
+        "hElectronShowerDaughtersTrueIncident;true daughter_{x} - WC_{x} [cm];true daughter_{y} - WC_{y} [cm]",
         50, -15, 15,
         50, -15, 15
     );
 
     TH2D* hElectronShowerDaughtersRecoIncident = new TH2D(
         "hElectronShowerDaughtersRecoIncident",
-        "hElectronShowerDaughtersRecoIncident;reco daughter_{x} - WC_{x};reco daughter_{y} - WC_{y}",
+        "hElectronShowerDaughtersRecoIncident;reco daughter_{x} - WC_{x} [cm];reco daughter_{y} - WC_{y} [cm]",
         50, -15, 15,
         50, -15, 15
     );
