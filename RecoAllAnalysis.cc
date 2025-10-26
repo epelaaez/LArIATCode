@@ -34,7 +34,7 @@ void RecoAllAnalysis() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/RecoAllAnalysis/";
 
     // Load root file
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo.root"; 
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo2.root"; 
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
@@ -57,8 +57,7 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("isData", &isData);
 
     // Signal information
-    bool isPionAbsorptionSignal; int backgroundType, numVisibleProtons; 
-    tree->SetBranchAddress("isPionAbsorptionSignal", &isPionAbsorptionSignal);
+    int backgroundType, numVisibleProtons; 
     tree->SetBranchAddress("backgroundType", &backgroundType);
     tree->SetBranchAddress("numVisibleProtons", &numVisibleProtons);
 
@@ -297,12 +296,29 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("fHitChargeCol", &fHitChargeCol);
     tree->SetBranchAddress("hitWC2TPCKey", &hitWC2TPCKey);
 
-    // Retrieve histograms
-    TH1D* hTotalEvents = (TH1D*) Directory->Get<TH1D>("hTotalEvents");
+    // Information about post-scattering interactions
+    std::vector<int>*                 secondaryInteractionTypes = nullptr;
+    std::vector<int>*                 secondaryInteractionTrkID = nullptr;
+    std::vector<double>*              secondaryInteractionInteractingKE = nullptr;
+    std::vector<double>*              secondaryInteractionAngle = nullptr;
+    std::vector<double>*              secondaryInteractionXPosition = nullptr;
+    std::vector<double>*              secondaryInteractionYPosition = nullptr;
+    std::vector<double>*              secondaryInteractionZPosition = nullptr;
+    std::vector<std::vector<double>>* secondaryIncidentKEContributions = nullptr;
+    tree->SetBranchAddress("secondaryInteractionTypes", &secondaryInteractionTypes);
+    tree->SetBranchAddress("secondaryInteractionTrkID", &secondaryInteractionTrkID);
+    tree->SetBranchAddress("secondaryInteractionInteractingKE", &secondaryInteractionInteractingKE);
+    tree->SetBranchAddress("secondaryInteractionAngle", &secondaryInteractionAngle);
+    tree->SetBranchAddress("secondaryInteractionXPosition", &secondaryInteractionXPosition);
+    tree->SetBranchAddress("secondaryInteractionYPosition", &secondaryInteractionYPosition);
+    tree->SetBranchAddress("secondaryInteractionZPosition", &secondaryInteractionZPosition);
+    tree->SetBranchAddress("secondaryIncidentKEContributions", &secondaryIncidentKEContributions);
 
     ///////////////////////
     // Create histograms //
     ///////////////////////
+
+    TH1D* hTotalEvents = new TH1D("hTotalEvents", "hTotalEvents", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
     TH1D *hRecoAbsorption   = new TH1D("hRecoAbsorption", "hRecoAbsorption;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D *hRecoAbsorption0p = new TH1D("hRecoAbsorption0p", "hRecoAbsorption0p;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
@@ -967,11 +983,50 @@ void RecoAllAnalysis() {
         // Sanity check
         removeRepeatedPoints(WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ);
 
-        // Label background type as 0 for 0p signal and 1 for Np signal
-        if (isPionAbsorptionSignal) {
-            if (numVisibleProtons == 0) backgroundType = 0;
-            if (numVisibleProtons > 0)  backgroundType = 1;
+        // Scattering only if degree > THRESHOLD
+        double scatteringAngle = -9999;
+        if (backgroundType == 12 || backgroundType == 6) {
+            if (backgroundType == 12) {
+                scatteringAngle = trajectoryInteractionAngle;
+            } else if (backgroundType == 6) {
+                scatteringAngle = truthScatteringAngle;
+            }
+
+            if (scatteringAngle < SCATTERING_ANGLE_THRESHOLD) {
+                // Use secondary interaction
+                for (int iInteraction = 0; iInteraction < secondaryInteractionTypes->size(); ++iInteraction) {
+                    int currentInteraction = secondaryInteractionTypes->at(iInteraction);
+                    scatteringAngle        = secondaryInteractionAngle->at(iInteraction);
+
+                    // for (int iContribution = 0; iContribution < secondaryIncidentKEContributions->at(iInteraction).size(); ++iContribution) {
+                    //     trueIncidentKEContributions->push_back(secondaryIncidentKEContributions->at(iInteraction)[iContribution]);
+                    // }
+
+                    if (
+                        (currentInteraction == 6 || currentInteraction == 12) &&
+                        scatteringAngle < SCATTERING_ANGLE_THRESHOLD
+                    ) {
+                        // We want to keep going
+                        continue;
+                    } else {
+                        // We found non-scattering interaction or scattering interaction 
+                        // with angle above our threshold value
+                        backgroundType       = currentInteraction;
+                        truthPrimaryVertexKE = secondaryInteractionInteractingKE->at(iInteraction);
+
+                        truthPrimaryVertexX = secondaryInteractionXPosition->at(iInteraction);
+                        truthPrimaryVertexY = secondaryInteractionYPosition->at(iInteraction);
+                        truthPrimaryVertexZ = secondaryInteractionZPosition->at(iInteraction);
+                        break;
+                    }
+                }
+            } else {
+                // If initial interaction has valid angle, just correct interaction KE for 
+                // elastic scattering interactions
+                if (backgroundType == 12) truthPrimaryVertexKE = trajectoryInteractionKE;
+            }
         }
+        hTotalEvents->Fill(backgroundType);
 
         // Categorize scatterings into 0p and Np scatterings
         int scatteringType = -1; // -1: not scattering, 0: 0p scattering, 1: Np scattering

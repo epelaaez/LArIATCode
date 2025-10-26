@@ -1,3 +1,5 @@
+import numpy as np
+
 # TPC fiducial volume
 RminX =  5.0
 RmaxX = 42.0
@@ -29,3 +31,6 @@ EVENTS_TO_READ = 50_000
 
 # Parameters for BDT training variables
 RECO_TRKS_SAVE = 5
+
+# Parameter for scattering acceptance
+MIN_SCATTER_ANGLE = 5 * (np.pi / 180)

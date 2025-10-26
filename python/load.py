@@ -93,7 +93,6 @@ def get_avg_direction(x, y, z):
     
     return np.average(direction, axis=0)
 
-
 def clean_up(df):
     # Get rid of entries with no matched WC2TPC track
     df = df[df["WC2TPCtrkID"] != -99999].copy()
@@ -101,6 +100,28 @@ def clean_up(df):
     # Keep track of events we want to reject
     is_beamline_electron_idx = []
     has_secondary_part_idx   = []
+
+    # Fix scatterings
+    for i, row in df.iterrows():
+        # Allow scatterings with more than a predetermined angle
+        if (row["backgroundType"] == 6) or (row["backgroundType"] == 12):
+            validScatter = False
+            if (row["backgroundType"] == 6) and (row["truthScatteringAngle"] > constants.MIN_SCATTER_ANGLE):
+                validScatter = True
+            if (row["backgroundType"] == 12) and (row["trajectoryInteractionAngle"] > constants.MIN_SCATTER_ANGLE):
+                validScatter = True
+
+            if not validScatter:
+                for interaction_idx in range(len(row["secondaryInteractionTypes"])):
+                    next_interaction  = row["secondaryInteractionTypes"][interaction_idx]
+                    interaction_angle = row["secondaryInteractionAngle"][interaction_idx] 
+
+                    if ((next_interaction == 6) or (next_interaction == 12)) and (interaction_angle < constants.MIN_SCATTER_ANGLE):
+                        continue
+                    else:
+                        validScatter = True
+                        df.at[i, "backgroundType"] = next_interaction
+                        break
 
     for i, row in df.iterrows():
         # Get WC2TPC positions
@@ -253,7 +274,7 @@ def clean_up(df):
 
 if (__name__ == "__main__"):
     filepath = "/exp/lariat/app/users/epelaez/files"
-    filename = "RecoNNAllEval_histo.root:RecoNNAllEval"
+    filename = "RecoNNAllEval_histo2.root:RecoNNAllEval"
     treename = "RecoNNAllEvalTree"
 
     with uproot.open(f"{filepath}/{filename}") as file:
@@ -279,6 +300,5 @@ if (__name__ == "__main__"):
         df = clean_up(df)
 
         print(f"Entries after cleanup: {df.shape[0]}")
-
         # Save the DataFrame to a pickle file
         df.to_pickle("files/train_chexch_abs_data.pkl")

@@ -113,7 +113,11 @@ if (__name__ == "__main__"):
     K = 4
     
     # Select features and target
-    X = df.drop(columns=["backgroundType", "target", "event"])
+    columns_to_drop = ["backgroundType", "target", "event"]
+    # columns_to_drop += ["WC2TPCBeginX", "WC2TPCBeginY", "WC2TPCBeginZ", "WC2TPCEndX", "WC2TPCEndY", "WC2TPCEndZ"]
+    # for i in range(5):
+    #     columns_to_drop += [f"recoTrkBeginX_{i}", f"recoTrkBeginY_{i}", f"recoTrkBeginZ_{i}", f"recoTrkEndX_{i}", f"recoTrkEndY_{i}", f"recoTrkEndZ_{i}"]
+    X = df.drop(columns=columns_to_drop)
     y = df["target"]
 
     # Split into train and test sets
@@ -132,12 +136,12 @@ if (__name__ == "__main__"):
     model = xgb.XGBClassifier(
         num_class=K,
         n_estimators=10000,
-        learning_rate=0.02,
-        early_stopping_rounds=400,
-        subsample=0.75,
+        learning_rate=0.03,
+        early_stopping_rounds=200,
+        subsample=0.70,
         reg_lambda=0.5,
         reg_alpha=0.3,
-        gamma=0.5,
+        gamma=0.1,
         objective='multi:softprob',
         eval_metric=['mlogloss', 'merror'],
     )

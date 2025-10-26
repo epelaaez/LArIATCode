@@ -35,7 +35,7 @@ void RecoClassifyAllSimplified() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/ClassifyAllSimplified/";
 
     // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo.root";
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo2.root";
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
@@ -53,8 +53,7 @@ void RecoClassifyAllSimplified() {
     tree->SetBranchAddress("isData", &isData);
 
     // Signal information
-    bool isPionAbsorptionSignal; int backgroundType, numVisibleProtons; 
-    tree->SetBranchAddress("isPionAbsorptionSignal", &isPionAbsorptionSignal);
+    int backgroundType, numVisibleProtons; 
     tree->SetBranchAddress("backgroundType", &backgroundType);
     tree->SetBranchAddress("numVisibleProtons", &numVisibleProtons);
 
@@ -277,11 +276,30 @@ void RecoClassifyAllSimplified() {
     tree->SetBranchAddress("primariesEndZ", &primariesEndZ);
     tree->SetBranchAddress("primariesID", &primariesID);
 
+    // Information about post-scattering interactions
+    std::vector<int>*                 secondaryInteractionTypes = nullptr;
+    std::vector<int>*                 secondaryInteractionTrkID = nullptr;
+    std::vector<double>*              secondaryInteractionInteractingKE = nullptr;
+    std::vector<double>*              secondaryInteractionAngle = nullptr;
+    std::vector<double>*              secondaryInteractionXPosition = nullptr;
+    std::vector<double>*              secondaryInteractionYPosition = nullptr;
+    std::vector<double>*              secondaryInteractionZPosition = nullptr;
+    std::vector<std::vector<double>>* secondaryIncidentKEContributions = nullptr;
+    tree->SetBranchAddress("secondaryInteractionTypes", &secondaryInteractionTypes);
+    tree->SetBranchAddress("secondaryInteractionTrkID", &secondaryInteractionTrkID);
+    tree->SetBranchAddress("secondaryInteractionInteractingKE", &secondaryInteractionInteractingKE);
+    tree->SetBranchAddress("secondaryInteractionAngle", &secondaryInteractionAngle);
+    tree->SetBranchAddress("secondaryInteractionXPosition", &secondaryInteractionXPosition);
+    tree->SetBranchAddress("secondaryInteractionYPosition", &secondaryInteractionYPosition);
+    tree->SetBranchAddress("secondaryInteractionZPosition", &secondaryInteractionZPosition);
+    tree->SetBranchAddress("secondaryIncidentKEContributions", &secondaryIncidentKEContributions);
+
     /////////////////////////////////
     // Files for event information //
     /////////////////////////////////
 
     std::ofstream outFileChExchBkg("files/ClassifyAll/ChExchBackground.txt");
+    std::ofstream outFileAbs0pBkg("files/ClassifyAll/Abs0pBackground.txt");
     TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "UPDATE");
 
     ///////////////////////
@@ -533,6 +551,26 @@ void RecoClassifyAllSimplified() {
     TH1D* hBestElectronChExch   = new TH1D("hBestElectronChExch", "hBestElectronChExch;;", PROB_DIVISIONS, 0, 1);
     TH1D* hBestElectronOther    = new TH1D("hBestElectronOther", "hBestElectronOther;;", PROB_DIVISIONS, 0, 1);
 
+    ////////////////////////////////
+    // Study unreconstructed hits //
+    ////////////////////////////////
+
+    TH1D* hHitClusterSizesAbs0p    = new TH1D("hHitClusterSizesAbs0p", "hHitClusterSizesAbs0p;;", 25, 0, 20);
+    TH1D* hHitClusterSizesAbsNp    = new TH1D("hHitClusterSizesAbsNp", "hHitClusterSizesAbsNp;;", 25, 0, 20);
+    TH1D* hHitClusterSizesMuon     = new TH1D("hHitClusterSizesMuon", "hHitClusterSizesMuon;;", 25, 0, 20);
+    TH1D* hHitClusterSizesElectron = new TH1D("hHitClusterSizesElectron", "hHitClusterSizesElectron;;", 25, 0, 20);
+    TH1D* hHitClusterSizesScatter  = new TH1D("hHitClusterSizesScatter", "hHitClusterSizesScatter;;", 25, 0, 20);
+    TH1D* hHitClusterSizesChExch   = new TH1D("hHitClusterSizesChExch", "hHitClusterSizesChExch;;", 25, 0, 20);
+    TH1D* hHitClusterSizesOther    = new TH1D("hHitClusterSizesOther", "hHitClusterSizesOther;;", 25, 0, 20);
+
+    TH1D* hLargeHitClusterAbs0p    = new TH1D("hLargeHitClusterAbs0p", "hLargeHitClusterAbs0p;;", 5, 0, 5);
+    TH1D* hLargeHitClusterAbsNp    = new TH1D("hLargeHitClusterAbsNp", "hLargeHitClusterAbsNp;;", 5, 0, 5);
+    TH1D* hLargeHitClusterMuon     = new TH1D("hLargeHitClusterMuon", "hLargeHitClusterMuon;;", 5, 0, 5);
+    TH1D* hLargeHitClusterElectron = new TH1D("hLargeHitClusterElectron", "hLargeHitClusterElectron;;", 5, 0, 5);
+    TH1D* hLargeHitClusterScatter  = new TH1D("hLargeHitClusterScatter", "hLargeHitClusterScatter;;", 5, 0, 5);
+    TH1D* hLargeHitClusterChExch   = new TH1D("hLargeHitClusterChExch", "hLargeHitClusterChExch;;", 5, 0, 5);
+    TH1D* hLargeHitClusterOther    = new TH1D("hLargeHitClusterOther", "hLargeHitClusterOther;;", 5, 0, 5);
+
     //////////////
     // Matrices //
     //////////////
@@ -648,6 +686,8 @@ void RecoClassifyAllSimplified() {
     int chExchContainedRedVolReco   = 0;
     int chExchContainedCylinderReco = 0;
 
+    int scatteringsModified = 0;
+
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
@@ -750,7 +790,7 @@ void RecoClassifyAllSimplified() {
 
             if (obtainedProbabilities) hMCShowerProb->Fill(showerProb);
 
-            int smallTracksComp = 0; 
+            int smallTracksComp = 0;
             int tracksNearVertexComp = 0;
             int numTGTracksComp = 0;
             int smallTracksTPCStart = 0;
@@ -851,9 +891,56 @@ void RecoClassifyAllSimplified() {
         // Save truth information //
         ////////////////////////////
 
-        // Set correct primary vertex KE for elastic scattering
-        if (backgroundType == 12) {
-            truthPrimaryVertexKE = trajectoryInteractionKE;
+        // Scattering only if degree > THRESHOLD
+        double scatteringAngle = -9999;
+        if (backgroundType == 12 || backgroundType == 6) {
+            if (backgroundType == 12) {
+                scatteringAngle = trajectoryInteractionAngle;
+            } else if (backgroundType == 6) {
+                scatteringAngle = truthScatteringAngle;
+            }
+
+            // std::cout << "Initial scattering angle: " << scatteringAngle * (180 / TMath::Pi()) << " for interaction " << backgroundType << std::endl;
+
+            if (scatteringAngle < SCATTERING_ANGLE_THRESHOLD) {
+                scatteringsModified++;
+
+                // Use secondary interaction
+                for (int iInteraction = 0; iInteraction < secondaryInteractionTypes->size(); ++iInteraction) {
+                    int currentInteraction = secondaryInteractionTypes->at(iInteraction);
+                    scatteringAngle        = secondaryInteractionAngle->at(iInteraction);
+
+                    for (int iContribution = 0; iContribution < secondaryIncidentKEContributions->at(iInteraction).size(); ++iContribution) {
+                        trueIncidentKEContributions->push_back(secondaryIncidentKEContributions->at(iInteraction)[iContribution]);
+                    }
+
+                    // std::cout << "  Current interaction: " << currentInteraction << ", scattering angle: " << scatteringAngle * (180 / TMath::Pi()) << std::endl;
+
+                    if (
+                        (currentInteraction == 6 || currentInteraction == 12) &&
+                        scatteringAngle < SCATTERING_ANGLE_THRESHOLD
+                    ) {
+                        // We want to keep going
+                        continue;
+                    } else {
+                        // We found non-scattering interaction or scattering interaction 
+                        // with angle above our threshold value
+                        backgroundType       = currentInteraction;
+                        truthPrimaryVertexKE = secondaryInteractionInteractingKE->at(iInteraction);
+
+                        truthPrimaryVertexX = secondaryInteractionXPosition->at(iInteraction);
+                        truthPrimaryVertexY = secondaryInteractionYPosition->at(iInteraction);
+                        truthPrimaryVertexZ = secondaryInteractionZPosition->at(iInteraction);
+                        break;
+                    }
+                }
+                // std::cout << "new interaction : " << backgroundType << std::endl;
+                // std::cout << std::endl;
+            } else {
+                // If initial interaction has valid angle, just correct interaction KE for 
+                // elastic scattering interactions
+                if (backgroundType == 12) truthPrimaryVertexKE = trajectoryInteractionKE;
+            }
         }
 
         // More information about charge exchange events
@@ -956,18 +1043,18 @@ void RecoClassifyAllSimplified() {
 
         // In this script, we replace background types 6 and 12 with background types 13 and 14,
         // because we are interested in contamination across the bins that we are measuring
-        if (backgroundType == 12 || (backgroundType == 6 && numVisibleProtons == 0)) {
-            backgroundType = 13;
-        } else if (backgroundType == 6 && numVisibleProtons > 0) {
-            backgroundType = 14;
-        }
+        // if (backgroundType == 12 || (backgroundType == 6 && numVisibleProtons == 0)) {
+        //     backgroundType = 13;
+        // } else if (backgroundType == 6 && numVisibleProtons > 0) {
+        //     backgroundType = 14;
+        // }
 
         // Fill in true interaction energy histograms
         if (backgroundType == 0) {
             hTrueAbs0pKE->Fill(truthPrimaryVertexKE * 1000);
         } else if (backgroundType == 1) {
             hTrueAbsNpKE->Fill(truthPrimaryVertexKE * 1000);
-        } else if (backgroundType == 13 || backgroundType == 14) {
+        } else if (backgroundType == 6 || backgroundType == 12) {
             hTrueScatterKE->Fill(truthPrimaryVertexKE * 1000);
         } else if (backgroundType == 7) {
             hTrueChExchKE->Fill(truthPrimaryVertexKE * 1000);
@@ -983,7 +1070,7 @@ void RecoClassifyAllSimplified() {
             } else if (backgroundType == 1) {
                 hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueAbsNpKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
-            } else if (backgroundType == 13 || backgroundType == 14) {
+            } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueScatterKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 7) {
@@ -1140,7 +1227,7 @@ void RecoClassifyAllSimplified() {
             } else if (backgroundType == 1) {
                 hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueAbsNpKERejElectron->Fill(truthPrimaryVertexKE * 1000);
-            } else if (backgroundType == 13 || backgroundType == 14) {
+            } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueScatterKERejElectron->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 7) {
@@ -1164,7 +1251,7 @@ void RecoClassifyAllSimplified() {
         //     } else if (backgroundType == 1) {
         //         hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
         //         hTrueAbsNpKERejElectron->Fill(truthPrimaryVertexKE * 1000);
-        //     } else if (backgroundType == 13 || backgroundType == 14) {
+        //     } else if (backgroundType == 6 || backgroundType == 12) {
         //         hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
         //         hTrueScatterKERejElectron->Fill(truthPrimaryVertexKE * 1000);
         //     } else if (backgroundType == 7) {
@@ -1278,7 +1365,7 @@ void RecoClassifyAllSimplified() {
             } else if (backgroundType == 1) {
                 hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueAbsNpKERejRedVol->Fill(truthPrimaryVertexKE * 1000);
-            } else if (backgroundType == 13 || backgroundType == 14) {
+            } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueScatterKERejRedVol->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 7) {
@@ -1296,7 +1383,7 @@ void RecoClassifyAllSimplified() {
             } else if (backgroundType == 1) {
                 hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueAbsNpKERejPID->Fill(truthPrimaryVertexKE * 1000);
-            } else if (backgroundType == 13 || backgroundType == 14) {
+            } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueScatterKERejPID->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 7) {
@@ -1416,7 +1503,7 @@ void RecoClassifyAllSimplified() {
                 } else if (backgroundType == 1) {
                     hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
                     hTrueAbsNpKERejManyPions->Fill(truthPrimaryVertexKE * 1000);
-                } else if (backgroundType == 13 || backgroundType == 14) {
+                } else if (backgroundType == 6 || backgroundType == 12) {
                     hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                     hTrueScatterKERejManyPions->Fill(truthPrimaryVertexKE * 1000);
                 } else if (backgroundType == 7) {
@@ -1436,7 +1523,7 @@ void RecoClassifyAllSimplified() {
                 hPionScatterKEAbsNp->Fill(energyAtVertex);
             } else if (backgroundType == 7) {
                 hPionScatterKEChExch->Fill(energyAtVertex);
-            } else if (backgroundType == 13 || backgroundType == 14) {
+            } else if (backgroundType == 6 || backgroundType == 12) {
                 hPionScatterKETrue->Fill(energyAtVertex);
             } else if (backgroundType == 2) {
                 hPionScatterKEMuon->Fill(energyAtVertex);
@@ -1460,7 +1547,7 @@ void RecoClassifyAllSimplified() {
             } else if (backgroundType == 1) {
                 hTrueAbsNpKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
                 if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
-            } else if (backgroundType == 13 || backgroundType == 14) {
+            } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
                 if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
             } else if (backgroundType == 7) {
@@ -1485,7 +1572,7 @@ void RecoClassifyAllSimplified() {
                 hPionAbsNpKETrue->Fill(energyAtVertex);
             } else if (backgroundType == 7) {
                 hPionAbsNpKEChExch->Fill(energyAtVertex);
-            } else if (backgroundType == 13 || backgroundType == 14) {
+            } else if (backgroundType == 6 || backgroundType == 12) {
                 hPionAbsNpKEScatter->Fill(energyAtVertex);
             } else if (backgroundType == 2) {
                 hPionAbsNpKEMuon->Fill(energyAtVertex);
@@ -1501,7 +1588,7 @@ void RecoClassifyAllSimplified() {
             } else if (backgroundType == 1) {
                 hTrueAbsNpKEAsAbsNp->Fill(truthPrimaryVertexKE * 1000);
                 if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
-            } else if (backgroundType == 13 || backgroundType == 14) {
+            } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKEAsAbsNp->Fill(truthPrimaryVertexKE * 1000);
                 if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
             } else if (backgroundType == 7) {
@@ -1512,195 +1599,6 @@ void RecoClassifyAllSimplified() {
             continue;
         }
         hNotPionAbsNp->Fill(backgroundType);
-
-        //////////////////////////////////////////////
-        // Discriminate abs 0p from charge exchange //
-        //////////////////////////////////////////////
-
-        double max_prob = std::max({p0, p1, p2, p3});
-
-        if (p0 == max_prob) {
-            // classify as pion abs 0p
-            hPionAbs0p->Fill(backgroundType);
-
-            hPionAbs0pKE->Fill(energyAtVertex);
-            if (backgroundType == 0) {
-                hPionAbs0pKETrue->Fill(energyAtVertex);
-                hBestAbs0pAbs0p->Fill(p0);
-            } else if (backgroundType == 1) {
-                hPionAbs0pKEAbsNp->Fill(energyAtVertex);
-                hBestAbs0pAbsNp->Fill(p0);
-            } else if (backgroundType == 7) {
-                hPionAbs0pKEChExch->Fill(energyAtVertex);
-                hBestAbs0pChExch->Fill(p0);
-            } else if (backgroundType == 13 || backgroundType == 14) {
-                hPionAbs0pKEScatter->Fill(energyAtVertex);
-                hBestAbs0pScatter->Fill(p0);
-            } else if (backgroundType == 2) {
-                hPionAbs0pKEMuon->Fill(energyAtVertex);
-                hBestAbs0pMuon->Fill(p0);
-
-                if (muonType == 0) {
-                    hPionAbs0pKEMuonTG->Fill(energyAtVertex);
-                } else if (muonType == 1) {
-                    hPionAbs0pKEMuonDecay->Fill(energyAtVertex);
-                } else if (muonType == 2) {
-                    hPionAbs0pKEMuonCAR->Fill(energyAtVertex);
-                }
-            } else if (backgroundType == 3) {
-                hPionAbs0pKEElectron->Fill(energyAtVertex);
-                hBestAbs0pElectron->Fill(p0);
-            } else {
-                hPionAbs0pKEOther->Fill(energyAtVertex);
-                hBestAbs0pOther->Fill(p0);
-            }
-
-            if (backgroundType == 0) {
-                hTrueAbs0pKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-            } else if (backgroundType == 13 || backgroundType == 14) {
-                hTrueScatterKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-            } else if (backgroundType == 7) {
-                hTrueChExchKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-            }
-
-            continue;
-        } else if (p1 == max_prob) {
-            // classify as electron shower
-            if (backgroundType == 0) {
-                hBestElectronAbs0p->Fill(p1);
-            } else if (backgroundType == 1) {
-                hBestElectronAbsNp->Fill(p1);
-            } else if (backgroundType == 7) {
-                hBestElectronChExch->Fill(p1);
-            } else if (backgroundType == 13 || backgroundType == 14) {
-                hBestElectronScatter->Fill(p1);
-            } else if (backgroundType == 2) {
-                hBestElectronMuon->Fill(p1);
-            } else if (backgroundType == 3) {
-                hBestElectronElectron->Fill(p1);
-            } else {
-                hBestElectronOther->Fill(p1);
-            }
-        } else if (p2 == max_prob) {
-            // classify as charge exchange
-            hPionChExch->Fill(backgroundType);
-
-            hPionChExchKE->Fill(energyAtVertex);
-            if (backgroundType == 0) {
-                hPionChExchKEAbs0p->Fill(energyAtVertex);
-                hBestChExchAbs0p->Fill(p2);
-            } else if (backgroundType == 1) {
-                hPionChExchKEAbsNp->Fill(energyAtVertex);
-                hBestChExchAbsNp->Fill(p2);
-            } else if (backgroundType == 7) {
-                hPionChExchKETrue->Fill(energyAtVertex);
-                hBestChExchChExch->Fill(p2);
-            } else if (backgroundType == 13 || backgroundType == 14) {
-                hPionChExchKEScatter->Fill(energyAtVertex);
-                hBestChExchScatter->Fill(p2);
-            } else if (backgroundType == 2) {
-                hPionChExchKEMuon->Fill(energyAtVertex);
-                hBestChExchMuon->Fill(p2);
-            } else if (backgroundType == 3) {
-                hPionChExchKEElectron->Fill(energyAtVertex);
-                hBestChExchElectron->Fill(p2);
-            } else {
-                hPionChExchKEOther->Fill(energyAtVertex);
-                hBestChExchOther->Fill(p2);
-            }
-
-            if (backgroundType == 0) {
-                hTrueAbs0pKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
-            } else if (backgroundType == 13 || backgroundType == 14) {
-                hTrueScatterKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
-            } else if (backgroundType == 7) {
-                hTrueChExchKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
-            }
-
-            if (chExchInsideCylinder) {
-                chExchContainedCylinderReco++;
-            } else if (chExchInsideRedVol) {
-                chExchContainedRedVolReco++;
-            }
-
-            continue;
-        } else if (p3 == max_prob) {
-            // classify as remaining scattering
-            if (backgroundType == 0) {
-                hBestScatterAbs0p->Fill(p3);
-            } else if (backgroundType == 1) {
-                hBestScatterAbsNp->Fill(p3);
-            } else if (backgroundType == 7) {
-                hBestScatterChExch->Fill(p3);
-            } else if (backgroundType == 13 || backgroundType == 14) {
-                hBestScatterScatter->Fill(p3);
-            } else if (backgroundType == 2) {
-                hBestScatterMuon->Fill(p3);
-            } else if (backgroundType == 3) {
-                hBestScatterElectron->Fill(p3);
-            } else {
-                hBestScatterOther->Fill(p3);
-            }
-        }
-
-        /////////////////////
-        // Small track cut //
-        /////////////////////
-
-        // if (numSmallTracks > SMALL_TRACK_CUT_CHEX) {
-        //     // Tag as charge exchange
-        //     hPionChExch->Fill(backgroundType);
-
-        //     hPionChExchKE->Fill(energyAtVertex);
-        //     if (backgroundType == 0) {
-        //         hPionChExchKEAbs0p->Fill(energyAtVertex);
-        //     } else if (backgroundType == 1) {
-        //         hPionChExchKEAbsNp->Fill(energyAtVertex);
-        //     } else if (backgroundType == 7) {
-        //         hPionChExchKETrue->Fill(energyAtVertex);
-        //     } else if (backgroundType == 13 || backgroundType == 14) {
-        //         hPionChExchKEScatter->Fill(energyAtVertex);
-        //     } else if (backgroundType == 2) {
-        //         hPionChExchKEMuon->Fill(energyAtVertex);
-        //     } else if (backgroundType == 3) {
-        //         hPionChExchKEElectron->Fill(energyAtVertex);
-        //     } else {
-        //         hPionChExchKEOther->Fill(energyAtVertex);
-        //     }
-
-        //     if (backgroundType == 0) {
-        //         hTrueAbs0pKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
-        //     } else if (backgroundType == 1) {
-        //         hTrueAbsNpKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
-        //     } else if (backgroundType == 13 || backgroundType == 14) {
-        //         hTrueScatterKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
-        //     } else if (backgroundType == 7) {
-        //         hTrueChExchKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
-        //     }
-
-        //     outFileChExchBkg << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
-        //     outFileChExchBkg << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
-        //     outFileChExchBkg << std::endl;
-
-        //     continue;
-        // }
-        // hNotChExch->Fill(backgroundType);
 
         /////////////////////////////////////////
         // Selection on non-reconstructed hits //
@@ -1754,7 +1652,7 @@ void RecoClassifyAllSimplified() {
             float thisHitCharge    = fHitCharge->at(thisHitKey);
             float thisHitChargeCol = fHitChargeCol->at(thisHitKey);
 
-            if (usedHits.count(thisHitKey)) continue;
+            if (usedHits.count(thisHitKey)) continue;            
             
             std::vector<int> clusterKeys;
             std::vector<float> clusterX;
@@ -1809,9 +1707,42 @@ void RecoClassifyAllSimplified() {
         // Get data for cut
         int numLargeClusters = 0;
         for (int i = 0; i < hitClusters.size(); ++i) {
-            float maxWire = *std::max_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
-            float minWire = *std::min_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
+            double maxWire = *std::max_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
+            double minWire = *std::min_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
             if (std::abs(maxWire - minWire) > LARGE_CLUSTER_THRESHOLD) numLargeClusters++;
+
+            double clusterSize = std::abs(maxWire - minWire);
+            if (backgroundType == 0) {
+                hHitClusterSizesAbs0p->Fill(clusterSize);
+            } else if (backgroundType == 1) {
+                hHitClusterSizesAbsNp->Fill(clusterSize);
+            } else if (backgroundType == 2) {
+                hHitClusterSizesMuon->Fill(clusterSize);
+            } else if (backgroundType == 3) {
+                hHitClusterSizesElectron->Fill(clusterSize);
+            } else if (backgroundType == 6 || backgroundType == 12) {
+                hHitClusterSizesScatter->Fill(clusterSize);
+            } else if (backgroundType == 7) {
+                hHitClusterSizesChExch->Fill(clusterSize);
+            } else {
+                hHitClusterSizesOther->Fill(clusterSize);
+            }
+        }
+
+        if (backgroundType == 0) {
+            hLargeHitClusterAbs0p->Fill(numLargeClusters);
+        } else if (backgroundType == 1) {
+            hLargeHitClusterAbsNp->Fill(numLargeClusters);
+        } else if (backgroundType == 7) {
+            hLargeHitClusterChExch->Fill(numLargeClusters);
+        } else if (backgroundType == 6 || backgroundType == 12) {
+            hLargeHitClusterScatter->Fill(numLargeClusters);
+        } else if (backgroundType == 2) {
+            hLargeHitClusterMuon->Fill(numLargeClusters);
+        } else if (backgroundType == 3) {
+            hLargeHitClusterElectron->Fill(numLargeClusters);
+        } else {
+            hLargeHitClusterOther->Fill(numLargeClusters);
         }
 
         // if (numLargeClusters < NUM_CLUSTERS_THRESHOLD) {
@@ -1824,7 +1755,7 @@ void RecoClassifyAllSimplified() {
         //         hPionAbs0pKEAbsNp->Fill(energyAtVertex);
         //     } else if (backgroundType == 7) {
         //         hPionAbs0pKEChExch->Fill(energyAtVertex);
-        //     } else if (backgroundType == 13 || backgroundType == 14) {
+        //     } else if (backgroundType == 6 || backgroundType == 12) {
         //         hPionAbs0pKEScatter->Fill(energyAtVertex);
         //     } else if (backgroundType == 2) {
         //         hPionAbs0pKEMuon->Fill(energyAtVertex);
@@ -1840,7 +1771,7 @@ void RecoClassifyAllSimplified() {
         //     } else if (backgroundType == 1) {
         //         hTrueAbsNpKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
         //         if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-        //     } else if (backgroundType == 13 || backgroundType == 14) {
+        //     } else if (backgroundType == 6 || backgroundType == 12) {
         //         hTrueScatterKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
         //         if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
         //     } else if (backgroundType == 7) {
@@ -1852,6 +1783,209 @@ void RecoClassifyAllSimplified() {
         // }
         // hNotPionAbs0p->Fill(backgroundType);
 
+        /////////////////////////////////////////////////
+        // Discriminate remaining from charge exchange //
+        /////////////////////////////////////////////////
+
+        double max_prob = std::max({p0, p1, p2, p3});
+
+        if (p0 == max_prob) {
+            // classify as pion abs 0p
+            if (p0 < 0.5) continue;
+
+            hPionAbs0p->Fill(backgroundType);
+
+            hPionAbs0pKE->Fill(energyAtVertex);
+            if (backgroundType == 0) {
+                hPionAbs0pKETrue->Fill(energyAtVertex);
+                hBestAbs0pAbs0p->Fill(p0);
+            } else if (backgroundType == 1) {
+                hPionAbs0pKEAbsNp->Fill(energyAtVertex);
+                hBestAbs0pAbsNp->Fill(p0);
+            } else if (backgroundType == 7) {
+                hPionAbs0pKEChExch->Fill(energyAtVertex);
+                hBestAbs0pChExch->Fill(p0);
+            } else if (backgroundType == 6 || backgroundType == 12) {
+                hPionAbs0pKEScatter->Fill(energyAtVertex);
+                hBestAbs0pScatter->Fill(p0);
+            } else if (backgroundType == 2) {
+                hPionAbs0pKEMuon->Fill(energyAtVertex);
+                hBestAbs0pMuon->Fill(p0);
+
+                if (muonType == 0) {
+                    hPionAbs0pKEMuonTG->Fill(energyAtVertex);
+                } else if (muonType == 1) {
+                    hPionAbs0pKEMuonDecay->Fill(energyAtVertex);
+                } else if (muonType == 2) {
+                    hPionAbs0pKEMuonCAR->Fill(energyAtVertex);
+                }
+            } else if (backgroundType == 3) {
+                hPionAbs0pKEElectron->Fill(energyAtVertex);
+                hBestAbs0pElectron->Fill(p0);
+            } else {
+                hPionAbs0pKEOther->Fill(energyAtVertex);
+                hBestAbs0pOther->Fill(p0);
+            }
+
+            if (backgroundType == 0) {
+                hTrueAbs0pKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            } else if (backgroundType == 6 || backgroundType == 12) {
+                hTrueScatterKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            }
+
+            outFileAbs0pBkg << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
+            outFileAbs0pBkg << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
+            outFileAbs0pBkg << " Scattering angle (degrees): " << scatteringAngle * (180 / TMath::Pi()) << std::endl;
+            outFileAbs0pBkg << " Tagged pions: " << totalTaggedPions << std::endl;
+            outFileAbs0pBkg << " Tagged protons: " << totalTaggedProtons << std::endl;
+            outFileAbs0pBkg << " Reco trks in cylinder: " << bdt_numRecoTrksInCylinder << std::endl;
+            outFileAbs0pBkg << std::endl;
+
+            continue;
+        } else if (p1 == max_prob) {
+            // classify as electron shower
+            if (backgroundType == 0) {
+                hBestElectronAbs0p->Fill(p1);
+            } else if (backgroundType == 1) {
+                hBestElectronAbsNp->Fill(p1);
+            } else if (backgroundType == 7) {
+                hBestElectronChExch->Fill(p1);
+            } else if (backgroundType == 6 || backgroundType == 12) {
+                hBestElectronScatter->Fill(p1);
+            } else if (backgroundType == 2) {
+                hBestElectronMuon->Fill(p1);
+            } else if (backgroundType == 3) {
+                hBestElectronElectron->Fill(p1);
+            } else {
+                hBestElectronOther->Fill(p1);
+            }
+
+            continue;
+        } else if (p2 == max_prob) {
+            // classify as charge exchange
+            hPionChExch->Fill(backgroundType);
+
+            hPionChExchKE->Fill(energyAtVertex);
+            if (backgroundType == 0) {
+                hPionChExchKEAbs0p->Fill(energyAtVertex);
+                hBestChExchAbs0p->Fill(p2);
+            } else if (backgroundType == 1) {
+                hPionChExchKEAbsNp->Fill(energyAtVertex);
+                hBestChExchAbsNp->Fill(p2);
+            } else if (backgroundType == 7) {
+                hPionChExchKETrue->Fill(energyAtVertex);
+                hBestChExchChExch->Fill(p2);
+            } else if (backgroundType == 6 || backgroundType == 12) {
+                hPionChExchKEScatter->Fill(energyAtVertex);
+                hBestChExchScatter->Fill(p2);
+            } else if (backgroundType == 2) {
+                hPionChExchKEMuon->Fill(energyAtVertex);
+                hBestChExchMuon->Fill(p2);
+            } else if (backgroundType == 3) {
+                hPionChExchKEElectron->Fill(energyAtVertex);
+                hBestChExchElectron->Fill(p2);
+            } else {
+                hPionChExchKEOther->Fill(energyAtVertex);
+                hBestChExchOther->Fill(p2);
+            }
+
+            if (backgroundType == 0) {
+                hTrueAbs0pKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
+            } else if (backgroundType == 6 || backgroundType == 12) {
+                hTrueScatterKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
+            }
+
+            if (chExchInsideCylinder) {
+                chExchContainedCylinderReco++;
+            } else if (chExchInsideRedVol) {
+                chExchContainedRedVolReco++;
+            }
+
+            continue;
+        } else if (p3 == max_prob) {
+            // classify as remaining scattering
+            if (backgroundType == 0) {
+                hBestScatterAbs0p->Fill(p3);
+            } else if (backgroundType == 1) {
+                hBestScatterAbsNp->Fill(p3);
+            } else if (backgroundType == 7) {
+                hBestScatterChExch->Fill(p3);
+            } else if (backgroundType == 6 || backgroundType == 12) {
+                hBestScatterScatter->Fill(p3);
+            } else if (backgroundType == 2) {
+                hBestScatterMuon->Fill(p3);
+            } else if (backgroundType == 3) {
+                hBestScatterElectron->Fill(p3);
+            } else {
+                hBestScatterOther->Fill(p3);
+            }
+
+            continue;
+        }
+
+        /////////////////////
+        // Small track cut //
+        /////////////////////
+
+        // if (numSmallTracks > SMALL_TRACK_CUT_CHEX) {
+        //     // Tag as charge exchange
+        //     hPionChExch->Fill(backgroundType);
+
+        //     hPionChExchKE->Fill(energyAtVertex);
+        //     if (backgroundType == 0) {
+        //         hPionChExchKEAbs0p->Fill(energyAtVertex);
+        //     } else if (backgroundType == 1) {
+        //         hPionChExchKEAbsNp->Fill(energyAtVertex);
+        //     } else if (backgroundType == 7) {
+        //         hPionChExchKETrue->Fill(energyAtVertex);
+        //     } else if (backgroundType == 6 || backgroundType == 12) {
+        //         hPionChExchKEScatter->Fill(energyAtVertex);
+        //     } else if (backgroundType == 2) {
+        //         hPionChExchKEMuon->Fill(energyAtVertex);
+        //     } else if (backgroundType == 3) {
+        //         hPionChExchKEElectron->Fill(energyAtVertex);
+        //     } else {
+        //         hPionChExchKEOther->Fill(energyAtVertex);
+        //     }
+
+        //     if (backgroundType == 0) {
+        //         hTrueAbs0pKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
+        //     } else if (backgroundType == 1) {
+        //         hTrueAbsNpKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
+        //     } else if (backgroundType == 6 || backgroundType == 12) {
+        //         hTrueScatterKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
+        //     } else if (backgroundType == 7) {
+        //         hTrueChExchKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
+        //     }
+
+        //     outFileChExchBkg << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
+        //     outFileChExchBkg << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
+        //     outFileChExchBkg << std::endl;
+
+        //     continue;
+        // }
+        // hNotChExch->Fill(backgroundType);
+
         // Anything left here is rejected
         if (backgroundType == 0) {
             hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
@@ -1859,7 +1993,7 @@ void RecoClassifyAllSimplified() {
         } else if (backgroundType == 1) {
             hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
             hTrueAbsNpKERejClusters->Fill(truthPrimaryVertexKE * 1000);
-        } else if (backgroundType == 13 || backgroundType == 14) {
+        } else if (backgroundType == 6 || backgroundType == 12) {
             hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
             hTrueScatterKERejClusters->Fill(truthPrimaryVertexKE * 1000);
         } else if (backgroundType == 7) {
@@ -1887,6 +2021,9 @@ void RecoClassifyAllSimplified() {
     std::cout << std::endl;
     std::cout << "  At least one photon in cylinder: " << chExchContainedCylinder << ", " << ((double) chExchContainedCylinder / (double) chExchAll) * 100 << "%" << std::endl;
     std::cout << "  At least one photon contained in cylinder correctly tagged: " << chExchContainedCylinderReco << ", " << ((double) chExchContainedCylinderReco / (double) chExchContainedCylinder) * 100 << "%" << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "Number of scattering events modified: " << scatteringsModified << std::endl;
 
     //////////////////////////////////
     // Breakdown of rejected events //
@@ -1921,13 +2058,13 @@ void RecoClassifyAllSimplified() {
     std::cout << "Events not classified as pion Np absorption (no secondary particles): " << std::endl;
     printBackgroundInfo(hNotPionAbsNp, std::cout);
 
+    std::cout << std::endl;
+    std::cout << "Events not classified as pion 0p absorption (too many non-reconstructed hit clusters): " << std::endl;
+    printBackgroundInfo(hNotPionAbs0p, std::cout);
+
     // std::cout << std::endl;
     // std::cout << "Events not classified as charge exchange (not enough small tracks): " << std::endl;
     // printBackgroundInfo(hNotChExch, std::cout);
-
-    // std::cout << std::endl;
-    // std::cout << "Events not classified as pion 0p absorption (too many non-reconstructed hit clusters): " << std::endl;
-    // printBackgroundInfo(hNotPionAbs0p, std::cout);
 
     ///////////////////////////////////////////
     // Information about events at each step //
@@ -1953,8 +2090,8 @@ void RecoClassifyAllSimplified() {
     std::cout << std::endl;
     std::cout << "Pion scattering total reco " << hPionScatter->Integral() << " with composition: " << std::endl;
     printBackgroundInfo(hPionScatter, std::cout);
-    std::cout << "Purity: " << (hPionScatter->GetBinContent(14) + hPionScatter->GetBinContent(15)) / hPionScatter->Integral() << std::endl;
-    std::cout << "Efficiency: " << (hPionScatter->GetBinContent(14) + hPionScatter->GetBinContent(15)) / (hTotalEvents->GetBinContent(14) + hTotalEvents->GetBinContent(15)) << std::endl;
+    std::cout << "Purity: " << (hPionScatter->GetBinContent(7) + hPionScatter->GetBinContent(13)) / hPionScatter->Integral() << std::endl;
+    std::cout << "Efficiency: " << (hPionScatter->GetBinContent(7) + hPionScatter->GetBinContent(13)) / (hTotalEvents->GetBinContent(7) + hTotalEvents->GetBinContent(13)) << std::endl;
 
     std::cout << std::endl;
     std::cout << "Pion charge exchange total reco " << hPionChExch->Integral() << " with composition: " << std::endl;
@@ -2368,7 +2505,11 @@ void RecoClassifyAllSimplified() {
         {hBestAbs0pAbs0p, hBestAbs0pAbsNp, hBestAbs0pMuon, hBestAbs0pElectron, hBestAbs0pScatter, hBestAbs0pChExch, hBestAbs0pOther},
         {hBestChExchAbs0p, hBestChExchAbsNp, hBestChExchMuon, hBestChExchElectron, hBestChExchScatter, hBestChExchChExch, hBestChExchOther},
         {hBestScatterAbs0p, hBestScatterAbsNp, hBestScatterMuon, hBestScatterElectron, hBestScatterScatter, hBestScatterChExch, hBestScatterOther},
-        {hBestElectronAbs0p, hBestElectronAbsNp, hBestElectronMuon, hBestElectronElectron, hBestElectronScatter, hBestElectronChExch, hBestElectronOther}
+        {hBestElectronAbs0p, hBestElectronAbsNp, hBestElectronMuon, hBestElectronElectron, hBestElectronScatter, hBestElectronChExch, hBestElectronOther},
+
+        // Unreconstructed hits
+        {hHitClusterSizesAbs0p, hHitClusterSizesAbsNp, hHitClusterSizesMuon, hHitClusterSizesElectron, hHitClusterSizesScatter, hHitClusterSizesChExch, hHitClusterSizesOther},
+        {hLargeHitClusterAbs0p, hLargeHitClusterAbsNp, hLargeHitClusterMuon, hLargeHitClusterElectron, hLargeHitClusterScatter, hLargeHitClusterChExch, hLargeHitClusterOther}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2417,6 +2558,10 @@ void RecoClassifyAllSimplified() {
         // BDT probabilities
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+
+        // Unreconstructed hits
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"}
     };
@@ -2468,7 +2613,11 @@ void RecoClassifyAllSimplified() {
         "BDTScores/Abs0pTrue",
         "BDTScores/ChExchTrue",
         "BDTScores/ScatterTrue",
-        "BDTScores/ElectronTrue"
+        "BDTScores/ElectronTrue",
+
+        // Unreconstructed hits
+        "Hits/ClusterSizes",
+        "Hits/NumLargeClusters"
     };
 
     std::vector<TString> XLabels = {
@@ -2518,7 +2667,11 @@ void RecoClassifyAllSimplified() {
         "Probability",
         "Probability",
         "Probability",
-        "Probability"
+        "Probability",
+
+        // Unreconstructed hits
+        "Cluster size [cm]",
+        "Number of large clusters"
     };
 
     std::vector<TString> YLabels = {
@@ -2567,6 +2720,10 @@ void RecoClassifyAllSimplified() {
         // BDT probabilities
         "Counts",
         "Counts",
+        "Counts",
+        "Counts",
+
+        // Unreconstructed hits
         "Counts",
         "Counts"
     };
@@ -2618,6 +2775,10 @@ void RecoClassifyAllSimplified() {
         true,
         true,
         true,
+        true,
+
+        // Unreconstructed hits
+        true,
         true
     };
 
@@ -2667,6 +2828,10 @@ void RecoClassifyAllSimplified() {
         // BDT probabilities
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+
+        // Unreconstructed hits
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false}
     };

@@ -134,6 +134,9 @@ const double NeutronMass = 939.5654133;  // in MeV
 // Threshold for individual dE/dx hits
 double HIT_DEDX_THRESHOLD = 40.;
 
+// Threshold for scattering angle
+double SCATTERING_ANGLE_THRESHOLD = 5.0 * (TMath::Pi() / 180);
+
 // Bins for energy bins
 static const std::vector<double> ARRAY_KE_BINS = {0., 100., 150., 200., 250., 300., 350., 400., 450., 500., 600.};
 static const int                   NUM_BINS_KE = ARRAY_KE_BINS.size() - 1;
