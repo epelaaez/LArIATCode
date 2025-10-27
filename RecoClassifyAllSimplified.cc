@@ -300,6 +300,7 @@ void RecoClassifyAllSimplified() {
 
     std::ofstream outFileChExchBkg("files/ClassifyAll/ChExchBackground.txt");
     std::ofstream outFileAbs0pBkg("files/ClassifyAll/Abs0pBackground.txt");
+    std::ofstream outFileLowProb("files/ClassifyAll/LowProbability.txt");
     TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "UPDATE");
 
     ///////////////////////
@@ -1789,9 +1790,29 @@ void RecoClassifyAllSimplified() {
 
         double max_prob = std::max({p0, p1, p2, p3});
 
+        if (max_prob < 0.5) {
+            outFileLowProb << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
+            outFileLowProb << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
+            outFileLowProb << " Scattering angle " << scatteringAngle * (180 / TMath::Pi()) << std::endl;
+            outFileLowProb << " Max BDT probability: " << max_prob << std::endl;
+            outFileLowProb << " Trks in cylinder: " << bdt_numRecoTrksInCylinder << std::endl;
+
+            if (p0 == max_prob) {
+                outFileLowProb << " Tagged as pion abs 0p" << std::endl; 
+            } else if (p1 == max_prob) {
+                outFileLowProb << " Tagged as electron shower" << std::endl; 
+            } else if (p2 == max_prob) {
+                outFileLowProb << " Tagged as pion charge exchange" << std::endl; 
+            } else {
+                outFileLowProb << " Tagged as scattering" << std::endl; 
+            }
+            outFileLowProb << std::endl; 
+        }
+        
         if (p0 == max_prob) {
             // classify as pion abs 0p
             if (p0 < 0.5) continue;
+            if (bdt_numRecoTrksInCylinder > 0) continue;
 
             hPionAbs0p->Fill(backgroundType);
 
@@ -1916,6 +1937,14 @@ void RecoClassifyAllSimplified() {
             } else if (chExchInsideRedVol) {
                 chExchContainedRedVolReco++;
             }
+
+            outFileChExchBkg << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
+            outFileChExchBkg << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
+            outFileChExchBkg << " Scattering angle (degrees): " << scatteringAngle * (180 / TMath::Pi()) << std::endl;
+            outFileChExchBkg << " Tagged pions: " << totalTaggedPions << std::endl;
+            outFileChExchBkg << " Tagged protons: " << totalTaggedProtons << std::endl;
+            outFileChExchBkg << " Reco trks in cylinder: " << bdt_numRecoTrksInCylinder << std::endl;
+            outFileChExchBkg << std::endl;
 
             continue;
         } else if (p3 == max_prob) {
