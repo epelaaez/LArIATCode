@@ -164,7 +164,6 @@ void RecoAllAnalysis() {
     int truthPrimaryPDG, truthPrimaryID;
     double truthPrimaryVertexX, truthPrimaryVertexY, truthPrimaryVertexZ;
     double truthPrimaryIncidentKE, truthPrimaryVertexKE;
-    std::vector<int>*         truthPrimaryDaughtersID      = nullptr;
     std::vector<int>*         truthPrimaryDaughtersPDG     = nullptr;
     std::vector<std::string>* truthPrimaryDaughtersProcess = nullptr;
     std::vector<double>*      truthPrimaryDaughtersKE      = nullptr;
@@ -175,7 +174,6 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("truthPrimaryVertexX", &truthPrimaryVertexX);
     tree->SetBranchAddress("truthPrimaryVertexY", &truthPrimaryVertexY);
     tree->SetBranchAddress("truthPrimaryVertexZ", &truthPrimaryVertexZ);
-    tree->SetBranchAddress("truthPrimaryDaughtersID", &truthPrimaryDaughtersID);
     tree->SetBranchAddress("truthPrimaryDaughtersPDG", &truthPrimaryDaughtersPDG);
     tree->SetBranchAddress("truthPrimaryDaughtersProcess", &truthPrimaryDaughtersProcess);
     tree->SetBranchAddress("truthPrimaryDaughtersKE", &truthPrimaryDaughtersKE);
@@ -305,6 +303,9 @@ void RecoAllAnalysis() {
     std::vector<double>*              secondaryInteractionYPosition = nullptr;
     std::vector<double>*              secondaryInteractionZPosition = nullptr;
     std::vector<std::vector<double>>* secondaryIncidentKEContributions = nullptr;
+    std::vector<std::vector<int>>* secondaryInteractionDaughtersPDG = nullptr;
+    std::vector<std::vector<double>>* secondaryInteractionDaughtersKE = nullptr;
+    // std::vector<std::vector<std::string>>* secondaryInteractionDaughtersProcess = nullptr;
     tree->SetBranchAddress("secondaryInteractionTypes", &secondaryInteractionTypes);
     tree->SetBranchAddress("secondaryInteractionTrkID", &secondaryInteractionTrkID);
     tree->SetBranchAddress("secondaryInteractionInteractingKE", &secondaryInteractionInteractingKE);
@@ -313,6 +314,9 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("secondaryInteractionYPosition", &secondaryInteractionYPosition);
     tree->SetBranchAddress("secondaryInteractionZPosition", &secondaryInteractionZPosition);
     tree->SetBranchAddress("secondaryIncidentKEContributions", &secondaryIncidentKEContributions);
+    tree->SetBranchAddress("secondaryInteractionDaughtersPDG", &secondaryInteractionDaughtersPDG);
+    tree->SetBranchAddress("secondaryInteractionDaughtersKE", &secondaryInteractionDaughtersKE);
+    // tree->SetBranchAddress("secondaryInteractionDaughtersProcess", &secondaryInteractionDaughtersProcess);
 
     ///////////////////////
     // Create histograms //
@@ -357,6 +361,23 @@ void RecoAllAnalysis() {
     TH1D *hSecondaryMeanDEDXProtons = new TH1D("hSecondaryMeanDEDXProtons", "hSecondaryMeanDEDXProtons;;", 10, 0, 10);
     TH1D *hSecondaryMeanDEDXPions   = new TH1D("hSecondaryMeanDEDXPions", "hSecondaryMeanDEDXPions;;", 10, 0, 10);
     TH1D *hSecondaryMeanDEDXOthers  = new TH1D("hSecondaryMeanDEDXOthers", "hSecondaryMeanDEDXOthers;;", 10, 0, 10);
+
+    //////////////////////////////////////////////////
+    // Reconstruction power for secondary particles //
+    //////////////////////////////////////////////////
+
+    TH1D* hAllSecondaryPions  = new TH1D("hAllSecondaryPions", "hAllSecondaryPions;;", 20, 0, 0.5);
+    TH1D* hRecoSecondaryPions = new TH1D("hRecoSecondaryPions", "hRecoSecondaryPions;;", 20, 0, 0.5);
+
+    TH1D* hAllSecondaryProtons  = new TH1D("hAllSecondaryProtons", "hAllSecondaryProtons;;", 20, 0, 0.4);
+    TH1D* hRecoSecondaryProtons = new TH1D("hRecoSecondaryProtons", "hRecoSecondaryProtons", 20, 0, 0.4); 
+
+    TH2D* hScatteringVertexKEVsOutKE = new TH2D(
+        "hScatteringVertexKEVsOutKE", 
+        "hScatteringVertexKEVsOutKE;Vertex KE [GeV];Outgoing KE [GeV]", 
+        20, 0, 0.6,
+        20, 0, 0.6
+    );
 
     /////////////////////////////////////////////////////////////////////////////
     // Variables and histograms for local linearity derivative cut optimizaton //
@@ -561,6 +582,9 @@ void RecoAllAnalysis() {
     std::vector<double> BackgroundNpInelasticScatteringIncidentKE;
     std::vector<double> BackgroundNpInelasticScatteringVertexKE;
     std::vector<double> BackgroundNpInelasticScatteringOutgoingKE;
+
+    TH1D *hAllScatteringTotal         = new TH1D("hAllScatteringReconstructionTotal", "hAllScatteringReconstructionTotal;;", 20, 0, 0.4);
+    TH1D *hAllScatteringReconstructed = new TH1D("hAllScatteringReconstructionEfficiency", "hAllScatteringReconstructionEfficiency;;", 20, 0, 0.4);
 
     TH1D *hInelasticScatteringReconstructed = new TH1D("hInelasticScatteringReconstructionEfficiency", "hInelasticScatteringReconstructionEfficiency;;", 20, 0, 0.4);
     TH1D *hInelasticScatteringTotal         = new TH1D("hInelasticScatteringTotal", "hInelasticScatteringTotal;;", 20, 0, 0.4);
@@ -980,6 +1004,10 @@ void RecoAllAnalysis() {
         // Make it go faster
         // if (i > 10000) break;
 
+        std::vector<int>             thisEventPrimaryDaughterPDG = *truthPrimaryDaughtersPDG;
+        std::vector<double>           thisEventPrimaryDaughterKE = *truthPrimaryDaughtersKE;
+        // std::vector<std::string> thisEventPrimaryDaughterProcess = *truthPrimaryDaughtersProcess;
+
         // Sanity check
         removeRepeatedPoints(WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ);
 
@@ -1017,6 +1045,22 @@ void RecoAllAnalysis() {
                         truthPrimaryVertexX = secondaryInteractionXPosition->at(iInteraction);
                         truthPrimaryVertexY = secondaryInteractionYPosition->at(iInteraction);
                         truthPrimaryVertexZ = secondaryInteractionZPosition->at(iInteraction);
+
+                        thisEventPrimaryDaughterPDG     = secondaryInteractionDaughtersPDG->at(iInteraction);
+                        thisEventPrimaryDaughterKE      = secondaryInteractionDaughtersKE->at(iInteraction);
+                        // thisEventPrimaryDaughterProcess = secondaryInteractionDaughtersProcess->at(iInteraction);
+
+                        // Re-do variables (hacky)
+                        if (currentInteraction == 12) trajectoryInteractionAngle = scatteringAngle;
+                        else if (currentInteraction == 6) {
+                            truthScatteringAngle = scatteringAngle;
+                            for (int i = 0; i < thisEventPrimaryDaughterPDG.size(); ++i) {
+                                if (thisEventPrimaryDaughterPDG[i] == -211) {
+                                    truthScatteredPionKE = secondaryInteractionDaughtersKE->at(iInteraction)[i];
+                                    break;
+                                }
+                            }
+                        }
                         break;
                     }
                 }
@@ -1027,6 +1071,15 @@ void RecoAllAnalysis() {
             }
         }
         hTotalEvents->Fill(backgroundType);
+
+        // Get data about truth-level secondary particles: pions and protons
+        for (int i = 0; i < thisEventPrimaryDaughterPDG.size(); ++i) {
+            if (thisEventPrimaryDaughterPDG[i] == -211) {
+                hAllSecondaryPions->Fill(thisEventPrimaryDaughterKE[i]);
+            } else if (thisEventPrimaryDaughterPDG[i] == 2212) {
+                hAllSecondaryProtons->Fill(thisEventPrimaryDaughterKE[i]);
+            }
+        }
 
         // Categorize scatterings into 0p and Np scatterings
         int scatteringType = -1; // -1: not scattering, 0: 0p scattering, 1: Np scattering
@@ -1127,6 +1180,7 @@ void RecoAllAnalysis() {
             // Elastic scattering event
             hElasticScatteringAngle->Fill(trajectoryInteractionAngle * (180. / TMath::Pi()));
             hElasticScatteringVertexKE->Fill(trajectoryInteractionKE);
+            hAllScatteringTotal->Fill(trajectoryInteractionKE);
 
             hAllScatteringAngle->Fill(trajectoryInteractionAngle * (180. / TMath::Pi()));
             hAllScatteringVertexKE->Fill(trajectoryInteractionKE);
@@ -1145,6 +1199,7 @@ void RecoAllAnalysis() {
                         trajectoryInteractionZ
                     ) < VERTEX_RADIUS) // within 5 cm of scattering vertex
                 ) {
+                    hAllScatteringReconstructed->Fill(trajectoryInteractionKE);
                     hElasticScatteringRecoAngle->Fill(trajectoryInteractionAngle * (180. / TMath::Pi()));
                     hElasticScatteringRecoVertexKE->Fill(trajectoryInteractionKE);
                     hAllScatteringRecoAngle->Fill(trajectoryInteractionAngle * (180. / TMath::Pi()));
@@ -1155,6 +1210,7 @@ void RecoAllAnalysis() {
         } else if (backgroundType == 6) {
             // Inelastic scattering event
             hInelasticScatteringTotal->Fill(truthScatteredPionKE);
+            hAllScatteringTotal->Fill(truthScatteredPionKE);
             hInelasticScatteringVertexKE->Fill(truthPrimaryVertexKE);
             hInelasticScatteringAngle->Fill(truthScatteringAngle * (180. / TMath::Pi()));
             hInelasticScatteringEnergyDiff->Fill(truthPrimaryVertexKE - truthScatteredPionKE);
@@ -1166,14 +1222,25 @@ void RecoAllAnalysis() {
             InelasticScatteringVertexKE.push_back(truthPrimaryVertexKE);
             InelasticScatteringOutgoingKE.push_back(truthScatteredPionKE);
 
+            hScatteringVertexKEVsOutKE->Fill(truthPrimaryVertexKE, truthScatteredPionKE);
+
             for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
                 if (recoTrkID->at(iRecoTrk) == WC2TPCtrkID) continue;
                 
                 if (
-                    (matchedIdentity->at(iRecoTrk) == -211) &&       // pion
-                    (matchedProcess->at(iRecoTrk) == "pi-Inelastic") // inelastic process
+                    (matchedIdentity->at(iRecoTrk) == -211) &&          // pion
+                    (matchedProcess->at(iRecoTrk) == "pi-Inelastic") && // inelastic process
+                    (distance(
+                        recoBeginX->at(iRecoTrk),
+                        truthPrimaryVertexX,
+                        recoBeginY->at(iRecoTrk),
+                        truthPrimaryVertexY,
+                        recoBeginZ->at(iRecoTrk),
+                        truthPrimaryVertexZ
+                    ) < VERTEX_RADIUS)
                 ) {
                     hInelasticScatteringReconstructed->Fill(truthScatteredPionKE);
+                    hAllScatteringReconstructed->Fill(truthScatteredPionKE);
                     hInelasticScatteringRecoAngle->Fill(truthScatteringAngle * (180. / TMath::Pi()));
                     hInelasticScatteringRecoEnergyDiff->Fill(truthPrimaryVertexKE - truthScatteredPionKE);
 
@@ -1364,6 +1431,23 @@ void RecoAllAnalysis() {
 
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
+
+        // Study all reconstructed tracks
+        for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
+            if (recoTrkID->at(iRecoTrk) == WC2TPCtrkID) continue;
+
+            if (distance(
+                    recoBeginX->at(iRecoTrk),
+                    truthPrimaryVertexX,
+                    recoBeginY->at(iRecoTrk),
+                    truthPrimaryVertexY,
+                    recoBeginZ->at(iRecoTrk),
+                    truthPrimaryVertexZ
+                ) < VERTEX_RADIUS) {
+                    if (matchedIdentity->at(iRecoTrk) == -211) hRecoSecondaryPions->Fill(matchedKEnergy->at(iRecoTrk));
+                    if (matchedIdentity->at(iRecoTrk) == 2212) hRecoSecondaryProtons->Fill(matchedKEnergy->at(iRecoTrk));
+                }
+        }
 
         // Study tracks inside 10 cm cylinder around primary track
         int numTracksInCylinder = 0; int numSmallTracksInCylinder = 0;
@@ -2588,6 +2672,9 @@ void RecoAllAnalysis() {
     // Compute reco efficiency for scattering //
     ////////////////////////////////////////////
 
+    TEfficiency* hAllScatteringReconstructionEfficiency = nullptr;
+    hAllScatteringReconstructionEfficiency = new TEfficiency(*hAllScatteringReconstructed, *hAllScatteringTotal);
+
     TEfficiency* hInelasticScatteringReconstructionEfficiency = nullptr;
     hInelasticScatteringReconstructionEfficiency = new TEfficiency(*hInelasticScatteringReconstructed, *hInelasticScatteringTotal);
 
@@ -2610,6 +2697,7 @@ void RecoAllAnalysis() {
     hInelasticScatteringReconstructionEnergyDiff = new TEfficiency(*hInelasticScatteringRecoEnergyDiff, *hInelasticScatteringEnergyDiff);
 
     std::vector<TEfficiency*> EfficiencyPlots = {
+        hAllScatteringReconstructionEfficiency,
         hInelasticScatteringReconstructionEfficiency,
         hInelasticScatteringReconstructionEfficiency0pBkg,
         hInelasticScatteringReconstructionEfficiencyNpBkg,
@@ -2620,6 +2708,7 @@ void RecoAllAnalysis() {
     };
 
     std::vector<TString> EfficiencyPlotsTitles = {
+        "Scattering/RecoEfficiencyAllScatteredPions",
         "Scattering/RecoEfficiencyInelScatteredPions",
         "Scattering/RecoEfficiencyInelScatteredPions0pBkg",
         "Scattering/RecoEfficiencyInelScatteredPionsNpBkg",
@@ -2630,6 +2719,7 @@ void RecoAllAnalysis() {
     };
 
     std::vector<TString> EfficiencyPlotsXLabels = {
+        "Outgoing pion KE (GeV/c)",
         "Outgoing pion KE (GeV/c)",
         "Outgoing pion KE (GeV/c)",
         "Outgoing pion KE (GeV/c)",
@@ -3004,6 +3094,7 @@ void RecoAllAnalysis() {
         {hInelasticScatteringTotal0pBkg, hInelasticScatteringReconstructed0pBkg},
         {hInelasticScatteringTotalNpBkg, hInelasticScatteringReconstructedNpBkg},
         {hInelasticScatteringEnergyDiff, hInelasticScatteringRecoEnergyDiff},
+        {hAllScatteringTotal, hAllScatteringReconstructed},
 
         // Local linearity
         {hMinimumLinearity0p, hMinimumLinearity0pBackground},
@@ -3073,7 +3164,11 @@ void RecoAllAnalysis() {
         {hElectronShowerTrkContainedRatio},
 
         // Multiple primaries
-        {hNumPrimaries, hNumValidPrimaries}
+        {hNumPrimaries, hNumValidPrimaries},
+
+        // Reconstructed secondary particles
+        {hRecoSecondaryPions, hAllSecondaryPions},
+        {hRecoSecondaryProtons, hAllSecondaryProtons}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -3104,6 +3199,7 @@ void RecoAllAnalysis() {
         {"Reco 0p true", "Reco 0p bkg", "Reco Np true", "Reco Np bkg"},
 
         // Scattering reconstruction
+        {"All", "Reconstructed"},
         {"All", "Reconstructed"},
         {"All", "Reconstructed"},
         {"All", "Reconstructed"},
@@ -3177,7 +3273,11 @@ void RecoAllAnalysis() {
         {"\% contained"},
 
         // Multiple primaries
-        {"Total", "Valid"}
+        {"Total", "Valid"},
+
+        // Reconstructed secondary particles
+        {"Reco", "All"},
+        {"Reco", "All"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -3212,6 +3312,7 @@ void RecoAllAnalysis() {
         "Scattering/RecoInelScatteredPions0pBkg",
         "Scattering/RecoInelScatteredPionsNpBkg",
         "Scattering/RecoInelScatteredPionsEnergyDiff",
+        "Scattering/RecoAllScatteredPions",
 
         // Local linearity
         "LocalLinearity/MinLocalLinearity0pReco",
@@ -3281,7 +3382,11 @@ void RecoAllAnalysis() {
         "BeamlineShower/ElectronShowerCylinderContainedRatio",
 
         // Multiple primaries
-        "Primaries/NumPrimaries"
+        "Primaries/NumPrimaries",
+
+        // Reconstructed secondary particles
+        "SecondaryReco/RecoPions",
+        "SecondaryReco/RecoProtons"
     };
 
     std::vector<TString> XLabels = {
@@ -3316,6 +3421,7 @@ void RecoAllAnalysis() {
         "Outgoing pion energy (GeV/c)",
         "Outgoing pion energy (GeV/c)",
         "Energy diff. (GeV/c)",
+        "Outgoing pion energy (GeV/c)",
 
         // Local linearity
         "Minimum local linearity",
@@ -3385,7 +3491,11 @@ void RecoAllAnalysis() {
         "Track length (cm)",
 
         // Multiple primaries
-        "# of primaries"
+        "# of primaries",
+
+        // Reconstructed secondary particles
+        "Initial KE",
+        "Initial KE"
     };
 
     std::vector<TString> YLabels = {
@@ -3416,6 +3526,7 @@ void RecoAllAnalysis() {
         "Number of events",
 
         // Scattering reconstruction
+        "Number of tracks",
         "Number of tracks",
         "Number of tracks",
         "Number of tracks",
@@ -3489,6 +3600,10 @@ void RecoAllAnalysis() {
         "Counts",
 
         // Multiple primaries
+        "Counts",
+
+        // Reconstructed secondary particles
+        "Counts",
         "Counts"
     };
 
@@ -3520,6 +3635,7 @@ void RecoAllAnalysis() {
         false,
 
         // Scattering reconstruction
+        false,
         false,
         false,
         false,
@@ -3593,6 +3709,10 @@ void RecoAllAnalysis() {
         false,
 
         // Multiple primaries
+        false,
+
+        // Reconstructed secondary particles
+        false,
         false
     };
 
@@ -3636,6 +3756,7 @@ void RecoAllAnalysis() {
         hTotalBackgroundAllScatteringVertexKEVSAngle,
         h0pBackgroundAllScatteringVertexKEVSAngle,
         hNpBackgroundAllScatteringVertexKEVSAngle,
+        hScatteringVertexKEVsOutKE,
 
         // Hit clustering
         hHitClusterCut0pReco,
@@ -3677,6 +3798,7 @@ void RecoAllAnalysis() {
         "Scattering/2DTotalBackgroundAllScatteringVertexKEVSAngle",
         "Scattering/2D0pBackgroundAllScatteringVertexKEVSAngle",
         "Scattering/2DNpBackgroundAllScatteringVertexKEVSAngle",
+        "Scattering/2DInelasticVertexVSOutKE",
 
         // Hit clustering
         "HitClustering/2DHitClusterCut0pReco",
