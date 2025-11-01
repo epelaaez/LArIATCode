@@ -332,6 +332,10 @@ void RecoClassifyAllSimplified() {
     TH1D* hIncidentKEMuon     = new TH1D("hIncidentKEMuon", "hIncidentKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTrueIncidentKE     = new TH1D("hTrueIncidentKE", "hTrueIncidentKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
+    // True interacting flux
+    TH1D* hTrueAllKE   = new TH1D("hTrueAllKE", "hTrueAllKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueOtherKE = new TH1D("hTrueOtherKE", "hTrueOtherKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
     // Interacting pion abs 0p energy
     TH1D* hPionAbs0pKE         = new TH1D("hPionAbs0pKE", "hPionAbs0pKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hPionAbs0pKETrue     = new TH1D("hPionAbs0PKETrue", "hPionAbs0PKETrue;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
@@ -1051,16 +1055,28 @@ void RecoClassifyAllSimplified() {
         // }
 
         // Fill in true interaction energy histograms
+
         if (backgroundType == 0) {
             hTrueAbs0pKE->Fill(truthPrimaryVertexKE * 1000);
+            hTrueAllKE->Fill(truthPrimaryVertexKE * 1000);
         } else if (backgroundType == 1) {
             hTrueAbsNpKE->Fill(truthPrimaryVertexKE * 1000);
+            hTrueAllKE->Fill(truthPrimaryVertexKE * 1000);
         } else if (backgroundType == 6 || backgroundType == 12) {
             hTrueScatterKE->Fill(truthPrimaryVertexKE * 1000);
+            hTrueAllKE->Fill(truthPrimaryVertexKE * 1000);
         } else if (backgroundType == 7) {
             hTrueChExchKE->Fill(truthPrimaryVertexKE * 1000);
+            hTrueAllKE->Fill(truthPrimaryVertexKE * 1000);
+        } else if (
+            backgroundType == 8 ||
+            backgroundType == 9 ||
+            backgroundType == 10 ||
+            backgroundType == 11
+        ) {
+            hTrueOtherKE->Fill(truthPrimaryVertexKE * 1000);
+            hTrueAllKE->Fill(truthPrimaryVertexKE * 1000);
         }
-
         hTotalEvents->Fill(backgroundType);
 
         // If no track matched to wire-chamber, skip
@@ -2468,7 +2484,16 @@ void RecoClassifyAllSimplified() {
     // Make plots per 50 MeV //
     ///////////////////////////
 
-    // TODO: create function that scales histogram bins per 50 MeV
+    // TODO: create function that scales histogram bins per 50 MeV,
+    //       this is already done above for cross-sections, but have to do 
+    //       it for everything
+
+    ///////////////////////////////////
+    // Save histograms to text files //
+    ///////////////////////////////////
+
+    histoToText(hTrueAllKE, "/exp/lariat/app/users/epelaez/analysis/files/Flux/InteractingFlux.txt");
+    histoToText(hTrueIncidentKE, "/exp/lariat/app/users/epelaez/analysis/files/Flux/IncidentFlux.txt");
 
     //////////////////
     // Create plots //
@@ -2499,6 +2524,10 @@ void RecoClassifyAllSimplified() {
         {hPionScatterKETrue, hPionScatterKEAbs0p, hPionScatterKEAbsNp, hPionScatterKEChExch, hPionScatterKEMuon, hPionScatterKEElectron, hPionScatterKEOther},
         {hPionScatterKETrue, hPionScatterKEAbs0p, hPionScatterKEAbsNp, hPionScatterKEChExch, hPionScatterKEMuonTG, hPionScatterKEMuonDecay, hPionScatterKEMuonCAR, hPionScatterKEElectron, hPionScatterKEOther},
         {hPionChExchKETrue, hPionChExchKEAbs0p, hPionChExchKEAbsNp, hPionChExchKEScatter, hPionChExchKEMuon, hPionChExchKEElectron, hPionChExchKEOther},
+
+        // True interacting KE
+        {hTrueAllKE},
+        {hTrueAbs0pKE, hTrueAbsNpKE, hTrueScatterKE, hTrueChExchKE, hTrueOtherKE},
 
         // True events classified breakdown
         {hTrueAbs0pKEAsAbs0p, hTrueAbs0pKEAsAbsNp, hTrueAbs0pKEAsScatter, hTrueAbs0pKEAsChExch, hTrueAbs0pKERejected},
@@ -2554,6 +2583,10 @@ void RecoClassifyAllSimplified() {
         {"True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
         {"True", "Abs 0p", "Abs Np", "Scatter", "Muon", "Electron", "Other"},
 
+        // True interacting KE
+        {"All"},
+        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other"},
+
         // True events classified breakdown
         {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Rejected"},
         {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Rejected"},
@@ -2608,6 +2641,10 @@ void RecoClassifyAllSimplified() {
         "RecoInteracting/ScatterInteractingKEDetailed",
         "RecoInteracting/ChExchInteractingKE",
 
+        // True interacting KE
+        "TrueInteracting/AllInteracting",
+        "TrueInteracting/AllInteractingBreakdown",
+
         // True events classified breakdown
         "TrueInteracting/TrueAbs0pBreakdown",
         "TrueInteracting/TrueAbsNpBreakdown",
@@ -2659,6 +2696,10 @@ void RecoClassifyAllSimplified() {
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+
+        // True interacting KE
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
 
@@ -2716,6 +2757,10 @@ void RecoClassifyAllSimplified() {
         "Counts",
         "Counts",
 
+        // True interacting KE
+        "Counts",
+        "Counts",
+
         // True events classified breakdown
         "Counts",
         "Counts",
@@ -2767,6 +2812,10 @@ void RecoClassifyAllSimplified() {
         true,
         true,
         true,
+        true,
+        true,
+
+        // True interacting KE
         true,
         true,
 
@@ -2823,6 +2872,10 @@ void RecoClassifyAllSimplified() {
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
+
+        // True interacting KE
+        {false},
+        {false, false, false, false, false},
 
         // True events classified breakdown
         {false, false, false, false, false},

@@ -963,6 +963,23 @@ void removeRepeatedPoints(std::vector<double>* x, std::vector<double>* y, std::v
     }
 }
 
+void histoToText(const TH1D* hist, const std::string& filename) {
+    std::ofstream outfile(filename);
+    if (!outfile.is_open()) {
+        std::cerr << "Error: could not open file " << filename << std::endl;
+        return;
+    }
+
+    int nbins = hist->GetNbinsX();
+    for (int i = 1; i <= nbins; ++i) {
+        double bin_low  = hist->GetBinLowEdge(i);
+        double bin_high = hist->GetBinLowEdge(i + 1);
+        double count    = hist->GetBinContent(i);
+        outfile << bin_low << ", " << bin_high << ", " << count << "\n";
+    }
+    outfile.close();
+}
+
 ////////////////////
 // Geometry stuff //
 ////////////////////

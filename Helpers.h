@@ -264,6 +264,8 @@ void getBDTVariables(
     Float_t& bdt_numRecoTrksInCylinder
 );
 
+void histoToText(const TH1D* hist, const std::string& filename);
+
 bool IsPointInsideTrackCylinder(
     const std::vector<double>* primaryX,
     const std::vector<double>* primaryY,
