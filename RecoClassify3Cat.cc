@@ -514,13 +514,31 @@ void RecoClassify3Cat() {
     // Study unreconstructed hits //
     ////////////////////////////////
 
-    TH1D* hHitClusterSizesAbs0p    = new TH1D("hHitClusterSizesAbs0p", "hHitClusterSizesAbs0p;;", 25, 0, 20);
-    TH1D* hHitClusterSizesAbsNp    = new TH1D("hHitClusterSizesAbsNp", "hHitClusterSizesAbsNp;;", 25, 0, 20);
-    TH1D* hHitClusterSizesMuon     = new TH1D("hHitClusterSizesMuon", "hHitClusterSizesMuon;;", 25, 0, 20);
-    TH1D* hHitClusterSizesElectron = new TH1D("hHitClusterSizesElectron", "hHitClusterSizesElectron;;", 25, 0, 20);
-    TH1D* hHitClusterSizesScatter  = new TH1D("hHitClusterSizesScatter", "hHitClusterSizesScatter;;", 25, 0, 20);
-    TH1D* hHitClusterSizesChExch   = new TH1D("hHitClusterSizesChExch", "hHitClusterSizesChExch;;", 25, 0, 20);
-    TH1D* hHitClusterSizesOther    = new TH1D("hHitClusterSizesOther", "hHitClusterSizesOther;;", 25, 0, 20);
+    TH1D* hNegativeTimePrimaryHits = new TH1D("hNegativeTimePrimaryHits", "hNegativeTimePrimaryHits", 40, -20, 1);
+
+    TH1D* hUnRecoHitsAbs0p    = new TH1D("hUnRecoHitsAbs0p", "hUnRecoHitsAbs0p", 25, 0, 50);
+    TH1D* hUnRecoHitsAbsNp    = new TH1D("hUnRecoHitsAbsNp", "hUnRecoHitsAbsNp", 25, 0, 50);
+    TH1D* hUnRecoHitsMuon     = new TH1D("hUnRecoHitsMuon", "hUnRecoHitsMuon", 25, 0, 50);
+    TH1D* hUnRecoHitsElectron = new TH1D("hUnRecoHitsElectron", "hUnRecoHitsElectron", 25, 0, 50);
+    TH1D* hUnRecoHitsScatter  = new TH1D("hUnRecoHitsScatter", "hUnRecoHitsScatter", 25, 0, 50);
+    TH1D* hUnRecoHitsChExch   = new TH1D("hUnRecoHitsChExch", "hUnRecoHitsChExch", 25, 0, 50);
+    TH1D* hUnRecoHitsOther    = new TH1D("hUnRecoHitsOther", "hUnRecoHitsOther", 25, 0, 50);
+
+    TH1D* hHitClusterSizesAbs0p    = new TH1D("hHitClusterSizesAbs0p", "hHitClusterSizesAbs0p;;", 15, 0, 30);
+    TH1D* hHitClusterSizesAbsNp    = new TH1D("hHitClusterSizesAbsNp", "hHitClusterSizesAbsNp;;", 15, 0, 30);
+    TH1D* hHitClusterSizesMuon     = new TH1D("hHitClusterSizesMuon", "hHitClusterSizesMuon;;", 15, 0, 30);
+    TH1D* hHitClusterSizesElectron = new TH1D("hHitClusterSizesElectron", "hHitClusterSizesElectron;;", 15, 0, 30);
+    TH1D* hHitClusterSizesScatter  = new TH1D("hHitClusterSizesScatter", "hHitClusterSizesScatter;;", 15, 0, 30);
+    TH1D* hHitClusterSizesChExch   = new TH1D("hHitClusterSizesChExch", "hHitClusterSizesChExch;;", 15, 0, 30);
+    TH1D* hHitClusterSizesOther    = new TH1D("hHitClusterSizesOther", "hHitClusterSizesOther;;", 15, 0, 30);
+
+    TH1D* hNumClustersAbs0p    = new TH1D("hNumClustersAbs0p", "hNumClustersAbs0p;;", 10, 0, 10);
+    TH1D* hNumClustersAbsNp    = new TH1D("hNumClustersAbsNp", "hNumClustersAbsNp;;", 10, 0, 10);
+    TH1D* hNumClustersMuon     = new TH1D("hNumClustersMuon", "hNumClustersMuon;;", 10, 0, 10);
+    TH1D* hNumClustersElectron = new TH1D("hNumClustersElectron", "hNumClustersElectron;;", 10, 0, 10);
+    TH1D* hNumClustersScatter  = new TH1D("hNumClustersScatter", "hNumClustersScatter;;", 10, 0, 10);
+    TH1D* hNumClustersChExch   = new TH1D("hNumClustersChExch", "hNumClustersChExch;;", 10, 0, 10);
+    TH1D* hNumClustersOther    = new TH1D("hNumClustersOther", "hNumClustersOther;;", 10, 0, 10);
 
     TH1D* hLargeHitClusterAbs0p    = new TH1D("hLargeHitClusterAbs0p", "hLargeHitClusterAbs0p;;", 5, 0, 5);
     TH1D* hLargeHitClusterAbsNp    = new TH1D("hLargeHitClusterAbsNp", "hLargeHitClusterAbsNp;;", 5, 0, 5);
@@ -551,7 +569,7 @@ void RecoClassify3Cat() {
     TH1D* hMCNumWC2TPCMatch      = new TH1D("hMCNumWC2TPCMatch", "hMCNumWC2TPCMatch", 10, 0, 10);
     TH1D* hMCNumTracksInCylinder = new TH1D("hMCNumTracksInCylinder", "hMCNumTracksInCylinder", 10, 0, 10);
 
-    TH1D* hMCTGTrackLengths         = new TH1D("hMCTGTrackLengths", "hMCTGTrackLengths;;", 25, 0, 50);
+    TH1D* hMCTGTrackLengths         = new TH1D("hMCTGTrackLengths", "hMCTGTrackLengths;;", 25, 0, 500);
     TH1D* hMCTGSmallTracks          = new TH1D("hMCTGSmallTracks", "hMCTGSmallTracks;;", 10, 0, 10);
     TH1D* hMCTracksNearVertex       = new TH1D("hMCTracksNearVertex", "hMCTracksNearVertex;;", 10, 0, 10);
     TH1D* hMCTrackLengthsNearVertex = new TH1D("hMCTrackLengthsNearVertex", "hMCTrackLengthsNearVertex;;", 50, 0, 100);
@@ -563,6 +581,9 @@ void RecoClassify3Cat() {
 
     TH2D* hMCSmallVsTGTracks          = new TH2D("hMCSmallVsTGTracks", "MCSmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
     TH2D* hMCTGNumSmallTracksVsThresh = new TH2D("hMCTGNumSmallTracksVsThresh", "MCTGNumSmallTracksVsThresh;Small Track Length Threshold (cm);Num Small Tracks", 10, 0, 40, 15, 0, 15);
+
+    TH1D* hMCTGUnreconstructedHitsInduction  = new TH1D("hMCTGUnreconstructedHitsInduction", "hMCTGUnreconstructedHitsInduction;;", 25, 0, 50);
+    TH1D* hMCTGUnreconstructedHitsCollection = new TH1D("hMCTGUnreconstructedHitsCollection", "hMCTGUnreconstructedHitsCollection;;", 25, 0, 50);
 
     ///////////////////////////////////
     // Distribution of primary track //
@@ -647,6 +668,13 @@ void RecoClassify3Cat() {
 
     int scatteringsModified = 0;
 
+    int numEventsPrimaryReco  = 0;
+    int numEventsNoCollection = 0;
+    int numEventsNoInduction  = 0;
+    int numEventsNoEither     = 0;
+
+    int numEventsPrimaryHitNegativeTime = 0;
+
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
@@ -669,6 +697,9 @@ void RecoClassify3Cat() {
 
         // Make script go faster
         // if (i > 10000) break;
+
+        // Get unordered set for hits in tracks
+        std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
 
         // Sanity check
         removeRepeatedPoints(WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ);
@@ -736,9 +767,148 @@ void RecoClassify3Cat() {
             });
         }
 
+        //////////////////////////////////
+        // Look at unreconstructed hits //
+        //////////////////////////////////
+
+        // Units for coordinates:
+        //     W: (channel) * (channel width) = cm
+        //     X: (drift velocity) * (time) = (cm / us) * us = cm
+
+        // First, find hits near the primary track that were not
+        // reconstructed into any of the already existing tracks
+        std::vector<int> candidateHits;
+
+        int numTotalHitsNearPrimary  = 0;
+        int numUnRecoHitsNearPrimary = 0;
+        for (size_t iHit = 0; iHit < fHitKey->size(); ++iHit) {
+            // if (fHitPlane->at(iHit) == 1) continue;
+
+            double hitX     = fHitX->at(iHit);
+            double hitW     = fHitW->at(iHit);
+            int    hitPlane = fHitPlane->at(iHit);
+
+            if (isHitNearPrimary(
+                hitWC2TPCKey,
+                fHitX,
+                fHitW,
+                fHitPlane,
+                hitX,
+                hitW,
+                hitPlane,
+                DISTANCE_TO_PRIMARY_THRESHOLD,
+                true
+            )) {
+                numTotalHitsNearPrimary++;
+
+                // Skip hits already in tracks
+                if (hitsInTracks.count(iHit) > 0) continue;
+                numUnRecoHitsNearPrimary++;
+                candidateHits.push_back(iHit); 
+            }
+        }
+
+        // Now cluster using those hits as starting points
+        std::unordered_set<int> usedHits;
+        std::vector<HitCluster> hitClusters;
+        int nCandidateHits    = candidateHits.size();
+
+        // Hits in the same cluster must be separated by at most some number of wires
+        for (int iHit = 0; iHit < nCandidateHits; ++iHit) {
+            // The candidate hits are only STARTING points, as this could make up 
+            // really long tracks in the induction plane that are no longer near 
+            // the ending point of the primary track
+            
+            // First, check if we have already used this hit
+            int   thisHitKey       = candidateHits.at(iHit);
+            int   thisHitPlane     = fHitPlane->at(thisHitKey);
+            float thisHitW         = fHitW->at(thisHitKey);
+            float thisHitX         = fHitX->at(thisHitKey);
+            float thisHitCharge    = fHitCharge->at(thisHitKey);
+            float thisHitChargeCol = fHitChargeCol->at(thisHitKey);
+            
+            if (usedHits.count(thisHitKey)) continue;           
+            
+            std::vector<int> clusterKeys;
+            std::vector<float> clusterX;
+            std::vector<float> clusterW;
+            std::vector<float> clusterCharge;
+            std::vector<float> clusterChargeCol;
+
+            clusterKeys.push_back(thisHitKey);
+            clusterX.push_back(thisHitX);
+            clusterW.push_back(thisHitW);
+            clusterCharge.push_back(thisHitCharge);
+            clusterChargeCol.push_back(thisHitChargeCol);
+            
+            for (int iAllHit = 0; iAllHit < fHitKey->size(); ++iAllHit) {
+                // Skip already used hits, and those reconstructed in tracks
+                // if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit) || (fHitPlane->at(iAllHit) == 1)) continue;
+                if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit)) continue;
+
+                // Clusters have to be in same plane
+                if (fHitPlane->at(iAllHit) != thisHitPlane) continue;
+
+                float internalHitW  = fHitW->at(iAllHit);
+                float internalHitX  = fHitX->at(iAllHit);
+                float dW            = std::abs(internalHitW - thisHitW);
+                float dX            = std::abs(internalHitX - thisHitX);
+                float distance      = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
+
+                int nClusterSoFar = clusterW.size();
+                for (int iCluster = 0; iCluster < nClusterSoFar; ++iCluster) {
+                    float tempdW       = std::abs(internalHitW - clusterW.at(iCluster));
+                    float tempdX       = std::abs(internalHitX - clusterX.at(iCluster));
+                    float tempDistance = std::sqrt(std::pow(tempdW, 2) + std::pow(tempdX, 2));
+
+                    if (tempDistance < distance) distance = tempDistance;
+                    if (distance < MAX_IN_CLUSTER_SEPARATION) break;
+                }
+
+                if (distance < MAX_IN_CLUSTER_SEPARATION) {
+                    usedHits.insert(iAllHit);
+                    clusterKeys.push_back(iAllHit);
+                    clusterX.push_back(fHitX->at(iAllHit));
+                    clusterW.push_back(fHitW->at(iAllHit));
+                    clusterCharge.push_back(fHitCharge->at(iAllHit));
+                    clusterChargeCol.push_back(fHitChargeCol->at(iAllHit));
+                }
+            }
+
+            if (clusterKeys.size() > MINIMUM_HITS_FOR_CLUSTER) {
+                HitCluster thisCluster;
+                thisCluster.plane        = thisHitPlane;
+                thisCluster.hitKeys      = clusterKeys;
+                thisCluster.hitX         = clusterX;
+                thisCluster.hitW         = clusterW;
+                thisCluster.hitCharge    = clusterCharge;
+                thisCluster.hitChargeCol = clusterChargeCol;
+                
+                usedHits.insert(thisHitKey);
+                hitClusters.push_back(thisCluster);
+            }
+        }
+
         ////////////////////////////////////////
         // Histograms for data-MC comparisons //
         ////////////////////////////////////////
+
+        // Separate primary hits into collection and induction
+        std::vector<int> hitWC2TPCKeyInduction;
+        std::vector<int> hitWC2TPCKeyCollection;
+        bool foundHitNegativeTime = false;
+        for (size_t i = 0; i < hitWC2TPCKey->size(); ++i) {
+            // std::cout << "   " << fHitPlane->at(hitWC2TPCKey->at(i)) << "  x: " << fHitX->at(hitWC2TPCKey->at(i)) << "  w: " << fHitW->at(hitWC2TPCKey->at(i)) << "  t: " << fHitT->at(hitWC2TPCKey->at(i))  <<std::endl;
+            if (fHitPlane->at(hitWC2TPCKey->at(i)) == 0) hitWC2TPCKeyInduction.push_back(hitWC2TPCKey->at(i));
+            else if (fHitPlane->at(hitWC2TPCKey->at(i)) == 1) hitWC2TPCKeyCollection.push_back(hitWC2TPCKey->at(i));
+
+            // Look at hits with negative time
+            if (fHitT->at(hitWC2TPCKey->at(i)) < 0) {
+                foundHitNegativeTime = true;
+                hNegativeTimePrimaryHits->Fill(fHitT->at(hitWC2TPCKey->at(i)));
+            }
+        }
+        if (foundHitNegativeTime) numEventsPrimaryHitNegativeTime++;
 
         // For data-MC comparisons
         hMCNumWC2TPCMatch->Fill(WC2TPCsize);
@@ -755,6 +925,45 @@ void RecoClassify3Cat() {
             int smallTracksTPCStart = 0;
             int numTracksInCylinder = 0;
 
+            // Information about hits
+
+            // First, get a random point in the primary track
+            int randomInduction  = gRandom->Uniform(0, hitWC2TPCKeyInduction.size() - 1);
+            int randomCollection = gRandom->Uniform(0, hitWC2TPCKeyCollection.size() - 1);
+            
+            numEventsPrimaryReco++;
+            if (hitWC2TPCKeyInduction.size() == 0) numEventsNoInduction++;
+            if (hitWC2TPCKeyCollection.size() == 0) numEventsNoCollection++;
+            if (
+                hitWC2TPCKeyCollection.size() == 0 &&
+                hitWC2TPCKeyInduction.size() == 0
+            ) numEventsNoEither++;
+
+            int numUnrecoHitsInduction  = 0;
+            int numUnrecoHitsCollection = 0;
+
+            for (size_t iHit = 0; iHit < fHitKey->size(); ++iHit) {
+                // Skip hits already in tracks
+                if (hitsInTracks.count(iHit) > 0) continue;
+
+                double hitX     = fHitX->at(iHit);
+                double hitW     = fHitW->at(iHit);
+                int    hitPlane = fHitPlane->at(iHit);
+
+                if (hitPlane == 0 && hitWC2TPCKeyInduction.size() > 0) {
+                    double dW = (hitW - fHitW->at(hitWC2TPCKeyInduction[randomInduction]));
+                    double dX = (hitX - fHitX->at(hitWC2TPCKeyInduction[randomInduction]));
+                    double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
+                    if (d < DISTANCE_TO_PRIMARY_THRESHOLD) numUnrecoHitsInduction++;
+                } else if (hitPlane == 1 && hitWC2TPCKeyCollection.size() > 0) {
+                    double dW = (hitW - fHitW->at(hitWC2TPCKeyCollection[randomCollection]));
+                    double dX = (hitX - fHitX->at(hitWC2TPCKeyCollection[randomCollection]));
+                    double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
+                    if (d < DISTANCE_TO_PRIMARY_THRESHOLD) numUnrecoHitsCollection++;
+                }
+            }
+
+            // Information about tracks
             for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
                 // Skip WC2TPC match itself
                 if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
@@ -827,6 +1036,9 @@ void RecoClassify3Cat() {
                 hMCTGSmallTracks->Fill(smallTracksComp);
                 hMCSmallVsTGTracks->Fill(smallTracksComp, numTGTracksComp);
                 hMCNumTracksInCylinder->Fill(numTracksInCylinder);
+                
+                hMCTGUnreconstructedHitsInduction->Fill(numUnrecoHitsInduction);
+                hMCTGUnreconstructedHitsCollection->Fill(numUnrecoHitsCollection);
 
                 // Scan over small track length thresholds and fill 2D histogram
                 for (int threshBin = 1; threshBin <= hMCTGNumSmallTracksVsThresh->GetNbinsX(); ++threshBin) {
@@ -1520,118 +1732,45 @@ void RecoClassify3Cat() {
         }
         hNotPionAbsNp->Fill(backgroundType);
 
-        /////////////////////////////////////////
-        // Selection on non-reconstructed hits //
-        /////////////////////////////////////////
+        ////////////////////////////////////////
+        // Cluster non-reconstructed hits cut //
+        ////////////////////////////////////////
 
-        // First, find hits in the induction plane near the primary track that
-        // were not reconstructed into any of the already existing tracks
-        const float xThreshold = 2.0;
-        const float wThreshold = 5.0 * HIT_WIRE_SEPARATION;
-        std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
-        std::vector<int> candidateInductionHits;
-
-        int nTotalHits = fHitKey->size();
-        for (size_t iHit = 0; iHit < nTotalHits; ++iHit) {
-            // Skip hits already in tracks and collection plane
-            // if ((hitsInTracks.count(iHit) > 0) || (fHitPlane->at(iHit) == 1)) continue;
-            if (hitsInTracks.count(iHit) > 0) continue;
-
-            float hitX = fHitX->at(iHit);
-            float hitW = fHitW->at(iHit);
-
-            if (isHitNearPrimary(
-                hitWC2TPCKey, 
-                fHitX, 
-                fHitW, 
-                hitX, 
-                hitW,
-                xThreshold, 
-                wThreshold
-            )) { candidateInductionHits.push_back(iHit); }
-        }
-
-        // Now cluster using those hits as starting points
-        std::unordered_set<int> usedHits;
-        std::vector<HitCluster> hitClusters;
-        int nCandidateHits    = candidateInductionHits.size();
-
-        // Hits in the same cluster must be separated by at most some number of wires
-        float maxHitClusterSeparation = HIT_WIRE_SEPARATION * 3.0; 
-        float maxHitXSeparation       = 1.0;
-        
-        for (int iHit = 0; iHit < nCandidateHits; ++iHit) {
-            // The candidate hits are only STARTING points, as this could make up 
-            // really long tracks in the induction plane that are no longer near 
-            // the ending point of the primary track
-            
-            // First, check if we have already used this hit
-            int   thisHitKey       = candidateInductionHits.at(iHit);
-            float thisHitW         = fHitW->at(thisHitKey);
-            float thisHitX         = fHitX->at(thisHitKey);
-            float thisHitCharge    = fHitCharge->at(thisHitKey);
-            float thisHitChargeCol = fHitChargeCol->at(thisHitKey);
-
-            if (usedHits.count(thisHitKey)) continue;            
-            
-            std::vector<int> clusterKeys;
-            std::vector<float> clusterX;
-            std::vector<float> clusterW;
-            std::vector<float> clusterCharge;
-            std::vector<float> clusterChargeCol;
-
-            clusterKeys.push_back(thisHitKey);
-            clusterX.push_back(thisHitX);
-            clusterW.push_back(thisHitW);
-            clusterCharge.push_back(thisHitCharge);
-            clusterChargeCol.push_back(thisHitChargeCol);
-            
-            for (int iAllHit = 0; iAllHit < nTotalHits; ++iAllHit) {
-                // Skip already used hits, those reconstructed in tracks, and those in collection plane
-                // if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit) || (fHitPlane->at(iHit) != 0)) continue;
-                if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit)) continue;
-                float internalHitW  = fHitW->at(iAllHit);
-                float internalHitX  = fHitX->at(iAllHit);
-                float dW            = std::abs(internalHitW - thisHitW);
-                float dX            = std::abs(internalHitX - thisHitX);
-
-                int   nClusterSoFar = clusterW.size();
-                for (int iCluster = 0; iCluster < nClusterSoFar; ++iCluster) {
-                    float tempdW = std::abs(internalHitW - clusterW.at(iCluster));
-                    if (tempdW < dW) dW = tempdW;
-                    float tempdX = std::abs(internalHitX - clusterX.at(iCluster));
-                    if (tempdX < dX) dX = tempdX;
-                }
-
-                if ((dW < maxHitClusterSeparation) && (dX < maxHitXSeparation)) {
-                    usedHits.insert(iAllHit);
-                    clusterKeys.push_back(iAllHit);
-                    clusterX.push_back(fHitX->at(iAllHit));
-                    clusterW.push_back(fHitW->at(iAllHit));
-                    clusterCharge.push_back(fHitCharge->at(iAllHit));
-                    clusterChargeCol.push_back(fHitChargeCol->at(iAllHit));
-                }
-            }
-
-            HitCluster thisCluster;
-            thisCluster.hitKeys      = clusterKeys;
-            thisCluster.hitX         = clusterX;
-            thisCluster.hitW         = clusterW;
-            thisCluster.hitCharge    = clusterCharge;
-            thisCluster.hitChargeCol = clusterChargeCol;
-            
-            usedHits.insert(thisHitKey);
-            hitClusters.push_back(thisCluster);
+        if (backgroundType == 0) {
+            hUnRecoHitsAbs0p->Fill(numUnRecoHitsNearPrimary);
+        } else if (backgroundType == 1) {
+            hUnRecoHitsAbsNp->Fill(numUnRecoHitsNearPrimary);
+        } else if (backgroundType == 2) {
+            hUnRecoHitsMuon->Fill(numUnRecoHitsNearPrimary);
+        } else if (backgroundType == 3) {
+            hUnRecoHitsElectron->Fill(numUnRecoHitsNearPrimary);
+        } else if (backgroundType == 6 || backgroundType == 12) {
+            hUnRecoHitsScatter->Fill(numUnRecoHitsNearPrimary);
+        } else if (backgroundType == 7) {
+            hUnRecoHitsChExch->Fill(numUnRecoHitsNearPrimary);
+        } else {
+            hUnRecoHitsOther->Fill(numUnRecoHitsNearPrimary);
         }
 
         // Get data for cut
         int numLargeClusters = 0;
         for (int i = 0; i < hitClusters.size(); ++i) {
-            double maxWire = *std::max_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
-            double minWire = *std::min_element(hitClusters[i].hitW.begin(), hitClusters[i].hitW.end());
-            if (std::abs(maxWire - minWire) > LARGE_CLUSTER_THRESHOLD) numLargeClusters++;
+            double clusterSize = 0.;
+            for (int j = 0; j < hitClusters[i].hitW.size() - 1; ++j) {
+                for (int k = j + 1; k < hitClusters[i].hitW.size(); ++k) {
+                    double wSeparation = hitClusters[i].hitW[j] - hitClusters[i].hitW[k];
+                    double xSeparation = hitClusters[i].hitX[j] - hitClusters[i].hitX[k];
 
-            double clusterSize = std::abs(maxWire - minWire);
+                    double thisDiameter = std::sqrt(
+                        std::pow(wSeparation, 2) + 
+                        std::pow(xSeparation, 2)
+                    );
+
+                    if (thisDiameter > clusterSize) clusterSize = thisDiameter;
+                }
+            }
+            if (clusterSize > LARGE_CLUSTER_THRESHOLD) numLargeClusters++;
+
             if (backgroundType == 0) {
                 hHitClusterSizesAbs0p->Fill(clusterSize);
             } else if (backgroundType == 1) {
@@ -1649,20 +1788,28 @@ void RecoClassify3Cat() {
             }
         }
 
+        int numClusters = hitClusters.size();
         if (backgroundType == 0) {
             hLargeHitClusterAbs0p->Fill(numLargeClusters);
+            hNumClustersAbs0p->Fill(numClusters);
         } else if (backgroundType == 1) {
             hLargeHitClusterAbsNp->Fill(numLargeClusters);
+            hNumClustersAbsNp->Fill(numClusters);
         } else if (backgroundType == 7) {
             hLargeHitClusterChExch->Fill(numLargeClusters);
+            hNumClustersChExch->Fill(numClusters);
         } else if (backgroundType == 6 || backgroundType == 12) {
             hLargeHitClusterScatter->Fill(numLargeClusters);
+            hNumClustersScatter->Fill(numClusters);
         } else if (backgroundType == 2) {
             hLargeHitClusterMuon->Fill(numLargeClusters);
+            hNumClustersMuon->Fill(numClusters);
         } else if (backgroundType == 3) {
             hLargeHitClusterElectron->Fill(numLargeClusters);
+            hNumClustersElectron->Fill(numClusters);
         } else {
             hLargeHitClusterOther->Fill(numLargeClusters);
+            hNumClustersOther->Fill(numClusters);
         }
 
         // if (numLargeClusters < NUM_CLUSTERS_THRESHOLD) {
@@ -1852,49 +1999,6 @@ void RecoClassify3Cat() {
             continue;
         }
 
-        /////////////////////
-        // Small track cut //
-        /////////////////////
-
-        // if (numSmallTracks > SMALL_TRACK_CUT_CHEX) {
-        //     // Tag as charge exchange
-        //     hPionChExch->Fill(backgroundType);
-
-        //     hPionChExchKE->Fill(energyAtVertex);
-        //     if (backgroundType == 0) {
-        //         hPionChExchKEAbs0p->Fill(energyAtVertex);
-        //     } else if (backgroundType == 1) {
-        //         hPionChExchKEAbsNp->Fill(energyAtVertex);
-        //     } else if (backgroundType == 7) {
-        //         hPionChExchKETrue->Fill(energyAtVertex);
-        //     } else if (backgroundType == 6 || backgroundType == 12) {
-        //         hPionChExchKEScatter->Fill(energyAtVertex);
-        //     } else if (backgroundType == 2) {
-        //         hPionChExchKEMuon->Fill(energyAtVertex);
-        //     } else if (backgroundType == 3) {
-        //         hPionChExchKEElectron->Fill(energyAtVertex);
-        //     } else {
-        //         hPionChExchKEOther->Fill(energyAtVertex);
-        //     }
-
-        //     if (backgroundType == 0) {
-        //         hTrueAbs0pKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
-        //     } else if (backgroundType == 1) {
-        //         hTrueAbsNpKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
-        //     } else if (backgroundType == 6 || backgroundType == 12) {
-        //         hTrueScatterKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
-        //     } else if (backgroundType == 7) {
-        //         hTrueChExchKEAsChExch->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(3)->Fill(energyAtVertex);
-        //     }
-
-        //     continue;
-        // }
-        // hNotChExch->Fill(backgroundType);
-
         // Anything left here is rejected
         if (backgroundType == 0) {
             hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
@@ -1907,6 +2011,15 @@ void RecoClassify3Cat() {
             hTrueScatterKERejClusters->Fill(truthPrimaryVertexKE * 1000);
         }
     }
+
+    std::cout << std::endl;
+    std::cout << "Events with reconstructed primary track: " << numEventsPrimaryReco << std::endl;
+    std::cout << "Events with no primary hits in induction: " << numEventsNoInduction << std::endl;
+    std::cout << "Events with no primary hits in collection: " << numEventsNoCollection << std::endl;
+    std::cout << "Events with no primary hits in either: " << numEventsNoEither << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "Events with primary reconstructed with negative time hits: " << numEventsPrimaryHitNegativeTime << std::endl;
 
     std::cout << std::endl;
     std::cout << "Original sample composition: " << std::endl;
@@ -2037,6 +2150,12 @@ void RecoClassify3Cat() {
 
     hMCPrimaryTrackPosition->SetDirectory(comparisonsFile);
     hMCPrimaryTrackPosition->Write();
+
+    hMCTGUnreconstructedHitsInduction->SetDirectory(comparisonsFile);
+    hMCTGUnreconstructedHitsInduction->Write();
+
+    hMCTGUnreconstructedHitsCollection->SetDirectory(comparisonsFile);
+    hMCTGUnreconstructedHitsCollection->Write();
 
     //////////////////////////////////////////////
     // Perform unfolding for interacting slices //
@@ -2403,7 +2522,10 @@ void RecoClassify3Cat() {
 
         // Unreconstructed hits
         {hHitClusterSizesAbs0p, hHitClusterSizesAbsNp, hHitClusterSizesMuon, hHitClusterSizesElectron, hHitClusterSizesScatter, hHitClusterSizesChExch, hHitClusterSizesOther},
-        {hLargeHitClusterAbs0p, hLargeHitClusterAbsNp, hLargeHitClusterMuon, hLargeHitClusterElectron, hLargeHitClusterScatter, hLargeHitClusterChExch, hLargeHitClusterOther}
+        {hLargeHitClusterAbs0p, hLargeHitClusterAbsNp, hLargeHitClusterMuon, hLargeHitClusterElectron, hLargeHitClusterScatter, hLargeHitClusterChExch, hLargeHitClusterOther},
+        {hUnRecoHitsAbs0p, hUnRecoHitsAbsNp, hUnRecoHitsMuon, hUnRecoHitsElectron, hUnRecoHitsScatter, hUnRecoHitsChExch, hUnRecoHitsOther},
+        {hNumClustersAbs0p, hNumClustersAbsNp, hNumClustersMuon, hNumClustersElectron, hNumClustersScatter, hNumClustersChExch, hNumClustersOther},
+        {hNegativeTimePrimaryHits}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2455,7 +2577,10 @@ void RecoClassify3Cat() {
 
         // Unreconstructed hits
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
-        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"}
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Negative time hits"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -2507,7 +2632,10 @@ void RecoClassify3Cat() {
 
         // Unreconstructed hits
         "Hits/ClusterSizes",
-        "Hits/NumLargeClusters"
+        "Hits/NumLargeClusters",
+        "Hits/UnReconstructedHits",
+        "Hits/NumClusters",
+        "Hits/PrimaryNegativeTimeHits"
     };
 
     std::vector<TString> XLabels = {
@@ -2559,7 +2687,10 @@ void RecoClassify3Cat() {
 
         // Unreconstructed hits
         "Cluster size [cm]",
-        "Number of large clusters"
+        "Number of large clusters",
+        "Unreconstructed hits",
+        "# of clusters",
+        "Hit time [us]"
     };
 
     std::vector<TString> YLabels = {
@@ -2610,6 +2741,9 @@ void RecoClassify3Cat() {
         "Counts",
 
         // Unreconstructed hits
+        "Counts",
+        "Counts",
+        "Counts",
         "Counts",
         "Counts"
     };
@@ -2663,7 +2797,10 @@ void RecoClassify3Cat() {
 
         // Unreconstructed hits
         true,
-        true
+        true,
+        true,
+        true,
+        false
     };
 
     std::vector<std::vector<bool>> PlotsAsPoints = {
@@ -2715,7 +2852,10 @@ void RecoClassify3Cat() {
 
         // Unreconstructed hits
         {false, false, false, false, false, false, false},
-        {false, false, false, false, false, false, false}
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+        {false}
     };
 
     // Add each unfolded histogram as a single plot group for plotting

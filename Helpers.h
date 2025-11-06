@@ -61,6 +61,7 @@ struct EventInfo {
 };
 
 struct HitCluster {
+    int                plane;
     std::vector<int>   hitKeys;
     std::vector<float> hitX;
     std::vector<float> hitW;
@@ -119,8 +120,16 @@ double FAR_TRACK_DISTANCE_CHEX = 10.;
 int    SMALL_TRACK_CUT_CHEX    = 3;
 
 // Hit cluster cut
+double DISTANCE_TO_PRIMARY_THRESHOLD = 10.;
+
+double MAX_IN_CLUSTER_W_SEPARATION = 1.5;
+double MAX_IN_CLUSTER_X_SEPARATION = 1.5;
+double MAX_IN_CLUSTER_SEPARATION   = 2.5;
+
+int MINIMUM_HITS_FOR_CLUSTER = 5;
+
 int    NUM_CLUSTERS_THRESHOLD  = 2;
-double LARGE_CLUSTER_THRESHOLD = HIT_WIRE_SEPARATION * 3;
+double LARGE_CLUSTER_THRESHOLD = 20.0;
 
 // Threshold(s) used to cut based on primary track local linearity
 double LINEARITY_DERIVATIVE_THRESHOLD = 0.06e-3;
@@ -201,7 +210,17 @@ void reweightOneDHisto(TH1D* histo, double weight);
 
 bool isWithinReducedVolume(double x, double y, double z);
 bool isWithinActiveVolume(double x, double y, double z);
-bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold);
+bool isHitNearPrimary(
+    std::vector<int>* primaryKey, 
+    std::vector<float>* hitX, 
+    std::vector<float>* hitW, 
+    std::vector<int>* hitPlane,
+    float thisHitX, 
+    float thisHitW, 
+    int thisHitPlane,
+    float threshold,
+    bool onlyVertex = false
+);
 
 double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData,  bool dataReversed, int nPoints, int nOutliersToDiscard = 0, int nTrim = 0);
 double distance(double x1, double x2, double y1, double y2, double z1, double z2);

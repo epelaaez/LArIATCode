@@ -1634,17 +1634,19 @@ void RecoClassifyAllSimplified() {
             // if ((hitsInTracks.count(iHit) > 0) || (fHitPlane->at(iHit) == 1)) continue;
             if (hitsInTracks.count(iHit) > 0) continue;
 
-            float hitX = fHitX->at(iHit);
-            float hitW = fHitW->at(iHit);
+            float hitX     = fHitX->at(iHit);
+            float hitW     = fHitW->at(iHit);
+            int   hitPlane = fHitPlane->at(iHit);
 
             if (isHitNearPrimary(
-                hitWC2TPCKey, 
-                fHitX, 
-                fHitW, 
-                hitX, 
+                hitWC2TPCKey,
+                fHitX,
+                fHitW,
+                fHitPlane,
+                hitX,
                 hitW,
-                xThreshold, 
-                wThreshold
+                hitPlane,
+                DISTANCE_TO_PRIMARY_THRESHOLD
             )) { candidateInductionHits.push_back(iHit); }
         }
 
@@ -2401,6 +2403,16 @@ void RecoClassifyAllSimplified() {
     TH1D* hUnSmearedPionChExchCrossSection   = new TH1D("hUnSmearedPionChExchCrossSection", "hUnSmearedPionChExchCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hSmearedTruePionChExchCrossSection = new TH1D("hSmearedTruePionChExchCrossSection", "hSmearedTruePionChExchCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTruePionChExchCrossSection        = new TH1D("hTruePionChExchCrossSection", "hTruePionChExchCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    
+    TH1D* hTruePionOtherCrossSection = new TH1D("hTruePionOtherCrossSection", "hTruePionOtherCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueTotalCrossSection     = new TH1D("hTrueTotalCrossSection", "hTrueTotalCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
+    // Branching ratios
+    TH1D* hTrueAbs0pBranchingRatio   = new TH1D("hTrueAbs0pBranchingRatio", "hTrueAbs0pBranchingRatio;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpBranchingRatio   = new TH1D("hTrueAbs0pBranchingRatio", "hTrueAbs0pBranchingRatio;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterBranchingRatio = new TH1D("hTrueScatterBranchingRatio", "hTrueScatterBranchingRatio;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchBranchingRatio  = new TH1D("hTrueChExchBranchingRatio", "hTrueChExchBranchingRatio;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueOtherBranchingRatio   = new TH1D("hTrueOtherBranchingRatio", "hTrueOtherBranchingRatio;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     std::vector<TH1D*> UnfoldedCrossSections = {
         hPionAbs0pCrossSection,
@@ -2480,6 +2492,35 @@ void RecoClassifyAllSimplified() {
         reweightOneDHisto(trueXSec, 50.);
     }
 
+    // True "other" cross-section
+    for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
+        hTruePionOtherCrossSection->SetBinContent(iBin, hTrueOtherKE->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin));
+    }
+    hTruePionOtherCrossSection->Scale(1.0 / (number_density * slab_width * 1e-28));
+    reweightOneDHisto(hTruePionOtherCrossSection, 50.);
+
+    // Get branching ratios
+    hTrueTotalCrossSection->Add(hTruePionAbs0pCrossSection);
+    hTrueTotalCrossSection->Add(hTruePionAbsNpCrossSection);
+    hTrueTotalCrossSection->Add(hTruePionScatterCrossSection);
+    hTrueTotalCrossSection->Add(hTruePionChExchCrossSection);
+    hTrueTotalCrossSection->Add(hTruePionOtherCrossSection);
+
+    hTrueAbs0pBranchingRatio->Add(hTruePionAbs0pCrossSection);
+    hTrueAbs0pBranchingRatio->Divide(hTrueTotalCrossSection);
+
+    hTrueAbsNpBranchingRatio->Add(hTruePionAbsNpCrossSection);
+    hTrueAbsNpBranchingRatio->Divide(hTrueTotalCrossSection);
+
+    hTrueScatterBranchingRatio->Add(hTruePionScatterCrossSection);
+    hTrueScatterBranchingRatio->Divide(hTrueTotalCrossSection);
+
+    hTrueChExchBranchingRatio->Add(hTruePionChExchCrossSection);
+    hTrueChExchBranchingRatio->Divide(hTrueTotalCrossSection);
+
+    hTrueOtherBranchingRatio->Add(hTruePionOtherCrossSection);
+    hTrueOtherBranchingRatio->Divide(hTrueTotalCrossSection);
+
     ///////////////////////////
     // Make plots per 50 MeV //
     ///////////////////////////
@@ -2494,6 +2535,12 @@ void RecoClassifyAllSimplified() {
 
     histoToText(hTrueAllKE, "/exp/lariat/app/users/epelaez/analysis/files/Flux/InteractingFlux.txt");
     histoToText(hTrueIncidentKE, "/exp/lariat/app/users/epelaez/analysis/files/Flux/IncidentFlux.txt");
+
+    histoToText(hTrueTotalCrossSection, "/exp/lariat/app/users/epelaez/analysis/files/CrossSection/Total.txt");
+    histoToText(hTruePionAbs0pCrossSection, "/exp/lariat/app/users/epelaez/analysis/files/CrossSection/Abs0p.txt");
+    histoToText(hTruePionAbsNpCrossSection, "/exp/lariat/app/users/epelaez/analysis/files/CrossSection/AbsNp.txt");
+    histoToText(hTruePionScatterCrossSection, "/exp/lariat/app/users/epelaez/analysis/files/CrossSection/Scatter.txt");
+    histoToText(hTruePionChExchCrossSection, "/exp/lariat/app/users/epelaez/analysis/files/CrossSection/ChExch.txt");
 
     //////////////////
     // Create plots //
@@ -2559,6 +2606,10 @@ void RecoClassifyAllSimplified() {
         {hTruePionScatterCrossSection, hUnSmearedPionScatterCrossSection},
         {hTruePionChExchCrossSection, hUnSmearedPionChExchCrossSection},
 
+        // Total true-cross section (true space)
+        {hTruePionAbs0pCrossSection, hTruePionAbsNpCrossSection, hTruePionScatterCrossSection, hTruePionChExchCrossSection, hTruePionOtherCrossSection},
+        {hTrueAbs0pBranchingRatio, hTrueAbsNpBranchingRatio, hTrueScatterBranchingRatio, hTrueChExchBranchingRatio, hTrueOtherBranchingRatio},
+
         // BDT probabilities
         {hBestAbs0pAbs0p, hBestAbs0pAbsNp, hBestAbs0pMuon, hBestAbs0pElectron, hBestAbs0pScatter, hBestAbs0pChExch, hBestAbs0pOther},
         {hBestChExchAbs0p, hBestChExchAbsNp, hBestChExchMuon, hBestChExchElectron, hBestChExchScatter, hBestChExchChExch, hBestChExchOther},
@@ -2616,6 +2667,10 @@ void RecoClassifyAllSimplified() {
         {"True (t)", "Unf. (t)"},
         {"True (t)", "Unf. (t)"},
         {"True (t)", "Unf. (t)"},
+
+        // Total true-cross section (true space)
+        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other"},
 
         // BDT probabilities
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
@@ -2675,6 +2730,10 @@ void RecoClassifyAllSimplified() {
         "CrossSection/UnSmearedPionScatterCrossSection",
         "CrossSection/UnSmearedPionChExchCrossSection",
 
+        // Total true-cross section (true space)
+        "CrossSection/TotalTrueCrossSection",
+        "CrossSection/TotalTrueBranchingRatio",
+
         // BDT probabilities
         "BDTScores/Abs0pTrue",
         "BDTScores/ChExchTrue",
@@ -2730,6 +2789,10 @@ void RecoClassifyAllSimplified() {
         // Cross-sections (true space)
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+
+        // Total true-cross section (true space)
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
 
@@ -2791,6 +2854,10 @@ void RecoClassifyAllSimplified() {
         "Cross section [barn] per 50 MeV",
         "Cross section [barn] per 50 MeV",
 
+        // Total true-cross section (true space)
+        "Cross section [barn] per 50 MeV",
+        "Branching ratio per 50 MeV",
+
         // BDT probabilities
         "Counts",
         "Counts",
@@ -2847,6 +2914,10 @@ void RecoClassifyAllSimplified() {
         false,
         false,
         false,
+        false,
+
+        // Total true-cross section (true space)
+        true,
         false,
 
         // BDT probabilities
@@ -2906,6 +2977,10 @@ void RecoClassifyAllSimplified() {
         {false, true},
         {false, true},
         {false, true},
+
+        // Total true-cross section (true space)
+        {false, false, false, false, false},
+        {false, false, false, false, false},
 
         // BDT probabilities
         {false, false, false, false, false, false, false},

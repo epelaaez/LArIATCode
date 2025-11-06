@@ -21,12 +21,52 @@ double energyLossCalculation(double x, double px, bool isData) {
     }
 }
 
-bool isHitNearPrimary(std::vector<int>* primaryKey, std::vector<float>* hitX, std::vector<float>* hitW, float thisHitX, float thisHitW, float xThreshold, float wThreshold) {
+bool isHitNearPrimary(
+    std::vector<int>* primaryKey, 
+    std::vector<float>* hitX, 
+    std::vector<float>* hitW, 
+    std::vector<int>* hitPlane,
+    float thisHitX, 
+    float thisHitW, 
+    int thisHitPlane,
+    float threshold,
+    bool onlyVertex
+) {
     int nPrimaryHits = primaryKey->size();
+
+    if (onlyVertex) {
+        int maxWireIndex = -1;
+        float maxWire = -1e9;
+
+        // Find primary hit with the highest wire on the same plane
+        for (int iHit = 0; iHit < nPrimaryHits; ++iHit) {
+            int key = primaryKey->at(iHit);
+            if (hitPlane->at(key) != thisHitPlane) continue;
+
+            float w = hitW->at(key);
+            if (w > maxWire) {
+                maxWire = w;
+                maxWireIndex = key;
+            }
+        }
+
+        if (maxWireIndex < 0) return false;
+
+        float dX = std::abs(thisHitX - hitX->at(maxWireIndex));
+        float dW = std::abs(thisHitW - hitW->at(maxWireIndex));
+        float d  = std::sqrt(std::pow(dX, 2) + std::pow(dW, 2));
+
+        return (d < threshold);
+    }
+
     for (int iHit = 0; iHit < nPrimaryHits; ++iHit) {
+        if (hitPlane->at(primaryKey->at(iHit)) != thisHitPlane) continue;
+
         float dX = std::abs(thisHitX - hitX->at(primaryKey->at(iHit)));
         float dW = std::abs(thisHitW - hitW->at(primaryKey->at(iHit)));
-        if ((dX < xThreshold) && (dW < wThreshold)) return true;
+        float d  = std::sqrt(std::pow(dX, 2) + std::pow(dW, 2));
+
+        if (d < threshold) return true;
     }
     return false;
 }

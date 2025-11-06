@@ -184,19 +184,21 @@ void RecoDataAnalysis() {
     // Load histograms //
     /////////////////////
 
-    TH1D* hMCNumWC2TPCMatch             = (TH1D*) MCFile->Get("hMCNumWC2TPCMatch");
-    TH1D* hMCNumTracksInCylinder        = (TH1D*) MCFile->Get("hMCNumTracksInCylinder");
-    TH1D* hMCTGTrackLengths             = (TH1D*) MCFile->Get("hMCTGTrackLengths");
-    TH1D* hMCTGSmallTracks              = (TH1D*) MCFile->Get("hMCTGSmallTracks");
-    TH1D* hMCTracksNearVertex           = (TH1D*) MCFile->Get("hMCTracksNearVertex");
-    TH1D* hMCTrackLengthsNearVertex     = (TH1D*) MCFile->Get("hMCTrackLengthsNearVertex");
-    TH1D* hMCNumTGTracks                = (TH1D*) MCFile->Get("hMCNumTGTracks");
-    TH1D* hMCShowerProb                 = (TH1D*) MCFile->Get("hMCShowerProb");
-    TH1D* hMCBeforeShowerCutSmallTracks = (TH1D*) MCFile->Get("hMCBeforeShowerCutSmallTracks");
-    TH1D* hMCAfterShowerCutSmallTracks  = (TH1D*) MCFile->Get("hMCAfterShowerCutSmallTracks");
-    TH2D* hMCSmallVsTGTracks            = (TH2D*) MCFile->Get("hMCSmallVsTGTracks");
-    TH2D* hMCTGNumSmallTracksVsThresh   = (TH2D*) MCFile->Get("hMCTGNumSmallTracksVsThresh");
-    TH2D* hMCPrimaryTrackPosition       = (TH2D*) MCFile->Get("hMCPrimaryTrackPosition");
+    TH1D* hMCNumWC2TPCMatch                  = (TH1D*) MCFile->Get("hMCNumWC2TPCMatch");
+    TH1D* hMCNumTracksInCylinder             = (TH1D*) MCFile->Get("hMCNumTracksInCylinder");
+    TH1D* hMCTGTrackLengths                  = (TH1D*) MCFile->Get("hMCTGTrackLengths");
+    TH1D* hMCTGSmallTracks                   = (TH1D*) MCFile->Get("hMCTGSmallTracks");
+    TH1D* hMCTracksNearVertex                = (TH1D*) MCFile->Get("hMCTracksNearVertex");
+    TH1D* hMCTrackLengthsNearVertex          = (TH1D*) MCFile->Get("hMCTrackLengthsNearVertex");
+    TH1D* hMCNumTGTracks                     = (TH1D*) MCFile->Get("hMCNumTGTracks");
+    TH1D* hMCShowerProb                      = (TH1D*) MCFile->Get("hMCShowerProb");
+    TH1D* hMCBeforeShowerCutSmallTracks      = (TH1D*) MCFile->Get("hMCBeforeShowerCutSmallTracks");
+    TH1D* hMCAfterShowerCutSmallTracks       = (TH1D*) MCFile->Get("hMCAfterShowerCutSmallTracks");
+    TH2D* hMCSmallVsTGTracks                 = (TH2D*) MCFile->Get("hMCSmallVsTGTracks");
+    TH2D* hMCTGNumSmallTracksVsThresh        = (TH2D*) MCFile->Get("hMCTGNumSmallTracksVsThresh");
+    TH2D* hMCPrimaryTrackPosition            = (TH2D*) MCFile->Get("hMCPrimaryTrackPosition");
+    TH1D* hMCTGUnreconstructedHitsInduction  = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsInduction");
+    TH1D* hMCTGUnreconstructedHitsCollection = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsCollection");
 
     ///////////////////////
     // Create histograms //
@@ -228,6 +230,14 @@ void RecoDataAnalysis() {
 
     TH1D* hNumTracksInCylinder2TG = new TH1D("hNumTracksInCylinder2TG", "NumTracksInCylinder2TG", 10, 0, 10);
     TH1D* hTGSmallTracks2TG       = new TH1D("hTGSmallTracks2TG", "TGSmallTracks2TG", 10, 0, 10);
+
+    TH1D* hTGUnreconstructedHitsInduction0TG = new TH1D("hTGUnreconstructedHitsInduction0TG", "hTGUnreconstructedHitsInduction0TG;;", 25, 0, 50);
+    TH1D* hTGUnreconstructedHitsInduction1TG = new TH1D("hTGUnreconstructedHitsInduction1TG", "hTGUnreconstructedHitsInduction1TG;;", 25, 0, 50);
+    TH1D* hTGUnreconstructedHitsInduction2TG = new TH1D("hTGUnreconstructedHitsInduction2TG", "hTGUnreconstructedHitsInduction2TG;;", 25, 0, 50);
+
+    TH1D* hTGUnreconstructedHitsCollection0TG = new TH1D("hTGUnreconstructedHitsCollection0TG", "hTGUnreconstructedHitsCollection0TG;;", 25, 0, 50);
+    TH1D* hTGUnreconstructedHitsCollection1TG = new TH1D("hTGUnreconstructedHitsCollection1TG", "hTGUnreconstructedHitsCollection1TG;;", 25, 0, 50);
+    TH1D* hTGUnreconstructedHitsCollection2TG = new TH1D("hTGUnreconstructedHitsCollection2TG", "hTGUnreconstructedHitsCollection2TG;;", 25, 0, 50);
 
     // With primary interacting
     TH1D* hTracksNearVertex       = new TH1D("hTracksNearVertex", "TracksNearVertex", 10, 0, 10);
@@ -526,6 +536,58 @@ void RecoDataAnalysis() {
                 hTGNumSmallTracksVsThresh->Fill(threshold, nSmallTracks);
             }
         }
+
+        // Look at unreconstructed hits
+        std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
+
+        // Separate primary hits into collection and induction
+        std::vector<int> hitWC2TPCKeyInduction;
+        std::vector<int> hitWC2TPCKeyCollection;
+        for (size_t i = 0; i < hitWC2TPCKey->size(); ++i) {
+            if (fHitPlane->at(hitWC2TPCKey->at(i)) == 0) hitWC2TPCKeyInduction.push_back(hitWC2TPCKey->at(i));
+            else if (fHitPlane->at(hitWC2TPCKey->at(i)) == 1) hitWC2TPCKeyCollection.push_back(hitWC2TPCKey->at(i));
+        }
+
+        // First, get a random point in the primary track
+        double randomInduction  = gRandom->Uniform(0, hitWC2TPCKeyInduction->size());
+        double randomCollection = gRandom->Uniform(0, hitWC2TPCKeyCollection->size());
+
+        int numUnrecoHitsInduction  = 0;
+        int numUnrecoHitsCollection = 0;
+
+        for (size_t iHit = 0; iHit < fHitKey->size(); ++iHit) {
+            // Skip hits already in tracks
+            if (hitsInTracks.count(iHit) > 0) continue;
+
+            double hitX     = fHitX->at(iHit);
+            double hitW     = fHitW->at(iHit);
+            int    hitPlane = fHitPlane->at(iHit);
+
+            if (hitPlane == 0) {
+                double dW = (hitW - fHitW->at(hitWC2TPCKeyInduction[randomInduction]));
+                double dX = (hitX - fHitX->at(hitWC2TPCKeyInduction[randomInduction]));
+                double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
+                if (d < DISTANCE_TO_PRIMARY_THRESHOLD) numUnrecoHitsInduction++;
+            } else if (hitPlane == 1) {
+                double dW = (hitW - fHitW->at(hitWC2TPCKeyCollection[randomCollection]));
+                double dX = (hitX - fHitX->at(hitWC2TPCKeyCollection[randomCollection]));
+                double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
+                if (d < DISTANCE_TO_PRIMARY_THRESHOLD) numUnrecoHitsCollection++;
+            }
+        }
+
+        if (numTGTracks == 0 && isPrimaryTG) {
+            hTGUnreconstructedHitsInduction0TG->Fill(numUnrecoHitsInduction);
+            hTGUnreconstructedHitsCollection0TG->Fill(numUnrecoHitsCollection);
+        }
+        if (numTGTracks <= 1 && isPrimaryTG) {
+            hTGUnreconstructedHitsInduction1TG->Fill(numUnrecoHitsInduction);
+            hTGUnreconstructedHitsCollection1TG->Fill(numUnrecoHitsCollection);
+        }
+        if (numTGTracks <= 2 && isPrimaryTG) {
+            hTGUnreconstructedHitsInduction2TG->Fill(numUnrecoHitsInduction);
+            hTGUnreconstructedHitsCollection2TG->Fill(numUnrecoHitsCollection);
+        }
     }
     
     double numMCEvents   = hMCNumTGTracks->Integral(0, hMCNumTGTracks->GetNbinsX() + 1);
@@ -589,6 +651,14 @@ void RecoDataAnalysis() {
     hMCNumTracksInCylinder1TG->Scale(hNumTracksInCylinder1TG->Integral() / hMCNumTracksInCylinder1TG->Integral());
     hMCNumTracksInCylinder2TG->Scale(hNumTracksInCylinder2TG->Integral() / hMCNumTracksInCylinder2TG->Integral());
 
+    TH1D* hMCTGUnreconstructedHits0TG = (TH1D*) hMCTGUnreconstructedHits->Clone("hMCTGUnreconstructedHits0TG");
+    TH1D* hMCTGUnreconstructedHits1TG = (TH1D*) hMCTGUnreconstructedHits->Clone("hMCTGUnreconstructedHits1TG");
+    TH1D* hMCTGUnreconstructedHits2TG = (TH1D*) hMCTGUnreconstructedHits->Clone("hMCTGUnreconstructedHits2TG");
+
+    hMCTGUnreconstructedHits0TG->Scale(hTGUnreconstructedHits0TG->Integral() / hMCTGUnreconstructedHits0TG->Integral());
+    hMCTGUnreconstructedHits1TG->Scale(hTGUnreconstructedHits1TG->Integral() / hMCTGUnreconstructedHits1TG->Integral());
+    hMCTGUnreconstructedHits2TG->Scale(hTGUnreconstructedHits2TG->Integral() / hMCTGUnreconstructedHits2TG->Integral());
+
     //////////////////
     // Create plots //
     //////////////////
@@ -635,7 +705,10 @@ void RecoDataAnalysis() {
         {hTGSmallTracks2TG, hMCTGSmallTracks2TG},
         {hNumTracksInCylinder0TG, hMCNumTracksInCylinder0TG},
         {hNumTracksInCylinder1TG, hMCNumTracksInCylinder1TG},
-        {hNumTracksInCylinder2TG, hMCNumTracksInCylinder2TG}
+        {hNumTracksInCylinder2TG, hMCNumTracksInCylinder2TG},
+        {hTGUnreconstructedHits0TG, hMCTGUnreconstructedHits0TG},
+        {hTGUnreconstructedHits1TG, hMCTGUnreconstructedHits1TG},
+        {hTGUnreconstructedHits2TG, hMCTGUnreconstructedHits2TG}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -662,6 +735,9 @@ void RecoDataAnalysis() {
         {"Data", "MC (scaled)"},
 
         // Comparing TG threshold
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
@@ -699,7 +775,10 @@ void RecoDataAnalysis() {
         "TGThreshold/TGSmallTracks2TG",
         "TGThreshold/NumTracksInCylinder0TG",
         "TGThreshold/NumTracksInCylinder1TG",
-        "TGThreshold/NumTracksInCylinder2TG"
+        "TGThreshold/NumTracksInCylinder2TG",
+        "TGThreshold/UnreconstructedHits0TG",
+        "TGThreshold/UnreconstructedHits1TG",
+        "TGThreshold/UnreconstructedHits2TG"
     };
 
     std::vector<TString> XLabels = {
@@ -732,6 +811,9 @@ void RecoDataAnalysis() {
         "# of tracks",
         "# of tracks",
         "# of tracks",
+        "# of unreconstructed hits",
+        "# of unreconstructed hits",
+        "# of unreconstructed hits"
     };
 
     std::vector<TString> YLabels = {
@@ -758,6 +840,9 @@ void RecoDataAnalysis() {
         "Counts",
 
         // Comparing TG threshold
+        "Counts",
+        "Counts",
+        "Counts",
         "Counts",
         "Counts",
         "Counts",
@@ -795,6 +880,9 @@ void RecoDataAnalysis() {
         false,
         false,
         false,
+        false,
+        false,
+        false,
         false
     };
 
@@ -822,6 +910,9 @@ void RecoDataAnalysis() {
         {true, false},
 
         // Comparing TG threshold
+        {true, false},
+        {true, false},
+        {true, false},
         {true, false},
         {true, false},
         {true, false},
