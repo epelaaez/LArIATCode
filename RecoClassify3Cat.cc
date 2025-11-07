@@ -514,7 +514,8 @@ void RecoClassify3Cat() {
     // Study unreconstructed hits //
     ////////////////////////////////
 
-    TH1D* hNegativeTimePrimaryHits = new TH1D("hNegativeTimePrimaryHits", "hNegativeTimePrimaryHits", 40, -20, 1);
+    TH1D* hNegativeTimePrimaryHits = new TH1D("hNegativeTimePrimaryHits", "hNegativeTimePrimaryHits", 30, -20, 10);
+    TH1D* hTimePrimaryHits         = new TH1D("hTimePrimaryHits", "hTimePrimaryHits", 60, -20, 300);
 
     TH1D* hUnRecoHitsAbs0p    = new TH1D("hUnRecoHitsAbs0p", "hUnRecoHitsAbs0p", 25, 0, 50);
     TH1D* hUnRecoHitsAbsNp    = new TH1D("hUnRecoHitsAbsNp", "hUnRecoHitsAbsNp", 25, 0, 50);
@@ -907,6 +908,7 @@ void RecoClassify3Cat() {
                 foundHitNegativeTime = true;
                 hNegativeTimePrimaryHits->Fill(fHitT->at(hitWC2TPCKey->at(i)));
             }
+            hTimePrimaryHits->Fill(fHitT->at(hitWC2TPCKey->at(i)));
         }
         if (foundHitNegativeTime) numEventsPrimaryHitNegativeTime++;
 
@@ -2525,7 +2527,8 @@ void RecoClassify3Cat() {
         {hLargeHitClusterAbs0p, hLargeHitClusterAbsNp, hLargeHitClusterMuon, hLargeHitClusterElectron, hLargeHitClusterScatter, hLargeHitClusterChExch, hLargeHitClusterOther},
         {hUnRecoHitsAbs0p, hUnRecoHitsAbsNp, hUnRecoHitsMuon, hUnRecoHitsElectron, hUnRecoHitsScatter, hUnRecoHitsChExch, hUnRecoHitsOther},
         {hNumClustersAbs0p, hNumClustersAbsNp, hNumClustersMuon, hNumClustersElectron, hNumClustersScatter, hNumClustersChExch, hNumClustersOther},
-        {hNegativeTimePrimaryHits}
+        {hNegativeTimePrimaryHits},
+        {hTimePrimaryHits}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2580,7 +2583,8 @@ void RecoClassify3Cat() {
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
-        {"Negative time hits"}
+        {"Negative time hits"},
+        {"All time hits"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -2635,7 +2639,8 @@ void RecoClassify3Cat() {
         "Hits/NumLargeClusters",
         "Hits/UnReconstructedHits",
         "Hits/NumClusters",
-        "Hits/PrimaryNegativeTimeHits"
+        "Hits/PrimaryNegativeTimeHits",
+        "Hits/PrimaryTimeHits"
     };
 
     std::vector<TString> XLabels = {
@@ -2690,6 +2695,7 @@ void RecoClassify3Cat() {
         "Number of large clusters",
         "Unreconstructed hits",
         "# of clusters",
+        "Hit time [us]",
         "Hit time [us]"
     };
 
@@ -2741,6 +2747,7 @@ void RecoClassify3Cat() {
         "Counts",
 
         // Unreconstructed hits
+        "Counts",
         "Counts",
         "Counts",
         "Counts",
@@ -2800,7 +2807,8 @@ void RecoClassify3Cat() {
         true,
         true,
         true,
-        false
+        true,
+        true
     };
 
     std::vector<std::vector<bool>> PlotsAsPoints = {
@@ -2855,6 +2863,7 @@ void RecoClassify3Cat() {
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
+        {false},
         {false}
     };
 
