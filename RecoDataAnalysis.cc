@@ -293,6 +293,12 @@ void RecoDataAnalysis() {
     );
     TH1D* hRadDistMidPlane = new TH1D("hRadDistMidPlane", "RadDistMidPlane", 60, 0.0, 30.);
 
+    ///////////////////////////////////////////////////
+    // Distribution of hits matched to primary track //
+    ///////////////////////////////////////////////////
+
+    TH1D* hTimePrimaryHits = new TH1D("hTimePrimaryHits", "hTimePrimaryHits", 60, -20, 300);
+
     //////////////////////
     // Loop over events //
     //////////////////////
@@ -543,14 +549,17 @@ void RecoDataAnalysis() {
         // Separate primary hits into collection and induction
         std::vector<int> hitWC2TPCKeyInduction;
         std::vector<int> hitWC2TPCKeyCollection;
+
         for (size_t i = 0; i < hitWC2TPCKey->size(); ++i) {
             if (fHitPlane->at(hitWC2TPCKey->at(i)) == 0) hitWC2TPCKeyInduction.push_back(hitWC2TPCKey->at(i));
             else if (fHitPlane->at(hitWC2TPCKey->at(i)) == 1) hitWC2TPCKeyCollection.push_back(hitWC2TPCKey->at(i));
+
+            hTimePrimaryHits->Fill(fHitT->at(hitWC2TPCKey->at(i)));
         }
 
         // First, get a random point in the primary track
-        double randomInduction  = gRandom->Uniform(0, hitWC2TPCKeyInduction->size());
-        double randomCollection = gRandom->Uniform(0, hitWC2TPCKeyCollection->size());
+        double randomInduction  = gRandom->Uniform(0, hitWC2TPCKeyInduction.size());
+        double randomCollection = gRandom->Uniform(0, hitWC2TPCKeyCollection.size());
 
         int numUnrecoHitsInduction  = 0;
         int numUnrecoHitsCollection = 0;
@@ -563,12 +572,12 @@ void RecoDataAnalysis() {
             double hitW     = fHitW->at(iHit);
             int    hitPlane = fHitPlane->at(iHit);
 
-            if (hitPlane == 0) {
+            if (hitPlane == 0 && hitWC2TPCKeyInduction.size() > 0) {
                 double dW = (hitW - fHitW->at(hitWC2TPCKeyInduction[randomInduction]));
                 double dX = (hitX - fHitX->at(hitWC2TPCKeyInduction[randomInduction]));
                 double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
                 if (d < DISTANCE_TO_PRIMARY_THRESHOLD) numUnrecoHitsInduction++;
-            } else if (hitPlane == 1) {
+            } else if (hitPlane == 1 && hitWC2TPCKeyCollection.size() > 0) {
                 double dW = (hitW - fHitW->at(hitWC2TPCKeyCollection[randomCollection]));
                 double dX = (hitX - fHitX->at(hitWC2TPCKeyCollection[randomCollection]));
                 double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
@@ -651,13 +660,21 @@ void RecoDataAnalysis() {
     hMCNumTracksInCylinder1TG->Scale(hNumTracksInCylinder1TG->Integral() / hMCNumTracksInCylinder1TG->Integral());
     hMCNumTracksInCylinder2TG->Scale(hNumTracksInCylinder2TG->Integral() / hMCNumTracksInCylinder2TG->Integral());
 
-    TH1D* hMCTGUnreconstructedHits0TG = (TH1D*) hMCTGUnreconstructedHits->Clone("hMCTGUnreconstructedHits0TG");
-    TH1D* hMCTGUnreconstructedHits1TG = (TH1D*) hMCTGUnreconstructedHits->Clone("hMCTGUnreconstructedHits1TG");
-    TH1D* hMCTGUnreconstructedHits2TG = (TH1D*) hMCTGUnreconstructedHits->Clone("hMCTGUnreconstructedHits2TG");
+    TH1D* hMCTGUnreconstructedHitsInduction0TG = (TH1D*) hMCTGUnreconstructedHitsInduction->Clone("hMCTGUnreconstructedHitsInduction0TG");
+    TH1D* hMCTGUnreconstructedHitsInduction1TG = (TH1D*) hMCTGUnreconstructedHitsInduction->Clone("hMCTGUnreconstructedHitsInduction1TG");
+    TH1D* hMCTGUnreconstructedHitsInduction2TG = (TH1D*) hMCTGUnreconstructedHitsInduction->Clone("hMCTGUnreconstructedHitsInduction2TG");
 
-    hMCTGUnreconstructedHits0TG->Scale(hTGUnreconstructedHits0TG->Integral() / hMCTGUnreconstructedHits0TG->Integral());
-    hMCTGUnreconstructedHits1TG->Scale(hTGUnreconstructedHits1TG->Integral() / hMCTGUnreconstructedHits1TG->Integral());
-    hMCTGUnreconstructedHits2TG->Scale(hTGUnreconstructedHits2TG->Integral() / hMCTGUnreconstructedHits2TG->Integral());
+    hMCTGUnreconstructedHitsInduction0TG->Scale(hTGUnreconstructedHitsInduction0TG->Integral() / hMCTGUnreconstructedHitsInduction0TG->Integral());
+    hMCTGUnreconstructedHitsInduction1TG->Scale(hTGUnreconstructedHitsInduction1TG->Integral() / hMCTGUnreconstructedHitsInduction1TG->Integral());
+    hMCTGUnreconstructedHitsInduction2TG->Scale(hTGUnreconstructedHitsInduction2TG->Integral() / hMCTGUnreconstructedHitsInduction2TG->Integral());
+
+    TH1D* hMCTGUnreconstructedHitsCollection0TG = (TH1D*) hMCTGUnreconstructedHitsCollection->Clone("hMCTGUnreconstructedHitsCollection0TG");
+    TH1D* hMCTGUnreconstructedHitsCollection1TG = (TH1D*) hMCTGUnreconstructedHitsCollection->Clone("hMCTGUnreconstructedHitsCollection1TG");
+    TH1D* hMCTGUnreconstructedHitsCollection2TG = (TH1D*) hMCTGUnreconstructedHitsCollection->Clone("hMCTGUnreconstructedHitsCollection2TG");
+
+    hMCTGUnreconstructedHitsCollection0TG->Scale(hTGUnreconstructedHitsCollection0TG->Integral() / hMCTGUnreconstructedHitsCollection0TG->Integral());
+    hMCTGUnreconstructedHitsCollection1TG->Scale(hTGUnreconstructedHitsCollection1TG->Integral() / hMCTGUnreconstructedHitsCollection1TG->Integral());
+    hMCTGUnreconstructedHitsCollection2TG->Scale(hTGUnreconstructedHitsCollection2TG->Integral() / hMCTGUnreconstructedHitsCollection2TG->Integral());
 
     //////////////////
     // Create plots //
@@ -690,6 +707,9 @@ void RecoDataAnalysis() {
         // Cylinder
         {hNumTracksInCylinder, hMCNumTracksInCylinder},
 
+        // Hits in primary
+        {hTimePrimaryHits},
+
         // Comparisons with MC
         {hTGSmallTracks, hMCTGSmallTracks},
         {hTracksNearVertex, hMCTracksNearVertex},
@@ -706,9 +726,12 @@ void RecoDataAnalysis() {
         {hNumTracksInCylinder0TG, hMCNumTracksInCylinder0TG},
         {hNumTracksInCylinder1TG, hMCNumTracksInCylinder1TG},
         {hNumTracksInCylinder2TG, hMCNumTracksInCylinder2TG},
-        {hTGUnreconstructedHits0TG, hMCTGUnreconstructedHits0TG},
-        {hTGUnreconstructedHits1TG, hMCTGUnreconstructedHits1TG},
-        {hTGUnreconstructedHits2TG, hMCTGUnreconstructedHits2TG}
+        {hTGUnreconstructedHitsInduction0TG, hMCTGUnreconstructedHitsInduction0TG},
+        {hTGUnreconstructedHitsInduction1TG, hMCTGUnreconstructedHitsInduction1TG},
+        {hTGUnreconstructedHitsInduction2TG, hMCTGUnreconstructedHitsInduction2TG},
+        {hTGUnreconstructedHitsCollection0TG, hMCTGUnreconstructedHitsCollection0TG},
+        {hTGUnreconstructedHitsCollection1TG, hMCTGUnreconstructedHitsCollection1TG},
+        {hTGUnreconstructedHitsCollection2TG, hMCTGUnreconstructedHitsCollection2TG}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -725,6 +748,9 @@ void RecoDataAnalysis() {
         // Cylinder
         {"Data", "MC (scaled)"},
 
+        // Hits in primary
+        {"Data"},
+
         // Comparisons with MC
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
@@ -735,6 +761,9 @@ void RecoDataAnalysis() {
         {"Data", "MC (scaled)"},
 
         // Comparing TG threshold
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
@@ -760,6 +789,9 @@ void RecoDataAnalysis() {
         // Cylinder
         "Cylinder/NumTracksInCylinder",
 
+        // Hits in primary
+        "PrimaryHits/AllTime",
+
         // Comparisons with MC
         "TGPrimary/TGSmallTracks",
         "NearVertex/TracksNearVertex",
@@ -776,9 +808,12 @@ void RecoDataAnalysis() {
         "TGThreshold/NumTracksInCylinder0TG",
         "TGThreshold/NumTracksInCylinder1TG",
         "TGThreshold/NumTracksInCylinder2TG",
-        "TGThreshold/UnreconstructedHits0TG",
-        "TGThreshold/UnreconstructedHits1TG",
-        "TGThreshold/UnreconstructedHits2TG"
+        "TGThreshold/UnreconstructedInductionHits0TG",
+        "TGThreshold/UnreconstructedInductionHits1TG",
+        "TGThreshold/UnreconstructedInductionHits2TG",
+        "TGThreshold/UnreconstructedCollectionHits0TG",
+        "TGThreshold/UnreconstructedCollectionHits1TG",
+        "TGThreshold/UnreconstructedCollectionHits2TG"
     };
 
     std::vector<TString> XLabels = {
@@ -794,6 +829,9 @@ void RecoDataAnalysis() {
 
         // Cylinder
         "# of tracks",
+
+        // Hits in primary
+        "Hit time [us]",
 
         // Comparisons with MC
         "# of small tracks",
@@ -813,6 +851,9 @@ void RecoDataAnalysis() {
         "# of tracks",
         "# of unreconstructed hits",
         "# of unreconstructed hits",
+        "# of unreconstructed hits",
+        "# of unreconstructed hits",
+        "# of unreconstructed hits",
         "# of unreconstructed hits"
     };
 
@@ -830,6 +871,9 @@ void RecoDataAnalysis() {
         // Cylinder
         "Counts",
 
+        // Hits in primary
+        "Counts",
+
         // Comparisons with MC
         "Counts",
         "Counts",
@@ -840,6 +884,9 @@ void RecoDataAnalysis() {
         "Counts",
 
         // Comparing TG threshold
+        "Counts",
+        "Counts",
+        "Counts",
         "Counts",
         "Counts",
         "Counts",
@@ -865,6 +912,9 @@ void RecoDataAnalysis() {
         // Cylinder
         false,
 
+        // Hits in primary
+        false,
+
         // Comparisons with MC
         false,
         false,
@@ -875,6 +925,9 @@ void RecoDataAnalysis() {
         false,
 
         // Comparing TG threshold
+        false,
+        false,
+        false,
         false,
         false,
         false,
@@ -900,6 +953,9 @@ void RecoDataAnalysis() {
         // Cylinder
         {true, false},
 
+        // Hits in primary
+        {true},
+
         // Comparisons with MC
         {true, false},
         {true, false},
@@ -910,6 +966,9 @@ void RecoDataAnalysis() {
         {true, false},
 
         // Comparing TG threshold
+        {true, false},
+        {true, false},
+        {true, false},
         {true, false},
         {true, false},
         {true, false},
