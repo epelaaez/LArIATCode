@@ -62,6 +62,7 @@ struct EventInfo {
 
 struct HitCluster {
     int                plane;
+    double             clusterSize;
     std::vector<int>   hitKeys;
     std::vector<float> hitX;
     std::vector<float> hitW;
@@ -126,7 +127,7 @@ double MAX_IN_CLUSTER_W_SEPARATION = 1.5;
 double MAX_IN_CLUSTER_X_SEPARATION = 1.5;
 double MAX_IN_CLUSTER_SEPARATION   = 2.5;
 
-int MINIMUM_HITS_FOR_CLUSTER = 5;
+int MINIMUM_HITS_FOR_CLUSTER = 10;
 
 int    NUM_CLUSTERS_THRESHOLD  = 2;
 double LARGE_CLUSTER_THRESHOLD = 20.0;
@@ -145,6 +146,9 @@ double HIT_DEDX_THRESHOLD = 40.;
 
 // Threshold for scattering angle
 double SCATTERING_ANGLE_THRESHOLD = 5.0 * (TMath::Pi() / 180);
+
+// Threshold for pion scattering energy 
+double PION_SCATTERING_ENERGY_THRESHOLD = 0.05; // in GeV / c
 
 // Bins for energy bins
 static const std::vector<double> ARRAY_KE_BINS = {0., 100., 150., 200., 250., 300., 350., 400., 450., 500., 600.};

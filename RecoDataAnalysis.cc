@@ -199,6 +199,10 @@ void RecoDataAnalysis() {
     TH2D* hMCPrimaryTrackPosition            = (TH2D*) MCFile->Get("hMCPrimaryTrackPosition");
     TH1D* hMCTGUnreconstructedHitsInduction  = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsInduction");
     TH1D* hMCTGUnreconstructedHitsCollection = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsCollection");
+    TH1D* hMCTGNumClustersInduction          = (TH1D*) MCFile->Get("hMCTGNumClustersInduction");
+    TH1D* hMCTGClusterSizesInduction         = (TH1D*) MCFile->Get("hMCTGClusterSizesInduction");
+    TH1D* hMCTGNumClustersCollection         = (TH1D*) MCFile->Get("hMCTGNumClustersCollection");
+    TH1D* hMCTGClusterSizesCollection        = (TH1D*) MCFile->Get("hMCTGClusterSizesCollection");
 
     ///////////////////////
     // Create histograms //
@@ -231,13 +235,29 @@ void RecoDataAnalysis() {
     TH1D* hNumTracksInCylinder2TG = new TH1D("hNumTracksInCylinder2TG", "NumTracksInCylinder2TG", 10, 0, 10);
     TH1D* hTGSmallTracks2TG       = new TH1D("hTGSmallTracks2TG", "TGSmallTracks2TG", 10, 0, 10);
 
-    TH1D* hTGUnreconstructedHitsInduction0TG = new TH1D("hTGUnreconstructedHitsInduction0TG", "hTGUnreconstructedHitsInduction0TG;;", 25, 0, 50);
-    TH1D* hTGUnreconstructedHitsInduction1TG = new TH1D("hTGUnreconstructedHitsInduction1TG", "hTGUnreconstructedHitsInduction1TG;;", 25, 0, 50);
-    TH1D* hTGUnreconstructedHitsInduction2TG = new TH1D("hTGUnreconstructedHitsInduction2TG", "hTGUnreconstructedHitsInduction2TG;;", 25, 0, 50);
+    TH1D* hTGUnreconstructedHitsInduction0TG = new TH1D("hTGUnreconstructedHitsInduction0TG", "hTGUnreconstructedHitsInduction0TG;;", 30, 0, 30);
+    TH1D* hTGUnreconstructedHitsInduction1TG = new TH1D("hTGUnreconstructedHitsInduction1TG", "hTGUnreconstructedHitsInduction1TG;;", 30, 0, 30);
+    TH1D* hTGUnreconstructedHitsInduction2TG = new TH1D("hTGUnreconstructedHitsInduction2TG", "hTGUnreconstructedHitsInduction2TG;;", 30, 0, 30);
 
-    TH1D* hTGUnreconstructedHitsCollection0TG = new TH1D("hTGUnreconstructedHitsCollection0TG", "hTGUnreconstructedHitsCollection0TG;;", 25, 0, 50);
-    TH1D* hTGUnreconstructedHitsCollection1TG = new TH1D("hTGUnreconstructedHitsCollection1TG", "hTGUnreconstructedHitsCollection1TG;;", 25, 0, 50);
-    TH1D* hTGUnreconstructedHitsCollection2TG = new TH1D("hTGUnreconstructedHitsCollection2TG", "hTGUnreconstructedHitsCollection2TG;;", 25, 0, 50);
+    TH1D* hTGUnreconstructedHitsCollection0TG = new TH1D("hTGUnreconstructedHitsCollection0TG", "hTGUnreconstructedHitsCollection0TG;;", 30, 0, 30);
+    TH1D* hTGUnreconstructedHitsCollection1TG = new TH1D("hTGUnreconstructedHitsCollection1TG", "hTGUnreconstructedHitsCollection1TG;;", 30, 0, 30);
+    TH1D* hTGUnreconstructedHitsCollection2TG = new TH1D("hTGUnreconstructedHitsCollection2TG", "hTGUnreconstructedHitsCollection2TG;;", 30, 0, 30);
+
+    TH1D* hTGNumClustersInduction0TG = new TH1D("hTGNumClustersInduction0TG", "hTGNumClustersInduction0TG;;", 10, 0, 10);
+    TH1D* hTGNumClustersInduction1TG = new TH1D("hTGNumClustersInduction1TG", "hTGNumClustersInduction1TG;;", 10, 0, 10);
+    TH1D* hTGNumClustersInduction2TG = new TH1D("hTGNumClustersInduction2TG", "hTGNumClustersInduction2TG;;", 10, 0, 10);
+
+    TH1D* hTGNumClustersCollection0TG = new TH1D("hTGNumClustersCollection0TG", "hTGNumClustersCollection0TG;;", 10, 0, 10);
+    TH1D* hTGNumClustersCollection1TG = new TH1D("hTGNumClustersCollection1TG", "hTGNumClustersCollection1TG;;", 10, 0, 10);
+    TH1D* hTGNumClustersCollection2TG = new TH1D("hTGNumClustersCollection2TG", "hTGNumClustersCollection2TG;;", 10, 0, 10);
+
+    TH1D* hTGClusterSizesInduction0TG = new TH1D("hTGClusterSizesInduction0TG", "hTGClusterSizesInduction0TG;;", 15, 0, 30);
+    TH1D* hTGClusterSizesInduction1TG = new TH1D("hTGClusterSizesInduction1TG", "hTGClusterSizesInduction1TG;;", 15, 0, 30);
+    TH1D* hTGClusterSizesInduction2TG = new TH1D("hTGClusterSizesInduction2TG", "hTGClusterSizesInduction2TG;;", 15, 0, 30);
+
+    TH1D* hTGClusterSizesCollection0TG = new TH1D("hTGClusterSizesCollection0TG", "hTGClusterSizesCollection0TG;;", 15, 0, 30);
+    TH1D* hTGClusterSizesCollection1TG = new TH1D("hTGClusterSizesCollection1TG", "hTGClusterSizesCollection1TG;;", 15, 0, 30);
+    TH1D* hTGClusterSizesCollection2TG = new TH1D("hTGClusterSizesCollection2TG", "hTGClusterSizesCollection2TG;;", 15, 0, 30);
 
     // With primary interacting
     TH1D* hTracksNearVertex       = new TH1D("hTracksNearVertex", "TracksNearVertex", 10, 0, 10);
@@ -543,8 +563,131 @@ void RecoDataAnalysis() {
             }
         }
 
+        //////////////////////////
+        // Unreconstructed hits //
+        //////////////////////////
+
         // Look at unreconstructed hits
         std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
+
+        // Reconstruct hit clusters
+        std::vector<int> candidateHits;
+        for (size_t iHit = 0; iHit < fHitKey->size(); ++iHit) {
+            // Skip hits already in tracks
+            if (hitsInTracks.count(iHit) > 0) continue;
+
+            double hitX     = fHitX->at(iHit);
+            double hitW     = fHitW->at(iHit);
+            int    hitPlane = fHitPlane->at(iHit);
+
+            if (isHitNearPrimary(
+                hitWC2TPCKey,
+                fHitX,
+                fHitW,
+                fHitPlane,
+                hitX,
+                hitW,
+                hitPlane,
+                DISTANCE_TO_PRIMARY_THRESHOLD,
+                true
+            )) candidateHits.push_back(iHit);
+        }
+
+        // Now cluster using those hits as starting points
+        std::unordered_set<int> usedHits;
+        std::vector<HitCluster> hitClusters;
+        int nCandidateHits = candidateHits.size();
+
+        for (int iHit = 0; iHit < nCandidateHits; ++iHit) {
+            // The candidate hits are only STARTING points, as this could make up 
+            // really long tracks in the induction plane that are no longer near 
+            // the ending point of the primary track
+            
+            // First, check if we have already used this hit
+            int   thisHitKey       = candidateHits.at(iHit);
+            int   thisHitPlane     = fHitPlane->at(thisHitKey);
+            float thisHitW         = fHitW->at(thisHitKey);
+            float thisHitX         = fHitX->at(thisHitKey);
+            float thisHitCharge    = fHitCharge->at(thisHitKey);
+            float thisHitChargeCol = fHitChargeCol->at(thisHitKey);
+            
+            if (usedHits.count(thisHitKey)) continue;           
+            
+            std::vector<int> clusterKeys;
+            std::vector<float> clusterX;
+            std::vector<float> clusterW;
+            std::vector<float> clusterCharge;
+            std::vector<float> clusterChargeCol;
+
+            clusterKeys.push_back(thisHitKey);
+            clusterX.push_back(thisHitX);
+            clusterW.push_back(thisHitW);
+            clusterCharge.push_back(thisHitCharge);
+            clusterChargeCol.push_back(thisHitChargeCol);
+            
+            for (int iAllHit = 0; iAllHit < fHitKey->size(); ++iAllHit) {
+                // Skip already used hits, and those reconstructed in tracks
+                if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit)) continue;
+
+                // Clusters have to be in same plane
+                if (fHitPlane->at(iAllHit) != thisHitPlane) continue;
+
+                float internalHitW  = fHitW->at(iAllHit);
+                float internalHitX  = fHitX->at(iAllHit);
+                float dW            = std::abs(internalHitW - thisHitW);
+                float dX            = std::abs(internalHitX - thisHitX);
+                float distance      = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
+
+                int nClusterSoFar = clusterW.size();
+                for (int iCluster = 0; iCluster < nClusterSoFar; ++iCluster) {
+                    float tempdW       = std::abs(internalHitW - clusterW.at(iCluster));
+                    float tempdX       = std::abs(internalHitX - clusterX.at(iCluster));
+                    float tempDistance = std::sqrt(std::pow(tempdW, 2) + std::pow(tempdX, 2));
+
+                    if (tempDistance < distance) distance = tempDistance;
+                    if (distance < MAX_IN_CLUSTER_SEPARATION) break;
+                }
+
+                if (distance < MAX_IN_CLUSTER_SEPARATION) {
+                    usedHits.insert(iAllHit);
+                    clusterKeys.push_back(iAllHit);
+                    clusterX.push_back(fHitX->at(iAllHit));
+                    clusterW.push_back(fHitW->at(iAllHit));
+                    clusterCharge.push_back(fHitCharge->at(iAllHit));
+                    clusterChargeCol.push_back(fHitChargeCol->at(iAllHit));
+                }
+            }
+
+            if (clusterKeys.size() > MINIMUM_HITS_FOR_CLUSTER) {
+                HitCluster thisCluster;
+
+                double clusterSize = 0;
+                for (int j = 0; j < clusterW.size() - 1; ++j) {
+                    for (int k = j + 1; k < clusterW.size(); ++k) {
+                        double wSeparation = clusterW[j] - clusterW[k];
+                        double xSeparation = clusterX[j] - clusterX[k];
+
+                        double thisDiameter = std::sqrt(
+                            std::pow(wSeparation, 2) + 
+                            std::pow(xSeparation, 2)
+                        );
+
+                        if (thisDiameter > clusterSize) clusterSize = thisDiameter;
+                    }
+                }
+
+                thisCluster.plane        = thisHitPlane;
+                thisCluster.hitKeys      = clusterKeys;
+                thisCluster.hitX         = clusterX;
+                thisCluster.hitW         = clusterW;
+                thisCluster.hitCharge    = clusterCharge;
+                thisCluster.hitChargeCol = clusterChargeCol;
+                thisCluster.clusterSize  = clusterSize;
+                
+                usedHits.insert(thisHitKey);
+                hitClusters.push_back(thisCluster);
+            }
+        }
 
         // Separate primary hits into collection and induction
         std::vector<int> hitWC2TPCKeyInduction;
@@ -564,6 +707,9 @@ void RecoDataAnalysis() {
         int numUnrecoHitsInduction  = 0;
         int numUnrecoHitsCollection = 0;
 
+        std::vector<int> candidateRandomHitsInduction;
+        std::vector<int> candidateRandomHitsCollection;
+
         for (size_t iHit = 0; iHit < fHitKey->size(); ++iHit) {
             // Skip hits already in tracks
             if (hitsInTracks.count(iHit) > 0) continue;
@@ -576,24 +722,59 @@ void RecoDataAnalysis() {
                 double dW = (hitW - fHitW->at(hitWC2TPCKeyInduction[randomInduction]));
                 double dX = (hitX - fHitX->at(hitWC2TPCKeyInduction[randomInduction]));
                 double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
-                if (d < DISTANCE_TO_PRIMARY_THRESHOLD) numUnrecoHitsInduction++;
+                if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
+                    numUnrecoHitsInduction++;
+                    candidateRandomHitsInduction.push_back(iHit);
+                }
             } else if (hitPlane == 1 && hitWC2TPCKeyCollection.size() > 0) {
                 double dW = (hitW - fHitW->at(hitWC2TPCKeyCollection[randomCollection]));
                 double dX = (hitX - fHitX->at(hitWC2TPCKeyCollection[randomCollection]));
                 double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
-                if (d < DISTANCE_TO_PRIMARY_THRESHOLD) numUnrecoHitsCollection++;
+                if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
+                    numUnrecoHitsCollection++;
+                    candidateRandomHitsCollection.push_back(iHit);
+                }
+            }
+        }
+
+        // Loop through clusters and see which would be close to random point
+        int numClustersInduction = 0; int numClustersCollection = 0;
+
+        for (size_t iCluster = 0; iCluster < hitClusters.size(); ++iCluster) {
+            HitCluster thisCluster = hitClusters[iCluster];
+
+            for (size_t iHit = 0; iHit < thisCluster.hitKeys.size(); ++iHit) {
+                if (std::find(candidateRandomHitsInduction.begin(), candidateRandomHitsInduction.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsInduction.end()) {
+                    numClustersInduction++;
+                    if (numTGTracks == 0 && isPrimaryTG) hTGClusterSizesInduction0TG->Fill(thisCluster.clusterSize);
+                    else if (numTGTracks == 1 && isPrimaryTG) hTGClusterSizesInduction1TG->Fill(thisCluster.clusterSize);
+                    else if (numTGTracks == 2 && isPrimaryTG) hTGClusterSizesInduction2TG->Fill(thisCluster.clusterSize);
+                    break;
+                } else if (std::find(candidateRandomHitsCollection.begin(), candidateRandomHitsCollection.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsCollection.end()) {
+                    numClustersCollection++;
+                    if (numTGTracks == 0 && isPrimaryTG) hTGClusterSizesCollection0TG->Fill(thisCluster.clusterSize);
+                    else if (numTGTracks == 1 && isPrimaryTG) hTGClusterSizesCollection1TG->Fill(thisCluster.clusterSize);
+                    else if (numTGTracks == 2 && isPrimaryTG) hTGClusterSizesCollection2TG->Fill(thisCluster.clusterSize);
+                    break;
+                }
             }
         }
 
         if (numTGTracks == 0 && isPrimaryTG) {
+            hTGNumClustersInduction0TG->Fill(numClustersInduction);
+            hTGNumClustersCollection0TG->Fill(numClustersCollection);
             hTGUnreconstructedHitsInduction0TG->Fill(numUnrecoHitsInduction);
             hTGUnreconstructedHitsCollection0TG->Fill(numUnrecoHitsCollection);
         }
         if (numTGTracks <= 1 && isPrimaryTG) {
+            hTGNumClustersInduction1TG->Fill(numClustersInduction);
+            hTGNumClustersCollection1TG->Fill(numClustersCollection);
             hTGUnreconstructedHitsInduction1TG->Fill(numUnrecoHitsInduction);
             hTGUnreconstructedHitsCollection1TG->Fill(numUnrecoHitsCollection);
         }
         if (numTGTracks <= 2 && isPrimaryTG) {
+            hTGNumClustersInduction2TG->Fill(numClustersInduction);
+            hTGNumClustersCollection2TG->Fill(numClustersCollection);
             hTGUnreconstructedHitsInduction2TG->Fill(numUnrecoHitsInduction);
             hTGUnreconstructedHitsCollection2TG->Fill(numUnrecoHitsCollection);
         }
@@ -676,6 +857,38 @@ void RecoDataAnalysis() {
     hMCTGUnreconstructedHitsCollection1TG->Scale(hTGUnreconstructedHitsCollection1TG->Integral() / hMCTGUnreconstructedHitsCollection1TG->Integral());
     hMCTGUnreconstructedHitsCollection2TG->Scale(hTGUnreconstructedHitsCollection2TG->Integral() / hMCTGUnreconstructedHitsCollection2TG->Integral());
 
+    TH1D* hMCTGClusterSizesInduction0TG = (TH1D*) hMCTGClusterSizesInduction->Clone("hMCTGClusterSizesInduction0TG");
+    TH1D* hMCTGClusterSizesInduction1TG = (TH1D*) hMCTGClusterSizesInduction->Clone("hMCTGClusterSizesInduction1TG");
+    TH1D* hMCTGClusterSizesInduction2TG = (TH1D*) hMCTGClusterSizesInduction->Clone("hMCTGClusterSizesInduction2TG");
+
+    hMCTGClusterSizesInduction0TG->Scale(hTGClusterSizesInduction0TG->Integral() / hMCTGClusterSizesInduction0TG->Integral());
+    hMCTGClusterSizesInduction1TG->Scale(hTGClusterSizesInduction1TG->Integral() / hMCTGClusterSizesInduction1TG->Integral());
+    hMCTGClusterSizesInduction2TG->Scale(hTGClusterSizesInduction2TG->Integral() / hMCTGClusterSizesInduction2TG->Integral());
+
+    TH1D* hMCTGClusterSizesCollection0TG = (TH1D*) hMCTGClusterSizesCollection->Clone("hMCTGClusterSizesCollection0TG");
+    TH1D* hMCTGClusterSizesCollection1TG = (TH1D*) hMCTGClusterSizesCollection->Clone("hMCTGClusterSizesCollection1TG");
+    TH1D* hMCTGClusterSizesCollection2TG = (TH1D*) hMCTGClusterSizesCollection->Clone("hMCTGClusterSizesCollection2TG");
+
+    hMCTGClusterSizesCollection0TG->Scale(hTGClusterSizesCollection0TG->Integral() / hMCTGClusterSizesCollection0TG->Integral());
+    hMCTGClusterSizesCollection1TG->Scale(hTGClusterSizesCollection1TG->Integral() / hMCTGClusterSizesCollection1TG->Integral());
+    hMCTGClusterSizesCollection2TG->Scale(hTGClusterSizesCollection2TG->Integral() / hMCTGClusterSizesCollection2TG->Integral());
+
+    TH1D* hMCTGNumClustersCollection0TG = (TH1D*) hMCTGNumClustersCollection->Clone("hMCTGNumClustersCollection0TG");
+    TH1D* hMCTGNumClustersCollection1TG = (TH1D*) hMCTGNumClustersCollection->Clone("hMCTGNumClustersCollection1TG");
+    TH1D* hMCTGNumClustersCollection2TG = (TH1D*) hMCTGNumClustersCollection->Clone("hMCTGNumClustersCollection2TG");
+
+    hMCTGNumClustersCollection0TG->Scale(hTGNumClustersCollection0TG->Integral() / hMCTGNumClustersCollection0TG->Integral());
+    hMCTGNumClustersCollection1TG->Scale(hTGNumClustersCollection1TG->Integral() / hMCTGNumClustersCollection1TG->Integral());
+    hMCTGNumClustersCollection2TG->Scale(hTGNumClustersCollection2TG->Integral() / hMCTGNumClustersCollection2TG->Integral());
+
+    TH1D* hMCTGNumClustersInduction0TG = (TH1D*) hMCTGNumClustersInduction->Clone("hMCTGNumClustersInduction0TG");
+    TH1D* hMCTGNumClustersInduction1TG = (TH1D*) hMCTGNumClustersInduction->Clone("hMCTGNumClustersInduction1TG");
+    TH1D* hMCTGNumClustersInduction2TG = (TH1D*) hMCTGNumClustersInduction->Clone("hMCTGNumClustersInduction2TG");
+
+    hMCTGNumClustersInduction0TG->Scale(hTGNumClustersInduction0TG->Integral() / hMCTGNumClustersInduction0TG->Integral());
+    hMCTGNumClustersInduction1TG->Scale(hTGNumClustersInduction1TG->Integral() / hMCTGNumClustersInduction1TG->Integral());
+    hMCTGNumClustersInduction2TG->Scale(hTGNumClustersInduction2TG->Integral() / hMCTGNumClustersInduction2TG->Integral());
+
     //////////////////
     // Create plots //
     //////////////////
@@ -723,15 +936,34 @@ void RecoDataAnalysis() {
         {hTGSmallTracks0TG, hMCTGSmallTracks0TG},
         {hTGSmallTracks1TG, hMCTGSmallTracks1TG},
         {hTGSmallTracks2TG, hMCTGSmallTracks2TG},
+
         {hNumTracksInCylinder0TG, hMCNumTracksInCylinder0TG},
         {hNumTracksInCylinder1TG, hMCNumTracksInCylinder1TG},
         {hNumTracksInCylinder2TG, hMCNumTracksInCylinder2TG},
+
         {hTGUnreconstructedHitsInduction0TG, hMCTGUnreconstructedHitsInduction0TG},
         {hTGUnreconstructedHitsInduction1TG, hMCTGUnreconstructedHitsInduction1TG},
         {hTGUnreconstructedHitsInduction2TG, hMCTGUnreconstructedHitsInduction2TG},
+
         {hTGUnreconstructedHitsCollection0TG, hMCTGUnreconstructedHitsCollection0TG},
         {hTGUnreconstructedHitsCollection1TG, hMCTGUnreconstructedHitsCollection1TG},
-        {hTGUnreconstructedHitsCollection2TG, hMCTGUnreconstructedHitsCollection2TG}
+        {hTGUnreconstructedHitsCollection2TG, hMCTGUnreconstructedHitsCollection2TG},
+
+        {hTGClusterSizesCollection0TG, hMCTGClusterSizesCollection0TG},
+        {hTGClusterSizesCollection1TG, hMCTGClusterSizesCollection1TG},
+        {hTGClusterSizesCollection2TG, hMCTGClusterSizesCollection2TG},
+
+        {hTGClusterSizesInduction0TG, hMCTGClusterSizesInduction0TG},
+        {hTGClusterSizesInduction1TG, hMCTGClusterSizesInduction1TG},
+        {hTGClusterSizesInduction2TG, hMCTGClusterSizesInduction2TG},
+
+        {hTGNumClustersCollection0TG, hMCTGNumClustersCollection0TG},
+        {hTGNumClustersCollection1TG, hMCTGNumClustersCollection1TG},
+        {hTGNumClustersCollection2TG, hMCTGNumClustersCollection2TG},
+
+        {hTGNumClustersInduction0TG, hMCTGNumClustersInduction0TG},
+        {hTGNumClustersInduction1TG, hMCTGNumClustersInduction1TG},
+        {hTGNumClustersInduction2TG, hMCTGNumClustersInduction2TG}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -764,12 +996,31 @@ void RecoDataAnalysis() {
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
+        
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
+
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
+
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"}
@@ -805,15 +1056,34 @@ void RecoDataAnalysis() {
         "TGThreshold/TGSmallTracks0TG",
         "TGThreshold/TGSmallTracks1TG",
         "TGThreshold/TGSmallTracks2TG",
+
         "TGThreshold/NumTracksInCylinder0TG",
         "TGThreshold/NumTracksInCylinder1TG",
         "TGThreshold/NumTracksInCylinder2TG",
+
         "TGThreshold/UnreconstructedInductionHits0TG",
         "TGThreshold/UnreconstructedInductionHits1TG",
         "TGThreshold/UnreconstructedInductionHits2TG",
+
         "TGThreshold/UnreconstructedCollectionHits0TG",
         "TGThreshold/UnreconstructedCollectionHits1TG",
-        "TGThreshold/UnreconstructedCollectionHits2TG"
+        "TGThreshold/UnreconstructedCollectionHits2TG",
+
+        "TGThreshold/ClusterSizesCollection0TG",
+        "TGThreshold/ClusterSizesCollection1TG",
+        "TGThreshold/ClusterSizesCollection2TG",
+
+        "TGThreshold/ClusterSizesInduction0TG",
+        "TGThreshold/ClusterSizesInduction1TG",
+        "TGThreshold/ClusterSizesInduction2TG",
+
+        "TGThreshold/NumClustersCollection0TG",
+        "TGThreshold/NumClustersCollection1TG",
+        "TGThreshold/NumClustersCollection2TG",
+
+        "TGThreshold/NumClustersInduction0TG",
+        "TGThreshold/NumClustersInduction1TG",
+        "TGThreshold/NumClustersInduction2TG"
     };
 
     std::vector<TString> XLabels = {
@@ -846,15 +1116,34 @@ void RecoDataAnalysis() {
         "# of small tracks",
         "# of small tracks",
         "# of small tracks",
+
         "# of tracks",
         "# of tracks",
         "# of tracks",
+
         "# of unreconstructed hits",
         "# of unreconstructed hits",
         "# of unreconstructed hits",
+
         "# of unreconstructed hits",
         "# of unreconstructed hits",
-        "# of unreconstructed hits"
+        "# of unreconstructed hits",
+
+        "Cluster size [cm]",
+        "Cluster size [cm]",
+        "Cluster size [cm]",
+
+        "Cluster size [cm]",
+        "Cluster size [cm]",
+        "Cluster size [cm]",
+
+        "Number of clusters",
+        "Number of clusters",
+        "Number of clusters",
+
+        "Number of clusters",
+        "Number of clusters",
+        "Number of clusters"
     };
 
     std::vector<TString> YLabels = {
@@ -887,12 +1176,31 @@ void RecoDataAnalysis() {
         "Counts",
         "Counts",
         "Counts",
+
         "Counts",
         "Counts",
         "Counts",
+
         "Counts",
         "Counts",
         "Counts",
+
+        "Counts",
+        "Counts",
+        "Counts",
+
+        "Counts",
+        "Counts",
+        "Counts",
+
+        "Counts",
+        "Counts",
+        "Counts",
+
+        "Counts",
+        "Counts",
+        "Counts",
+
         "Counts",
         "Counts",
         "Counts"
@@ -928,12 +1236,31 @@ void RecoDataAnalysis() {
         false,
         false,
         false,
+
         false,
         false,
         false,
+
         false,
         false,
         false,
+
+        false,
+        false,
+        false,
+
+        false,
+        false,
+        false,
+
+        false,
+        false,
+        false,
+
+        false,
+        false,
+        false,
+
         false,
         false,
         false
@@ -969,12 +1296,31 @@ void RecoDataAnalysis() {
         {true, false},
         {true, false},
         {true, false},
+
         {true, false},
         {true, false},
         {true, false},
+
         {true, false},
         {true, false},
         {true, false},
+
+        {true, false},
+        {true, false},
+        {true, false},
+
+        {true, false},
+        {true, false},
+        {true, false},
+
+        {true, false},
+        {true, false},
+        {true, false},
+
+        {true, false},
+        {true, false},
+        {true, false},
+        
         {true, false},
         {true, false},
         {true, false}

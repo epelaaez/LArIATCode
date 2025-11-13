@@ -583,8 +583,8 @@ void RecoAllAnalysis() {
     std::vector<double> BackgroundNpInelasticScatteringVertexKE;
     std::vector<double> BackgroundNpInelasticScatteringOutgoingKE;
 
-    TH1D *hAllScatteringTotal         = new TH1D("hAllScatteringReconstructionTotal", "hAllScatteringReconstructionTotal;;", 20, 0, 0.4);
-    TH1D *hAllScatteringReconstructed = new TH1D("hAllScatteringReconstructionEfficiency", "hAllScatteringReconstructionEfficiency;;", 20, 0, 0.4);
+    TH1D *hAllScatteringTotal         = new TH1D("hAllScatteringReconstructionTotal", "hAllScatteringReconstructionTotal;;", 50, 0, 0.4);
+    TH1D *hAllScatteringReconstructed = new TH1D("hAllScatteringReconstructionEfficiency", "hAllScatteringReconstructionEfficiency;;", 50, 0, 0.4);
 
     TH1D *hInelasticScatteringReconstructed = new TH1D("hInelasticScatteringReconstructionEfficiency", "hInelasticScatteringReconstructionEfficiency;;", 20, 0, 0.4);
     TH1D *hInelasticScatteringTotal         = new TH1D("hInelasticScatteringTotal", "hInelasticScatteringTotal;;", 20, 0, 0.4);
@@ -2058,17 +2058,20 @@ void RecoAllAnalysis() {
             // if ((hitsInTracks.count(iHit) > 0) || (fHitPlane->at(iHit) == 1)) continue;
             if (hitsInTracks.count(iHit) > 0) continue;
 
-            float hitX = fHitX->at(iHit);
-            float hitW = fHitW->at(iHit);
+            float hitX     = fHitX->at(iHit);
+            float hitW     = fHitW->at(iHit);
+            int   hitPlane = fHitPlane->at(iHit);
 
             if (isHitNearPrimary(
                 hitWC2TPCKey, 
                 fHitX, 
                 fHitW, 
+                fHitPlane,
                 hitX, 
                 hitW,
-                xThreshold, 
-                wThreshold
+                hitPlane,
+                DISTANCE_TO_PRIMARY_THRESHOLD,
+                true
             )) { candidateInductionHits.push_back(iHit); }
         }
 

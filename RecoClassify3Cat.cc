@@ -284,6 +284,8 @@ void RecoClassify3Cat() {
     std::vector<double>*              secondaryInteractionXPosition = nullptr;
     std::vector<double>*              secondaryInteractionYPosition = nullptr;
     std::vector<double>*              secondaryInteractionZPosition = nullptr;
+    std::vector<std::vector<int>>*    secondaryInteractionDaughtersPDG = nullptr;
+    std::vector<std::vector<double>>* secondaryInteractionDaughtersKE = nullptr;
     std::vector<std::vector<double>>* secondaryIncidentKEContributions = nullptr;
     tree->SetBranchAddress("secondaryInteractionTypes", &secondaryInteractionTypes);
     tree->SetBranchAddress("secondaryInteractionTrkID", &secondaryInteractionTrkID);
@@ -292,6 +294,8 @@ void RecoClassify3Cat() {
     tree->SetBranchAddress("secondaryInteractionXPosition", &secondaryInteractionXPosition);
     tree->SetBranchAddress("secondaryInteractionYPosition", &secondaryInteractionYPosition);
     tree->SetBranchAddress("secondaryInteractionZPosition", &secondaryInteractionZPosition);
+    tree->SetBranchAddress("secondaryInteractionDaughtersPDG", &secondaryInteractionDaughtersPDG);
+    tree->SetBranchAddress("secondaryInteractionDaughtersKE", &secondaryInteractionDaughtersKE);
     tree->SetBranchAddress("secondaryIncidentKEContributions", &secondaryIncidentKEContributions);
 
     /////////////////////////////////
@@ -301,6 +305,46 @@ void RecoClassify3Cat() {
     std::ofstream outFileAbs0pBkg("files/Classify3Cat/Abs0pBackground.txt");
     std::ofstream outFileLowProb("files/Classify3Cat/LowProbability.txt");
     TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "UPDATE");
+
+    /////////////////////////////////////
+    // Files with estimated background //
+    /////////////////////////////////////
+
+    TString chExchXSecEstimateFile = "/exp/lariat/app/users/epelaez/analysis/estimated/ch_exch.txt";
+    std::ifstream chFile(chExchXSecEstimateFile.Data());
+    std::vector<double> chExchLowBin, chExchHighBin, chExchEstimate;
+    if (!chFile.is_open()) {
+        std::cerr << "Failed to open " << chExchXSecEstimateFile << std::endl;
+    } else {
+        std::string line;
+        while (std::getline(chFile, line)) {
+            if (line.empty()) continue;
+            if (line[0] == '#') continue;
+            size_t p1 = line.find(',');
+            if (p1 == std::string::npos) continue;
+            size_t p2 = line.find(',', p1 + 1);
+            if (p2 == std::string::npos) continue;
+            try {
+                double x = std::stod(line.substr(0, p1));
+                double y = std::stod(line.substr(p1 + 1, p2 - p1 - 1));
+                double z = std::stod(line.substr(p2 + 1));
+                chExchLowBin.push_back(x);
+                chExchHighBin.push_back(y);
+                chExchEstimate.push_back(z);
+            } catch (...) {
+                // ignore malformed lines
+                continue;
+            }
+        }
+        chFile.close();
+        std::cout << "Loaded " << chExchLowBin.size() << " charge-exchange points from " << chExchXSecEstimateFile << std::endl;
+    }
+
+    // TODO: load real uncertainty
+    std::vector<double> chExchEstimateUnc;
+    for (size_t i = 0; i < chExchEstimate.size(); ++i) {
+        chExchEstimateUnc.push_back(0.1 * chExchEstimate[i]);  // Placeholder for real uncertainty
+    }
 
     ///////////////////////
     // Create histograms //
@@ -517,37 +561,69 @@ void RecoClassify3Cat() {
     TH1D* hNegativeTimePrimaryHits = new TH1D("hNegativeTimePrimaryHits", "hNegativeTimePrimaryHits", 30, -20, 10);
     TH1D* hTimePrimaryHits         = new TH1D("hTimePrimaryHits", "hTimePrimaryHits", 60, -20, 300);
 
-    TH1D* hUnRecoHitsAbs0p    = new TH1D("hUnRecoHitsAbs0p", "hUnRecoHitsAbs0p", 25, 0, 50);
-    TH1D* hUnRecoHitsAbsNp    = new TH1D("hUnRecoHitsAbsNp", "hUnRecoHitsAbsNp", 25, 0, 50);
-    TH1D* hUnRecoHitsMuon     = new TH1D("hUnRecoHitsMuon", "hUnRecoHitsMuon", 25, 0, 50);
-    TH1D* hUnRecoHitsElectron = new TH1D("hUnRecoHitsElectron", "hUnRecoHitsElectron", 25, 0, 50);
-    TH1D* hUnRecoHitsScatter  = new TH1D("hUnRecoHitsScatter", "hUnRecoHitsScatter", 25, 0, 50);
-    TH1D* hUnRecoHitsChExch   = new TH1D("hUnRecoHitsChExch", "hUnRecoHitsChExch", 25, 0, 50);
-    TH1D* hUnRecoHitsOther    = new TH1D("hUnRecoHitsOther", "hUnRecoHitsOther", 25, 0, 50);
+    TH1D* hUnRecoHitsInductionAbs0p    = new TH1D("hUnRecoHitsInductionAbs0p", "hUnRecoHitsInductionAbs0p", 25, 0, 50);
+    TH1D* hUnRecoHitsInductionAbsNp    = new TH1D("hUnRecoHitsInductionAbsNp", "hUnRecoHitsInductionAbsNp", 25, 0, 50);
+    TH1D* hUnRecoHitsInductionMuon     = new TH1D("hUnRecoHitsInductionMuon", "hUnRecoHitsInductionMuon", 25, 0, 50);
+    TH1D* hUnRecoHitsInductionElectron = new TH1D("hUnRecoHitsInductionElectron", "hUnRecoHitsInductionElectron", 25, 0, 50);
+    TH1D* hUnRecoHitsInductionScatter  = new TH1D("hUnRecoHitsInductionScatter", "hUnRecoHitsInductionScatter", 25, 0, 50);
+    TH1D* hUnRecoHitsInductionChExch   = new TH1D("hUnRecoHitsInductionChExch", "hUnRecoHitsInductionChExch", 25, 0, 50);
+    TH1D* hUnRecoHitsInductionOther    = new TH1D("hUnRecoHitsInductionOther", "hUnRecoHitsInductionOther", 25, 0, 50);
 
-    TH1D* hHitClusterSizesAbs0p    = new TH1D("hHitClusterSizesAbs0p", "hHitClusterSizesAbs0p;;", 15, 0, 30);
-    TH1D* hHitClusterSizesAbsNp    = new TH1D("hHitClusterSizesAbsNp", "hHitClusterSizesAbsNp;;", 15, 0, 30);
-    TH1D* hHitClusterSizesMuon     = new TH1D("hHitClusterSizesMuon", "hHitClusterSizesMuon;;", 15, 0, 30);
-    TH1D* hHitClusterSizesElectron = new TH1D("hHitClusterSizesElectron", "hHitClusterSizesElectron;;", 15, 0, 30);
-    TH1D* hHitClusterSizesScatter  = new TH1D("hHitClusterSizesScatter", "hHitClusterSizesScatter;;", 15, 0, 30);
-    TH1D* hHitClusterSizesChExch   = new TH1D("hHitClusterSizesChExch", "hHitClusterSizesChExch;;", 15, 0, 30);
-    TH1D* hHitClusterSizesOther    = new TH1D("hHitClusterSizesOther", "hHitClusterSizesOther;;", 15, 0, 30);
+    TH1D* hUnRecoHitsCollectionAbs0p    = new TH1D("hUnRecoHitsCollectionAbs0p", "hUnRecoHitsCollectionAbs0p", 25, 0, 50);
+    TH1D* hUnRecoHitsCollectionAbsNp    = new TH1D("hUnRecoHitsCollectionAbsNp", "hUnRecoHitsCollectionAbsNp", 25, 0, 50);
+    TH1D* hUnRecoHitsCollectionMuon     = new TH1D("hUnRecoHitsCollectionMuon", "hUnRecoHitsCollectionMuon", 25, 0, 50);
+    TH1D* hUnRecoHitsCollectionElectron = new TH1D("hUnRecoHitsCollectionElectron", "hUnRecoHitsCollectionElectron", 25, 0, 50);
+    TH1D* hUnRecoHitsCollectionScatter  = new TH1D("hUnRecoHitsCollectionScatter", "hUnRecoHitsCollectionScatter", 25, 0, 50);
+    TH1D* hUnRecoHitsCollectionChExch   = new TH1D("hUnRecoHitsCollectionChExch", "hUnRecoHitsCollectionChExch", 25, 0, 50);
+    TH1D* hUnRecoHitsCollectionOther    = new TH1D("hUnRecoHitsCollectionOther", "hUnRecoHitsCollectionOther", 25, 0, 50);
 
-    TH1D* hNumClustersAbs0p    = new TH1D("hNumClustersAbs0p", "hNumClustersAbs0p;;", 10, 0, 10);
-    TH1D* hNumClustersAbsNp    = new TH1D("hNumClustersAbsNp", "hNumClustersAbsNp;;", 10, 0, 10);
-    TH1D* hNumClustersMuon     = new TH1D("hNumClustersMuon", "hNumClustersMuon;;", 10, 0, 10);
-    TH1D* hNumClustersElectron = new TH1D("hNumClustersElectron", "hNumClustersElectron;;", 10, 0, 10);
-    TH1D* hNumClustersScatter  = new TH1D("hNumClustersScatter", "hNumClustersScatter;;", 10, 0, 10);
-    TH1D* hNumClustersChExch   = new TH1D("hNumClustersChExch", "hNumClustersChExch;;", 10, 0, 10);
-    TH1D* hNumClustersOther    = new TH1D("hNumClustersOther", "hNumClustersOther;;", 10, 0, 10);
+    TH1D* hHitClusterInductionSizesAbs0p    = new TH1D("hHitClusterInductionSizesAbs0p", "hHitClusterInductionSizesAbs0p;;", 15, 0, 30);
+    TH1D* hHitClusterInductionSizesAbsNp    = new TH1D("hHitClusterInductionSizesAbsNp", "hHitClusterInductionSizesAbsNp;;", 15, 0, 30);
+    TH1D* hHitClusterInductionSizesMuon     = new TH1D("hHitClusterInductionSizesMuon", "hHitClusterInductionSizesMuon;;", 15, 0, 30);
+    TH1D* hHitClusterInductionSizesElectron = new TH1D("hHitClusterInductionSizesElectron", "hHitClusterInductionSizesElectron;;", 15, 0, 30);
+    TH1D* hHitClusterInductionSizesScatter  = new TH1D("hHitClusterInductionSizesScatter", "hHitClusterInductionSizesScatter;;", 15, 0, 30);
+    TH1D* hHitClusterInductionSizesChExch   = new TH1D("hHitClusterInductionSizesChExch", "hHitClusterInductionSizesChExch;;", 15, 0, 30);
+    TH1D* hHitClusterInductionSizesOther    = new TH1D("hHitClusterInductionSizesOther", "hHitClusterInductionSizesOther;;", 15, 0, 30);
 
-    TH1D* hLargeHitClusterAbs0p    = new TH1D("hLargeHitClusterAbs0p", "hLargeHitClusterAbs0p;;", 5, 0, 5);
-    TH1D* hLargeHitClusterAbsNp    = new TH1D("hLargeHitClusterAbsNp", "hLargeHitClusterAbsNp;;", 5, 0, 5);
-    TH1D* hLargeHitClusterMuon     = new TH1D("hLargeHitClusterMuon", "hLargeHitClusterMuon;;", 5, 0, 5);
-    TH1D* hLargeHitClusterElectron = new TH1D("hLargeHitClusterElectron", "hLargeHitClusterElectron;;", 5, 0, 5);
-    TH1D* hLargeHitClusterScatter  = new TH1D("hLargeHitClusterScatter", "hLargeHitClusterScatter;;", 5, 0, 5);
-    TH1D* hLargeHitClusterChExch   = new TH1D("hLargeHitClusterChExch", "hLargeHitClusterChExch;;", 5, 0, 5);
-    TH1D* hLargeHitClusterOther    = new TH1D("hLargeHitClusterOther", "hLargeHitClusterOther;;", 5, 0, 5);
+    TH1D* hHitClusterCollectionSizesAbs0p    = new TH1D("hHitClusterCollectionSizesAbs0p", "hHitClusterCollectionSizesAbs0p;;", 15, 0, 30);
+    TH1D* hHitClusterCollectionSizesAbsNp    = new TH1D("hHitClusterCollectionSizesAbsNp", "hHitClusterCollectionSizesAbsNp;;", 15, 0, 30);
+    TH1D* hHitClusterCollectionSizesMuon     = new TH1D("hHitClusterCollectionSizesMuon", "hHitClusterCollectionSizesMuon;;", 15, 0, 30);
+    TH1D* hHitClusterCollectionSizesElectron = new TH1D("hHitClusterCollectionSizesElectron", "hHitClusterCollectionSizesElectron;;", 15, 0, 30);
+    TH1D* hHitClusterCollectionSizesScatter  = new TH1D("hHitClusterCollectionSizesScatter", "hHitClusterCollectionSizesScatter;;", 15, 0, 30);
+    TH1D* hHitClusterCollectionSizesChExch   = new TH1D("hHitClusterCollectionSizesChExch", "hHitClusterCollectionSizesChExch;;", 15, 0, 30);
+    TH1D* hHitClusterCollectionSizesOther    = new TH1D("hHitClusterCollectionSizesOther", "hHitClusterCollectionSizesOther;;", 15, 0, 30);
+
+    TH1D* hNumClustersInductionAbs0p    = new TH1D("hNumClustersInductionAbs0p", "hNumClustersInductionAbs0p;;", 10, 0, 10);
+    TH1D* hNumClustersInductionAbsNp    = new TH1D("hNumClustersInductionAbsNp", "hNumClustersInductionAbsNp;;", 10, 0, 10);
+    TH1D* hNumClustersInductionMuon     = new TH1D("hNumClustersInductionMuon", "hNumClustersInductionMuon;;", 10, 0, 10);
+    TH1D* hNumClustersInductionElectron = new TH1D("hNumClustersInductionElectron", "hNumClustersInductionElectron;;", 10, 0, 10);
+    TH1D* hNumClustersInductionScatter  = new TH1D("hNumClustersInductionScatter", "hNumClustersInductionScatter;;", 10, 0, 10);
+    TH1D* hNumClustersInductionChExch   = new TH1D("hNumClustersInductionChExch", "hNumClustersInductionChExch;;", 10, 0, 10);
+    TH1D* hNumClustersInductionOther    = new TH1D("hNumClustersInductionOther", "hNumClustersInductionOther;;", 10, 0, 10);
+
+    TH1D* hNumClustersCollectionAbs0p    = new TH1D("hNumClustersCollectionAbs0p", "hNumClustersCollectionAbs0p;;", 10, 0, 10);
+    TH1D* hNumClustersCollectionAbsNp    = new TH1D("hNumClustersCollectionAbsNp", "hNumClustersCollectionAbsNp;;", 10, 0, 10);
+    TH1D* hNumClustersCollectionMuon     = new TH1D("hNumClustersCollectionMuon", "hNumClustersCollectionMuon;;", 10, 0, 10);
+    TH1D* hNumClustersCollectionElectron = new TH1D("hNumClustersCollectionElectron", "hNumClustersCollectionElectron;;", 10, 0, 10);
+    TH1D* hNumClustersCollectionScatter  = new TH1D("hNumClustersCollectionScatter", "hNumClustersCollectionScatter;;", 10, 0, 10);
+    TH1D* hNumClustersCollectionChExch   = new TH1D("hNumClustersCollectionChExch", "hNumClustersCollectionChExch;;", 10, 0, 10);
+    TH1D* hNumClustersCollectionOther    = new TH1D("hNumClustersCollectionOther", "hNumClustersCollectionOther;;", 10, 0, 10);
+
+    TH1D* hLargeHitClusterInductionAbs0p    = new TH1D("hLargeHitClusterInductionAbs0p", "hLargeHitClusterInductionAbs0p;;", 5, 0, 5);
+    TH1D* hLargeHitClusterInductionAbsNp    = new TH1D("hLargeHitClusterInductionAbsNp", "hLargeHitClusterInductionAbsNp;;", 5, 0, 5);
+    TH1D* hLargeHitClusterInductionMuon     = new TH1D("hLargeHitClusterInductionMuon", "hLargeHitClusterInductionMuon;;", 5, 0, 5);
+    TH1D* hLargeHitClusterInductionElectron = new TH1D("hLargeHitClusterInductionElectron", "hLargeHitClusterInductionElectron;;", 5, 0, 5);
+    TH1D* hLargeHitClusterInductionScatter  = new TH1D("hLargeHitClusterInductionScatter", "hLargeHitClusterInductionScatter;;", 5, 0, 5);
+    TH1D* hLargeHitClusterInductionChExch   = new TH1D("hLargeHitClusterInductionChExch", "hLargeHitClusterInductionChExch;;", 5, 0, 5);
+    TH1D* hLargeHitClusterInductionOther    = new TH1D("hLargeHitClusterInductionOther", "hLargeHitClusterInductionOther;;", 5, 0, 5);
+
+    TH1D* hLargeHitClusterCollectionAbs0p    = new TH1D("hLargeHitClusterCollectionAbs0p", "hLargeHitClusterCollectionAbs0p;;", 5, 0, 5);
+    TH1D* hLargeHitClusterCollectionAbsNp    = new TH1D("hLargeHitClusterCollectionAbsNp", "hLargeHitClusterCollectionAbsNp;;", 5, 0, 5);
+    TH1D* hLargeHitClusterCollectionMuon     = new TH1D("hLargeHitClusterCollectionMuon", "hLargeHitClusterCollectionMuon;;", 5, 0, 5);
+    TH1D* hLargeHitClusterCollectionElectron = new TH1D("hLargeHitClusterCollectionElectron", "hLargeHitClusterCollectionElectron;;", 5, 0, 5);
+    TH1D* hLargeHitClusterCollectionScatter  = new TH1D("hLargeHitClusterCollectionScatter", "hLargeHitClusterCollectionScatter;;", 5, 0, 5);
+    TH1D* hLargeHitClusterCollectionChExch   = new TH1D("hLargeHitClusterCollectionChExch", "hLargeHitClusterCollectionChExch;;", 5, 0, 5);
+    TH1D* hLargeHitClusterCollectionOther    = new TH1D("hLargeHitClusterCollectionOther", "hLargeHitClusterCollectionOther;;", 5, 0, 5);
 
     //////////////
     // Matrices //
@@ -583,8 +659,14 @@ void RecoClassify3Cat() {
     TH2D* hMCSmallVsTGTracks          = new TH2D("hMCSmallVsTGTracks", "MCSmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
     TH2D* hMCTGNumSmallTracksVsThresh = new TH2D("hMCTGNumSmallTracksVsThresh", "MCTGNumSmallTracksVsThresh;Small Track Length Threshold (cm);Num Small Tracks", 10, 0, 40, 15, 0, 15);
 
-    TH1D* hMCTGUnreconstructedHitsInduction  = new TH1D("hMCTGUnreconstructedHitsInduction", "hMCTGUnreconstructedHitsInduction;;", 25, 0, 50);
-    TH1D* hMCTGUnreconstructedHitsCollection = new TH1D("hMCTGUnreconstructedHitsCollection", "hMCTGUnreconstructedHitsCollection;;", 25, 0, 50);
+    TH1D* hMCTGUnreconstructedHitsInduction  = new TH1D("hMCTGUnreconstructedHitsInduction", "hMCTGUnreconstructedHitsInduction;;", 30, 0, 30);
+    TH1D* hMCTGUnreconstructedHitsCollection = new TH1D("hMCTGUnreconstructedHitsCollection", "hMCTGUnreconstructedHitsCollection;;", 30, 0, 30);
+
+    TH1D* hMCTGNumClustersInduction  = new TH1D("hMCTGNumClustersInduction", "hMCTGNumClustersInduction;;", 10, 0, 10);
+    TH1D* hMCTGNumClustersCollection = new TH1D("hMCTGNumClustersCollection", "hMCTGNumClustersCollection;;", 10, 0, 10);
+
+    TH1D* hMCTGClusterSizesInduction  = new TH1D("hMCTGClusterSizesInduction", "hMCTGClusterSizesInduction;;", 15, 0, 30);
+    TH1D* hMCTGClusterSizesCollection = new TH1D("hMCTGClusterSizesCollection", "hMCTGClusterSizesCollection;;", 15, 0, 30);
 
     ///////////////////////////////////
     // Distribution of primary track //
@@ -606,52 +688,52 @@ void RecoClassify3Cat() {
     // Load BDT model //
     ////////////////////
 
-    TMVA::Reader BDTReader;
+    // TMVA::Reader BDTReader;
     
-    Float_t bdt_WC2TPCTrackLength;
-    Float_t bdt_WC2TPCBeginX;
-    Float_t bdt_WC2TPCBeginY;
-    Float_t bdt_WC2TPCBeginZ;
-    Float_t bdt_WC2TPCEndX;
-    Float_t bdt_WC2TPCEndY;
-    Float_t bdt_WC2TPCEndZ;
-    Float_t bdt_WC2TPCdEdx;
-    Float_t bdt_numRecoTrksInCylinder;
+    // Float_t bdt_WC2TPCTrackLength;
+    // Float_t bdt_WC2TPCBeginX;
+    // Float_t bdt_WC2TPCBeginY;
+    // Float_t bdt_WC2TPCBeginZ;
+    // Float_t bdt_WC2TPCEndX;
+    // Float_t bdt_WC2TPCEndY;
+    // Float_t bdt_WC2TPCEndZ;
+    // Float_t bdt_WC2TPCdEdx;
+    // Float_t bdt_numRecoTrksInCylinder;
 
-    BDTReader.AddVariable("WC2TPCTrackLength", &bdt_WC2TPCTrackLength);
-    BDTReader.AddVariable("WC2TPCBeginX", &bdt_WC2TPCBeginX);
-    BDTReader.AddVariable("WC2TPCBeginY", &bdt_WC2TPCBeginY);
-    BDTReader.AddVariable("WC2TPCBeginZ", &bdt_WC2TPCBeginZ);
-    BDTReader.AddVariable("WC2TPCEndX", &bdt_WC2TPCEndX);
-    BDTReader.AddVariable("WC2TPCEndY", &bdt_WC2TPCEndY);
-    BDTReader.AddVariable("WC2TPCEndZ", &bdt_WC2TPCEndZ);
-    BDTReader.AddVariable("WC2TPCdEdx", &bdt_WC2TPCdEdx);
+    // BDTReader.AddVariable("WC2TPCTrackLength", &bdt_WC2TPCTrackLength);
+    // BDTReader.AddVariable("WC2TPCBeginX", &bdt_WC2TPCBeginX);
+    // BDTReader.AddVariable("WC2TPCBeginY", &bdt_WC2TPCBeginY);
+    // BDTReader.AddVariable("WC2TPCBeginZ", &bdt_WC2TPCBeginZ);
+    // BDTReader.AddVariable("WC2TPCEndX", &bdt_WC2TPCEndX);
+    // BDTReader.AddVariable("WC2TPCEndY", &bdt_WC2TPCEndY);
+    // BDTReader.AddVariable("WC2TPCEndZ", &bdt_WC2TPCEndZ);
+    // BDTReader.AddVariable("WC2TPCdEdx", &bdt_WC2TPCdEdx);
 
-    Float_t bdt_recoTrkBeginX[BDT_NUM_RECO_TRKS];
-    Float_t bdt_recoTrkBeginY[BDT_NUM_RECO_TRKS];
-    Float_t bdt_recoTrkBeginZ[BDT_NUM_RECO_TRKS];
-    Float_t bdt_recoTrkEndX[BDT_NUM_RECO_TRKS];
-    Float_t bdt_recoTrkEndY[BDT_NUM_RECO_TRKS];
-    Float_t bdt_recoTrkEndZ[BDT_NUM_RECO_TRKS];
-    Float_t bdt_recoTrkLen[BDT_NUM_RECO_TRKS];
-    Float_t bdt_recoTrkdEdx[BDT_NUM_RECO_TRKS];
+    // Float_t bdt_recoTrkBeginX[BDT_NUM_RECO_TRKS];
+    // Float_t bdt_recoTrkBeginY[BDT_NUM_RECO_TRKS];
+    // Float_t bdt_recoTrkBeginZ[BDT_NUM_RECO_TRKS];
+    // Float_t bdt_recoTrkEndX[BDT_NUM_RECO_TRKS];
+    // Float_t bdt_recoTrkEndY[BDT_NUM_RECO_TRKS];
+    // Float_t bdt_recoTrkEndZ[BDT_NUM_RECO_TRKS];
+    // Float_t bdt_recoTrkLen[BDT_NUM_RECO_TRKS];
+    // Float_t bdt_recoTrkdEdx[BDT_NUM_RECO_TRKS];
 
-    for (int j = 0; j < BDT_NUM_RECO_TRKS; ++j) {
-        BDTReader.AddVariable(Form("recoTrkBeginX_%d", j), &bdt_recoTrkBeginX[j]);
-        BDTReader.AddVariable(Form("recoTrkBeginY_%d", j), &bdt_recoTrkBeginY[j]);
-        BDTReader.AddVariable(Form("recoTrkBeginZ_%d", j), &bdt_recoTrkBeginZ[j]);
-        BDTReader.AddVariable(Form("recoTrkEndX_%d", j), &bdt_recoTrkEndX[j]);
-        BDTReader.AddVariable(Form("recoTrkEndY_%d", j), &bdt_recoTrkEndY[j]);
-        BDTReader.AddVariable(Form("recoTrkEndZ_%d", j), &bdt_recoTrkEndZ[j]);
-        BDTReader.AddVariable(Form("recoTrkLen_%d", j), &bdt_recoTrkLen[j]);
-        BDTReader.AddVariable(Form("recoTrkdEdx_%d", j), &bdt_recoTrkdEdx[j]);
-    }
+    // for (int j = 0; j < BDT_NUM_RECO_TRKS; ++j) {
+    //     BDTReader.AddVariable(Form("recoTrkBeginX_%d", j), &bdt_recoTrkBeginX[j]);
+    //     BDTReader.AddVariable(Form("recoTrkBeginY_%d", j), &bdt_recoTrkBeginY[j]);
+    //     BDTReader.AddVariable(Form("recoTrkBeginZ_%d", j), &bdt_recoTrkBeginZ[j]);
+    //     BDTReader.AddVariable(Form("recoTrkEndX_%d", j), &bdt_recoTrkEndX[j]);
+    //     BDTReader.AddVariable(Form("recoTrkEndY_%d", j), &bdt_recoTrkEndY[j]);
+    //     BDTReader.AddVariable(Form("recoTrkEndZ_%d", j), &bdt_recoTrkEndZ[j]);
+    //     BDTReader.AddVariable(Form("recoTrkLen_%d", j), &bdt_recoTrkLen[j]);
+    //     BDTReader.AddVariable(Form("recoTrkdEdx_%d", j), &bdt_recoTrkdEdx[j]);
+    // }
     
-    BDTReader.AddVariable("numRecoTrksInCylinder", &bdt_numRecoTrksInCylinder);
+    // BDTReader.AddVariable("numRecoTrksInCylinder", &bdt_numRecoTrksInCylinder);
 
-    for (int i = 0; i < 4; ++i) {
-        BDTReader.BookMVA("BDT" + std::to_string(i), "/exp/lariat/app/users/epelaez/analysis/python/model/chexch_abs_model_class_" + std::to_string(i) + ".xml");
-    }
+    // for (int i = 0; i < 4; ++i) {
+    //     BDTReader.BookMVA("BDT" + std::to_string(i), "/exp/lariat/app/users/epelaez/analysis/python/model/chexch_abs_model_class_" + std::to_string(i) + ".xml");
+    // }
 
     //////////////////////
     // Loop over events //
@@ -697,7 +779,7 @@ void RecoClassify3Cat() {
         if (i > 50000) break;
 
         // Make script go faster
-        // if (i > 10000) break;
+        // if (i > 5000) break;
 
         // Get unordered set for hits in tracks
         std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
@@ -780,8 +862,9 @@ void RecoClassify3Cat() {
         // reconstructed into any of the already existing tracks
         std::vector<int> candidateHits;
 
-        int numTotalHitsNearPrimary  = 0;
-        int numUnRecoHitsNearPrimary = 0;
+        int numTotalHitsNearPrimary            = 0;
+        int numUnRecoHitsNearPrimaryInduction  = 0;
+        int numUnRecoHitsNearPrimaryCollection = 0;
         for (size_t iHit = 0; iHit < fHitKey->size(); ++iHit) {
             // if (fHitPlane->at(iHit) == 1) continue;
 
@@ -804,7 +887,10 @@ void RecoClassify3Cat() {
 
                 // Skip hits already in tracks
                 if (hitsInTracks.count(iHit) > 0) continue;
-                numUnRecoHitsNearPrimary++;
+
+                if (hitPlane == 0) numUnRecoHitsNearPrimaryInduction++;
+                else if (hitPlane == 1) numUnRecoHitsNearPrimaryCollection++;
+
                 candidateHits.push_back(iHit); 
             }
         }
@@ -812,7 +898,7 @@ void RecoClassify3Cat() {
         // Now cluster using those hits as starting points
         std::unordered_set<int> usedHits;
         std::vector<HitCluster> hitClusters;
-        int nCandidateHits    = candidateHits.size();
+        int nCandidateHits = candidateHits.size();
 
         // Hits in the same cluster must be separated by at most some number of wires
         for (int iHit = 0; iHit < nCandidateHits; ++iHit) {
@@ -878,12 +964,29 @@ void RecoClassify3Cat() {
 
             if (clusterKeys.size() > MINIMUM_HITS_FOR_CLUSTER) {
                 HitCluster thisCluster;
+
+                double clusterSize = 0;
+                for (int j = 0; j < clusterW.size() - 1; ++j) {
+                    for (int k = j + 1; k < clusterW.size(); ++k) {
+                        double wSeparation = clusterW[j] - clusterW[k];
+                        double xSeparation = clusterX[j] - clusterX[k];
+
+                        double thisDiameter = std::sqrt(
+                            std::pow(wSeparation, 2) + 
+                            std::pow(xSeparation, 2)
+                        );
+
+                        if (thisDiameter > clusterSize) clusterSize = thisDiameter;
+                    }
+                }
+
                 thisCluster.plane        = thisHitPlane;
                 thisCluster.hitKeys      = clusterKeys;
                 thisCluster.hitX         = clusterX;
                 thisCluster.hitW         = clusterW;
                 thisCluster.hitCharge    = clusterCharge;
                 thisCluster.hitChargeCol = clusterChargeCol;
+                thisCluster.clusterSize  = clusterSize;
                 
                 usedHits.insert(thisHitKey);
                 hitClusters.push_back(thisCluster);
@@ -944,6 +1047,9 @@ void RecoClassify3Cat() {
             int numUnrecoHitsInduction  = 0;
             int numUnrecoHitsCollection = 0;
 
+            std::vector<int> candidateRandomHitsInduction;
+            std::vector<int> candidateRandomHitsCollection;
+
             for (size_t iHit = 0; iHit < fHitKey->size(); ++iHit) {
                 // Skip hits already in tracks
                 if (hitsInTracks.count(iHit) > 0) continue;
@@ -956,13 +1062,43 @@ void RecoClassify3Cat() {
                     double dW = (hitW - fHitW->at(hitWC2TPCKeyInduction[randomInduction]));
                     double dX = (hitX - fHitX->at(hitWC2TPCKeyInduction[randomInduction]));
                     double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
-                    if (d < DISTANCE_TO_PRIMARY_THRESHOLD) numUnrecoHitsInduction++;
+                    if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
+                        numUnrecoHitsInduction++;
+                        candidateRandomHitsInduction.push_back(iHit);
+                    }
                 } else if (hitPlane == 1 && hitWC2TPCKeyCollection.size() > 0) {
                     double dW = (hitW - fHitW->at(hitWC2TPCKeyCollection[randomCollection]));
                     double dX = (hitX - fHitX->at(hitWC2TPCKeyCollection[randomCollection]));
                     double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
-                    if (d < DISTANCE_TO_PRIMARY_THRESHOLD) numUnrecoHitsCollection++;
+                    if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
+                        numUnrecoHitsCollection++;
+                        candidateRandomHitsCollection.push_back(iHit);
+                    }
                 }
+            }
+
+            // Loop through clusters and see which would be close to random point
+            int numClustersInduction = 0;
+            int numClustersCollection = 0;
+
+            for (size_t iCluster = 0; iCluster < hitClusters.size(); ++iCluster) {
+                HitCluster thisCluster = hitClusters[iCluster];
+
+                for (size_t iHit = 0; iHit < thisCluster.hitKeys.size(); ++iHit) {
+                    if (std::find(candidateRandomHitsInduction.begin(), candidateRandomHitsInduction.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsInduction.end()) {
+                        numClustersInduction++;
+                        if (isPrimaryTG) hMCTGClusterSizesInduction->Fill(thisCluster.clusterSize);
+                        break;
+                    } else if (std::find(candidateRandomHitsCollection.begin(), candidateRandomHitsCollection.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsCollection.end()) {
+                        numClustersCollection++;
+                        if (isPrimaryTG) hMCTGClusterSizesCollection->Fill(thisCluster.clusterSize);
+                        break;
+                    }
+                }
+            }
+            if (isPrimaryTG) {
+                hMCTGNumClustersInduction->Fill(numClustersInduction);
+                hMCTGNumClustersCollection->Fill(numClustersCollection);
             }
 
             // Information about tracks
@@ -1064,7 +1200,7 @@ void RecoClassify3Cat() {
         // Save truth information //
         ////////////////////////////
 
-        // Scattering only if degree > THRESHOLD
+        // Scattering only if degree > THRESHOLD and energy > THRESHOLD
         double scatteringAngle = -9999;
         if (backgroundType == 12 || backgroundType == 6) {
             if (backgroundType == 12) {
@@ -1098,21 +1234,60 @@ void RecoClassify3Cat() {
                     } else {
                         // We found non-scattering interaction or scattering interaction 
                         // with angle above our threshold value
-                        backgroundType       = currentInteraction;
-                        truthPrimaryVertexKE = secondaryInteractionInteractingKE->at(iInteraction);
+                        backgroundType = currentInteraction;
 
-                        truthPrimaryVertexX = secondaryInteractionXPosition->at(iInteraction);
-                        truthPrimaryVertexY = secondaryInteractionYPosition->at(iInteraction);
-                        truthPrimaryVertexZ = secondaryInteractionZPosition->at(iInteraction);
+                        if (backgroundType == 6 || backgroundType == 12) {
+                            // Look at outgoing particles
+                            int secondaryVisibleProtons = 0; double scatteringEnergy = 0;
+                            for (int i = 0; i < secondaryInteractionDaughtersPDG->at(iInteraction).size(); ++i) {
+                                if (secondaryInteractionDaughtersPDG->at(iInteraction)[i] == -211) {
+                                    scatteringEnergy = secondaryInteractionDaughtersKE->at(iInteraction)[i];
+                                } else if (secondaryInteractionDaughtersPDG->at(iInteraction)[i] == 2212) {
+                                    if (
+                                        secondaryInteractionDaughtersKE->at(iInteraction)[i] > PROTON_ENERGY_LOWER_BOUND &&
+                                        secondaryInteractionDaughtersKE->at(iInteraction)[i] < PROTON_ENERGY_UPPER_BOUND
+                                    ) secondaryVisibleProtons++;
+                                }
+                            }
+
+                            // If scattering energy is below threshold, absorption
+                            if (scatteringEnergy < PION_SCATTERING_ENERGY_THRESHOLD) {
+                                if (secondaryVisibleProtons == 0) backgroundType = 0;
+                                else backgroundType = 1;
+                            }
+                        }
+                        truthPrimaryVertexKE = secondaryInteractionInteractingKE->at(iInteraction);
+                        truthPrimaryVertexX  = secondaryInteractionXPosition->at(iInteraction);
+                        truthPrimaryVertexY  = secondaryInteractionYPosition->at(iInteraction);
+                        truthPrimaryVertexZ  = secondaryInteractionZPosition->at(iInteraction);
                         break;
                     }
                 }
                 // std::cout << "new interaction : " << backgroundType << std::endl;
                 // std::cout << std::endl;
             } else {
-                // If initial interaction has valid angle, just correct interaction KE for 
-                // elastic scattering interactions
+                // If initial interaction has valid angle, first correct for vertex energy 
                 if (backgroundType == 12) truthPrimaryVertexKE = trajectoryInteractionKE;
+
+                // Check if outgoing pion is above threshold
+                if (backgroundType == 6 && truthScatteredPionKE < PION_SCATTERING_ENERGY_THRESHOLD) {
+                    int secondaryVisibleProtons = 0;
+                    for (int i = 0; i < truthPrimaryDaughtersPDG->size(); ++i) {
+                        if (truthPrimaryDaughtersPDG->at(i) == 2212) {
+                            if (
+                                truthPrimaryDaughtersKE->at(i) > PROTON_ENERGY_LOWER_BOUND &&
+                                truthPrimaryDaughtersKE->at(i) < PROTON_ENERGY_UPPER_BOUND
+                            ) secondaryVisibleProtons++;
+                        }
+                    }
+                    if (secondaryVisibleProtons == 0) backgroundType = 0;
+                    else backgroundType = 1;
+                } else if (backgroundType == 12 && trajectoryInteractionKE < PION_SCATTERING_ENERGY_THRESHOLD) {
+                    // If outgoing pion from elastic scattering has energy lower than threshold, we
+                    // label it as 0p absorption since there are no other products in an elastic scattering
+                    backgroundType = 0;
+                }
+
             }
         }
 
@@ -1214,16 +1389,7 @@ void RecoClassify3Cat() {
             }
         }
 
-        // In this script, we replace background types 6 and 12 with background types 13 and 14,
-        // because we are interested in contamination across the bins that we are measuring
-        // if (backgroundType == 12 || (backgroundType == 6 && numVisibleProtons == 0)) {
-        //     backgroundType = 13;
-        // } else if (backgroundType == 6 && numVisibleProtons > 0) {
-        //     backgroundType = 14;
-        // }
-
         // Fill in true interaction energy histograms
-
         if (backgroundType == 0) {
             hTrueAbs0pKE->Fill(truthPrimaryVertexKE * 1000);
             hTrueAllKE->Fill(truthPrimaryVertexKE * 1000);
@@ -1419,55 +1585,55 @@ void RecoClassify3Cat() {
         // Setup BDT for use //
         ///////////////////////
 
-        getBDTVariables(
-            WC2TPCtrkID, 
-            WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
-            wcX, wcY, wcZ,
-            recoBeginX, recoBeginY, recoBeginZ,
-            recoEndX,   recoEndY,   recoEndZ,
-            recoDEDX, recoTrkID, BDT_NUM_RECO_TRKS,
-            &bdt_WC2TPCTrackLength,
-            &bdt_WC2TPCBeginX, &bdt_WC2TPCBeginY, &bdt_WC2TPCBeginZ,
-            &bdt_WC2TPCEndX,   &bdt_WC2TPCEndY,   &bdt_WC2TPCEndZ,
-            &bdt_WC2TPCdEdx,
-            bdt_recoTrkBeginX, bdt_recoTrkBeginY, bdt_recoTrkBeginZ,
-            bdt_recoTrkEndX,   bdt_recoTrkEndY,   bdt_recoTrkEndZ,
-            bdt_recoTrkLen,    bdt_recoTrkdEdx,
-            &bdt_numRecoTrksInCylinder
-        );
+        // getBDTVariables(
+        //     WC2TPCtrkID, 
+        //     WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
+        //     wcX, wcY, wcZ,
+        //     recoBeginX, recoBeginY, recoBeginZ,
+        //     recoEndX,   recoEndY,   recoEndZ,
+        //     recoDEDX, recoTrkID, BDT_NUM_RECO_TRKS,
+        //     &bdt_WC2TPCTrackLength,
+        //     &bdt_WC2TPCBeginX, &bdt_WC2TPCBeginY, &bdt_WC2TPCBeginZ,
+        //     &bdt_WC2TPCEndX,   &bdt_WC2TPCEndY,   &bdt_WC2TPCEndZ,
+        //     &bdt_WC2TPCdEdx,
+        //     bdt_recoTrkBeginX, bdt_recoTrkBeginY, bdt_recoTrkBeginZ,
+        //     bdt_recoTrkEndX,   bdt_recoTrkEndY,   bdt_recoTrkEndZ,
+        //     bdt_recoTrkLen,    bdt_recoTrkdEdx,
+        //     &bdt_numRecoTrksInCylinder
+        // );
 
-        // Compute BDT scores
-        double s0 = BDTReader.EvaluateMVA("BDT0");
-        double s1 = BDTReader.EvaluateMVA("BDT1");
-        double s2 = BDTReader.EvaluateMVA("BDT2");
-        double s3 = BDTReader.EvaluateMVA("BDT3");
+        // // Compute BDT scores
+        // double s0 = BDTReader.EvaluateMVA("BDT0");
+        // double s1 = BDTReader.EvaluateMVA("BDT1");
+        // double s2 = BDTReader.EvaluateMVA("BDT2");
+        // double s3 = BDTReader.EvaluateMVA("BDT3");
 
         // Make sure raw output is in (-1, 1)
-        const double eps = 1e-12; 
-        s0 = std::max(-1.0 + eps, std::min(1.0 - eps, s0));
-        s1 = std::max(-1.0 + eps, std::min(1.0 - eps, s1));
-        s2 = std::max(-1.0 + eps, std::min(1.0 - eps, s2));
-        s3 = std::max(-1.0 + eps, std::min(1.0 - eps, s3));
+        // const double eps = 1e-12; 
+        // s0 = std::max(-1.0 + eps, std::min(1.0 - eps, s0));
+        // s1 = std::max(-1.0 + eps, std::min(1.0 - eps, s1));
+        // s2 = std::max(-1.0 + eps, std::min(1.0 - eps, s2));
+        // s3 = std::max(-1.0 + eps, std::min(1.0 - eps, s3));
         
-        // Map scores in (-1,1) -> margins in (-inf, +inf) via atanh
-        double m0 = 0.5 * std::log((1.0 + s0) / (1.0 - s0)); // atanh(s0)
-        double m1 = 0.5 * std::log((1.0 + s1) / (1.0 - s1)); // atanh(s1)
-        double m2 = 0.5 * std::log((1.0 + s2) / (1.0 - s2)); // atanh(s2)
-        double m3 = 0.5 * std::log((1.0 + s3) / (1.0 - s3)); // atanh(s3)
+        // // Map scores in (-1,1) -> margins in (-inf, +inf) via atanh
+        // double m0 = 0.5 * std::log((1.0 + s0) / (1.0 - s0)); // atanh(s0)
+        // double m1 = 0.5 * std::log((1.0 + s1) / (1.0 - s1)); // atanh(s1)
+        // double m2 = 0.5 * std::log((1.0 + s2) / (1.0 - s2)); // atanh(s2)
+        // double m3 = 0.5 * std::log((1.0 + s3) / (1.0 - s3)); // atanh(s3)
 
-        // Convert margins -> class probabilities via softmax
-        double mmax = std::max({m0, m1, m2, m3});
-        double e0 = std::exp(m0 - mmax);
-        double e1 = std::exp(m1 - mmax);
-        double e2 = std::exp(m2 - mmax);
-        double e3 = std::exp(m3 - mmax);
-        double Z  = e0 + e1 + e2 + e3;
-        if (Z == 0) Z = 1e-12;
+        // // Convert margins -> class probabilities via softmax
+        // double mmax = std::max({m0, m1, m2, m3});
+        // double e0 = std::exp(m0 - mmax);
+        // double e1 = std::exp(m1 - mmax);
+        // double e2 = std::exp(m2 - mmax);
+        // double e3 = std::exp(m3 - mmax);
+        // double Z  = e0 + e1 + e2 + e3;
+        // if (Z == 0) Z = 1e-12;
 
-        double p0 = e0 / Z;
-        double p1 = e1 / Z;
-        double p2 = e2 / Z;
-        double p3 = e3 / Z;
+        // double p0 = e0 / Z;
+        // double p1 = e1 / Z;
+        // double p2 = e2 / Z;
+        // double p3 = e3 / Z;
 
         // Test few events
         if (
@@ -1739,181 +1905,136 @@ void RecoClassify3Cat() {
         ////////////////////////////////////////
 
         if (backgroundType == 0) {
-            hUnRecoHitsAbs0p->Fill(numUnRecoHitsNearPrimary);
+            hUnRecoHitsInductionAbs0p->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionAbs0p->Fill(numUnRecoHitsNearPrimaryCollection);
         } else if (backgroundType == 1) {
-            hUnRecoHitsAbsNp->Fill(numUnRecoHitsNearPrimary);
+            hUnRecoHitsInductionAbsNp->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionAbsNp->Fill(numUnRecoHitsNearPrimaryCollection);
         } else if (backgroundType == 2) {
-            hUnRecoHitsMuon->Fill(numUnRecoHitsNearPrimary);
+            hUnRecoHitsInductionMuon->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionMuon->Fill(numUnRecoHitsNearPrimaryCollection);
         } else if (backgroundType == 3) {
-            hUnRecoHitsElectron->Fill(numUnRecoHitsNearPrimary);
+            hUnRecoHitsInductionElectron->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionElectron->Fill(numUnRecoHitsNearPrimaryCollection);
         } else if (backgroundType == 6 || backgroundType == 12) {
-            hUnRecoHitsScatter->Fill(numUnRecoHitsNearPrimary);
+            hUnRecoHitsInductionScatter->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionScatter->Fill(numUnRecoHitsNearPrimaryCollection);
         } else if (backgroundType == 7) {
-            hUnRecoHitsChExch->Fill(numUnRecoHitsNearPrimary);
+            hUnRecoHitsInductionChExch->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionChExch->Fill(numUnRecoHitsNearPrimaryCollection);
         } else {
-            hUnRecoHitsOther->Fill(numUnRecoHitsNearPrimary);
+            hUnRecoHitsInductionOther->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionOther->Fill(numUnRecoHitsNearPrimaryCollection);
         }
 
         // Get data for cut
-        int numLargeClusters = 0;
+        int numLargeClustersInduction  = 0;
+        int numLargeClustersCollection = 0;
+
+        int numClustersInduction  = 0;
+        int numClustersCollection = 0;
+
         for (int i = 0; i < hitClusters.size(); ++i) {
-            double clusterSize = 0.;
-            for (int j = 0; j < hitClusters[i].hitW.size() - 1; ++j) {
-                for (int k = j + 1; k < hitClusters[i].hitW.size(); ++k) {
-                    double wSeparation = hitClusters[i].hitW[j] - hitClusters[i].hitW[k];
-                    double xSeparation = hitClusters[i].hitX[j] - hitClusters[i].hitX[k];
+            double clusterSize = hitClusters[i].clusterSize;
 
-                    double thisDiameter = std::sqrt(
-                        std::pow(wSeparation, 2) + 
-                        std::pow(xSeparation, 2)
-                    );
+            if (hitClusters[i].plane == 0) numClustersInduction++;
+            else if (hitClusters[i].plane == 1) numClustersCollection++;
 
-                    if (thisDiameter > clusterSize) clusterSize = thisDiameter;
-                }
+            if (clusterSize > LARGE_CLUSTER_THRESHOLD) {
+                if (hitClusters[i].plane == 0) numLargeClustersInduction++;
+                else if (hitClusters[i].plane == 1) numLargeClustersCollection++;
             }
-            if (clusterSize > LARGE_CLUSTER_THRESHOLD) numLargeClusters++;
 
             if (backgroundType == 0) {
-                hHitClusterSizesAbs0p->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesAbs0p->Fill(clusterSize);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesAbs0p->Fill(clusterSize);
             } else if (backgroundType == 1) {
-                hHitClusterSizesAbsNp->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesAbsNp->Fill(clusterSize);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesAbsNp->Fill(clusterSize);
             } else if (backgroundType == 2) {
-                hHitClusterSizesMuon->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesMuon->Fill(clusterSize);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesMuon->Fill(clusterSize);
             } else if (backgroundType == 3) {
-                hHitClusterSizesElectron->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesElectron->Fill(clusterSize);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesElectron->Fill(clusterSize);
             } else if (backgroundType == 6 || backgroundType == 12) {
-                hHitClusterSizesScatter->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesScatter->Fill(clusterSize);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesScatter->Fill(clusterSize);
             } else if (backgroundType == 7) {
-                hHitClusterSizesChExch->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesChExch->Fill(clusterSize);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesChExch->Fill(clusterSize);
             } else {
-                hHitClusterSizesOther->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesOther->Fill(clusterSize);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesOther->Fill(clusterSize);
             }
         }
 
-        int numClusters = hitClusters.size();
         if (backgroundType == 0) {
-            hLargeHitClusterAbs0p->Fill(numLargeClusters);
-            hNumClustersAbs0p->Fill(numClusters);
+            hLargeHitClusterInductionAbs0p->Fill(numLargeClustersInduction);
+            hNumClustersInductionAbs0p->Fill(numClustersInduction);
+
+            hLargeHitClusterCollectionAbs0p->Fill(numLargeClustersCollection);
+            hNumClustersCollectionAbs0p->Fill(numClustersCollection);
         } else if (backgroundType == 1) {
-            hLargeHitClusterAbsNp->Fill(numLargeClusters);
-            hNumClustersAbsNp->Fill(numClusters);
+            hLargeHitClusterInductionAbsNp->Fill(numLargeClustersInduction);
+            hNumClustersInductionAbsNp->Fill(numClustersInduction);
+
+            hLargeHitClusterCollectionAbsNp->Fill(numLargeClustersCollection);
+            hNumClustersCollectionAbsNp->Fill(numClustersCollection);
         } else if (backgroundType == 7) {
-            hLargeHitClusterChExch->Fill(numLargeClusters);
-            hNumClustersChExch->Fill(numClusters);
+            hLargeHitClusterInductionChExch->Fill(numLargeClustersInduction);
+            hNumClustersInductionChExch->Fill(numClustersInduction);
+
+            hLargeHitClusterCollectionChExch->Fill(numLargeClustersCollection);
+            hNumClustersCollectionChExch->Fill(numClustersCollection);
         } else if (backgroundType == 6 || backgroundType == 12) {
-            hLargeHitClusterScatter->Fill(numLargeClusters);
-            hNumClustersScatter->Fill(numClusters);
+            hLargeHitClusterInductionScatter->Fill(numLargeClustersInduction);
+            hNumClustersInductionScatter->Fill(numClustersInduction);
+
+            hLargeHitClusterCollectionScatter->Fill(numLargeClustersCollection);
+            hNumClustersCollectionScatter->Fill(numClustersCollection);
         } else if (backgroundType == 2) {
-            hLargeHitClusterMuon->Fill(numLargeClusters);
-            hNumClustersMuon->Fill(numClusters);
+            hLargeHitClusterInductionMuon->Fill(numLargeClustersInduction);
+            hNumClustersInductionMuon->Fill(numClustersInduction);
+
+            hLargeHitClusterCollectionMuon->Fill(numLargeClustersCollection);
+            hNumClustersCollectionMuon->Fill(numClustersCollection);
         } else if (backgroundType == 3) {
-            hLargeHitClusterElectron->Fill(numLargeClusters);
-            hNumClustersElectron->Fill(numClusters);
+            hLargeHitClusterInductionElectron->Fill(numLargeClustersInduction);
+            hNumClustersInductionElectron->Fill(numClustersInduction);
+
+            hLargeHitClusterCollectionElectron->Fill(numLargeClustersCollection);
+            hNumClustersCollectionElectron->Fill(numClustersCollection);
         } else {
-            hLargeHitClusterOther->Fill(numLargeClusters);
-            hNumClustersOther->Fill(numClusters);
+            hLargeHitClusterInductionOther->Fill(numLargeClustersInduction);
+            hNumClustersInductionOther->Fill(numClustersInduction);
+
+            hLargeHitClusterCollectionOther->Fill(numLargeClustersCollection);
+            hNumClustersCollectionOther->Fill(numClustersCollection);
         }
 
-        // if (numLargeClusters < NUM_CLUSTERS_THRESHOLD) {
-        //     hPionAbs0p->Fill(backgroundType);
-
-        //     hPionAbs0pKE->Fill(energyAtVertex);
-        //     if (backgroundType == 0) {
-        //         hPionAbs0pKETrue->Fill(energyAtVertex);
-        //     } else if (backgroundType == 1) {
-        //         hPionAbs0pKEAbsNp->Fill(energyAtVertex);
-        //     } else if (backgroundType == 7) {
-        //         hPionAbs0pKEChExch->Fill(energyAtVertex);
-        //     } else if (backgroundType == 6 || backgroundType == 12) {
-        //         hPionAbs0pKEScatter->Fill(energyAtVertex);
-        //     } else if (backgroundType == 2) {
-        //         hPionAbs0pKEMuon->Fill(energyAtVertex);
-        //     } else if (backgroundType == 3) {
-        //         hPionAbs0pKEElectron->Fill(energyAtVertex);
-        //     } else {
-        //         hPionAbs0pKEOther->Fill(energyAtVertex);
-        //     }
-
-        //     if (backgroundType == 0) {
-        //         hTrueAbs0pKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-        //     } else if (backgroundType == 1) {
-        //         hTrueAbsNpKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-        //     } else if (backgroundType == 6 || backgroundType == 12) {
-        //         hTrueScatterKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-        //     } else if (backgroundType == 7) {
-        //         hTrueChExchKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueChExchAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-        //     }
-
-        //     continue;
-        // }
-        // hNotPionAbs0p->Fill(backgroundType);
-
-        /////////////////////////////////////////////////
-        // Discriminate remaining from charge exchange //
-        /////////////////////////////////////////////////
-
-        double max_prob = std::max({p0, p1, p2, p3});
-
-        if (max_prob < 0.5) {
-            outFileLowProb << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
-            outFileLowProb << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
-            outFileLowProb << " Scattering angle " << scatteringAngle * (180 / TMath::Pi()) << std::endl;
-            outFileLowProb << " Max BDT probability: " << max_prob << std::endl;
-            outFileLowProb << " Trks in cylinder: " << bdt_numRecoTrksInCylinder << std::endl;
-
-            if (p0 == max_prob) {
-                outFileLowProb << " Tagged as pion abs 0p" << std::endl; 
-            } else if (p1 == max_prob) {
-                outFileLowProb << " Tagged as electron shower" << std::endl; 
-            } else if (p2 == max_prob) {
-                outFileLowProb << " Tagged as pion charge exchange" << std::endl; 
-            } else {
-                outFileLowProb << " Tagged as scattering" << std::endl; 
-            }
-            outFileLowProb << std::endl; 
-        }
-        
-        if (p0 == max_prob) {
-            // classify as pion abs 0p
-            if (p0 < 0.5) continue;
-            if (bdt_numRecoTrksInCylinder > 0) continue;
-
+        if (
+            numClustersInduction < 1 &&
+            numClustersCollection < 2 && 
+            numLargeClustersCollection < 1
+        ) {
             hPionAbs0p->Fill(backgroundType);
 
             hPionAbs0pKE->Fill(energyAtVertex);
             if (backgroundType == 0) {
                 hPionAbs0pKETrue->Fill(energyAtVertex);
-                hBestAbs0pAbs0p->Fill(p0);
             } else if (backgroundType == 1) {
                 hPionAbs0pKEAbsNp->Fill(energyAtVertex);
-                hBestAbs0pAbsNp->Fill(p0);
             } else if (backgroundType == 7) {
                 hPionAbs0pKEChExch->Fill(energyAtVertex);
-                hBestAbs0pChExch->Fill(p0);
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hPionAbs0pKEScatter->Fill(energyAtVertex);
-                hBestAbs0pScatter->Fill(p0);
             } else if (backgroundType == 2) {
                 hPionAbs0pKEMuon->Fill(energyAtVertex);
-                hBestAbs0pMuon->Fill(p0);
-
-                if (muonType == 0) {
-                    hPionAbs0pKEMuonTG->Fill(energyAtVertex);
-                } else if (muonType == 1) {
-                    hPionAbs0pKEMuonDecay->Fill(energyAtVertex);
-                } else if (muonType == 2) {
-                    hPionAbs0pKEMuonCAR->Fill(energyAtVertex);
-                }
             } else if (backgroundType == 3) {
                 hPionAbs0pKEElectron->Fill(energyAtVertex);
-                hBestAbs0pElectron->Fill(p0);
             } else {
                 hPionAbs0pKEOther->Fill(energyAtVertex);
-                hBestAbs0pOther->Fill(p0);
             }
 
             if (backgroundType == 0) {
@@ -1927,79 +2048,158 @@ void RecoClassify3Cat() {
                 if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
             }
 
-            outFileAbs0pBkg << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
-            outFileAbs0pBkg << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
-            outFileAbs0pBkg << " Scattering angle (degrees): " << scatteringAngle * (180 / TMath::Pi()) << std::endl;
-            outFileAbs0pBkg << " Tagged pions: " << totalTaggedPions << std::endl;
-            outFileAbs0pBkg << " Tagged protons: " << totalTaggedProtons << std::endl;
-            outFileAbs0pBkg << " Reco trks in cylinder: " << bdt_numRecoTrksInCylinder << std::endl;
-            outFileAbs0pBkg << std::endl;
-
-            continue;
-        } else if (p1 == max_prob) {
-            // classify as electron shower
-            if (backgroundType == 0) {
-                hBestElectronAbs0p->Fill(p1);
-            } else if (backgroundType == 1) {
-                hBestElectronAbsNp->Fill(p1);
-            } else if (backgroundType == 7) {
-                hBestElectronChExch->Fill(p1);
-            } else if (backgroundType == 6 || backgroundType == 12) {
-                hBestElectronScatter->Fill(p1);
-            } else if (backgroundType == 2) {
-                hBestElectronMuon->Fill(p1);
-            } else if (backgroundType == 3) {
-                hBestElectronElectron->Fill(p1);
-            } else {
-                hBestElectronOther->Fill(p1);
-            }
-
-            continue;
-        } else if (p2 == max_prob) {
-            // classify as charge exchange
-            if (backgroundType == 0) {
-                hBestChExchAbs0p->Fill(p2);
-            } else if (backgroundType == 1) {
-                hBestChExchAbsNp->Fill(p2);
-            } else if (backgroundType == 7) {
-                hBestChExchChExch->Fill(p2);
-            } else if (backgroundType == 6 || backgroundType == 12) {
-                hBestChExchScatter->Fill(p2);
-            } else if (backgroundType == 2) {
-                hBestChExchMuon->Fill(p2);
-            } else if (backgroundType == 3) {
-                hBestChExchElectron->Fill(p2);
-            } else {
-                hBestChExchOther->Fill(p2);
-            }
-
-            if (chExchInsideCylinder) {
-                chExchContainedCylinderReco++;
-            } else if (chExchInsideRedVol) {
-                chExchContainedRedVolReco++;
-            }
-
-            continue;
-        } else if (p3 == max_prob) {
-            // classify as remaining scattering
-            if (backgroundType == 0) {
-                hBestScatterAbs0p->Fill(p3);
-            } else if (backgroundType == 1) {
-                hBestScatterAbsNp->Fill(p3);
-            } else if (backgroundType == 7) {
-                hBestScatterChExch->Fill(p3);
-            } else if (backgroundType == 6 || backgroundType == 12) {
-                hBestScatterScatter->Fill(p3);
-            } else if (backgroundType == 2) {
-                hBestScatterMuon->Fill(p3);
-            } else if (backgroundType == 3) {
-                hBestScatterElectron->Fill(p3);
-            } else {
-                hBestScatterOther->Fill(p3);
-            }
-
             continue;
         }
+        hNotPionAbs0p->Fill(backgroundType);
+
+        /////////////////////////////////////////////////
+        // Discriminate remaining from charge exchange //
+        /////////////////////////////////////////////////
+
+        // double max_prob = std::max({p0, p1, p2, p3});
+
+        // if (max_prob < 0.5) {
+        //     outFileLowProb << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
+        //     outFileLowProb << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
+        //     outFileLowProb << " Scattering angle " << scatteringAngle * (180 / TMath::Pi()) << std::endl;
+        //     outFileLowProb << " Max BDT probability: " << max_prob << std::endl;
+        //     outFileLowProb << " Trks in cylinder: " << bdt_numRecoTrksInCylinder << std::endl;
+
+        //     if (p0 == max_prob) {
+        //         outFileLowProb << " Tagged as pion abs 0p" << std::endl; 
+        //     } else if (p1 == max_prob) {
+        //         outFileLowProb << " Tagged as electron shower" << std::endl; 
+        //     } else if (p2 == max_prob) {
+        //         outFileLowProb << " Tagged as pion charge exchange" << std::endl; 
+        //     } else {
+        //         outFileLowProb << " Tagged as scattering" << std::endl; 
+        //     }
+        //     outFileLowProb << std::endl; 
+        // }
+        
+        // if (p0 == max_prob) {
+        //     // classify as pion abs 0p
+        //     if (p0 < 0.5) continue;
+        //     if (bdt_numRecoTrksInCylinder > 0) continue;
+
+        //     hPionAbs0p->Fill(backgroundType);
+
+        //     hPionAbs0pKE->Fill(energyAtVertex);
+        //     if (backgroundType == 0) {
+        //         hPionAbs0pKETrue->Fill(energyAtVertex);
+        //         hBestAbs0pAbs0p->Fill(p0);
+        //     } else if (backgroundType == 1) {
+        //         hPionAbs0pKEAbsNp->Fill(energyAtVertex);
+        //         hBestAbs0pAbsNp->Fill(p0);
+        //     } else if (backgroundType == 7) {
+        //         hPionAbs0pKEChExch->Fill(energyAtVertex);
+        //         hBestAbs0pChExch->Fill(p0);
+        //     } else if (backgroundType == 6 || backgroundType == 12) {
+        //         hPionAbs0pKEScatter->Fill(energyAtVertex);
+        //         hBestAbs0pScatter->Fill(p0);
+        //     } else if (backgroundType == 2) {
+        //         hPionAbs0pKEMuon->Fill(energyAtVertex);
+        //         hBestAbs0pMuon->Fill(p0);
+
+        //         if (muonType == 0) {
+        //             hPionAbs0pKEMuonTG->Fill(energyAtVertex);
+        //         } else if (muonType == 1) {
+        //             hPionAbs0pKEMuonDecay->Fill(energyAtVertex);
+        //         } else if (muonType == 2) {
+        //             hPionAbs0pKEMuonCAR->Fill(energyAtVertex);
+        //         }
+        //     } else if (backgroundType == 3) {
+        //         hPionAbs0pKEElectron->Fill(energyAtVertex);
+        //         hBestAbs0pElectron->Fill(p0);
+        //     } else {
+        //         hPionAbs0pKEOther->Fill(energyAtVertex);
+        //         hBestAbs0pOther->Fill(p0);
+        //     }
+
+        //     if (backgroundType == 0) {
+        //         hTrueAbs0pKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+        //     } else if (backgroundType == 1) {
+        //         hTrueAbsNpKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+        //     } else if (backgroundType == 6 || backgroundType == 12) {
+        //         hTrueScatterKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+        //         if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+        //     }
+
+        //     outFileAbs0pBkg << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
+        //     outFileAbs0pBkg << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
+        //     outFileAbs0pBkg << " Scattering angle (degrees): " << scatteringAngle * (180 / TMath::Pi()) << std::endl;
+        //     outFileAbs0pBkg << " Tagged pions: " << totalTaggedPions << std::endl;
+        //     outFileAbs0pBkg << " Tagged protons: " << totalTaggedProtons << std::endl;
+        //     outFileAbs0pBkg << " Reco trks in cylinder: " << bdt_numRecoTrksInCylinder << std::endl;
+        //     outFileAbs0pBkg << std::endl;
+
+        //     continue;
+        // } else if (p1 == max_prob) {
+        //     // classify as electron shower
+        //     if (backgroundType == 0) {
+        //         hBestElectronAbs0p->Fill(p1);
+        //     } else if (backgroundType == 1) {
+        //         hBestElectronAbsNp->Fill(p1);
+        //     } else if (backgroundType == 7) {
+        //         hBestElectronChExch->Fill(p1);
+        //     } else if (backgroundType == 6 || backgroundType == 12) {
+        //         hBestElectronScatter->Fill(p1);
+        //     } else if (backgroundType == 2) {
+        //         hBestElectronMuon->Fill(p1);
+        //     } else if (backgroundType == 3) {
+        //         hBestElectronElectron->Fill(p1);
+        //     } else {
+        //         hBestElectronOther->Fill(p1);
+        //     }
+
+        //     continue;
+        // } else if (p2 == max_prob) {
+        //     // classify as charge exchange
+        //     if (backgroundType == 0) {
+        //         hBestChExchAbs0p->Fill(p2);
+        //     } else if (backgroundType == 1) {
+        //         hBestChExchAbsNp->Fill(p2);
+        //     } else if (backgroundType == 7) {
+        //         hBestChExchChExch->Fill(p2);
+        //     } else if (backgroundType == 6 || backgroundType == 12) {
+        //         hBestChExchScatter->Fill(p2);
+        //     } else if (backgroundType == 2) {
+        //         hBestChExchMuon->Fill(p2);
+        //     } else if (backgroundType == 3) {
+        //         hBestChExchElectron->Fill(p2);
+        //     } else {
+        //         hBestChExchOther->Fill(p2);
+        //     }
+
+        //     if (chExchInsideCylinder) {
+        //         chExchContainedCylinderReco++;
+        //     } else if (chExchInsideRedVol) {
+        //         chExchContainedRedVolReco++;
+        //     }
+
+        //     continue;
+        // } else if (p3 == max_prob) {
+        //     // classify as remaining scattering
+        //     if (backgroundType == 0) {
+        //         hBestScatterAbs0p->Fill(p3);
+        //     } else if (backgroundType == 1) {
+        //         hBestScatterAbsNp->Fill(p3);
+        //     } else if (backgroundType == 7) {
+        //         hBestScatterChExch->Fill(p3);
+        //     } else if (backgroundType == 6 || backgroundType == 12) {
+        //         hBestScatterScatter->Fill(p3);
+        //     } else if (backgroundType == 2) {
+        //         hBestScatterMuon->Fill(p3);
+        //     } else if (backgroundType == 3) {
+        //         hBestScatterElectron->Fill(p3);
+        //     } else {
+        //         hBestScatterOther->Fill(p3);
+        //     }
+
+        //     continue;
+        // }
 
         // Anything left here is rejected
         if (backgroundType == 0) {
@@ -2158,6 +2358,20 @@ void RecoClassify3Cat() {
 
     hMCTGUnreconstructedHitsCollection->SetDirectory(comparisonsFile);
     hMCTGUnreconstructedHitsCollection->Write();
+
+    hMCTGNumClustersInduction->SetDirectory(comparisonsFile);
+    hMCTGNumClustersInduction->Write();
+
+    hMCTGNumClustersCollection->SetDirectory(comparisonsFile);
+    hMCTGNumClustersCollection->Write();
+
+    hMCTGClusterSizesInduction->SetDirectory(comparisonsFile);
+    hMCTGClusterSizesInduction->Write();
+
+    hMCTGClusterSizesCollection->SetDirectory(comparisonsFile);
+    hMCTGClusterSizesCollection->Write();
+
+    comparisonsFile->Close();
 
     //////////////////////////////////////////////
     // Perform unfolding for interacting slices //
@@ -2523,10 +2737,16 @@ void RecoClassify3Cat() {
         {hBestElectronAbs0p, hBestElectronAbsNp, hBestElectronMuon, hBestElectronElectron, hBestElectronScatter, hBestElectronChExch, hBestElectronOther},
 
         // Unreconstructed hits
-        {hHitClusterSizesAbs0p, hHitClusterSizesAbsNp, hHitClusterSizesMuon, hHitClusterSizesElectron, hHitClusterSizesScatter, hHitClusterSizesChExch, hHitClusterSizesOther},
-        {hLargeHitClusterAbs0p, hLargeHitClusterAbsNp, hLargeHitClusterMuon, hLargeHitClusterElectron, hLargeHitClusterScatter, hLargeHitClusterChExch, hLargeHitClusterOther},
-        {hUnRecoHitsAbs0p, hUnRecoHitsAbsNp, hUnRecoHitsMuon, hUnRecoHitsElectron, hUnRecoHitsScatter, hUnRecoHitsChExch, hUnRecoHitsOther},
-        {hNumClustersAbs0p, hNumClustersAbsNp, hNumClustersMuon, hNumClustersElectron, hNumClustersScatter, hNumClustersChExch, hNumClustersOther},
+        {hHitClusterInductionSizesAbs0p, hHitClusterInductionSizesAbsNp, hHitClusterInductionSizesMuon, hHitClusterInductionSizesElectron, hHitClusterInductionSizesScatter, hHitClusterInductionSizesChExch, hHitClusterInductionSizesOther},
+        {hLargeHitClusterInductionAbs0p, hLargeHitClusterInductionAbsNp, hLargeHitClusterInductionMuon, hLargeHitClusterInductionElectron, hLargeHitClusterInductionScatter, hLargeHitClusterInductionChExch, hLargeHitClusterInductionOther},
+        {hNumClustersInductionAbs0p, hNumClustersInductionAbsNp, hNumClustersInductionMuon, hNumClustersInductionElectron, hNumClustersInductionScatter, hNumClustersInductionChExch, hNumClustersInductionOther},
+        {hUnRecoHitsInductionAbs0p, hUnRecoHitsInductionAbsNp, hUnRecoHitsInductionMuon, hUnRecoHitsInductionElectron, hUnRecoHitsInductionScatter, hUnRecoHitsInductionChExch, hUnRecoHitsInductionOther},
+
+        {hHitClusterCollectionSizesAbs0p, hHitClusterCollectionSizesAbsNp, hHitClusterCollectionSizesMuon, hHitClusterCollectionSizesElectron, hHitClusterCollectionSizesScatter, hHitClusterCollectionSizesChExch, hHitClusterCollectionSizesOther},
+        {hLargeHitClusterCollectionAbs0p, hLargeHitClusterCollectionAbsNp, hLargeHitClusterCollectionMuon, hLargeHitClusterCollectionElectron, hLargeHitClusterCollectionScatter, hLargeHitClusterCollectionChExch, hLargeHitClusterCollectionOther},
+        {hNumClustersCollectionAbs0p, hNumClustersCollectionAbsNp, hNumClustersCollectionMuon, hNumClustersCollectionElectron, hNumClustersCollectionScatter, hNumClustersCollectionChExch, hNumClustersCollectionOther},
+        {hUnRecoHitsCollectionAbs0p, hUnRecoHitsCollectionAbsNp, hUnRecoHitsCollectionMuon, hUnRecoHitsCollectionElectron, hUnRecoHitsCollectionScatter, hUnRecoHitsCollectionChExch, hUnRecoHitsCollectionOther},
+
         {hNegativeTimePrimaryHits},
         {hTimePrimaryHits}
     };
@@ -2583,6 +2803,10 @@ void RecoClassify3Cat() {
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Negative time hits"},
         {"All time hits"}
     };
@@ -2635,10 +2859,14 @@ void RecoClassify3Cat() {
         "BDTScores/ElectronTrue",
 
         // Unreconstructed hits
-        "Hits/ClusterSizes",
-        "Hits/NumLargeClusters",
-        "Hits/UnReconstructedHits",
-        "Hits/NumClusters",
+        "Hits/ClusterSizesInduction",
+        "Hits/NumLargeClustersInduction",
+        "Hits/NumClustersInduction",
+        "Hits/UnReconstructedInduction",
+        "Hits/ClusterSizesCollection",
+        "Hits/NumLargeClustersCollection",
+        "Hits/NumClustersCollection",
+        "Hits/UnReconstructedCollection",
         "Hits/PrimaryNegativeTimeHits",
         "Hits/PrimaryTimeHits"
     };
@@ -2693,8 +2921,12 @@ void RecoClassify3Cat() {
         // Unreconstructed hits
         "Cluster size [cm]",
         "Number of large clusters",
-        "Unreconstructed hits",
         "# of clusters",
+        "Unreconstructed hits",
+        "Cluster size [cm]",
+        "Number of large clusters",
+        "# of clusters",
+        "Unreconstructed hits",
         "Hit time [us]",
         "Hit time [us]"
     };
@@ -2747,6 +2979,10 @@ void RecoClassify3Cat() {
         "Counts",
 
         // Unreconstructed hits
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
         "Counts",
         "Counts",
         "Counts",
@@ -2808,6 +3044,10 @@ void RecoClassify3Cat() {
         true,
         true,
         true,
+        true,
+        true,
+        true,
+        true,
         true
     };
 
@@ -2859,6 +3099,10 @@ void RecoClassify3Cat() {
         {false, false, false, false, false, false, false},
 
         // Unreconstructed hits
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
