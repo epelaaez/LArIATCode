@@ -187,7 +187,7 @@ Event number: 1460
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2112 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -3053,7 +3053,7 @@ Event number: 10218
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2212 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -4481,7 +4481,7 @@ Event number: 12342
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs Np
   Daughters: 
     1000180400 with process: hadElastic
     2212 with process: pi-Inelastic
@@ -7150,7 +7150,7 @@ Event number: 17635
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     -211 with process: pi-Inelastic
@@ -7606,7 +7606,7 @@ Event number: 17977
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     111 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -8841,7 +8841,7 @@ Event number: 24104
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2212 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -12224,7 +12224,7 @@ Event number: 53987
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2212 with process: pi-Inelastic
@@ -16502,7 +16502,7 @@ Event number: 64557
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     2212 with process: pi-Inelastic
@@ -16814,7 +16814,7 @@ Event number: 64940
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     22 with process: hBertiniCaptureAtRest
@@ -17304,7 +17304,7 @@ Event number: 65563
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2212 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -21716,7 +21716,7 @@ Event number: 85141
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
 
@@ -21982,7 +21982,7 @@ Event number: 85471
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2112 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -22590,7 +22590,7 @@ Event number: 88979
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2112 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -23760,7 +23760,7 @@ Event number: 89930
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -25528,7 +25528,7 @@ Event number: 91365
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     2212 with process: pi-Inelastic
@@ -27853,7 +27853,7 @@ Event number: 93638
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     111 with process: pi-Inelastic
@@ -29289,7 +29289,7 @@ Event number: 104129
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2212 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -31291,7 +31291,7 @@ Event number: 106048
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2112 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -38223,7 +38223,7 @@ Event number: 112622
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     1000180400 with process: hadElastic
@@ -40382,7 +40382,7 @@ Event number: 114806
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2112 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -41936,7 +41936,7 @@ Event number: 125082
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     22 with process: hBertiniCaptureAtRest
@@ -42491,7 +42491,7 @@ Event number: 125885
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
 
@@ -43219,7 +43219,7 @@ Event number: 126688
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     2112 with process: pi-Inelastic
@@ -44568,7 +44568,7 @@ Event number: 134055
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2212 with process: pi-Inelastic
@@ -46453,7 +46453,7 @@ Event number: 135999
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     22 with process: hBertiniCaptureAtRest
@@ -49398,7 +49398,7 @@ Event number: 144707
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2112 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -49433,7 +49433,7 @@ Event number: 144744
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     22 with process: hBertiniCaptureAtRest
@@ -49530,7 +49530,7 @@ Event number: 144888
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs Np
   Daughters: 
     2212 with process: pi-Inelastic
     2212 with process: pi-Inelastic
@@ -51185,7 +51185,7 @@ Event number: 149384
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     22 with process: pi-Inelastic
@@ -51949,7 +51949,7 @@ Event number: 150293
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -56857,7 +56857,7 @@ Event number: 166966
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2112 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -61446,7 +61446,7 @@ Event number: 171368
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -62444,7 +62444,7 @@ Event number: 172257
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2212 with process: pi-Inelastic
     2212 with process: pi-Inelastic
@@ -66067,7 +66067,7 @@ Event number: 175144
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     2112 with process: pi-Inelastic
@@ -67173,7 +67173,7 @@ Event number: 176599
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs Np
   Daughters: 
     2212 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -68316,7 +68316,7 @@ Event number: 177824
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2112 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -68629,7 +68629,7 @@ Event number: 178034
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -69503,7 +69503,7 @@ Event number: 178941
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     22 with process: pi-Inelastic
@@ -70493,7 +70493,7 @@ Event number: 179787
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs Np
   Daughters: 
     2212 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -70774,7 +70774,7 @@ Event number: 180059
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -72647,7 +72647,7 @@ Event number: 181195
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -73794,7 +73794,7 @@ Event number: 182380
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     22 with process: hBertiniCaptureAtRest
@@ -74461,7 +74461,7 @@ Event number: 183057
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2212 with process: pi-Inelastic
     2212 with process: pi-Inelastic
@@ -74588,7 +74588,7 @@ Event number: 183104
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2112 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -74965,7 +74965,7 @@ Event number: 183519
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     22 with process: hBertiniCaptureAtRest
     22 with process: hBertiniCaptureAtRest
@@ -76623,7 +76623,7 @@ Event number: 197319
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2212 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -78367,7 +78367,7 @@ Event number: 199281
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -79982,7 +79982,7 @@ Event number: 200903
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     2212 with process: pi-Inelastic
@@ -81399,7 +81399,7 @@ Event number: 202222
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -82972,7 +82972,7 @@ Event number: 230861
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     2212 with process: pi-Inelastic
@@ -83206,7 +83206,7 @@ Event number: 231043
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     22 with process: hBertiniCaptureAtRest
@@ -84110,7 +84110,7 @@ Event number: 231818
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -89393,7 +89393,7 @@ Event number: 245265
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -94398,7 +94398,7 @@ Event number: 264820
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs Np
   Daughters: 
     2212 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -94457,7 +94457,7 @@ Event number: 264836
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     1000180400 with process: hadElastic
@@ -96962,7 +96962,7 @@ Event number: 267421
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     2112 with process: pi-Inelastic
@@ -97211,7 +97211,7 @@ Event number: 267596
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -97668,7 +97668,7 @@ Event number: 268068
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     -211 with process: pi-Inelastic
@@ -98406,7 +98406,7 @@ Event number: 268654
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     22 with process: pi-Inelastic
@@ -99050,7 +99050,7 @@ Event number: 269343
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     2112 with process: pi-Inelastic
     -211 with process: pi-Inelastic
@@ -104628,7 +104628,7 @@ Event number: 280213
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Inelastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     -211 with process: pi-Inelastic
     2112 with process: pi-Inelastic
@@ -104708,7 +104708,7 @@ Event number: 280261
   Is new better than original: false
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     1000180400 with process: hadElastic
@@ -104924,7 +104924,7 @@ Event number: 280458
   Is new better than original: true
 
   Primary particle PDG: -211
-  Event classified as: Elastic scattering
+  Event classified as: Abs 0p
   Daughters: 
     1000180400 with process: hadElastic
     111 with process: pi-Inelastic

@@ -379,6 +379,13 @@ void RecoAllAnalysis() {
         20, 0, 0.6
     );
 
+    TH2D* hScatteredPionKEVsAngle = new TH2D(
+        "hScatteredPionKEVsAngle",
+        "hScatteredPionKEVsAngle;Outgoing KE [GeV];Angle [deg]",
+        20, 0, 0.6,
+        20, 0, 180
+    );
+
     /////////////////////////////////////////////////////////////////////////////
     // Variables and histograms for local linearity derivative cut optimizaton //
     /////////////////////////////////////////////////////////////////////////////
@@ -1011,7 +1018,7 @@ void RecoAllAnalysis() {
         // Sanity check
         removeRepeatedPoints(WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ);
 
-        // Scattering only if degree > THRESHOLD
+        // Scattering only if degree > THRESHOLD and energy > THRESHOLD
         double scatteringAngle = -9999;
         if (backgroundType == 12 || backgroundType == 6) {
             if (backgroundType == 12) {
@@ -1026,10 +1033,6 @@ void RecoAllAnalysis() {
                     int currentInteraction = secondaryInteractionTypes->at(iInteraction);
                     scatteringAngle        = secondaryInteractionAngle->at(iInteraction);
 
-                    // for (int iContribution = 0; iContribution < secondaryIncidentKEContributions->at(iInteraction).size(); ++iContribution) {
-                    //     trueIncidentKEContributions->push_back(secondaryIncidentKEContributions->at(iInteraction)[iContribution]);
-                    // }
-
                     if (
                         (currentInteraction == 6 || currentInteraction == 12) &&
                         scatteringAngle < SCATTERING_ANGLE_THRESHOLD
@@ -1039,35 +1042,58 @@ void RecoAllAnalysis() {
                     } else {
                         // We found non-scattering interaction or scattering interaction 
                         // with angle above our threshold value
-                        backgroundType       = currentInteraction;
-                        truthPrimaryVertexKE = secondaryInteractionInteractingKE->at(iInteraction);
+                        backgroundType = currentInteraction;
 
-                        truthPrimaryVertexX = secondaryInteractionXPosition->at(iInteraction);
-                        truthPrimaryVertexY = secondaryInteractionYPosition->at(iInteraction);
-                        truthPrimaryVertexZ = secondaryInteractionZPosition->at(iInteraction);
-
-                        thisEventPrimaryDaughterPDG     = secondaryInteractionDaughtersPDG->at(iInteraction);
-                        thisEventPrimaryDaughterKE      = secondaryInteractionDaughtersKE->at(iInteraction);
-                        // thisEventPrimaryDaughterProcess = secondaryInteractionDaughtersProcess->at(iInteraction);
-
-                        // Re-do variables (hacky)
-                        if (currentInteraction == 12) trajectoryInteractionAngle = scatteringAngle;
-                        else if (currentInteraction == 6) {
-                            truthScatteringAngle = scatteringAngle;
-                            for (int i = 0; i < thisEventPrimaryDaughterPDG.size(); ++i) {
-                                if (thisEventPrimaryDaughterPDG[i] == -211) {
-                                    truthScatteredPionKE = secondaryInteractionDaughtersKE->at(iInteraction)[i];
-                                    break;
+                        if (backgroundType == 6 || backgroundType == 12) {
+                            // Look at outgoing particles
+                            int secondaryVisibleProtons = 0; double scatteringEnergy = 0;
+                            for (int i = 0; i < secondaryInteractionDaughtersPDG->at(iInteraction).size(); ++i) {
+                                if (secondaryInteractionDaughtersPDG->at(iInteraction)[i] == -211) {
+                                    scatteringEnergy = secondaryInteractionDaughtersKE->at(iInteraction)[i];
+                                } else if (secondaryInteractionDaughtersPDG->at(iInteraction)[i] == 2212) {
+                                    if (
+                                        secondaryInteractionDaughtersKE->at(iInteraction)[i] > PROTON_ENERGY_LOWER_BOUND &&
+                                        secondaryInteractionDaughtersKE->at(iInteraction)[i] < PROTON_ENERGY_UPPER_BOUND
+                                    ) secondaryVisibleProtons++;
                                 }
                             }
+
+                            // If scattering energy is below threshold, absorption
+                            if (scatteringEnergy < PION_SCATTERING_ENERGY_THRESHOLD) {
+                                if (secondaryVisibleProtons == 0) backgroundType = 0;
+                                else backgroundType = 1;
+                            }
                         }
+                        truthPrimaryVertexKE = secondaryInteractionInteractingKE->at(iInteraction);
+                        truthPrimaryVertexX  = secondaryInteractionXPosition->at(iInteraction);
+                        truthPrimaryVertexY  = secondaryInteractionYPosition->at(iInteraction);
+                        truthPrimaryVertexZ  = secondaryInteractionZPosition->at(iInteraction);
                         break;
                     }
                 }
             } else {
-                // If initial interaction has valid angle, just correct interaction KE for 
-                // elastic scattering interactions
+                // If initial interaction has valid angle, first correct for vertex energy 
                 if (backgroundType == 12) truthPrimaryVertexKE = trajectoryInteractionKE;
+
+                // Check if outgoing pion is above threshold
+                if (backgroundType == 6 && truthScatteredPionKE < PION_SCATTERING_ENERGY_THRESHOLD) {
+                    int secondaryVisibleProtons = 0;
+                    for (int i = 0; i < truthPrimaryDaughtersPDG->size(); ++i) {
+                        if (truthPrimaryDaughtersPDG->at(i) == 2212) {
+                            if (
+                                truthPrimaryDaughtersKE->at(i) > PROTON_ENERGY_LOWER_BOUND &&
+                                truthPrimaryDaughtersKE->at(i) < PROTON_ENERGY_UPPER_BOUND
+                            ) secondaryVisibleProtons++;
+                        }
+                    }
+                    if (secondaryVisibleProtons == 0) backgroundType = 0;
+                    else backgroundType = 1;
+                } else if (backgroundType == 12 && trajectoryInteractionKE < PION_SCATTERING_ENERGY_THRESHOLD) {
+                    // If outgoing pion from elastic scattering has energy lower than threshold, we
+                    // label it as 0p absorption since there are no other products in an elastic scattering
+                    backgroundType = 0;
+                }
+
             }
         }
         hTotalEvents->Fill(backgroundType);
@@ -1185,6 +1211,8 @@ void RecoAllAnalysis() {
             hAllScatteringAngle->Fill(trajectoryInteractionAngle * (180. / TMath::Pi()));
             hAllScatteringVertexKE->Fill(trajectoryInteractionKE);
 
+            hScatteredPionKEVsAngle->Fill(trajectoryInteractionKE, trajectoryInteractionAngle * (180. / TMath::Pi()));
+
             for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
                 if (recoTrkID->at(iRecoTrk) == WC2TPCtrkID) continue;
 
@@ -1222,6 +1250,7 @@ void RecoAllAnalysis() {
             InelasticScatteringVertexKE.push_back(truthPrimaryVertexKE);
             InelasticScatteringOutgoingKE.push_back(truthScatteredPionKE);
 
+            hScatteredPionKEVsAngle->Fill(truthScatteredPionKE, truthScatteringAngle * (180. / TMath::Pi()));
             hScatteringVertexKEVsOutKE->Fill(truthPrimaryVertexKE, truthScatteredPionKE);
 
             for (int iRecoTrk = 0; iRecoTrk < matchedIdentity->size(); ++iRecoTrk) {
@@ -3760,6 +3789,7 @@ void RecoAllAnalysis() {
         h0pBackgroundAllScatteringVertexKEVSAngle,
         hNpBackgroundAllScatteringVertexKEVSAngle,
         hScatteringVertexKEVsOutKE,
+        hScatteredPionKEVsAngle,
 
         // Hit clustering
         hHitClusterCut0pReco,
@@ -3802,6 +3832,7 @@ void RecoAllAnalysis() {
         "Scattering/2D0pBackgroundAllScatteringVertexKEVSAngle",
         "Scattering/2DNpBackgroundAllScatteringVertexKEVSAngle",
         "Scattering/2DInelasticVertexVSOutKE",
+        "Scattering/2DOutKEVsAngle",
 
         // Hit clustering
         "HitClustering/2DHitClusterCut0pReco",

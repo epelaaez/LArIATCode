@@ -19,6 +19,7 @@ void RecoClassify3Cat() {
     gStyle->SetOptStat(0); // get rid of stats box
     TH1D::SetDefaultSumw2();
     TH2D::SetDefaultSumw2();
+    TH1::AddDirectory(false);
     gStyle->SetPalette(kRainBow);
 
     TGraph* gProton = new TGraph();
@@ -350,6 +351,8 @@ void RecoClassify3Cat() {
     // Create histograms //
     ///////////////////////
 
+    NUM_SIGNAL_TYPES = 3;
+
     TH1D* hTotalEvents = new TH1D("hTotalEvents", "hTotalEvents", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
     // Histograms with classified events
@@ -593,6 +596,22 @@ void RecoClassify3Cat() {
     TH1D* hHitClusterCollectionSizesChExch   = new TH1D("hHitClusterCollectionSizesChExch", "hHitClusterCollectionSizesChExch;;", 15, 0, 30);
     TH1D* hHitClusterCollectionSizesOther    = new TH1D("hHitClusterCollectionSizesOther", "hHitClusterCollectionSizesOther;;", 15, 0, 30);
 
+    TH1D* hLargestHitClusterInductionAbs0p    = new TH1D("hLargestHitClusterInductionAbs0p", "hLargestHitClusterInductionAbs0p;;", 15, 0, 30);
+    TH1D* hLargestHitClusterInductionAbsNp    = new TH1D("hLargestHitClusterInductionAbsNp", "hLargestHitClusterInductionAbsNp;;", 15, 0, 30);
+    TH1D* hLargestHitClusterInductionMuon     = new TH1D("hLargestHitClusterInductionMuon", "hLargestHitClusterInductionMuon;;", 15, 0, 30);
+    TH1D* hLargestHitClusterInductionElectron = new TH1D("hLargestHitClusterInductionElectron", "hLargestHitClusterInductionElectron;;", 15, 0, 30);
+    TH1D* hLargestHitClusterInductionScatter  = new TH1D("hLargestHitClusterInductionScatter", "hLargestHitClusterInductionScatter;;", 15, 0, 30);
+    TH1D* hLargestHitClusterInductionChExch   = new TH1D("hLargestHitClusterInductionChExch", "hLargestHitClusterInductionChExch;;", 15, 0, 30);
+    TH1D* hLargestHitClusterInductionOther    = new TH1D("hLargestHitClusterInductionOther", "hLargestHitClusterInductionOther;;", 15, 0, 30);
+
+    TH1D* hLargestHitClusterCollectionAbs0p    = new TH1D("hLargestHitClusterCollectionAbs0p", "hLargestHitClusterCollectionAbs0p;;", 15, 0, 30);
+    TH1D* hLargestHitClusterCollectionAbsNp    = new TH1D("hLargestHitClusterCollectionAbsNp", "hLargestHitClusterCollectionAbsNp;;", 15, 0, 30);
+    TH1D* hLargestHitClusterCollectionMuon     = new TH1D("hLargestHitClusterCollectionMuon", "hLargestHitClusterCollectionMuon;;", 15, 0, 30);
+    TH1D* hLargestHitClusterCollectionElectron = new TH1D("hLargestHitClusterCollectionElectron", "hLargestHitClusterCollectionElectron;;", 15, 0, 30);
+    TH1D* hLargestHitClusterCollectionScatter  = new TH1D("hLargestHitClusterCollectionScatter", "hLargestHitClusterCollectionScatter;;", 15, 0, 30);
+    TH1D* hLargestHitClusterCollectionChExch   = new TH1D("hLargestHitClusterCollectionChExch", "hLargestHitClusterCollectionChExch;;", 15, 0, 30);
+    TH1D* hLargestHitClusterCollectionOther    = new TH1D("hLargestHitClusterCollectionOther", "hLargestHitClusterCollectionOther;;", 15, 0, 30);
+
     TH1D* hNumClustersInductionAbs0p    = new TH1D("hNumClustersInductionAbs0p", "hNumClustersInductionAbs0p;;", 10, 0, 10);
     TH1D* hNumClustersInductionAbsNp    = new TH1D("hNumClustersInductionAbsNp", "hNumClustersInductionAbsNp;;", 10, 0, 10);
     TH1D* hNumClustersInductionMuon     = new TH1D("hNumClustersInductionMuon", "hNumClustersInductionMuon;;", 10, 0, 10);
@@ -628,8 +647,6 @@ void RecoClassify3Cat() {
     //////////////
     // Matrices //
     //////////////
-
-    NUM_SIGNAL_TYPES = 3;
 
     std::vector<TH1*> TotalEventsHistos = {
         hTrueAbs0pKE, hTrueAbsNpKE, hTrueScatterKE
@@ -776,7 +793,7 @@ void RecoClassify3Cat() {
         // )) continue;
 
         // Use first 50k events, last 50k events were used for BDT training
-        if (i > 50000) break;
+        // if (i > 50000) break;
 
         // Make script go faster
         // if (i > 5000) break;
@@ -1904,29 +1921,6 @@ void RecoClassify3Cat() {
         // Cluster non-reconstructed hits cut //
         ////////////////////////////////////////
 
-        if (backgroundType == 0) {
-            hUnRecoHitsInductionAbs0p->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionAbs0p->Fill(numUnRecoHitsNearPrimaryCollection);
-        } else if (backgroundType == 1) {
-            hUnRecoHitsInductionAbsNp->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionAbsNp->Fill(numUnRecoHitsNearPrimaryCollection);
-        } else if (backgroundType == 2) {
-            hUnRecoHitsInductionMuon->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionMuon->Fill(numUnRecoHitsNearPrimaryCollection);
-        } else if (backgroundType == 3) {
-            hUnRecoHitsInductionElectron->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionElectron->Fill(numUnRecoHitsNearPrimaryCollection);
-        } else if (backgroundType == 6 || backgroundType == 12) {
-            hUnRecoHitsInductionScatter->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionScatter->Fill(numUnRecoHitsNearPrimaryCollection);
-        } else if (backgroundType == 7) {
-            hUnRecoHitsInductionChExch->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionChExch->Fill(numUnRecoHitsNearPrimaryCollection);
-        } else {
-            hUnRecoHitsInductionOther->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionOther->Fill(numUnRecoHitsNearPrimaryCollection);
-        }
-
         // Get data for cut
         int numLargeClustersInduction  = 0;
         int numLargeClustersCollection = 0;
@@ -1934,11 +1928,20 @@ void RecoClassify3Cat() {
         int numClustersInduction  = 0;
         int numClustersCollection = 0;
 
+        double largestClusterSizeInduction  = 0;
+        double largestClusterSizeCollection = 0;
+
         for (int i = 0; i < hitClusters.size(); ++i) {
             double clusterSize = hitClusters[i].clusterSize;
 
-            if (hitClusters[i].plane == 0) numClustersInduction++;
-            else if (hitClusters[i].plane == 1) numClustersCollection++;
+            if (hitClusters[i].plane == 0) {
+                if (clusterSize > largestClusterSizeInduction) largestClusterSizeInduction = clusterSize;
+                numClustersInduction++;
+            }
+            else if (hitClusters[i].plane == 1) {
+                if (clusterSize > largestClusterSizeCollection) largestClusterSizeCollection = clusterSize;
+                numClustersCollection++;
+            }
 
             if (clusterSize > LARGE_CLUSTER_THRESHOLD) {
                 if (hitClusters[i].plane == 0) numLargeClustersInduction++;
@@ -1971,45 +1974,59 @@ void RecoClassify3Cat() {
 
         if (backgroundType == 0) {
             hLargeHitClusterInductionAbs0p->Fill(numLargeClustersInduction);
+            hLargestHitClusterInductionAbs0p->Fill(largestClusterSizeInduction);
             hNumClustersInductionAbs0p->Fill(numClustersInduction);
 
             hLargeHitClusterCollectionAbs0p->Fill(numLargeClustersCollection);
+            hLargestHitClusterCollectionAbs0p->Fill(largestClusterSizeCollection);
             hNumClustersCollectionAbs0p->Fill(numClustersCollection);
         } else if (backgroundType == 1) {
             hLargeHitClusterInductionAbsNp->Fill(numLargeClustersInduction);
+            hLargestHitClusterInductionAbsNp->Fill(largestClusterSizeInduction);
             hNumClustersInductionAbsNp->Fill(numClustersInduction);
 
             hLargeHitClusterCollectionAbsNp->Fill(numLargeClustersCollection);
+            hLargestHitClusterCollectionAbsNp->Fill(largestClusterSizeCollection);
             hNumClustersCollectionAbsNp->Fill(numClustersCollection);
         } else if (backgroundType == 7) {
             hLargeHitClusterInductionChExch->Fill(numLargeClustersInduction);
+            hLargestHitClusterInductionChExch->Fill(largestClusterSizeInduction);
             hNumClustersInductionChExch->Fill(numClustersInduction);
 
             hLargeHitClusterCollectionChExch->Fill(numLargeClustersCollection);
+            hLargestHitClusterCollectionChExch->Fill(largestClusterSizeCollection);
             hNumClustersCollectionChExch->Fill(numClustersCollection);
         } else if (backgroundType == 6 || backgroundType == 12) {
             hLargeHitClusterInductionScatter->Fill(numLargeClustersInduction);
+            hLargestHitClusterInductionScatter->Fill(largestClusterSizeInduction);
             hNumClustersInductionScatter->Fill(numClustersInduction);
 
             hLargeHitClusterCollectionScatter->Fill(numLargeClustersCollection);
+            hLargestHitClusterCollectionScatter->Fill(largestClusterSizeCollection);
             hNumClustersCollectionScatter->Fill(numClustersCollection);
         } else if (backgroundType == 2) {
             hLargeHitClusterInductionMuon->Fill(numLargeClustersInduction);
+            hLargestHitClusterInductionMuon->Fill(largestClusterSizeInduction);
             hNumClustersInductionMuon->Fill(numClustersInduction);
 
             hLargeHitClusterCollectionMuon->Fill(numLargeClustersCollection);
+            hLargestHitClusterCollectionMuon->Fill(largestClusterSizeCollection);
             hNumClustersCollectionMuon->Fill(numClustersCollection);
         } else if (backgroundType == 3) {
             hLargeHitClusterInductionElectron->Fill(numLargeClustersInduction);
+            hLargestHitClusterInductionElectron->Fill(largestClusterSizeInduction);
             hNumClustersInductionElectron->Fill(numClustersInduction);
 
             hLargeHitClusterCollectionElectron->Fill(numLargeClustersCollection);
+            hLargestHitClusterCollectionElectron->Fill(largestClusterSizeCollection);
             hNumClustersCollectionElectron->Fill(numClustersCollection);
         } else {
             hLargeHitClusterInductionOther->Fill(numLargeClustersInduction);
+            hLargestHitClusterInductionOther->Fill(largestClusterSizeInduction);
             hNumClustersInductionOther->Fill(numClustersInduction);
 
             hLargeHitClusterCollectionOther->Fill(numLargeClustersCollection);
+            hLargestHitClusterCollectionOther->Fill(largestClusterSizeCollection);
             hNumClustersCollectionOther->Fill(numClustersCollection);
         }
 
@@ -2031,6 +2048,13 @@ void RecoClassify3Cat() {
                 hPionAbs0pKEScatter->Fill(energyAtVertex);
             } else if (backgroundType == 2) {
                 hPionAbs0pKEMuon->Fill(energyAtVertex);
+                if (muonType == 0) {
+                    hPionAbs0pKEMuonTG->Fill(energyAtVertex);
+                } else if (muonType == 1) {
+                    hPionAbs0pKEMuonDecay->Fill(energyAtVertex);
+                } else if (muonType == 2) {
+                    hPionAbs0pKEMuonCAR->Fill(energyAtVertex);
+                }
             } else if (backgroundType == 3) {
                 hPionAbs0pKEElectron->Fill(energyAtVertex);
             } else {
@@ -2051,6 +2075,29 @@ void RecoClassify3Cat() {
             continue;
         }
         hNotPionAbs0p->Fill(backgroundType);
+
+        if (backgroundType == 0) {
+            hUnRecoHitsInductionAbs0p->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionAbs0p->Fill(numUnRecoHitsNearPrimaryCollection);
+        } else if (backgroundType == 1) {
+            hUnRecoHitsInductionAbsNp->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionAbsNp->Fill(numUnRecoHitsNearPrimaryCollection);
+        } else if (backgroundType == 2) {
+            hUnRecoHitsInductionMuon->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionMuon->Fill(numUnRecoHitsNearPrimaryCollection);
+        } else if (backgroundType == 3) {
+            hUnRecoHitsInductionElectron->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionElectron->Fill(numUnRecoHitsNearPrimaryCollection);
+        } else if (backgroundType == 6 || backgroundType == 12) {
+            hUnRecoHitsInductionScatter->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionScatter->Fill(numUnRecoHitsNearPrimaryCollection);
+        } else if (backgroundType == 7) {
+            hUnRecoHitsInductionChExch->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionChExch->Fill(numUnRecoHitsNearPrimaryCollection);
+        } else {
+            hUnRecoHitsInductionOther->Fill(numUnRecoHitsNearPrimaryInduction);
+            hUnRecoHitsCollectionOther->Fill(numUnRecoHitsNearPrimaryCollection);
+        }
 
         /////////////////////////////////////////////////
         // Discriminate remaining from charge exchange //
@@ -2739,11 +2786,13 @@ void RecoClassify3Cat() {
         // Unreconstructed hits
         {hHitClusterInductionSizesAbs0p, hHitClusterInductionSizesAbsNp, hHitClusterInductionSizesMuon, hHitClusterInductionSizesElectron, hHitClusterInductionSizesScatter, hHitClusterInductionSizesChExch, hHitClusterInductionSizesOther},
         {hLargeHitClusterInductionAbs0p, hLargeHitClusterInductionAbsNp, hLargeHitClusterInductionMuon, hLargeHitClusterInductionElectron, hLargeHitClusterInductionScatter, hLargeHitClusterInductionChExch, hLargeHitClusterInductionOther},
+        {hLargestHitClusterInductionAbs0p, hLargestHitClusterInductionAbsNp, hLargestHitClusterInductionMuon, hLargestHitClusterInductionElectron, hLargestHitClusterInductionScatter, hLargestHitClusterInductionChExch, hLargestHitClusterInductionOther},
         {hNumClustersInductionAbs0p, hNumClustersInductionAbsNp, hNumClustersInductionMuon, hNumClustersInductionElectron, hNumClustersInductionScatter, hNumClustersInductionChExch, hNumClustersInductionOther},
         {hUnRecoHitsInductionAbs0p, hUnRecoHitsInductionAbsNp, hUnRecoHitsInductionMuon, hUnRecoHitsInductionElectron, hUnRecoHitsInductionScatter, hUnRecoHitsInductionChExch, hUnRecoHitsInductionOther},
 
         {hHitClusterCollectionSizesAbs0p, hHitClusterCollectionSizesAbsNp, hHitClusterCollectionSizesMuon, hHitClusterCollectionSizesElectron, hHitClusterCollectionSizesScatter, hHitClusterCollectionSizesChExch, hHitClusterCollectionSizesOther},
         {hLargeHitClusterCollectionAbs0p, hLargeHitClusterCollectionAbsNp, hLargeHitClusterCollectionMuon, hLargeHitClusterCollectionElectron, hLargeHitClusterCollectionScatter, hLargeHitClusterCollectionChExch, hLargeHitClusterCollectionOther},
+        {hLargestHitClusterCollectionAbs0p, hLargestHitClusterCollectionAbsNp, hLargestHitClusterCollectionMuon, hLargestHitClusterCollectionElectron, hLargestHitClusterCollectionScatter, hLargestHitClusterCollectionChExch, hLargestHitClusterCollectionOther},
         {hNumClustersCollectionAbs0p, hNumClustersCollectionAbsNp, hNumClustersCollectionMuon, hNumClustersCollectionElectron, hNumClustersCollectionScatter, hNumClustersCollectionChExch, hNumClustersCollectionOther},
         {hUnRecoHitsCollectionAbs0p, hUnRecoHitsCollectionAbsNp, hUnRecoHitsCollectionMuon, hUnRecoHitsCollectionElectron, hUnRecoHitsCollectionScatter, hUnRecoHitsCollectionChExch, hUnRecoHitsCollectionOther},
 
@@ -2807,6 +2856,8 @@ void RecoClassify3Cat() {
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Negative time hits"},
         {"All time hits"}
     };
@@ -2861,10 +2912,12 @@ void RecoClassify3Cat() {
         // Unreconstructed hits
         "Hits/ClusterSizesInduction",
         "Hits/NumLargeClustersInduction",
+        "Hits/LargestClusterInduction",
         "Hits/NumClustersInduction",
         "Hits/UnReconstructedInduction",
         "Hits/ClusterSizesCollection",
         "Hits/NumLargeClustersCollection",
+        "Hits/LargestClusterCollection",
         "Hits/NumClustersCollection",
         "Hits/UnReconstructedCollection",
         "Hits/PrimaryNegativeTimeHits",
@@ -2921,10 +2974,12 @@ void RecoClassify3Cat() {
         // Unreconstructed hits
         "Cluster size [cm]",
         "Number of large clusters",
+        "Cluster size [cm]",
         "# of clusters",
         "Unreconstructed hits",
         "Cluster size [cm]",
         "Number of large clusters",
+        "Cluster size [cm]",
         "# of clusters",
         "Unreconstructed hits",
         "Hit time [us]",
@@ -2979,6 +3034,8 @@ void RecoClassify3Cat() {
         "Counts",
 
         // Unreconstructed hits
+        "Counts",
+        "Counts",
         "Counts",
         "Counts",
         "Counts",
@@ -3048,6 +3105,8 @@ void RecoClassify3Cat() {
         true,
         true,
         true,
+        true,
+        true,
         true
     };
 
@@ -3099,6 +3158,8 @@ void RecoClassify3Cat() {
         {false, false, false, false, false, false, false},
 
         // Unreconstructed hits
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
