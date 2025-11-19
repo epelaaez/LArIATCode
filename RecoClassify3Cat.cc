@@ -533,14 +533,6 @@ void RecoClassify3Cat() {
     TH1D* hBestAbs0pChExch   = new TH1D("hBestAbs0pChExch", "hBestAbs0pChExch;;", PROB_DIVISIONS, 0, 1);
     TH1D* hBestAbs0pOther    = new TH1D("hBestAbs0pOther", "hBestAbs0pOther;;", PROB_DIVISIONS, 0, 1);
 
-    TH1D* hBestChExchAbs0p    = new TH1D("hBestChExchAbs0p", "hBestChExchAbs0p;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestChExchAbsNp    = new TH1D("hBestChExchAbsNp", "hBestChExchAbsNp;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestChExchMuon     = new TH1D("hBestChExchMuon", "hBestChExchMuon;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestChExchElectron = new TH1D("hBestChExchElectron", "hBestChExchElectron;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestChExchScatter  = new TH1D("hBestChExchScatter", "hBestChExchScatter;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestChExchChExch   = new TH1D("hBestChExchChExch", "hBestChExchChExch;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestChExchOther    = new TH1D("hBestChExchOther", "hBestChExchOther;;", PROB_DIVISIONS, 0, 1);
-
     TH1D* hBestScatterAbs0p    = new TH1D("hBestScatterAbs0p", "hBestScatterAbs0p;;", PROB_DIVISIONS, 0, 1);
     TH1D* hBestScatterAbsNp    = new TH1D("hBestScatterAbsNp", "hBestScatterAbsNp;;", PROB_DIVISIONS, 0, 1);
     TH1D* hBestScatterMuon     = new TH1D("hBestScatterMuon", "hBestScatterMuon;;", PROB_DIVISIONS, 0, 1);
@@ -549,13 +541,13 @@ void RecoClassify3Cat() {
     TH1D* hBestScatterChExch   = new TH1D("hBestScatterChExch", "hBestScatterChExch;;", PROB_DIVISIONS, 0, 1);
     TH1D* hBestScatterOther    = new TH1D("hBestScatterOther", "hBestScatterOther;;", PROB_DIVISIONS, 0, 1);
 
-    TH1D* hBestElectronAbs0p    = new TH1D("hBestElectronAbs0p", "hBestElectronAbs0p;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestElectronAbsNp    = new TH1D("hBestElectronAbsNp", "hBestElectronAbsNp;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestElectronMuon     = new TH1D("hBestElectronMuon", "hBestElectronMuon;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestElectronElectron = new TH1D("hBestElectronElectron", "hBestElectronElectron;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestElectronScatter  = new TH1D("hBestElectronScatter", "hBestElectronScatter;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestElectronChExch   = new TH1D("hBestElectronChExch", "hBestElectronChExch;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestElectronOther    = new TH1D("hBestElectronOther", "hBestElectronOther;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestOtherAbs0p    = new TH1D("hBestOtherAbs0p", "hBestOtherAbs0p;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestOtherAbsNp    = new TH1D("hBestOtherAbsNp", "hBestOtherAbsNp;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestOtherMuon     = new TH1D("hBestOtherMuon", "hBestOtherMuon;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestOtherElectron = new TH1D("hBestOtherElectron", "hBestOtherElectron;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestOtherScatter  = new TH1D("hBestOtherScatter", "hBestOtherScatter;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestOtherChExch   = new TH1D("hBestOtherChExch", "hBestOtherChExch;;", PROB_DIVISIONS, 0, 1);
+    TH1D* hBestOtherOther    = new TH1D("hBestOtherOther", "hBestOtherOther;;", PROB_DIVISIONS, 0, 1);
 
     ////////////////////////////////
     // Study unreconstructed hits //
@@ -661,10 +653,18 @@ void RecoClassify3Cat() {
     ///////////////////////////////////
 
     TH1D* hMCNumWC2TPCMatch      = new TH1D("hMCNumWC2TPCMatch", "hMCNumWC2TPCMatch", 10, 0, 10);
-    TH1D* hMCNumTracksInCylinder = new TH1D("hMCNumTracksInCylinder", "hMCNumTracksInCylinder", 10, 0, 10);
+
+    TH1D* hMCNumTracksInCylinder    = new TH1D("hMCNumTracksInCylinder", "hMCNumTracksInCylinder", 10, 0, 10);
+    TH1D* hMCNumTracksInCylinder0TG = new TH1D("hMCNumTracksInCylinder0TG", "hMCNumTracksInCylinder0TG", 10, 0, 10);
+    TH1D* hMCNumTracksInCylinder1TG = new TH1D("hMCNumTracksInCylinder1TG", "hMCNumTracksInCylinder1TG", 10, 0, 10);
+    TH1D* hMCNumTracksInCylinder2TG = new TH1D("hMCNumTracksInCylinder2TG", "hMCNumTracksInCylinder2TG", 10, 0, 10);
+
+    TH1D* hMCTGSmallTracks    = new TH1D("hMCTGSmallTracks", "hMCTGSmallTracks;;", 10, 0, 10);
+    TH1D* hMCTGSmallTracks0TG = new TH1D("hMCTGSmallTracks0TG", "hMCTGSmallTracks0TG;;", 10, 0, 10);
+    TH1D* hMCTGSmallTracks1TG = new TH1D("hMCTGSmallTracks1TG", "hMCTGSmallTracks1TG;;", 10, 0, 10);
+    TH1D* hMCTGSmallTracks2TG = new TH1D("hMCTGSmallTracks2TG", "hMCTGSmallTracks2TG;;", 10, 0, 10);
 
     TH1D* hMCTGTrackLengths         = new TH1D("hMCTGTrackLengths", "hMCTGTrackLengths;;", 25, 0, 500);
-    TH1D* hMCTGSmallTracks          = new TH1D("hMCTGSmallTracks", "hMCTGSmallTracks;;", 10, 0, 10);
     TH1D* hMCTracksNearVertex       = new TH1D("hMCTracksNearVertex", "hMCTracksNearVertex;;", 10, 0, 10);
     TH1D* hMCTrackLengthsNearVertex = new TH1D("hMCTrackLengthsNearVertex", "hMCTrackLengthsNearVertex;;", 50, 0, 100);
     TH1D* hMCNumTGTracks            = new TH1D("hMCNumTGTracks", "hMCNumTGTracks;;", 10, 0, 10);
@@ -676,14 +676,29 @@ void RecoClassify3Cat() {
     TH2D* hMCSmallVsTGTracks          = new TH2D("hMCSmallVsTGTracks", "MCSmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
     TH2D* hMCTGNumSmallTracksVsThresh = new TH2D("hMCTGNumSmallTracksVsThresh", "MCTGNumSmallTracksVsThresh;Small Track Length Threshold (cm);Num Small Tracks", 10, 0, 40, 15, 0, 15);
 
-    TH1D* hMCTGUnreconstructedHitsInduction  = new TH1D("hMCTGUnreconstructedHitsInduction", "hMCTGUnreconstructedHitsInduction;;", 30, 0, 30);
-    TH1D* hMCTGUnreconstructedHitsCollection = new TH1D("hMCTGUnreconstructedHitsCollection", "hMCTGUnreconstructedHitsCollection;;", 30, 0, 30);
+    TH1D* hMCTGUnreconstructedHitsInduction0TG = new TH1D("hMCTGUnreconstructedHitsInduction0TG", "hMCTGUnreconstructedHitsInduction0TG;;", 30, 0, 30);
+    TH1D* hMCTGUnreconstructedHitsInduction1TG = new TH1D("hMCTGUnreconstructedHitsInduction1TG", "hMCTGUnreconstructedHitsInduction1TG;;", 30, 0, 30);
+    TH1D* hMCTGUnreconstructedHitsInduction2TG = new TH1D("hMCTGUnreconstructedHitsInduction2TG", "hMCTGUnreconstructedHitsInduction2TG;;", 30, 0, 30);
 
-    TH1D* hMCTGNumClustersInduction  = new TH1D("hMCTGNumClustersInduction", "hMCTGNumClustersInduction;;", 10, 0, 10);
-    TH1D* hMCTGNumClustersCollection = new TH1D("hMCTGNumClustersCollection", "hMCTGNumClustersCollection;;", 10, 0, 10);
+    TH1D* hMCTGUnreconstructedHitsCollection0TG = new TH1D("hMCTGUnreconstructedHitsCollection0TG", "hMCTGUnreconstructedHitsCollection0TG;;", 30, 0, 30);
+    TH1D* hMCTGUnreconstructedHitsCollection1TG = new TH1D("hMCTGUnreconstructedHitsCollection1TG", "hMCTGUnreconstructedHitsCollection1TG;;", 30, 0, 30);
+    TH1D* hMCTGUnreconstructedHitsCollection2TG = new TH1D("hMCTGUnreconstructedHitsCollection2TG", "hMCTGUnreconstructedHitsCollection2TG;;", 30, 0, 30);
 
-    TH1D* hMCTGClusterSizesInduction  = new TH1D("hMCTGClusterSizesInduction", "hMCTGClusterSizesInduction;;", 15, 0, 30);
-    TH1D* hMCTGClusterSizesCollection = new TH1D("hMCTGClusterSizesCollection", "hMCTGClusterSizesCollection;;", 15, 0, 30);
+    TH1D* hMCTGNumClustersInduction0TG = new TH1D("hMCTGNumClustersInduction0TG", "hMCTGNumClustersInduction0TG;;", 10, 0, 10);
+    TH1D* hMCTGNumClustersInduction1TG = new TH1D("hMCTGNumClustersInduction1TG", "hMCTGNumClustersInduction1TG;;", 10, 0, 10);
+    TH1D* hMCTGNumClustersInduction2TG = new TH1D("hMCTGNumClustersInduction2TG", "hMCTGNumClustersInduction2TG;;", 10, 0, 10);
+
+    TH1D* hMCTGNumClustersCollection0TG = new TH1D("hMCTGNumClustersCollection0TG", "hMCTGNumClustersCollection0TG;;", 10, 0, 10);
+    TH1D* hMCTGNumClustersCollection1TG = new TH1D("hMCTGNumClustersCollection1TG", "hMCTGNumClustersCollection1TG;;", 10, 0, 10);
+    TH1D* hMCTGNumClustersCollection2TG = new TH1D("hMCTGNumClustersCollection2TG", "hMCTGNumClustersCollection2TG;;", 10, 0, 10);
+
+    TH1D* hMCTGClusterSizesInduction0TG = new TH1D("hMCTGClusterSizesInduction0TG", "hMCTGClusterSizesInduction0TG;;", 15, 0, 30);
+    TH1D* hMCTGClusterSizesInduction1TG = new TH1D("hMCTGClusterSizesInduction1TG", "hMCTGClusterSizesInduction1TG;;", 15, 0, 30);
+    TH1D* hMCTGClusterSizesInduction2TG = new TH1D("hMCTGClusterSizesInduction2TG", "hMCTGClusterSizesInduction2TG;;", 15, 0, 30);
+
+    TH1D* hMCTGClusterSizesCollection0TG = new TH1D("hMCTGClusterSizesCollection0TG", "hMCTGClusterSizesCollection0TG;;", 15, 0, 30);
+    TH1D* hMCTGClusterSizesCollection1TG = new TH1D("hMCTGClusterSizesCollection1TG", "hMCTGClusterSizesCollection1TG;;", 15, 0, 30);
+    TH1D* hMCTGClusterSizesCollection2TG = new TH1D("hMCTGClusterSizesCollection2TG", "hMCTGClusterSizesCollection2TG;;", 15, 0, 30);
 
     ///////////////////////////////////
     // Distribution of primary track //
@@ -748,8 +763,8 @@ void RecoClassify3Cat() {
     
     // BDTReader.AddVariable("numRecoTrksInCylinder", &bdt_numRecoTrksInCylinder);
 
-    // for (int i = 0; i < 4; ++i) {
-    //     BDTReader.BookMVA("BDT" + std::to_string(i), "/exp/lariat/app/users/epelaez/analysis/python/model/chexch_abs_model_class_" + std::to_string(i) + ".xml");
+    // for (int i = 0; i < 3; ++i) {
+    //     BDTReader.BookMVA("BDT" + std::to_string(i), "/exp/lariat/app/users/epelaez/analysis/python/model/abs_model_class_" + std::to_string(i) + ".xml");
     // }
 
     //////////////////////
@@ -780,16 +795,13 @@ void RecoClassify3Cat() {
 
         // Events to debug BDT
         // if (!(
-        //     event == 149610 || 
+        //     event == 149604 || 
+        //     event == 149610 ||
+        //     event == 149612 ||
+        //     event == 149622 ||
+        //     event == 149625 ||
         //     event == 149626 ||
-        //     event == 149639 ||
-        //     event == 149650 ||
-        //     event == 149655 ||
-        //     event == 149666 ||
-        //     event == 149694 ||
-        //     event == 149696 ||
-        //     event == 149702 ||
-        //     event == 149706
+        //     event == 149627 
         // )) continue;
 
         // Use first 50k events, last 50k events were used for BDT training
@@ -1049,13 +1061,35 @@ void RecoClassify3Cat() {
 
             // Information about hits
 
-            // First, get a random point in the primary track
-            int randomInduction  = gRandom->Uniform(0, hitWC2TPCKeyInduction.size() - 1);
-            int randomCollection = gRandom->Uniform(0, hitWC2TPCKeyCollection.size() - 1);
+            // We want to look at multiple random points in the induction and collection plane
+            std::vector<int> randomInduction; std::vector<int> randomCollection;
             
             numEventsPrimaryReco++;
-            if (hitWC2TPCKeyInduction.size() == 0) numEventsNoInduction++;
-            if (hitWC2TPCKeyCollection.size() == 0) numEventsNoCollection++;
+            if (hitWC2TPCKeyInduction.size() == 0) {
+                numEventsNoInduction++;
+            } else {
+                randomInduction.push_back(0);
+
+                for (int i = 1; i < (int) hitWC2TPCKeyInduction.size(); ++i) {
+                    double dX = std::abs(fHitX->at(hitWC2TPCKeyInduction[randomInduction[randomInduction.size() - 1]]) - fHitX->at(hitWC2TPCKeyInduction[i]));
+                    double dW = std::abs(fHitW->at(hitWC2TPCKeyInduction[randomInduction[randomInduction.size() - 1]]) - fHitW->at(hitWC2TPCKeyInduction[i]));
+
+                    if (dX > MAX_IN_CLUSTER_X_SEPARATION && dW > MAX_IN_CLUSTER_W_SEPARATION) randomInduction.push_back(i);
+                }
+            }
+            if (hitWC2TPCKeyCollection.size() == 0) {
+                numEventsNoCollection++;
+            } else {
+                randomCollection.push_back(0);
+
+                for (int i = 1; i < (int) hitWC2TPCKeyCollection.size(); ++i) {
+                    double dX = std::abs(fHitX->at(hitWC2TPCKeyCollection[randomCollection[randomCollection.size() - 1]]) - fHitX->at(hitWC2TPCKeyCollection[i]));
+                    double dW = std::abs(fHitW->at(hitWC2TPCKeyCollection[randomCollection[randomCollection.size() - 1]]) - fHitW->at(hitWC2TPCKeyCollection[i]));
+
+                    if (dX > MAX_IN_CLUSTER_X_SEPARATION && dW > MAX_IN_CLUSTER_W_SEPARATION) randomCollection.push_back(i);
+                }
+            }
+
             if (
                 hitWC2TPCKeyCollection.size() == 0 &&
                 hitWC2TPCKeyInduction.size() == 0
@@ -1076,46 +1110,26 @@ void RecoClassify3Cat() {
                 int    hitPlane = fHitPlane->at(iHit);
 
                 if (hitPlane == 0 && hitWC2TPCKeyInduction.size() > 0) {
-                    double dW = (hitW - fHitW->at(hitWC2TPCKeyInduction[randomInduction]));
-                    double dX = (hitX - fHitX->at(hitWC2TPCKeyInduction[randomInduction]));
-                    double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
-                    if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
-                        numUnrecoHitsInduction++;
-                        candidateRandomHitsInduction.push_back(iHit);
+                    for (int idx : randomInduction) {
+                        double dW = (hitW - fHitW->at(hitWC2TPCKeyInduction[idx]));
+                        double dX = (hitX - fHitX->at(hitWC2TPCKeyInduction[idx]));
+                        double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
+                        if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
+                            numUnrecoHitsInduction++;
+                            candidateRandomHitsInduction.push_back(iHit);
+                        }
                     }
                 } else if (hitPlane == 1 && hitWC2TPCKeyCollection.size() > 0) {
-                    double dW = (hitW - fHitW->at(hitWC2TPCKeyCollection[randomCollection]));
-                    double dX = (hitX - fHitX->at(hitWC2TPCKeyCollection[randomCollection]));
-                    double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
-                    if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
-                        numUnrecoHitsCollection++;
-                        candidateRandomHitsCollection.push_back(iHit);
+                    for (int idx : randomCollection) {
+                        double dW = (hitW - fHitW->at(hitWC2TPCKeyCollection[idx]));
+                        double dX = (hitX - fHitX->at(hitWC2TPCKeyCollection[idx]));
+                        double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
+                        if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
+                            numUnrecoHitsCollection++;
+                            candidateRandomHitsCollection.push_back(iHit);
+                        }
                     }
                 }
-            }
-
-            // Loop through clusters and see which would be close to random point
-            int numClustersInduction = 0;
-            int numClustersCollection = 0;
-
-            for (size_t iCluster = 0; iCluster < hitClusters.size(); ++iCluster) {
-                HitCluster thisCluster = hitClusters[iCluster];
-
-                for (size_t iHit = 0; iHit < thisCluster.hitKeys.size(); ++iHit) {
-                    if (std::find(candidateRandomHitsInduction.begin(), candidateRandomHitsInduction.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsInduction.end()) {
-                        numClustersInduction++;
-                        if (isPrimaryTG) hMCTGClusterSizesInduction->Fill(thisCluster.clusterSize);
-                        break;
-                    } else if (std::find(candidateRandomHitsCollection.begin(), candidateRandomHitsCollection.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsCollection.end()) {
-                        numClustersCollection++;
-                        if (isPrimaryTG) hMCTGClusterSizesCollection->Fill(thisCluster.clusterSize);
-                        break;
-                    }
-                }
-            }
-            if (isPrimaryTG) {
-                hMCTGNumClustersInduction->Fill(numClustersInduction);
-                hMCTGNumClustersCollection->Fill(numClustersCollection);
             }
 
             // Information about tracks
@@ -1188,12 +1202,28 @@ void RecoClassify3Cat() {
             if (!isPrimaryTG) hMCTracksNearVertex->Fill(tracksNearVertexComp);
 
             if (isPrimaryTG) {
-                hMCTGSmallTracks->Fill(smallTracksComp);
                 hMCSmallVsTGTracks->Fill(smallTracksComp, numTGTracksComp);
+                hMCTGSmallTracks->Fill(smallTracksComp);
                 hMCNumTracksInCylinder->Fill(numTracksInCylinder);
-                
-                hMCTGUnreconstructedHitsInduction->Fill(numUnrecoHitsInduction);
-                hMCTGUnreconstructedHitsCollection->Fill(numUnrecoHitsCollection);
+
+                if (numTGTracksComp == 0) {
+                    hMCTGSmallTracks0TG->Fill(smallTracksComp);
+                    hMCNumTracksInCylinder0TG->Fill(numTracksInCylinder);
+                    hMCTGUnreconstructedHitsInduction0TG->Fill(numUnrecoHitsInduction);
+                    hMCTGUnreconstructedHitsCollection0TG->Fill(numUnrecoHitsCollection);
+                }
+                if (numTGTracksComp <= 1) {
+                    hMCTGSmallTracks1TG->Fill(smallTracksComp);
+                    hMCNumTracksInCylinder1TG->Fill(numTracksInCylinder);
+                    hMCTGUnreconstructedHitsInduction1TG->Fill(numUnrecoHitsInduction);
+                    hMCTGUnreconstructedHitsCollection1TG->Fill(numUnrecoHitsCollection);
+                }
+                if (numTGTracksComp <= 2) {
+                    hMCTGSmallTracks2TG->Fill(smallTracksComp);
+                    hMCNumTracksInCylinder2TG->Fill(numTracksInCylinder);
+                    hMCTGUnreconstructedHitsInduction2TG->Fill(numUnrecoHitsInduction);
+                    hMCTGUnreconstructedHitsCollection2TG->Fill(numUnrecoHitsCollection);
+                }
 
                 // Scan over small track length thresholds and fill 2D histogram
                 for (int threshBin = 1; threshBin <= hMCTGNumSmallTracksVsThresh->GetNbinsX(); ++threshBin) {
@@ -1209,6 +1239,48 @@ void RecoClassify3Cat() {
                         if (trackLength < threshold) nSmallTracks++;
                     }
                     hMCTGNumSmallTracksVsThresh->Fill(threshold, nSmallTracks);
+                }
+            }
+
+            // Loop through clusters and see which would be close to random points
+            int numClustersInduction = 0;
+            int numClustersCollection = 0;
+
+            for (size_t iCluster = 0; iCluster < hitClusters.size(); ++iCluster) {
+                HitCluster thisCluster = hitClusters[iCluster];
+
+                for (size_t iHit = 0; iHit < thisCluster.hitKeys.size(); ++iHit) {
+                    if (std::find(candidateRandomHitsInduction.begin(), candidateRandomHitsInduction.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsInduction.end()) {
+                        numClustersInduction++;
+                        if (isPrimaryTG) {
+                            if (numTGTracksComp == 0) hMCTGClusterSizesInduction0TG->Fill(thisCluster.clusterSize);
+                            if (numTGTracksComp <= 1) hMCTGClusterSizesInduction1TG->Fill(thisCluster.clusterSize);
+                            if (numTGTracksComp <= 2) hMCTGClusterSizesInduction2TG->Fill(thisCluster.clusterSize);
+                        }
+                        break;
+                    } else if (std::find(candidateRandomHitsCollection.begin(), candidateRandomHitsCollection.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsCollection.end()) {
+                        numClustersCollection++;
+                        if (isPrimaryTG) {
+                            if (numTGTracksComp == 0) hMCTGClusterSizesCollection0TG->Fill(thisCluster.clusterSize);
+                            if (numTGTracksComp <= 1) hMCTGClusterSizesCollection1TG->Fill(thisCluster.clusterSize);
+                            if (numTGTracksComp <= 2) hMCTGClusterSizesCollection2TG->Fill(thisCluster.clusterSize);
+                        }
+                        break;
+                    }
+                }
+            }
+            if (isPrimaryTG) {
+                if (numTGTracksComp == 0) {
+                    hMCTGNumClustersInduction0TG->Fill(numClustersInduction);
+                    hMCTGNumClustersCollection0TG->Fill(numClustersCollection);   
+                }
+                if (numTGTracksComp <= 1) {
+                    hMCTGNumClustersInduction1TG->Fill(numClustersInduction);
+                    hMCTGNumClustersCollection1TG->Fill(numClustersCollection);   
+                }
+                if (numTGTracksComp <= 2) {
+                    hMCTGNumClustersInduction2TG->Fill(numClustersInduction);
+                    hMCTGNumClustersCollection2TG->Fill(numClustersCollection);
                 }
             }
         }
@@ -1619,54 +1691,46 @@ void RecoClassify3Cat() {
         //     &bdt_numRecoTrksInCylinder
         // );
 
-        // // Compute BDT scores
+        // Compute BDT scores
         // double s0 = BDTReader.EvaluateMVA("BDT0");
         // double s1 = BDTReader.EvaluateMVA("BDT1");
         // double s2 = BDTReader.EvaluateMVA("BDT2");
-        // double s3 = BDTReader.EvaluateMVA("BDT3");
 
-        // Make sure raw output is in (-1, 1)
+        // // Make sure raw output is in (-1, 1)
         // const double eps = 1e-12; 
         // s0 = std::max(-1.0 + eps, std::min(1.0 - eps, s0));
         // s1 = std::max(-1.0 + eps, std::min(1.0 - eps, s1));
         // s2 = std::max(-1.0 + eps, std::min(1.0 - eps, s2));
-        // s3 = std::max(-1.0 + eps, std::min(1.0 - eps, s3));
         
         // // Map scores in (-1,1) -> margins in (-inf, +inf) via atanh
         // double m0 = 0.5 * std::log((1.0 + s0) / (1.0 - s0)); // atanh(s0)
         // double m1 = 0.5 * std::log((1.0 + s1) / (1.0 - s1)); // atanh(s1)
         // double m2 = 0.5 * std::log((1.0 + s2) / (1.0 - s2)); // atanh(s2)
-        // double m3 = 0.5 * std::log((1.0 + s3) / (1.0 - s3)); // atanh(s3)
 
         // // Convert margins -> class probabilities via softmax
-        // double mmax = std::max({m0, m1, m2, m3});
+        // double mmax = std::max({m0, m1, m2});
         // double e0 = std::exp(m0 - mmax);
         // double e1 = std::exp(m1 - mmax);
         // double e2 = std::exp(m2 - mmax);
-        // double e3 = std::exp(m3 - mmax);
-        // double Z  = e0 + e1 + e2 + e3;
+        // double Z  = e0 + e1 + e2;
         // if (Z == 0) Z = 1e-12;
 
         // double p0 = e0 / Z;
         // double p1 = e1 / Z;
         // double p2 = e2 / Z;
-        // double p3 = e3 / Z;
 
         // Test few events
-        if (
-            event == 149610 || 
+        if ((
+            event == 149604 || 
+            event == 149610 ||
+            event == 149612 ||
+            event == 149622 ||
+            event == 149625 ||
             event == 149626 ||
-            event == 149639 ||
-            event == 149650 ||
-            event == 149655 ||
-            event == 149666 ||
-            event == 149694 ||
-            event == 149696 ||
-            event == 149702 ||
-            event == 149706
-        ) {
-            // std::cout << "Event " << event << " BDT scores: " << p0 << ", " << p1 << ", " << p2 << ", " << p3 << std::endl;
-            // std::cout << "           " << "Raw scores: " << s0 << ", " << s1 << ", " << s2 << ", " << s3 << std::endl;
+            event == 149627 
+        )) {
+            // std::cout << "Event " << event << " BDT scores: " << p0 << ", " << p1 << ", " << p2 << std::endl;
+            // std::cout << "           " << "Raw scores: " << s0 << ", " << s1 << ", " << s2 << std::endl;
 
             // std::cout << "BDT input variables for event " << event << ":" << std::endl;
             // std::cout << "  WC2TPCTrackLength: " << bdt_WC2TPCTrackLength << std::endl;
@@ -2103,7 +2167,7 @@ void RecoClassify3Cat() {
         // Discriminate remaining from charge exchange //
         /////////////////////////////////////////////////
 
-        // double max_prob = std::max({p0, p1, p2, p3});
+        // double max_prob = std::max({p0, p1, p2});
 
         // if (max_prob < 0.5) {
         //     outFileLowProb << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
@@ -2125,9 +2189,7 @@ void RecoClassify3Cat() {
         // }
         
         // if (p0 == max_prob) {
-        //     // classify as pion abs 0p
-        //     if (p0 < 0.5) continue;
-        //     if (bdt_numRecoTrksInCylinder > 0) continue;
+        //     // classify as pion abs 0p/charge exchange
 
         //     hPionAbs0p->Fill(backgroundType);
 
@@ -2184,65 +2246,40 @@ void RecoClassify3Cat() {
 
         //     continue;
         // } else if (p1 == max_prob) {
-        //     // classify as electron shower
+        //     // classify as scatter
         //     if (backgroundType == 0) {
-        //         hBestElectronAbs0p->Fill(p1);
+        //         hBestScatterAbs0p->Fill(p1);
         //     } else if (backgroundType == 1) {
-        //         hBestElectronAbsNp->Fill(p1);
+        //         hBestScatterAbsNp->Fill(p1);
         //     } else if (backgroundType == 7) {
-        //         hBestElectronChExch->Fill(p1);
+        //         hBestScatterChExch->Fill(p1);
         //     } else if (backgroundType == 6 || backgroundType == 12) {
-        //         hBestElectronScatter->Fill(p1);
+        //         hBestScatterScatter->Fill(p1);
         //     } else if (backgroundType == 2) {
-        //         hBestElectronMuon->Fill(p1);
+        //         hBestScatterMuon->Fill(p1);
         //     } else if (backgroundType == 3) {
-        //         hBestElectronElectron->Fill(p1);
+        //         hBestScatterElectron->Fill(p1);
         //     } else {
-        //         hBestElectronOther->Fill(p1);
+        //         hBestScatterOther->Fill(p1);
         //     }
 
         //     continue;
         // } else if (p2 == max_prob) {
-        //     // classify as charge exchange
+        //     // classify as other
         //     if (backgroundType == 0) {
-        //         hBestChExchAbs0p->Fill(p2);
+        //         hBestOtherAbs0p->Fill(p2);
         //     } else if (backgroundType == 1) {
-        //         hBestChExchAbsNp->Fill(p2);
+        //         hBestOtherAbsNp->Fill(p2);
         //     } else if (backgroundType == 7) {
-        //         hBestChExchChExch->Fill(p2);
+        //         hBestOtherChExch->Fill(p2);
         //     } else if (backgroundType == 6 || backgroundType == 12) {
-        //         hBestChExchScatter->Fill(p2);
+        //         hBestOtherScatter->Fill(p2);
         //     } else if (backgroundType == 2) {
-        //         hBestChExchMuon->Fill(p2);
+        //         hBestOtherMuon->Fill(p2);
         //     } else if (backgroundType == 3) {
-        //         hBestChExchElectron->Fill(p2);
+        //         hBestOtherElectron->Fill(p2);
         //     } else {
-        //         hBestChExchOther->Fill(p2);
-        //     }
-
-        //     if (chExchInsideCylinder) {
-        //         chExchContainedCylinderReco++;
-        //     } else if (chExchInsideRedVol) {
-        //         chExchContainedRedVolReco++;
-        //     }
-
-        //     continue;
-        // } else if (p3 == max_prob) {
-        //     // classify as remaining scattering
-        //     if (backgroundType == 0) {
-        //         hBestScatterAbs0p->Fill(p3);
-        //     } else if (backgroundType == 1) {
-        //         hBestScatterAbsNp->Fill(p3);
-        //     } else if (backgroundType == 7) {
-        //         hBestScatterChExch->Fill(p3);
-        //     } else if (backgroundType == 6 || backgroundType == 12) {
-        //         hBestScatterScatter->Fill(p3);
-        //     } else if (backgroundType == 2) {
-        //         hBestScatterMuon->Fill(p3);
-        //     } else if (backgroundType == 3) {
-        //         hBestScatterElectron->Fill(p3);
-        //     } else {
-        //         hBestScatterOther->Fill(p3);
+        //         hBestOtherOther->Fill(p2);
         //     }
 
         //     continue;
@@ -2362,7 +2399,13 @@ void RecoClassify3Cat() {
     ////////////////////////////////
 
     hMCTGSmallTracks->SetDirectory(comparisonsFile);
+    hMCTGSmallTracks0TG->SetDirectory(comparisonsFile);
+    hMCTGSmallTracks1TG->SetDirectory(comparisonsFile);
+    hMCTGSmallTracks2TG->SetDirectory(comparisonsFile);
     hMCTGSmallTracks->Write();
+    hMCTGSmallTracks0TG->Write();
+    hMCTGSmallTracks1TG->Write();
+    hMCTGSmallTracks2TG->Write();
 
     hMCTracksNearVertex->SetDirectory(comparisonsFile);
     hMCTracksNearVertex->Write();
@@ -2395,28 +2438,58 @@ void RecoClassify3Cat() {
     hMCNumWC2TPCMatch->Write();
 
     hMCNumTracksInCylinder->SetDirectory(comparisonsFile);
+    hMCNumTracksInCylinder0TG->SetDirectory(comparisonsFile);
+    hMCNumTracksInCylinder1TG->SetDirectory(comparisonsFile);
+    hMCNumTracksInCylinder2TG->SetDirectory(comparisonsFile);
     hMCNumTracksInCylinder->Write();
+    hMCNumTracksInCylinder0TG->Write();
+    hMCNumTracksInCylinder1TG->Write();
+    hMCNumTracksInCylinder2TG->Write();
 
     hMCPrimaryTrackPosition->SetDirectory(comparisonsFile);
     hMCPrimaryTrackPosition->Write();
 
-    hMCTGUnreconstructedHitsInduction->SetDirectory(comparisonsFile);
-    hMCTGUnreconstructedHitsInduction->Write();
+    hMCTGUnreconstructedHitsInduction0TG->SetDirectory(comparisonsFile);
+    hMCTGUnreconstructedHitsInduction1TG->SetDirectory(comparisonsFile);
+    hMCTGUnreconstructedHitsInduction2TG->SetDirectory(comparisonsFile);
+    hMCTGUnreconstructedHitsInduction0TG->Write();
+    hMCTGUnreconstructedHitsInduction1TG->Write();
+    hMCTGUnreconstructedHitsInduction2TG->Write();
 
-    hMCTGUnreconstructedHitsCollection->SetDirectory(comparisonsFile);
-    hMCTGUnreconstructedHitsCollection->Write();
+    hMCTGUnreconstructedHitsCollection0TG->SetDirectory(comparisonsFile);
+    hMCTGUnreconstructedHitsCollection1TG->SetDirectory(comparisonsFile);
+    hMCTGUnreconstructedHitsCollection2TG->SetDirectory(comparisonsFile);
+    hMCTGUnreconstructedHitsCollection0TG->Write();
+    hMCTGUnreconstructedHitsCollection1TG->Write();
+    hMCTGUnreconstructedHitsCollection2TG->Write();
 
-    hMCTGNumClustersInduction->SetDirectory(comparisonsFile);
-    hMCTGNumClustersInduction->Write();
+    hMCTGNumClustersInduction0TG->SetDirectory(comparisonsFile);
+    hMCTGNumClustersInduction1TG->SetDirectory(comparisonsFile);
+    hMCTGNumClustersInduction2TG->SetDirectory(comparisonsFile);
+    hMCTGNumClustersInduction0TG->Write();
+    hMCTGNumClustersInduction1TG->Write();
+    hMCTGNumClustersInduction2TG->Write();
 
-    hMCTGNumClustersCollection->SetDirectory(comparisonsFile);
-    hMCTGNumClustersCollection->Write();
+    hMCTGNumClustersCollection0TG->SetDirectory(comparisonsFile);
+    hMCTGNumClustersCollection1TG->SetDirectory(comparisonsFile);
+    hMCTGNumClustersCollection2TG->SetDirectory(comparisonsFile);
+    hMCTGNumClustersCollection0TG->Write();
+    hMCTGNumClustersCollection1TG->Write();
+    hMCTGNumClustersCollection2TG->Write();
 
-    hMCTGClusterSizesInduction->SetDirectory(comparisonsFile);
-    hMCTGClusterSizesInduction->Write();
+    hMCTGClusterSizesInduction0TG->SetDirectory(comparisonsFile);
+    hMCTGClusterSizesInduction1TG->SetDirectory(comparisonsFile);
+    hMCTGClusterSizesInduction2TG->SetDirectory(comparisonsFile);
+    hMCTGClusterSizesInduction0TG->Write();
+    hMCTGClusterSizesInduction1TG->Write();
+    hMCTGClusterSizesInduction2TG->Write();
 
-    hMCTGClusterSizesCollection->SetDirectory(comparisonsFile);
-    hMCTGClusterSizesCollection->Write();
+    hMCTGClusterSizesCollection0TG->SetDirectory(comparisonsFile);
+    hMCTGClusterSizesCollection1TG->SetDirectory(comparisonsFile);
+    hMCTGClusterSizesCollection2TG->SetDirectory(comparisonsFile);
+    hMCTGClusterSizesCollection0TG->Write();
+    hMCTGClusterSizesCollection1TG->Write();
+    hMCTGClusterSizesCollection2TG->Write();
 
     comparisonsFile->Close();
 
@@ -2779,9 +2852,8 @@ void RecoClassify3Cat() {
 
         // BDT probabilities
         {hBestAbs0pAbs0p, hBestAbs0pAbsNp, hBestAbs0pMuon, hBestAbs0pElectron, hBestAbs0pScatter, hBestAbs0pChExch, hBestAbs0pOther},
-        {hBestChExchAbs0p, hBestChExchAbsNp, hBestChExchMuon, hBestChExchElectron, hBestChExchScatter, hBestChExchChExch, hBestChExchOther},
         {hBestScatterAbs0p, hBestScatterAbsNp, hBestScatterMuon, hBestScatterElectron, hBestScatterScatter, hBestScatterChExch, hBestScatterOther},
-        {hBestElectronAbs0p, hBestElectronAbsNp, hBestElectronMuon, hBestElectronElectron, hBestElectronScatter, hBestElectronChExch, hBestElectronOther},
+        {hBestOtherAbs0p, hBestOtherAbsNp, hBestOtherMuon, hBestOtherElectron, hBestOtherScatter, hBestOtherChExch, hBestOtherOther},
 
         // Unreconstructed hits
         {hHitClusterInductionSizesAbs0p, hHitClusterInductionSizesAbsNp, hHitClusterInductionSizesMuon, hHitClusterInductionSizesElectron, hHitClusterInductionSizesScatter, hHitClusterInductionSizesChExch, hHitClusterInductionSizesOther},
@@ -2845,7 +2917,6 @@ void RecoClassify3Cat() {
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
-        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
 
         // Unreconstructed hits
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
@@ -2905,9 +2976,8 @@ void RecoClassify3Cat() {
 
         // BDT probabilities
         "BDTScores/Abs0pTrue",
-        "BDTScores/ChExchTrue",
         "BDTScores/ScatterTrue",
-        "BDTScores/ElectronTrue",
+        "BDTScores/OtherTrue",
 
         // Unreconstructed hits
         "Hits/ClusterSizesInduction",
@@ -2966,7 +3036,6 @@ void RecoClassify3Cat() {
         "Kinetic energy [MeV]",
 
         // BDT probabilities
-        "Probability",
         "Probability",
         "Probability",
         "Probability",
@@ -3031,7 +3100,6 @@ void RecoClassify3Cat() {
         "Counts",
         "Counts",
         "Counts",
-        "Counts",
 
         // Unreconstructed hits
         "Counts",
@@ -3093,7 +3161,6 @@ void RecoClassify3Cat() {
         true,
         true,
         true,
-        true,
 
         // Unreconstructed hits
         true,
@@ -3152,7 +3219,6 @@ void RecoClassify3Cat() {
         {false, true},
 
         // BDT probabilities
-        {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},

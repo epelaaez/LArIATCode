@@ -184,25 +184,51 @@ void RecoDataAnalysis() {
     // Load histograms //
     /////////////////////
 
-    TH1D* hMCNumWC2TPCMatch                  = (TH1D*) MCFile->Get("hMCNumWC2TPCMatch");
-    TH1D* hMCNumTracksInCylinder             = (TH1D*) MCFile->Get("hMCNumTracksInCylinder");
-    TH1D* hMCTGTrackLengths                  = (TH1D*) MCFile->Get("hMCTGTrackLengths");
-    TH1D* hMCTGSmallTracks                   = (TH1D*) MCFile->Get("hMCTGSmallTracks");
-    TH1D* hMCTracksNearVertex                = (TH1D*) MCFile->Get("hMCTracksNearVertex");
-    TH1D* hMCTrackLengthsNearVertex          = (TH1D*) MCFile->Get("hMCTrackLengthsNearVertex");
-    TH1D* hMCNumTGTracks                     = (TH1D*) MCFile->Get("hMCNumTGTracks");
-    TH1D* hMCShowerProb                      = (TH1D*) MCFile->Get("hMCShowerProb");
-    TH1D* hMCBeforeShowerCutSmallTracks      = (TH1D*) MCFile->Get("hMCBeforeShowerCutSmallTracks");
-    TH1D* hMCAfterShowerCutSmallTracks       = (TH1D*) MCFile->Get("hMCAfterShowerCutSmallTracks");
-    TH2D* hMCSmallVsTGTracks                 = (TH2D*) MCFile->Get("hMCSmallVsTGTracks");
-    TH2D* hMCTGNumSmallTracksVsThresh        = (TH2D*) MCFile->Get("hMCTGNumSmallTracksVsThresh");
-    TH2D* hMCPrimaryTrackPosition            = (TH2D*) MCFile->Get("hMCPrimaryTrackPosition");
-    TH1D* hMCTGUnreconstructedHitsInduction  = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsInduction");
-    TH1D* hMCTGUnreconstructedHitsCollection = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsCollection");
-    TH1D* hMCTGNumClustersInduction          = (TH1D*) MCFile->Get("hMCTGNumClustersInduction");
-    TH1D* hMCTGClusterSizesInduction         = (TH1D*) MCFile->Get("hMCTGClusterSizesInduction");
-    TH1D* hMCTGNumClustersCollection         = (TH1D*) MCFile->Get("hMCTGNumClustersCollection");
-    TH1D* hMCTGClusterSizesCollection        = (TH1D*) MCFile->Get("hMCTGClusterSizesCollection");
+    TH1D* hMCNumWC2TPCMatch             = (TH1D*) MCFile->Get("hMCNumWC2TPCMatch");
+    TH1D* hMCTGTrackLengths             = (TH1D*) MCFile->Get("hMCTGTrackLengths");
+    TH1D* hMCTracksNearVertex           = (TH1D*) MCFile->Get("hMCTracksNearVertex");
+    TH1D* hMCTrackLengthsNearVertex     = (TH1D*) MCFile->Get("hMCTrackLengthsNearVertex");
+    TH1D* hMCNumTGTracks                = (TH1D*) MCFile->Get("hMCNumTGTracks");
+    TH1D* hMCShowerProb                 = (TH1D*) MCFile->Get("hMCShowerProb");
+    TH1D* hMCBeforeShowerCutSmallTracks = (TH1D*) MCFile->Get("hMCBeforeShowerCutSmallTracks");
+    TH1D* hMCAfterShowerCutSmallTracks  = (TH1D*) MCFile->Get("hMCAfterShowerCutSmallTracks");
+    TH2D* hMCSmallVsTGTracks            = (TH2D*) MCFile->Get("hMCSmallVsTGTracks");
+    TH2D* hMCTGNumSmallTracksVsThresh   = (TH2D*) MCFile->Get("hMCTGNumSmallTracksVsThresh");
+    TH2D* hMCPrimaryTrackPosition       = (TH2D*) MCFile->Get("hMCPrimaryTrackPosition");
+
+    TH1D* hMCNumTracksInCylinder    = (TH1D*) MCFile->Get("hMCNumTracksInCylinder");
+    TH1D* hMCNumTracksInCylinder0TG = (TH1D*) MCFile->Get("hMCNumTracksInCylinder0TG");
+    TH1D* hMCNumTracksInCylinder1TG = (TH1D*) MCFile->Get("hMCNumTracksInCylinder1TG");
+    TH1D* hMCNumTracksInCylinder2TG = (TH1D*) MCFile->Get("hMCNumTracksInCylinder2TG");
+
+    TH1D* hMCTGSmallTracks    = (TH1D*) MCFile->Get("hMCTGSmallTracks");
+    TH1D* hMCTGSmallTracks0TG = (TH1D*) MCFile->Get("hMCTGSmallTracks0TG");
+    TH1D* hMCTGSmallTracks1TG = (TH1D*) MCFile->Get("hMCTGSmallTracks1TG");
+    TH1D* hMCTGSmallTracks2TG = (TH1D*) MCFile->Get("hMCTGSmallTracks2TG");
+
+    TH1D* hMCTGUnreconstructedHitsInduction0TG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsInduction0TG");
+    TH1D* hMCTGUnreconstructedHitsInduction1TG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsInduction1TG");
+    TH1D* hMCTGUnreconstructedHitsInduction2TG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsInduction2TG");
+
+    TH1D* hMCTGUnreconstructedHitsCollection0TG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsCollection0TG");
+    TH1D* hMCTGUnreconstructedHitsCollection1TG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsCollection1TG");
+    TH1D* hMCTGUnreconstructedHitsCollection2TG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsCollection2TG");
+
+    TH1D* hMCTGNumClustersInduction0TG = (TH1D*) MCFile->Get("hMCTGNumClustersInduction0TG");
+    TH1D* hMCTGNumClustersInduction1TG = (TH1D*) MCFile->Get("hMCTGNumClustersInduction1TG");
+    TH1D* hMCTGNumClustersInduction2TG = (TH1D*) MCFile->Get("hMCTGNumClustersInduction2TG");
+
+    TH1D* hMCTGClusterSizesInduction0TG = (TH1D*) MCFile->Get("hMCTGClusterSizesInduction0TG");
+    TH1D* hMCTGClusterSizesInduction1TG = (TH1D*) MCFile->Get("hMCTGClusterSizesInduction1TG");
+    TH1D* hMCTGClusterSizesInduction2TG = (TH1D*) MCFile->Get("hMCTGClusterSizesInduction2TG");
+
+    TH1D* hMCTGNumClustersCollection0TG = (TH1D*) MCFile->Get("hMCTGNumClustersCollection0TG");
+    TH1D* hMCTGNumClustersCollection1TG = (TH1D*) MCFile->Get("hMCTGNumClustersCollection1TG");
+    TH1D* hMCTGNumClustersCollection2TG = (TH1D*) MCFile->Get("hMCTGNumClustersCollection2TG");
+
+    TH1D* hMCTGClusterSizesCollection0TG = (TH1D*) MCFile->Get("hMCTGClusterSizesCollection0TG");
+    TH1D* hMCTGClusterSizesCollection1TG = (TH1D*) MCFile->Get("hMCTGClusterSizesCollection1TG");
+    TH1D* hMCTGClusterSizesCollection2TG = (TH1D*) MCFile->Get("hMCTGClusterSizesCollection2TG");
 
     ///////////////////////
     // Create histograms //
@@ -701,8 +727,28 @@ void RecoDataAnalysis() {
         }
 
         // First, get a random point in the primary track
-        double randomInduction  = gRandom->Uniform(0, hitWC2TPCKeyInduction.size());
-        double randomCollection = gRandom->Uniform(0, hitWC2TPCKeyCollection.size());
+        std::vector<int> randomInduction; std::vector<int> randomCollection;
+
+        if (hitWC2TPCKeyInduction.size() != 0) {
+            randomInduction.push_back(0);
+
+            for (int i = 1; i < (int) hitWC2TPCKeyInduction.size(); ++i) {
+                double dX = std::abs(fHitX->at(hitWC2TPCKeyInduction[randomInduction[randomInduction.size() - 1]]) - fHitX->at(hitWC2TPCKeyInduction[i]));
+                double dW = std::abs(fHitW->at(hitWC2TPCKeyInduction[randomInduction[randomInduction.size() - 1]]) - fHitW->at(hitWC2TPCKeyInduction[i]));
+
+                if (dX > MAX_IN_CLUSTER_X_SEPARATION && dW > MAX_IN_CLUSTER_W_SEPARATION) randomInduction.push_back(i);
+            }
+        } 
+        if (hitWC2TPCKeyCollection.size() != 0) {
+            randomCollection.push_back(0);
+
+            for (int i = 1; i < (int) hitWC2TPCKeyCollection.size(); ++i) {
+                double dX = std::abs(fHitX->at(hitWC2TPCKeyCollection[randomCollection[randomCollection.size() - 1]]) - fHitX->at(hitWC2TPCKeyCollection[i]));
+                double dW = std::abs(fHitW->at(hitWC2TPCKeyCollection[randomCollection[randomCollection.size() - 1]]) - fHitW->at(hitWC2TPCKeyCollection[i]));
+
+                if (dX > MAX_IN_CLUSTER_X_SEPARATION && dW > MAX_IN_CLUSTER_W_SEPARATION) randomCollection.push_back(i);
+            }
+        }
 
         int numUnrecoHitsInduction  = 0;
         int numUnrecoHitsCollection = 0;
@@ -719,20 +765,24 @@ void RecoDataAnalysis() {
             int    hitPlane = fHitPlane->at(iHit);
 
             if (hitPlane == 0 && hitWC2TPCKeyInduction.size() > 0) {
-                double dW = (hitW - fHitW->at(hitWC2TPCKeyInduction[randomInduction]));
-                double dX = (hitX - fHitX->at(hitWC2TPCKeyInduction[randomInduction]));
-                double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
-                if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
-                    numUnrecoHitsInduction++;
-                    candidateRandomHitsInduction.push_back(iHit);
+                for (int idx : randomInduction) {
+                    double dW = (hitW - fHitW->at(hitWC2TPCKeyInduction[idx]));
+                    double dX = (hitX - fHitX->at(hitWC2TPCKeyInduction[idx]));
+                    double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
+                    if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
+                        numUnrecoHitsInduction++;
+                        candidateRandomHitsInduction.push_back(iHit);
+                    }
                 }
             } else if (hitPlane == 1 && hitWC2TPCKeyCollection.size() > 0) {
-                double dW = (hitW - fHitW->at(hitWC2TPCKeyCollection[randomCollection]));
-                double dX = (hitX - fHitX->at(hitWC2TPCKeyCollection[randomCollection]));
-                double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
-                if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
-                    numUnrecoHitsCollection++;
-                    candidateRandomHitsCollection.push_back(iHit);
+                for (int idx : randomCollection) {
+                    double dW = (hitW - fHitW->at(hitWC2TPCKeyCollection[idx]));
+                    double dX = (hitX - fHitX->at(hitWC2TPCKeyCollection[idx]));
+                    double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
+                    if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
+                        numUnrecoHitsCollection++;
+                        candidateRandomHitsCollection.push_back(iHit);
+                    }
                 }
             }
         }
@@ -824,66 +874,33 @@ void RecoDataAnalysis() {
     hMCShowerProb->Scale(hShowerProb->Integral() / hMCShowerProb->Integral());
     hMCNumWC2TPCMatch->Scale(hNumWC2TPCMatch->Integral() / hMCNumWC2TPCMatch->Integral());
 
-    // Have to account for cutting off more events
-    TH1D* hMCTGSmallTracks0TG = (TH1D*) hMCTGSmallTracks->Clone("hMCTGSmallTracks0TG");
-    TH1D* hMCTGSmallTracks1TG = (TH1D*) hMCTGSmallTracks->Clone("hMCTGSmallTracks1TG");
-    TH1D* hMCTGSmallTracks2TG = (TH1D*) hMCTGSmallTracks->Clone("hMCTGSmallTracks2TG");
-
     hMCTGSmallTracks0TG->Scale(hTGSmallTracks0TG->Integral() / hMCTGSmallTracks0TG->Integral());
     hMCTGSmallTracks1TG->Scale(hTGSmallTracks1TG->Integral() / hMCTGSmallTracks1TG->Integral());
     hMCTGSmallTracks2TG->Scale(hTGSmallTracks2TG->Integral() / hMCTGSmallTracks2TG->Integral());
-
-    TH1D* hMCNumTracksInCylinder0TG = (TH1D*) hMCNumTracksInCylinder->Clone("hMCNumTracksInCylinder0TG");
-    TH1D* hMCNumTracksInCylinder1TG = (TH1D*) hMCNumTracksInCylinder->Clone("hMCNumTracksInCylinder1TG");
-    TH1D* hMCNumTracksInCylinder2TG = (TH1D*) hMCNumTracksInCylinder->Clone("hMCNumTracksInCylinder2TG");
 
     hMCNumTracksInCylinder0TG->Scale(hNumTracksInCylinder0TG->Integral() / hMCNumTracksInCylinder0TG->Integral());
     hMCNumTracksInCylinder1TG->Scale(hNumTracksInCylinder1TG->Integral() / hMCNumTracksInCylinder1TG->Integral());
     hMCNumTracksInCylinder2TG->Scale(hNumTracksInCylinder2TG->Integral() / hMCNumTracksInCylinder2TG->Integral());
 
-    TH1D* hMCTGUnreconstructedHitsInduction0TG = (TH1D*) hMCTGUnreconstructedHitsInduction->Clone("hMCTGUnreconstructedHitsInduction0TG");
-    TH1D* hMCTGUnreconstructedHitsInduction1TG = (TH1D*) hMCTGUnreconstructedHitsInduction->Clone("hMCTGUnreconstructedHitsInduction1TG");
-    TH1D* hMCTGUnreconstructedHitsInduction2TG = (TH1D*) hMCTGUnreconstructedHitsInduction->Clone("hMCTGUnreconstructedHitsInduction2TG");
-
     hMCTGUnreconstructedHitsInduction0TG->Scale(hTGUnreconstructedHitsInduction0TG->Integral() / hMCTGUnreconstructedHitsInduction0TG->Integral());
     hMCTGUnreconstructedHitsInduction1TG->Scale(hTGUnreconstructedHitsInduction1TG->Integral() / hMCTGUnreconstructedHitsInduction1TG->Integral());
     hMCTGUnreconstructedHitsInduction2TG->Scale(hTGUnreconstructedHitsInduction2TG->Integral() / hMCTGUnreconstructedHitsInduction2TG->Integral());
-
-    TH1D* hMCTGUnreconstructedHitsCollection0TG = (TH1D*) hMCTGUnreconstructedHitsCollection->Clone("hMCTGUnreconstructedHitsCollection0TG");
-    TH1D* hMCTGUnreconstructedHitsCollection1TG = (TH1D*) hMCTGUnreconstructedHitsCollection->Clone("hMCTGUnreconstructedHitsCollection1TG");
-    TH1D* hMCTGUnreconstructedHitsCollection2TG = (TH1D*) hMCTGUnreconstructedHitsCollection->Clone("hMCTGUnreconstructedHitsCollection2TG");
 
     hMCTGUnreconstructedHitsCollection0TG->Scale(hTGUnreconstructedHitsCollection0TG->Integral() / hMCTGUnreconstructedHitsCollection0TG->Integral());
     hMCTGUnreconstructedHitsCollection1TG->Scale(hTGUnreconstructedHitsCollection1TG->Integral() / hMCTGUnreconstructedHitsCollection1TG->Integral());
     hMCTGUnreconstructedHitsCollection2TG->Scale(hTGUnreconstructedHitsCollection2TG->Integral() / hMCTGUnreconstructedHitsCollection2TG->Integral());
 
-    TH1D* hMCTGClusterSizesInduction0TG = (TH1D*) hMCTGClusterSizesInduction->Clone("hMCTGClusterSizesInduction0TG");
-    TH1D* hMCTGClusterSizesInduction1TG = (TH1D*) hMCTGClusterSizesInduction->Clone("hMCTGClusterSizesInduction1TG");
-    TH1D* hMCTGClusterSizesInduction2TG = (TH1D*) hMCTGClusterSizesInduction->Clone("hMCTGClusterSizesInduction2TG");
-
     hMCTGClusterSizesInduction0TG->Scale(hTGClusterSizesInduction0TG->Integral() / hMCTGClusterSizesInduction0TG->Integral());
     hMCTGClusterSizesInduction1TG->Scale(hTGClusterSizesInduction1TG->Integral() / hMCTGClusterSizesInduction1TG->Integral());
     hMCTGClusterSizesInduction2TG->Scale(hTGClusterSizesInduction2TG->Integral() / hMCTGClusterSizesInduction2TG->Integral());
-
-    TH1D* hMCTGClusterSizesCollection0TG = (TH1D*) hMCTGClusterSizesCollection->Clone("hMCTGClusterSizesCollection0TG");
-    TH1D* hMCTGClusterSizesCollection1TG = (TH1D*) hMCTGClusterSizesCollection->Clone("hMCTGClusterSizesCollection1TG");
-    TH1D* hMCTGClusterSizesCollection2TG = (TH1D*) hMCTGClusterSizesCollection->Clone("hMCTGClusterSizesCollection2TG");
 
     hMCTGClusterSizesCollection0TG->Scale(hTGClusterSizesCollection0TG->Integral() / hMCTGClusterSizesCollection0TG->Integral());
     hMCTGClusterSizesCollection1TG->Scale(hTGClusterSizesCollection1TG->Integral() / hMCTGClusterSizesCollection1TG->Integral());
     hMCTGClusterSizesCollection2TG->Scale(hTGClusterSizesCollection2TG->Integral() / hMCTGClusterSizesCollection2TG->Integral());
 
-    TH1D* hMCTGNumClustersCollection0TG = (TH1D*) hMCTGNumClustersCollection->Clone("hMCTGNumClustersCollection0TG");
-    TH1D* hMCTGNumClustersCollection1TG = (TH1D*) hMCTGNumClustersCollection->Clone("hMCTGNumClustersCollection1TG");
-    TH1D* hMCTGNumClustersCollection2TG = (TH1D*) hMCTGNumClustersCollection->Clone("hMCTGNumClustersCollection2TG");
-
     hMCTGNumClustersCollection0TG->Scale(hTGNumClustersCollection0TG->Integral() / hMCTGNumClustersCollection0TG->Integral());
     hMCTGNumClustersCollection1TG->Scale(hTGNumClustersCollection1TG->Integral() / hMCTGNumClustersCollection1TG->Integral());
     hMCTGNumClustersCollection2TG->Scale(hTGNumClustersCollection2TG->Integral() / hMCTGNumClustersCollection2TG->Integral());
-
-    TH1D* hMCTGNumClustersInduction0TG = (TH1D*) hMCTGNumClustersInduction->Clone("hMCTGNumClustersInduction0TG");
-    TH1D* hMCTGNumClustersInduction1TG = (TH1D*) hMCTGNumClustersInduction->Clone("hMCTGNumClustersInduction1TG");
-    TH1D* hMCTGNumClustersInduction2TG = (TH1D*) hMCTGNumClustersInduction->Clone("hMCTGNumClustersInduction2TG");
 
     hMCTGNumClustersInduction0TG->Scale(hTGNumClustersInduction0TG->Integral() / hMCTGNumClustersInduction0TG->Integral());
     hMCTGNumClustersInduction1TG->Scale(hTGNumClustersInduction1TG->Integral() / hMCTGNumClustersInduction1TG->Integral());
