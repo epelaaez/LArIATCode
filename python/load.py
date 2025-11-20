@@ -263,7 +263,7 @@ def clean_up(df):
     # Drop tagged events
     all_indices = set(is_beamline_electron_idx + has_secondary_part_idx)
 
-    # df = df.drop(index=is_beamline_electron_idx)
+    df = df.drop(index=is_beamline_electron_idx)
     # df = df.drop(index=all_indices)
 
     # Drop variables not needed for training
@@ -274,7 +274,8 @@ def clean_up(df):
 
 if (__name__ == "__main__"):
     filepath = "/exp/lariat/app/users/epelaez/files"
-    filename = "RecoNNAllEval_histo2.root:RecoNNAllEval"
+    # filename = "RecoNNAllEval_histo2.root:RecoNNAllEval"
+    filename = "RecoNNAllEvalRV_histo.root:RecoNNAllEval"
     treename = "RecoNNAllEvalTree"
 
     with uproot.open(f"{filepath}/{filename}") as file:
@@ -301,4 +302,4 @@ if (__name__ == "__main__"):
 
         print(f"Entries after cleanup: {df.shape[0]}")
         # Save the DataFrame to a pickle file
-        df.to_pickle("files/train_initial_data.pkl")
+        df.to_pickle("files/train_chexch_abs_data.pkl")

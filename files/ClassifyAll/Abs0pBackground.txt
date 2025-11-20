@@ -1,10 +1,3 @@
-Run: 1 subrun: 0 event: 1451
- Classified as: Elastic scattering with energy at vertex: 204.124
- Scattering angle (degrees): 11.7771
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 1600
  Classified as: Elastic scattering with energy at vertex: 131.617
  Scattering angle (degrees): 16.1933
@@ -19,37 +12,9 @@ Run: 1 subrun: 0 event: 1697
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 1764
- Classified as: Charge exchange with energy at vertex: 212.38
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 2446
  Classified as: Abs 0p with energy at vertex: 81.8282
  Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 5109
- Classified as: Inelastic scattering with energy at vertex: 328.859
- Scattering angle (degrees): 115.191
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 5253
- Classified as: Abs 0p with energy at vertex: 288.042
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 5295
- Classified as: Inelastic scattering with energy at vertex: 312.657
- Scattering angle (degrees): 101.75
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -76,21 +41,7 @@ Run: 1 subrun: 0 event: 5986
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 6083
- Classified as: Elastic scattering with energy at vertex: 136.671
- Scattering angle (degrees): 22.0527
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 6160
- Classified as: Abs 0p with energy at vertex: 267.14
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 6219
- Classified as: Abs 0p with energy at vertex: 243.229
+ Classified as: Charge exchange with energy at vertex: 109.614
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -98,20 +49,6 @@ Run: 1 subrun: 0 event: 6219
 
 Run: 1 subrun: 0 event: 6252
  Classified as: Abs Np with energy at vertex: 101.21
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 6337
- Classified as: Abs 0p with energy at vertex: 211.922
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 6373
- Classified as: Abs Np with energy at vertex: 233.45
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -131,20 +68,6 @@ Run: 1 subrun: 0 event: 8718
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 8812
- Classified as: Outside reduced volume with energy at vertex: 373.05
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 8813
- Classified as: Abs 0p with energy at vertex: 222.985
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 8840
  Classified as: Abs Np with energy at vertex: 113.063
  Scattering angle (degrees): -572900
@@ -159,23 +82,16 @@ Run: 1 subrun: 0 event: 8927
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 8972
- Classified as: Abs 0p with energy at vertex: 281.825
+Run: 1 subrun: 0 event: 9147
+ Classified as: Abs Np with energy at vertex: 168.897
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 9147
- Classified as: Elastic scattering with energy at vertex: 292.615
- Scattering angle (degrees): 7.87306
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 10231
- Classified as: Elastic scattering with energy at vertex: 134.45
- Scattering angle (degrees): 9.87217
+ Classified as: Abs 0p with energy at vertex: 82.7018
+ Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -194,13 +110,6 @@ Run: 1 subrun: 0 event: 10507
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 10574
- Classified as: Charge exchange with energy at vertex: 468.496
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 10634
  Classified as: Abs 0p with energy at vertex: 201.212
  Scattering angle (degrees): -572900
@@ -211,13 +120,6 @@ Run: 1 subrun: 0 event: 10634
 Run: 1 subrun: 0 event: 10644
  Classified as: Inelastic scattering with energy at vertex: 241.74
  Scattering angle (degrees): 70.8394
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 10651
- Classified as: Abs 0p with energy at vertex: 159.489
- Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -244,29 +146,8 @@ Run: 1 subrun: 0 event: 11160
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 11334
- Classified as: Elastic scattering with energy at vertex: 210.455
- Scattering angle (degrees): 9.17061
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 12205
- Classified as: Primary electron with energy at vertex: 0
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 12464
- Classified as: Elastic scattering with energy at vertex: 211.103
- Scattering angle (degrees): 118.033
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 12574
- Classified as: Inelastic scattering with energy at vertex: 410.016
- Scattering angle (degrees): 122.705
+ Classified as: Abs 0p with energy at vertex: 169.856
+ Scattering angle (degrees): 0
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -285,30 +166,9 @@ Run: 1 subrun: 0 event: 14326
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 14385
- Classified as: Abs 0p with energy at vertex: 222.629
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 14715
- Classified as: Inelastic scattering with energy at vertex: 327.171
- Scattering angle (degrees): 81.8063
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 14747
- Classified as: Abs 0p with energy at vertex: 480.3
+ Classified as: Outside reduced volume with energy at vertex: 480.3
  Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 14812
- Classified as: Inelastic scattering with energy at vertex: 220.968
- Scattering angle (degrees): 43.9815
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -334,36 +194,8 @@ Run: 1 subrun: 0 event: 15866
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 15919
- Classified as: Elastic scattering with energy at vertex: 268.248
- Scattering angle (degrees): 47.7969
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 15982
- Classified as: Abs 0p with energy at vertex: 256.331
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 16059
  Classified as: Abs 0p with energy at vertex: 114.537
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 16156
- Classified as: Abs 0p with energy at vertex: 207.707
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 16158
- Classified as: Abs Np with energy at vertex: 209.12
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -377,22 +209,8 @@ Run: 1 subrun: 0 event: 16445
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 16450
- Classified as: Elastic scattering with energy at vertex: 178.32
- Scattering angle (degrees): 6.20598
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 16503
- Classified as: Abs 0p with energy at vertex: 290.136
+ Classified as: Abs Np with energy at vertex: 124.369
  Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 16520
- Classified as: Elastic scattering with energy at vertex: 197.869
- Scattering angle (degrees): 9.69609
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -411,13 +229,6 @@ Run: 1 subrun: 0 event: 16685
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 16758
- Classified as: Abs 0p with energy at vertex: 296.683
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 16774
  Classified as: Abs Np with energy at vertex: 157.993
  Scattering angle (degrees): -572900
@@ -426,15 +237,8 @@ Run: 1 subrun: 0 event: 16774
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 16810
- Classified as: Elastic scattering with energy at vertex: 235.164
- Scattering angle (degrees): 17.7376
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 16868
- Classified as: Elastic scattering with energy at vertex: 345.495
- Scattering angle (degrees): 5.76112
+ Classified as: Abs Np with energy at vertex: 196.569
+ Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -461,35 +265,14 @@ Run: 1 subrun: 0 event: 17222
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 17400
- Classified as: Elastic scattering with energy at vertex: 267.153
- Scattering angle (degrees): 9.11766
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 17570
- Classified as: Abs Np with energy at vertex: 178.067
+ Classified as: Abs Np with energy at vertex: 215.795
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 17573
- Classified as: Inelastic scattering with energy at vertex: 373.604
- Scattering angle (degrees): 7.73424
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 17670
- Classified as: Abs 0p with energy at vertex: 227.931
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 17742
- Classified as: Abs Np with energy at vertex: 257.263
+ Classified as: Outside reduced volume with energy at vertex: 373.604
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -502,23 +285,9 @@ Run: 1 subrun: 0 event: 17807
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 17826
- Classified as: Abs 0p with energy at vertex: 272.033
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 17959
  Classified as: Inelastic scattering with energy at vertex: 229.197
  Scattering angle (degrees): 133.331
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 18088
- Classified as: Abs 0p with energy at vertex: 167.046
- Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -537,29 +306,8 @@ Run: 1 subrun: 0 event: 19412
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 19429
- Classified as: Charge exchange with energy at vertex: 167.17
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 19468
- Classified as: Abs Np with energy at vertex: 319.964
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 19580
  Classified as: Abs 0p with energy at vertex: 208.127
- Scattering angle (degrees): 0
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 19865
- Classified as: Abs Np with energy at vertex: 336.564
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -579,13 +327,6 @@ Run: 1 subrun: 0 event: 19977
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 19981
- Classified as: Charge exchange with energy at vertex: 187.008
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 22810
  Classified as: Abs 0p with energy at vertex: 140.442
  Scattering angle (degrees): -572900
@@ -600,50 +341,8 @@ Run: 1 subrun: 0 event: 22966
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 22983
- Classified as: Abs 0p with energy at vertex: 307.837
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 24230
  Classified as: Abs Np with energy at vertex: 102.247
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 24300
- Classified as: Abs 0p with energy at vertex: 263.154
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 24338
- Classified as: Inelastic scattering with energy at vertex: 249.259
- Scattering angle (degrees): 70.9658
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 24348
- Classified as: Abs 0p with energy at vertex: 221.452
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 24412
- Classified as: Elastic scattering with energy at vertex: 258.072
- Scattering angle (degrees): 7.17478
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 24491
- Classified as: Abs 0p with energy at vertex: 358.951
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -656,57 +355,8 @@ Run: 1 subrun: 0 event: 24535
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 24552
- Classified as: Charge exchange with energy at vertex: 343.362
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 24566
- Classified as: Inelastic scattering with energy at vertex: 169.352
- Scattering angle (degrees): 102.96
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 26146
- Classified as: Inelastic scattering with energy at vertex: 263.098
- Scattering angle (degrees): 126.717
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 26229
  Classified as: Abs 0p with energy at vertex: 188.412
- Scattering angle (degrees): 0
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 26327
- Classified as: Abs Np with energy at vertex: 101.235
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 26440
- Classified as: Abs Np with energy at vertex: 228.061
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 26453
- Classified as: Abs 0p with energy at vertex: 299.847
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 26495
- Classified as: Abs 0p with energy at vertex: 202.962
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -714,13 +364,6 @@ Run: 1 subrun: 0 event: 26495
 
 Run: 1 subrun: 0 event: 26519
  Classified as: Abs 0p with energy at vertex: 189.827
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 26597
- Classified as: Abs 0p with energy at vertex: 267.025
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -741,42 +384,7 @@ Run: 1 subrun: 0 event: 26647
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 26657
- Classified as: Elastic scattering with energy at vertex: 296.867
- Scattering angle (degrees): 9.94085
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 26688
- Classified as: Outside reduced volume with energy at vertex: 203.041
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 26745
- Classified as: Elastic scattering with energy at vertex: 388.901
- Scattering angle (degrees): 36.5643
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 26821
- Classified as: Abs 0p with energy at vertex: 134.108
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 52988
- Classified as: Abs 0p with energy at vertex: 256.874
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 53239
- Classified as: Abs 0p with energy at vertex: 235.669
+ Classified as: Abs Np with energy at vertex: 193.553
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -784,13 +392,6 @@ Run: 1 subrun: 0 event: 53239
 
 Run: 1 subrun: 0 event: 53295
  Classified as: Abs Np with energy at vertex: 391.326
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 53300
- Classified as: Abs 0p with energy at vertex: 296.368
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -811,7 +412,7 @@ Run: 1 subrun: 0 event: 53478
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 53525
- Classified as: Abs 0p with energy at vertex: 125.124
+ Classified as: Outside reduced volume with energy at vertex: 125.124
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -820,13 +421,6 @@ Run: 1 subrun: 0 event: 53525
 Run: 1 subrun: 0 event: 53744
  Classified as: Elastic scattering with energy at vertex: 198.326
  Scattering angle (degrees): 12.0763
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 54071
- Classified as: Abs Np with energy at vertex: 220.658
- Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -845,30 +439,9 @@ Run: 1 subrun: 0 event: 54460
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 54513
- Classified as: Inelastic scattering with energy at vertex: 301.385
- Scattering angle (degrees): 117.714
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 54899
  Classified as: Abs 0p with energy at vertex: 110.77
  Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 55002
- Classified as: Abs 0p with energy at vertex: 229.663
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 55187
- Classified as: Inelastic scattering with energy at vertex: 154.362
- Scattering angle (degrees): 59.281
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -929,29 +502,8 @@ Run: 1 subrun: 0 event: 62057
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 62313
- Classified as: Abs 0p with energy at vertex: 418.723
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 62434
- Classified as: Abs Np with energy at vertex: 150.417
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 62439
  Classified as: Charge exchange with energy at vertex: 280.97
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 62446
- Classified as: Abs Np with energy at vertex: 274.986
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -978,20 +530,6 @@ Run: 1 subrun: 0 event: 62906
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 62986
- Classified as: Outside reduced volume with energy at vertex: 364.229
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 63047
- Classified as: Abs 0p with energy at vertex: 291.895
- Scattering angle (degrees): 0
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 63090
  Classified as: Inelastic scattering with energy at vertex: 140.656
  Scattering angle (degrees): 122.881
@@ -999,30 +537,9 @@ Run: 1 subrun: 0 event: 63090
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 63169
- Classified as: Abs Np with energy at vertex: 262.871
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 63319
  Classified as: Elastic scattering with energy at vertex: 176.61
  Scattering angle (degrees): 23.8758
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 63459
- Classified as: Abs 0p with energy at vertex: 269.817
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 63489
- Classified as: Elastic scattering with energy at vertex: 321.38
- Scattering angle (degrees): 5.41684
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -1041,20 +558,6 @@ Run: 1 subrun: 0 event: 63501
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 63509
- Classified as: Abs 0p with energy at vertex: 209.916
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 63858
- Classified as: Elastic scattering with energy at vertex: 447.745
- Scattering angle (degrees): 5.34142
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 64004
  Classified as: Abs 0p with energy at vertex: 192.014
  Scattering angle (degrees): -572900
@@ -1069,13 +572,6 @@ Run: 1 subrun: 0 event: 64061
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 64255
- Classified as: Abs Np with energy at vertex: 166.252
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 64451
  Classified as: Abs 0p with energy at vertex: 71.3094
  Scattering angle (degrees): -572900
@@ -1083,36 +579,8 @@ Run: 1 subrun: 0 event: 64451
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 64546
- Classified as: Primary electron with energy at vertex: 0
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 64618
- Classified as: Abs 0p with energy at vertex: 190.834
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 64739
  Classified as: Abs 0p with energy at vertex: 218.012
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 64741
- Classified as: Abs Np with energy at vertex: 220.749
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 64943
- Classified as: Abs 0p with energy at vertex: 272.021
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1126,14 +594,7 @@ Run: 1 subrun: 0 event: 65085
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 65243
- Classified as: Elastic scattering with energy at vertex: 271.446
- Scattering angle (degrees): 10.6268
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 65495
- Classified as: Abs 0p with energy at vertex: 262.673
+ Classified as: Abs Np with energy at vertex: 181.293
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1160,29 +621,8 @@ Run: 1 subrun: 0 event: 65566
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 65683
- Classified as: Abs Np with energy at vertex: 197.887
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 65706
- Classified as: Abs 0p with energy at vertex: 255.759
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 65817
  Classified as: Abs 0p with energy at vertex: 169.605
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 65828
- Classified as: Abs 0p with energy at vertex: 143.688
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1197,35 +637,7 @@ Run: 1 subrun: 0 event: 65835
 
 Run: 1 subrun: 0 event: 65860
  Classified as: Abs 0p with energy at vertex: 228.214
- Scattering angle (degrees): 0
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 65930
- Classified as: Abs 0p with energy at vertex: 145.479
  Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 66082
- Classified as: Abs Np with energy at vertex: 265.916
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 66110
- Classified as: Abs 0p with energy at vertex: 318.997
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 66130
- Classified as: Inelastic scattering with energy at vertex: 249.084
- Scattering angle (degrees): 132.594
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -1237,30 +649,9 @@ Run: 1 subrun: 0 event: 66171
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 66321
- Classified as: Primary electron with energy at vertex: 0
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 66350
- Classified as: Abs Np with energy at vertex: 198.869
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 66713
- Classified as: Elastic scattering with energy at vertex: 272.594
- Scattering angle (degrees): 8.5212
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 66766
- Classified as: Abs Np with energy at vertex: 221.978
- Scattering angle (degrees): -572900
+ Classified as: Inelastic scattering with energy at vertex: 230.376
+ Scattering angle (degrees): 93.9171
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -1293,30 +684,16 @@ Run: 1 subrun: 0 event: 67020
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 67039
- Classified as: Elastic scattering with energy at vertex: 355.055
- Scattering angle (degrees): 54.0552
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 67051
- Classified as: Elastic scattering with energy at vertex: 227.66
- Scattering angle (degrees): 9.10257
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 67107
- Classified as: Abs 0p with energy at vertex: 188.64
+ Classified as: Abs 0p with energy at vertex: 152.326
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 67153
- Classified as: Elastic scattering with energy at vertex: 293.505
- Scattering angle (degrees): 53.6454
+ Classified as: Elastic scattering with energy at vertex: 246.972
+ Scattering angle (degrees): 10.9155
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -1342,50 +719,15 @@ Run: 1 subrun: 0 event: 67352
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 67440
- Classified as: Abs Np with energy at vertex: 270.514
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 67758
- Classified as: Elastic scattering with energy at vertex: 208.126
- Scattering angle (degrees): 7.67979
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 82855
- Classified as: Inelastic scattering with energy at vertex: 291.276
- Scattering angle (degrees): 119.132
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 82939
- Classified as: Abs 0p with energy at vertex: 241.458
- Scattering angle (degrees): -572900
+ Classified as: Inelastic scattering with energy at vertex: 150.14
+ Scattering angle (degrees): 119.487
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 82940
  Classified as: Charge exchange with energy at vertex: 271.707
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 83005
- Classified as: Abs 0p with energy at vertex: 329.708
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 83192
- Classified as: Abs 0p with energy at vertex: 165.915
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1401,20 +743,6 @@ Run: 1 subrun: 0 event: 83387
 Run: 1 subrun: 0 event: 83391
  Classified as: Elastic scattering with energy at vertex: 290.639
  Scattering angle (degrees): 10.0757
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 83505
- Classified as: Abs 0p with energy at vertex: 222.314
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 83572
- Classified as: Charge exchange with energy at vertex: 431.128
- Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -1447,29 +775,8 @@ Run: 1 subrun: 0 event: 84320
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 84361
- Classified as: Inelastic scattering with energy at vertex: 229.599
- Scattering angle (degrees): 100.283
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 84476
- Classified as: Abs Np with energy at vertex: 171.945
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 84608
  Classified as: Abs 0p with energy at vertex: 150.944
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 84880
- Classified as: Abs 0p with energy at vertex: 352.274
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1482,50 +789,15 @@ Run: 1 subrun: 0 event: 84919
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 85071
- Classified as: Abs 0p with energy at vertex: 393.545
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 85111
- Classified as: Primary electron with energy at vertex: 0
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 85270
- Classified as: Elastic scattering with energy at vertex: 207.693
- Scattering angle (degrees): 12.0553
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 85553
- Classified as: Abs 0p with energy at vertex: 282.513
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 85732
- Classified as: Inelastic scattering with energy at vertex: 169.13
- Scattering angle (degrees): 132.834
+ Classified as: Abs Np with energy at vertex: 79.376
+ Scattering angle (degrees): 0
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 85736
  Classified as: Abs 0p with energy at vertex: 389.069
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 85738
- Classified as: Abs 0p with energy at vertex: 172.8
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1545,29 +817,8 @@ Run: 1 subrun: 0 event: 88938
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 89032
- Classified as: Primary electron with energy at vertex: 0
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 89073
  Classified as: Abs Np with energy at vertex: 252.54
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 89076
- Classified as: Primary electron with energy at vertex: 0
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 89111
- Classified as: Abs Np with energy at vertex: 237.589
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1594,20 +845,6 @@ Run: 1 subrun: 0 event: 89504
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 89630
- Classified as: Abs 0p with energy at vertex: 369.573
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 89789
- Classified as: Abs Np with energy at vertex: 302.591
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 89819
  Classified as: Abs 0p with energy at vertex: 266.347
  Scattering angle (degrees): -572900
@@ -1615,36 +852,8 @@ Run: 1 subrun: 0 event: 89819
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 90047
- Classified as: Abs 0p with energy at vertex: 209.576
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 90094
- Classified as: Abs 0p with energy at vertex: 278.058
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 90440
- Classified as: Abs 0p with energy at vertex: 420.149
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 90442
  Classified as: Charge exchange with energy at vertex: 299.127
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 90455
- Classified as: Abs 0p with energy at vertex: 277.029
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1665,14 +874,7 @@ Run: 1 subrun: 0 event: 90494
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 90712
- Classified as: Elastic scattering with energy at vertex: 233.243
- Scattering angle (degrees): 20.2363
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 90834
- Classified as: Abs 0p with energy at vertex: 193.521
+ Classified as: Abs 0p with energy at vertex: 175.463
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1680,13 +882,6 @@ Run: 1 subrun: 0 event: 90834
 
 Run: 1 subrun: 0 event: 91085
  Classified as: Abs 0p with energy at vertex: 165.829
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 91374
- Classified as: Abs 0p with energy at vertex: 291.59
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1720,27 +915,6 @@ Run: 1 subrun: 0 event: 91772
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 91807
- Classified as: Inelastic scattering with energy at vertex: 227.988
- Scattering angle (degrees): 65.711
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 91971
- Classified as: Abs 0p with energy at vertex: 415.751
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 92098
- Classified as: Abs 0p with energy at vertex: 293.929
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 92180
  Classified as: Abs 0p with energy at vertex: 62.9479
  Scattering angle (degrees): -572900
@@ -1762,13 +936,6 @@ Run: 1 subrun: 0 event: 92193
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 92289
- Classified as: Elastic scattering with energy at vertex: 396.503
- Scattering angle (degrees): 5.39755
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 92314
  Classified as: Abs 0p with energy at vertex: 99.7116
  Scattering angle (degrees): -572900
@@ -1783,20 +950,6 @@ Run: 1 subrun: 0 event: 92382
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 92433
- Classified as: Inelastic scattering with energy at vertex: 143.639
- Scattering angle (degrees): 145.089
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 92623
- Classified as: Elastic scattering with energy at vertex: 247.362
- Scattering angle (degrees): 31.533
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 92902
  Classified as: Abs 0p with energy at vertex: 340.095
  Scattering angle (degrees): -572900
@@ -1804,37 +957,9 @@ Run: 1 subrun: 0 event: 92902
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 92955
- Classified as: Abs 0p with energy at vertex: 205.298
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 93019
- Classified as: Abs 0p with energy at vertex: 215.721
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 93203
- Classified as: Inelastic scattering with energy at vertex: 271.866
- Scattering angle (degrees): 23.7553
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 93220
  Classified as: Inelastic scattering with energy at vertex: 202.47
  Scattering angle (degrees): 140.03
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 93379
- Classified as: Abs 0p with energy at vertex: 126.22
- Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -1855,20 +980,6 @@ Run: 1 subrun: 0 event: 93429
 
 Run: 1 subrun: 0 event: 93435
  Classified as: Abs 0p with energy at vertex: 178.317
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 93581
- Classified as: Elastic scattering with energy at vertex: 151.049
- Scattering angle (degrees): 8.57086
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 93611
- Classified as: Abs Np with energy at vertex: 193.132
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1903,14 +1014,7 @@ Run: 1 subrun: 0 event: 94083
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 94090
- Classified as: Elastic scattering with energy at vertex: 324.197
- Scattering angle (degrees): 5.4985
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 94213
- Classified as: Abs 0p with energy at vertex: 319.271
+ Classified as: Abs Np with energy at vertex: 262.791
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1937,13 +1041,6 @@ Run: 1 subrun: 0 event: 94638
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 94686
- Classified as: Abs 0p with energy at vertex: 301.004
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 94717
  Classified as: Abs 0p with energy at vertex: 134.344
  Scattering angle (degrees): -572900
@@ -1952,14 +1049,7 @@ Run: 1 subrun: 0 event: 94717
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 94741
- Classified as: Elastic scattering with energy at vertex: 277.175
- Scattering angle (degrees): 16.2601
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 94786
- Classified as: Abs 0p with energy at vertex: 241.802
+ Classified as: Abs Np with energy at vertex: 232.704
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -1986,30 +1076,9 @@ Run: 1 subrun: 0 event: 104292
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 104353
- Classified as: Abs 0p with energy at vertex: 411.485
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 104434
- Classified as: Outside reduced volume with energy at vertex: 216.094
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 104472
  Classified as: Abs 0p with energy at vertex: 191.855
  Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 104555
- Classified as: Inelastic scattering with energy at vertex: 199.994
- Scattering angle (degrees): 105.036
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -2028,13 +1097,6 @@ Run: 1 subrun: 0 event: 104703
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 104784
- Classified as: Abs Np with energy at vertex: 261.553
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 105019
  Classified as: Elastic scattering with energy at vertex: 239.246
  Scattering angle (degrees): 11.1331
@@ -2042,30 +1104,9 @@ Run: 1 subrun: 0 event: 105019
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 105054
- Classified as: Inelastic scattering with energy at vertex: 218.423
- Scattering angle (degrees): 76.4643
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 105114
  Classified as: Abs 0p with energy at vertex: 225.105
  Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 105135
- Classified as: Outside reduced volume with energy at vertex: 202.21
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 105145
- Classified as: Inelastic scattering with energy at vertex: 261.5
- Scattering angle (degrees): 93.837
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -2078,35 +1119,21 @@ Run: 1 subrun: 0 event: 105169
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 105388
- Classified as: Elastic scattering with energy at vertex: 356.86
- Scattering angle (degrees): 6.68302
+ Classified as: Inelastic scattering with energy at vertex: 257.539
+ Scattering angle (degrees): 129.446
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 105510
- Classified as: Elastic scattering with energy at vertex: 187.464
- Scattering angle (degrees): 9.65103
+ Classified as: Elastic scattering with energy at vertex: 147.635
+ Scattering angle (degrees): 39.2679
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 105515
  Classified as: Abs Np with energy at vertex: 172.457
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 105681
- Classified as: Abs Np with energy at vertex: 252.732
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 105786
- Classified as: Abs 0p with energy at vertex: 176.832
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -2120,14 +1147,7 @@ Run: 1 subrun: 0 event: 106105
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 106131
- Classified as: Elastic scattering with energy at vertex: 266.951
- Scattering angle (degrees): 13.1301
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 106181
- Classified as: Abs Np with energy at vertex: 237.505
+ Classified as: Abs 0p with energy at vertex: 227.479
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -2140,44 +1160,9 @@ Run: 1 subrun: 0 event: 106211
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 106338
- Classified as: Abs 0p with energy at vertex: 297.187
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 106438
- Classified as: Inelastic scattering with energy at vertex: 259.086
- Scattering angle (degrees): 67.1858
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 106444
- Classified as: Elastic scattering with energy at vertex: 293.175
- Scattering angle (degrees): 23.8447
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 106470
- Classified as: Abs 0p with energy at vertex: 190.017
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 106528
- Classified as: Abs 0p with energy at vertex: 177.946
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 106586
- Classified as: Elastic scattering with energy at vertex: 221.336
- Scattering angle (degrees): 7.43256
+ Classified as: Abs 0p with energy at vertex: 160.177
+ Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -2189,22 +1174,8 @@ Run: 1 subrun: 0 event: 106610
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 106698
- Classified as: Abs Np with energy at vertex: 174.132
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 106911
- Classified as: Elastic scattering with energy at vertex: 275.817
- Scattering angle (degrees): 6.19526
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 106930
- Classified as: Charge exchange with energy at vertex: 349.006
+ Classified as: Abs Np with energy at vertex: 245.66
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -2218,8 +1189,8 @@ Run: 1 subrun: 0 event: 106981
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 107053
- Classified as: Elastic scattering with energy at vertex: 382.433
- Scattering angle (degrees): 11.7518
+ Classified as: Abs 0p with energy at vertex: 345.506
+ Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -2238,13 +1209,6 @@ Run: 1 subrun: 0 event: 107198
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 107266
- Classified as: Abs 0p with energy at vertex: 219.553
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 107355
  Classified as: Abs 0p with energy at vertex: 88.483
  Scattering angle (degrees): -572900
@@ -2252,29 +1216,8 @@ Run: 1 subrun: 0 event: 107355
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 107547
- Classified as: Abs 0p with energy at vertex: 212.781
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 107600
- Classified as: Abs Np with energy at vertex: 154.517
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 107634
  Classified as: Abs Np with energy at vertex: 290.001
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 107655
- Classified as: Abs 0p with energy at vertex: 312.715
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -2296,27 +1239,6 @@ Run: 1 subrun: 0 event: 107723
 
 Run: 1 subrun: 0 event: 107729
  Classified as: Abs 0p with energy at vertex: 136.793
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 107771
- Classified as: Abs Np with energy at vertex: 240.638
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 107920
- Classified as: Primary electron with energy at vertex: 0
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 107993
- Classified as: Abs 0p with energy at vertex: 219.384
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -2378,27 +1300,6 @@ Run: 1 subrun: 0 event: 108224
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 108428
- Classified as: Elastic scattering with energy at vertex: 220.065
- Scattering angle (degrees): 24.0909
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 108486
- Classified as: Abs 0p with energy at vertex: 225.889
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 108514
- Classified as: Abs 0p with energy at vertex: 159.168
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 108532
  Classified as: Abs 0p with energy at vertex: 194.348
  Scattering angle (degrees): -572900
@@ -2407,42 +1308,14 @@ Run: 1 subrun: 0 event: 108532
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 108556
- Classified as: Elastic scattering with energy at vertex: 270.306
- Scattering angle (degrees): 16.8954
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 108614
- Classified as: Abs Np with energy at vertex: 248.412
- Scattering angle (degrees): -572900
+ Classified as: Inelastic scattering with energy at vertex: 263.805
+ Scattering angle (degrees): 69.2717
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 108642
  Classified as: Abs 0p with energy at vertex: 134.953
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 108655
- Classified as: Abs 0p with energy at vertex: 325.138
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 108937
- Classified as: Abs 0p with energy at vertex: 199.758
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 109022
- Classified as: Abs Np with energy at vertex: 173.203
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -2455,44 +1328,9 @@ Run: 1 subrun: 0 event: 109060
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 109117
- Classified as: Elastic scattering with energy at vertex: 151.74
- Scattering angle (degrees): 7.49064
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 109260
- Classified as: Abs 0p with energy at vertex: 203.391
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 109441
- Classified as: Outside reduced volume with energy at vertex: 213.832
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 109477
- Classified as: Abs Np with energy at vertex: 215.458
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 109627
  Classified as: Abs 0p with energy at vertex: 140.997
  Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 109652
- Classified as: Elastic scattering with energy at vertex: 239.32
- Scattering angle (degrees): 7.67683
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -2506,20 +1344,6 @@ Run: 1 subrun: 0 event: 109690
 
 Run: 1 subrun: 0 event: 109740
  Classified as: Abs 0p with energy at vertex: 317.891
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 109822
- Classified as: Abs 0p with energy at vertex: 347.512
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 110068
- Classified as: Abs 0p with energy at vertex: 276.172
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -2539,13 +1363,6 @@ Run: 1 subrun: 0 event: 110179
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 110274
- Classified as: Abs 0p with energy at vertex: 298.737
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 110303
  Classified as: Abs 0p with energy at vertex: 171.743
  Scattering angle (degrees): -572900
@@ -2560,20 +1377,6 @@ Run: 1 subrun: 0 event: 110461
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 110475
- Classified as: Abs 0p with energy at vertex: 138.734
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 110570
- Classified as: Primary electron with energy at vertex: 0
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 110575
  Classified as: Abs 0p with energy at vertex: 225.58
  Scattering angle (degrees): 0
@@ -2582,8 +1385,8 @@ Run: 1 subrun: 0 event: 110575
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 110610
- Classified as: Elastic scattering with energy at vertex: 248.658
- Scattering angle (degrees): 9.34567
+ Classified as: Abs 0p with energy at vertex: 183.456
+ Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -2603,21 +1406,7 @@ Run: 1 subrun: 0 event: 110886
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 110901
- Classified as: Elastic scattering with energy at vertex: 265.564
- Scattering angle (degrees): 6.89574
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 111052
- Classified as: Elastic scattering with energy at vertex: 393.881
- Scattering angle (degrees): 10.6626
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 111089
- Classified as: Primary electron with energy at vertex: 0
+ Classified as: Charge exchange with energy at vertex: 216.903
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -2644,13 +1433,6 @@ Run: 1 subrun: 0 event: 111317
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 111350
- Classified as: Abs 0p with energy at vertex: 440.985
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 111372
  Classified as: Abs 0p with energy at vertex: 220.823
  Scattering angle (degrees): -572900
@@ -2661,13 +1443,6 @@ Run: 1 subrun: 0 event: 111372
 Run: 1 subrun: 0 event: 111500
  Classified as: Abs 0p with energy at vertex: 230.662
  Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 111583
- Classified as: Abs 0p with energy at vertex: 296.443
- Scattering angle (degrees): 0
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -2693,13 +1468,6 @@ Run: 1 subrun: 0 event: 111672
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 111703
- Classified as: Abs Np with energy at vertex: 221.652
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 111790
  Classified as: Elastic scattering with energy at vertex: 274.294
  Scattering angle (degrees): 8.36262
@@ -2714,36 +1482,8 @@ Run: 1 subrun: 0 event: 111810
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 111857
- Classified as: Abs Np with energy at vertex: 345.742
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 112177
- Classified as: Abs 0p with energy at vertex: 136.012
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 112235
- Classified as: Abs Np with energy at vertex: 294.196
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 112409
  Classified as: Abs 0p with energy at vertex: 92.6562
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 112429
- Classified as: Primary electron with energy at vertex: 0
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -2772,7 +1512,7 @@ Run: 1 subrun: 0 event: 112725
 
 Run: 1 subrun: 0 event: 112862
  Classified as: Abs 0p with energy at vertex: 246.559
- Scattering angle (degrees): 0
+ Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -2784,13 +1524,6 @@ Run: 1 subrun: 0 event: 112984
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 113072
- Classified as: Elastic scattering with energy at vertex: 304.632
- Scattering angle (degrees): 6.21445
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 113140
  Classified as: Elastic scattering with energy at vertex: 302.569
  Scattering angle (degrees): 69.2029
@@ -2798,23 +1531,9 @@ Run: 1 subrun: 0 event: 113140
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 113178
- Classified as: Abs Np with energy at vertex: 227.327
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 113253
- Classified as: Abs 0p with energy at vertex: 388.769
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 113263
- Classified as: Elastic scattering with energy at vertex: 230.601
- Scattering angle (degrees): 6.85123
+ Classified as: Elastic scattering with energy at vertex: 176.27
+ Scattering angle (degrees): 20.1132
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -2833,36 +1552,8 @@ Run: 1 subrun: 0 event: 113516
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 113550
- Classified as: Elastic scattering with energy at vertex: 281.488
- Scattering angle (degrees): 10.3243
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 113831
- Classified as: Elastic scattering with energy at vertex: 235.37
- Scattering angle (degrees): 7.22119
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 113892
- Classified as: Inelastic scattering with energy at vertex: 225.51
- Scattering angle (degrees): 42.3032
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 113898
- Classified as: Abs Np with energy at vertex: 311.989
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 114266
- Classified as: Abs Np with energy at vertex: 285.049
+ Classified as: Abs 0p with energy at vertex: 157.428
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -2875,23 +1566,9 @@ Run: 1 subrun: 0 event: 114308
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 114318
- Classified as: Abs 0p with energy at vertex: 313.952
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 114332
  Classified as: Inelastic scattering with energy at vertex: 147.879
  Scattering angle (degrees): 127.142
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 114407
- Classified as: Abs 0p with energy at vertex: 195.18
- Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -2903,22 +1580,8 @@ Run: 1 subrun: 0 event: 114417
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 114641
- Classified as: Abs 0p with energy at vertex: 227.844
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 114659
  Classified as: Abs 0p with energy at vertex: 88.9162
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 114874
- Classified as: Abs 0p with energy at vertex: 373.164
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -2945,22 +1608,8 @@ Run: 1 subrun: 0 event: 115088
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 115134
- Classified as: Charge exchange with energy at vertex: 173.432
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 115310
  Classified as: Abs 0p with energy at vertex: 57.1624
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 115459
- Classified as: Abs 0p with energy at vertex: 215.153
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -2987,22 +1636,8 @@ Run: 1 subrun: 0 event: 115688
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 115718
- Classified as: Abs 0p with energy at vertex: 196.643
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 124807
  Classified as: Abs 0p with energy at vertex: 108.625
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 124998
- Classified as: Abs 0p with energy at vertex: 227.254
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -3015,20 +1650,6 @@ Run: 1 subrun: 0 event: 125049
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 125106
- Classified as: Abs 0p with energy at vertex: 223.5
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 125151
- Classified as: Inelastic scattering with energy at vertex: 308.608
- Scattering angle (degrees): 110.262
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 125198
  Classified as: Elastic scattering with energy at vertex: 257.184
  Scattering angle (degrees): 15.3372
@@ -3037,21 +1658,7 @@ Run: 1 subrun: 0 event: 125198
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 125292
- Classified as: Elastic scattering with energy at vertex: 289.546
- Scattering angle (degrees): 7.07292
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 125420
- Classified as: Elastic scattering with energy at vertex: 156.74
- Scattering angle (degrees): 15.521
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 125436
- Classified as: Abs Np with energy at vertex: 174.976
+ Classified as: Abs Np with energy at vertex: 244.555
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -3060,20 +1667,6 @@ Run: 1 subrun: 0 event: 125436
 Run: 1 subrun: 0 event: 125611
  Classified as: Elastic scattering with energy at vertex: 168.139
  Scattering angle (degrees): 9.09821
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 125730
- Classified as: Abs 0p with energy at vertex: 243.258
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 125732
- Classified as: Primary electron with energy at vertex: 0
- Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -3092,37 +1685,9 @@ Run: 1 subrun: 0 event: 125780
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 125909
- Classified as: Inelastic scattering with energy at vertex: 249.389
- Scattering angle (degrees): 76.9331
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 125991
- Classified as: Abs 0p with energy at vertex: 227.154
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 126109
- Classified as: Inelastic scattering with energy at vertex: 227.108
- Scattering angle (degrees): 146.05
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 126163
- Classified as: Abs Np with energy at vertex: 124.331
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 126210
- Classified as: Elastic scattering with energy at vertex: 180.833
- Scattering angle (degrees): 7.62733
+ Classified as: Abs 0p with energy at vertex: 92.5952
+ Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -3141,13 +1706,6 @@ Run: 1 subrun: 0 event: 126472
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 126596
- Classified as: Inelastic scattering with energy at vertex: 197.67
- Scattering angle (degrees): 89.2557
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 126693
  Classified as: Abs Np with energy at vertex: 297.473
  Scattering angle (degrees): -572900
@@ -3155,65 +1713,9 @@ Run: 1 subrun: 0 event: 126693
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 126729
- Classified as: Charge exchange with energy at vertex: 316.734
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 127028
- Classified as: Abs 0p with energy at vertex: 298.511
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 127220
- Classified as: Abs 0p with energy at vertex: 227.823
- Scattering angle (degrees): 0
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 127264
- Classified as: Inelastic scattering with energy at vertex: 277.603
- Scattering angle (degrees): 117.414
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 127299
  Classified as: Elastic scattering with energy at vertex: 233.933
  Scattering angle (degrees): 11.2376
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 127561
- Classified as: Elastic scattering with energy at vertex: 231.573
- Scattering angle (degrees): 7.57633
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 127788
- Classified as: Abs 0p with energy at vertex: 211.192
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 133935
- Classified as: Abs 0p with energy at vertex: 242.554
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 133938
- Classified as: Abs 0p with energy at vertex: 206.245
- Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -3253,13 +1755,6 @@ Run: 1 subrun: 0 event: 134303
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 134314
- Classified as: Abs 0p with energy at vertex: 173.388
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 134318
  Classified as: Charge exchange with energy at vertex: 401.058
  Scattering angle (degrees): -572900
@@ -3276,13 +1771,6 @@ Run: 1 subrun: 0 event: 134320
 
 Run: 1 subrun: 0 event: 134373
  Classified as: Abs Np with energy at vertex: 244.181
- Scattering angle (degrees): 0
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 134441
- Classified as: Abs 0p with energy at vertex: 324.525
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -3295,13 +1783,6 @@ Run: 1 subrun: 0 event: 134687
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 134779
- Classified as: Primary electron with energy at vertex: 0
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 134862
  Classified as: Abs Np with energy at vertex: 227.769
  Scattering angle (degrees): -572900
@@ -3309,29 +1790,8 @@ Run: 1 subrun: 0 event: 134862
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 134925
- Classified as: Abs 0p with energy at vertex: 208.339
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 135001
  Classified as: Abs 0p with energy at vertex: 214.9
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 135050
- Classified as: Abs Np with energy at vertex: 321.411
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 135190
- Classified as: Abs 0p with energy at vertex: 296.934
  Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
@@ -3351,30 +1811,9 @@ Run: 1 subrun: 0 event: 135373
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 135398
- Classified as: Abs Np with energy at vertex: 311.915
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 135452
- Classified as: Charge exchange with energy at vertex: 333.574
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 135632
- Classified as: Inelastic scattering with energy at vertex: 222.959
- Scattering angle (degrees): 147.732
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 135663
- Classified as: Elastic scattering with energy at vertex: 266.538
- Scattering angle (degrees): 11.4667
+ Classified as: Elastic scattering with energy at vertex: 226.586
+ Scattering angle (degrees): 10.7214
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -3428,13 +1867,6 @@ Run: 1 subrun: 0 event: 136236
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 136405
- Classified as: Inelastic scattering with energy at vertex: 268.513
- Scattering angle (degrees): 88.0417
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 136491
  Classified as: Abs Np with energy at vertex: 87.9198
  Scattering angle (degrees): -572900
@@ -3443,8 +1875,8 @@ Run: 1 subrun: 0 event: 136491
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 136662
- Classified as: Elastic scattering with energy at vertex: 147.249
- Scattering angle (degrees): 17.0223
+ Classified as: Inelastic scattering with energy at vertex: 87.493
+ Scattering angle (degrees): 41.651
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -3456,23 +1888,9 @@ Run: 1 subrun: 0 event: 136678
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 136739
- Classified as: Abs 0p with energy at vertex: 231.874
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 136757
  Classified as: Abs Np with energy at vertex: 455.107
  Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 136877
- Classified as: Elastic scattering with energy at vertex: 262.228
- Scattering angle (degrees): 11.0426
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -3491,30 +1909,9 @@ Run: 1 subrun: 0 event: 136908
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 136988
- Classified as: Abs 0p with energy at vertex: 230.781
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 142918
  Classified as: Elastic scattering with energy at vertex: 91.1062
  Scattering angle (degrees): 68.7698
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 143013
- Classified as: Primary electron with energy at vertex: 0
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 143266
- Classified as: Abs 0p with energy at vertex: 260.672
- Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -3540,37 +1937,9 @@ Run: 1 subrun: 0 event: 143733
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 143911
- Classified as: Elastic scattering with energy at vertex: 209.401
- Scattering angle (degrees): 54.0478
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 144144
  Classified as: Elastic scattering with energy at vertex: 166.126
  Scattering angle (degrees): 16.327
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 144160
- Classified as: Abs 0p with energy at vertex: 263.423
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 144236
- Classified as: Outside reduced volume with energy at vertex: 420.885
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 144298
- Classified as: Abs 0p with energy at vertex: 358.615
- Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -3582,16 +1951,9 @@ Run: 1 subrun: 0 event: 144784
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 144848
- Classified as: Abs 0p with energy at vertex: 195.257
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 144961
- Classified as: Elastic scattering with energy at vertex: 231.848
- Scattering angle (degrees): 10.2536
+ Classified as: Abs Np with energy at vertex: 196.676
+ Scattering angle (degrees): -572900
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -3603,23 +1965,9 @@ Run: 1 subrun: 0 event: 145045
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 145071
- Classified as: Abs Np with energy at vertex: 284.548
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 145129
  Classified as: Abs 0p with energy at vertex: 242.304
  Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 145135
- Classified as: Elastic scattering with energy at vertex: 332.723
- Scattering angle (degrees): 52.6374
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
@@ -3638,13 +1986,6 @@ Run: 1 subrun: 0 event: 145242
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 145322
- Classified as: Abs 0p with energy at vertex: 184.849
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 145463
  Classified as: Abs Np with energy at vertex: 159.244
  Scattering angle (degrees): -572900
@@ -3652,37 +1993,16 @@ Run: 1 subrun: 0 event: 145463
  Tagged protons: 0
  Reco trks in cylinder: 0
 
-Run: 1 subrun: 0 event: 145549
- Classified as: Abs 0p with energy at vertex: 241.501
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 145701
- Classified as: Abs 0p with energy at vertex: 241.336
- Scattering angle (degrees): -572900
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
 Run: 1 subrun: 0 event: 148926
- Classified as: Elastic scattering with energy at vertex: 235.921
- Scattering angle (degrees): 11.7063
- Tagged pions: 0
- Tagged protons: 0
- Reco trks in cylinder: 0
-
-Run: 1 subrun: 0 event: 149176
- Classified as: Abs 0p with energy at vertex: 293.897
- Scattering angle (degrees): -572900
+ Classified as: Elastic scattering with energy at vertex: 136.696
+ Scattering angle (degrees): 22.247
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0
 
 Run: 1 subrun: 0 event: 149291
- Classified as: Elastic scattering with energy at vertex: 184.016
- Scattering angle (degrees): 12.0251
+ Classified as: Inelastic scattering with energy at vertex: 148.562
+ Scattering angle (degrees): 25.9654
  Tagged pions: 0
  Tagged protons: 0
  Reco trks in cylinder: 0

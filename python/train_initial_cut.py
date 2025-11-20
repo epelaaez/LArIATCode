@@ -93,9 +93,9 @@ if (__name__ == "__main__"):
     # Load DataFrame from pickle file
     df = pd.read_pickle("files/train_initial_data.pkl")
     
-    # Map background type to new target: 0 for pion, 1 for electron, 2 for muon
+    # Map background type to new target: 0 for pion, 1 for electron and ch exch, 2 for muon
     def bkg_to_target(x):
-        if x == 3:
+        if (x == 3 or x == 7):
             return 1
         elif x == 2:
             return 2

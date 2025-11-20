@@ -94,7 +94,7 @@ if (__name__ == "__main__"):
     df = pd.read_pickle("files/train_chexch_abs_data.pkl")
 
     # Keep only pion abs 0p, charge exchange, electron showers
-    df = df[df["backgroundType"].isin([0, 1, 2, 3, 7, 6, 12])]
+    df = df[df["backgroundType"].isin([0, 1, 2, 5, 7, 6, 12])]
 
     # Map backgroundType to new target: 0 for pion abs 0p, 1 for scatter, 2 for other
     def bkg_to_code(x):
@@ -131,8 +131,8 @@ if (__name__ == "__main__"):
     model = xgb.XGBClassifier(
         num_class=K,
         n_estimators=10000,
-        learning_rate=0.03,
-        early_stopping_rounds=200,
+        learning_rate=0.02,
+        early_stopping_rounds=300,
         subsample=0.70,
         reg_lambda=0.5,
         reg_alpha=0.3,

@@ -35,7 +35,8 @@ void RecoClassifyAllSimplified() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/ClassifyAllSimplified/";
 
     // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo2.root";
+    // TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo2.root";
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEvalRV_histo.root"; // RV at z = 30
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 

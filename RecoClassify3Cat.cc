@@ -36,7 +36,8 @@ void RecoClassify3Cat() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Classify3Cat/";
 
     // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo2.root";
+    // TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo2.root";
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEvalRV_histo.root"; // RV at z = 30
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
@@ -1569,9 +1570,9 @@ void RecoClassify3Cat() {
         double breakPointY = WC2TPCPrimaryEndY; 
         double breakPointZ = WC2TPCPrimaryEndZ;
         if (minChi2 == minStitchedChi2) {
-            breakPointX = wcMatchXPos->at(bestBreakPoint); 
-            breakPointY = wcMatchYPos->at(bestBreakPoint); 
-            breakPointZ = wcMatchZPos->at(bestBreakPoint);    
+            breakPointX = wcMatchXPos->at(bestBreakPoint);
+            breakPointY = wcMatchYPos->at(bestBreakPoint);
+            breakPointZ = wcMatchZPos->at(bestBreakPoint);
         }
 
         // At this point, we want to fill the incident kinetic energy histograms
@@ -1800,6 +1801,9 @@ void RecoClassify3Cat() {
         int otherTaggedProton = 0;
 
         int numSmallTracks = 0;
+
+        // TODO: look at tertiary tracks?
+
         for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
             if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
 
@@ -2493,6 +2497,36 @@ void RecoClassify3Cat() {
 
     comparisonsFile->Close();
 
+    ///////////////////////////////////
+    // Corrections for incident flux //
+    ///////////////////////////////////
+
+    // Set errors to original incident KE histogram
+    for (int iBin = 1; iBin <= hIncidentKE->GetNbinsX(); ++iBin) {
+        double entries = hIncidentKE->GetBinContent(iBin);
+        hIncidentKE->SetBinError(iBin, std::sqrt(entries)); // stat error
+    }
+
+    // Compute corrections for use when computing cross-section
+    TH1D* hPsiInc = (TH1D*) hIncidentKEPion->Clone("hPsiInc");
+    hPsiInc->Divide(hTrueIncidentKE);
+
+    TH1D* hCInc = (TH1D*) hIncidentKEPion->Clone("hCInc");
+    hCInc->Divide(hIncidentKE);
+
+    // Get corrected incident KE
+    TH1D* hIncidentKECorrected = (TH1D*) hIncidentKE->Clone("hIncidentKECorrected");
+
+    // Set errors to corrected incident KE histogram
+    for (int iBin = 1; iBin <= hIncidentKECorrected->GetNbinsX(); ++iBin) {
+        double entries = hIncidentKECorrected->GetBinContent(iBin);
+        hIncidentKECorrected->SetBinError(iBin, std::sqrt(entries));
+    }
+
+    // Apply corrections
+    hIncidentKECorrected->Divide(hPsiInc);
+    hIncidentKECorrected->Multiply(hCInc);
+
     //////////////////////////////////////////////
     // Perform unfolding for interacting slices //
     //////////////////////////////////////////////
@@ -2656,34 +2690,6 @@ void RecoClassify3Cat() {
     );
     M2H(Covariance, hCovariance); M2H(AddSmear, hSmearing); M2H(AddSmearInverse, hSmearingInv);
 
-    ///////////////////////////////////
-    // Corrections for incident flux //
-    ///////////////////////////////////
-
-    // Set errors to original incident KE histogram
-    for (int iBin = 1; iBin <= hIncidentKE->GetNbinsX(); ++iBin) {
-        double entries = hIncidentKE->GetBinContent(iBin);
-        hIncidentKE->SetBinError(iBin, std::sqrt(entries)); // stat error
-    }
-
-    // Compute corrections for use when computing cross-section
-    TH1D* hPsiInc = (TH1D*) hIncidentKEPion->Clone("hPsiInc");
-    hPsiInc->Divide(hTrueIncidentKE);
-
-    TH1D* hCInc = (TH1D*) hIncidentKEPion->Clone("hCInc");
-    hCInc->Divide(hIncidentKE);
-
-    // Only for plotting corrected incident KE
-    TH1D* hIncidentKECorrected = (TH1D*) hIncidentKE->Clone("hIncidentKECorrected");
-    hIncidentKECorrected->Divide(hPsiInc);
-    hIncidentKECorrected->Multiply(hCInc);
-
-    // Set errors to corrected incident KE histogram (TODO: errors on corrections)
-    for (int iBin = 1; iBin <= hIncidentKECorrected->GetNbinsX(); ++iBin) {
-        double entries = hIncidentKECorrected->GetBinContent(iBin);
-        hIncidentKECorrected->SetBinError(iBin, std::sqrt(entries));
-    }
-
     ///////////////////////////////////////////////
     // Get cross-section using corrrected fluxes //
     ///////////////////////////////////////////////
@@ -2702,6 +2708,9 @@ void RecoClassify3Cat() {
     TH1D* hUnSmearedPionScatterCrossSection   = new TH1D("hUnSmearedPionScatterCrossSection", "hUnSmearedPionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hSmearedTruePionScatterCrossSection = new TH1D("hSmearedTruePionScatterCrossSection", "hSmearedTruePionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTruePionScatterCrossSection        = new TH1D("hTruePionScatterCrossSection", "hTruePionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
+    TH1D* hTruePionOtherCrossSection = new TH1D("hTruePionOtherCrossSection", "hTruePionOtherCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueTotalCrossSection     = new TH1D("hTrueTotalCrossSection", "hTrueTotalCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     std::vector<TH1D*> UnfoldedCrossSections = {
         hPionAbs0pCrossSection,
@@ -2742,7 +2751,7 @@ void RecoClassify3Cat() {
 
             double unSmearedInteractingContent = UnSmearedUnfRecoHistos[i]->GetBinContent(iBin);
 
-            // we compute error as δσ / σ = δN_int / N_int + δN_inc / N_inc (conservative upper bound)
+            // we compute error as δσ / σ = δN_int / N_int + δN_inc / N_inc
             double crossSection    = interactingContent / incidentContent;
             double crossSectionErr = crossSection * ((interactingErr / interactingContent) + (incidentErr / incidentContent));
             unfXSec->SetBinContent(iBin, crossSection);
@@ -2776,6 +2785,13 @@ void RecoClassify3Cat() {
         reweightOneDHisto(smearedTrueXSec, 50.);
         reweightOneDHisto(trueXSec, 50.);
     }
+
+    // True "other" cross-section
+    for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
+        hTruePionOtherCrossSection->SetBinContent(iBin, hTrueOtherKE->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin));
+    }
+    hTruePionOtherCrossSection->Scale(1.0 / (number_density * slab_width * 1e-28));
+    reweightOneDHisto(hTruePionOtherCrossSection, 50.);
 
     ///////////////////////////
     // Make plots per 50 MeV //
@@ -2850,6 +2866,9 @@ void RecoClassify3Cat() {
         {hTruePionAbsNpCrossSection, hUnSmearedPionAbsNpCrossSection},
         {hTruePionScatterCrossSection, hUnSmearedPionScatterCrossSection},
 
+        // Total true-cross section
+        {hTruePionAbs0pCrossSection, hTruePionAbsNpCrossSection, hTruePionScatterCrossSection, hTruePionOtherCrossSection},
+
         // BDT probabilities
         {hBestAbs0pAbs0p, hBestAbs0pAbsNp, hBestAbs0pMuon, hBestAbs0pElectron, hBestAbs0pScatter, hBestAbs0pChExch, hBestAbs0pOther},
         {hBestScatterAbs0p, hBestScatterAbsNp, hBestScatterMuon, hBestScatterElectron, hBestScatterScatter, hBestScatterChExch, hBestScatterOther},
@@ -2913,6 +2932,9 @@ void RecoClassify3Cat() {
         {"True (t)", "Unf. (t)"},
         {"True (t)", "Unf. (t)"},
 
+        // Total true-cross section
+        {"Abs 0p", "Abs Np", "Scatter", "Other"},
+
         // BDT probabilities
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
@@ -2974,6 +2996,9 @@ void RecoClassify3Cat() {
         "CrossSection/UnSmearedPionAbsNpCrossSection",
         "CrossSection/UnSmearedPionScatterCrossSection",
 
+        // Total true-cross section
+        "CrossSection/TotalTrueCrossSection",
+
         // BDT probabilities
         "BDTScores/Abs0pTrue",
         "BDTScores/ScatterTrue",
@@ -3033,6 +3058,9 @@ void RecoClassify3Cat() {
         // Cross-sections (true space)
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+
+        // Total true-cross section
         "Kinetic energy [MeV]",
 
         // BDT probabilities
@@ -3096,6 +3124,9 @@ void RecoClassify3Cat() {
         "Cross section [barn] per 50 MeV",
         "Cross section [barn] per 50 MeV",
 
+        // Total true-cross section
+        "Cross section [barn] per 50 MeV",
+
         // BDT probabilities
         "Counts",
         "Counts",
@@ -3157,6 +3188,9 @@ void RecoClassify3Cat() {
         false,
         false,
 
+        // Total true-cross section
+        true,
+
         // BDT probabilities
         true,
         true,
@@ -3217,6 +3251,9 @@ void RecoClassify3Cat() {
         {false, true},
         {false, true},
         {false, true},
+
+        // Total true-cross section
+        {false, false, false, false},
 
         // BDT probabilities
         {false, false, false, false, false, false, false},

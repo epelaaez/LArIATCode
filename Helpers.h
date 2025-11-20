@@ -75,7 +75,7 @@ const double RminX =  5.0;
 const double RmaxX = 42.0;
 const double RminY =-15.0; 
 const double RmaxY = 15.0;
-const double RminZ =  8.0;
+const double RminZ = 30.0;
 const double RmaxZ = 82.0;
 
 // Detector dimensions
@@ -151,7 +151,7 @@ double SCATTERING_ANGLE_THRESHOLD = 5.0 * (TMath::Pi() / 180);
 double PION_SCATTERING_ENERGY_THRESHOLD = 0.05; // in GeV / c
 
 // Bins for energy bins
-static const std::vector<double> ARRAY_KE_BINS = {0., 100., 150., 200., 250., 300., 350., 400., 450., 500., 600.};
+static const std::vector<double> ARRAY_KE_BINS = {0., 100., 150., 200., 250., 300., 350., 400., 600.};
 static const int                   NUM_BINS_KE = ARRAY_KE_BINS.size() - 1;
 
 // TOF mass cut
@@ -160,7 +160,7 @@ double PI_MU_EL_MASS_CUTOFF = 350.;
 // Cylinder radius for shower identification
 double CYLINDER_RADIUS               = 10.;
 double CYLINDER_SMALL_TRACK          = 5.;
-int    ALLOWED_CYLINDER_SMALL_TRACKS = 2;
+int    ALLOWED_CYLINDER_SMALL_TRACKS = 1;
 int    ALLOWED_CYLINDER_TRACKS       = 1;
 
 // Sliced cone for ch exch events parameters

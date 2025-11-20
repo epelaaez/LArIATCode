@@ -829,24 +829,26 @@ void printBackgroundInfo(TH1D* background_histo, std::ostream& os) {
     int scattering0p         = background_histo->GetBinContent(14);
     int scatteringNp         = background_histo->GetBinContent(15);
 
-    os << "  Abs 0p: " << pionAbs0p << std::endl;
-    os << "  Abs Np: " << pionAbsNp << std::endl;
-    os << "  Primary muon: " << primaryMuon << std::endl;
-    os << "  Primary electron: " << primaryElectron << std::endl;
-    os << "  Other primary: " << otherPrimary << std::endl;
-    os << "  Outside reduced volume: " << pionOutRedVol << std::endl;
+    int total = background_histo->Integral(1, 15);
+
+    os << "  Abs 0p: " << pionAbs0p << "    " << 100 * (pionAbs0p / (double) total) << "%" << std::endl;
+    os << "  Abs Np: " << pionAbsNp << "    " << 100 * (pionAbsNp / (double) total) << "%" << std::endl;
+    os << "  Primary muon: " << primaryMuon << "    " << 100 * (primaryMuon / (double) total) << "%" << std::endl;
+    os << "  Primary electron: " << primaryElectron << "    " << 100 * (primaryElectron / (double) total) << "%" << std::endl;
+    os << "  Other primary: " << otherPrimary << "    " << 100 * (otherPrimary / (double) total) << "%" << std::endl;
+    os << "  Outside reduced volume: " << pionOutRedVol << "    " << 100 * (pionOutRedVol / (double) total) << "%" << std::endl;
     if (scattering0p + scatteringNp == 0) {
-        os << "  Inelastic scattering: " << pionInelScatter << std::endl;
-        os << "  Elastic scattering: " << elasticScattering << std::endl;
+        os << "  Inelastic scattering: " << pionInelScatter << "    " << 100 * (pionInelScatter / (double) total) << "%" << std::endl;
+        os << "  Elastic scattering: " << elasticScattering << "    " << 100 * (elasticScattering / (double) total) << "%" << std::endl;
     } else {
-        os << "  Scattering 0p: " << scattering0p << std::endl;
-        os << "  Scattering Np: " << scatteringNp << std::endl;
+        os << "  Scattering 0p: " << scattering0p << "    " << 100 * (scattering0p / (double) total) << "%" << std::endl;
+        os << "  Scattering Np: " << scatteringNp << "    " << 100 * (scatteringNp / (double) total) << "%" << std::endl;
     }
-    os << "  Charge exchange: " << chargeExchange << std::endl;
-    os << "  Double charge exchange: " << doubleChargeExchange << std::endl;
-    os << "  Capture at rest: " << captureAtRest << std::endl;
-    os << "  Decay: " << pionDecay << std::endl;
-    os << "  Other: " << other << std::endl;
+    os << "  Charge exchange: " << chargeExchange << "    " << 100 * (chargeExchange / (double) total) << "%" << std::endl;
+    os << "  Double charge exchange: " << doubleChargeExchange << "    " << 100 * (doubleChargeExchange / (double) total) << "%" << std::endl;
+    os << "  Capture at rest: " << captureAtRest << "    " << 100 * (captureAtRest / (double) total) << "%" << std::endl;
+    os << "  Decay: " << pionDecay << "    " << 100 * (pionDecay / (double) total) << "%" << std::endl;
+    os << "  Other: " << other << "    " << 100 * (other / (double) total) << "%" << std::endl;
 }
 
 void printEventInfo(EventInfo event, std::ostream& os) {

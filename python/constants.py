@@ -5,7 +5,8 @@ RminX =  5.0
 RmaxX = 42.0
 RminY =-15.0
 RmaxY = 15.0
-RminZ =  8.0
+# RminZ =  8.0
+RminZ = 30.0
 RmaxZ = 82.0
 
 # TPC active volume
@@ -19,7 +20,7 @@ maxZ = 87.0
 # Cylinder parameters
 CYLINDER_RADIUS = 10.0
 CYLINDER_SMALL_TRACK = 5.0
-ALLOWED_CYLINDER_SMALL_TRACKS = 2
+ALLOWED_CYLINDER_SMALL_TRACKS = 1
 ALLOWED_CYLINDER_TRACKS = 1
 
 # Vertex parameters

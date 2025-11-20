@@ -34,7 +34,8 @@ void RecoAllAnalysis() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/RecoAllAnalysis/";
 
     // Load root file
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo2.root"; 
+    // TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo2.root";
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEvalRV_histo.root"; // RV at z = 30
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
