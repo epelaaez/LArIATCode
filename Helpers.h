@@ -130,7 +130,7 @@ double MAX_IN_CLUSTER_SEPARATION   = 2.5;
 int MINIMUM_HITS_FOR_CLUSTER = 5;
 
 int    NUM_CLUSTERS_THRESHOLD  = 2;
-double LARGE_CLUSTER_THRESHOLD = 17.5;
+double LARGE_CLUSTER_THRESHOLD = 10.0;
 
 // Threshold(s) used to cut based on primary track local linearity
 double LINEARITY_DERIVATIVE_THRESHOLD = 0.06e-3;

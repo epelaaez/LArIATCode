@@ -1388,7 +1388,7 @@ TVectorD WienerSVD(
     Signal = C*Signal;
     R = R*C_inv;
   
-    // SVD decomposition of R 
+    // SVD decomposition of R
     TDecompSVD udv(R);
     TMatrixD U = udv.GetU();
     TMatrixD U_t (TMatrixD::kTransposed, U);
@@ -1407,9 +1407,9 @@ TVectorD WienerSVD(
     }
 
     TVectorD S = V_t*Signal;
-    // Wiener Filter 
+    // Wiener Filter
     TMatrixD W(n, n);
-    TMatrixD W0(n, n);    
+    TMatrixD W0(n, n);
     for(Int_t i=0; i<n; i++) {
         for(Int_t j=0; j<n; j++) {
             W(i, j)  = 0;
@@ -1419,7 +1419,7 @@ TVectorD WienerSVD(
                 //WF(i) = D(i)*D(i)*W(i, j);//S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
                 W(i, j) = S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
                 WF(i) = D(i)*D(i)*W(i, j);
-                W0(i, j) = WF(i); 
+                W0(i, j) = WF(i);
             }
         }
     }
