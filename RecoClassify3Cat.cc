@@ -41,6 +41,19 @@ void RecoClassify3Cat() {
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
+    // Get file with weights
+    TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/CalculateWeights_histo.root";
+    std::unique_ptr<TFile> WeightsFile(TFile::Open(RootWeightsFilePath));
+    TDirectory* WeightsDirectory = (TDirectory*)WeightsFile->Get("CalculateWeights");
+    TTree* w_tree = (TTree*) WeightsDirectory->Get<TTree>("WeightsTree");
+
+    std::unordered_map<int, Long64_t> eventToWeightEntry;
+    int w_evt; w_tree->SetBranchAddress("event", &w_evt);
+    std::vector<double>* evt_weights = nullptr; w_tree->SetBranchAddress("weights", &evt_weights);
+    for (Long64_t i = 0; i < w_tree->GetEntries(); ++i) {
+        w_tree->GetEntry(i); eventToWeightEntry[w_evt] = i;
+    }
+
     ///////////////////
     // Load branches //
     ///////////////////
@@ -793,6 +806,16 @@ void RecoClassify3Cat() {
 
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
+
+        auto it = eventToWeightEntry.find(event);
+        if (!(it == eventToWeightEntry.end())) {
+            std::cout << "Weights found for event " << event << " " << std::endl;
+            std::cout << "There are " << evt_weights->size() << " weights" << std::endl;
+            for (int i = 0; i < evt_weights->size(); ++i) {
+                std::cout << evt_weights->at(i) << ", ";
+            }
+            std::cout << std::endl;
+        }
 
         // Events to debug BDT
         // if (!(
