@@ -181,6 +181,8 @@ double avogadro       = 6.022e+23; // number / mol
 double number_density = rho * g_per_kg / molar_mass * avogadro;
 double slab_width     = 0.0047; // in m
 
+double XSEC_UNITS = 1 / (number_density * slab_width * 1e-28);
+
 // For each "collimator", the bounds of the face of both aperatures [xlow_frontface, xhigh_frontface, xlow_backface, xhigh_backface], 
 // similarly for y. In cm, in TPC coordinates. Taken from survey.
 double xboundMagnet1[4] = {45.74, 75.52, 35.09, 64.87};
@@ -337,4 +339,4 @@ TMatrixD Matrix_C(Int_t n, Int_t type);
 //   - AddSmear is additional smearing matrix after unfolding
 //   - WF is the elements of Wiener Filter
 //   - Covariance matrix of the unfolded spectrum
-TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrixD Covariance, Int_t C_type, Float_t Norm_type, TMatrixD& AddSmear, TVectorD& WF, TMatrixD& UnfoldCov, TMatrixD& CovRotation, TMatrixD& AddSmearInverse);
+TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrixD Covariance, Int_t C_type, Float_t Norm_type, TMatrixD& AddSmear, TVectorD& WF, TMatrixD& UnfoldCov, TMatrixD& CovRotation, TMatrixD& AddSmearInverse, bool filterOff = false);

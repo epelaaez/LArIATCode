@@ -809,7 +809,7 @@ void RecoClassify3Cat() {
         // if (i > 50000) break;
 
         // Make script go faster
-        // if (i > 5000) break;
+        // if (i > 20000) break;
 
         // Get unordered set for hits in tracks
         std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
@@ -2623,7 +2623,8 @@ void RecoClassify3Cat() {
     }
 
     // Convert histo to matrix
-    TMatrixD Response(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); H2M(static_cast<const TH2D*>(hResponseMatrix), Response, kTRUE);
+    TMatrixD Response(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); 
+    H2M(static_cast<const TH2D*>(hResponseMatrix), Response, kTRUE);
 
     // Objects to store stuff
     TMatrixD AddSmear(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
@@ -2643,7 +2644,8 @@ void RecoClassify3Cat() {
         WF,
         UnfoldCov,
         CovRotation,
-        AddSmearInverse
+        AddSmearInverse,
+        true // turn Wiener filter off
     );
     TVectorD SmearedTrue  = AddSmear * Signal;
     TVectorD UnSmearedUnf = AddSmearInverse * UnfoldedReco;
@@ -2680,16 +2682,25 @@ void RecoClassify3Cat() {
         "hCovariance", "Covariance Matrix;(i, #alpha);(j, #beta)",
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE 
-    );
+    ); M2H(Covariance, hCovariance);
+    TH2D* hUnfCovariance = new TH2D(
+        "hUnfCovariance", "Unfolded Covariance Matrix;(i, #alpha);(j, #beta)",
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE 
+    ); M2H(UnfoldCov, hUnfCovariance);
+    TH2D* hCovRotation = new TH2D(
+        "hCovRotation", "Covariance Rotation Matrix;(i, #alpha);(j, #beta)",
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE 
+    ); M2H(CovRotation, hCovRotation);
     TH2D* hSmearing = new TH2D("hSmearing", "Smearing Matrix;True (i, #alpha); Reco (j, #beta)", 
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
-    );
+    ); M2H(AddSmear, hSmearing);
     TH2D* hSmearingInv = new TH2D("hSmearingInverse", "Smearing Inverse Matrix;True (i, #alpha); Reco (j, #beta)", 
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
-    );
-    M2H(Covariance, hCovariance); M2H(AddSmear, hSmearing); M2H(AddSmearInverse, hSmearingInv);
+    ); M2H(AddSmearInverse, hSmearingInv);
 
     ///////////////////////////////////////////////
     // Get cross-section using corrrected fluxes //
@@ -2744,8 +2755,8 @@ void RecoClassify3Cat() {
         TH1D* trueXSec         = TrueCrossSections[i];
 
         for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
-            double incidentErr     = hIncidentKE->GetBinError(iBin);
-            double incidentContent = hIncidentKE->GetBinContent(iBin);
+            double incidentErr     = hIncidentKECorrected->GetBinError(iBin);
+            double incidentContent = hIncidentKECorrected->GetBinContent(iBin);
 
             double interactingErr     = UnfoldedRecoHistos[i]->GetBinError(iBin);
             double interactingContent = UnfoldedRecoHistos[i]->GetBinContent(iBin);
@@ -2766,19 +2777,11 @@ void RecoClassify3Cat() {
             smearedTrueXSec->SetBinContent(iBin, SmearedTrueHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin));
             trueXSec->SetBinContent(iBin, TotalEventsHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin));
         }
-
-        // Incident KE corrections
-        unfXSec->Multiply(hPsiInc);
-        unfXSec->Divide(hCInc);
-
-        unSmearedUnfXSec->Multiply(hPsiInc);
-        unSmearedUnfXSec->Divide(hCInc);
-
         // Scale units
-        unfXSec->Scale(1.0 / (number_density * slab_width * 1e-28));
-        unSmearedUnfXSec->Scale(1.0 / (number_density * slab_width * 1e-28));
-        smearedTrueXSec->Scale(1.0 / (number_density * slab_width * 1e-28));
-        trueXSec->Scale(1.0 / (number_density * slab_width * 1e-28));
+        unfXSec->Scale(XSEC_UNITS);
+        unSmearedUnfXSec->Scale(XSEC_UNITS);
+        smearedTrueXSec->Scale(XSEC_UNITS);
+        trueXSec->Scale(XSEC_UNITS);
 
         // Make contents per 50 MeV
         reweightOneDHisto(unfXSec, 50.);
@@ -2789,9 +2792,8 @@ void RecoClassify3Cat() {
 
     // True "other" cross-section
     for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
-        hTruePionOtherCrossSection->SetBinContent(iBin, hTrueOtherKE->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin));
+        hTruePionOtherCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueOtherKE->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)));
     }
-    hTruePionOtherCrossSection->Scale(1.0 / (number_density * slab_width * 1e-28));
     reweightOneDHisto(hTruePionOtherCrossSection, 50.);
 
     ///////////////////////////
@@ -3239,9 +3241,9 @@ void RecoClassify3Cat() {
         {false, false, false, false, false, false},
 
         // True cross-section comparison (reg vs true space)
-        {false, false},
-        {false, false},
-        {false, false},
+        {false, true},
+        {false, true},
+        {false, true},
 
         // Cross-sections (reg space)
         {false, true},
@@ -3331,13 +3333,17 @@ void RecoClassify3Cat() {
     std::vector<TH2*> TwoDPlots = {
         hResponseMatrix,
         hCovariance, 
+        hUnfCovariance,
+        hCovRotation,
         hSmearing,
         hSmearingInv
     };
 
     std::vector<TString> TwoDTitles = {
         "Response/ResponseMatrix",
+        "Covariance/Covariance",
         "Covariance/UnfoldedCovariance",
+        "Covariance/CovRotation",
         "Smearing/AddSmearing",
         "Smearing/AddSmearingInverse"
     };
@@ -3346,10 +3352,14 @@ void RecoClassify3Cat() {
         {0, 0},
         {0, 0},
         {0, 0},
+        {0, 0},
+        {0, 0},
         {0, 0}
     };
 
     std::vector<bool> TwoDDisplayNumbers = {
+        false,
+        false,
         false,
         false,
         false,

@@ -1343,7 +1343,8 @@ TVectorD WienerSVD(
     TVectorD& WF,          //
     TMatrixD& UnfoldCov,   //
     TMatrixD& CovRotation,  //
-    TMatrixD& AddSmearInverse
+    TMatrixD& AddSmearInverse, 
+    bool filterOff
 ) {
     Int_t m = Response.GetNrows(); // measure, M
     Int_t n = Response.GetNcols(); // signal, S
@@ -1366,7 +1367,7 @@ TVectorD WienerSVD(
     }
 
     TMatrixD Q = err*Q0;
-    // transform Measure and Response
+    // Transform Measure and Response
     TVectorD M = Q*Measure;
     TMatrixD R = Q*Response;
 
@@ -1381,6 +1382,8 @@ TVectorD WienerSVD(
         }
     }
     C0 = C0*normsig;
+
+    if (C_type == 0 && Norm_type == 0) C0.UnitMatrix();
 
     TMatrixD C = C0;
     C0.Invert();
@@ -1405,6 +1408,17 @@ TVectorD WienerSVD(
             }
         }
     }
+    // for matrix D inverse
+    TMatrixD D_inv(n, m);
+    for (Int_t i = 0; i<n; i++) {
+        for (Int_t j = 0; j<m; j++) {
+            D_inv(i,j) = 0.;
+            if (i == j) {
+                if (D(i) > 0) D_inv(i,j) = 1.0 / D(i);
+                else          D_inv(i,j) = 0.0;
+            }
+        }
+    }
 
     TVectorD S = V_t*Signal;
     // Wiener Filter
@@ -1415,11 +1429,17 @@ TVectorD WienerSVD(
             W(i, j)  = 0;
             W0(i, j) = 0;
             if(i == j) {
-                //W(i, j) = 1./(D(i)*D(i)+2e-7); //S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
-                //WF(i) = D(i)*D(i)*W(i, j);//S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
-                W(i, j) = S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
-                WF(i) = D(i)*D(i)*W(i, j);
-                W0(i, j) = WF(i);
+                if (filterOff) {
+                    WF(i)    = 1.;
+                    W0(i, j) = WF(i);
+                    W(i, j)  = 1. / (D(i) * D(i));
+                } else {
+                    //W(i, j) = 1./(D(i)*D(i)+2e-7); //S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
+                    //WF(i) = D(i)*D(i)*W(i, j);//S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
+                    W(i, j)  = S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
+                    WF(i)    = D(i)*D(i)*W(i, j);
+                    W0(i, j) = WF(i);
+                }
             }
         }
     }
@@ -1429,16 +1449,26 @@ TVectorD WienerSVD(
     for (int i = 0; i < W0_inv.GetNrows(); ++i) {
         W0_inv(i,i ) = 1.0 / W0(i,i);
     }
-    AddSmearInverse = C_inv * V * W0_inv * V_t * C;
-    AddSmear        = C_inv * V * W0 * V_t * C;
+    
+    TVectorD unfold(n);
+    TMatrixD covRotation(n,m);
 
-    TVectorD unfold = C_inv*V*W*D_t*U_t*M;
+    if (filterOff) {
+        // If filter off, rather not multiply really small/large numbers
+        AddSmearInverse = C_inv * V * V_t * C; // = I
+        AddSmear        = C_inv * V * V_t * C; // = I
+        unfold          = C_inv * V * D_inv * U_t * M;
+        covRotation     = C_inv * V * D_inv * U_t * Q;
+    } else {
+        AddSmearInverse = C_inv * V * W0_inv * V_t * C;
+        AddSmear        = C_inv * V * W0 * V_t * C;
+        unfold          = C_inv * V * W * D_t * U_t * M;
+        covRotation     = C_inv * V * W * D_t * U_t * Q;
+    }
 
-    // covariance matrix of the unfolded spectrum
-    TMatrixD covRotation = C_inv*V*W*D_t*U_t*Q;
     CovRotation = covRotation;
     TMatrixD covRotation_t (TMatrixD::kTransposed, covRotation); 
-    UnfoldCov = covRotation*Covariance*covRotation_t;  
+    UnfoldCov = covRotation * Covariance * covRotation_t;  
 
     return unfold;
 }
