@@ -2116,10 +2116,10 @@ void RecoClassify3Cat() {
         }
 
         if (
-            numClustersInduction < 1 &&
-            numClustersCollection < 2 && 
-            largestClusterSizeCollection < 2 &&
-            largestClusterSizeInduction < 2
+            numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION &&
+            numClustersCollection < MAX_NUM_CLUSTERS_COLLECTION && 
+            largestClusterSizeInduction < MAX_LARGEST_CLUSTER_INDUCTION &&
+            largestClusterSizeCollection < MAX_LARGEST_CLUSTER_COLLECTION
         ) {
             hPionAbs0p->Fill(backgroundType);
 
