@@ -807,15 +807,9 @@ void RecoClassify3Cat() {
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
+        // Load weights
         auto it = eventToWeightEntry.find(event);
-        if (!(it == eventToWeightEntry.end())) {
-            std::cout << "Weights found for event " << event << " " << std::endl;
-            std::cout << "There are " << evt_weights->size() << " weights" << std::endl;
-            for (int i = 0; i < evt_weights->size(); ++i) {
-                std::cout << evt_weights->at(i) << ", ";
-            }
-            std::cout << std::endl;
-        }
+        if (!(it == eventToWeightEntry.end())) w_tree->GetEntry(it->second);
 
         // Events to debug BDT
         // if (!(
@@ -2566,7 +2560,9 @@ void RecoClassify3Cat() {
     // Construct response matrix
     for (int iOuterSignalBin = 0; iOuterSignalBin < NUM_SIGNAL_TYPES; ++iOuterSignalBin) {
         for (int iOuterEnergyBin = 0; iOuterEnergyBin < NUM_BINS_KE; ++iOuterEnergyBin) {
-            // Get index for row (i, \alpha) -> k
+            // Get index for row (i, \alpha) -> k, index 1 corresponds to abs 0p in energy bin 1,
+            // index 2 to abs 0p in energy bin 2, ..., index NUM_BINS_KE + 1 corresponds to abs Np 
+            // in energy bin 1, and so on
             int row = flattenIndex(iOuterSignalBin, iOuterEnergyBin, NUM_BINS_KE);
 
             // Get total number of true events of true signal type \alpha with true energy bin i
@@ -2620,15 +2616,6 @@ void RecoClassify3Cat() {
         }
     }
 
-    // Construct large signal vector
-    TVectorD Signal(NUM_SIGNAL_TYPES * NUM_BINS_KE);
-    for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
-        for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
-            int index     = flattenIndex(iSignal, iBin, NUM_BINS_KE);
-            Signal(index) = TotalEventsHistos[iSignal]->GetBinContent(iBin + 1);
-        }
-    }
-
     // Construct covariance matrix (only statistical variance for now)
     TMatrixD Covariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); Covariance.Zero();
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
@@ -2645,45 +2632,24 @@ void RecoClassify3Cat() {
         }
     }
 
-    // Convert histo to matrix
+    // Convert response histogram to matrix
     TMatrixD Response(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); 
     H2M(static_cast<const TH2D*>(hResponseMatrix), Response, kTRUE);
 
-    // Objects to store stuff
-    TMatrixD AddSmear(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
-    TMatrixD AddSmearInverse(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
-    TVectorD WF(NUM_SIGNAL_TYPES * NUM_BINS_KE);
-    TMatrixD UnfoldCov(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
-    TMatrixD CovRotation(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    // Invert response matrix with SVD
+    TDecompSVD svd(Response); svd.SetTol(1e-8);
+    TMatrixD Rinv = svd.Invert();
+    TMatrixD RinvT(TMatrixD::kTransposed, Rinv);
 
-    TVectorD UnfoldedReco = WienerSVD(
-        Response,
-        Signal,
-        Measure,
-        Covariance,
-        0, // 0: unit, 2: second derivative
-        0, // smoothing parameter
-        AddSmear,
-        WF,
-        UnfoldCov,
-        CovRotation,
-        AddSmearInverse,
-        true // turn Wiener filter off
-    );
-    TVectorD SmearedTrue  = AddSmear * Signal;
-    TVectorD UnSmearedUnf = AddSmearInverse * UnfoldedReco;
+    // Unfold selected events
+    TVectorD UnfoldedReco = Rinv * Measure;
+    TMatrixD UnfoldCov    = Rinv * Covariance * RinvT;
 
     // Organize results
     std::vector<TH1*> UnfoldedRecoHistos;
-    std::vector<TH1*> UnSmearedUnfRecoHistos;
-    std::vector<TH1*> SmearedTrueHistos;
     for (int iBin = 0; iBin < NUM_SIGNAL_TYPES; ++iBin) {
-        TH1D* unfoldedHist          = new TH1D(Form("hUnfoldedRecoVec_%d", iBin), Form("Unfolded Reco Vec %d", iBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
-        TH1D* unSmearedUnfoldedHist = new TH1D(Form("hUnSmearedUnfoldedRecoVec_%d", iBin), Form("Unsmeared Unfolded Reco Vec %d", iBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
-        TH1D* smearedHist           = new TH1D(Form("hSmearedTrueVec_%d", iBin), Form("Smeared True Vec %d", iBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+        TH1D* unfoldedHist = new TH1D(Form("hUnfoldedRecoVec_%d", iBin), Form("Unfolded Reco Vec %d", iBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
         UnfoldedRecoHistos.push_back(unfoldedHist);
-        UnSmearedUnfRecoHistos.push_back(unSmearedUnfoldedHist);
-        SmearedTrueHistos.push_back(smearedHist);
     }
 
     for (int iFlatIndex = 0; iFlatIndex < NUM_SIGNAL_TYPES * NUM_BINS_KE; ++iFlatIndex) {
@@ -2693,14 +2659,9 @@ void RecoClassify3Cat() {
         double err = std::sqrt(UnfoldCov[iFlatIndex][iFlatIndex]);
         UnfoldedRecoHistos[signalBin]->SetBinContent(energyBin + 1, UnfoldedReco(iFlatIndex));
         UnfoldedRecoHistos[signalBin]->SetBinError(energyBin + 1, err);
-
-        // TODO: get error for un-smeared histos
-        UnSmearedUnfRecoHistos[signalBin]->SetBinContent(energyBin + 1, UnSmearedUnf(iFlatIndex));
-
-        SmearedTrueHistos[signalBin]->SetBinContent(energyBin + 1, SmearedTrue(iFlatIndex));
     }
 
-    // Copy covariance and smearing matrices into histos
+    // Copy covariance and inverse response matrices into histos
     TH2D* hCovariance = new TH2D(
         "hCovariance", "Covariance Matrix;(i, #alpha);(j, #beta)",
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
@@ -2711,38 +2672,23 @@ void RecoClassify3Cat() {
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE 
     ); M2H(UnfoldCov, hUnfCovariance);
-    TH2D* hCovRotation = new TH2D(
-        "hCovRotation", "Covariance Rotation Matrix;(i, #alpha);(j, #beta)",
-        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
-        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE 
-    ); M2H(CovRotation, hCovRotation);
-    TH2D* hSmearing = new TH2D("hSmearing", "Smearing Matrix;True (i, #alpha); Reco (j, #beta)", 
-        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
+    TH2D* hResponseInvMatrix = new TH2D("hResponseInvMatrix", "hResponseInvMatrix;Reco (j, #beta);True (i, #alpha)",
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
-    ); M2H(AddSmear, hSmearing);
-    TH2D* hSmearingInv = new TH2D("hSmearingInverse", "Smearing Inverse Matrix;True (i, #alpha); Reco (j, #beta)", 
-        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
-        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
-    ); M2H(AddSmearInverse, hSmearingInv);
+    ); M2H(Rinv, hResponseInvMatrix);
 
     ///////////////////////////////////////////////
     // Get cross-section using corrrected fluxes //
     ///////////////////////////////////////////////
 
-    TH1D* hPionAbs0pCrossSection            = new TH1D("hPionAbs0pCrossSection", "hPionAbs0pCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hUnSmearedPionAbs0pCrossSection   = new TH1D("hUnSmearedPionAbs0pCrossSection", "hUnSmearedPionAbs0pCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hSmearedTruePionAbs0pCrossSection = new TH1D("hSmearedTruePionAbs0pCrossSection", "hSmearedTruePionAbs0pCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTruePionAbs0pCrossSection        = new TH1D("hTruePionAbs0pCrossSection", "hTruePionAbs0pCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pCrossSection     = new TH1D("hPionAbs0pCrossSection", "hPionAbs0pCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTruePionAbs0pCrossSection = new TH1D("hTruePionAbs0pCrossSection", "hTruePionAbs0pCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D* hPionAbsNpCrossSection            = new TH1D("hPionAbsNpCrossSection", "hPionAbsNpCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hUnSmearedPionAbsNpCrossSection   = new TH1D("hUnSmearedPionAbsNpCrossSection", "hUnSmearedPionAbsNpCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hSmearedTruePionAbsNpCrossSection = new TH1D("hSmearedTruePionAbsNpCrossSection", "hSmearedTruePionAbsNpCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTruePionAbsNpCrossSection        = new TH1D("hTruePionAbsNpCrossSection", "hTruePionAbsNpCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsNpCrossSection     = new TH1D("hPionAbsNpCrossSection", "hPionAbsNpCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTruePionAbsNpCrossSection = new TH1D("hTruePionAbsNpCrossSection", "hTruePionAbsNpCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D* hPionScatterCrossSection            = new TH1D("hPionScatterCrossSection", "hPionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hUnSmearedPionScatterCrossSection   = new TH1D("hUnSmearedPionScatterCrossSection", "hUnSmearedPionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hSmearedTruePionScatterCrossSection = new TH1D("hSmearedTruePionScatterCrossSection", "hSmearedTruePionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTruePionScatterCrossSection        = new TH1D("hTruePionScatterCrossSection", "hTruePionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionScatterCrossSection     = new TH1D("hPionScatterCrossSection", "hPionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTruePionScatterCrossSection = new TH1D("hTruePionScatterCrossSection", "hTruePionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     TH1D* hTruePionOtherCrossSection = new TH1D("hTruePionOtherCrossSection", "hTruePionOtherCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTrueTotalCrossSection     = new TH1D("hTrueTotalCrossSection", "hTrueTotalCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
@@ -2753,18 +2699,6 @@ void RecoClassify3Cat() {
         hPionScatterCrossSection
     };
 
-    std::vector<TH1D*> UnSmearedUnfoldedCrossSections = {
-        hUnSmearedPionAbs0pCrossSection,
-        hUnSmearedPionAbsNpCrossSection,
-        hUnSmearedPionScatterCrossSection
-    };
-
-    std::vector<TH1D*> SmearedTrueCrossSections = {
-        hSmearedTruePionAbs0pCrossSection,
-        hSmearedTruePionAbsNpCrossSection,
-        hSmearedTruePionScatterCrossSection
-    };
-
     std::vector<TH1D*> TrueCrossSections = {
         hTruePionAbs0pCrossSection,
         hTruePionAbsNpCrossSection,
@@ -2773,18 +2707,20 @@ void RecoClassify3Cat() {
 
     for (int i = 0; i < UnfoldedCrossSections.size(); ++i) {
         TH1D* unfXSec          = UnfoldedCrossSections[i];
-        TH1D* unSmearedUnfXSec = UnSmearedUnfoldedCrossSections[i];
-        TH1D* smearedTrueXSec  = SmearedTrueCrossSections[i];
         TH1D* trueXSec         = TrueCrossSections[i];
 
         for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
-            double incidentErr     = hIncidentKECorrected->GetBinError(iBin);
-            double incidentContent = hIncidentKECorrected->GetBinContent(iBin);
+            double incidentErr     = hIncidentKE->GetBinError(iBin);
+            double incidentContent = hIncidentKE->GetBinContent(iBin);
+
+            // Apply correcionts
+            double psi_corr = hPsiInc->GetBinContent(iBin);
+            double c_corr   = hCInc->GetBinContent(iBin);
+            incidentContent = incidentContent * (c_corr / psi_corr);
+            incidentErr     = incidentErr * (c_corr / psi_corr);
 
             double interactingErr     = UnfoldedRecoHistos[i]->GetBinError(iBin);
             double interactingContent = UnfoldedRecoHistos[i]->GetBinContent(iBin);
-
-            double unSmearedInteractingContent = UnSmearedUnfRecoHistos[i]->GetBinContent(iBin);
 
             // we compute error as δσ / σ = δN_int / N_int + δN_inc / N_inc
             double crossSection    = interactingContent / incidentContent;
@@ -2792,24 +2728,15 @@ void RecoClassify3Cat() {
             unfXSec->SetBinContent(iBin, crossSection);
             unfXSec->SetBinError(iBin, crossSectionErr);
 
-            // TODO: error
-            double unsmearedCrossSection = unSmearedInteractingContent / incidentContent;
-            unSmearedUnfXSec->SetBinContent(iBin, unsmearedCrossSection);
-
-            // True cross-sections, no error bars
-            smearedTrueXSec->SetBinContent(iBin, SmearedTrueHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin));
+            // True cross-section, no error bars
             trueXSec->SetBinContent(iBin, TotalEventsHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin));
         }
         // Scale units
         unfXSec->Scale(XSEC_UNITS);
-        unSmearedUnfXSec->Scale(XSEC_UNITS);
-        smearedTrueXSec->Scale(XSEC_UNITS);
         trueXSec->Scale(XSEC_UNITS);
 
         // Make contents per 50 MeV
         reweightOneDHisto(unfXSec, 50.);
-        reweightOneDHisto(unSmearedUnfXSec, 50.);
-        reweightOneDHisto(smearedTrueXSec, 50.);
         reweightOneDHisto(trueXSec, 50.);
     }
 
@@ -2877,20 +2804,10 @@ void RecoClassify3Cat() {
         {hTrueAbsNpKERejDataProds, hTrueAbsNpKERejElectron, hTrueAbsNpKERejRedVol, hTrueAbsNpKERejPID, hTrueAbsNpKERejManyPions, hTrueAbsNpKERejClusters},
         {hTrueScatterKERejDataProds, hTrueScatterKERejElectron, hTrueScatterKERejRedVol, hTrueScatterKERejPID, hTrueScatterKERejManyPions, hTrueScatterKERejClusters},
 
-        // True cross-section comparison (reg vs true space)
-        {hTruePionAbs0pCrossSection, hSmearedTruePionAbs0pCrossSection},
-        {hTruePionAbsNpCrossSection, hSmearedTruePionAbsNpCrossSection},
-        {hTruePionScatterCrossSection, hSmearedTruePionScatterCrossSection},
-
-        // Cross-sections (reg space)
-        {hSmearedTruePionAbs0pCrossSection, hPionAbs0pCrossSection},
-        {hSmearedTruePionAbsNpCrossSection, hPionAbsNpCrossSection},
-        {hSmearedTruePionScatterCrossSection, hPionScatterCrossSection},
-
-        // Cross-sections (true space)
-        {hTruePionAbs0pCrossSection, hUnSmearedPionAbs0pCrossSection},
-        {hTruePionAbsNpCrossSection, hUnSmearedPionAbsNpCrossSection},
-        {hTruePionScatterCrossSection, hUnSmearedPionScatterCrossSection},
+        // Cross-sections (unfolded)
+        {hTruePionAbs0pCrossSection, hPionAbs0pCrossSection},
+        {hTruePionAbsNpCrossSection, hPionAbsNpCrossSection},
+        {hTruePionScatterCrossSection, hPionScatterCrossSection},
 
         // Total true-cross section
         {hTruePionAbs0pCrossSection, hTruePionAbsNpCrossSection, hTruePionScatterCrossSection, hTruePionOtherCrossSection},
@@ -2943,20 +2860,10 @@ void RecoClassify3Cat() {
         {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
         {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
 
-        // True cross-section comparison (reg vs true space)
-        {"True (t)", "True (r)"},
-        {"True (t)", "True (r)"},
-        {"True (t)", "True (r)"},
-
-        // Cross-sections (reg space)
-        {"True (r)", "Unf. (r)"},
-        {"True (r)", "Unf. (r)"},
-        {"True (r)", "Unf. (r)"},
-
-        // Cross-sections (true space)
-        {"True (t)", "Unf. (t)"},
-        {"True (t)", "Unf. (t)"},
-        {"True (t)", "Unf. (t)"},
+        // Cross-sections (unfolded)
+        {"True", "Unf."},
+        {"True", "Unf."},
+        {"True", "Unf."},
 
         // Total true-cross section
         {"Abs 0p", "Abs Np", "Scatter", "Other"},
@@ -3007,20 +2914,10 @@ void RecoClassify3Cat() {
         "Rejected/TrueAbsNpRej",
         "Rejected/TrueScatterRej",
 
-        // True cross-section comparison (reg vs true space)
-        "CrossSection/ComparePionAbs0pCrossSection",
-        "CrossSection/ComparePionAbsNpCrossSection",
-        "CrossSection/ComparePionScatterCrossSection",
-
-        // Cross-sections (reg space)
+        // True cross-section (unfolded)
         "CrossSection/PionAbs0pCrossSection",
         "CrossSection/PionAbsNpCrossSection",
         "CrossSection/PionScatterCrossSection",
-
-        // Cross-sections (true space)
-        "CrossSection/UnSmearedPionAbs0pCrossSection",
-        "CrossSection/UnSmearedPionAbsNpCrossSection",
-        "CrossSection/UnSmearedPionScatterCrossSection",
 
         // Total true-cross section
         "CrossSection/TotalTrueCrossSection",
@@ -3071,17 +2968,7 @@ void RecoClassify3Cat() {
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
 
-        // True cross-section comparison (reg vs true space)
-        "Kinetic energy [MeV]",
-        "Kinetic energy [MeV]",
-        "Kinetic energy [MeV]",
-
-        // Cross-sections (reg space)
-        "Kinetic energy [MeV]",
-        "Kinetic energy [MeV]",
-        "Kinetic energy [MeV]",
-
-        // Cross-sections (true space)
+        // Cross-sections (unfolded)
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
@@ -3135,17 +3022,7 @@ void RecoClassify3Cat() {
         "Counts",
         "Counts",
 
-        // True cross-section comparison (reg vs true space)
-        "Cross section [barn] per 50 MeV",
-        "Cross section [barn] per 50 MeV",
-        "Cross section [barn] per 50 MeV",
-
-        // Cross-sections (reg space)
-        "Cross section [barn] per 50 MeV",
-        "Cross section [barn] per 50 MeV",
-        "Cross section [barn] per 50 MeV",
-
-        // Cross-sections (true space)
+        // Cross-sections (unfolded)
         "Cross section [barn] per 50 MeV",
         "Cross section [barn] per 50 MeV",
         "Cross section [barn] per 50 MeV",
@@ -3199,17 +3076,7 @@ void RecoClassify3Cat() {
         true,
         true,
 
-        // True cross-section comparison (reg vs true space)
-        false,
-        false,
-        false,
-
-        // Cross-sections (reg space)
-        false,
-        false,
-        false,
-
-        // Cross-sections (true space)
+        // Cross-sections (unfolded)
         false,
         false,
         false,
@@ -3263,17 +3130,7 @@ void RecoClassify3Cat() {
         {false, false, false, false, false, false},
         {false, false, false, false, false, false},
 
-        // True cross-section comparison (reg vs true space)
-        {false, true},
-        {false, true},
-        {false, true},
-
-        // Cross-sections (reg space)
-        {false, true},
-        {false, true},
-        {false, true},
-
-        // Cross-sections (true space)
+        // Cross-sections (unfolded)
         {false, true},
         {false, true},
         {false, true},
@@ -3305,33 +3162,14 @@ void RecoClassify3Cat() {
     std::vector<TString> UnfHistTitles = {
         "UnfoldedAbs0p",
         "UnfoldedAbsNp",
-        "UnfoldedScatter",
-        "UnfoldedChExch"
+        "UnfoldedScatter"
     };
 
     for (size_t i = 0; i < UnfoldedRecoHistos.size(); ++i) {
-        PlotGroups.push_back({SmearedTrueHistos[i], UnfoldedRecoHistos[i]});
+        PlotGroups.push_back({TotalEventsHistos[i], UnfoldedRecoHistos[i]});
         PlotsAsPoints.push_back({false, true});
-        PlotLabelGroups.push_back({"True (r)", "Unf. (r)"});
+        PlotLabelGroups.push_back({"True", "Unf."});
         PlotTitles.push_back("Unfolded/" + UnfHistTitles[i]);
-        XLabels.push_back("Kinetic energy [MeV]");
-        YLabels.push_back("Counts");
-        PlotStacked.push_back(false);
-
-        PlotGroups.push_back({TotalEventsHistos[i], UnSmearedUnfRecoHistos[i]});
-        PlotsAsPoints.push_back({false, true});
-        PlotLabelGroups.push_back({"True (t)", "Unf. (t)"});
-        PlotTitles.push_back("Unfolded/UnSmeared" + UnfHistTitles[i] );
-        XLabels.push_back("Kinetic energy [MeV]");
-        YLabels.push_back("Counts");
-        PlotStacked.push_back(false);
-
-        PlotGroups.push_back({TotalEventsHistos[i], SmearedTrueHistos[i]});
-        PlotsAsPoints.push_back({false, false});
-        PlotLabelGroups.push_back({"True (t)", "True (r)"});
-        TString modifiedTitle = UnfHistTitles[i];
-        modifiedTitle.ReplaceAll("Unfolded", "");
-        PlotTitles.push_back("Unfolded/TrueComparison" + modifiedTitle);
         XLabels.push_back("Kinetic energy [MeV]");
         YLabels.push_back("Counts");
         PlotStacked.push_back(false);
@@ -3355,25 +3193,19 @@ void RecoClassify3Cat() {
 
     std::vector<TH2*> TwoDPlots = {
         hResponseMatrix,
+        hResponseInvMatrix,
         hCovariance, 
-        hUnfCovariance,
-        hCovRotation,
-        hSmearing,
-        hSmearingInv
+        hUnfCovariance
     };
 
     std::vector<TString> TwoDTitles = {
         "Response/ResponseMatrix",
+        "Response/ResponseInverseMatrix",
         "Covariance/Covariance",
-        "Covariance/UnfoldedCovariance",
-        "Covariance/CovRotation",
-        "Smearing/AddSmearing",
-        "Smearing/AddSmearingInverse"
+        "Covariance/UnfoldedCovariance"
     };
 
     std::vector<std::pair<double,double>> TwoDRanges = {
-        {0, 0},
-        {0, 0},
         {0, 0},
         {0, 0},
         {0, 0},
@@ -3381,8 +3213,6 @@ void RecoClassify3Cat() {
     };
 
     std::vector<bool> TwoDDisplayNumbers = {
-        false,
-        false,
         false,
         false,
         false,
