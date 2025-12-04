@@ -2,7 +2,9 @@
 set -euo pipefail
 
 # Usage:
-#   sh ./run_chunks.sh /path/to/inputs.list your_fcl.fcl NUM_CHUNKS /path/to/outdir output_name_prefix
+#   sh ./run_chunks.sh /path/to/inputs.list your_fcl.fcl NUM_CHUNKS /path/to/outdir output_name_prefix [START_K]
+#
+# START_K (optional): which chunk number to start from (default = 0)
 #
 # Each chunk runs 10,000 events, increases --nskip by 10,000, and
 # writes numbered event (-o) and histogram (-T) outputs.
@@ -12,6 +14,7 @@ FCL="${2:?need .fcl file}"
 NCHUNKS="${3:?need number of chunks}"
 OUTDIR="${4:?need output directory}"
 OUTNAME="${5:?need output name prefix}"
+STARTK="${6:-0}" 
 
 # Basic checks
 [[ -f "$FILELIST" ]] || { echo "File list not found: $FILELIST" >&2; exit 1; }
@@ -19,7 +22,7 @@ OUTNAME="${5:?need output name prefix}"
 
 mkdir -p "$OUTDIR"
 
-for (( i=0; i< NCHUNKS; ++i )); do
+for (( i=STARTK; i< NCHUNKS; ++i )); do
   idx=$(printf "%05d" "$i")
   N=10000
   NSKIP=$(( i * N ))
