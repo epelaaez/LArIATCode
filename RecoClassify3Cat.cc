@@ -319,7 +319,9 @@ void RecoClassify3Cat() {
 
     std::ofstream outFileAbs0pBkg("files/Classify3Cat/Abs0pBackground.txt");
     std::ofstream outFileLowProb("files/Classify3Cat/LowProbability.txt");
+
     TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "UPDATE");
+    TFile* nominalFile     = new TFile("/exp/lariat/app/users/epelaez/histos/nominal/Reco.root", "UPDATE");
 
     /////////////////////////////////////
     // Files with estimated background //
@@ -806,10 +808,6 @@ void RecoClassify3Cat() {
 
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
-
-        // Load weights
-        auto it = eventToWeightEntry.find(event);
-        if (!(it == eventToWeightEntry.end())) w_tree->GetEntry(it->second);
 
         // Events to debug BDT
         // if (!(
@@ -1534,6 +1532,9 @@ void RecoClassify3Cat() {
         }
         hDataProdsAndWC2TPC->Fill(backgroundType);
 
+        // If more than X through-going tracks in the detector, skip
+        // TODO: above
+
         //////////////////////////////////////
         // Back to classification algorithm //
         //////////////////////////////////////
@@ -1817,8 +1818,6 @@ void RecoClassify3Cat() {
         int otherTaggedPion   = 0;
         int otherTaggedProton = 0;
 
-        int numSmallTracks = 0;
-
         // TODO: look at tertiary tracks?
 
         for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
@@ -1841,7 +1840,6 @@ void RecoClassify3Cat() {
                 pow(recoBeginY->at(trk_idx) - recoEndY->at(trk_idx), 2) + 
                 pow(recoBeginZ->at(trk_idx) - recoEndZ->at(trk_idx), 2)
             );
-            if (thisTrackLength < SMALL_TRACK_LENGTH_CHEX) numSmallTracks++;
 
             if ((distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS)) {
                 std::vector<double> secondaryDEDX = recoDEDX->at(trk_idx);
@@ -2616,6 +2614,15 @@ void RecoClassify3Cat() {
         }
     }
 
+    // Save nominal measure vector and response matrix
+    TH1D* hMeasureVectorNominal = new TH1D("hMeasureVectorNominal", "hMeasureVectorNominal;;", NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE); V2H(Measure, hMeasureVectorNominal);
+
+    hMeasureVectorNominal->SetDirectory(nominalFile);
+    hMeasureVectorNominal->Write();
+
+    hResponseMatrix->SetDirectory(nominalFile);
+    hResponseMatrix->Write();
+
     // Construct covariance matrix (only statistical variance for now)
     TMatrixD Covariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); Covariance.Zero();
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
@@ -3220,4 +3227,7 @@ void RecoClassify3Cat() {
     };
 
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles, TwoDRanges, TwoDDisplayNumbers);
+
+    // Close nominal file
+    nominalFile->Close();
 }

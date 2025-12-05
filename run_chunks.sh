@@ -2,9 +2,14 @@
 set -euo pipefail
 
 # Usage:
-#   sh ./run_chunks.sh /path/to/inputs.list your_fcl.fcl NUM_CHUNKS /path/to/outdir output_name_prefix [START_K]
+#   sh run_chunks.sh FILELIST FCL NCHUNKS OUTDIR OUTNAME [STARTK]
 #
-# START_K (optional): which chunk number to start from (default = 0)
+# FILELIST : text file listing input ROOT files (/path/to/inputs.list)
+# FCL      : FHiCL configuration file (your_fcl.fcl)
+# NCHUNKS  : total number of chunks to run
+# OUTDIR   : directory for output (/path/to/outdir)
+# OUTNAME  : prefix for output files
+# STARTK   : (optional) starting chunk index, default = 0
 #
 # Each chunk runs 10,000 events, increases --nskip by 10,000, and
 # writes numbered event (-o) and histogram (-T) outputs.

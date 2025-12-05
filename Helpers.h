@@ -346,3 +346,13 @@ TMatrixD Matrix_C(Int_t n, Int_t type);
 //   - WF is the elements of Wiener Filter
 //   - Covariance matrix of the unfolded spectrum
 TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrixD Covariance, Int_t C_type, Float_t Norm_type, TMatrixD& AddSmear, TVectorD& WF, TMatrixD& UnfoldCov, TMatrixD& CovRotation, TMatrixD& AddSmearInverse, bool filterOff = false);
+
+/////////////////
+// Systematics //
+/////////////////
+
+void GetCovMatrix(TH1* RecoHisto, std::vector<TH1D*> UnivRecoHisto, TH2* CovMatrix);
+void GetFracCovAndCorrMatrix(TH1* RecoHisto, TH2* CovMatrix, TH2* FracCovMatrix, TH2* CorrMatrix);
+double FindQuantile(double frac, std::vector<double>& xs_in);
+void DrawHistosWithErrorBands(TH1D* RecoHisto, std::vector<TH1D*> UnivRecoHisto, TString dir, TString SystName, TString PlotName, double TextSize = 0.06, int FontStyle = 132);
+void DrawErrorBand(TH1* nom, TGraphAsymmErrors* band, int bandCol, double alpha);

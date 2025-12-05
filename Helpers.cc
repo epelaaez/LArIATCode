@@ -1625,3 +1625,195 @@ void getBDTVariables(
     }
     *bdt_numRecoTrksInCylinder = trks_in_cylinder;
 }
+
+/////////////////
+// Systematics //
+/////////////////
+
+void GetCovMatrix(
+    TH1* RecoHisto,
+    std::vector<TH1D*> UnivRecoHisto,
+    TH2* CovMatrix
+) {
+    int NUniv = UnivRecoHisto.size();
+
+    // Create covariance matrices
+    int n = RecoHisto->GetNbinsX();
+    for (int iUniv = 0; iUniv < NUniv; ++iUniv) {
+        for (int x = 1; x < n + 1; x++) {
+            double XEventRateCV = RecoHisto->GetBinContent(x);
+            double XEventRateVar = UnivRecoHisto[iUniv]->GetBinContent(x);
+            for (int y = 1; y < n + 1; y++) {
+                double YEventRateCV = RecoHisto->GetBinContent(y);
+                double YEventRateVar = UnivRecoHisto[iUniv]->GetBinContent(y);
+
+                double Value = ((XEventRateVar - XEventRateCV) * (YEventRateVar - YEventRateCV)) / NUniv;
+                if (TMath::Abs(Value) < 1e-14) Value = 1e-14;
+
+                // if (x == y) {
+                //     std::cout << "(" << x << ", " << y << ")" << std::endl;
+                //     std::cout << XEventRateVar << "  " << XEventRateCV << "  " << XEventRateVar - XEventRateCV << std::endl;
+                //     std::cout << YEventRateVar << "  " << YEventRateCV << "  " << YEventRateVar - YEventRateCV << std::endl;
+                //     std::cout << Value << std::endl;
+                //     std::cout << std::endl;
+                // }
+
+                CovMatrix->Fill(
+                    RecoHisto->GetXaxis()->GetBinCenter(x),
+                    RecoHisto->GetXaxis()->GetBinCenter(y),
+                    Value
+                );
+            }
+        }
+    }
+}
+
+void GetFracCovAndCorrMatrix(
+    TH1* RecoHisto,
+    TH2* CovMatrix,
+    TH2* FracCovMatrix,
+    TH2* CorrMatrix
+) {
+    int n = RecoHisto->GetNbinsX();
+    for (int x = 1; x < n + 1; x++) {
+        double XEventRateCV = RecoHisto->GetBinContent(x);
+        for (int y = 1; y < n + 1; y++) {
+            double YEventRateCV = RecoHisto->GetBinContent(y);
+            double CovBinValue = CovMatrix->GetBinContent(x,y);
+            double XBinValue = CovMatrix->GetBinContent(x,x);
+            double YBinValue = CovMatrix->GetBinContent(y,y);
+
+            // Fill frac cov matrix
+            double FracValue = (XEventRateCV == 0. || YEventRateCV == 0.) ? 1e-14 : CovBinValue / (XEventRateCV * YEventRateCV);
+            if (TMath::Abs(FracValue) < 1e-14) FracValue = 1e-14;
+            FracCovMatrix->SetBinContent(x, y, FracValue);
+
+            // Fill corr matrix
+            double CorrValue = (XBinValue == 0. || YBinValue == 0.) ? 1e-14 : CovBinValue / (TMath::Sqrt(XBinValue) * TMath::Sqrt(YBinValue));
+            if (TMath::Abs(CorrValue) < 1e-14) CorrValue = 1e-14;
+            CorrMatrix->SetBinContent(x, y, CorrValue);
+        }
+    }
+}
+
+double FindQuantile(double frac, std::vector<double>& xs_in) {
+    // This turns out to be a much more fraught issue than you would naively
+    // expect. This algorithm is equivalent to R-6 here:
+    // https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample
+
+    // In principle we could use std::nth_element(). Probably doesn't matter
+    // much in practice since this is only for plotting.
+    std::vector<double> xs = xs_in;
+    std::sort(xs.begin(), xs.end());
+
+    const int N = xs.size();
+    // The index we would ideally be sampling at
+    const double h = frac*(N+1);
+    // The indices on either side where we have to actually evaluate
+    const unsigned int h0 = std::floor(h);
+    const unsigned int h1 = std::ceil(h);
+    if(h0 == 0) return xs[0]; // Don't underflow indexing
+    if(h1 > xs.size()) return xs.back(); // Don't overflow indexing
+    // The values at those indices
+    const double x0 = xs[h0-1]; // wikipedia is using 1-based indexing
+    const double x1 = xs[h1-1];
+
+    if(h0 == h1) return x0;
+
+    // Linear interpolation
+    return (h1-h)*x0 + (h-h0)*x1;
+}
+
+void DrawHistosWithErrorBands(
+    TH1D* RecoHisto, 
+    std::vector<TH1D*> UnivRecoHisto, 
+    TString dir, 
+    TString SystName, 
+    TString PlotName,
+    double TextSize,
+    int FontStyle
+) {
+    // Make sure univ histos are of the same length
+    assert (UnivRecoHisto.size() == UnivRecoTrueHisto.size());
+    int NUniv = UnivRecoHisto.size();
+
+    // Create canvas for plots
+    TCanvas* PlotCanvas = new TCanvas("Selection","Selection",205,34,1124,768);
+
+    // Legend for plot with error bands
+    TLegend* leg = new TLegend(0.2,0.73,0.75,0.83);
+    leg->SetBorderSize(0);
+    leg->SetNColumns(3);
+    leg->SetTextSize(TextSize*0.8);
+    leg->SetTextFont(FontStyle);
+
+    TLegendEntry* legReco = leg->AddEntry(RecoHisto,"Reconstructed","l");
+    RecoHisto->SetLineColor(kBlue+2);
+    RecoHisto->SetLineWidth(4);
+
+    int n = RecoHisto->GetNbinsX();
+    double edges[n+1];
+    for (int i = 0; i < n+1; i++) { edges[i] = RecoHisto->GetBinLowEdge(i+1); }
+
+    // Get graph with error bands
+    TGraphAsymmErrors* RecoErrorBand = new TGraphAsymmErrors;
+    for (int binIdx = 0; binIdx < n + 2; ++binIdx) {
+        const double recoxnom = RecoHisto->GetXaxis()->GetBinCenter(binIdx);
+        const double recoynom = RecoHisto->GetBinContent(binIdx);
+        RecoErrorBand->SetPoint(binIdx, recoxnom, recoynom);
+
+        const double dx = RecoHisto->GetXaxis()->GetBinWidth(binIdx);
+
+        std::vector<double> recoys;
+        for(int iUniv = 0; iUniv < NUniv; ++iUniv){
+            recoys.push_back(UnivRecoHisto.at(iUniv)->GetBinContent(binIdx));
+        }
+        const double recoy0 = FindQuantile(.5-0.6827/2, recoys);
+        const double recoy1 = FindQuantile(.5+0.6827/2, recoys);
+
+        RecoErrorBand->SetPointError(binIdx, dx/2, dx/2, std::max(recoynom-recoy0, 0.), std::max(recoy1-recoynom, 0.));
+    }
+    PlotCanvas->cd();
+    PlotCanvas->SetTopMargin(0.13);
+    PlotCanvas->SetLeftMargin(0.17);
+    PlotCanvas->SetRightMargin(0.05);
+    PlotCanvas->SetBottomMargin(0.16);
+
+    double imax = RecoHisto->GetMaximum();
+    double YAxisRange = 1.3*imax;
+    RecoHisto->GetYaxis()->SetRangeUser(0.,YAxisRange);
+
+    RecoHisto->Draw("hist");
+    DrawErrorBand(RecoHisto, RecoErrorBand, -1, 1);
+    leg->Draw();
+    PlotCanvas->SaveAs(dir+SystName+"/"+PlotName+".png");
+    delete PlotCanvas; delete leg;
+}
+
+void DrawErrorBand(TH1* nom, TGraphAsymmErrors* band, int bandCol, double alpha) {
+    if(bandCol == -1) bandCol = nom->GetLineColor()-10; // hopefully a lighter version
+
+    // Check if this pad has already been drawn in
+    const bool same = gPad && !gPad->GetListOfPrimitives()->IsEmpty();
+
+    nom->Draw(same ? "hist same" : "hist");
+
+    band->SetFillColorAlpha(bandCol, alpha);
+    band->Draw("e2 same");
+
+    nom->Draw("hist same");
+
+    // If we are the first spectrum to draw, scale the y-axis appropriately to
+    // fit the error band as well as the nominal
+    if(!same){
+    double maxY = 0;
+    // Don't consider underflow or overflow bins when determining maximum
+    for(int i = 1; i < band->GetN()-1; ++i){
+        maxY = std::max(maxY, band->GetY()[i] + band->GetErrorYhigh(i));
+    }
+
+    // Use non-zero lower value so that SetLogy() still works
+    nom->GetYaxis()->SetRangeUser(1e-10, 1.1 * maxY);
+    }
+    gPad->RedrawAxis();
+}
