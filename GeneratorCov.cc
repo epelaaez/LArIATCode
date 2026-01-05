@@ -42,12 +42,12 @@ void GeneratorCov() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Systematics/";
 
     // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEvalRV_histo.root"; // RV at z = 30
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
     // Get file with weights
-    TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/CalculateWeights_histo.root";
+    TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/WeightsAll_histo.root";
     std::unique_ptr<TFile> WeightsFile(TFile::Open(RootWeightsFilePath));
     TDirectory* WeightsDirectory = (TDirectory*)WeightsFile->Get("CalculateWeights");
     TTree* w_tree = (TTree*) WeightsDirectory->Get<TTree>("WeightsTree");
@@ -316,53 +316,111 @@ void GeneratorCov() {
 
     NUM_SIGNAL_TYPES = 3;
 
+    /////////////////
+    // Incident KE //
+    /////////////////
+
     // Selected incident pion
-    std::vector<TH1D*> PionIncidentKEUnivs; PionIncidentKEUnivs.reserve(NUM_UNIVERSES);
-    for (int i = 0; i < NUM_UNIVERSES; ++i) {
-        auto h = std::make_unique<TH1D>(
-            ("hIncidentKE_" + std::to_string(i)).c_str(),
-            "IncidentKE;Kinetic Energy [MeV];Counts",
-            NUM_BINS_KE, ARRAY_KE_BINS.data()
-        ); PionIncidentKEUnivs.push_back(h.release());
-    }
+    std::vector<TH1D*> PionIncidentKEUnivs = MakeUniverseHists("hIncidentKE", "IncidentKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
     TH1D* hPionIncidentKENom = new TH1D("hPionIncidentKENom", "hPionIncidentKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
+    // Selected incident pion that is true pion
+    std::vector<TH1D*> PionIncidentKETrueUnivs = MakeUniverseHists("hIncidentKETrue", "IncidentKETrue;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
+    TH1D* hPionIncidentKETrueNom = new TH1D("hPionIncidentKETrueNom", "hPionIncidentKETrueNom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
+    // True incident KE
+    std::vector<TH1D*> TrueIncidentKEUnivs = MakeUniverseHists("hTrueIncidentKE", "TrueIncidentKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
+    TH1D* hTrueIncidentKENom = new TH1D("hTrueIncidentKENom", "hTrueIncidentKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
+    /////////////////
+    // Selected KE // 
+    /////////////////
+
     // Selected pion abs 0p for universes
-    std::vector<TH1D*> PionAbs0pKEUnivs; PionAbs0pKEUnivs.reserve(NUM_UNIVERSES);
-    for (int i = 0; i < NUM_UNIVERSES; ++i) {
-        auto h = std::make_unique<TH1D>(
-            ("hPionAbs0pKE_" + std::to_string(i)).c_str(),
-            "PionAbs0pKE;Kinetic Energy [MeV];Counts",
-            NUM_BINS_KE, ARRAY_KE_BINS.data()
-        ); PionAbs0pKEUnivs.push_back(h.release());
-    }
+    std::vector<TH1D*> PionAbs0pKEUnivs = MakeUniverseHists("hPionAbs0pKE", "PionAbs0pKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
     TH1D* hPionAbs0pKENom = new TH1D("hPionAbs0pKENom", "hPionAbs0pKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Selected pion abs Np for universes
-    std::vector<TH1D*> PionAbsNpKEUnivs; PionAbsNpKEUnivs.reserve(NUM_UNIVERSES);
-    for (int i = 0; i < NUM_UNIVERSES; ++i) {
-        auto h = std::make_unique<TH1D>(
-            ("hPionAbsNpKE_" + std::to_string(i)).c_str(),
-            "PionAbsNpKE;Kinetic Energy [MeV];Counts",
-            NUM_BINS_KE, ARRAY_KE_BINS.data()
-        ); PionAbsNpKEUnivs.push_back(h.release());
-    }
+    std::vector<TH1D*> PionAbsNpKEUnivs = MakeUniverseHists("hPionAbsNpKE", "PionAbsNpKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
     TH1D* hPionAbsNpKENom = new TH1D("hPionAbsNpKENom", "hPionAbsNpKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Selected pion scattering for universes
-    std::vector<TH1D*> PionScatterKEUnivs; PionScatterKEUnivs.reserve(NUM_UNIVERSES);
-    for (int i = 0; i < NUM_UNIVERSES; ++i) {
-        auto h = std::make_unique<TH1D>(
-            ("hPionScatterKE_" + std::to_string(i)).c_str(),
-            "PionScatterKE;Kinetic Energy [MeV];Counts",
-            NUM_BINS_KE, ARRAY_KE_BINS.data()
-        ); PionScatterKEUnivs.push_back(h.release());
-    }
+    std::vector<TH1D*> PionScatterKEUnivs = MakeUniverseHists("hPionScatterKE", "PionScatterKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
     TH1D* hPionScatterKENom = new TH1D("hPionScatterKENom", "hPionScatterKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     std::vector<TH1*> RecoSignals = {
         hPionAbs0pKENom, hPionAbsNpKENom, hPionScatterKENom
     };
+
+    /////////////
+    // True KE // 
+    /////////////
+
+    // True abs 0p KE
+    std::vector<TH1D*> TruePionAbs0pKEUnivs = MakeUniverseHists("hTruePionAbs0pKE", "TruePionAbs0pKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
+    TH1D* hTruePionAbs0pKENom = new TH1D("hTruePionAbs0pKENom", "hTruePionAbs0pKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
+    // True abs Np KE
+    std::vector<TH1D*> TruePionAbsNpKEUnivs = MakeUniverseHists("hTruePionAbsNpKE", "TruePionAbsNpKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
+    TH1D* hTruePionAbsNpKENom = new TH1D("hTruePionAbsNpKENom", "hTruePionAbsNpKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
+    // True abs scattering KE
+    std::vector<TH1D*> TruePionScatterKEUnivs = MakeUniverseHists("hTruePionScatterKE", "TruePionScatterKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
+    TH1D* hTruePionScatterKENom = new TH1D("hTruePionScatterKENom", "hTruePionScatterKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
+    std::vector<TH1*> TotalEventsHistos = {
+        hTruePionAbs0pKENom, hTruePionAbsNpKENom, hTruePionScatterKENom
+    };
+
+    /////////////////////////
+    // For response matrix //
+    /////////////////////////
+
+    // For all universes
+    std::vector<std::vector<std::vector<TH1D*>>> TrueAbs0pAsByBinUnivs = MakeUniverseHistBlock(
+        "hTrueAbs0p", "True Abs0p (U=%d): As %d in true bin %d",
+        NUM_UNIVERSES, NUM_BINS_KE, NUM_SIGNAL_TYPES,
+        NUM_BINS_KE, ARRAY_KE_BINS.data()
+    );
+    std::vector<std::vector<std::vector<TH1D*>>> TrueAbsNpAsByBinUnivs = MakeUniverseHistBlock(
+        "hTrueAbsNp", "True AbsNp (U=%d): As %d in true bin %d",
+        NUM_UNIVERSES, NUM_BINS_KE, NUM_SIGNAL_TYPES,
+        NUM_BINS_KE, ARRAY_KE_BINS.data()
+    );
+    std::vector<std::vector<std::vector<TH1D*>>> TrueScatterAsByBinUnivs = MakeUniverseHistBlock(
+        "hTrueScatter", "True Scatter (U=%d): As %d in true bin %d",
+        NUM_UNIVERSES, NUM_BINS_KE, NUM_SIGNAL_TYPES,
+        NUM_BINS_KE, ARRAY_KE_BINS.data()
+    );
+
+    // Nominal
+    std::vector<std::vector<TH1*>> TrueAbs0pAsByBinNom;
+    for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
+        std::vector<TH1*> TempVec;
+        for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
+            TH1* hTempHist = new TH1D(Form("hTrueAbs0p_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs 0p KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TempVec.push_back(hTempHist);
+        }
+        TrueAbs0pAsByBinNom.push_back(TempVec);
+    }
+    std::vector<std::vector<TH1*>> TrueAbsNpAsByBinNom;
+    for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
+        std::vector<TH1*> TempVec;
+        for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
+            TH1* hTempHist = new TH1D(Form("hTrueAbsNp_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Np KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TempVec.push_back(hTempHist);
+        }
+        TrueAbsNpAsByBinNom.push_back(TempVec);
+    }
+    std::vector<std::vector<TH1*>> TrueScatterAsByBinNom;
+    for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
+        std::vector<TH1*> TempVec;
+        for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
+            TH1* hTempHist = new TH1D(Form("hTrueScatter_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Scatter KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TempVec.push_back(hTempHist);
+        }
+        TrueScatterAsByBinNom.push_back(TempVec);
+    }
 
     //////////////////////
     // Loop over events //
@@ -375,7 +433,7 @@ void GeneratorCov() {
         tree->GetEntry(i);
 
         // Go faster
-        // if (i > 10000) break;
+        if (i > 50000) break;
 
         // Load weights
         auto it = eventToWeightEntry.find(event);
@@ -623,6 +681,35 @@ void GeneratorCov() {
             }
         }
 
+        ///////////////////////////
+        // Get truth information //
+        ///////////////////////////
+
+        int TrueEnergyBin = getBin(truthPrimaryVertexKE * 1000, ARRAY_KE_BINS);
+
+        if (validTrueIncidentKE) {
+            for (double x : *trueIncidentKEContributions) {
+                // Add to nominal
+                hTrueIncidentKENom->Fill(x);
+
+                // Add to universes
+                for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+                    TrueIncidentKEUnivs[iUniv]->Fill(x, evt_weights->at(iUniv));
+                }
+            }
+        }
+
+        if (backgroundType == 0) {
+            hTruePionAbs0pKENom->Fill(truthPrimaryVertexKE * 1000);
+            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionAbs0pKEUnivs[iUniv]->Fill(truthPrimaryVertexKE * 1000, evt_weights->at(iUniv));
+        } else if (backgroundType == 1) {
+            hTruePionAbsNpKENom->Fill(truthPrimaryVertexKE * 1000);
+            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionAbsNpKEUnivs[iUniv]->Fill(truthPrimaryVertexKE * 1000, evt_weights->at(iUniv));
+        } else if (backgroundType == 6 || backgroundType == 12) {
+            hTruePionScatterKENom->Fill(truthPrimaryVertexKE * 1000);
+            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionScatterKEUnivs[iUniv]->Fill(truthPrimaryVertexKE * 1000, evt_weights->at(iUniv));
+        }
+
         //////////////////////////////
         // Classification algorithm //
         //////////////////////////////
@@ -863,20 +950,47 @@ void GeneratorCov() {
 
             // Add weights to scatter
             hPionScatterKENom->Fill(energyAtVertex);
-            // if (backgroundType == 6) std::cout << "found true scatter: " << std::endl;
-            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
-                // if (backgroundType == 6) std::cout << evt_weights->at(iUniv) << " ";
-                PionScatterKEUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
+            if (backgroundType == 0) {
+                if (TrueEnergyBin != -1) TrueAbs0pAsByBinNom.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                if (TrueEnergyBin != -1) TrueAbsNpAsByBinNom.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
+            } else if (backgroundType == 6 || backgroundType == 12) {
+                if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
             }
-            // if (backgroundType == 6) std::cout << std::endl;
+
+            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+                PionScatterKEUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
+                if (backgroundType == 0) {
+                    if (TrueEnergyBin != -1) TrueAbs0pAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(2)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                } else if (backgroundType == 1) {
+                    if (TrueEnergyBin != -1) TrueAbsNpAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(2)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                } else if (backgroundType == 6 || backgroundType == 12) {
+                    if (TrueEnergyBin != -1) TrueScatterAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(2)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                }
+            }
             continue;
         }
 
         if (totalTaggedProtons > 0) {
             // Add weights to abs Np
             hPionAbsNpKENom->Fill(energyAtVertex);
+            if (backgroundType == 0) {
+                if (TrueEnergyBin != -1) TrueAbs0pAsByBinNom.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                if (TrueEnergyBin != -1) TrueAbsNpAsByBinNom.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+            } else if (backgroundType == 6 || backgroundType == 12) {
+                if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+            }
+            
             for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
                 PionAbsNpKEUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
+                if (backgroundType == 0) {
+                    if (TrueEnergyBin != -1) TrueAbs0pAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(1)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                } else if (backgroundType == 1) {
+                    if (TrueEnergyBin != -1) TrueAbsNpAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(1)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                } else if (backgroundType == 6 || backgroundType == 12) {
+                    if (TrueEnergyBin != -1) TrueScatterAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(1)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                }
             }
             continue;
         }
@@ -921,8 +1035,23 @@ void GeneratorCov() {
         ) {
             // Add weights to abs 0p
             hPionAbs0pKENom->Fill(energyAtVertex);
+            if (backgroundType == 0) {
+                if (TrueEnergyBin != -1) TrueAbs0pAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            } else if (backgroundType == 1) {
+                if (TrueEnergyBin != -1) TrueAbsNpAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            } else if (backgroundType == 6 || backgroundType == 12) {
+                if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            }
+
             for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
                 PionAbs0pKEUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
+                if (backgroundType == 0) {
+                    if (TrueEnergyBin != -1) TrueAbs0pAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(0)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                } else if (backgroundType == 1) {
+                    if (TrueEnergyBin != -1) TrueAbsNpAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(0)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                } else if (backgroundType == 6 || backgroundType == 12) {
+                    if (TrueEnergyBin != -1) TrueScatterAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(0)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                }
             }
             continue;
         }

@@ -36,23 +36,9 @@ void RecoClassify3Cat() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Classify3Cat/";
 
     // Load file with NN data products
-    // TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo2.root";
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEvalRV_histo.root"; // RV at z = 30
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
-
-    // Get file with weights
-    TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/CalculateWeights_histo.root";
-    std::unique_ptr<TFile> WeightsFile(TFile::Open(RootWeightsFilePath));
-    TDirectory* WeightsDirectory = (TDirectory*)WeightsFile->Get("CalculateWeights");
-    TTree* w_tree = (TTree*) WeightsDirectory->Get<TTree>("WeightsTree");
-
-    std::unordered_map<int, Long64_t> eventToWeightEntry;
-    int w_evt; w_tree->SetBranchAddress("event", &w_evt);
-    std::vector<double>* evt_weights = nullptr; w_tree->SetBranchAddress("weights", &evt_weights);
-    for (Long64_t i = 0; i < w_tree->GetEntries(); ++i) {
-        w_tree->GetEntry(i); eventToWeightEntry[w_evt] = i;
-    }
 
     ///////////////////
     // Load branches //
@@ -71,23 +57,6 @@ void RecoClassify3Cat() {
     int backgroundType, numVisibleProtons; 
     tree->SetBranchAddress("backgroundType", &backgroundType);
     tree->SetBranchAddress("numVisibleProtons", &numVisibleProtons);
-
-    // Shower probability information
-    double trackProb, showerProb;
-    bool obtainedProbabilities;
-    tree->SetBranchAddress("trackProb", &trackProb);
-    tree->SetBranchAddress("showerProb", &showerProb);
-    tree->SetBranchAddress("obtainedProbabilities", &obtainedProbabilities);
-
-    double showerNoBoxProb;
-    bool obtainedNoBoxProbabilities;
-    tree->SetBranchAddress("showerNoBoxProb", &showerNoBoxProb);
-    tree->SetBranchAddress("obtainedNoBoxProbabilities", &obtainedNoBoxProbabilities);
-
-    double showerOutsideBoxProb;
-    bool obtainedOutsideBoxProbabilities;
-    tree->SetBranchAddress("showerOutsideBoxProb", &showerOutsideBoxProb);
-    tree->SetBranchAddress("obtainedOutsideBoxProbabilities", &obtainedOutsideBoxProbabilities);
 
     // WC match information
     int WC2TPCtrkID, WC2TPCsize;
@@ -257,6 +226,16 @@ void RecoClassify3Cat() {
     tree->SetBranchAddress("hitWC2TPCKey", &hitWC2TPCKey);
     tree->SetBranchAddress("hitThroughTrack", &hitThroughTrack);
 
+    // Hits reconstructed into full tracks
+    std::vector<std::vector<int>>* recoTrackHitIndices = nullptr;
+    std::vector<std::vector<double>>*     recoTrackHitX = nullptr; 
+    std::vector<std::vector<double>>*     recoTrackHitY = nullptr; 
+    std::vector<std::vector<double>>*     recoTrackHitZ = nullptr; 
+    tree->SetBranchAddress("recoTrackHitIndices", &recoTrackHitIndices);
+    tree->SetBranchAddress("recoTrackHitX", &recoTrackHitX);
+    tree->SetBranchAddress("recoTrackHitY", &recoTrackHitY);
+    tree->SetBranchAddress("recoTrackHitZ", &recoTrackHitZ);
+
     // Truth level incident KE information
     bool validTrueIncidentKE;
     std::vector<double>* trueIncidentKEContributions = nullptr;
@@ -320,8 +299,8 @@ void RecoClassify3Cat() {
     std::ofstream outFileAbs0pBkg("files/Classify3Cat/Abs0pBackground.txt");
     std::ofstream outFileLowProb("files/Classify3Cat/LowProbability.txt");
 
-    TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "UPDATE");
-    TFile* nominalFile     = new TFile("/exp/lariat/app/users/epelaez/histos/nominal/Reco.root", "UPDATE");
+    TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "RECREATE");
+    TFile* nominalFile     = new TFile("/exp/lariat/app/users/epelaez/histos/nominal/Reco.root", "RECREATE");
 
     /////////////////////////////////////
     // Files with estimated background //
@@ -372,7 +351,7 @@ void RecoClassify3Cat() {
     TH1D* hTotalEvents = new TH1D("hTotalEvents", "hTotalEvents", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
     // Histograms with classified events
-    TH1D* hPionAbs0p     = new TH1D("hPassShowerProb", "hPassShowerProb;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D* hPionAbs0p     = new TH1D("hPionAbs0p", "hPionAbs0p;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D* hPionAbsNp     = new TH1D("hPionAbsNp", "hPionAbsNp;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D* hPionScatter   = new TH1D("hPionScatter", "hPionScatter;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
@@ -680,14 +659,10 @@ void RecoClassify3Cat() {
     TH1D* hMCTGSmallTracks1TG = new TH1D("hMCTGSmallTracks1TG", "hMCTGSmallTracks1TG;;", 10, 0, 10);
     TH1D* hMCTGSmallTracks2TG = new TH1D("hMCTGSmallTracks2TG", "hMCTGSmallTracks2TG;;", 10, 0, 10);
 
-    TH1D* hMCTGTrackLengths         = new TH1D("hMCTGTrackLengths", "hMCTGTrackLengths;;", 25, 0, 500);
+    TH1D* hMCTGTrackLengths         = new TH1D("hMCTGTrackLengths", "hMCTGTrackLengths;;", 25, 0, 50);
     TH1D* hMCTracksNearVertex       = new TH1D("hMCTracksNearVertex", "hMCTracksNearVertex;;", 10, 0, 10);
     TH1D* hMCTrackLengthsNearVertex = new TH1D("hMCTrackLengthsNearVertex", "hMCTrackLengthsNearVertex;;", 50, 0, 100);
     TH1D* hMCNumTGTracks            = new TH1D("hMCNumTGTracks", "hMCNumTGTracks;;", 10, 0, 10);
-    TH1D* hMCShowerProb             = new TH1D("hMCShowerProb", "hMCShowerProb;;", 20, 0, 1.);
-
-    TH1D* hMCBeforeShowerCutSmallTracks = new TH1D("hMCBeforeShowerCutSmallTracks", "hMCBeforeShowerCutSmallTracks;;", 10, 0, 10);
-    TH1D* hMCAfterShowerCutSmallTracks  = new TH1D("hMCAfterShowerCutSmallTracks", "hMCAfterShowerCutSmallTracks;;", 10, 0, 10);
 
     TH2D* hMCSmallVsTGTracks          = new TH2D("hMCSmallVsTGTracks", "MCSmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
     TH2D* hMCTGNumSmallTracksVsThresh = new TH2D("hMCTGNumSmallTracksVsThresh", "MCTGNumSmallTracksVsThresh;Small Track Length Threshold (cm);Num Small Tracks", 10, 0, 40, 15, 0, 15);
@@ -809,22 +784,8 @@ void RecoClassify3Cat() {
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
 
-        // Events to debug BDT
-        // if (!(
-        //     event == 149604 || 
-        //     event == 149610 ||
-        //     event == 149612 ||
-        //     event == 149622 ||
-        //     event == 149625 ||
-        //     event == 149626 ||
-        //     event == 149627 
-        // )) continue;
-
-        // Use first 50k events, last 50k events were used for BDT training
-        // if (i > 50000) break;
-
         // Make script go faster
-        // if (i > 20000) break;
+        // if (i > 50000) break;
 
         // Get unordered set for hits in tracks
         std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
@@ -1047,7 +1008,6 @@ void RecoClassify3Cat() {
         std::vector<int> hitWC2TPCKeyCollection;
         bool foundHitNegativeTime = false;
         for (size_t i = 0; i < hitWC2TPCKey->size(); ++i) {
-            // std::cout << "   " << fHitPlane->at(hitWC2TPCKey->at(i)) << "  x: " << fHitX->at(hitWC2TPCKey->at(i)) << "  w: " << fHitW->at(hitWC2TPCKey->at(i)) << "  t: " << fHitT->at(hitWC2TPCKey->at(i))  <<std::endl;
             if (fHitPlane->at(hitWC2TPCKey->at(i)) == 0) hitWC2TPCKeyInduction.push_back(hitWC2TPCKey->at(i));
             else if (fHitPlane->at(hitWC2TPCKey->at(i)) == 1) hitWC2TPCKeyCollection.push_back(hitWC2TPCKey->at(i));
 
@@ -1066,8 +1026,6 @@ void RecoClassify3Cat() {
             hMCPrimaryTrackPosition->Fill(WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY);
 
             bool isPrimaryTG = !isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ);
-
-            if (obtainedProbabilities) hMCShowerProb->Fill(showerProb);
 
             int smallTracksComp = 0;
             int tracksNearVertexComp = 0;
@@ -1211,10 +1169,8 @@ void RecoClassify3Cat() {
                 if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksComp++;
             }
 
-            hMCBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
             hMCNumTGTracks->Fill(numTGTracksComp);
 
-            if (obtainedProbabilities && showerProb < SHOWER_PROB_CUT) hMCAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
             if (!isPrimaryTG) hMCTracksNearVertex->Fill(tracksNearVertexComp);
 
             if (isPrimaryTG) {
@@ -2115,7 +2071,7 @@ void RecoClassify3Cat() {
 
         if (
             numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION &&
-            numClustersCollection < MAX_NUM_CLUSTERS_COLLECTION && 
+            numClustersCollection < MAX_NUM_CLUSTERS_COLLECTION &&
             largestClusterSizeInduction < MAX_LARGEST_CLUSTER_INDUCTION &&
             largestClusterSizeCollection < MAX_LARGEST_CLUSTER_COLLECTION
         ) {
@@ -2418,98 +2374,52 @@ void RecoClassify3Cat() {
     // Save comparison histograms //
     ////////////////////////////////
 
-    hMCTGSmallTracks->SetDirectory(comparisonsFile);
-    hMCTGSmallTracks0TG->SetDirectory(comparisonsFile);
-    hMCTGSmallTracks1TG->SetDirectory(comparisonsFile);
-    hMCTGSmallTracks2TG->SetDirectory(comparisonsFile);
-    hMCTGSmallTracks->Write();
-    hMCTGSmallTracks0TG->Write();
-    hMCTGSmallTracks1TG->Write();
-    hMCTGSmallTracks2TG->Write();
+    comparisonsFile->cd();
 
-    hMCTracksNearVertex->SetDirectory(comparisonsFile);
-    hMCTracksNearVertex->Write();
+    hMCTGSmallTracks->Write("", TObject::kOverwrite);
+    hMCTGSmallTracks0TG->Write("", TObject::kOverwrite);
+    hMCTGSmallTracks1TG->Write("", TObject::kOverwrite);
+    hMCTGSmallTracks2TG->Write("", TObject::kOverwrite);
 
-    hMCTrackLengthsNearVertex->SetDirectory(comparisonsFile);
-    hMCTrackLengthsNearVertex->Write();
+    hMCTracksNearVertex->Write("", TObject::kOverwrite);
+    hMCTrackLengthsNearVertex->Write("", TObject::kOverwrite);
 
-    hMCNumTGTracks->SetDirectory(comparisonsFile);
-    hMCNumTGTracks->Write();
+    hMCNumTGTracks->Write("", TObject::kOverwrite);
+    hMCSmallVsTGTracks->Write("", TObject::kOverwrite);
+    hMCTGTrackLengths->Write("", TObject::kOverwrite);
+    hMCTGNumSmallTracksVsThresh->Write("", TObject::kOverwrite);
+    hMCNumWC2TPCMatch->Write("", TObject::kOverwrite);
 
-    hMCSmallVsTGTracks->SetDirectory(comparisonsFile);
-    hMCSmallVsTGTracks->Write();
+    hMCNumTracksInCylinder->Write("", TObject::kOverwrite);
+    hMCNumTracksInCylinder0TG->Write("", TObject::kOverwrite);
+    hMCNumTracksInCylinder1TG->Write("", TObject::kOverwrite);
+    hMCNumTracksInCylinder2TG->Write("", TObject::kOverwrite);
+    
+    hMCPrimaryTrackPosition->Write("", TObject::kOverwrite);
 
-    hMCShowerProb->SetDirectory(comparisonsFile);
-    hMCShowerProb->Write();
+    hMCTGUnreconstructedHitsInduction0TG->Write("", TObject::kOverwrite);
+    hMCTGUnreconstructedHitsInduction1TG->Write("", TObject::kOverwrite);
+    hMCTGUnreconstructedHitsInduction2TG->Write("", TObject::kOverwrite);
 
-    hMCBeforeShowerCutSmallTracks->SetDirectory(comparisonsFile);
-    hMCBeforeShowerCutSmallTracks->Write();
+    hMCTGUnreconstructedHitsCollection0TG->Write("", TObject::kOverwrite);
+    hMCTGUnreconstructedHitsCollection1TG->Write("", TObject::kOverwrite);
+    hMCTGUnreconstructedHitsCollection2TG->Write("", TObject::kOverwrite);
 
-    hMCAfterShowerCutSmallTracks->SetDirectory(comparisonsFile);
-    hMCAfterShowerCutSmallTracks->Write();
+    hMCTGNumClustersInduction0TG->Write("", TObject::kOverwrite);
+    hMCTGNumClustersInduction1TG->Write("", TObject::kOverwrite);
+    hMCTGNumClustersInduction2TG->Write("", TObject::kOverwrite);
 
-    hMCTGTrackLengths->SetDirectory(comparisonsFile);
-    hMCTGTrackLengths->Write();
+    hMCTGNumClustersCollection0TG->Write("", TObject::kOverwrite);
+    hMCTGNumClustersCollection1TG->Write("", TObject::kOverwrite);
+    hMCTGNumClustersCollection2TG->Write("", TObject::kOverwrite);
 
-    hMCTGNumSmallTracksVsThresh->SetDirectory(comparisonsFile);
-    hMCTGNumSmallTracksVsThresh->Write();
+    hMCTGClusterSizesInduction0TG->Write("", TObject::kOverwrite);
+    hMCTGClusterSizesInduction1TG->Write("", TObject::kOverwrite);
+    hMCTGClusterSizesInduction2TG->Write("", TObject::kOverwrite);
 
-    hMCNumWC2TPCMatch->SetDirectory(comparisonsFile);
-    hMCNumWC2TPCMatch->Write();
-
-    hMCNumTracksInCylinder->SetDirectory(comparisonsFile);
-    hMCNumTracksInCylinder0TG->SetDirectory(comparisonsFile);
-    hMCNumTracksInCylinder1TG->SetDirectory(comparisonsFile);
-    hMCNumTracksInCylinder2TG->SetDirectory(comparisonsFile);
-    hMCNumTracksInCylinder->Write();
-    hMCNumTracksInCylinder0TG->Write();
-    hMCNumTracksInCylinder1TG->Write();
-    hMCNumTracksInCylinder2TG->Write();
-
-    hMCPrimaryTrackPosition->SetDirectory(comparisonsFile);
-    hMCPrimaryTrackPosition->Write();
-
-    hMCTGUnreconstructedHitsInduction0TG->SetDirectory(comparisonsFile);
-    hMCTGUnreconstructedHitsInduction1TG->SetDirectory(comparisonsFile);
-    hMCTGUnreconstructedHitsInduction2TG->SetDirectory(comparisonsFile);
-    hMCTGUnreconstructedHitsInduction0TG->Write();
-    hMCTGUnreconstructedHitsInduction1TG->Write();
-    hMCTGUnreconstructedHitsInduction2TG->Write();
-
-    hMCTGUnreconstructedHitsCollection0TG->SetDirectory(comparisonsFile);
-    hMCTGUnreconstructedHitsCollection1TG->SetDirectory(comparisonsFile);
-    hMCTGUnreconstructedHitsCollection2TG->SetDirectory(comparisonsFile);
-    hMCTGUnreconstructedHitsCollection0TG->Write();
-    hMCTGUnreconstructedHitsCollection1TG->Write();
-    hMCTGUnreconstructedHitsCollection2TG->Write();
-
-    hMCTGNumClustersInduction0TG->SetDirectory(comparisonsFile);
-    hMCTGNumClustersInduction1TG->SetDirectory(comparisonsFile);
-    hMCTGNumClustersInduction2TG->SetDirectory(comparisonsFile);
-    hMCTGNumClustersInduction0TG->Write();
-    hMCTGNumClustersInduction1TG->Write();
-    hMCTGNumClustersInduction2TG->Write();
-
-    hMCTGNumClustersCollection0TG->SetDirectory(comparisonsFile);
-    hMCTGNumClustersCollection1TG->SetDirectory(comparisonsFile);
-    hMCTGNumClustersCollection2TG->SetDirectory(comparisonsFile);
-    hMCTGNumClustersCollection0TG->Write();
-    hMCTGNumClustersCollection1TG->Write();
-    hMCTGNumClustersCollection2TG->Write();
-
-    hMCTGClusterSizesInduction0TG->SetDirectory(comparisonsFile);
-    hMCTGClusterSizesInduction1TG->SetDirectory(comparisonsFile);
-    hMCTGClusterSizesInduction2TG->SetDirectory(comparisonsFile);
-    hMCTGClusterSizesInduction0TG->Write();
-    hMCTGClusterSizesInduction1TG->Write();
-    hMCTGClusterSizesInduction2TG->Write();
-
-    hMCTGClusterSizesCollection0TG->SetDirectory(comparisonsFile);
-    hMCTGClusterSizesCollection1TG->SetDirectory(comparisonsFile);
-    hMCTGClusterSizesCollection2TG->SetDirectory(comparisonsFile);
-    hMCTGClusterSizesCollection0TG->Write();
-    hMCTGClusterSizesCollection1TG->Write();
-    hMCTGClusterSizesCollection2TG->Write();
+    hMCTGClusterSizesCollection0TG->Write("", TObject::kOverwrite);
+    hMCTGClusterSizesCollection1TG->Write("", TObject::kOverwrite);
+    hMCTGClusterSizesCollection2TG->Write("", TObject::kOverwrite);
 
     comparisonsFile->Close();
 
@@ -2580,28 +2490,18 @@ void RecoClassify3Cat() {
         }
     }
 
-    // Before unfolding, we have to remove the estimated backgrounds using ratios
-    std::vector<TH1D*> hSubtractEstimatedBkgs(NUM_SIGNAL_TYPES);
+    // Before unfolding, we have to remove the estimated backgrounds
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
-        hSubtractEstimatedBkgs[iSignal] = (TH1D*) RecoSignals[iSignal]->Clone(Form("hSubtractEstimatedBkgs_%d", iSignal));
-        hSubtractEstimatedBkgs[iSignal]->SetTitle(Form("Ratio for non-bkgs for signal %d", iSignal));
+        // Apply ratio to reco signal
         for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
-            double total = RecoSignals[iSignal]->GetBinContent(iBin);
-
-            double bkg = 0;
+            double reco = RecoSignals[iSignal]->GetBinContent(iBin);
+            double inc  = hIncidentKE->GetBinContent(iBin + 1);
+            double bkg  = 0;
             for (int iBkg = 0; iBkg < RecoSignalBackgrounds[iSignal].size(); ++iBkg) {
                 bkg += RecoSignalBackgrounds[iSignal][iBkg]->GetBinContent(iBin);
             }
-
-            double ratio = (total > 0) ? (total - bkg) / total : 0;
-            hSubtractEstimatedBkgs[iSignal]->SetBinContent(iBin, ratio);
-        }
-
-        // Apply ratio to reco signal
-        for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
-            double reco  = RecoSignals[iSignal]->GetBinContent(iBin);
-            double ratio = hSubtractEstimatedBkgs[iSignal]->GetBinContent(iBin);
-            RecoSignals[iSignal]->SetBinContent(iBin, reco * ratio);
+            RecoSignals[iSignal]->SetBinContent(iBin, reco - bkg);
+            RecoSignals[iSignal]->SetBinError(iBin, std::sqrt(reco * (1 - (reco / inc))));
         }
     }
 
@@ -2617,11 +2517,10 @@ void RecoClassify3Cat() {
     // Save nominal measure vector and response matrix
     TH1D* hMeasureVectorNominal = new TH1D("hMeasureVectorNominal", "hMeasureVectorNominal;;", NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE); V2H(Measure, hMeasureVectorNominal);
 
-    hMeasureVectorNominal->SetDirectory(nominalFile);
-    hMeasureVectorNominal->Write();
-
-    hResponseMatrix->SetDirectory(nominalFile);
-    hResponseMatrix->Write();
+    nominalFile->cd();
+    hMeasureVectorNominal->Write("", TObject::kOverwrite);
+    hResponseMatrix->Write("", TObject::kOverwrite);
+    nominalFile->Close();
 
     // Construct covariance matrix (only statistical variance for now)
     TMatrixD Covariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); Covariance.Zero();
@@ -2787,15 +2686,15 @@ void RecoClassify3Cat() {
 
     std::vector<std::vector<TH1*>> PlotGroups = {
         // Incident KE
-        {hIncidentKEPion, hIncidentKEMuon, hIncidentKEElectron},
+        {hIncidentKE, hIncidentKEPion, hIncidentKEMuon, hIncidentKEElectron},
         {hIncidentKECorrected, hTrueIncidentKE},
 
         // Interacting KE
-        {hPionAbs0pKETrue, hPionAbs0pKEAbsNp, hPionAbs0pKEScatter, hPionAbs0pKEChExch, hPionAbs0pKEMuon, hPionAbs0pKEElectron, hPionAbs0pKEOther},
-        {hPionAbs0pKETrue, hPionAbs0pKEAbsNp, hPionAbs0pKEScatter, hPionAbs0pKEChExch, hPionAbs0pKEMuonTG, hPionAbs0pKEMuonDecay, hPionAbs0pKEMuonCAR, hPionAbs0pKEElectron, hPionAbs0pKEOther},
-        {hPionAbsNpKETrue, hPionAbsNpKEAbs0p, hPionAbsNpKEScatter, hPionAbsNpKEChExch, hPionAbsNpKEMuon, hPionAbsNpKEElectron, hPionAbsNpKEOther},
-        {hPionScatterKETrue, hPionScatterKEAbs0p, hPionScatterKEAbsNp, hPionScatterKEChExch, hPionScatterKEMuon, hPionScatterKEElectron, hPionScatterKEOther},
-        {hPionScatterKETrue, hPionScatterKEAbs0p, hPionScatterKEAbsNp, hPionScatterKEChExch, hPionScatterKEMuonTG, hPionScatterKEMuonDecay, hPionScatterKEMuonCAR, hPionScatterKEElectron, hPionScatterKEOther},
+        {hPionAbs0pKE, hPionAbs0pKETrue, hPionAbs0pKEAbsNp, hPionAbs0pKEScatter, hPionAbs0pKEChExch, hPionAbs0pKEMuon, hPionAbs0pKEElectron, hPionAbs0pKEOther},
+        {hPionAbs0pKE, hPionAbs0pKETrue, hPionAbs0pKEAbsNp, hPionAbs0pKEScatter, hPionAbs0pKEChExch, hPionAbs0pKEMuonTG, hPionAbs0pKEMuonDecay, hPionAbs0pKEMuonCAR, hPionAbs0pKEElectron, hPionAbs0pKEOther},
+        {hPionAbsNpKE, hPionAbsNpKETrue, hPionAbsNpKEAbs0p, hPionAbsNpKEScatter, hPionAbsNpKEChExch, hPionAbsNpKEMuon, hPionAbsNpKEElectron, hPionAbsNpKEOther},
+        {hPionScatterKE, hPionScatterKETrue, hPionScatterKEAbs0p, hPionScatterKEAbsNp, hPionScatterKEChExch, hPionScatterKEMuon, hPionScatterKEElectron, hPionScatterKEOther},
+        {hPionScatterKE, hPionScatterKETrue, hPionScatterKEAbs0p, hPionScatterKEAbsNp, hPionScatterKEChExch, hPionScatterKEMuonTG, hPionScatterKEMuonDecay, hPionScatterKEMuonCAR, hPionScatterKEElectron, hPionScatterKEOther},
 
         // True interacting KE
         {hTrueAllKE},
@@ -2843,15 +2742,15 @@ void RecoClassify3Cat() {
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
         // Incident KE
-        {"Pions", "Muons", "Electrons"},
+        {"All", "Pions", "Muons", "Electrons"},
         {"Corrected", "True"},
 
         // Interacting KE
-        {"True", "Abs Np", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
-        {"True", "Abs Np", "Scatter", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
-        {"True", "Abs 0p", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
-        {"True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon", "Electron", "Other"},
-        {"True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
+        {"All (no bkg.)", "True", "Abs Np", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"All (no bkg.)", "True", "Abs Np", "Scatter", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
+        {"All (no bkg.)", "True", "Abs 0p", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"All (no bkg.)", "True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"All (no bkg.)", "True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
 
         // True interacting KE
         {"All"},
@@ -3113,15 +3012,15 @@ void RecoClassify3Cat() {
 
     std::vector<std::vector<bool>> PlotsAsPoints = {
         // Incident KE
-        {false, false, false},
+        {true, false, false, false},
         {true, false},
 
         // Interacting KE
-        {false, false, false, false, false, false, false},
-        {false, false, false, false, false, false, false, false, false},
-        {false, false, false, false, false, false, false},
-        {false, false, false, false, false, false, false},
-        {false, false, false, false, false, false, false, false, false},
+        {true, false, false, false, false, false, false, false},
+        {true, false, false, false, false, false, false, false, false, false},
+        {true, false, false, false, false, false, false, false},
+        {true, false, false, false, false, false, false, false},
+        {true, false, false, false, false, false, false, false, false, false},
 
         // True interacting KE
         {false},
@@ -3227,7 +3126,4 @@ void RecoClassify3Cat() {
     };
 
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles, TwoDRanges, TwoDDisplayNumbers);
-
-    // Close nominal file
-    nominalFile->Close();
 }

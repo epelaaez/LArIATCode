@@ -34,7 +34,7 @@ void RecoDataAnalysis() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/RecoDataAnalysis/";
 
     // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNDataEval_histo.root";
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/DataAll_histo.root";
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNDataEval");
 
@@ -54,23 +54,6 @@ void RecoDataAnalysis() {
     tree->SetBranchAddress("subrun", &subrun); 
     tree->SetBranchAddress("event", &event);
     tree->SetBranchAddress("isData", &isData);
-
-    // Shower probability information
-    double trackProb, showerProb;
-    bool obtainedProbabilities;
-    tree->SetBranchAddress("trackProb", &trackProb);
-    tree->SetBranchAddress("showerProb", &showerProb);
-    tree->SetBranchAddress("obtainedProbabilities", &obtainedProbabilities);
-
-    double showerNoBoxProb;
-    bool obtainedNoBoxProbabilities;
-    tree->SetBranchAddress("showerNoBoxProb", &showerNoBoxProb);
-    tree->SetBranchAddress("obtainedNoBoxProbabilities", &obtainedNoBoxProbabilities);
-
-    double showerOutsideBoxProb;
-    bool obtainedOutsideBoxProbabilities;
-    tree->SetBranchAddress("showerOutsideBoxProb", &showerOutsideBoxProb);
-    tree->SetBranchAddress("obtainedOutsideBoxProbabilities", &obtainedOutsideBoxProbabilities);
 
     // WC match information
     int WC2TPCtrkID, WC2TPCsize;
@@ -189,9 +172,6 @@ void RecoDataAnalysis() {
     TH1D* hMCTracksNearVertex           = (TH1D*) MCFile->Get("hMCTracksNearVertex");
     TH1D* hMCTrackLengthsNearVertex     = (TH1D*) MCFile->Get("hMCTrackLengthsNearVertex");
     TH1D* hMCNumTGTracks                = (TH1D*) MCFile->Get("hMCNumTGTracks");
-    TH1D* hMCShowerProb                 = (TH1D*) MCFile->Get("hMCShowerProb");
-    TH1D* hMCBeforeShowerCutSmallTracks = (TH1D*) MCFile->Get("hMCBeforeShowerCutSmallTracks");
-    TH1D* hMCAfterShowerCutSmallTracks  = (TH1D*) MCFile->Get("hMCAfterShowerCutSmallTracks");
     TH2D* hMCSmallVsTGTracks            = (TH2D*) MCFile->Get("hMCSmallVsTGTracks");
     TH2D* hMCTGNumSmallTracksVsThresh   = (TH2D*) MCFile->Get("hMCTGNumSmallTracksVsThresh");
     TH2D* hMCPrimaryTrackPosition       = (TH2D*) MCFile->Get("hMCPrimaryTrackPosition");
@@ -242,11 +222,6 @@ void RecoDataAnalysis() {
     TH1D* hNumWC2TPCMatch = new TH1D("hNumWC2TPCMatch", "NumWC2TPCMatch", 10, 0, 10);
     TH1D* hNumWCHits      = new TH1D("hNumWCHits", "hNumWCHits", 10, 0, 10);
 
-    // Shower cut
-    TH1D* hShowerProb                 = new TH1D("hShowerProb", "ShowerProb", 20, 0, 1.);
-    TH1D* hBeforeShowerCutSmallTracks = new TH1D("hBeforeShowerCutSmallTracks", "BeforeShowerCutSmallTracks", 10, 0, 10);
-    TH1D* hAfterShowerCutSmallTracks  = new TH1D("hAfterShowerCutSmallTracks", "AfterShowerCutSmallTracks", 10, 0, 10);
-
     // With primary TG
     TH1D* hNumTracksInCylinder = new TH1D("hNumTracksInCylinder", "NumTracksInCylinder", 10, 0, 10);
     TH1D* hTGTrackLengths      = new TH1D("hTGTrackLengths", "TGTrackLengths", 25, 0, 50);
@@ -261,29 +236,29 @@ void RecoDataAnalysis() {
     TH1D* hNumTracksInCylinder2TG = new TH1D("hNumTracksInCylinder2TG", "NumTracksInCylinder2TG", 10, 0, 10);
     TH1D* hTGSmallTracks2TG       = new TH1D("hTGSmallTracks2TG", "TGSmallTracks2TG", 10, 0, 10);
 
-    TH1D* hTGUnreconstructedHitsInduction0TG = new TH1D("hTGUnreconstructedHitsInduction0TG", "hTGUnreconstructedHitsInduction0TG;;", 30, 0, 30);
-    TH1D* hTGUnreconstructedHitsInduction1TG = new TH1D("hTGUnreconstructedHitsInduction1TG", "hTGUnreconstructedHitsInduction1TG;;", 30, 0, 30);
-    TH1D* hTGUnreconstructedHitsInduction2TG = new TH1D("hTGUnreconstructedHitsInduction2TG", "hTGUnreconstructedHitsInduction2TG;;", 30, 0, 30);
+    TH1D* hTGUnreconstructedHitsInduction0TG = new TH1D("hTGUnreconstructedHitsInduction0TG", "UnreconstructedInductionHits0TG;;", 30, 0, 30);
+    TH1D* hTGUnreconstructedHitsInduction1TG = new TH1D("hTGUnreconstructedHitsInduction1TG", "UnreconstructedInductionHits1TG;;", 30, 0, 30);
+    TH1D* hTGUnreconstructedHitsInduction2TG = new TH1D("hTGUnreconstructedHitsInduction2TG", "UnreconstructedInductionHits2TG;;", 30, 0, 30);
 
-    TH1D* hTGUnreconstructedHitsCollection0TG = new TH1D("hTGUnreconstructedHitsCollection0TG", "hTGUnreconstructedHitsCollection0TG;;", 30, 0, 30);
-    TH1D* hTGUnreconstructedHitsCollection1TG = new TH1D("hTGUnreconstructedHitsCollection1TG", "hTGUnreconstructedHitsCollection1TG;;", 30, 0, 30);
-    TH1D* hTGUnreconstructedHitsCollection2TG = new TH1D("hTGUnreconstructedHitsCollection2TG", "hTGUnreconstructedHitsCollection2TG;;", 30, 0, 30);
+    TH1D* hTGUnreconstructedHitsCollection0TG = new TH1D("hTGUnreconstructedHitsCollection0TG", "UnreconstructedCollectionHits0TG;;", 30, 0, 30);
+    TH1D* hTGUnreconstructedHitsCollection1TG = new TH1D("hTGUnreconstructedHitsCollection1TG", "UnreconstructedCollectionHits1TG;;", 30, 0, 30);
+    TH1D* hTGUnreconstructedHitsCollection2TG = new TH1D("hTGUnreconstructedHitsCollection2TG", "UnreconstructedCollectionHits2TG;;", 30, 0, 30);
 
-    TH1D* hTGNumClustersInduction0TG = new TH1D("hTGNumClustersInduction0TG", "hTGNumClustersInduction0TG;;", 10, 0, 10);
-    TH1D* hTGNumClustersInduction1TG = new TH1D("hTGNumClustersInduction1TG", "hTGNumClustersInduction1TG;;", 10, 0, 10);
-    TH1D* hTGNumClustersInduction2TG = new TH1D("hTGNumClustersInduction2TG", "hTGNumClustersInduction2TG;;", 10, 0, 10);
+    TH1D* hTGNumClustersInduction0TG = new TH1D("hTGNumClustersInduction0TG", "NumClustersInduction0TG;;", 10, 0, 10);
+    TH1D* hTGNumClustersInduction1TG = new TH1D("hTGNumClustersInduction1TG", "NumClustersInduction1TG;;", 10, 0, 10);
+    TH1D* hTGNumClustersInduction2TG = new TH1D("hTGNumClustersInduction2TG", "NumClustersInduction2TG;;", 10, 0, 10);
 
-    TH1D* hTGNumClustersCollection0TG = new TH1D("hTGNumClustersCollection0TG", "hTGNumClustersCollection0TG;;", 10, 0, 10);
-    TH1D* hTGNumClustersCollection1TG = new TH1D("hTGNumClustersCollection1TG", "hTGNumClustersCollection1TG;;", 10, 0, 10);
-    TH1D* hTGNumClustersCollection2TG = new TH1D("hTGNumClustersCollection2TG", "hTGNumClustersCollection2TG;;", 10, 0, 10);
+    TH1D* hTGNumClustersCollection0TG = new TH1D("hTGNumClustersCollection0TG", "NumClustersCollection0TG;;", 10, 0, 10);
+    TH1D* hTGNumClustersCollection1TG = new TH1D("hTGNumClustersCollection1TG", "NumClustersCollection1TG;;", 10, 0, 10);
+    TH1D* hTGNumClustersCollection2TG = new TH1D("hTGNumClustersCollection2TG", "NumClustersCollection2TG;;", 10, 0, 10);
 
-    TH1D* hTGClusterSizesInduction0TG = new TH1D("hTGClusterSizesInduction0TG", "hTGClusterSizesInduction0TG;;", 15, 0, 30);
-    TH1D* hTGClusterSizesInduction1TG = new TH1D("hTGClusterSizesInduction1TG", "hTGClusterSizesInduction1TG;;", 15, 0, 30);
-    TH1D* hTGClusterSizesInduction2TG = new TH1D("hTGClusterSizesInduction2TG", "hTGClusterSizesInduction2TG;;", 15, 0, 30);
+    TH1D* hTGClusterSizesInduction0TG = new TH1D("hTGClusterSizesInduction0TG", "ClusterSizesInduction0TG;;", 15, 0, 30);
+    TH1D* hTGClusterSizesInduction1TG = new TH1D("hTGClusterSizesInduction1TG", "ClusterSizesInduction1TG;;", 15, 0, 30);
+    TH1D* hTGClusterSizesInduction2TG = new TH1D("hTGClusterSizesInduction2TG", "ClusterSizesInduction2TG;;", 15, 0, 30);
 
-    TH1D* hTGClusterSizesCollection0TG = new TH1D("hTGClusterSizesCollection0TG", "hTGClusterSizesCollection0TG;;", 15, 0, 30);
-    TH1D* hTGClusterSizesCollection1TG = new TH1D("hTGClusterSizesCollection1TG", "hTGClusterSizesCollection1TG;;", 15, 0, 30);
-    TH1D* hTGClusterSizesCollection2TG = new TH1D("hTGClusterSizesCollection2TG", "hTGClusterSizesCollection2TG;;", 15, 0, 30);
+    TH1D* hTGClusterSizesCollection0TG = new TH1D("hTGClusterSizesCollection0TG", "ClusterSizesCollection0TG;;", 15, 0, 30);
+    TH1D* hTGClusterSizesCollection1TG = new TH1D("hTGClusterSizesCollection1TG", "ClusterSizesCollection1TG;;", 15, 0, 30);
+    TH1D* hTGClusterSizesCollection2TG = new TH1D("hTGClusterSizesCollection2TG", "ClusterSizesCollection2TG;;", 15, 0, 30);
 
     // With primary interacting
     TH1D* hTracksNearVertex       = new TH1D("hTracksNearVertex", "TracksNearVertex", 10, 0, 10);
@@ -355,6 +330,9 @@ void RecoDataAnalysis() {
     int numValidEvents = 0;
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
+
+        // Make script go faster
+        // if (i > 50000) break;
 
         // Fill for all events
         hTOFMass->Fill(std::abs(TOFMass));
@@ -429,10 +407,6 @@ void RecoDataAnalysis() {
             }
         }
         // if (countEarlyTracks > 4) continue;
-
-        // If high shower probability, reject
-        // if (showerProb >= SHOWER_PROB_CUT) continue;
-        if (obtainedProbabilities) hShowerProb->Fill(showerProb);
 
         // Loop over reconstructed tracks
         int numSmallTracks = 0; 
@@ -560,11 +534,9 @@ void RecoDataAnalysis() {
             hTGSmallTracks2TG->Fill(numSmallTracks);
         }
 
-        hBeforeShowerCutSmallTracks->Fill(smallTracksTPCStart);
         hNumTGTracks->Fill(numTGTracks);
 
         if (!isPrimaryTG) hTracksNearVertex->Fill(numTracksNearVertex);
-        if (obtainedProbabilities && showerProb < SHOWER_PROB_CUT) hAfterShowerCutSmallTracks->Fill(smallTracksTPCStart);
 
         // Add to histogram of small tracks if primary is throughgoing
         if (isPrimaryTG) {
@@ -858,53 +830,56 @@ void RecoDataAnalysis() {
     std::cout << "Num valid data TG events with at most one more TG: " << hNumTracksInCylinder1TG->Integral() << std::endl;
     std::cout << "Num valid data TG events with at most two more TG: " << hNumTracksInCylinder2TG->Integral() << std::endl;
 
-    // Scale MC histograms to data histograms using event counts
-    hMCNumTGTracks->Scale(scaling);
-    hMCBeforeShowerCutSmallTracks->Scale(scaling);
-    hMCAfterShowerCutSmallTracks->Scale(hAfterShowerCutSmallTracks->Integral() / hMCAfterShowerCutSmallTracks->Integral()); // not sure
+    double scaling0TG = hNumTracksInCylinder0TG->Integral() / hMCNumTracksInCylinder0TG->Integral();
+    double scaling1TG = hNumTracksInCylinder1TG->Integral() / hMCNumTracksInCylinder1TG->Integral();
+    double scaling2TG = hNumTracksInCylinder2TG->Integral() / hMCNumTracksInCylinder2TG->Integral();
 
-    hMCTGSmallTracks->Scale(scalingTG);
-    hMCTGTrackLengths->Scale(scalingTG);
-    hMCNumTracksInCylinder->Scale(scalingTG);
-    
+    // Scale MC histograms to data histograms using event counts
+    hMCNumWC2TPCMatch->Scale(hNumWC2TPCMatch->Integral() / hMCNumWC2TPCMatch->Integral());
+
+    // all events
+    hMCNumTGTracks->Scale(scaling);
+
+    // primary not TG
     hMCTracksNearVertex->Scale(scalingNoTG);
     hMCTrackLengthsNearVertex->Scale(scalingNoTG);
 
-    // Have to account only for events with valid NN probability
-    hMCShowerProb->Scale(hShowerProb->Integral() / hMCShowerProb->Integral());
-    hMCNumWC2TPCMatch->Scale(hNumWC2TPCMatch->Integral() / hMCNumWC2TPCMatch->Integral());
+    // primary TG
+    hMCTGSmallTracks->Scale(scalingTG);
+    hMCTGTrackLengths->Scale(scalingTG);
+    hMCNumTracksInCylinder->Scale(scalingTG);
 
-    hMCTGSmallTracks0TG->Scale(hTGSmallTracks0TG->Integral() / hMCTGSmallTracks0TG->Integral());
-    hMCTGSmallTracks1TG->Scale(hTGSmallTracks1TG->Integral() / hMCTGSmallTracks1TG->Integral());
-    hMCTGSmallTracks2TG->Scale(hTGSmallTracks2TG->Integral() / hMCTGSmallTracks2TG->Integral());
+    hMCTGSmallTracks0TG->Scale(scaling0TG);
+    hMCTGSmallTracks1TG->Scale(scaling1TG);
+    hMCTGSmallTracks2TG->Scale(scaling2TG);
 
-    hMCNumTracksInCylinder0TG->Scale(hNumTracksInCylinder0TG->Integral() / hMCNumTracksInCylinder0TG->Integral());
-    hMCNumTracksInCylinder1TG->Scale(hNumTracksInCylinder1TG->Integral() / hMCNumTracksInCylinder1TG->Integral());
-    hMCNumTracksInCylinder2TG->Scale(hNumTracksInCylinder2TG->Integral() / hMCNumTracksInCylinder2TG->Integral());
+    hMCNumTracksInCylinder0TG->Scale(scaling0TG);
+    hMCNumTracksInCylinder1TG->Scale(scaling1TG);
+    hMCNumTracksInCylinder2TG->Scale(scaling2TG);
 
-    hMCTGUnreconstructedHitsInduction0TG->Scale(hTGUnreconstructedHitsInduction0TG->Integral() / hMCTGUnreconstructedHitsInduction0TG->Integral());
-    hMCTGUnreconstructedHitsInduction1TG->Scale(hTGUnreconstructedHitsInduction1TG->Integral() / hMCTGUnreconstructedHitsInduction1TG->Integral());
-    hMCTGUnreconstructedHitsInduction2TG->Scale(hTGUnreconstructedHitsInduction2TG->Integral() / hMCTGUnreconstructedHitsInduction2TG->Integral());
+    hMCTGUnreconstructedHitsInduction0TG->Scale(scaling0TG);
+    hMCTGUnreconstructedHitsInduction1TG->Scale(scaling1TG);
+    hMCTGUnreconstructedHitsInduction2TG->Scale(scaling2TG);
 
-    hMCTGUnreconstructedHitsCollection0TG->Scale(hTGUnreconstructedHitsCollection0TG->Integral() / hMCTGUnreconstructedHitsCollection0TG->Integral());
-    hMCTGUnreconstructedHitsCollection1TG->Scale(hTGUnreconstructedHitsCollection1TG->Integral() / hMCTGUnreconstructedHitsCollection1TG->Integral());
-    hMCTGUnreconstructedHitsCollection2TG->Scale(hTGUnreconstructedHitsCollection2TG->Integral() / hMCTGUnreconstructedHitsCollection2TG->Integral());
+    hMCTGUnreconstructedHitsCollection0TG->Scale(scaling0TG);
+    hMCTGUnreconstructedHitsCollection1TG->Scale(scaling1TG);
+    hMCTGUnreconstructedHitsCollection2TG->Scale(scaling2TG);
 
-    hMCTGClusterSizesInduction0TG->Scale(hTGClusterSizesInduction0TG->Integral() / hMCTGClusterSizesInduction0TG->Integral());
-    hMCTGClusterSizesInduction1TG->Scale(hTGClusterSizesInduction1TG->Integral() / hMCTGClusterSizesInduction1TG->Integral());
-    hMCTGClusterSizesInduction2TG->Scale(hTGClusterSizesInduction2TG->Integral() / hMCTGClusterSizesInduction2TG->Integral());
+    hMCTGClusterSizesInduction0TG->Scale(scaling0TG);
+    hMCTGClusterSizesInduction1TG->Scale(scaling1TG);
+    hMCTGClusterSizesInduction2TG->Scale(scaling2TG);
 
-    hMCTGClusterSizesCollection0TG->Scale(hTGClusterSizesCollection0TG->Integral() / hMCTGClusterSizesCollection0TG->Integral());
-    hMCTGClusterSizesCollection1TG->Scale(hTGClusterSizesCollection1TG->Integral() / hMCTGClusterSizesCollection1TG->Integral());
-    hMCTGClusterSizesCollection2TG->Scale(hTGClusterSizesCollection2TG->Integral() / hMCTGClusterSizesCollection2TG->Integral());
+    hMCTGClusterSizesCollection0TG->Scale(scaling0TG);
+    hMCTGClusterSizesCollection1TG->Scale(scaling1TG);
+    hMCTGClusterSizesCollection2TG->Scale(scaling2TG);
 
-    hMCTGNumClustersCollection0TG->Scale(hTGNumClustersCollection0TG->Integral() / hMCTGNumClustersCollection0TG->Integral());
-    hMCTGNumClustersCollection1TG->Scale(hTGNumClustersCollection1TG->Integral() / hMCTGNumClustersCollection1TG->Integral());
-    hMCTGNumClustersCollection2TG->Scale(hTGNumClustersCollection2TG->Integral() / hMCTGNumClustersCollection2TG->Integral());
+    hMCTGNumClustersCollection0TG->Scale(scaling0TG);
+    hMCTGNumClustersCollection1TG->Scale(scaling1TG);
+    hMCTGNumClustersCollection2TG->Scale(scaling2TG);
 
-    hMCTGNumClustersInduction0TG->Scale(hTGNumClustersInduction0TG->Integral() / hMCTGNumClustersInduction0TG->Integral());
-    hMCTGNumClustersInduction1TG->Scale(hTGNumClustersInduction1TG->Integral() / hMCTGNumClustersInduction1TG->Integral());
-    hMCTGNumClustersInduction2TG->Scale(hTGNumClustersInduction2TG->Integral() / hMCTGNumClustersInduction2TG->Integral());
+    hMCTGNumClustersInduction0TG->Scale(scaling0TG);
+    hMCTGNumClustersInduction1TG->Scale(scaling1TG);
+    hMCTGNumClustersInduction2TG->Scale(scaling2TG);
 
     //////////////////
     // Create plots //
@@ -935,18 +910,17 @@ void RecoDataAnalysis() {
         {hRadDistMidPlane},
 
         // Cylinder
-        {hNumTracksInCylinder, hMCNumTracksInCylinder},
+        {hNumTracksInCylinder0TG, hMCNumTracksInCylinder0TG},
+        {hNumTracksInCylinder1TG, hMCNumTracksInCylinder1TG},
+        {hNumTracksInCylinder2TG, hMCNumTracksInCylinder2TG},
 
         // Hits in primary
         {hTimePrimaryHits},
 
         // Comparisons with MC
-        {hTGSmallTracks, hMCTGSmallTracks},
         {hTracksNearVertex, hMCTracksNearVertex},
         {hTrackLengthsNearVertex, hMCTrackLengthsNearVertex},
         {hNumTGTracks, hMCNumTGTracks},
-        {hShowerProb, hMCShowerProb},
-        {hBeforeShowerCutSmallTracks, hAfterShowerCutSmallTracks, hMCBeforeShowerCutSmallTracks, hMCAfterShowerCutSmallTracks},
         {hTGTrackLengths, hMCTGTrackLengths},
 
         // Comparing TG threshold
@@ -954,10 +928,7 @@ void RecoDataAnalysis() {
         {hTGSmallTracks1TG, hMCTGSmallTracks1TG},
         {hTGSmallTracks2TG, hMCTGSmallTracks2TG},
 
-        {hNumTracksInCylinder0TG, hMCNumTracksInCylinder0TG},
-        {hNumTracksInCylinder1TG, hMCNumTracksInCylinder1TG},
-        {hNumTracksInCylinder2TG, hMCNumTracksInCylinder2TG},
-
+        // Unreconstructed hits
         {hTGUnreconstructedHitsInduction0TG, hMCTGUnreconstructedHitsInduction0TG},
         {hTGUnreconstructedHitsInduction1TG, hMCTGUnreconstructedHitsInduction1TG},
         {hTGUnreconstructedHitsInduction2TG, hMCTGUnreconstructedHitsInduction2TG},
@@ -996,12 +967,13 @@ void RecoDataAnalysis() {
 
         // Cylinder
         {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
 
         // Hits in primary
         {"Data"},
 
         // Comparisons with MC
-        {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
@@ -1013,11 +985,8 @@ void RecoDataAnalysis() {
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
-        
-        {"Data", "MC (scaled)"},
-        {"Data", "MC (scaled)"},
-        {"Data", "MC (scaled)"},
 
+        // Unreconstructed hits
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
@@ -1055,52 +1024,48 @@ void RecoDataAnalysis() {
         "WCQuality/RadDistMidPlane",
 
         // Cylinder
-        "Cylinder/NumTracksInCylinder",
+        "Cylinder/NumTracksInCylinder0TG",
+        "Cylinder/NumTracksInCylinder1TG",
+        "Cylinder/NumTracksInCylinder2TG",
 
         // Hits in primary
-        "PrimaryHits/AllTime",
+        "Primary/HitTime",
 
         // Comparisons with MC
-        "TGPrimary/TGSmallTracks",
         "NearVertex/TracksNearVertex",
         "NearVertex/TrackLengthsNearVertex",
         "TGTracks/NumTGTracks",
-        "ShowerCut/ShowerProb",
-        "ShowerCut/SmallTracksShowerCut",
-        "TGPrimary/TGTrackLengths",
+        "Primary/TGTrackLengths",
 
-        // Comparing TG threshold
-        "TGThreshold/TGSmallTracks0TG",
-        "TGThreshold/TGSmallTracks1TG",
-        "TGThreshold/TGSmallTracks2TG",
+        // Small tracks when primary is TG
+        "Primary/TGSmallTracks0TG",
+        "Primary/TGSmallTracks1TG",
+        "Primary/TGSmallTracks2TG",
 
-        "TGThreshold/NumTracksInCylinder0TG",
-        "TGThreshold/NumTracksInCylinder1TG",
-        "TGThreshold/NumTracksInCylinder2TG",
+        // Unreconstructed hits
+        "UnrecoHits/UnreconstructedInductionHits0TG",
+        "UnrecoHits/UnreconstructedInductionHits1TG",
+        "UnrecoHits/UnreconstructedInductionHits2TG",
 
-        "TGThreshold/UnreconstructedInductionHits0TG",
-        "TGThreshold/UnreconstructedInductionHits1TG",
-        "TGThreshold/UnreconstructedInductionHits2TG",
+        "UnrecoHits/UnreconstructedCollectionHits0TG",
+        "UnrecoHits/UnreconstructedCollectionHits1TG",
+        "UnrecoHits/UnreconstructedCollectionHits2TG",
 
-        "TGThreshold/UnreconstructedCollectionHits0TG",
-        "TGThreshold/UnreconstructedCollectionHits1TG",
-        "TGThreshold/UnreconstructedCollectionHits2TG",
+        "UnrecoHits/ClusterSizesCollection0TG",
+        "UnrecoHits/ClusterSizesCollection1TG",
+        "UnrecoHits/ClusterSizesCollection2TG",
 
-        "TGThreshold/ClusterSizesCollection0TG",
-        "TGThreshold/ClusterSizesCollection1TG",
-        "TGThreshold/ClusterSizesCollection2TG",
+        "UnrecoHits/ClusterSizesInduction0TG",
+        "UnrecoHits/ClusterSizesInduction1TG",
+        "UnrecoHits/ClusterSizesInduction2TG",
 
-        "TGThreshold/ClusterSizesInduction0TG",
-        "TGThreshold/ClusterSizesInduction1TG",
-        "TGThreshold/ClusterSizesInduction2TG",
+        "UnrecoHits/NumClustersCollection0TG",
+        "UnrecoHits/NumClustersCollection1TG",
+        "UnrecoHits/NumClustersCollection2TG",
 
-        "TGThreshold/NumClustersCollection0TG",
-        "TGThreshold/NumClustersCollection1TG",
-        "TGThreshold/NumClustersCollection2TG",
-
-        "TGThreshold/NumClustersInduction0TG",
-        "TGThreshold/NumClustersInduction1TG",
-        "TGThreshold/NumClustersInduction2TG"
+        "UnrecoHits/NumClustersInduction0TG",
+        "UnrecoHits/NumClustersInduction1TG",
+        "UnrecoHits/NumClustersInduction2TG"
     };
 
     std::vector<TString> XLabels = {
@@ -1121,19 +1086,17 @@ void RecoDataAnalysis() {
         "Hit time [us]",
 
         // Comparisons with MC
-        "# of small tracks",
         "# of tracks near vertex",
         "Track length [cm]",
         "# of throughgoing tracks",
-        "Shower probability",
-        "# of small tracks (first 30 cm)",
         "Track length [cm]",
 
-        // Comparing TG threshold
+        // Small tracks when primary is TG
         "# of small tracks",
         "# of small tracks",
         "# of small tracks",
 
+        // Unreconstructed hits
         "# of tracks",
         "# of tracks",
         "# of tracks",
@@ -1186,14 +1149,13 @@ void RecoDataAnalysis() {
         "Counts",
         "Counts",
         "Counts",
-        "Counts",
-        "Counts",
 
-        // Comparing TG threshold
+        // Small tracks when primary is TG
         "Counts",
         "Counts",
         "Counts",
 
+        // Unreconstructed hits
         "Counts",
         "Counts",
         "Counts",
@@ -1245,15 +1207,13 @@ void RecoDataAnalysis() {
         false,
         false,
         false,
+
+        // Small tracks when primary is TG
         false,
         false,
         false,
 
-        // Comparing TG threshold
-        false,
-        false,
-        false,
-
+        // Unreconstructed hits
         false,
         false,
         false,
@@ -1305,15 +1265,13 @@ void RecoDataAnalysis() {
         {true, false},
         {true, false},
         {true, false},
-        {true, false},
-        {true, true, false, false},
-        {true, false},
 
-        // Comparing TG threshold
+        // Small tracks when primary is TG
         {true, false},
         {true, false},
         {true, false},
 
+        // Unreconstructed hits
         {true, false},
         {true, false},
         {true, false},
@@ -1348,23 +1306,88 @@ void RecoDataAnalysis() {
     /////////////////////////////////
     
     std::vector<std::pair<TH1*,TH1*>> PlotGroupsFracDiff = {
-        {hTGSmallTracks, hMCTGSmallTracks},
+        // Primary
+        {hTGSmallTracks0TG, hMCTGSmallTracks0TG},
+        {hTGSmallTracks1TG, hMCTGSmallTracks1TG},
+        {hTGSmallTracks2TG, hMCTGSmallTracks2TG},
+        {hTGTrackLengths, hMCTGTrackLengths},
+
+        // Cylinder
+        {hNumTracksInCylinder0TG, hMCNumTracksInCylinder0TG},
+        {hNumTracksInCylinder1TG, hMCNumTracksInCylinder1TG},
+        {hNumTracksInCylinder2TG, hMCNumTracksInCylinder2TG},
+
+        // Near vertex
         {hTracksNearVertex, hMCTracksNearVertex},
         {hTrackLengthsNearVertex, hMCTrackLengthsNearVertex},
+
+        // TG tracks
         {hNumTGTracks, hMCNumTGTracks},
-        {hBeforeShowerCutSmallTracks, hMCBeforeShowerCutSmallTracks},
-        {hAfterShowerCutSmallTracks, hMCAfterShowerCutSmallTracks},
-        {hTGTrackLengths, hMCTGTrackLengths},
+
+        // Unreconstruced hits
+        {hTGUnreconstructedHitsInduction0TG, hMCTGUnreconstructedHitsInduction0TG},
+        {hTGUnreconstructedHitsInduction1TG, hMCTGUnreconstructedHitsInduction1TG},
+        {hTGUnreconstructedHitsInduction2TG, hMCTGUnreconstructedHitsInduction2TG},
+
+        {hTGUnreconstructedHitsCollection0TG, hMCTGUnreconstructedHitsCollection0TG},
+        {hTGUnreconstructedHitsCollection1TG, hMCTGUnreconstructedHitsCollection1TG},
+        {hTGUnreconstructedHitsCollection2TG, hMCTGUnreconstructedHitsCollection2TG},
+
+        {hTGClusterSizesCollection0TG, hMCTGClusterSizesCollection0TG},
+        {hTGClusterSizesCollection1TG, hMCTGClusterSizesCollection1TG},
+        {hTGClusterSizesCollection2TG, hMCTGClusterSizesCollection2TG},
+
+        {hTGClusterSizesInduction0TG, hMCTGClusterSizesInduction0TG},
+        {hTGClusterSizesInduction1TG, hMCTGClusterSizesInduction1TG},
+        {hTGClusterSizesInduction2TG, hMCTGClusterSizesInduction2TG},
+
+        {hTGNumClustersCollection0TG, hMCTGNumClustersCollection0TG},
+        {hTGNumClustersCollection1TG, hMCTGNumClustersCollection1TG},
+        {hTGNumClustersCollection2TG, hMCTGNumClustersCollection2TG},
+
+        {hTGNumClustersInduction0TG, hMCTGNumClustersInduction0TG},
+        {hTGNumClustersInduction1TG, hMCTGNumClustersInduction1TG},
+        {hTGNumClustersInduction2TG, hMCTGNumClustersInduction2TG}
     };
 
     std::vector<std::string> FracDiffDirectory = {
-        "TGPrimary",
+        "Primary",
+        "Primary",
+        "Primary",
+        "Primary",
+
+        "Cylinder",
+        "Cylinder",
+        "Cylinder",
+
         "NearVertex",
         "NearVertex",
+
         "TGTracks",
-        "ShowerCut",
-        "ShowerCut",
-        "TGPrimary"
+
+        "UnrecoHits",
+        "UnrecoHits",
+        "UnrecoHits",
+
+        "UnrecoHits",
+        "UnrecoHits",
+        "UnrecoHits",
+
+        "UnrecoHits",
+        "UnrecoHits",
+        "UnrecoHits",
+
+        "UnrecoHits",
+        "UnrecoHits",
+        "UnrecoHits",
+
+        "UnrecoHits",
+        "UnrecoHits",
+        "UnrecoHits",
+
+        "UnrecoHits",
+        "UnrecoHits",
+        "UnrecoHits"
     };
 
     for (int i = 0; i < (int)PlotGroupsFracDiff.size(); ++i) {
@@ -1448,8 +1471,8 @@ void RecoDataAnalysis() {
         "TGTracks/TGNumSmallTracksVsThresh",
         "TGTracks/MCTGNumSmallTracksVsThresh",
         "TOF/TOFVsTOFMass",
-        "PrimaryTrack/IncidentPosition",
-        "PrimaryTrack/MCIncidentPosition",
+        "Primary/TrackIncidentPosition",
+        "Primary/MCTrackIncidentPosition",
         "BkgTracks/IncidentPosition",
         "BkgTracks/IncidentDirection",
         "WCQuality/ProjVsRealWC4",

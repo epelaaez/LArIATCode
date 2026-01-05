@@ -351,6 +351,9 @@ TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrix
 // Systematics //
 /////////////////
 
+std::vector<TH1D*> MakeUniverseHists(const std::string& baseName, const std::string& title, int nBins, const double* binEdges, int nUniverses);
+std::vector<std::vector<std::vector<TH1D*>>> MakeUniverseHistBlock(const std::string& baseName, const std::string& titleFmt, int nUniverses, int nOuter, int nInner, int nbins, const double* binEdges);
+
 void GetCovMatrix(TH1* RecoHisto, std::vector<TH1D*> UnivRecoHisto, TH2* CovMatrix);
 void GetFracCovAndCorrMatrix(TH1* RecoHisto, TH2* CovMatrix, TH2* FracCovMatrix, TH2* CorrMatrix);
 double FindQuantile(double frac, std::vector<double>& xs_in);

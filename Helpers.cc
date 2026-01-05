@@ -1630,6 +1630,74 @@ void getBDTVariables(
 // Systematics //
 /////////////////
 
+std::vector<TH1D*> MakeUniverseHists(
+    const std::string& baseName,
+    const std::string& title,
+    int nBins,
+    const double* binEdges,
+    int nUniverses
+) {
+    std::vector<TH1D*> hists;
+    hists.reserve(nUniverses);
+
+    for (int i = 0; i < nUniverses; ++i) {
+        auto h = std::make_unique<TH1D>(
+            (baseName + "_" + std::to_string(i)).c_str(),
+            title.c_str(),
+            nBins,
+            binEdges
+        );
+        hists.push_back(h.release());
+    }
+
+    return hists;
+}
+
+std::vector<std::vector<std::vector<TH1D*>>> MakeUniverseHistBlock(
+    const std::string& baseName,        // e.g., "hTrueAbs0p"
+    const std::string& titleFmt,        // e.g., "Abs0p (U=%d): type %d in bin %d"
+    int nUniverses,
+    int nOuter,                         // e.g., NUM_BINS_KE
+    int nInner,                         // e.g., NUM_SIGNAL_TYPES
+    int nbins,
+    const double* binEdges
+) {
+    std::vector<std::vector<std::vector<TH1D*>>> block;
+    block.resize(nUniverses);
+
+    for (int u = 0; u < nUniverses; ++u) {
+        block[u].resize(nOuter);
+
+        for (int i = 0; i < nOuter; ++i) {
+            block[u][i].reserve(nInner);
+
+            for (int j = 0; j < nInner; ++j) {
+                // Unique histogram name
+                std::string name = Form(
+                    "%s_U%d_%d_%d", 
+                    baseName.c_str(), u, i, j
+                );
+
+                // Title with formatting
+                std::string title = Form(
+                    titleFmt.c_str(), u, j, i
+                );
+
+                auto h = std::make_unique<TH1D>(
+                    name.c_str(),
+                    title.c_str(),
+                    nbins,
+                    binEdges
+                );
+
+                block[u][i].push_back(h.release());
+            }
+        }
+    }
+
+    return block;
+}
+
 void GetCovMatrix(
     TH1* RecoHisto,
     std::vector<TH1D*> UnivRecoHisto,
