@@ -330,6 +330,8 @@ std::vector<double> getAverageDir(const std::vector<double>& points);
 
 std::pair<size_t, size_t> find_unique_position(const std::vector<std::vector<int>>* v, int n);
 
+bool EqualApprox(const TMatrixD& A, const TMatrixD& B, double rtol = 1e-12, double atol = 1e-15);
+
 ///////////////
 // WC checks //
 ///////////////
@@ -350,7 +352,7 @@ TMatrixD Matrix_C(Int_t n, Int_t type);
 //   - AddSmear is additional smearing matrix after unfolding
 //   - WF is the elements of Wiener Filter
 //   - Covariance matrix of the unfolded spectrum
-TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrixD Covariance, Int_t C_type, Float_t Norm_type, TMatrixD& AddSmear, TVectorD& WF, TMatrixD& UnfoldCov, TMatrixD& CovRotation, TMatrixD& AddSmearInverse, bool filterOff = false);
+TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrixD Covariance, Int_t C_type, Float_t Norm_type, TMatrixD& AddSmear, TVectorD& WF, TMatrixD& UnfoldCov, TMatrixD& CovRotation, TMatrixD& AddSmearInverse);
 
 /////////////////
 // Systematics //

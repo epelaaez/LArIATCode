@@ -2328,6 +2328,15 @@ void RecoClassify3Cat() {
         }
     }
 
+    // Construct large signal vector
+    TVectorD Signal(NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
+        for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
+            int index     = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+            Signal(index) = TotalEventsHistos[iSignal]->GetBinContent(iBin + 1);
+        }
+    }
+
     // Save nominal measure vector and response matrix
     TH1D* hMeasureVectorNominal = new TH1D("hMeasureVectorNominal", "hMeasureVectorNominal;;", NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE); V2H(Measure, hMeasureVectorNominal);
 
@@ -2356,14 +2365,34 @@ void RecoClassify3Cat() {
     TMatrixD Response(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); 
     H2M(static_cast<const TH2D*>(hResponseMatrix), Response, kTRUE);
 
-    // Invert response matrix with SVD
+    // Objects to store stuff
+    TMatrixD AddSmear(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    TMatrixD AddSmearInverse(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    TVectorD WF(NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    TMatrixD UnfoldCov(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    TMatrixD CovRotation(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+
+    // Invert response matrix with Wiener-SVD w/o regularization
+    TVectorD UnfoldedReco = WienerSVD(
+        Response,
+        Signal,
+        Measure,
+        Covariance,
+        0, // 0: unit, 2: second derivative
+        0, // smoothing parameter
+        AddSmear,
+        WF,
+        UnfoldCov,
+        CovRotation,
+        AddSmearInverse
+    );
+
+    // Sanity check: CovRotation = RInv?
     TDecompSVD svd(Response); svd.SetTol(1e-8);
     TMatrixD Rinv = svd.Invert();
-    TMatrixD RinvT(TMatrixD::kTransposed, Rinv);
-
-    // Unfold selected events
-    TVectorD UnfoldedReco = Rinv * Measure;
-    TMatrixD UnfoldCov    = Rinv * Covariance * RinvT;
+    if (!EqualApprox(CovRotation, Rinv, 1e-8, 1e-8)) {
+        std::cerr << "Warning: CovRotation matrix does not match the inverse of the response matrix within tolerance." << std::endl;
+    }
 
     // Organize results
     std::vector<TH1*> UnfoldedRecoHistos;
@@ -2395,7 +2424,7 @@ void RecoClassify3Cat() {
     TH2D* hResponseInvMatrix = new TH2D("hResponseInvMatrix", "hResponseInvMatrix;Reco (j, #beta);True (i, #alpha)",
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
-    ); M2H(Rinv, hResponseInvMatrix);
+    ); M2H(CovRotation, hResponseInvMatrix);
 
     ///////////////////////////////////////////////
     // Get cross-section using corrrected fluxes //

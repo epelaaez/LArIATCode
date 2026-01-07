@@ -1240,6 +1240,21 @@ std::pair<size_t, size_t> find_unique_position(const std::vector<std::vector<int
     return {0, 0}; // unreachable, but silences warnings in some builds
 }
 
+bool EqualApprox(const TMatrixD& A, const TMatrixD& B, double rtol, double atol) {
+    if (A.GetNrows() != B.GetNrows() || A.GetNcols() != B.GetNcols()) return false;
+
+    for (int i = 0; i < A.GetNrows(); ++i) {
+        for (int j = 0; j < A.GetNcols(); ++j) {
+            const double a = A(i,j);
+            const double b = B(i,j);
+            const double diff = std::fabs(a - b);
+            const double scale = atol + rtol * std::max(std::fabs(a), std::fabs(b));
+            if (diff > scale) return false;
+        }
+    }
+    return true;
+}
+
 ///////////////
 // WC checks //
 ///////////////
@@ -1358,8 +1373,7 @@ TVectorD WienerSVD(
     TVectorD& WF,          //
     TMatrixD& UnfoldCov,   //
     TMatrixD& CovRotation,  //
-    TMatrixD& AddSmearInverse, 
-    bool filterOff
+    TMatrixD& AddSmearInverse
 ) {
     Int_t m = Response.GetNrows(); // measure, M
     Int_t n = Response.GetNcols(); // signal, S
@@ -1397,7 +1411,6 @@ TVectorD WienerSVD(
         }
     }
     C0 = C0*normsig;
-
     if (C_type == 0 && Norm_type == 0) C0.UnitMatrix();
 
     TMatrixD C = C0;
@@ -1423,17 +1436,6 @@ TVectorD WienerSVD(
             }
         }
     }
-    // for matrix D inverse
-    TMatrixD D_inv(n, m);
-    for (Int_t i = 0; i<n; i++) {
-        for (Int_t j = 0; j<m; j++) {
-            D_inv(i,j) = 0.;
-            if (i == j) {
-                if (D(i) > 0) D_inv(i,j) = 1.0 / D(i);
-                else          D_inv(i,j) = 0.0;
-            }
-        }
-    }
 
     TVectorD S = V_t*Signal;
     // Wiener Filter
@@ -1444,17 +1446,13 @@ TVectorD WienerSVD(
             W(i, j)  = 0;
             W0(i, j) = 0;
             if(i == j) {
-                if (filterOff) {
-                    WF(i)    = 1.;
-                    W0(i, j) = WF(i);
-                    W(i, j)  = 1. / (D(i) * D(i));
+                if (Norm_type == 0 && C_type == 0) {
+                    W(i, j) = 1. / (D(i)*D(i)); // removed 2e-7 tolerance
                 } else {
-                    //W(i, j) = 1./(D(i)*D(i)+2e-7); //S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
-                    //WF(i) = D(i)*D(i)*W(i, j);//S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
-                    W(i, j)  = S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
-                    WF(i)    = D(i)*D(i)*W(i, j);
-                    W0(i, j) = WF(i);
+                    W(i, j) = S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
                 }
+                WF(i)    = D(i)*D(i)*W(i, j);
+                W0(i, j) = WF(i);
             }
         }
     }
@@ -1468,18 +1466,10 @@ TVectorD WienerSVD(
     TVectorD unfold(n);
     TMatrixD covRotation(n,m);
 
-    if (filterOff) {
-        // If filter off, rather not multiply really small/large numbers
-        AddSmearInverse = C_inv * V * V_t * C; // = I
-        AddSmear        = C_inv * V * V_t * C; // = I
-        unfold          = C_inv * V * D_inv * U_t * M;
-        covRotation     = C_inv * V * D_inv * U_t * Q;
-    } else {
-        AddSmearInverse = C_inv * V * W0_inv * V_t * C;
-        AddSmear        = C_inv * V * W0 * V_t * C;
-        unfold          = C_inv * V * W * D_t * U_t * M;
-        covRotation     = C_inv * V * W * D_t * U_t * Q;
-    }
+    AddSmearInverse = C_inv * V * W0_inv * V_t * C;
+    AddSmear        = C_inv * V * W0 * V_t * C;
+    unfold          = C_inv * V * W * D_t * U_t * M;
+    covRotation     = C_inv * V * W * D_t * U_t * Q;
 
     CovRotation = covRotation;
     TMatrixD covRotation_t (TMatrixD::kTransposed, covRotation); 
