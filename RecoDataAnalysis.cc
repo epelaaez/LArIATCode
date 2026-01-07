@@ -158,6 +158,16 @@ void RecoDataAnalysis() {
     tree->SetBranchAddress("hitWC2TPCKey", &hitWC2TPCKey);
     tree->SetBranchAddress("hitThroughTrack", &hitThroughTrack);
 
+    // Information about hits in tracks
+    std::vector<std::vector<int>>* recoTrackHitIndices  = nullptr;
+    std::vector<std::vector<double>>*     recoTrackHitX = nullptr; 
+    std::vector<std::vector<double>>*     recoTrackHitY = nullptr; 
+    std::vector<std::vector<double>>*     recoTrackHitZ = nullptr; 
+    tree->SetBranchAddress("recoTrackHitIndices", &recoTrackHitIndices);
+    tree->SetBranchAddress("recoTrackHitX", &recoTrackHitX);
+    tree->SetBranchAddress("recoTrackHitY", &recoTrackHitY);
+    tree->SetBranchAddress("recoTrackHitZ", &recoTrackHitZ);
+
     // TOF information
     double TOFMass, tofObject;
     tree->SetBranchAddress("TOFMass", &TOFMass);
@@ -176,10 +186,13 @@ void RecoDataAnalysis() {
     TH2D* hMCTGNumSmallTracksVsThresh   = (TH2D*) MCFile->Get("hMCTGNumSmallTracksVsThresh");
     TH2D* hMCPrimaryTrackPosition       = (TH2D*) MCFile->Get("hMCPrimaryTrackPosition");
 
-    TH1D* hMCNumTracksInCylinder    = (TH1D*) MCFile->Get("hMCNumTracksInCylinder");
     TH1D* hMCNumTracksInCylinder0TG = (TH1D*) MCFile->Get("hMCNumTracksInCylinder0TG");
     TH1D* hMCNumTracksInCylinder1TG = (TH1D*) MCFile->Get("hMCNumTracksInCylinder1TG");
     TH1D* hMCNumTracksInCylinder2TG = (TH1D*) MCFile->Get("hMCNumTracksInCylinder2TG");
+
+    TH1D* hMCNumSmallTracksInCylinder0TG = (TH1D*) MCFile->Get("hMCNumSmallTracksInCylinder0TG");
+    TH1D* hMCNumSmallTracksInCylinder1TG = (TH1D*) MCFile->Get("hMCNumSmallTracksInCylinder1TG");
+    TH1D* hMCNumSmallTracksInCylinder2TG = (TH1D*) MCFile->Get("hMCNumSmallTracksInCylinder2TG");
 
     TH1D* hMCTGSmallTracks    = (TH1D*) MCFile->Get("hMCTGSmallTracks");
     TH1D* hMCTGSmallTracks0TG = (TH1D*) MCFile->Get("hMCTGSmallTracks0TG");
@@ -227,14 +240,17 @@ void RecoDataAnalysis() {
     TH1D* hTGTrackLengths      = new TH1D("hTGTrackLengths", "TGTrackLengths", 25, 0, 50);
     TH1D* hTGSmallTracks       = new TH1D("hTGSmallTracks", "TGSmallTracks", 10, 0, 10);
 
-    TH1D* hNumTracksInCylinder0TG = new TH1D("hNumTracksInCylinder0TG", "NumTracksInCylinder0TG", 10, 0, 10);
-    TH1D* hTGSmallTracks0TG       = new TH1D("hTGSmallTracks0TG", "TGSmallTracks0TG", 10, 0, 10);
+    TH1D* hNumTracksInCylinder0TG      = new TH1D("hNumTracksInCylinder0TG", "NumTracksInCylinder0TG", 10, 0, 10);
+    TH1D* hNumSmallTracksInCylinder0TG = new TH1D("hNumSmallTracksInCylinder0TG", "NumSmallTracksInCylinder0TG", 10, 0, 10);
+    TH1D* hTGSmallTracks0TG            = new TH1D("hTGSmallTracks0TG", "TGSmallTracks0TG", 10, 0, 10);
 
-    TH1D* hNumTracksInCylinder1TG = new TH1D("hNumTracksInCylinder1TG", "NumTracksInCylinder1TG", 10, 0, 10);
-    TH1D* hTGSmallTracks1TG       = new TH1D("hTGSmallTracks1TG", "TGSmallTracks1TG", 10, 0, 10);
+    TH1D* hNumTracksInCylinder1TG      = new TH1D("hNumTracksInCylinder1TG", "NumTracksInCylinder1TG", 10, 0, 10);
+    TH1D* hNumSmallTracksInCylinder1TG = new TH1D("hNumSmallTracksInCylinder1TG", "NumSmallTracksInCylinder1TG", 10, 0, 10);
+    TH1D* hTGSmallTracks1TG            = new TH1D("hTGSmallTracks1TG", "TGSmallTracks1TG", 10, 0, 10);
 
-    TH1D* hNumTracksInCylinder2TG = new TH1D("hNumTracksInCylinder2TG", "NumTracksInCylinder2TG", 10, 0, 10);
-    TH1D* hTGSmallTracks2TG       = new TH1D("hTGSmallTracks2TG", "TGSmallTracks2TG", 10, 0, 10);
+    TH1D* hNumTracksInCylinder2TG      = new TH1D("hNumTracksInCylinder2TG", "NumTracksInCylinder2TG", 10, 0, 10);
+    TH1D* hNumSmallTracksInCylinder2TG = new TH1D("hNumSmallTracksInCylinder2TG", "NumSmallTracksInCylinder2TG", 10, 0, 10);
+    TH1D* hTGSmallTracks2TG            = new TH1D("hTGSmallTracks2TG", "TGSmallTracks2TG", 10, 0, 10);
 
     TH1D* hTGUnreconstructedHitsInduction0TG = new TH1D("hTGUnreconstructedHitsInduction0TG", "UnreconstructedInductionHits0TG;;", 30, 0, 30);
     TH1D* hTGUnreconstructedHitsInduction1TG = new TH1D("hTGUnreconstructedHitsInduction1TG", "UnreconstructedInductionHits1TG;;", 30, 0, 30);
@@ -332,7 +348,7 @@ void RecoDataAnalysis() {
         tree->GetEntry(i);
 
         // Make script go faster
-        // if (i > 50000) break;
+        if (i > 50000) break;
 
         // Fill for all events
         hTOFMass->Fill(std::abs(TOFMass));
@@ -414,9 +430,27 @@ void RecoDataAnalysis() {
         int smallTracksTPCStart = 0; 
         int numTGTracks = 0;
         int numTracksInCylinder = 0;
+        int numSmallTracksInCylinder = 0;
 
         for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
             if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
+            double distanceFromStart = distance(
+                recoBeginX->at(trk_idx), WC2TPCPrimaryEndX, 
+                recoBeginY->at(trk_idx), WC2TPCPrimaryEndY,
+                recoBeginZ->at(trk_idx), WC2TPCPrimaryEndZ
+            );
+            double distanceFromEnd = distance(
+                recoEndX->at(trk_idx), WC2TPCPrimaryEndX, 
+                recoEndY->at(trk_idx), WC2TPCPrimaryEndY,
+                recoEndZ->at(trk_idx), WC2TPCPrimaryEndZ
+            );
+
+            double trackLength = sqrt(
+                pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
+                pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
+                pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+            );
 
             // Copy WC2TPCLocations
             std::vector<double>* wcX = new std::vector<double>(*WC2TPCLocationsX);
@@ -455,24 +489,11 @@ void RecoDataAnalysis() {
                 recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
                 CYLINDER_RADIUS
             );
-            if (startInCylinder && endInCylinder) numTracksInCylinder++;
+            if (startInCylinder && endInCylinder) {
+                numTracksInCylinder++;
+                if (trackLength < CYLINDER_SMALL_TRACK) numSmallTracksInCylinder++;
+            }
 
-            double distanceFromStart = distance(
-                recoBeginX->at(trk_idx), WC2TPCPrimaryEndX, 
-                recoBeginY->at(trk_idx), WC2TPCPrimaryEndY,
-                recoBeginZ->at(trk_idx), WC2TPCPrimaryEndZ
-            );
-            double distanceFromEnd = distance(
-                recoEndX->at(trk_idx), WC2TPCPrimaryEndX, 
-                recoEndY->at(trk_idx), WC2TPCPrimaryEndY,
-                recoEndZ->at(trk_idx), WC2TPCPrimaryEndZ
-            );
-
-            double trackLength = sqrt(
-                pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
-                pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
-                pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
-            );
             if (isPrimaryTG) hTGTrackLengths->Fill(trackLength);
 
             if (
@@ -523,14 +544,17 @@ void RecoDataAnalysis() {
         // Look at relevant quantities with different number of TG tracks
         if (numTGTracks == 0 && isPrimaryTG) {
             hNumTracksInCylinder0TG->Fill(numTracksInCylinder);
+            hNumSmallTracksInCylinder0TG->Fill(numSmallTracksInCylinder);
             hTGSmallTracks0TG->Fill(numSmallTracks);
         } 
         if (numTGTracks <= 1 && isPrimaryTG) {
             hNumTracksInCylinder1TG->Fill(numTracksInCylinder);
+            hNumSmallTracksInCylinder1TG->Fill(numSmallTracksInCylinder);
             hTGSmallTracks1TG->Fill(numSmallTracks);
         }
         if (numTGTracks <= 2 && isPrimaryTG) {
             hNumTracksInCylinder2TG->Fill(numTracksInCylinder);
+            hNumSmallTracksInCylinder2TG->Fill(numSmallTracksInCylinder);
             hTGSmallTracks2TG->Fill(numSmallTracks);
         }
 
@@ -692,6 +716,14 @@ void RecoDataAnalysis() {
         std::vector<int> hitWC2TPCKeyCollection;
 
         for (size_t i = 0; i < hitWC2TPCKey->size(); ++i) {
+            // Only care about hits inside the reduced volume
+            auto [i_hit, j_hit] = find_unique_position(recoTrackHitIndices, hitWC2TPCKey->at(i));
+            if (!isWithinReducedVolume(
+                recoTrackHitX->at(i_hit)[j_hit],
+                recoTrackHitY->at(i_hit)[j_hit],
+                recoTrackHitZ->at(i_hit)[j_hit]
+            )) continue;
+
             if (fHitPlane->at(hitWC2TPCKey->at(i)) == 0) hitWC2TPCKeyInduction.push_back(hitWC2TPCKey->at(i));
             else if (fHitPlane->at(hitWC2TPCKey->at(i)) == 1) hitWC2TPCKeyCollection.push_back(hitWC2TPCKey->at(i));
 
@@ -847,7 +879,6 @@ void RecoDataAnalysis() {
     // primary TG
     hMCTGSmallTracks->Scale(scalingTG);
     hMCTGTrackLengths->Scale(scalingTG);
-    hMCNumTracksInCylinder->Scale(scalingTG);
 
     hMCTGSmallTracks0TG->Scale(scaling0TG);
     hMCTGSmallTracks1TG->Scale(scaling1TG);
@@ -856,6 +887,10 @@ void RecoDataAnalysis() {
     hMCNumTracksInCylinder0TG->Scale(scaling0TG);
     hMCNumTracksInCylinder1TG->Scale(scaling1TG);
     hMCNumTracksInCylinder2TG->Scale(scaling2TG);
+
+    hMCNumSmallTracksInCylinder0TG->Scale(scaling0TG);
+    hMCNumSmallTracksInCylinder1TG->Scale(scaling1TG);
+    hMCNumSmallTracksInCylinder2TG->Scale(scaling2TG);
 
     hMCTGUnreconstructedHitsInduction0TG->Scale(scaling0TG);
     hMCTGUnreconstructedHitsInduction1TG->Scale(scaling1TG);
@@ -914,6 +949,10 @@ void RecoDataAnalysis() {
         {hNumTracksInCylinder1TG, hMCNumTracksInCylinder1TG},
         {hNumTracksInCylinder2TG, hMCNumTracksInCylinder2TG},
 
+        {hNumSmallTracksInCylinder0TG, hMCNumSmallTracksInCylinder0TG},
+        {hNumSmallTracksInCylinder1TG, hMCNumSmallTracksInCylinder1TG},
+        {hNumSmallTracksInCylinder2TG, hMCNumSmallTracksInCylinder2TG},
+
         // Hits in primary
         {hTimePrimaryHits},
 
@@ -966,6 +1005,10 @@ void RecoDataAnalysis() {
         {"Data"},
 
         // Cylinder
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
@@ -1028,6 +1071,10 @@ void RecoDataAnalysis() {
         "Cylinder/NumTracksInCylinder1TG",
         "Cylinder/NumTracksInCylinder2TG",
 
+        "Cylinder/NumSmallTracksInCylinder0TG",
+        "Cylinder/NumSmallTracksInCylinder1TG",
+        "Cylinder/NumSmallTracksInCylinder2TG",
+
         // Hits in primary
         "Primary/HitTime",
 
@@ -1081,6 +1128,12 @@ void RecoDataAnalysis() {
 
         // Cylinder
         "# of tracks",
+        "# of tracks",
+        "# of tracks",
+
+        "# of small tracks",
+        "# of small tracks",
+        "# of small tracks",
 
         // Hits in primary
         "Hit time [us]",
@@ -1097,10 +1150,6 @@ void RecoDataAnalysis() {
         "# of small tracks",
 
         // Unreconstructed hits
-        "# of tracks",
-        "# of tracks",
-        "# of tracks",
-
         "# of unreconstructed hits",
         "# of unreconstructed hits",
         "# of unreconstructed hits",
@@ -1139,6 +1188,12 @@ void RecoDataAnalysis() {
 
         // Cylinder
         "Counts",
+        "Counts",
+        "Counts",
+
+        "Counts",
+        "Counts",
+        "Counts",
 
         // Hits in primary
         "Counts",
@@ -1156,10 +1211,6 @@ void RecoDataAnalysis() {
         "Counts",
 
         // Unreconstructed hits
-        "Counts",
-        "Counts",
-        "Counts",
-
         "Counts",
         "Counts",
         "Counts",
@@ -1198,6 +1249,12 @@ void RecoDataAnalysis() {
 
         // Cylinder
         false,
+        false,
+        false,
+
+        false,
+        false,
+        false,
 
         // Hits in primary
         false,
@@ -1214,10 +1271,6 @@ void RecoDataAnalysis() {
         false,
 
         // Unreconstructed hits
-        false,
-        false,
-        false,
-
         false,
         false,
         false,
@@ -1256,6 +1309,12 @@ void RecoDataAnalysis() {
 
         // Cylinder
         {true, false},
+        {true, false},
+        {true, false},
+
+        {true, false},
+        {true, false},
+        {true, false},
 
         // Hits in primary
         {true},
@@ -1294,10 +1353,6 @@ void RecoDataAnalysis() {
 
         {true, false},
         {true, false},
-        {true, false},
-        
-        {true, false},
-        {true, false},
         {true, false}
     };
 
@@ -1316,6 +1371,10 @@ void RecoDataAnalysis() {
         {hNumTracksInCylinder0TG, hMCNumTracksInCylinder0TG},
         {hNumTracksInCylinder1TG, hMCNumTracksInCylinder1TG},
         {hNumTracksInCylinder2TG, hMCNumTracksInCylinder2TG},
+
+        {hNumSmallTracksInCylinder0TG, hMCNumSmallTracksInCylinder0TG},
+        {hNumSmallTracksInCylinder1TG, hMCNumSmallTracksInCylinder1TG},
+        {hNumSmallTracksInCylinder2TG, hMCNumSmallTracksInCylinder2TG},
 
         // Near vertex
         {hTracksNearVertex, hMCTracksNearVertex},
@@ -1355,6 +1414,10 @@ void RecoDataAnalysis() {
         "Primary",
         "Primary",
         "Primary",
+
+        "Cylinder",
+        "Cylinder",
+        "Cylinder",
 
         "Cylinder",
         "Cylinder",

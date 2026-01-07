@@ -1225,6 +1225,21 @@ std::vector<double> getAverageDir(const std::vector<std::vector<double>>& points
     return avgDir;
 }
 
+std::pair<size_t, size_t> find_unique_position(const std::vector<std::vector<int>>* v, int n) {
+    for (size_t i = 0; i < v->size(); ++i) {
+        const auto& row = (*v)[i];
+        for (size_t j = 0; j < row.size(); ++j) {
+            if (row[j] == n) {
+                return {i, j};
+            }
+        }
+    }
+
+    // If you truly guarantee it exists, reaching here is a logic error:
+    assert(false && "n not found in recoTrackHitIndices");
+    return {0, 0}; // unreachable, but silences warnings in some builds
+}
+
 ///////////////
 // WC checks //
 ///////////////

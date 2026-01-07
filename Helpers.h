@@ -176,6 +176,9 @@ double SLICED_CONE_HEIGHT               = 30.0;
 double SLICED_CONE_SMALL_TRACK          = 5.0;
 int    SLICED_CONE_ALLOWED_SMALL_TRACKS = 0;
 
+// Number of allowed TG tracks
+int MAX_NUM_TG_TRACKS = 2;
+
 // Parameters for BDT model
 int BDT_NUM_RECO_TRKS = 5;
 
@@ -324,6 +327,8 @@ std::tuple<double, double> azimuth_polar_from_points(
 std::vector<double> projToZ(const std::vector<double>& hit0, const std::vector<double>& hit1, double zpos);
 
 std::vector<double> getAverageDir(const std::vector<double>& points);
+
+std::pair<size_t, size_t> find_unique_position(const std::vector<std::vector<int>>* v, int n);
 
 ///////////////
 // WC checks //

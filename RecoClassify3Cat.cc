@@ -227,7 +227,7 @@ void RecoClassify3Cat() {
     tree->SetBranchAddress("hitThroughTrack", &hitThroughTrack);
 
     // Hits reconstructed into full tracks
-    std::vector<std::vector<int>>* recoTrackHitIndices = nullptr;
+    std::vector<std::vector<int>>* recoTrackHitIndices  = nullptr;
     std::vector<std::vector<double>>*     recoTrackHitX = nullptr; 
     std::vector<std::vector<double>>*     recoTrackHitY = nullptr; 
     std::vector<std::vector<double>>*     recoTrackHitZ = nullptr; 
@@ -357,6 +357,7 @@ void RecoClassify3Cat() {
 
     // Events composition after each cut
     TH1D* hDataProdsAndWC2TPC = new TH1D("hDataProdsAndWC2TPC", "hDataProdsAndWC2TPC;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D* hNotManyTGTracks    = new TH1D("hNotManyTGTracks", "hNotManyTGTracks;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D* hNotAnElectron      = new TH1D("hNotAnElectron", "hNotAnElectron;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D* hPrimaryInRedVol    = new TH1D("hPrimaryInRedVol", "hPrimaryInRedVol;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D* hPrimaryPID         = new TH1D("hPrimaryPID", "hPrimaryPID;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
@@ -544,6 +545,18 @@ void RecoClassify3Cat() {
     TH1D* hBestOtherChExch   = new TH1D("hBestOtherChExch", "hBestOtherChExch;;", PROB_DIVISIONS, 0, 1);
     TH1D* hBestOtherOther    = new TH1D("hBestOtherOther", "hBestOtherOther;;", PROB_DIVISIONS, 0, 1);
 
+    //////////////////////////
+    // Through-going tracks //
+    //////////////////////////
+
+    TH1D* hNumTGTracksAbs0p    = new TH1D("hNumTGTracksAbs0p", "hNumTGTracksAbs0p", 10, 0, 10);
+    TH1D* hNumTGTracksAbsNp    = new TH1D("hNumTGTracksAbsNp", "hNumTGTracksAbsNp", 10, 0, 10);
+    TH1D* hNumTGTracksMuon     = new TH1D("hNumTGTracksMuon", "hNumTGTracksMuon", 10, 0, 10);
+    TH1D* hNumTGTracksElectron = new TH1D("hNumTGTracksElectron", "hNumTGTracksElectron", 10, 0, 10);
+    TH1D* hNumTGTracksScatter  = new TH1D("hNumTGTracksScatter", "hNumTGTracksScatter", 10, 0, 10);
+    TH1D* hNumTGTracksChExch   = new TH1D("hNumTGTracksChExch", "hNumTGTracksChExch", 10, 0, 10);
+    TH1D* hNumTGTracksOther    = new TH1D("hNumTGTracksOther", "hNumTGTracksOther", 10, 0, 10);
+
     ////////////////////////////////
     // Study unreconstructed hits //
     ////////////////////////////////
@@ -649,10 +662,13 @@ void RecoClassify3Cat() {
 
     TH1D* hMCNumWC2TPCMatch      = new TH1D("hMCNumWC2TPCMatch", "hMCNumWC2TPCMatch", 10, 0, 10);
 
-    TH1D* hMCNumTracksInCylinder    = new TH1D("hMCNumTracksInCylinder", "hMCNumTracksInCylinder", 10, 0, 10);
     TH1D* hMCNumTracksInCylinder0TG = new TH1D("hMCNumTracksInCylinder0TG", "hMCNumTracksInCylinder0TG", 10, 0, 10);
     TH1D* hMCNumTracksInCylinder1TG = new TH1D("hMCNumTracksInCylinder1TG", "hMCNumTracksInCylinder1TG", 10, 0, 10);
     TH1D* hMCNumTracksInCylinder2TG = new TH1D("hMCNumTracksInCylinder2TG", "hMCNumTracksInCylinder2TG", 10, 0, 10);
+
+    TH1D* hMCNumSmallTracksInCylinder0TG = new TH1D("hMCNumSmallTracksInCylinder0TG", "hMCNumSmallTracksInCylinder0TG", 10, 0, 10);
+    TH1D* hMCNumSmallTracksInCylinder1TG = new TH1D("hMCNumSmallTracksInCylinder1TG", "hMCNumSmallTracksInCylinder1TG", 10, 0, 10);
+    TH1D* hMCNumSmallTracksInCylinder2TG = new TH1D("hMCNumSmallTracksInCylinder2TG", "hMCNumSmallTracksInCylinder2TG", 10, 0, 10);
 
     TH1D* hMCTGSmallTracks    = new TH1D("hMCTGSmallTracks", "hMCTGSmallTracks;;", 10, 0, 10);
     TH1D* hMCTGSmallTracks0TG = new TH1D("hMCTGSmallTracks0TG", "hMCTGSmallTracks0TG;;", 10, 0, 10);
@@ -691,6 +707,14 @@ void RecoClassify3Cat() {
     TH1D* hMCTGClusterSizesCollection1TG = new TH1D("hMCTGClusterSizesCollection1TG", "hMCTGClusterSizesCollection1TG;;", 15, 0, 30);
     TH1D* hMCTGClusterSizesCollection2TG = new TH1D("hMCTGClusterSizesCollection2TG", "hMCTGClusterSizesCollection2TG;;", 15, 0, 30);
 
+    TH1D* hMCTGLargestClusterInduction0TG = new TH1D("hMCTGLargestClusterInduction0TG", "hMCTGLargestClusterInduction0TG;;", 20, 0, 20);
+    TH1D* hMCTGLargestClusterInduction1TG = new TH1D("hMCTGLargestClusterInduction1TG", "hMCTGLargestClusterInduction1TG;;", 20, 0, 20);
+    TH1D* hMCTGLargestClusterInduction2TG = new TH1D("hMCTGLargestClusterInduction2TG", "hMCTGLargestClusterInduction2TG;;", 20, 0, 20);
+
+    TH1D* hMCTGLargestClusterCollection0TG = new TH1D("hMCTGLargestClusterCollection0TG", "hMCTGLargestClusterCollection0TG;;", 20, 0, 20);
+    TH1D* hMCTGLargestClusterCollection1TG = new TH1D("hMCTGLargestClusterCollection1TG", "hMCTGLargestClusterCollection1TG;;", 20, 0, 20);
+    TH1D* hMCTGLargestClusterCollection2TG = new TH1D("hMCTGLargestClusterCollection2TG", "hMCTGLargestClusterCollection2TG;;", 20, 0, 20);
+
     ///////////////////////////////////
     // Distribution of primary track //
     ///////////////////////////////////
@@ -706,57 +730,6 @@ void RecoClassify3Cat() {
     ////////////////
 
     TH1D* hTrueMuonTypes = new TH1D("hTrueMuonTypes", "hTrueMuonTypes", 4, 0, 4);
-
-    ////////////////////
-    // Load BDT model //
-    ////////////////////
-
-    // TMVA::Reader BDTReader;
-    
-    // Float_t bdt_WC2TPCTrackLength;
-    // Float_t bdt_WC2TPCBeginX;
-    // Float_t bdt_WC2TPCBeginY;
-    // Float_t bdt_WC2TPCBeginZ;
-    // Float_t bdt_WC2TPCEndX;
-    // Float_t bdt_WC2TPCEndY;
-    // Float_t bdt_WC2TPCEndZ;
-    // Float_t bdt_WC2TPCdEdx;
-    // Float_t bdt_numRecoTrksInCylinder;
-
-    // BDTReader.AddVariable("WC2TPCTrackLength", &bdt_WC2TPCTrackLength);
-    // BDTReader.AddVariable("WC2TPCBeginX", &bdt_WC2TPCBeginX);
-    // BDTReader.AddVariable("WC2TPCBeginY", &bdt_WC2TPCBeginY);
-    // BDTReader.AddVariable("WC2TPCBeginZ", &bdt_WC2TPCBeginZ);
-    // BDTReader.AddVariable("WC2TPCEndX", &bdt_WC2TPCEndX);
-    // BDTReader.AddVariable("WC2TPCEndY", &bdt_WC2TPCEndY);
-    // BDTReader.AddVariable("WC2TPCEndZ", &bdt_WC2TPCEndZ);
-    // BDTReader.AddVariable("WC2TPCdEdx", &bdt_WC2TPCdEdx);
-
-    // Float_t bdt_recoTrkBeginX[BDT_NUM_RECO_TRKS];
-    // Float_t bdt_recoTrkBeginY[BDT_NUM_RECO_TRKS];
-    // Float_t bdt_recoTrkBeginZ[BDT_NUM_RECO_TRKS];
-    // Float_t bdt_recoTrkEndX[BDT_NUM_RECO_TRKS];
-    // Float_t bdt_recoTrkEndY[BDT_NUM_RECO_TRKS];
-    // Float_t bdt_recoTrkEndZ[BDT_NUM_RECO_TRKS];
-    // Float_t bdt_recoTrkLen[BDT_NUM_RECO_TRKS];
-    // Float_t bdt_recoTrkdEdx[BDT_NUM_RECO_TRKS];
-
-    // for (int j = 0; j < BDT_NUM_RECO_TRKS; ++j) {
-    //     BDTReader.AddVariable(Form("recoTrkBeginX_%d", j), &bdt_recoTrkBeginX[j]);
-    //     BDTReader.AddVariable(Form("recoTrkBeginY_%d", j), &bdt_recoTrkBeginY[j]);
-    //     BDTReader.AddVariable(Form("recoTrkBeginZ_%d", j), &bdt_recoTrkBeginZ[j]);
-    //     BDTReader.AddVariable(Form("recoTrkEndX_%d", j), &bdt_recoTrkEndX[j]);
-    //     BDTReader.AddVariable(Form("recoTrkEndY_%d", j), &bdt_recoTrkEndY[j]);
-    //     BDTReader.AddVariable(Form("recoTrkEndZ_%d", j), &bdt_recoTrkEndZ[j]);
-    //     BDTReader.AddVariable(Form("recoTrkLen_%d", j), &bdt_recoTrkLen[j]);
-    //     BDTReader.AddVariable(Form("recoTrkdEdx_%d", j), &bdt_recoTrkdEdx[j]);
-    // }
-    
-    // BDTReader.AddVariable("numRecoTrksInCylinder", &bdt_numRecoTrksInCylinder);
-
-    // for (int i = 0; i < 3; ++i) {
-    //     BDTReader.BookMVA("BDT" + std::to_string(i), "/exp/lariat/app/users/epelaez/analysis/python/model/abs_model_class_" + std::to_string(i) + ".xml");
-    // }
 
     //////////////////////
     // Loop over events //
@@ -785,7 +758,7 @@ void RecoClassify3Cat() {
         tree->GetEntry(i);
 
         // Make script go faster
-        // if (i > 50000) break;
+        if (i > 50000) break;
 
         // Get unordered set for hits in tracks
         std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
@@ -872,12 +845,11 @@ void RecoClassify3Cat() {
         int numUnRecoHitsNearPrimaryInduction  = 0;
         int numUnRecoHitsNearPrimaryCollection = 0;
         for (size_t iHit = 0; iHit < fHitKey->size(); ++iHit) {
-            // if (fHitPlane->at(iHit) == 1) continue;
-
             double hitX     = fHitX->at(iHit);
             double hitW     = fHitW->at(iHit);
             int    hitPlane = fHitPlane->at(iHit);
 
+            // Check if hit is near vertex of the primary
             if (isHitNearPrimary(
                 hitWC2TPCKey,
                 fHitX,
@@ -1008,6 +980,14 @@ void RecoClassify3Cat() {
         std::vector<int> hitWC2TPCKeyCollection;
         bool foundHitNegativeTime = false;
         for (size_t i = 0; i < hitWC2TPCKey->size(); ++i) {
+            // Only care about hits inside the reduced volume
+            auto [i_hit, j_hit] = find_unique_position(recoTrackHitIndices, hitWC2TPCKey->at(i));
+            if (!isWithinReducedVolume(
+                recoTrackHitX->at(i_hit)[j_hit],
+                recoTrackHitY->at(i_hit)[j_hit],
+                recoTrackHitZ->at(i_hit)[j_hit]
+            )) continue;
+
             if (fHitPlane->at(hitWC2TPCKey->at(i)) == 0) hitWC2TPCKeyInduction.push_back(hitWC2TPCKey->at(i));
             else if (fHitPlane->at(hitWC2TPCKey->at(i)) == 1) hitWC2TPCKeyCollection.push_back(hitWC2TPCKey->at(i));
 
@@ -1032,6 +1012,7 @@ void RecoClassify3Cat() {
             int numTGTracksComp = 0;
             int smallTracksTPCStart = 0;
             int numTracksInCylinder = 0;
+            int numSmallTracksInCylinder = 0;
 
             // Information about hits
 
@@ -1111,26 +1092,7 @@ void RecoClassify3Cat() {
                 // Skip WC2TPC match itself
                 if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
 
-                // Is track contained in 10 cm cylinder?
-                bool startInCylinder = IsPointInsideTrackCylinder(
-                    wcX, wcY, wcZ,
-                    recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
-                    CYLINDER_RADIUS
-                );
-                bool endInCylinder = IsPointInsideTrackCylinder(
-                    wcX, wcY, wcZ,
-                    recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
-                    CYLINDER_RADIUS
-                );
-                if (startInCylinder && endInCylinder) numTracksInCylinder++;
-
-                if (
-                    !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
-                    !isWithinReducedVolume(recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx))
-                ) {
-                    numTGTracksComp++;
-                }
-
+                // Get distance from start and end of WC2TPC match
                 double distanceFromStart = distance(
                     recoBeginX->at(trk_idx), WC2TPCPrimaryEndX, 
                     recoBeginY->at(trk_idx), WC2TPCPrimaryEndY,
@@ -1142,14 +1104,40 @@ void RecoClassify3Cat() {
                     recoEndZ->at(trk_idx), WC2TPCPrimaryEndZ
                 );
 
+                // Get track length
                 double trackLength = sqrt(
                     pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
                     pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
                     pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
                 );
-                if (isPrimaryTG) {
-                    hMCTGTrackLengths->Fill(trackLength);
+
+                // Is track contained in 10 cm cylinder?
+                bool startInCylinder = IsPointInsideTrackCylinder(
+                    wcX, wcY, wcZ,
+                    recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
+                    CYLINDER_RADIUS
+                );
+                bool endInCylinder = IsPointInsideTrackCylinder(
+                    wcX, wcY, wcZ,
+                    recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
+                    CYLINDER_RADIUS
+                );
+                if (startInCylinder && endInCylinder) {
+                    numTracksInCylinder++;
+                    if (trackLength < CYLINDER_SMALL_TRACK) numSmallTracksInCylinder++;
                 }
+
+
+                // Is track throughgoing?
+                if (
+                    !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
+                    !isWithinReducedVolume(recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx))
+                ) {
+                    numTGTracksComp++;
+                }
+
+                // If the primary track is a throughgoing, record track length
+                if (isPrimaryTG) hMCTGTrackLengths->Fill(trackLength);
 
                 // Start of TPC
                 if (
@@ -1176,23 +1164,25 @@ void RecoClassify3Cat() {
             if (isPrimaryTG) {
                 hMCSmallVsTGTracks->Fill(smallTracksComp, numTGTracksComp);
                 hMCTGSmallTracks->Fill(smallTracksComp);
-                hMCNumTracksInCylinder->Fill(numTracksInCylinder);
 
                 if (numTGTracksComp == 0) {
                     hMCTGSmallTracks0TG->Fill(smallTracksComp);
                     hMCNumTracksInCylinder0TG->Fill(numTracksInCylinder);
+                    hMCNumSmallTracksInCylinder0TG->Fill(numSmallTracksInCylinder);
                     hMCTGUnreconstructedHitsInduction0TG->Fill(numUnrecoHitsInduction);
                     hMCTGUnreconstructedHitsCollection0TG->Fill(numUnrecoHitsCollection);
                 }
                 if (numTGTracksComp <= 1) {
                     hMCTGSmallTracks1TG->Fill(smallTracksComp);
                     hMCNumTracksInCylinder1TG->Fill(numTracksInCylinder);
+                    hMCNumSmallTracksInCylinder1TG->Fill(numSmallTracksInCylinder);
                     hMCTGUnreconstructedHitsInduction1TG->Fill(numUnrecoHitsInduction);
                     hMCTGUnreconstructedHitsCollection1TG->Fill(numUnrecoHitsCollection);
                 }
                 if (numTGTracksComp <= 2) {
                     hMCTGSmallTracks2TG->Fill(smallTracksComp);
                     hMCNumTracksInCylinder2TG->Fill(numTracksInCylinder);
+                    hMCNumSmallTracksInCylinder2TG->Fill(numSmallTracksInCylinder);
                     hMCTGUnreconstructedHitsInduction2TG->Fill(numUnrecoHitsInduction);
                     hMCTGUnreconstructedHitsCollection2TG->Fill(numUnrecoHitsCollection);
                 }
@@ -1220,7 +1210,7 @@ void RecoClassify3Cat() {
 
             for (size_t iCluster = 0; iCluster < hitClusters.size(); ++iCluster) {
                 HitCluster thisCluster = hitClusters[iCluster];
-
+                
                 for (size_t iHit = 0; iHit < thisCluster.hitKeys.size(); ++iHit) {
                     if (std::find(candidateRandomHitsInduction.begin(), candidateRandomHitsInduction.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsInduction.end()) {
                         numClustersInduction++;
@@ -1488,9 +1478,6 @@ void RecoClassify3Cat() {
         }
         hDataProdsAndWC2TPC->Fill(backgroundType);
 
-        // If more than X through-going tracks in the detector, skip
-        // TODO: above
-
         //////////////////////////////////////
         // Back to classification algorithm //
         //////////////////////////////////////
@@ -1589,14 +1576,21 @@ void RecoClassify3Cat() {
         }
         double energyAtVertex = initialKE - energyDeposited;
 
-        //////////////////
-        // Cylinder cut //
-        //////////////////
+        ////////////////////////////////
+        // Cylinder and TG track cuts //
+        ////////////////////////////////
 
+        int numTGTracks = 0;
         int numSmallTracksInCylinder = 0;
         int numTracksInCylinder      = 0;
         for (int trk_idx = 0; trk_idx < recoTrkID->size(); ++trk_idx) {
             if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
+            // Check if tracks is through-going
+            if (
+                !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
+                !isWithinReducedVolume(recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx))
+            ) numTGTracks++;
 
             double trackLength = sqrt(
                 pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
@@ -1624,8 +1618,27 @@ void RecoClassify3Cat() {
                 numSmallTracksInCylinder++;
             }
         }
+        
+        // Save data about TG tracks
+        if (backgroundType == 0) {
+            hNumTGTracksAbs0p->Fill(numTGTracks);
+        } else if (backgroundType == 1) {
+            hNumTGTracksAbsNp->Fill(numTGTracks);
+        } else if (backgroundType == 2) {
+            hNumTGTracksMuon->Fill(numTGTracks);
+        } else if (backgroundType == 3) {
+            hNumTGTracksElectron->Fill(numTGTracks);    
+        } else if (backgroundType == 6 || backgroundType == 12) {
+            hNumTGTracksScatter->Fill(numTGTracks);
+        } else if (backgroundType == 7) {
+            hNumTGTracksChExch->Fill(numTGTracks);
+        } else {
+            hNumTGTracksOther->Fill(numTGTracks);
+        }
 
-        // Perform cut
+        // Perform TG track cut
+        if (numTGTracks > MAX_NUM_TG_TRACKS) continue;
+        hNotManyTGTracks->Fill(backgroundType);
 
         // Cut on tracks
         // if (numTracksInCylinder > ALLOWED_CYLINDER_TRACKS) {
@@ -1644,90 +1657,6 @@ void RecoClassify3Cat() {
             continue;
         }
         hNotAnElectron->Fill(backgroundType);
-
-        ///////////////////////
-        // Setup BDT for use //
-        ///////////////////////
-
-        // getBDTVariables(
-        //     WC2TPCtrkID, 
-        //     WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ,
-        //     wcX, wcY, wcZ,
-        //     recoBeginX, recoBeginY, recoBeginZ,
-        //     recoEndX,   recoEndY,   recoEndZ,
-        //     recoDEDX, recoTrkID, BDT_NUM_RECO_TRKS,
-        //     &bdt_WC2TPCTrackLength,
-        //     &bdt_WC2TPCBeginX, &bdt_WC2TPCBeginY, &bdt_WC2TPCBeginZ,
-        //     &bdt_WC2TPCEndX,   &bdt_WC2TPCEndY,   &bdt_WC2TPCEndZ,
-        //     &bdt_WC2TPCdEdx,
-        //     bdt_recoTrkBeginX, bdt_recoTrkBeginY, bdt_recoTrkBeginZ,
-        //     bdt_recoTrkEndX,   bdt_recoTrkEndY,   bdt_recoTrkEndZ,
-        //     bdt_recoTrkLen,    bdt_recoTrkdEdx,
-        //     &bdt_numRecoTrksInCylinder
-        // );
-
-        // Compute BDT scores
-        // double s0 = BDTReader.EvaluateMVA("BDT0");
-        // double s1 = BDTReader.EvaluateMVA("BDT1");
-        // double s2 = BDTReader.EvaluateMVA("BDT2");
-
-        // // Make sure raw output is in (-1, 1)
-        // const double eps = 1e-12; 
-        // s0 = std::max(-1.0 + eps, std::min(1.0 - eps, s0));
-        // s1 = std::max(-1.0 + eps, std::min(1.0 - eps, s1));
-        // s2 = std::max(-1.0 + eps, std::min(1.0 - eps, s2));
-        
-        // // Map scores in (-1,1) -> margins in (-inf, +inf) via atanh
-        // double m0 = 0.5 * std::log((1.0 + s0) / (1.0 - s0)); // atanh(s0)
-        // double m1 = 0.5 * std::log((1.0 + s1) / (1.0 - s1)); // atanh(s1)
-        // double m2 = 0.5 * std::log((1.0 + s2) / (1.0 - s2)); // atanh(s2)
-
-        // // Convert margins -> class probabilities via softmax
-        // double mmax = std::max({m0, m1, m2});
-        // double e0 = std::exp(m0 - mmax);
-        // double e1 = std::exp(m1 - mmax);
-        // double e2 = std::exp(m2 - mmax);
-        // double Z  = e0 + e1 + e2;
-        // if (Z == 0) Z = 1e-12;
-
-        // double p0 = e0 / Z;
-        // double p1 = e1 / Z;
-        // double p2 = e2 / Z;
-
-        // Test few events
-        if ((
-            event == 149604 || 
-            event == 149610 ||
-            event == 149612 ||
-            event == 149622 ||
-            event == 149625 ||
-            event == 149626 ||
-            event == 149627 
-        )) {
-            // std::cout << "Event " << event << " BDT scores: " << p0 << ", " << p1 << ", " << p2 << std::endl;
-            // std::cout << "           " << "Raw scores: " << s0 << ", " << s1 << ", " << s2 << std::endl;
-
-            // std::cout << "BDT input variables for event " << event << ":" << std::endl;
-            // std::cout << "  WC2TPCTrackLength: " << bdt_WC2TPCTrackLength << std::endl;
-            // std::cout << "  WC2TPCBeginX: " << bdt_WC2TPCBeginX << std::endl;
-            // std::cout << "  WC2TPCBeginY: " << bdt_WC2TPCBeginY << std::endl;
-            // std::cout << "  WC2TPCBeginZ: " << bdt_WC2TPCBeginZ << std::endl;
-            // std::cout << "  WC2TPCEndX: " << bdt_WC2TPCEndX << std::endl;
-            // std::cout << "  WC2TPCEndY: " << bdt_WC2TPCEndY << std::endl;
-            // std::cout << "  WC2TPCEndZ: " << bdt_WC2TPCEndZ << std::endl;
-            // std::cout << "  WC2TPCdEdx: " << bdt_WC2TPCdEdx << std::endl;
-            // for (int j = 0; j < BDT_NUM_RECO_TRKS; ++j) {
-            //     std::cout << "  recoTrkBeginX[" << j << "]: " << bdt_recoTrkBeginX[j] << std::endl;
-            //     std::cout << "  recoTrkBeginY[" << j << "]: " << bdt_recoTrkBeginY[j] << std::endl;
-            //     std::cout << "  recoTrkBeginZ[" << j << "]: " << bdt_recoTrkBeginZ[j] << std::endl;
-            //     std::cout << "  recoTrkEndX[" << j << "]: " << bdt_recoTrkEndX[j] << std::endl;
-            //     std::cout << "  recoTrkEndY[" << j << "]: " << bdt_recoTrkEndY[j] << std::endl;
-            //     std::cout << "  recoTrkEndZ[" << j << "]: " << bdt_recoTrkEndZ[j] << std::endl;
-            //     std::cout << "  recoTrkLen[" << j << "]: " << bdt_recoTrkLen[j] << std::endl;
-            //     std::cout << "  recoTrkdEdx[" << j << "]: " << bdt_recoTrkdEdx[j] << std::endl;
-            // }
-            // std::cout << "  numRecoTrksInCylinder: " << bdt_numRecoTrksInCylinder << std::endl;
-        }
 
         ////////////////////////
         // Reduced volume cut //
@@ -2071,9 +2000,9 @@ void RecoClassify3Cat() {
 
         if (
             numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION &&
-            numClustersCollection < MAX_NUM_CLUSTERS_COLLECTION &&
-            largestClusterSizeInduction < MAX_LARGEST_CLUSTER_INDUCTION &&
-            largestClusterSizeCollection < MAX_LARGEST_CLUSTER_COLLECTION
+            numClustersCollection < MAX_NUM_CLUSTERS_COLLECTION
+            // largestClusterSizeInduction < MAX_LARGEST_CLUSTER_INDUCTION &&
+            // largestClusterSizeCollection < MAX_LARGEST_CLUSTER_COLLECTION // last two do not have an effect
         ) {
             hPionAbs0p->Fill(backgroundType);
 
@@ -2139,128 +2068,6 @@ void RecoClassify3Cat() {
             hUnRecoHitsCollectionOther->Fill(numUnRecoHitsNearPrimaryCollection);
         }
 
-        /////////////////////////////////////////////////
-        // Discriminate remaining from charge exchange //
-        /////////////////////////////////////////////////
-
-        // double max_prob = std::max({p0, p1, p2});
-
-        // if (max_prob < 0.5) {
-        //     outFileLowProb << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
-        //     outFileLowProb << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
-        //     outFileLowProb << " Scattering angle " << scatteringAngle * (180 / TMath::Pi()) << std::endl;
-        //     outFileLowProb << " Max BDT probability: " << max_prob << std::endl;
-        //     outFileLowProb << " Trks in cylinder: " << bdt_numRecoTrksInCylinder << std::endl;
-
-        //     if (p0 == max_prob) {
-        //         outFileLowProb << " Tagged as pion abs 0p" << std::endl; 
-        //     } else if (p1 == max_prob) {
-        //         outFileLowProb << " Tagged as electron shower" << std::endl; 
-        //     } else if (p2 == max_prob) {
-        //         outFileLowProb << " Tagged as pion charge exchange" << std::endl; 
-        //     } else {
-        //         outFileLowProb << " Tagged as scattering" << std::endl; 
-        //     }
-        //     outFileLowProb << std::endl; 
-        // }
-        
-        // if (p0 == max_prob) {
-        //     // classify as pion abs 0p/charge exchange
-
-        //     hPionAbs0p->Fill(backgroundType);
-
-        //     hPionAbs0pKE->Fill(energyAtVertex);
-        //     if (backgroundType == 0) {
-        //         hPionAbs0pKETrue->Fill(energyAtVertex);
-        //         hBestAbs0pAbs0p->Fill(p0);
-        //     } else if (backgroundType == 1) {
-        //         hPionAbs0pKEAbsNp->Fill(energyAtVertex);
-        //         hBestAbs0pAbsNp->Fill(p0);
-        //     } else if (backgroundType == 7) {
-        //         hPionAbs0pKEChExch->Fill(energyAtVertex);
-        //         hBestAbs0pChExch->Fill(p0);
-        //     } else if (backgroundType == 6 || backgroundType == 12) {
-        //         hPionAbs0pKEScatter->Fill(energyAtVertex);
-        //         hBestAbs0pScatter->Fill(p0);
-        //     } else if (backgroundType == 2) {
-        //         hPionAbs0pKEMuon->Fill(energyAtVertex);
-        //         hBestAbs0pMuon->Fill(p0);
-
-        //         if (muonType == 0) {
-        //             hPionAbs0pKEMuonTG->Fill(energyAtVertex);
-        //         } else if (muonType == 1) {
-        //             hPionAbs0pKEMuonDecay->Fill(energyAtVertex);
-        //         } else if (muonType == 2) {
-        //             hPionAbs0pKEMuonCAR->Fill(energyAtVertex);
-        //         }
-        //     } else if (backgroundType == 3) {
-        //         hPionAbs0pKEElectron->Fill(energyAtVertex);
-        //         hBestAbs0pElectron->Fill(p0);
-        //     } else {
-        //         hPionAbs0pKEOther->Fill(energyAtVertex);
-        //         hBestAbs0pOther->Fill(p0);
-        //     }
-
-        //     if (backgroundType == 0) {
-        //         hTrueAbs0pKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-        //     } else if (backgroundType == 1) {
-        //         hTrueAbsNpKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-        //     } else if (backgroundType == 6 || backgroundType == 12) {
-        //         hTrueScatterKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-        //         if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-        //     }
-
-        //     outFileAbs0pBkg << "Run: " << run << " subrun: " << subrun << " event: " << event << std::endl;
-        //     outFileAbs0pBkg << " Classified as: " << backgroundTypes[backgroundType] << " with energy at vertex: " << truthPrimaryVertexKE * 1000 << std::endl;
-        //     outFileAbs0pBkg << " Scattering angle (degrees): " << scatteringAngle * (180 / TMath::Pi()) << std::endl;
-        //     outFileAbs0pBkg << " Tagged pions: " << totalTaggedPions << std::endl;
-        //     outFileAbs0pBkg << " Tagged protons: " << totalTaggedProtons << std::endl;
-        //     outFileAbs0pBkg << " Reco trks in cylinder: " << bdt_numRecoTrksInCylinder << std::endl;
-        //     outFileAbs0pBkg << std::endl;
-
-        //     continue;
-        // } else if (p1 == max_prob) {
-        //     // classify as scatter
-        //     if (backgroundType == 0) {
-        //         hBestScatterAbs0p->Fill(p1);
-        //     } else if (backgroundType == 1) {
-        //         hBestScatterAbsNp->Fill(p1);
-        //     } else if (backgroundType == 7) {
-        //         hBestScatterChExch->Fill(p1);
-        //     } else if (backgroundType == 6 || backgroundType == 12) {
-        //         hBestScatterScatter->Fill(p1);
-        //     } else if (backgroundType == 2) {
-        //         hBestScatterMuon->Fill(p1);
-        //     } else if (backgroundType == 3) {
-        //         hBestScatterElectron->Fill(p1);
-        //     } else {
-        //         hBestScatterOther->Fill(p1);
-        //     }
-
-        //     continue;
-        // } else if (p2 == max_prob) {
-        //     // classify as other
-        //     if (backgroundType == 0) {
-        //         hBestOtherAbs0p->Fill(p2);
-        //     } else if (backgroundType == 1) {
-        //         hBestOtherAbsNp->Fill(p2);
-        //     } else if (backgroundType == 7) {
-        //         hBestOtherChExch->Fill(p2);
-        //     } else if (backgroundType == 6 || backgroundType == 12) {
-        //         hBestOtherScatter->Fill(p2);
-        //     } else if (backgroundType == 2) {
-        //         hBestOtherMuon->Fill(p2);
-        //     } else if (backgroundType == 3) {
-        //         hBestOtherElectron->Fill(p2);
-        //     } else {
-        //         hBestOtherOther->Fill(p2);
-        //     }
-
-        //     continue;
-        // }
-
         // Anything left here is rejected
         if (backgroundType == 0) {
             hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
@@ -2320,7 +2127,11 @@ void RecoClassify3Cat() {
     printBackgroundInfo(hDataProdsAndWC2TPC, std::cout);
 
     std::cout << std::endl;
-    std::cout << "Events not classified as electron: " << std::endl;
+    std::cout << "Events with number of TG tracks below threshold: " << std::endl;
+    printBackgroundInfo(hNotManyTGTracks, std::cout);
+
+    std::cout << std::endl;
+    std::cout << "Events not classified as electron (with cylinder small tracks): " << std::endl;
     printBackgroundInfo(hNotAnElectron, std::cout);
 
     std::cout << std::endl;
@@ -2390,11 +2201,14 @@ void RecoClassify3Cat() {
     hMCTGNumSmallTracksVsThresh->Write("", TObject::kOverwrite);
     hMCNumWC2TPCMatch->Write("", TObject::kOverwrite);
 
-    hMCNumTracksInCylinder->Write("", TObject::kOverwrite);
     hMCNumTracksInCylinder0TG->Write("", TObject::kOverwrite);
     hMCNumTracksInCylinder1TG->Write("", TObject::kOverwrite);
     hMCNumTracksInCylinder2TG->Write("", TObject::kOverwrite);
-    
+
+    hMCNumSmallTracksInCylinder0TG->Write("", TObject::kOverwrite);
+    hMCNumSmallTracksInCylinder1TG->Write("", TObject::kOverwrite);
+    hMCNumSmallTracksInCylinder2TG->Write("", TObject::kOverwrite);
+
     hMCPrimaryTrackPosition->Write("", TObject::kOverwrite);
 
     hMCTGUnreconstructedHitsInduction0TG->Write("", TObject::kOverwrite);
@@ -2737,7 +2551,10 @@ void RecoClassify3Cat() {
         {hUnRecoHitsCollectionAbs0p, hUnRecoHitsCollectionAbsNp, hUnRecoHitsCollectionMuon, hUnRecoHitsCollectionElectron, hUnRecoHitsCollectionScatter, hUnRecoHitsCollectionChExch, hUnRecoHitsCollectionOther},
 
         {hNegativeTimePrimaryHits},
-        {hTimePrimaryHits}
+        {hTimePrimaryHits},
+
+        // Through-going tracks
+        {hNumTGTracksAbs0p, hNumTGTracksAbsNp, hNumTGTracksMuon, hNumTGTracksElectron, hNumTGTracksScatter, hNumTGTracksChExch, hNumTGTracksOther}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2791,7 +2608,10 @@ void RecoClassify3Cat() {
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Negative time hits"},
-        {"All time hits"}
+        {"All time hits"},
+
+        // Through-going tracks
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -2845,7 +2665,10 @@ void RecoClassify3Cat() {
         "Hits/NumClustersCollection",
         "Hits/UnReconstructedCollection",
         "Hits/PrimaryNegativeTimeHits",
-        "Hits/PrimaryTimeHits"
+        "Hits/PrimaryTimeHits",
+
+        // Through-going tracks
+        "TGTracks/NumTGTracks"
     };
 
     std::vector<TString> XLabels = {
@@ -2899,7 +2722,10 @@ void RecoClassify3Cat() {
         "# of clusters",
         "Unreconstructed hits",
         "Hit time [us]",
-        "Hit time [us]"
+        "Hit time [us]",
+
+        // Through-going tracks
+        "# of TG tracks"
     };
 
     std::vector<TString> YLabels = {
@@ -2953,6 +2779,9 @@ void RecoClassify3Cat() {
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
+
+        // Through-going tracks
         "Counts"
     };
 
@@ -3007,6 +2836,9 @@ void RecoClassify3Cat() {
         true,
         true,
         true,
+        true,
+
+        // Through-going tracks
         true
     };
 
@@ -3061,7 +2893,10 @@ void RecoClassify3Cat() {
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
         {false},
-        {false}
+        {false},
+
+        // Through-going tracks
+        {false, false, false, false, false, false, false}
     };
 
     // Add each unfolded histogram as a single plot group for plotting

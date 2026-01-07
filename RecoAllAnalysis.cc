@@ -34,8 +34,7 @@ void RecoAllAnalysis() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/RecoAllAnalysis/";
 
     // Load root file
-    // TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEval_histo2.root";
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoNNAllEvalRV_histo.root"; // RV at z = 30
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
@@ -68,13 +67,6 @@ void RecoAllAnalysis() {
     tree->SetBranchAddress("passesNoOutgoingPion", &passesNoOutgoingPion);
     tree->SetBranchAddress("passesSmallTracksCut", &passesSmallTracksCut);
     tree->SetBranchAddress("passesMeanCurvatureCut", &passesMeanCurvatureCut);
-
-    // Shower probability information
-    double trackProb, showerProb;
-    bool obtainedProbabilities;
-    tree->SetBranchAddress("trackProb", &trackProb);
-    tree->SetBranchAddress("showerProb", &showerProb);
-    tree->SetBranchAddress("obtainedProbabilities", &obtainedProbabilities);
 
     // WC match information
     int WC2TPCtrkID;
@@ -1010,7 +1002,7 @@ void RecoAllAnalysis() {
         tree->GetEntry(i);
 
         // Make it go faster
-        // if (i > 10000) break;
+        if (i > 50000) break;
 
         std::vector<int>             thisEventPrimaryDaughterPDG = *truthPrimaryDaughtersPDG;
         std::vector<double>           thisEventPrimaryDaughterKE = *truthPrimaryDaughtersKE;
