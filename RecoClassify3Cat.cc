@@ -515,6 +515,13 @@ void RecoClassify3Cat() {
     TH1D* hTrueScatterKERejManyPions = new TH1D("hTrueScatterKERejManyPions", "hTrueScatterKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTrueScatterKERejClusters  = new TH1D("hTrueScatterKERejClusters", "hTrueScatterKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
+    // True charge exchange
+    TH1D* hTrueChExchKE          = new TH1D("hTrueChExchKE", "hTrueChExchKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsAbs0p   = new TH1D("hTrueChExchKEAsAbs0p", "hTrueChExchKEAsAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsAbsNp   = new TH1D("hTrueChExchKEAsAbsNp", "hTrueChExchKEAsAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsScatter = new TH1D("hTrueChExchKEAsScatter", "hTrueChExchKEAsScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKERejected  = new TH1D("hTrueChExchKERejected", "hTrueChExchKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
     ////////////////
     // BDT scores //
     ////////////////
@@ -1450,8 +1457,10 @@ void RecoClassify3Cat() {
         } else if (backgroundType == 6 || backgroundType == 12) {
             hTrueScatterKE->Fill(truthPrimaryVertexKE * 1000);
             hTrueAllKE->Fill(truthPrimaryVertexKE * 1000);
+        } else if (backgroundType == 7) {
+            hTrueChExchKE->Fill(truthPrimaryVertexKE * 1000);
+            hTrueAllKE->Fill(truthPrimaryVertexKE * 1000);
         } else if (
-            backgroundType == 7 ||
             backgroundType == 8 ||
             backgroundType == 9 ||
             backgroundType == 10 ||
@@ -1473,6 +1482,8 @@ void RecoClassify3Cat() {
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueScatterKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
+            } else if (backgroundType == 7) {
+                hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
             }
             continue;
         }
@@ -1653,6 +1664,8 @@ void RecoClassify3Cat() {
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueScatterKERejElectron->Fill(truthPrimaryVertexKE * 1000);
+            } else if (backgroundType == 7) {
+                hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
             }
             continue;
         }
@@ -1672,6 +1685,8 @@ void RecoClassify3Cat() {
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueScatterKERejRedVol->Fill(truthPrimaryVertexKE * 1000);
+            } else if (backgroundType == 7) {
+                hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
             }
             continue;
         }
@@ -1687,6 +1702,8 @@ void RecoClassify3Cat() {
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueScatterKERejPID->Fill(truthPrimaryVertexKE * 1000);
+            } else if (backgroundType == 7) {
+                hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
             }
             continue;
         }
@@ -1804,6 +1821,8 @@ void RecoClassify3Cat() {
                 } else if (backgroundType == 6 || backgroundType == 12) {
                     hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                     hTrueScatterKERejManyPions->Fill(truthPrimaryVertexKE * 1000);
+                } else if (backgroundType == 7) {
+                    hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
                 }
                 continue;
             }
@@ -1843,6 +1862,8 @@ void RecoClassify3Cat() {
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
                 if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
             }
 
             // TODO: maybe check not rejecting more than 1 pion
@@ -1879,6 +1900,8 @@ void RecoClassify3Cat() {
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKEAsAbsNp->Fill(truthPrimaryVertexKE * 1000);
                 if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKEAsAbsNp->Fill(truthPrimaryVertexKE * 1000);
             }
 
             continue;
@@ -2039,6 +2062,8 @@ void RecoClassify3Cat() {
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
                 if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hTrueChExchKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
             }
 
             continue;
@@ -2078,6 +2103,8 @@ void RecoClassify3Cat() {
         } else if (backgroundType == 6 || backgroundType == 12) {
             hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
             hTrueScatterKERejClusters->Fill(truthPrimaryVertexKE * 1000);
+        } else if (backgroundType == 7) {
+            hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
         }
     }
 
@@ -2512,12 +2539,13 @@ void RecoClassify3Cat() {
 
         // True interacting KE
         {hTrueAllKE},
-        {hTrueAbs0pKE, hTrueAbsNpKE, hTrueScatterKE, hTrueOtherKE},
+        {hTrueAbs0pKE, hTrueAbsNpKE, hTrueScatterKE, hTrueChExchKE, hTrueOtherKE},
 
         // True events classified breakdown
         {hTrueAbs0pKEAsAbs0p, hTrueAbs0pKEAsAbsNp, hTrueAbs0pKEAsScatter, hTrueAbs0pKERejected},
         {hTrueAbsNpKEAsAbs0p, hTrueAbsNpKEAsAbsNp, hTrueAbsNpKEAsScatter, hTrueAbsNpKERejected},
         {hTrueScatterKEAsAbs0p, hTrueScatterKEAsAbsNp, hTrueScatterKEAsScatter, hTrueScatterKERejected},
+        {hTrueChExchKEAsAbs0p, hTrueChExchKEAsAbsNp, hTrueChExchKEAsScatter, hTrueChExchKERejected},
 
         // Rejected events
         {hTrueAbs0pKERejDataProds, hTrueAbs0pKERejElectron, hTrueAbs0pKERejRedVol, hTrueAbs0pKERejPID, hTrueAbs0pKERejManyPions, hTrueAbs0pKERejClusters},
@@ -2571,9 +2599,10 @@ void RecoClassify3Cat() {
 
         // True interacting KE
         {"All"},
-        {"Abs 0p", "Abs Np", "Scatter", "Other"},
+        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other"},
 
         // True events classified breakdown
+        {"Abs 0p", "Abs Np", "Scatter", "Rejected"},
         {"Abs 0p", "Abs Np", "Scatter", "Rejected"},
         {"Abs 0p", "Abs Np", "Scatter", "Rejected"},
         {"Abs 0p", "Abs Np", "Scatter", "Rejected"},
@@ -2634,6 +2663,7 @@ void RecoClassify3Cat() {
         "TrueInteracting/TrueAbs0pBreakdown",
         "TrueInteracting/TrueAbsNpBreakdown",
         "TrueInteracting/TrueScatterBreakdown",
+        "TrueInteracting/TrueChExchBreakdown",
 
         // Rejected events
         "Rejected/TrueAbs0pRej",
@@ -2688,6 +2718,7 @@ void RecoClassify3Cat() {
         "Kinetic energy [MeV]",
 
         // True events classified breakdown
+        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
@@ -2748,6 +2779,7 @@ void RecoClassify3Cat() {
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
 
         // Rejected events
         "Counts",
@@ -2805,6 +2837,7 @@ void RecoClassify3Cat() {
         true,
         true,
         true,
+        true,
 
         // Rejected events
         true,
@@ -2859,6 +2892,7 @@ void RecoClassify3Cat() {
         {false, false, false, false, false},
 
         // True events classified breakdown
+        {false, false, false, false, false},
         {false, false, false, false, false},
         {false, false, false, false, false},
         {false, false, false, false, false},
