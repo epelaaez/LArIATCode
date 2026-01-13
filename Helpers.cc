@@ -915,6 +915,7 @@ void H2M(const TH2D* histo, TMatrixD& mat, bool rowcolumn) {
 }
 
 void H2V(const TH1D* histo, TVectorD& vec) {
+    if (!histo) return;
     for (Int_t i=0; i<histo->GetNbinsX(); i++) {
         vec(i) = histo->GetBinContent(i+1);
     }
@@ -1701,6 +1702,39 @@ std::vector<std::vector<std::vector<TH1D*>>> MakeUniverseHistBlock(
     }
 
     return block;
+}
+
+void GetResponseMatrix(
+    int SizeOuter, int SizeInner,
+    const std::vector<TH1D*>& TotalEventsHistos,
+    const std::vector<std::vector<std::vector<TH1D*>>>& TrueRecoAsByBin,
+    const TH1D* IncidentFlux,
+    TH2D* ReponseMatrix,
+    bool UseIncidentFlux
+) {
+    for (int iOuterSignalBin = 0; iOuterSignalBin < SizeOuter; ++iOuterSignalBin) {
+        for (int iOuterEnergyBin = 0; iOuterEnergyBin < SizeInner; ++iOuterEnergyBin) {
+            int row      = flattenIndex(iOuterSignalBin, iOuterEnergyBin, SizeInner);
+            double denom = TotalEventsHistos.at(iOuterSignalBin)->GetBinContent(iOuterEnergyBin + 1);
+
+            for (int iInnerSignalBin = 0; iInnerSignalBin < SizeOuter; ++iInnerSignalBin) {
+                for (int iInnerEnergyBin = 0; iInnerEnergyBin < SizeInner; ++iInnerEnergyBin) {
+                    int  column = flattenIndex(iInnerSignalBin, iInnerEnergyBin, SizeInner);
+                    double prob = 0;
+                    
+                    // Get total number of true (i, \alpha) events that were reconstructed as (j, \beta)
+                    if (denom > 0) prob = TrueRecoAsByBin.at(iOuterSignalBin).at(iOuterEnergyBin).at(iInnerSignalBin)->GetBinContent(iInnerEnergyBin + 1) / denom;
+
+                    // Scale for different incident flux between energy bins
+                    if (UseIncidentFlux) {
+                        prob = prob * (IncidentFlux->GetBinContent(iOuterEnergyBin + 1) / IncidentFlux->GetBinContent(iInnerEnergyBin + 1));
+                    }
+
+                    ReponseMatrix->SetBinContent(column + 1, row + 1, prob);
+                }
+            }
+        }
+    }
 }
 
 void GetCovMatrix(

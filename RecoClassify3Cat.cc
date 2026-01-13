@@ -448,11 +448,11 @@ void RecoClassify3Cat() {
     TH1D* hTrueAbs0pKERejected    = new TH1D("hTrueAbs0pKERejected", "hTrueAbs0pKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // For each TRUE energy bin, what are abs 0p events reconstructed as?
-    std::vector<std::vector<TH1*>> TrueAbs0pAsByBin;
+    std::vector<std::vector<TH1D*>> TrueAbs0pAsByBin;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
-        std::vector<TH1*> TempVec;
+        std::vector<TH1D*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueAbs0p_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs 0p KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TH1D* hTempHist = new TH1D(Form("hTrueAbs0p_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs 0p KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueAbs0pAsByBin.push_back(TempVec);
@@ -473,11 +473,11 @@ void RecoClassify3Cat() {
     TH1D* hTrueAbsNpKERejected  = new TH1D("hTrueAbsNpKERejected", "hTrueAbsNpKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // For each TRUE energy bin, what are abs Np events reconstructed as?
-    std::vector<std::vector<TH1*>> TrueAbsNpAsByBin;
+    std::vector<std::vector<TH1D*>> TrueAbsNpAsByBin;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
-        std::vector<TH1*> TempVec;
+        std::vector<TH1D*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueAbsNp_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Np KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TH1D* hTempHist = new TH1D(Form("hTrueAbsNp_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Np KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueAbsNpAsByBin.push_back(TempVec);
@@ -498,11 +498,11 @@ void RecoClassify3Cat() {
     TH1D* hTrueScatterKERejected  = new TH1D("hTrueScatterKERejected", "hTrueScatterKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // For each TRUE energy bin, what are scatter events reconstructed as?
-    std::vector<std::vector<TH1*>> TrueScatterAsByBin;
+    std::vector<std::vector<TH1D*>> TrueScatterAsByBin;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
-        std::vector<TH1*> TempVec;
+        std::vector<TH1D*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueAbsScatter_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Scatter KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TH1D* hTempHist = new TH1D(Form("hTrueAbsScatter_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Scatter KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueScatterAsByBin.push_back(TempVec);
@@ -618,11 +618,11 @@ void RecoClassify3Cat() {
     // Matrices //
     //////////////
 
-    std::vector<TH1*> TotalEventsHistos = {
+    std::vector<TH1D*> TotalEventsHistos = {
         hTrueAbs0pKE, hTrueAbsNpKE, hTrueScatterKE
     };
 
-    std::vector<std::vector<std::vector<TH1*>>> TrueRecoAsByBin = {
+    std::vector<std::vector<std::vector<TH1D*>>> TrueRecoAsByBin = {
         TrueAbs0pAsByBin, TrueAbsNpAsByBin, TrueScatterAsByBin
     };
 
@@ -1550,7 +1550,7 @@ void RecoClassify3Cat() {
         // Cylinder and TG track cuts //
         ////////////////////////////////
 
-        int numTGTracks = 0;
+        int numTGTracks              = 0;
         int numSmallTracksInCylinder = 0;
         int numTracksInCylinder      = 0;
         for (int trk_idx = 0; trk_idx < recoTrkID->size(); ++trk_idx) {
@@ -1800,6 +1800,8 @@ void RecoClassify3Cat() {
                 }
             } else if (backgroundType == 3) {
                 hPionScatterKEElectron->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hPionScatterKEChExch->Fill(energyAtVertex);
             } else {
                 hPionScatterKEOther->Fill(energyAtVertex);
             }
@@ -1836,6 +1838,8 @@ void RecoClassify3Cat() {
                 hPionAbsNpKEMuon->Fill(energyAtVertex);
             } else if (backgroundType == 3) {
                 hPionAbsNpKEElectron->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hPionAbsNpKEChExch->Fill(energyAtVertex);
             } else {
                 hPionAbsNpKEOther->Fill(energyAtVertex);
             }
@@ -2250,33 +2254,13 @@ void RecoClassify3Cat() {
     );
 
     // Construct response matrix
-    for (int iOuterSignalBin = 0; iOuterSignalBin < NUM_SIGNAL_TYPES; ++iOuterSignalBin) {
-        for (int iOuterEnergyBin = 0; iOuterEnergyBin < NUM_BINS_KE; ++iOuterEnergyBin) {
-            // Get index for row (i, \alpha) -> k, index 1 corresponds to abs 0p in energy bin 1,
-            // index 2 to abs 0p in energy bin 2, ..., index NUM_BINS_KE + 1 corresponds to abs Np 
-            // in energy bin 1, and so on
-            int row = flattenIndex(iOuterSignalBin, iOuterEnergyBin, NUM_BINS_KE);
-
-            // Get total number of true events of true signal type \alpha with true energy bin i
-            double denom = TotalEventsHistos.at(iOuterSignalBin)->GetBinContent(iOuterEnergyBin + 1);
-
-            for (int iInnerSignalBin = 0; iInnerSignalBin < NUM_SIGNAL_TYPES; ++iInnerSignalBin) {
-                for (int iInnerEnergyBin = 0; iInnerEnergyBin < NUM_BINS_KE; ++iInnerEnergyBin) {
-                    // Get index for column (j, \beta) -> l
-                    int  column = flattenIndex(iInnerSignalBin, iInnerEnergyBin, NUM_BINS_KE);
-                    double prob = 0;
-                    
-                    // Get total number of true (i, \alpha) events that were reconstructed as (j, \beta)
-                    if (denom > 0) prob = TrueRecoAsByBin.at(iOuterSignalBin).at(iOuterEnergyBin).at(iInnerSignalBin)->GetBinContent(iInnerEnergyBin + 1) / denom;
-
-                    // Scale for different incident flux between energy bins
-                    prob = prob * (hIncidentKECorrected->GetBinContent(iOuterEnergyBin + 1) / hIncidentKECorrected->GetBinContent(iInnerEnergyBin + 1));
-
-                    hResponseMatrix->SetBinContent(column + 1, row + 1, prob);
-                }
-            }
-        }
-    }
+    GetResponseMatrix(
+        NUM_SIGNAL_TYPES, NUM_BINS_KE,
+        TotalEventsHistos,
+        TrueRecoAsByBin,
+        hIncidentKECorrected,
+        hResponseMatrix
+    );
 
     // Before unfolding, we have to remove the estimated backgrounds
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
