@@ -365,5 +365,5 @@ void GetResponseMatrix(int SizeOuter, int SizeInner, const std::vector<TH1D*>& T
 void GetCovMatrix(TH1* RecoHisto, std::vector<TH1D*> UnivRecoHisto, TH2* CovMatrix);
 void GetFracCovAndCorrMatrix(TH1* RecoHisto, TH2* CovMatrix, TH2* FracCovMatrix, TH2* CorrMatrix);
 double FindQuantile(double frac, std::vector<double>& xs_in);
-void DrawHistosWithErrorBands(TH1D* RecoHisto, std::vector<TH1D*> UnivRecoHisto, TString dir, TString SystName, TString PlotName, double TextSize = 0.06, int FontStyle = 132);
+void DrawHistosWithErrorBands(TH1D* RecoHisto, std::vector<TH1D*> UnivRecoHisto, const TString& dir, const TString& SystName, const TString& PlotName, double textSize, int fontStyle, const TString& title, const TString& xlabel, const TString& ylabel);
 void DrawErrorBand(TH1* nom, TGraphAsymmErrors* band, int bandCol, double alpha);
