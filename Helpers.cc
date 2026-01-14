@@ -788,7 +788,9 @@ void printTwoDPlots(
 ) {
     int nPlots = plots.size();
 
-    TCanvas* c1 = new TCanvas("c1", "EnergyLossPlots", 850, 600);
+    TCanvas* c1 = new TCanvas("c1", "EnergyLossPlots", 850, 700);
+    c1->SetRightMargin(0.20);
+
     for (int iPlot = 0; iPlot < nPlots; ++iPlot) {
         TH1* hPlot = plots.at(iPlot);
 
