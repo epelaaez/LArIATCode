@@ -788,7 +788,9 @@ void printTwoDPlots(
 ) {
     int nPlots = plots.size();
 
-    TCanvas* c1 = new TCanvas("c1", "EnergyLossPlots", 850, 600);
+    TCanvas* c1 = new TCanvas("c1", "EnergyLossPlots", 850, 700);
+    c1->SetRightMargin(0.20);
+
     for (int iPlot = 0; iPlot < nPlots; ++iPlot) {
         TH1* hPlot = plots.at(iPlot);
 
@@ -915,6 +917,7 @@ void H2M(const TH2D* histo, TMatrixD& mat, bool rowcolumn) {
 }
 
 void H2V(const TH1D* histo, TVectorD& vec) {
+    if (!histo) return;
     for (Int_t i=0; i<histo->GetNbinsX(); i++) {
         vec(i) = histo->GetBinContent(i+1);
     }
@@ -1240,6 +1243,21 @@ std::pair<size_t, size_t> find_unique_position(const std::vector<std::vector<int
     return {0, 0}; // unreachable, but silences warnings in some builds
 }
 
+bool EqualApprox(const TMatrixD& A, const TMatrixD& B, double rtol, double atol) {
+    if (A.GetNrows() != B.GetNrows() || A.GetNcols() != B.GetNcols()) return false;
+
+    for (int i = 0; i < A.GetNrows(); ++i) {
+        for (int j = 0; j < A.GetNcols(); ++j) {
+            const double a = A(i,j);
+            const double b = B(i,j);
+            const double diff = std::fabs(a - b);
+            const double scale = atol + rtol * std::max(std::fabs(a), std::fabs(b));
+            if (diff > scale) return false;
+        }
+    }
+    return true;
+}
+
 ///////////////
 // WC checks //
 ///////////////
@@ -1358,8 +1376,7 @@ TVectorD WienerSVD(
     TVectorD& WF,          //
     TMatrixD& UnfoldCov,   //
     TMatrixD& CovRotation,  //
-    TMatrixD& AddSmearInverse, 
-    bool filterOff
+    TMatrixD& AddSmearInverse
 ) {
     Int_t m = Response.GetNrows(); // measure, M
     Int_t n = Response.GetNcols(); // signal, S
@@ -1397,7 +1414,6 @@ TVectorD WienerSVD(
         }
     }
     C0 = C0*normsig;
-
     if (C_type == 0 && Norm_type == 0) C0.UnitMatrix();
 
     TMatrixD C = C0;
@@ -1423,17 +1439,6 @@ TVectorD WienerSVD(
             }
         }
     }
-    // for matrix D inverse
-    TMatrixD D_inv(n, m);
-    for (Int_t i = 0; i<n; i++) {
-        for (Int_t j = 0; j<m; j++) {
-            D_inv(i,j) = 0.;
-            if (i == j) {
-                if (D(i) > 0) D_inv(i,j) = 1.0 / D(i);
-                else          D_inv(i,j) = 0.0;
-            }
-        }
-    }
 
     TVectorD S = V_t*Signal;
     // Wiener Filter
@@ -1444,17 +1449,13 @@ TVectorD WienerSVD(
             W(i, j)  = 0;
             W0(i, j) = 0;
             if(i == j) {
-                if (filterOff) {
-                    WF(i)    = 1.;
-                    W0(i, j) = WF(i);
-                    W(i, j)  = 1. / (D(i) * D(i));
+                if (Norm_type == 0 && C_type == 0) {
+                    W(i, j) = 1. / (D(i)*D(i)); // removed 2e-7 tolerance
                 } else {
-                    //W(i, j) = 1./(D(i)*D(i)+2e-7); //S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
-                    //WF(i) = D(i)*D(i)*W(i, j);//S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
-                    W(i, j)  = S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
-                    WF(i)    = D(i)*D(i)*W(i, j);
-                    W0(i, j) = WF(i);
+                    W(i, j) = S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
                 }
+                WF(i)    = D(i)*D(i)*W(i, j);
+                W0(i, j) = WF(i);
             }
         }
     }
@@ -1468,18 +1469,10 @@ TVectorD WienerSVD(
     TVectorD unfold(n);
     TMatrixD covRotation(n,m);
 
-    if (filterOff) {
-        // If filter off, rather not multiply really small/large numbers
-        AddSmearInverse = C_inv * V * V_t * C; // = I
-        AddSmear        = C_inv * V * V_t * C; // = I
-        unfold          = C_inv * V * D_inv * U_t * M;
-        covRotation     = C_inv * V * D_inv * U_t * Q;
-    } else {
-        AddSmearInverse = C_inv * V * W0_inv * V_t * C;
-        AddSmear        = C_inv * V * W0 * V_t * C;
-        unfold          = C_inv * V * W * D_t * U_t * M;
-        covRotation     = C_inv * V * W * D_t * U_t * Q;
-    }
+    AddSmearInverse = C_inv * V * W0_inv * V_t * C;
+    AddSmear        = C_inv * V * W0 * V_t * C;
+    unfold          = C_inv * V * W * D_t * U_t * M;
+    covRotation     = C_inv * V * W * D_t * U_t * Q;
 
     CovRotation = covRotation;
     TMatrixD covRotation_t (TMatrixD::kTransposed, covRotation); 
@@ -1713,6 +1706,39 @@ std::vector<std::vector<std::vector<TH1D*>>> MakeUniverseHistBlock(
     return block;
 }
 
+void GetResponseMatrix(
+    int SizeOuter, int SizeInner,
+    const std::vector<TH1D*>& TotalEventsHistos,
+    const std::vector<std::vector<std::vector<TH1D*>>>& TrueRecoAsByBin,
+    const TH1D* IncidentFlux,
+    TH2D* ReponseMatrix,
+    bool UseIncidentFlux
+) {
+    for (int iOuterSignalBin = 0; iOuterSignalBin < SizeOuter; ++iOuterSignalBin) {
+        for (int iOuterEnergyBin = 0; iOuterEnergyBin < SizeInner; ++iOuterEnergyBin) {
+            int row      = flattenIndex(iOuterSignalBin, iOuterEnergyBin, SizeInner);
+            double denom = TotalEventsHistos.at(iOuterSignalBin)->GetBinContent(iOuterEnergyBin + 1);
+
+            for (int iInnerSignalBin = 0; iInnerSignalBin < SizeOuter; ++iInnerSignalBin) {
+                for (int iInnerEnergyBin = 0; iInnerEnergyBin < SizeInner; ++iInnerEnergyBin) {
+                    int  column = flattenIndex(iInnerSignalBin, iInnerEnergyBin, SizeInner);
+                    double prob = 0;
+                    
+                    // Get total number of true (i, \alpha) events that were reconstructed as (j, \beta)
+                    if (denom > 0) prob = TrueRecoAsByBin.at(iOuterSignalBin).at(iOuterEnergyBin).at(iInnerSignalBin)->GetBinContent(iInnerEnergyBin + 1) / denom;
+
+                    // Scale for different incident flux between energy bins
+                    if (UseIncidentFlux) {
+                        prob = prob * (IncidentFlux->GetBinContent(iOuterEnergyBin + 1) / IncidentFlux->GetBinContent(iInnerEnergyBin + 1));
+                    }
+
+                    ReponseMatrix->SetBinContent(column + 1, row + 1, prob);
+                }
+            }
+        }
+    }
+}
+
 void GetCovMatrix(
     TH1* RecoHisto,
     std::vector<TH1D*> UnivRecoHisto,
@@ -1808,69 +1834,147 @@ double FindQuantile(double frac, std::vector<double>& xs_in) {
 }
 
 void DrawHistosWithErrorBands(
-    TH1D* RecoHisto, 
-    std::vector<TH1D*> UnivRecoHisto, 
-    TString dir, 
-    TString SystName, 
-    TString PlotName,
-    double TextSize,
-    int FontStyle
+    TH1D* RecoHisto,
+    std::vector<TH1D*> UnivRecoHisto,
+    const TString& dir,
+    const TString& SystName,
+    const TString& PlotName,
+    double textSize,
+    int fontStyle,
+    const TString& title,
+    const TString& xlabel,
+    const TString& ylabel
 ) {
-    // Make sure univ histos are of the same length
-    assert (UnivRecoHisto.size() == UnivRecoTrueHisto.size());
-    int NUniv = UnivRecoHisto.size();
+    // Basic sanity
+    if (!RecoHisto) return;
+    const int NUniv = (int) UnivRecoHisto.size();
+    if (NUniv == 0) return;
 
-    // Create canvas for plots
-    TCanvas* PlotCanvas = new TCanvas("Selection","Selection",205,34,1124,768);
+    auto styleAxes = [&](TH1* h){
+        h->SetTitle(title);
 
-    // Legend for plot with error bands
-    TLegend* leg = new TLegend(0.2,0.73,0.75,0.83);
-    leg->SetBorderSize(0);
-    leg->SetNColumns(3);
-    leg->SetTextSize(TextSize*0.8);
-    leg->SetTextFont(FontStyle);
+        h->GetXaxis()->SetTitleFont(fontStyle);
+        h->GetXaxis()->SetLabelFont(fontStyle);
+        h->GetXaxis()->SetNdivisions(8);
+        h->GetXaxis()->SetLabelSize(textSize);
+        h->GetXaxis()->SetTitleSize(textSize);
+        h->GetXaxis()->SetTitle(xlabel);
+        h->GetXaxis()->SetTitleOffset(1.1);
+        h->GetXaxis()->CenterTitle();
 
-    TLegendEntry* legReco = leg->AddEntry(RecoHisto,"Reconstructed","l");
-    RecoHisto->SetLineColor(kBlue+2);
-    RecoHisto->SetLineWidth(4);
+        h->GetYaxis()->SetTitleFont(fontStyle);
+        h->GetYaxis()->SetLabelFont(fontStyle);
+        h->GetYaxis()->SetNdivisions(6);
+        h->GetYaxis()->SetLabelSize(textSize);
+        h->GetYaxis()->SetTitleSize(textSize);
+        h->GetYaxis()->SetTitle(ylabel);
+        h->GetYaxis()->SetTitleOffset(1.1);
+        h->GetYaxis()->CenterTitle();
+    };
 
-    int n = RecoHisto->GetNbinsX();
-    double edges[n+1];
-    for (int i = 0; i < n+1; i++) { edges[i] = RecoHisto->GetBinLowEdge(i+1); }
+    auto styleLineOnly = [&](TH1* h, int color){
+        h->SetLineWidth(2);
+        h->SetLineColor(color);
+        h->SetFillStyle(0);
+        h->SetFillColor(0);
+    };
 
-    // Get graph with error bands
+    auto getGlobalMax = [&](TH1* h){
+        return h ? h->GetMaximum() : 0.0;
+    };
+
+    auto getGlobalMin = [&](TH1* h){
+        return h ? h->GetMinimum() : 0.0;
+    };
+
+    TCanvas* PlotCanvas = new TCanvas("Selection","Selection", 205, 34, 1300, 768);
+
+    TPad* mainPad = new TPad("mainPad", "", 0.0, 0.0, 0.80, 1.0);
+    mainPad->SetRightMargin(0.05);
+    mainPad->SetLeftMargin(0.15);
+    mainPad->SetBottomMargin(0.15);
+    mainPad->Draw();
+    mainPad->cd();
+
+    TPad* legendPad = new TPad("legendPad", "", 0.80, 0.4, 1.0, 0.8);
+    legendPad->SetLeftMargin(0.05);
+    legendPad->SetRightMargin(0.05);
+    legendPad->SetBottomMargin(0.15);
+    legendPad->SetFillStyle(0);
+    legendPad->SetBorderMode(0);
+
+    TLegend* leg = new TLegend(0.0, 0.0, 1.0, 1.0);
+    leg->SetTextSize(textSize * 2.5);
+    leg->SetTextFont(fontStyle);
+    leg->SetBorderSize(1);
+    leg->SetLineColor(kBlack);
+
+    styleAxes(RecoHisto);
+    styleLineOnly(RecoHisto, kBlue + 2);
+
+    const int n = RecoHisto->GetNbinsX();
     TGraphAsymmErrors* RecoErrorBand = new TGraphAsymmErrors;
-    for (int binIdx = 0; binIdx < n + 2; ++binIdx) {
-        const double recoxnom = RecoHisto->GetXaxis()->GetBinCenter(binIdx);
-        const double recoynom = RecoHisto->GetBinContent(binIdx);
-        RecoErrorBand->SetPoint(binIdx, recoxnom, recoynom);
+    RecoErrorBand->Set(n);
 
-        const double dx = RecoHisto->GetXaxis()->GetBinWidth(binIdx);
+    double ymaxBand = -1e300;
+    for (int binIdx = 1; binIdx <= n; ++binIdx) {
+        const double x = RecoHisto->GetXaxis()->GetBinCenter(binIdx);
+        const double y = RecoHisto->GetBinContent(binIdx);
+        RecoErrorBand->SetPoint(binIdx, x, y);
 
-        std::vector<double> recoys;
-        for(int iUniv = 0; iUniv < NUniv; ++iUniv){
-            recoys.push_back(UnivRecoHisto.at(iUniv)->GetBinContent(binIdx));
+        const double dx = RecoHisto->GetXaxis()->GetBinWidth(std::min(std::max(binIdx, 1), n));
+
+        std::vector<double> ys;
+        ys.reserve(NUniv);
+        for (int iUniv = 0; iUniv < NUniv; ++iUniv) {
+            if (!UnivRecoHisto[iUniv]) continue;
+            ys.push_back(UnivRecoHisto[iUniv]->GetBinContent(binIdx));
         }
-        const double recoy0 = FindQuantile(.5-0.6827/2, recoys);
-        const double recoy1 = FindQuantile(.5+0.6827/2, recoys);
 
-        RecoErrorBand->SetPointError(binIdx, dx/2, dx/2, std::max(recoynom-recoy0, 0.), std::max(recoy1-recoynom, 0.));
+        double y0 = y, y1 = y;
+        if (!ys.empty()) {
+            y0 = FindQuantile(.5 - 0.6827/2, ys);
+            y1 = FindQuantile(.5 + 0.6827/2, ys);
+        }
+
+        ymaxBand = std::max(ymaxBand, std::max(y, y1));
+
+        RecoErrorBand->SetPointError(
+            binIdx,
+            dx/2, dx/2,
+            std::max(y - y0, 0.0),
+            std::max(y1 - y, 0.0)
+        );
     }
-    PlotCanvas->cd();
-    PlotCanvas->SetTopMargin(0.13);
-    PlotCanvas->SetLeftMargin(0.17);
-    PlotCanvas->SetRightMargin(0.05);
-    PlotCanvas->SetBottomMargin(0.16);
 
-    double imax = RecoHisto->GetMaximum();
-    double YAxisRange = 1.3*imax;
-    RecoHisto->GetYaxis()->SetRangeUser(0.,YAxisRange);
+    // Legend entry
+    leg->AddEntry(RecoHisto, "Reconstructed", "l");
 
-    RecoHisto->Draw("hist");
+    const double ymax = std::max(getGlobalMax(RecoHisto), ymaxBand);
+    const double ymin = getGlobalMin(RecoHisto);
+
+    const double yr_high = 1.15 * (ymax > 0 ? ymax : 1.0);
+    const double yr_low  = (ymin < 0) ? 1.15 * ymin : 0.0;
+    RecoHisto->GetYaxis()->SetRangeUser(yr_low, yr_high);
+
+    // --- Draw ---
+    RecoHisto->Draw("HIST");
     DrawErrorBand(RecoHisto, RecoErrorBand, -1, 1);
+
+    gPad->Update();
+    RecoHisto->GetXaxis()->SetMaxDigits(3);
+    gPad->Modified(); gPad->Update();
+
+    PlotCanvas->cd();
+    legendPad->Draw();
+    legendPad->cd();
     leg->Draw();
-    PlotCanvas->SaveAs(dir+SystName+"/"+PlotName+".png");
-    delete PlotCanvas; delete leg;
+
+    PlotCanvas->SaveAs(dir + SystName + "/" + PlotName + ".png");
+
+    delete PlotCanvas;
+    delete leg;
+    delete RecoErrorBand;
 }
 
 void DrawErrorBand(TH1* nom, TGraphAsymmErrors* band, int bandCol, double alpha) {

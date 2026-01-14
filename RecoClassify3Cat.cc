@@ -448,11 +448,11 @@ void RecoClassify3Cat() {
     TH1D* hTrueAbs0pKERejected    = new TH1D("hTrueAbs0pKERejected", "hTrueAbs0pKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // For each TRUE energy bin, what are abs 0p events reconstructed as?
-    std::vector<std::vector<TH1*>> TrueAbs0pAsByBin;
+    std::vector<std::vector<TH1D*>> TrueAbs0pAsByBin;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
-        std::vector<TH1*> TempVec;
+        std::vector<TH1D*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueAbs0p_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs 0p KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TH1D* hTempHist = new TH1D(Form("hTrueAbs0p_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs 0p KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueAbs0pAsByBin.push_back(TempVec);
@@ -473,11 +473,11 @@ void RecoClassify3Cat() {
     TH1D* hTrueAbsNpKERejected  = new TH1D("hTrueAbsNpKERejected", "hTrueAbsNpKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // For each TRUE energy bin, what are abs Np events reconstructed as?
-    std::vector<std::vector<TH1*>> TrueAbsNpAsByBin;
+    std::vector<std::vector<TH1D*>> TrueAbsNpAsByBin;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
-        std::vector<TH1*> TempVec;
+        std::vector<TH1D*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueAbsNp_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Np KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TH1D* hTempHist = new TH1D(Form("hTrueAbsNp_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Np KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueAbsNpAsByBin.push_back(TempVec);
@@ -498,11 +498,11 @@ void RecoClassify3Cat() {
     TH1D* hTrueScatterKERejected  = new TH1D("hTrueScatterKERejected", "hTrueScatterKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // For each TRUE energy bin, what are scatter events reconstructed as?
-    std::vector<std::vector<TH1*>> TrueScatterAsByBin;
+    std::vector<std::vector<TH1D*>> TrueScatterAsByBin;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
-        std::vector<TH1*> TempVec;
+        std::vector<TH1D*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueAbsScatter_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Scatter KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TH1D* hTempHist = new TH1D(Form("hTrueAbsScatter_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Scatter KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueScatterAsByBin.push_back(TempVec);
@@ -521,36 +521,6 @@ void RecoClassify3Cat() {
     TH1D* hTrueChExchKEAsAbsNp   = new TH1D("hTrueChExchKEAsAbsNp", "hTrueChExchKEAsAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTrueChExchKEAsScatter = new TH1D("hTrueChExchKEAsScatter", "hTrueChExchKEAsScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTrueChExchKERejected  = new TH1D("hTrueChExchKERejected", "hTrueChExchKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-
-    ////////////////
-    // BDT scores //
-    ////////////////
-
-    int PROB_DIVISIONS = 30;
-
-    TH1D* hBestAbs0pAbs0p    = new TH1D("hBestAbs0pAbs0p", "hBestAbs0pAbs0p;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestAbs0pAbsNp    = new TH1D("hBestAbs0pAbsNp", "hBestAbs0pAbsNp;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestAbs0pMuon     = new TH1D("hBestAbs0pMuon", "hBestAbs0pMuon;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestAbs0pElectron = new TH1D("hBestAbs0pElectron", "hBestAbs0pElectron;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestAbs0pScatter  = new TH1D("hBestAbs0pScatter", "hBestAbs0pScatter;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestAbs0pChExch   = new TH1D("hBestAbs0pChExch", "hBestAbs0pChExch;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestAbs0pOther    = new TH1D("hBestAbs0pOther", "hBestAbs0pOther;;", PROB_DIVISIONS, 0, 1);
-
-    TH1D* hBestScatterAbs0p    = new TH1D("hBestScatterAbs0p", "hBestScatterAbs0p;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestScatterAbsNp    = new TH1D("hBestScatterAbsNp", "hBestScatterAbsNp;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestScatterMuon     = new TH1D("hBestScatterMuon", "hBestScatterMuon;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestScatterElectron = new TH1D("hBestScatterElectron", "hBestScatterElectron;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestScatterScatter  = new TH1D("hBestScatterScatter", "hBestScatterScatter;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestScatterChExch   = new TH1D("hBestScatterChExch", "hBestScatterChExch;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestScatterOther    = new TH1D("hBestScatterOther", "hBestScatterOther;;", PROB_DIVISIONS, 0, 1);
-
-    TH1D* hBestOtherAbs0p    = new TH1D("hBestOtherAbs0p", "hBestOtherAbs0p;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestOtherAbsNp    = new TH1D("hBestOtherAbsNp", "hBestOtherAbsNp;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestOtherMuon     = new TH1D("hBestOtherMuon", "hBestOtherMuon;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestOtherElectron = new TH1D("hBestOtherElectron", "hBestOtherElectron;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestOtherScatter  = new TH1D("hBestOtherScatter", "hBestOtherScatter;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestOtherChExch   = new TH1D("hBestOtherChExch", "hBestOtherChExch;;", PROB_DIVISIONS, 0, 1);
-    TH1D* hBestOtherOther    = new TH1D("hBestOtherOther", "hBestOtherOther;;", PROB_DIVISIONS, 0, 1);
 
     //////////////////////////
     // Through-going tracks //
@@ -655,11 +625,11 @@ void RecoClassify3Cat() {
     // Matrices //
     //////////////
 
-    std::vector<TH1*> TotalEventsHistos = {
+    std::vector<TH1D*> TotalEventsHistos = {
         hTrueAbs0pKE, hTrueAbsNpKE, hTrueScatterKE
     };
 
-    std::vector<std::vector<std::vector<TH1*>>> TrueRecoAsByBin = {
+    std::vector<std::vector<std::vector<TH1D*>>> TrueRecoAsByBin = {
         TrueAbs0pAsByBin, TrueAbsNpAsByBin, TrueScatterAsByBin
     };
 
@@ -765,7 +735,7 @@ void RecoClassify3Cat() {
         tree->GetEntry(i);
 
         // Make script go faster
-        if (i > 50000) break;
+        if (i > 100000) break;
 
         // Get unordered set for hits in tracks
         std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
@@ -1591,7 +1561,7 @@ void RecoClassify3Cat() {
         // Cylinder and TG track cuts //
         ////////////////////////////////
 
-        int numTGTracks = 0;
+        int numTGTracks              = 0;
         int numSmallTracksInCylinder = 0;
         int numTracksInCylinder      = 0;
         for (int trk_idx = 0; trk_idx < recoTrkID->size(); ++trk_idx) {
@@ -1849,6 +1819,8 @@ void RecoClassify3Cat() {
                 }
             } else if (backgroundType == 3) {
                 hPionScatterKEElectron->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hPionScatterKEChExch->Fill(energyAtVertex);
             } else {
                 hPionScatterKEOther->Fill(energyAtVertex);
             }
@@ -1887,6 +1859,8 @@ void RecoClassify3Cat() {
                 hPionAbsNpKEMuon->Fill(energyAtVertex);
             } else if (backgroundType == 3) {
                 hPionAbsNpKEElectron->Fill(energyAtVertex);
+            } else if (backgroundType == 7) {
+                hPionAbsNpKEChExch->Fill(energyAtVertex);
             } else {
                 hPionAbsNpKEOther->Fill(energyAtVertex);
             }
@@ -2307,29 +2281,13 @@ void RecoClassify3Cat() {
     );
 
     // Construct response matrix
-    for (int iOuterSignalBin = 0; iOuterSignalBin < NUM_SIGNAL_TYPES; ++iOuterSignalBin) {
-        for (int iOuterEnergyBin = 0; iOuterEnergyBin < NUM_BINS_KE; ++iOuterEnergyBin) {
-            // Get index for row (i, \alpha) -> k, index 1 corresponds to abs 0p in energy bin 1,
-            // index 2 to abs 0p in energy bin 2, ..., index NUM_BINS_KE + 1 corresponds to abs Np 
-            // in energy bin 1, and so on
-            int row = flattenIndex(iOuterSignalBin, iOuterEnergyBin, NUM_BINS_KE);
-
-            // Get total number of true events of true signal type \alpha with true energy bin i
-            double denom = TotalEventsHistos.at(iOuterSignalBin)->GetBinContent(iOuterEnergyBin + 1);
-
-            for (int iInnerSignalBin = 0; iInnerSignalBin < NUM_SIGNAL_TYPES; ++iInnerSignalBin) {
-                for (int iInnerEnergyBin = 0; iInnerEnergyBin < NUM_BINS_KE; ++iInnerEnergyBin) {
-                    // Get index for column (j, \beta) -> l
-                    int  column = flattenIndex(iInnerSignalBin, iInnerEnergyBin, NUM_BINS_KE);
-                    double prob = 0;
-                    
-                    // Get total number of true (i, \alpha) events that were reconstructed as (j, \beta)
-                    if (denom > 0) prob = TrueRecoAsByBin.at(iOuterSignalBin).at(iOuterEnergyBin).at(iInnerSignalBin)->GetBinContent(iInnerEnergyBin + 1) / denom;
-                    hResponseMatrix->SetBinContent(column + 1, row + 1, prob);
-                }
-            }
-        }
-    }
+    GetResponseMatrix(
+        NUM_SIGNAL_TYPES, NUM_BINS_KE,
+        TotalEventsHistos,
+        TrueRecoAsByBin,
+        hIncidentKECorrected,
+        hResponseMatrix
+    );
 
     // Before unfolding, we have to remove the estimated backgrounds
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
@@ -2351,46 +2309,92 @@ void RecoClassify3Cat() {
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
             int index      = flattenIndex(iSignal, iBin, NUM_BINS_KE);
-            Measure(index) = RecoSignals[iSignal]->GetBinContent(iBin + 1);
+            Measure(index) = XSEC_UNITS * (RecoSignals[iSignal]->GetBinContent(iBin + 1) / hIncidentKECorrected->GetBinContent(iBin + 1));
+        }
+    }
+
+    // Construct large signal vector
+    TVectorD Signal(NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
+        for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
+            int index     = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+            Signal(index) = XSEC_UNITS * (TotalEventsHistos[iSignal]->GetBinContent(iBin + 1) / hIncidentKECorrected->GetBinContent(iBin + 1));
         }
     }
 
     // Save nominal measure vector and response matrix
-    TH1D* hMeasureVectorNominal = new TH1D("hMeasureVectorNominal", "hMeasureVectorNominal;;", NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE); V2H(Measure, hMeasureVectorNominal);
+    TH1D* hMeasureVectorNominal = new TH1D(
+        "hMeasureVectorNominal", "hMeasureVectorNominal;;", 
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
+    ); V2H(Measure, hMeasureVectorNominal);
 
     nominalFile->cd();
     hMeasureVectorNominal->Write("", TObject::kOverwrite);
     hResponseMatrix->Write("", TObject::kOverwrite);
     nominalFile->Close();
 
-    // Construct covariance matrix (only statistical variance for now)
-    TMatrixD Covariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); Covariance.Zero();
+    // Load covariance matrices
+    std::unique_ptr<TFile> GeneratorFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/generator/Measure.root"));
+    TH2D* GeneratorCovariance = (TH2D*) GeneratorFile->Get("hMeasureCovMatrix");
+    TMatrixD GeneratorCov(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); H2M(GeneratorCovariance, GeneratorCov, kTRUE);
+
+    // Construct statistical covariance matrix
+    TMatrixD StatCovariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); StatCovariance.Zero();
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
-            int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+            int index   = flattenIndex(iSignal, iBin, NUM_BINS_KE);
             double N    = RecoSignals[iSignal]->GetBinContent(iBin + 1);
             double Ninc = hIncidentKE->GetBinContent(iBin + 1);
 
-            if (N > 0) {
-                Covariance(index, index) = N * (1 - (N / Ninc)); // variance = N_int(1-N_int/N_inc)
-            } else {
-                Covariance(index, index) = 1.0; // small floor to avoid zero variance
-            }
+            double numSigma = (Ninc>0.0 && N>0.0 ? std::sqrt(N*(1.0 - N/Ninc)) : 0.0);
+            double denSigma = (Ninc>0.0 ? std::sqrt(Ninc) : 0.0);
+
+            double xs       = N / Ninc;
+            double relVarXS = (N>0.0 && Ninc>0.0 ? std::pow(numSigma/N + denSigma/Ninc, 2) : 0.0);
+
+            StatCovariance(index, index) = xs * xs * relVarXS * XSEC_UNITS;
         }
     }
+
+    // Add all covariances
+    TMatrixD Covariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); Covariance.Zero();
+    Covariance += StatCovariance;
+    Covariance += GeneratorCov;
+
+    std::vector<TMatrixD> AllCovariances = {StatCovariance, GeneratorCov};
 
     // Convert response histogram to matrix
     TMatrixD Response(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); 
     H2M(static_cast<const TH2D*>(hResponseMatrix), Response, kTRUE);
 
-    // Invert response matrix with SVD
+    // Objects to store stuff
+    TMatrixD AddSmear(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    TMatrixD AddSmearInverse(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    TVectorD WF(NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    TMatrixD UnfoldCov(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    TMatrixD CovRotation(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+
+    // Invert response matrix with Wiener-SVD w/o regularization
+    TVectorD UnfoldedReco = WienerSVD(
+        Response,
+        Signal,
+        Measure,
+        Covariance,
+        0, // 0: unit, 2: second derivative
+        0, // smoothing parameter
+        AddSmear,
+        WF,
+        UnfoldCov,
+        CovRotation,
+        AddSmearInverse
+    );
+
+    // Sanity check: CovRotation = RInv?
     TDecompSVD svd(Response); svd.SetTol(1e-8);
     TMatrixD Rinv = svd.Invert();
-    TMatrixD RinvT(TMatrixD::kTransposed, Rinv);
-
-    // Unfold selected events
-    TVectorD UnfoldedReco = Rinv * Measure;
-    TMatrixD UnfoldCov    = Rinv * Covariance * RinvT;
+    if (!EqualApprox(CovRotation, Rinv, 1e-8, 1e-8)) {
+        std::cerr << "Warning: CovRotation matrix does not match the inverse of the response matrix within tolerance." << std::endl;
+    }
 
     // Organize results
     std::vector<TH1*> UnfoldedRecoHistos;
@@ -2422,7 +2426,7 @@ void RecoClassify3Cat() {
     TH2D* hResponseInvMatrix = new TH2D("hResponseInvMatrix", "hResponseInvMatrix;Reco (j, #beta);True (i, #alpha)",
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
-    ); M2H(Rinv, hResponseInvMatrix);
+    ); M2H(CovRotation, hResponseInvMatrix);
 
     ///////////////////////////////////////////////
     // Get cross-section using corrrected fluxes //
@@ -2453,34 +2457,19 @@ void RecoClassify3Cat() {
     };
 
     for (int i = 0; i < UnfoldedCrossSections.size(); ++i) {
-        TH1D* unfXSec          = UnfoldedCrossSections[i];
-        TH1D* trueXSec         = TrueCrossSections[i];
+        TH1D* unfXSec  = UnfoldedCrossSections[i];
+        TH1D* trueXSec = TrueCrossSections[i];
 
         for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
-            double incidentErr     = hIncidentKE->GetBinError(iBin);
-            double incidentContent = hIncidentKE->GetBinContent(iBin);
+            double xsecErr     = UnfoldedRecoHistos[i]->GetBinError(iBin);
+            double xsecContent = UnfoldedRecoHistos[i]->GetBinContent(iBin);
 
-            // Apply correcionts
-            double psi_corr = hPsiInc->GetBinContent(iBin);
-            double c_corr   = hCInc->GetBinContent(iBin);
-            incidentContent = incidentContent * (c_corr / psi_corr);
-            incidentErr     = incidentErr * (c_corr / psi_corr);
-
-            double interactingErr     = UnfoldedRecoHistos[i]->GetBinError(iBin);
-            double interactingContent = UnfoldedRecoHistos[i]->GetBinContent(iBin);
-
-            // we compute error as δσ / σ = δN_int / N_int + δN_inc / N_inc
-            double crossSection    = interactingContent / incidentContent;
-            double crossSectionErr = crossSection * ((interactingErr / interactingContent) + (incidentErr / incidentContent));
-            unfXSec->SetBinContent(iBin, crossSection);
-            unfXSec->SetBinError(iBin, crossSectionErr);
+            unfXSec->SetBinContent(iBin, xsecContent);
+            unfXSec->SetBinError(iBin, xsecErr);
 
             // True cross-section, no error bars
-            trueXSec->SetBinContent(iBin, TotalEventsHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin));
+            trueXSec->SetBinContent(iBin, XSEC_UNITS * (TotalEventsHistos[i]->GetBinContent(iBin) / hIncidentKECorrected->GetBinContent(iBin)));
         }
-        // Scale units
-        unfXSec->Scale(XSEC_UNITS);
-        trueXSec->Scale(XSEC_UNITS);
 
         // Make contents per 50 MeV
         reweightOneDHisto(unfXSec, 50.);
@@ -2489,7 +2478,7 @@ void RecoClassify3Cat() {
 
     // True "other" cross-section
     for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
-        hTruePionOtherCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueOtherKE->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)));
+        hTruePionOtherCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueOtherKE->GetBinContent(iBin) / hIncidentKECorrected->GetBinContent(iBin)));
     }
     reweightOneDHisto(hTruePionOtherCrossSection, 50.);
 
@@ -2560,11 +2549,6 @@ void RecoClassify3Cat() {
         // Total true-cross section
         {hTruePionAbs0pCrossSection, hTruePionAbsNpCrossSection, hTruePionScatterCrossSection, hTruePionOtherCrossSection},
 
-        // BDT probabilities
-        {hBestAbs0pAbs0p, hBestAbs0pAbsNp, hBestAbs0pMuon, hBestAbs0pElectron, hBestAbs0pScatter, hBestAbs0pChExch, hBestAbs0pOther},
-        {hBestScatterAbs0p, hBestScatterAbsNp, hBestScatterMuon, hBestScatterElectron, hBestScatterScatter, hBestScatterChExch, hBestScatterOther},
-        {hBestOtherAbs0p, hBestOtherAbsNp, hBestOtherMuon, hBestOtherElectron, hBestOtherScatter, hBestOtherChExch, hBestOtherOther},
-
         // Unreconstructed hits
         {hHitClusterInductionSizesAbs0p, hHitClusterInductionSizesAbsNp, hHitClusterInductionSizesMuon, hHitClusterInductionSizesElectron, hHitClusterInductionSizesScatter, hHitClusterInductionSizesChExch, hHitClusterInductionSizesOther},
         {hLargeHitClusterInductionAbs0p, hLargeHitClusterInductionAbsNp, hLargeHitClusterInductionMuon, hLargeHitClusterInductionElectron, hLargeHitClusterInductionScatter, hLargeHitClusterInductionChExch, hLargeHitClusterInductionOther},
@@ -2620,11 +2604,6 @@ void RecoClassify3Cat() {
         // Total true-cross section
         {"Abs 0p", "Abs Np", "Scatter", "Other"},
 
-        // BDT probabilities
-        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
-        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
-        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
-
         // Unreconstructed hits
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
@@ -2677,11 +2656,6 @@ void RecoClassify3Cat() {
 
         // Total true-cross section
         "CrossSection/TotalTrueCrossSection",
-
-        // BDT probabilities
-        "BDTScores/Abs0pTrue",
-        "BDTScores/ScatterTrue",
-        "BDTScores/OtherTrue",
 
         // Unreconstructed hits
         "Hits/ClusterSizesInduction",
@@ -2736,11 +2710,6 @@ void RecoClassify3Cat() {
         // Total true-cross section
         "Kinetic energy [MeV]",
 
-        // BDT probabilities
-        "Probability",
-        "Probability",
-        "Probability",
-
         // Unreconstructed hits
         "Cluster size [cm]",
         "Number of large clusters",
@@ -2794,11 +2763,6 @@ void RecoClassify3Cat() {
         // Total true-cross section
         "Cross section [barn] per 50 MeV",
 
-        // BDT probabilities
-        "Counts",
-        "Counts",
-        "Counts",
-
         // Unreconstructed hits
         "Counts",
         "Counts",
@@ -2850,11 +2814,6 @@ void RecoClassify3Cat() {
         false,
 
         // Total true-cross section
-        true,
-
-        // BDT probabilities
-        true,
-        true,
         true,
 
         // Unreconstructed hits
@@ -2910,11 +2869,6 @@ void RecoClassify3Cat() {
         // Total true-cross section
         {false, false, false, false},
 
-        // BDT probabilities
-        {false, false, false, false, false, false, false},
-        {false, false, false, false, false, false, false},
-        {false, false, false, false, false, false, false},
-
         // Unreconstructed hits
         {false, false, false, false, false, false, false},
         {false, false, false, false, false, false, false},
@@ -2932,23 +2886,6 @@ void RecoClassify3Cat() {
         // Through-going tracks
         {false, false, false, false, false, false, false}
     };
-
-    // Add each unfolded histogram as a single plot group for plotting
-    std::vector<TString> UnfHistTitles = {
-        "UnfoldedAbs0p",
-        "UnfoldedAbsNp",
-        "UnfoldedScatter"
-    };
-
-    for (size_t i = 0; i < UnfoldedRecoHistos.size(); ++i) {
-        PlotGroups.push_back({TotalEventsHistos[i], UnfoldedRecoHistos[i]});
-        PlotsAsPoints.push_back({false, true});
-        PlotLabelGroups.push_back({"True", "Unf."});
-        PlotTitles.push_back("Unfolded/" + UnfHistTitles[i]);
-        XLabels.push_back("Kinetic energy [MeV]");
-        YLabels.push_back("Counts");
-        PlotStacked.push_back(false);
-    }
 
     printOneDPlots(
         SaveDir, FontStyle, TextSize,

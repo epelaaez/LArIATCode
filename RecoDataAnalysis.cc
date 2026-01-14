@@ -348,7 +348,7 @@ void RecoDataAnalysis() {
         tree->GetEntry(i);
 
         // Make script go faster
-        if (i > 50000) break;
+        if (i > 100000) break;
 
         // Fill for all events
         hTOFMass->Fill(std::abs(TOFMass));

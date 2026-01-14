@@ -330,6 +330,8 @@ std::vector<double> getAverageDir(const std::vector<double>& points);
 
 std::pair<size_t, size_t> find_unique_position(const std::vector<std::vector<int>>* v, int n);
 
+bool EqualApprox(const TMatrixD& A, const TMatrixD& B, double rtol = 1e-12, double atol = 1e-15);
+
 ///////////////
 // WC checks //
 ///////////////
@@ -350,7 +352,7 @@ TMatrixD Matrix_C(Int_t n, Int_t type);
 //   - AddSmear is additional smearing matrix after unfolding
 //   - WF is the elements of Wiener Filter
 //   - Covariance matrix of the unfolded spectrum
-TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrixD Covariance, Int_t C_type, Float_t Norm_type, TMatrixD& AddSmear, TVectorD& WF, TMatrixD& UnfoldCov, TMatrixD& CovRotation, TMatrixD& AddSmearInverse, bool filterOff = false);
+TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrixD Covariance, Int_t C_type, Float_t Norm_type, TMatrixD& AddSmear, TVectorD& WF, TMatrixD& UnfoldCov, TMatrixD& CovRotation, TMatrixD& AddSmearInverse);
 
 /////////////////
 // Systematics //
@@ -359,8 +361,9 @@ TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrix
 std::vector<TH1D*> MakeUniverseHists(const std::string& baseName, const std::string& title, int nBins, const double* binEdges, int nUniverses);
 std::vector<std::vector<std::vector<TH1D*>>> MakeUniverseHistBlock(const std::string& baseName, const std::string& titleFmt, int nUniverses, int nOuter, int nInner, int nbins, const double* binEdges);
 
+void GetResponseMatrix(int SizeOuter, int SizeInner, const std::vector<TH1D*>& TotalEventsHistos, const std::vector<std::vector<std::vector<TH1D*>>>& TrueRecoAsByBin, const TH1D* IncidentFlux, TH2D* ReponseMatrix, bool UseIncidentFlux = true);
 void GetCovMatrix(TH1* RecoHisto, std::vector<TH1D*> UnivRecoHisto, TH2* CovMatrix);
 void GetFracCovAndCorrMatrix(TH1* RecoHisto, TH2* CovMatrix, TH2* FracCovMatrix, TH2* CorrMatrix);
 double FindQuantile(double frac, std::vector<double>& xs_in);
-void DrawHistosWithErrorBands(TH1D* RecoHisto, std::vector<TH1D*> UnivRecoHisto, TString dir, TString SystName, TString PlotName, double TextSize = 0.06, int FontStyle = 132);
+void DrawHistosWithErrorBands(TH1D* RecoHisto, std::vector<TH1D*> UnivRecoHisto, const TString& dir, const TString& SystName, const TString& PlotName, double textSize, int fontStyle, const TString& title, const TString& xlabel, const TString& ylabel);
 void DrawErrorBand(TH1* nom, TGraphAsymmErrors* band, int bandCol, double alpha);

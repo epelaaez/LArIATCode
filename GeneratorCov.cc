@@ -332,6 +332,18 @@ void GeneratorCov() {
     std::vector<TH1D*> TrueIncidentKEUnivs = MakeUniverseHists("hTrueIncidentKE", "TrueIncidentKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
     TH1D* hTrueIncidentKENom = new TH1D("hTrueIncidentKENom", "hTrueIncidentKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
+    // Psi corrections
+    std::vector<TH1D*> PsiIncidentUnivs = MakeUniverseHists("PsiIncidentUnivs", "PsiIncidentUnivs;Kinetic Energy [MeV];Factor", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
+    TH1D* hPsiIncidentNom = new TH1D("hPsiIncidentNom", "hPsiIncidentNom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
+    // C corrections
+    std::vector<TH1D*> CIncidentUnivs = MakeUniverseHists("CIncidentUnivs", "CIncidentUnivs;Kinetic Energy [MeV];Factor", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
+    TH1D* hCIncidentNom = new TH1D("hCIncidentNom", "hCIncidentNom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
+    // Corrected selected incident pion
+    std::vector<TH1D*> PionIncidentCorrectedKEUnivs = MakeUniverseHists("hPionIncidentCorrectedKE", "PionIncidentCorrectedKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
+    TH1D* hPionIncidentCorrectedKENom = new TH1D("hPionIncidentCorrectedKENom", "hPionIncidentCorrectedKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
     /////////////////
     // Selected KE // 
     /////////////////
@@ -340,20 +352,36 @@ void GeneratorCov() {
     std::vector<TH1D*> PionAbs0pKEUnivs = MakeUniverseHists("hPionAbs0pKE", "PionAbs0pKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
     TH1D* hPionAbs0pKENom = new TH1D("hPionAbs0pKENom", "hPionAbs0pKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
+    // Pion abs 0p estimated backgrounds
+    std::vector<TH1D*> PionAbs0pKEBkgUnivs = MakeUniverseHists("hPionAbs0pKEBkg", "hPionAbs0pKEBkg;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
+    TH1D* hPionAbs0pKEBkgNom = new TH1D("hPionAbs0pKEBkgNom", "hPionAbs0pKEBkgNom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
     // Selected pion abs Np for universes
     std::vector<TH1D*> PionAbsNpKEUnivs = MakeUniverseHists("hPionAbsNpKE", "PionAbsNpKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
     TH1D* hPionAbsNpKENom = new TH1D("hPionAbsNpKENom", "hPionAbsNpKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
+    // Pion abs Np estimated backgrounds
+    std::vector<TH1D*> PionAbsNpKEBkgUnivs = MakeUniverseHists("hPionAbsNpKEBkg", "hPionAbsNpKEBkg;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
+    TH1D* hPionAbsNpKEBkgNom = new TH1D("hPionAbsNpKEBkgNom", "hPionAbsNpKEBkgNom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Selected pion scattering for universes
     std::vector<TH1D*> PionScatterKEUnivs = MakeUniverseHists("hPionScatterKE", "PionScatterKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
     TH1D* hPionScatterKENom = new TH1D("hPionScatterKENom", "hPionScatterKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    std::vector<TH1*> RecoSignals = {
+    // Pion scattering estimated backgrounds
+    std::vector<TH1D*> PionScatterKEBkgUnivs = MakeUniverseHists("hPionScatterKEBkg", "hPionScatterKEBkg;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
+    TH1D* hPionScatterKEBkgNom = new TH1D("hPionScatterKEBkgNom", "hPionScatterKEBkgNom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
+    std::vector<TH1D*> RecoSignals = {
         hPionAbs0pKENom, hPionAbsNpKENom, hPionScatterKENom
     };
 
+    std::vector<TH1D*> RecoBkgSignals = {
+        hPionAbs0pKEBkgNom, hPionAbsNpKEBkgNom, hPionScatterKEBkgNom
+    };
+
     /////////////
-    // True KE // 
+    // True KE //
     /////////////
 
     // True abs 0p KE
@@ -368,7 +396,7 @@ void GeneratorCov() {
     std::vector<TH1D*> TruePionScatterKEUnivs = MakeUniverseHists("hTruePionScatterKE", "TruePionScatterKE;Kinetic Energy [MeV];Counts", NUM_BINS_KE, ARRAY_KE_BINS.data(), NUM_UNIVERSES);
     TH1D* hTruePionScatterKENom = new TH1D("hTruePionScatterKENom", "hTruePionScatterKENom;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    std::vector<TH1*> TotalEventsHistos = {
+    std::vector<TH1D*> TotalEventsHistosNom = {
         hTruePionAbs0pKENom, hTruePionAbsNpKENom, hTruePionScatterKENom
     };
 
@@ -394,33 +422,37 @@ void GeneratorCov() {
     );
 
     // Nominal
-    std::vector<std::vector<TH1*>> TrueAbs0pAsByBinNom;
+    std::vector<std::vector<TH1D*>> TrueAbs0pAsByBinNom;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
-        std::vector<TH1*> TempVec;
+        std::vector<TH1D*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueAbs0p_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs 0p KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TH1D* hTempHist = new TH1D(Form("hTrueAbs0p_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs 0p KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueAbs0pAsByBinNom.push_back(TempVec);
     }
-    std::vector<std::vector<TH1*>> TrueAbsNpAsByBinNom;
+    std::vector<std::vector<TH1D*>> TrueAbsNpAsByBinNom;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
-        std::vector<TH1*> TempVec;
+        std::vector<TH1D*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueAbsNp_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Np KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TH1D* hTempHist = new TH1D(Form("hTrueAbsNp_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Np KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueAbsNpAsByBinNom.push_back(TempVec);
     }
-    std::vector<std::vector<TH1*>> TrueScatterAsByBinNom;
+    std::vector<std::vector<TH1D*>> TrueScatterAsByBinNom;
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
-        std::vector<TH1*> TempVec;
+        std::vector<TH1D*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1* hTempHist = new TH1D(Form("hTrueScatter_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Scatter KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TH1D* hTempHist = new TH1D(Form("hTrueScatter_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Scatter KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueScatterAsByBinNom.push_back(TempVec);
     }
+
+    std::vector<std::vector<std::vector<TH1D*>>> TrueRecoAsByBinNom = {
+        TrueAbs0pAsByBinNom, TrueAbsNpAsByBinNom, TrueScatterAsByBinNom
+    };
 
     //////////////////////
     // Loop over events //
@@ -692,9 +724,10 @@ void GeneratorCov() {
                 // Add to nominal
                 hTrueIncidentKENom->Fill(x);
 
-                // Add to universes
+                // Add to universes. For generator systematics, we do not vary the 
+                // incident flux, just the interacting flux
                 for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
-                    TrueIncidentKEUnivs[iUniv]->Fill(x, evt_weights->at(iUniv));
+                    TrueIncidentKEUnivs[iUniv]->Fill(x, 1);
                 }
             }
         }
@@ -717,14 +750,21 @@ void GeneratorCov() {
         // Reject stuff with no data products
         if (WC2TPCtrkID == -99999) continue;
 
-        //////////////////
-        // Cylinder cut //
-        //////////////////
+        ////////////////////////////////
+        // Cylinder and TG track cuts //
+        ////////////////////////////////
 
         int numSmallTracksInCylinder = 0;
         int numTracksInCylinder      = 0;
+        int numTGTracks              = 0;
         for (int trk_idx = 0; trk_idx < recoTrkID->size(); ++trk_idx) {
             if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
+            // Check if tracks is through-going
+            if (
+                !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
+                !isWithinReducedVolume(recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx))
+            ) numTGTracks++;
 
             double trackLength = sqrt(
                 pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
@@ -752,6 +792,9 @@ void GeneratorCov() {
                 numSmallTracksInCylinder++;
             }
         }
+
+        // Reject events with too many TG tracks
+        if (numTGTracks > MAX_NUM_TG_TRACKS) continue;
 
         // Reject events with too many small tracks inside the cylinder
         if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) continue;
@@ -817,6 +860,7 @@ void GeneratorCov() {
 
         double energyDeposited = 0;
         std::vector<double> incidentEnergyDepositions;
+        std::vector<double> incidentEnergyDepositionsPion;
         for (size_t iDep = 0; iDep < wcMatchDEDX->size(); ++iDep) {
             // If we are past detected breaking point, exit loop
             if (wcMatchZPos->at(iDep) > breakPointZ) break;
@@ -831,14 +875,22 @@ void GeneratorCov() {
             if (isWithinReducedVolume(wcMatchXPos->at(iDep), wcMatchYPos->at(iDep), wcMatchZPos->at(iDep))) {
                 hPionIncidentKENom->Fill(initialKE - energyDeposited);
                 incidentEnergyDepositions.push_back(initialKE - energyDeposited);
+                if (truthPrimaryPDG == -211) {
+                    hPionIncidentKETrueNom->Fill(initialKE - energyDeposited);
+                    incidentEnergyDepositionsPion.push_back(initialKE - energyDeposited);
+                }
             }
         }
         double energyAtVertex = initialKE - energyDeposited;
 
-        // Add universe weights
+        // Add incident to universes. In the case of generator systematics, we do not want to 
+        // vary the incident flux, but only the interacting flux through the weights given
         for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
             for (int iDep = 0; iDep < incidentEnergyDepositions.size(); ++iDep) {
-                PionIncidentKEUnivs[iUniv]->Fill(incidentEnergyDepositions[iDep], evt_weights->at(iUniv));
+                PionIncidentKEUnivs[iUniv]->Fill(incidentEnergyDepositions[iDep], 1);
+            }
+            for (int iDep = 0; iDep < incidentEnergyDepositionsPion.size(); ++iDep) {
+                PionIncidentKETrueUnivs[iUniv]->Fill(incidentEnergyDepositionsPion[iDep], 1);
             }
         }
 
@@ -956,6 +1008,8 @@ void GeneratorCov() {
                 if (TrueEnergyBin != -1) TrueAbsNpAsByBinNom.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
             } else if (backgroundType == 6 || backgroundType == 12) {
                 if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
+            } else {
+                hPionScatterKEBkgNom->Fill(energyAtVertex);
             }
 
             for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
@@ -966,6 +1020,8 @@ void GeneratorCov() {
                     if (TrueEnergyBin != -1) TrueAbsNpAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(2)->Fill(energyAtVertex, evt_weights->at(iUniv));
                 } else if (backgroundType == 6 || backgroundType == 12) {
                     if (TrueEnergyBin != -1) TrueScatterAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(2)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                } else {
+                    PionScatterKEBkgUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
                 }
             }
             continue;
@@ -980,6 +1036,8 @@ void GeneratorCov() {
                 if (TrueEnergyBin != -1) TrueAbsNpAsByBinNom.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
             } else if (backgroundType == 6 || backgroundType == 12) {
                 if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+            } else {
+                hPionAbsNpKEBkgNom->Fill(energyAtVertex);
             }
             
             for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
@@ -990,6 +1048,8 @@ void GeneratorCov() {
                     if (TrueEnergyBin != -1) TrueAbsNpAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(1)->Fill(energyAtVertex, evt_weights->at(iUniv));
                 } else if (backgroundType == 6 || backgroundType == 12) {
                     if (TrueEnergyBin != -1) TrueScatterAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(1)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                } else {
+                    PionAbsNpKEBkgUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
                 }
             }
             continue;
@@ -1029,9 +1089,7 @@ void GeneratorCov() {
 
         if (
             numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION &&
-            numClustersCollection < MAX_NUM_CLUSTERS_COLLECTION && 
-            largestClusterSizeInduction < MAX_LARGEST_CLUSTER_INDUCTION &&
-            largestClusterSizeCollection < MAX_LARGEST_CLUSTER_COLLECTION
+            numClustersCollection < MAX_NUM_CLUSTERS_COLLECTION
         ) {
             // Add weights to abs 0p
             hPionAbs0pKENom->Fill(energyAtVertex);
@@ -1041,6 +1099,8 @@ void GeneratorCov() {
                 if (TrueEnergyBin != -1) TrueAbsNpAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
             } else if (backgroundType == 6 || backgroundType == 12) {
                 if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            } else {
+                hPionAbs0pKEBkgNom->Fill(energyAtVertex);
             }
 
             for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
@@ -1051,78 +1111,248 @@ void GeneratorCov() {
                     if (TrueEnergyBin != -1) TrueAbsNpAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(0)->Fill(energyAtVertex, evt_weights->at(iUniv));
                 } else if (backgroundType == 6 || backgroundType == 12) {
                     if (TrueEnergyBin != -1) TrueScatterAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(0)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                } else {
+                    PionAbs0pKEBkgUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
                 }
             }
             continue;
         }
     }
 
+    //////////////////////////////
+    // Cross-section extraction //
+    //////////////////////////////
+
+    ///////////////////
+    // Incident flux //
+    ///////////////////
+    
+    // Get nominal incident flux and corrections
+    for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
+        double psi = hPionIncidentKETrueNom->GetBinContent(iBin + 1) / hTrueIncidentKENom->GetBinContent(iBin + 1);
+        double   c = hPionIncidentKETrueNom->GetBinContent(iBin + 1) / hPionIncidentKENom->GetBinContent(iBin + 1);
+
+        hPsiIncidentNom->SetBinContent(iBin + 1, psi); hCIncidentNom->SetBinContent(iBin + 1, c);
+        hPionIncidentCorrectedKENom->SetBinContent(iBin + 1, (c / psi) * hPionIncidentKENom->GetBinContent(iBin + 1));
+    }
+
+    // Get incident flux and corrections for all universes
+    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+        for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
+            double psi = PionIncidentKETrueUnivs[iUniv]->GetBinContent(iBin + 1) / TrueIncidentKEUnivs[iUniv]->GetBinContent(iBin + 1);
+            double   c = PionIncidentKETrueUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentKEUnivs[iUniv]->GetBinContent(iBin + 1);
+
+            PsiIncidentUnivs[iUniv]->SetBinContent(iBin + 1, psi); CIncidentUnivs[iUniv]->SetBinContent(iBin + 1, c);
+            PionIncidentCorrectedKEUnivs[iUniv]->SetBinContent(iBin + 1, (c / psi) * PionIncidentKEUnivs[iUniv]->GetBinContent(iBin + 1));
+        }
+    }
+
+    ///////////////////////
+    // Response matrices //
+    ///////////////////////
+
+    // Get nominal response matrix
+    TH2D* hResponseMatrixNominal = new TH2D(
+        "hResponseMatrix", "hResponseMatrix;Reco (j, #beta);True (i, #alpha)",
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
+    );
+    GetResponseMatrix(
+        NUM_SIGNAL_TYPES, NUM_BINS_KE,
+        TotalEventsHistosNom,
+        TrueRecoAsByBinNom,
+        hPionIncidentCorrectedKENom,
+        hResponseMatrixNominal
+    );
+
+    // Compute response matrix for all universes
+    std::vector<TH2D*> ResponseMatricesUnivs;
+    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+        TH2D* hResponseMatrixUniv = new TH2D(
+            "hResponseMatrix", "hResponseMatrix;Reco (j, #beta);True (i, #alpha)",
+            NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
+            NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
+        );
+        std::vector<TH1D*> TotalEventsUniv = {TruePionAbs0pKEUnivs[iUniv], TruePionAbsNpKEUnivs[iUniv], TruePionScatterKEUnivs[iUniv]};
+        std::vector<std::vector<std::vector<TH1D*>>> TrueRecoAsByBinUniv = {TrueAbs0pAsByBinUnivs[iUniv], TrueAbsNpAsByBinUnivs[iUniv], TrueScatterAsByBinUnivs[iUniv]};
+        TH1D* IncidentFluxUniv = PionIncidentCorrectedKEUnivs[iUniv];
+        
+        GetResponseMatrix(
+            NUM_SIGNAL_TYPES, NUM_BINS_KE,
+            TotalEventsUniv,
+            TrueRecoAsByBinUniv,
+            IncidentFluxUniv,
+            hResponseMatrixUniv
+        );
+
+        ResponseMatricesUnivs.push_back(hResponseMatrixUniv);
+    }
+
+    //////////////////////////
+    // Signal cross-section //
+    //////////////////////////
+
+    // Get nominal signal vector
+    TH1D* hSignalNominal = new TH1D("hSignalNominal", "hSignalNominal;;", NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
+        for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
+            int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+            double xsec =  XSEC_UNITS * (TotalEventsHistosNom[iSignal]->GetBinContent(iBin + 1) / hPionIncidentCorrectedKENom->GetBinContent(iBin + 1));
+            hSignalNominal->SetBinContent(index + 1,  xsec); TotalEventsHistosNom[iSignal]->SetBinContent(iBin + 1,  xsec);
+        }
+    }
+
+    // Compose signal vectors for all universes
+    // std::vector<TH1D*> SignalVectorUnivs;
+    // SignalVectorUnivs.reserve(NUM_UNIVERSES);
+    // for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+    //     TH1D* hSignal = new TH1D(Form("hSignal_Univ%d", iUniv), Form("Signal Vector for Universe %d", iUniv), NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+
+    //     // Fill it with flattened (signal, bin) content
+    //     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
+    //         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
+    //             int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+                
+    //             double content = 0;
+    //             if (iSignal == 0) {
+    //                 content = XSEC_UNITS * (TruePionAbs0pKEUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
+    //                 TruePionAbs0pKEUnivs[iUniv]->SetBinContent(iBin + 1, content);
+    //             } else if (iSignal == 1) {
+    //                 content = XSEC_UNITS * (TruePionAbsNpKEUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
+    //                 TruePionAbsNpKEUnivs[iUniv]->SetBinContent(iBin + 1, content);
+    //             } else if (iSignal == 2) {
+    //                 content = XSEC_UNITS * (TruePionScatterKEUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
+    //                 TruePionScatterKEUnivs[iUniv]->SetBinContent(iBin + 1, content);
+    //             }
+
+    //             hSignal->SetBinContent(index + 1, content);
+    //             hSignal->SetBinError(index + 1, 0.0);
+    //         }
+    //     }
+    //     SignalVectorUnivs.push_back(hSignal);
+    // }
+
+    //////////////////////////////
+    // Background cross-section //
+    //////////////////////////////
+
+    // Get nominal estimated background vector
+    TH1D* hBackgroundNominal = new TH1D("hBackgroundNominal", "hBackgroundNominal;;", NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
+        for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
+            int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+            double xsec = XSEC_UNITS * (RecoBkgSignals[iSignal]->GetBinContent(iBin + 1) / hPionIncidentCorrectedKENom->GetBinContent(iBin + 1));
+            hBackgroundNominal->SetBinContent(index + 1, xsec); RecoBkgSignals[iSignal]->SetBinContent(iBin + 1, xsec);
+        }
+    }
+
+    // Compose background vectors for all universes
+    std::vector<TH1D*> BackgroundVectorUnivs;
+    BackgroundVectorUnivs.reserve(NUM_UNIVERSES);
+    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+        TH1D* hBackground = new TH1D(Form("hBackground_Univ%d", iUniv), Form("Background Vector for Universe %d", iUniv), NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+        for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
+            for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
+                int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+
+                double content = 0;
+                if (iSignal == 0) {
+                    content = XSEC_UNITS * (PionAbs0pKEBkgUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
+                    PionAbs0pKEBkgUnivs[iUniv]->SetBinContent(iBin + 1, content);
+                } else if (iSignal == 1) {
+                    content = XSEC_UNITS * (PionAbsNpKEBkgUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
+                    PionAbsNpKEBkgUnivs[iUniv]->SetBinContent(iBin + 1, content);
+                } else if (iSignal == 2) {
+                    content = XSEC_UNITS * (PionScatterKEBkgUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
+                    PionScatterKEBkgUnivs[iUniv]->SetBinContent(iBin + 1, content);
+                }
+
+                hBackground->SetBinContent(index + 1, content);
+                hBackground->SetBinError(index + 1, 0.0);
+            }
+        }
+        BackgroundVectorUnivs.push_back(hBackground);
+    }
+
+    ////////////////////////////
+    // Measured cross-section //
+    ////////////////////////////
+
     // Get nominal measure vector
     TH1D* hMeasureNominal = new TH1D("hMeasureVectorNominal", "hMeasureVectorNominal;;", NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
             int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
-            hMeasureNominal->SetBinContent(index + 1, RecoSignals[iSignal]->GetBinContent(iBin + 1));
+            double xsec = XSEC_UNITS * (RecoSignals[iSignal]->GetBinContent(iBin + 1) / hPionIncidentCorrectedKENom->GetBinContent(iBin + 1));
+            hMeasureNominal->SetBinContent(index + 1, xsec); RecoSignals[iSignal]->SetBinContent(iBin + 1, xsec);
         }
     }
+
+    // Get nominal true cross-section in vector form
+    TVectorD SignalNom(NUM_SIGNAL_TYPES * NUM_BINS_KE); H2V(hSignalNominal, SignalNom);
 
     // Compose measured vectors for all universes
     std::vector<TH1D*> MeasureVectorUnivs;
     MeasureVectorUnivs.reserve(NUM_UNIVERSES);
     for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
         // One TH1D holding all signals flattened
-        TH1D* hMeasure = new TH1D(
-            Form("hMeasure_Univ%d", iUniv),
-            Form("Measured Vector for Universe %d", iUniv),
-            NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
-        );
+        TH1D* hMeasure = new TH1D(Form("hMeasure_Univ%d", iUniv), Form("Measured Vector for Universe %d", iUniv), NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+
+        // Compute M = R * S + B with S fixed
+        TMatrixD R(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); H2M(static_cast<const TH2D*>(ResponseMatricesUnivs[iUniv]), R, kTRUE);
+        TVectorD B(NUM_SIGNAL_TYPES * NUM_BINS_KE); H2V(BackgroundVectorUnivs[iUniv], B);
+
+        TVectorD M = (R * SignalNom) + B;
 
         // Fill it with flattened (signal, bin) content
         for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
             for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
-                int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+                int index     = flattenIndex(iSignal, iBin, NUM_BINS_KE);
 
-                double content = 0;
-                if (iSignal == 0) content      = PionAbs0pKEUnivs[iUniv]->GetBinContent(iBin + 1);
-                else if (iSignal == 1) content = PionAbsNpKEUnivs[iUniv]->GetBinContent(iBin + 1);
-                else if (iSignal == 2) content = PionScatterKEUnivs[iUniv]->GetBinContent(iBin + 1);
-
-                hMeasure->SetBinContent(index + 1, content);
+                // double content = 0;
+                if (iSignal == 0) {
+                    // content = XSEC_UNITS * (PionAbs0pKEUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
+                    PionAbs0pKEUnivs[iUniv]->SetBinContent(iBin + 1, M(index));
+                    // std::cout << "measured: " << content << " vs. vector: " << M(index) << std::endl;
+                } else if (iSignal == 1) {
+                    // content = XSEC_UNITS * (PionAbsNpKEUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
+                    PionAbsNpKEUnivs[iUniv]->SetBinContent(iBin + 1, M(index));
+                    // std::cout << "measured: " << content << " vs. vector: " << M(index) << std::endl;
+                } else if (iSignal == 2) {
+                    // content = XSEC_UNITS * (PionScatterKEUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
+                    PionScatterKEUnivs[iUniv]->SetBinContent(iBin + 1, M(index));
+                    // std::cout << "measured: " << content << " vs. vector: " << M(index) << std::endl;
+                }
+                
+                hMeasure->SetBinContent(index + 1, M(index));
                 hMeasure->SetBinError(index + 1, 0.0);
             }
         }
         MeasureVectorUnivs.push_back(hMeasure);
     }
 
+    // Use TMatrices/Vectors to compute response equation
+    TMatrixD ResponseNom(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); H2M(static_cast<const TH2D*>(hResponseMatrixNominal), ResponseNom, kTRUE);
+    TVectorD BackgroundNom(NUM_SIGNAL_TYPES * NUM_BINS_KE); H2V(hBackgroundNominal, BackgroundNom);
+
+    // Get measured vector by "folding" true vector
+    TVectorD MeasureNom = (ResponseNom * SignalNom) + BackgroundNom;
+
+    // Sanity check, for CV, these two should match
+    std::cout << "Cross-section: " << std::endl;
+    TH1D* hCrossSectionNominal = new TH1D("hCrossSectionNominal", "hCrossSectionNominal;;", NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
+        for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
+            int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+            std::cout << "  Reco: " << index << " " << hMeasureNominal->GetBinContent(index + 1) << std::endl;
+            std::cout << "  Fold: " << index << " " << MeasureNom(index) << std::endl;
+            std::cout << std::endl;
+        }
+    }
+
     /////////////////////
     // Get covariances //
     /////////////////////
-
-    // Incident KE
-    TH2D* hIncidentCovMatrix = new TH2D(
-        "hMeasureCovMatrix", "hMeasureCovMatrix;Reco (j, #beta);True (i, #alpha)",
-        NUM_BINS_KE, ARRAY_KE_BINS.data(),
-        NUM_BINS_KE, ARRAY_KE_BINS.data()
-    );
-    TH2D* hIncidentFracCovMatrix = new TH2D(
-        "hIncidentFracCovMatrix", "hIncidentFracCovMatrix;Reco (j, #beta);True (i, #alpha)",
-        NUM_BINS_KE, ARRAY_KE_BINS.data(),
-        NUM_BINS_KE, ARRAY_KE_BINS.data()
-    );
-    TH2D* hIncidentCorrMatrix = new TH2D(
-        "hIncidentCorrMatrix", "hIncidentCorrMatrix;Reco (j, #beta);True (i, #alpha)",
-        NUM_BINS_KE, ARRAY_KE_BINS.data(),
-        NUM_BINS_KE, ARRAY_KE_BINS.data()
-    );
-    GetCovMatrix(hPionIncidentKENom, PionIncidentKEUnivs, hIncidentCovMatrix);
-    GetFracCovAndCorrMatrix(hPionIncidentKENom, hIncidentCovMatrix, hIncidentFracCovMatrix, hIncidentCorrMatrix);
-    DrawHistosWithErrorBands(
-        hPionIncidentKENom,
-        PionIncidentKEUnivs,
-        SaveDir,
-        "Generator",
-        "Incident"
-    );
 
     // Meausured vector
     TH2D* hMeasureCovMatrix = new TH2D(
@@ -1147,68 +1377,106 @@ void GeneratorCov() {
         MeasureVectorUnivs,
         SaveDir,
         "Generator",
-        "MeasureVector"
+        "Measure",
+        TextSize,
+        FontStyle,
+        "Measured Cross Section",
+        "Kinetic Energy [MeV]",
+        "Cross Section [barn]"
     );
 
     // Abs 0p
     TH2D* hAbs0pCovMatrix = new TH2D(
-        "hAbs0pCovMatrix", "hAbs0pCovMatrix;Reco (j, #beta);True (i, #alpha)",
+        "hAbs0pCovMatrix", "hAbs0pCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
         NUM_BINS_KE, ARRAY_KE_BINS.data(),
         NUM_BINS_KE, ARRAY_KE_BINS.data()
     );
     TH2D* hAbs0pFracCovMatrix = new TH2D(
-        "hAbs0pFracCovMatrix", "hAbs0pFracCovMatrix;Reco (j, #beta);True (i, #alpha)",
+        "hAbs0pFracCovMatrix", "hAbs0pFracCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
         NUM_BINS_KE, ARRAY_KE_BINS.data(),
         NUM_BINS_KE, ARRAY_KE_BINS.data()
     );
     TH2D* hAbs0pCorrMatrix = new TH2D(
-        "hAbs0pCorrMatrix", "hAbs0pCorrMatrix;Reco (j, #beta);True (i, #alpha)",
+        "hAbs0pCorrMatrix", "hAbs0pCorrMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
         NUM_BINS_KE, ARRAY_KE_BINS.data(),
         NUM_BINS_KE, ARRAY_KE_BINS.data()
     );
     GetCovMatrix(hPionAbs0pKENom, PionAbs0pKEUnivs, hAbs0pCovMatrix);
     GetFracCovAndCorrMatrix(hPionAbs0pKENom, hAbs0pCovMatrix, hAbs0pFracCovMatrix, hAbs0pCorrMatrix);
-    DrawHistosWithErrorBands(hPionAbs0pKENom, PionAbs0pKEUnivs, SaveDir, "Generator", "Abs0p");
+    DrawHistosWithErrorBands(
+        hPionAbs0pKENom, 
+        PionAbs0pKEUnivs, 
+        SaveDir, 
+        "Generator", 
+        "Abs0p",
+        TextSize,
+        FontStyle,
+        "Abs 0p Cross Section",
+        "Kinetic Energy [MeV]",
+        "Cross Section [barn]"
+    );
 
     // Abs Np
     TH2D* hAbsNpCovMatrix = new TH2D(
-        "hAbsNpCovMatrix", "hAbsNpCovMatrix;Reco (j, #beta);True (i, #alpha)",
+        "hAbsNpCovMatrix", "hAbsNpCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
         NUM_BINS_KE, ARRAY_KE_BINS.data(),
         NUM_BINS_KE, ARRAY_KE_BINS.data()
     );
     TH2D* hAbsNpFracCovMatrix = new TH2D(
-        "hAbsNpFracCovMatrix", "hAbsNpFracCovMatrix;Reco (j, #beta);True (i, #alpha)",
+        "hAbsNpFracCovMatrix", "hAbsNpFracCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
         NUM_BINS_KE, ARRAY_KE_BINS.data(),
         NUM_BINS_KE, ARRAY_KE_BINS.data()
     );
     TH2D* hAbsNpCorrMatrix = new TH2D(
-        "hAbsNpCorrMatrix", "hAbsNpCorrMatrix;Reco (j, #beta);True (i, #alpha)",
+        "hAbsNpCorrMatrix", "hAbsNpCorrMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
         NUM_BINS_KE, ARRAY_KE_BINS.data(),
         NUM_BINS_KE, ARRAY_KE_BINS.data()
     );
     GetCovMatrix(hPionAbsNpKENom, PionAbsNpKEUnivs, hAbsNpCovMatrix);
     GetFracCovAndCorrMatrix(hPionAbsNpKENom, hAbsNpCovMatrix, hAbsNpFracCovMatrix, hAbsNpCorrMatrix);
-    DrawHistosWithErrorBands(hPionAbsNpKENom, PionAbsNpKEUnivs, SaveDir, "Generator", "AbsNp");
+    DrawHistosWithErrorBands(
+        hPionAbsNpKENom, 
+        PionAbsNpKEUnivs, 
+        SaveDir,
+        "Generator", 
+        "AbsNp",
+        TextSize,
+        FontStyle,
+        "Abs Np Cross Section",
+        "Kinetic Energy [MeV]",
+        "Cross Section [barn]"
+    );
 
     // Scatter
     TH2D* hScatterCovMatrix = new TH2D(
-        "hScatterCovMatrix", "hScatterCovMatrix;Reco (j, #beta);True (i, #alpha)",
+        "hScatterCovMatrix", "hScatterCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
         NUM_BINS_KE, ARRAY_KE_BINS.data(),
         NUM_BINS_KE, ARRAY_KE_BINS.data()
     );
     TH2D* hScatterFracCovMatrix = new TH2D(
-        "hScatterFracCovMatrix", "hScatterFracCovMatrix;Reco (j, #beta);True (i, #alpha)",
+        "hScatterFracCovMatrix", "hScatterFracCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
         NUM_BINS_KE, ARRAY_KE_BINS.data(),
         NUM_BINS_KE, ARRAY_KE_BINS.data()
     );
     TH2D* hScatterCorrMatrix = new TH2D(
-        "hScatterCorrMatrix", "hScatterCorrMatrix;Reco (j, #beta);True (i, #alpha)",
+        "hScatterCorrMatrix", "hScatterCorrMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
         NUM_BINS_KE, ARRAY_KE_BINS.data(),
         NUM_BINS_KE, ARRAY_KE_BINS.data()
     );
     GetCovMatrix(hPionScatterKENom, PionScatterKEUnivs, hScatterCovMatrix);
     GetFracCovAndCorrMatrix(hPionScatterKENom, hScatterCovMatrix, hScatterFracCovMatrix, hScatterCorrMatrix);
-    DrawHistosWithErrorBands(hPionScatterKENom, PionScatterKEUnivs, SaveDir, "Generator", "Scatter");
+    DrawHistosWithErrorBands(
+        hPionScatterKENom, 
+        PionScatterKEUnivs, 
+        SaveDir, 
+        "Generator",
+        "Scatter",
+        TextSize,
+        FontStyle,
+        "Scatter Cross Section",
+        "Kinetic Energy [MeV]",
+        "Cross Section [barn]"
+    );
 
     ///////////////////
     // Draw 2D Plots //
@@ -1218,9 +1486,6 @@ void GeneratorCov() {
         hMeasureCovMatrix,
         hMeasureFracCovMatrix, 
         hMeasureCorrMatrix,
-        hIncidentCovMatrix,
-        hIncidentFracCovMatrix,
-        hIncidentCorrMatrix,
         hAbs0pCovMatrix,
         hAbs0pFracCovMatrix,
         hAbs0pCorrMatrix,
@@ -1236,9 +1501,6 @@ void GeneratorCov() {
         "Generator/MeasureCovariance",
         "Generator/MeasureFracCovariance",
         "Generator/MeasureCorrelation",
-        "Generator/IncidentCovariance",
-        "Generator/IncidentFracCovariance",
-        "Generator/IncidentCorrelation",
         "Generator/Abs0pCovariance",
         "Generator/Abs0pFracCovariance",
         "Generator/Abs0pCorrelation",
@@ -1253,19 +1515,16 @@ void GeneratorCov() {
     std::vector<std::pair<double,double>> TwoDRanges = {
         {0, 0},
         {0, 0},
+        {-1, 1},
         {0, 0},
         {0, 0},
+        {-1, 1},
         {0, 0},
         {0, 0},
+        {-1, 1},
         {0, 0},
         {0, 0},
-        {0, 0},
-        {0, 0},
-        {0, 0},
-        {0, 0},
-        {0, 0},
-        {0, 0},
-        {0, 0}
+        {-1, 1}
     };
 
     std::vector<bool> TwoDDisplayNumbers = {
@@ -1287,4 +1546,13 @@ void GeneratorCov() {
     };
 
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles, TwoDRanges, TwoDDisplayNumbers);
+
+    ////////////////////////////
+    // Save covariance matrix //
+    ////////////////////////////
+
+    TFile* saveFile = new TFile("/exp/lariat/app/users/epelaez/histos/generator/Measure.root", "RECREATE");
+    saveFile->cd();
+    hMeasureCovMatrix->Write("", TObject::kOverwrite);
+    saveFile->Close();
 }

@@ -1002,7 +1002,7 @@ void RecoAllAnalysis() {
         tree->GetEntry(i);
 
         // Make it go faster
-        if (i > 50000) break;
+        if (i > 100000) break;
 
         std::vector<int>             thisEventPrimaryDaughterPDG = *truthPrimaryDaughtersPDG;
         std::vector<double>           thisEventPrimaryDaughterKE = *truthPrimaryDaughtersKE;
