@@ -465,7 +465,7 @@ void GeneratorCov() {
         tree->GetEntry(i);
 
         // Go faster
-        if (i > 50000) break;
+        // if (i > USE_NUM_EVENTS) break;
 
         // Load weights
         auto it = eventToWeightEntry.find(event);

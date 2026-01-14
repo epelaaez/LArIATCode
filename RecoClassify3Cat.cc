@@ -735,7 +735,7 @@ void RecoClassify3Cat() {
         tree->GetEntry(i);
 
         // Make script go faster
-        if (i > 100000) break;
+        // if (i > USE_NUM_EVENTS) break;
 
         // Get unordered set for hits in tracks
         std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
@@ -2441,8 +2441,10 @@ void RecoClassify3Cat() {
     TH1D* hPionScatterCrossSection     = new TH1D("hPionScatterCrossSection", "hPionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTruePionScatterCrossSection = new TH1D("hTruePionScatterCrossSection", "hTruePionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
-    TH1D* hTruePionOtherCrossSection = new TH1D("hTruePionOtherCrossSection", "hTruePionOtherCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueTotalCrossSection     = new TH1D("hTrueTotalCrossSection", "hTrueTotalCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTruePionChExchCrossSection = new TH1D("hTruePionChExchCrossSection", "hTruePionChExchCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTruePionOtherCrossSection  = new TH1D("hTruePionOtherCrossSection", "hTruePionOtherCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueTotalCrossSection      = new TH1D("hTrueTotalCrossSection", "hTrueTotalCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    // TODO: some sort of check with the total?
 
     std::vector<TH1D*> UnfoldedCrossSections = {
         hPionAbs0pCrossSection,
@@ -2479,8 +2481,9 @@ void RecoClassify3Cat() {
     // True "other" cross-section
     for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
         hTruePionOtherCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueOtherKE->GetBinContent(iBin) / hIncidentKECorrected->GetBinContent(iBin)));
+        hTruePionChExchCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueChExchKE->GetBinContent(iBin) / hIncidentKECorrected->GetBinContent(iBin)));
     }
-    reweightOneDHisto(hTruePionOtherCrossSection, 50.);
+    reweightOneDHisto(hTruePionOtherCrossSection, 50.); reweightOneDHisto(hTruePionChExchCrossSection, 50.);
 
     ///////////////////////////
     // Make plots per 50 MeV //
@@ -2547,7 +2550,7 @@ void RecoClassify3Cat() {
         {hTruePionScatterCrossSection, hPionScatterCrossSection},
 
         // Total true-cross section
-        {hTruePionAbs0pCrossSection, hTruePionAbsNpCrossSection, hTruePionScatterCrossSection, hTruePionOtherCrossSection},
+        {hTruePionAbs0pCrossSection, hTruePionAbsNpCrossSection, hTruePionScatterCrossSection, hTruePionChExchCrossSection, hTruePionOtherCrossSection},
 
         // Unreconstructed hits
         {hHitClusterInductionSizesAbs0p, hHitClusterInductionSizesAbsNp, hHitClusterInductionSizesMuon, hHitClusterInductionSizesElectron, hHitClusterInductionSizesScatter, hHitClusterInductionSizesChExch, hHitClusterInductionSizesOther},
@@ -2602,7 +2605,7 @@ void RecoClassify3Cat() {
         {"True", "Unf."},
 
         // Total true-cross section
-        {"Abs 0p", "Abs Np", "Scatter", "Other"},
+        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other"},
 
         // Unreconstructed hits
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
@@ -2867,7 +2870,7 @@ void RecoClassify3Cat() {
         {false, true},
 
         // Total true-cross section
-        {false, false, false, false},
+        {false, false, false, false, false},
 
         // Unreconstructed hits
         {false, false, false, false, false, false, false},

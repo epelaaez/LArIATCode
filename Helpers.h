@@ -8,6 +8,9 @@
 // Global constants //
 //////////////////////
 
+// Run through this many events
+int USE_NUM_EVENTS = 50000; 
+
 std::map<int, std::string> backgroundTypes = {
     {0, "Abs 0p"},
     {1, "Abs Np"},

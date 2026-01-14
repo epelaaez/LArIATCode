@@ -797,7 +797,9 @@ void printTwoDPlots(
         if (iPlot < (int) zRanges.size() && zRanges[iPlot].first < zRanges[iPlot].second) {
             hPlot->GetZaxis()->SetRangeUser(zRanges[iPlot].first, zRanges[iPlot].second);
         } else {
-            hPlot->SetMinimum(0);
+            double min = 0.;
+            if (hPlot->GetMinimum() < min) min = hPlot->GetMinimum();
+            hPlot->SetMinimum(min);
             hPlot->SetMaximum(hPlot->GetMaximum());
         }
 
