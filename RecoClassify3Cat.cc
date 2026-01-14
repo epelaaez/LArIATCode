@@ -2306,8 +2306,13 @@ void RecoClassify3Cat() {
     hResponseMatrix->Write("", TObject::kOverwrite);
     nominalFile->Close();
 
-    // Construct covariance matrix (only statistical variance for now)
-    TMatrixD Covariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); Covariance.Zero();
+    // Load covariance matrices
+    std::unique_ptr<TFile> GeneratorFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/generator/Measure.root"));
+    TH2D* GeneratorCovariance = (TH2D*) GeneratorFile->Get("hMeasureCovMatrix");
+    TMatrixD GeneratorCov(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); H2M(GeneratorCovariance, GeneratorCov, kTRUE);
+
+    // Construct statistical covariance matrix
+    TMatrixD StatCovariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); StatCovariance.Zero();
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
             int index   = flattenIndex(iSignal, iBin, NUM_BINS_KE);
@@ -2320,9 +2325,16 @@ void RecoClassify3Cat() {
             double xs       = N / Ninc;
             double relVarXS = (N>0.0 && Ninc>0.0 ? std::pow(numSigma/N + denSigma/Ninc, 2) : 0.0);
 
-            Covariance(index, index) = xs * xs * relVarXS * XSEC_UNITS;
+            StatCovariance(index, index) = xs * xs * relVarXS * XSEC_UNITS;
         }
     }
+
+    // Add all covariances
+    TMatrixD Covariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); Covariance.Zero();
+    Covariance += StatCovariance;
+    Covariance += GeneratorCov;
+
+    std::vector<TMatrixD> AllCovariances = {StatCovariance, GeneratorCov};
 
     // Convert response histogram to matrix
     TMatrixD Response(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); 
