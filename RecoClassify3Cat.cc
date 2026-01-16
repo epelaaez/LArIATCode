@@ -2275,7 +2275,7 @@ void RecoClassify3Cat() {
     // Response matrix with components: 
     //    R[(i, \alpha), (j, \beta)] = P(reco signal \beta in reco energy bin j | true signal \alpha in true energy bin i)
     TH2D* hResponseMatrix = new TH2D(
-        "hResponseMatrix", "hResponseMatrix;Reco (j, #beta);True (i, #alpha)",
+        "hResponseMatrix", "Response;Reco (j, #beta);True (i, #alpha)",
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
     );
@@ -2322,16 +2322,15 @@ void RecoClassify3Cat() {
         }
     }
 
-    // Save nominal measure vector and response matrix
+    // Save nominal measure and signal
+    TH1D* hSignalVectorNominal = new TH1D(
+        "hSignalVectorNominal", "hSignalVectorNominal;;", 
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
+    ); V2H(Signal, hSignalVectorNominal);
     TH1D* hMeasureVectorNominal = new TH1D(
         "hMeasureVectorNominal", "hMeasureVectorNominal;;", 
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
     ); V2H(Measure, hMeasureVectorNominal);
-
-    nominalFile->cd();
-    hMeasureVectorNominal->Write("", TObject::kOverwrite);
-    hResponseMatrix->Write("", TObject::kOverwrite);
-    nominalFile->Close();
 
     // Load covariance matrices
     std::unique_ptr<TFile> GeneratorFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/generator/Measure.root"));
@@ -2388,6 +2387,8 @@ void RecoClassify3Cat() {
         CovRotation,
         AddSmearInverse
     );
+    TH1D* hUnfReco = new TH1D("hUnfReco", "Unfolded Reco;;", NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    V2H(UnfoldedReco, hUnfReco);
 
     // Sanity check: CovRotation = RInv?
     TDecompSVD svd(Response); svd.SetTol(1e-8);
@@ -2414,19 +2415,33 @@ void RecoClassify3Cat() {
 
     // Copy covariance and inverse response matrices into histos
     TH2D* hCovariance = new TH2D(
-        "hCovariance", "Covariance Matrix;(i, #alpha);(j, #beta)",
+        "Covariance", "Covariance Matrix;(i, #alpha);(j, #beta)",
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE 
     ); M2H(Covariance, hCovariance);
     TH2D* hUnfCovariance = new TH2D(
-        "hUnfCovariance", "Unfolded Covariance Matrix;(i, #alpha);(j, #beta)",
+        "Unfolded Covariance", "Unfolded Covariance Matrix;(i, #alpha);(j, #beta)",
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE 
     ); M2H(UnfoldCov, hUnfCovariance);
-    TH2D* hResponseInvMatrix = new TH2D("hResponseInvMatrix", "hResponseInvMatrix;Reco (j, #beta);True (i, #alpha)",
+    TH2D* hResponseInvMatrix = new TH2D("Response Inverse", "Response Inverse;Reco (j, #beta);True (i, #alpha)",
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
     ); M2H(CovRotation, hResponseInvMatrix);
+
+    TH2D* hStatCovariance = new TH2D(
+        "hStatCovariance", "Statistical Covariance Matrix;(i, #alpha);(j, #beta)",
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE, 
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE 
+    ); M2H(StatCovariance, hStatCovariance);
+
+    // Save stuff to nominal file
+    nominalFile->cd();
+    hMeasureVectorNominal->Write("", TObject::kOverwrite);
+    hSignalVectorNominal->Write("", TObject::kOverwrite);
+    hResponseMatrix->Write("", TObject::kOverwrite);
+    hStatCovariance->Write("", TObject::kOverwrite);
+    nominalFile->Close();
 
     ///////////////////////////////////////////////
     // Get cross-section using corrrected fluxes //
@@ -2906,28 +2921,78 @@ void RecoClassify3Cat() {
     // Two-dimensional plots //
     ///////////////////////////
 
+    // Get extra matrices
+    TH2D* hFracCovMatrix = new TH2D(
+        "Fractional Covariance", "Fractional Covariance;Reco (j, #beta);True (i, #alpha)",
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
+    );
+    TH2D* hCorrMatrix = new TH2D(
+        "Correlation", "Correlation;Reco (j, #beta);True (i, #alpha)",
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
+    );
+    GetFracCovAndCorrMatrix(hMeasureVectorNominal, hCovariance, hFracCovMatrix, hCorrMatrix);
+
+    TH2D* hUnfFracCovMatrix = new TH2D(
+        "Unfolded Fractional Covariance", "Unfolded Fractional Covariance;Reco (j, #beta);True (i, #alpha)",
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
+    );
+    TH2D* hUnfCorrMatrix = new TH2D(
+        "Unfolded Correlation", "Unfolded Correlation;Reco (j, #beta);True (i, #alpha)",
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
+    );
+    GetFracCovAndCorrMatrix(hUnfReco, hUnfCovariance, hUnfFracCovMatrix, hUnfCorrMatrix);
+
     std::vector<TH2*> TwoDPlots = {
         hResponseMatrix,
         hResponseInvMatrix,
-        hCovariance, 
-        hUnfCovariance
+        hCovariance,
+        hFracCovMatrix,
+        hCorrMatrix,
+        hUnfCovariance,
+        hUnfFracCovMatrix,
+        hUnfCorrMatrix
     };
 
     std::vector<TString> TwoDTitles = {
+        // Response
         "Response/ResponseMatrix",
         "Response/ResponseInverseMatrix",
+
+        // Covariances
         "Covariance/Covariance",
-        "Covariance/UnfoldedCovariance"
+        "Covariance/FracCovariance",
+        "Covariance/Correlation",
+        "Covariance/UnfoldedCovariance",
+        "Covariance/UnfoldedFracCovariance",
+        "Covariance/UnfoldedCorrelation"
     };
 
     std::vector<std::pair<double,double>> TwoDRanges = {
+        // Response
         {0, 0},
         {0, 0},
+
+        // Covariances
         {0, 0},
-        {0, 0}
+        {0, 0},
+        {-1, -1},
+        {0, 0},
+        {0, 0},
+        {-1, -1}
     };
 
     std::vector<bool> TwoDDisplayNumbers = {
+        // Response
+        false,
+        false,
+
+        // Covariances
+        false,
+        false,
         false,
         false,
         false,

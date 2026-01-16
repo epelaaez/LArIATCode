@@ -551,7 +551,8 @@ void printOneDPlots(
     std::vector<TString>& xlabels, 
     std::vector<TString>& ylabels,
     std::vector<bool>& stack,
-    std::vector<std::vector<bool>> asPoints
+    std::vector<std::vector<bool>> asPoints,
+    std::vector<std::vector<bool>> addText
 ) {
     int numPlots = groups.size();
 
@@ -559,6 +560,13 @@ void printOneDPlots(
         asPoints.resize(numPlots);
         for (size_t i = 0; i < numPlots; ++i) {
             asPoints[i].assign(groups[i].size(), false);
+        }
+    }
+
+    if (addText.empty()) {
+        addText.resize(numPlots);
+        for (size_t i = 0; i < numPlots; ++i) {
+            addText[i].assign(groups[i].size(), false);
         }
     }
 
@@ -644,6 +652,7 @@ void printOneDPlots(
         std::vector<TH1*> Plots = groups.at(iPlot);
         std::vector<TString> Labels = labels.at(iPlot);
         std::vector<bool> AsPts = asPoints.at(iPlot);
+        std::vector<bool> AddText = addText.at(iPlot);
 
         if (stack.at(iPlot)) {
             // Stacked: non-points -> filled stack; points -> overlay
@@ -719,7 +728,8 @@ void printOneDPlots(
                 leg->AddEntry(h0, Labels[firstIdx], "lep");
             } else {
                 styleLineOnly(h0, colors.at(firstIdx));
-                h0->Draw("HIST");                 // line only (no fill because FillStyle=0)
+                if (AddText[firstIdx]) h0->Draw("HIST TEXT0");
+                else h0->Draw("HIST"); // line only (no fill because FillStyle=0)
                 leg->AddEntry(h0, Labels[firstIdx], "l");
             }
 
@@ -734,7 +744,8 @@ void printOneDPlots(
                     leg->AddEntry(h, Labels[k], "lep");
                 } else {
                     styleLineOnly(h, colors.at(k));
-                    h->Draw("HIST SAME");
+                    if (AddText[k]) h->Draw("HIST TEXT0 SAME");
+                    else h->Draw("HIST SAME"); 
                     leg->AddEntry(h, Labels[k], "l");
                 }
             }
