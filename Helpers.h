@@ -370,3 +370,4 @@ void GetFracCovAndCorrMatrix(TH1* RecoHisto, TH2* CovMatrix, TH2* FracCovMatrix,
 double FindQuantile(double frac, std::vector<double>& xs_in);
 void DrawHistosWithErrorBands(TH1D* RecoHisto, std::vector<TH1D*> UnivRecoHisto, const TString& dir, const TString& SystName, const TString& PlotName, double textSize, int fontStyle, const TString& title, const TString& xlabel, const TString& ylabel);
 void DrawErrorBand(TH1* nom, TGraphAsymmErrors* band, int bandCol, double alpha);
+void PrintTruthUnfoldedStatShapePlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* hUnfolded, TH1* hStat, TH1* hShape, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle = 132, double TextSize = 0.06);

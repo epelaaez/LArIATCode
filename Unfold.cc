@@ -111,7 +111,7 @@ void Unfold() {
     // Organize output //
     /////////////////////
 
-    // Unfolded total vector
+    // Unfolded total uncertainty
     TH1D* hUncTotal     = new TH1D("hUncTotal", "hUncTotal;Bin (i, #alpha);Cross section [barn] per 50 MeV", N, 0, N);
     TH1D* hFracUncTotal = new TH1D("hFracUncTotal", "hFracUncTotal;Bin (i, #alpha);Cross section unc. [%]", N, 0, N);
 
@@ -446,4 +446,66 @@ void Unfold() {
 
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles, TwoDRanges, TwoDDisplayNumbers);
 
+    ////////////////////////
+    // Final "nice" plots //
+    ////////////////////////
+
+    TH1D* hUncStatTemp = new TH1D("hUncStatTemp", "hUncStatTemp;Bin (i, #alpha);Cross section [barn] per 50 MeV", N, 0, N);
+    PrintTruthUnfoldedStatShapePlot(
+        SaveDir,
+        "TotalUnf",
+        TrueNominal,
+        hUnfolded,
+        hUncStatTemp,
+        hUncTotal,
+        "Unfolded Total Vector",
+        "Kinetic Energy [MeV]",
+        "Cross section [barn]"
+    );
+
+    TH1D* hTrueAbs0p   = new TH1D("hTrueAbs0p_plot",   ";Kinetic Energy [MeV];Cross section [barn]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNp   = new TH1D("hTrueAbsNp_plot",   ";Kinetic Energy [MeV];Cross section [barn]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatter = new TH1D("hTrueScatter_plot", ";Kinetic Energy [MeV];Cross section [barn]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    std::vector<TH1D*> TrueKE = {hTrueAbs0p, hTrueAbsNp, hTrueScatter};
+
+    for (int idx = 0; idx < N; ++idx) {
+        auto [signalBin, energyBin] = unflattenIndex(idx, NUM_BINS_KE);
+        TrueKE[signalBin]->SetBinContent(energyBin + 1, TrueSignal(idx));
+    }
+    for (int i = 0; i < NUM_SIGNAL_TYPES; ++i) reweightOneDHisto(TrueKE[i],  50.);
+
+    TH1D* hStatDummy = new TH1D("hStatDummy", ";Kinetic Energy [MeV];#sigma", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    PrintTruthUnfoldedStatShapePlot(
+        SaveDir,
+        "Abs0pUnf",
+        TrueKE[0],
+        UnfPerInteraction[0],
+        hStatDummy,
+        TotalUncPerInteraction[0],
+        "Unfolded Absorption 0p",
+        "Kinetic Energy [MeV]",
+        "Cross section [barn] per 50 MeV"
+    );
+    PrintTruthUnfoldedStatShapePlot(
+        SaveDir,
+        "AbsNpUnf",
+        TrueKE[1],
+        UnfPerInteraction[1],
+        hStatDummy,
+        TotalUncPerInteraction[1],
+        "Unfolded Absorption Np",
+        "Kinetic Energy [MeV]",
+        "Cross section [barn] per 50 MeV"
+    );
+    PrintTruthUnfoldedStatShapePlot(
+        SaveDir,
+        "ScatterUnf",
+        TrueKE[2],
+        UnfPerInteraction[2],
+        hStatDummy,
+        TotalUncPerInteraction[2],
+        "Unfolded Scatter",
+        "Kinetic Energy [MeV]",
+        "Cross section [barn] per 50 MeV"
+    );
 }
