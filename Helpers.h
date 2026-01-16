@@ -33,7 +33,7 @@ std::map<int, std::string> backgroundTypes = {
 int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 
 // Signal types
-int NUM_SIGNAL_TYPES = 5; // for now: 0p abs, Np abs, 0p scatter, Np scatter, charge exchange
+int NUM_SIGNAL_TYPES = 3; // for now: 0p abs, Np abs, 0p scatter, Np scatter, charge exchange
 
 struct EventInfo {
     int run; int subrun; int event; bool isData;
