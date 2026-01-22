@@ -955,37 +955,61 @@ void RecoAllAnalysis() {
     /////////////////////////////////////
 
     gProton->SetLineColor(kRed+1);
-    gProton->SetLineWidth(2);
+    gProton->SetLineWidth(4);
     gProton->SetTitle("Proton");
 
     gPion->SetLineColor(kRed+3);
-    gPion->SetLineWidth(2);
+    gPion->SetLineWidth(4);
     gPion->SetTitle("Pion");
 
     gMuonTG->SetLineColor(kOrange+7);
-    gMuonTG->SetLineWidth(2);
-    gMuonTG->SetTitle("MIP");
+    gMuonTG->SetLineWidth(4);
+    gMuonTG->SetTitle("Through-going MIP");
 
     // Set axis labels using one of the graphs
     gProton->SetTitle("dE/dx vs Residual Range;Residual Range [cm];dE/dx [MeV/cm]");
 
+    gProton->GetXaxis()->CenterTitle(true);
+    gProton->GetXaxis()->SetTitleFont(FontStyle);
+    gProton->GetXaxis()->SetLabelFont(FontStyle);
+    gProton->GetXaxis()->SetTitleSize(TextSize);
+    gProton->GetXaxis()->SetLabelSize(TextSize * 0.85);
+    gProton->GetXaxis()->SetTitleOffset(1.15);
+
+    gProton->GetYaxis()->CenterTitle(true);
+    gProton->GetYaxis()->SetTitleFont(FontStyle);
+    gProton->GetYaxis()->SetLabelFont(FontStyle);
+    gProton->GetYaxis()->SetTitleSize(TextSize);
+    gProton->GetYaxis()->SetLabelSize(TextSize * 0.85);
+    gProton->GetYaxis()->SetTitleOffset(1.0);
+
     // Create a canvas and draw the graphs
-    TCanvas* c1 = new TCanvas("c1", "dE/dx vs Residual Range", 800, 600);
+    TCanvas* c1 = new TCanvas("c1", "dE/dx vs Residual Range", 1400, 1000);
+    c1->SetLeftMargin(0.14);
+    c1->SetRightMargin(0.05);
+    c1->SetBottomMargin(0.14);
+    c1->SetTopMargin(0.10);
+    c1->SetTicks(1,1);
+
     gProton->Draw("AL");
     gPion->Draw("L SAME");
     gMuonTG->Draw("L SAME");
 
     // Add a legend
-    TLegend* legend = new TLegend(0.65, 0.70, 0.88, 0.88);
+    TLegend* legend = new TLegend(0.55, 0.70, 0.88, 0.88);
     legend->AddEntry(gProton, "Proton", "l");
     legend->AddEntry(gPion,   "Pion",   "l");
-    legend->AddEntry(gMuonTG, "MIP",   "l");
+    legend->AddEntry(gMuonTG, "Through-going MIP",   "l");
+    legend->SetTextFont(FontStyle);
+    legend->SetTextSize(TextSize * 0.75);
     legend->Draw();
 
     // Optional: set grid
     c1->SetGrid();
     c1->SaveAs(SaveDir +  "dEdxProfiles/AllProfiles.png");
     delete c1;
+
+    return;
 
     // Absorption Np vertex reco
     int betterVertexNp = 0;
