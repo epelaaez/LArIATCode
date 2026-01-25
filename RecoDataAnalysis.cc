@@ -223,6 +223,9 @@ void RecoDataAnalysis() {
     TH1D* hMCTGClusterSizesCollection1TG = (TH1D*) MCFile->Get("hMCTGClusterSizesCollection1TG");
     TH1D* hMCTGClusterSizesCollection2TG = (TH1D*) MCFile->Get("hMCTGClusterSizesCollection2TG");
 
+    TH1D* hMCNumCandidateProtons = (TH1D*) MCFile->Get("hMCNumCandidateProtons");
+    TH1D* hMCLengthCandidateProtons = (TH1D*) MCFile->Get("hMCLengthCandidateProtons");
+
     ///////////////////////
     // Create histograms //
     ///////////////////////
@@ -286,6 +289,10 @@ void RecoDataAnalysis() {
     TH2D* hTGNumSmallTracksVsThresh = new TH2D("hTGNumSmallTracksVsThresh", "TGNumSmallTracksVsThresh;Small Track Length Threshold (cm);Num Small Tracks", 10, 0, 40, 15, 0, 15);
     TH2D* hTOFVsTOFMass             = new TH2D("hTOFVsTOFMass", "TOFVsTOFMass;TOF [ns];TOF Mass [MeV/c^2]", 35, 10, 80, 50, 0, 1200);
 
+    // Kinematics
+    TH1D* hNumCandidateProtons    = new TH1D("hNumCandidateProtons", "hNumCandidateProtons;;", 10, 0, 10);
+    TH1D* hLengthCandidateProtons = new TH1D("hLengthCandidateProtons", "hLengthCandidateProtons;;", 40, 0, 80);
+
     ///////////////////////////////////
     // Distribution of primary track //
     ///////////////////////////////////
@@ -348,7 +355,7 @@ void RecoDataAnalysis() {
         tree->GetEntry(i);
 
         // Make script go faster
-        if (i > 100000) break;
+        // if (i > 50000) break;
 
         // Fill for all events
         hTOFMass->Fill(std::abs(TOFMass));
@@ -409,20 +416,6 @@ void RecoDataAnalysis() {
 
         // Check if WC2TPC is through-going
         bool isPrimaryTG = !isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ);
-
-        // Tracks in first 14 cm of upstream TPC
-        int countEarlyTracks = 0;
-        for (size_t trk_idx = 0; trk_idx < recoTrkID->size(); ++trk_idx) {
-            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
-
-            if (
-                recoBeginZ->at(trk_idx) < 14.0 ||
-                recoEndZ->at(trk_idx) < 14.0
-            ) {
-                countEarlyTracks++;
-            }
-        }
-        // if (countEarlyTracks > 4) continue;
 
         // Loop over reconstructed tracks
         int numSmallTracks = 0; 
@@ -832,6 +825,57 @@ void RecoDataAnalysis() {
             hTGUnreconstructedHitsInduction2TG->Fill(numUnrecoHitsInduction);
             hTGUnreconstructedHitsCollection2TG->Fill(numUnrecoHitsCollection);
         }
+
+        //////////////////
+        // TG track cut //
+        //////////////////
+
+        if (numTGTracks > MAX_NUM_TG_TRACKS) continue;
+        
+        //////////////////
+        // Cylinder cut //
+        //////////////////
+
+        if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) continue;
+        
+        ////////////////////////
+        // Reduced volume cut //
+        ////////////////////////
+
+        if (isPrimaryTG) continue;
+
+        ///////////////////////////////////
+        // Secondary particle kinematics //
+        ///////////////////////////////////
+
+        int numCandidateProtons = 0;
+
+        for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
+            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+
+            double distanceFromStart = distance(
+                recoBeginX->at(trk_idx), WC2TPCPrimaryEndX, 
+                recoBeginY->at(trk_idx), WC2TPCPrimaryEndY,
+                recoBeginZ->at(trk_idx), WC2TPCPrimaryEndZ
+            );
+            double distanceFromEnd = distance(
+                recoEndX->at(trk_idx), WC2TPCPrimaryEndX, 
+                recoEndY->at(trk_idx), WC2TPCPrimaryEndY,
+                recoEndZ->at(trk_idx), WC2TPCPrimaryEndZ
+            );
+
+            double trackLength = sqrt(
+                pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
+                pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
+                pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+            );
+
+            if (distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS) {
+                numCandidateProtons++;
+                hLengthCandidateProtons->Fill(trackLength);
+            }
+        }
+        hNumCandidateProtons->Fill(numCandidateProtons);
     }
     
     double numMCEvents   = hMCNumTGTracks->Integral(0, hMCNumTGTracks->GetNbinsX() + 1);
@@ -865,6 +909,7 @@ void RecoDataAnalysis() {
     double scaling0TG = hNumTracksInCylinder0TG->Integral() / hMCNumTracksInCylinder0TG->Integral();
     double scaling1TG = hNumTracksInCylinder1TG->Integral() / hMCNumTracksInCylinder1TG->Integral();
     double scaling2TG = hNumTracksInCylinder2TG->Integral() / hMCNumTracksInCylinder2TG->Integral();
+    double scalingKin = hNumCandidateProtons->Integral() / hMCNumCandidateProtons->Integral();
 
     // Scale MC histograms to data histograms using event counts
     hMCNumWC2TPCMatch->Scale(hNumWC2TPCMatch->Integral() / hMCNumWC2TPCMatch->Integral());
@@ -915,6 +960,10 @@ void RecoDataAnalysis() {
     hMCTGNumClustersInduction0TG->Scale(scaling0TG);
     hMCTGNumClustersInduction1TG->Scale(scaling1TG);
     hMCTGNumClustersInduction2TG->Scale(scaling2TG);
+
+    // Secondary particle kinematics
+    hMCNumCandidateProtons->Scale(scalingKin);
+    hMCLengthCandidateProtons->Scale(scalingKin);
 
     //////////////////
     // Create plots //
@@ -990,7 +1039,11 @@ void RecoDataAnalysis() {
 
         {hTGNumClustersInduction0TG, hMCTGNumClustersInduction0TG},
         {hTGNumClustersInduction1TG, hMCTGNumClustersInduction1TG},
-        {hTGNumClustersInduction2TG, hMCTGNumClustersInduction2TG}
+        {hTGNumClustersInduction2TG, hMCTGNumClustersInduction2TG},
+
+        // Secondary particle kinematics
+        {hNumCandidateProtons, hMCNumCandidateProtons},
+        {hLengthCandidateProtons, hMCLengthCandidateProtons}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -1052,6 +1105,10 @@ void RecoDataAnalysis() {
 
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+
+        // Secondary particle kinematics
+        {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"}
     };
 
@@ -1112,7 +1169,11 @@ void RecoDataAnalysis() {
 
         "UnrecoHits/NumClustersInduction0TG",
         "UnrecoHits/NumClustersInduction1TG",
-        "UnrecoHits/NumClustersInduction2TG"
+        "UnrecoHits/NumClustersInduction2TG",
+
+        // Secondary particle kinematics
+        "Kinematics/NumCandidateProtons",
+        "Kinematics/LengthsCandidateProtons"
     };
 
     std::vector<TString> XLabels = {
@@ -1172,7 +1233,11 @@ void RecoDataAnalysis() {
 
         "Number of clusters",
         "Number of clusters",
-        "Number of clusters"
+        "Number of clusters",
+
+        // Secondary particle kinematics
+        "# of candidate proton",
+        "Candidate proton length [cm]"
     };
 
     std::vector<TString> YLabels = {
@@ -1232,6 +1297,10 @@ void RecoDataAnalysis() {
         "Counts",
 
         "Counts",
+        "Counts",
+        "Counts",
+
+        // Secondary particle kinematics
         "Counts",
         "Counts"
     };
@@ -1293,6 +1362,10 @@ void RecoDataAnalysis() {
 
         false,
         false,
+        false,
+
+        // Secondary particle kinematics
+        false,
         false
     };
 
@@ -1353,6 +1426,10 @@ void RecoDataAnalysis() {
 
         {true, false},
         {true, false},
+        {true, false},
+
+        // Secondary particle kinematics
+        {true, false},
         {true, false}
     };
 
@@ -1406,7 +1483,11 @@ void RecoDataAnalysis() {
 
         {hTGNumClustersInduction0TG, hMCTGNumClustersInduction0TG},
         {hTGNumClustersInduction1TG, hMCTGNumClustersInduction1TG},
-        {hTGNumClustersInduction2TG, hMCTGNumClustersInduction2TG}
+        {hTGNumClustersInduction2TG, hMCTGNumClustersInduction2TG},
+
+        // Secondary particle kinematics
+        {hNumCandidateProtons, hMCNumCandidateProtons},
+        {hLengthCandidateProtons, hMCLengthCandidateProtons}
     };
 
     std::vector<std::string> FracDiffDirectory = {
@@ -1450,7 +1531,10 @@ void RecoDataAnalysis() {
 
         "UnrecoHits",
         "UnrecoHits",
-        "UnrecoHits"
+        "UnrecoHits",
+
+        "Kinematics",
+        "Kinematics"
     };
 
     for (int i = 0; i < (int)PlotGroupsFracDiff.size(); ++i) {

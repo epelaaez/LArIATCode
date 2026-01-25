@@ -692,6 +692,10 @@ void RecoClassify3Cat() {
     TH1D* hMCTGLargestClusterCollection1TG = new TH1D("hMCTGLargestClusterCollection1TG", "hMCTGLargestClusterCollection1TG;;", 20, 0, 20);
     TH1D* hMCTGLargestClusterCollection2TG = new TH1D("hMCTGLargestClusterCollection2TG", "hMCTGLargestClusterCollection2TG;;", 20, 0, 20);
 
+    // Data-MC comparisons for secondary particle kinematics to validate unfolding
+    TH1D* hMCNumCandidateProtons    = new TH1D("hMCNumCandidateProtons", "hMCNumCandidateProtons;;", 10, 0, 10);
+    TH1D* hMCLengthCandidateProtons = new TH1D("hMCLengthCandidateProtons", "hMCLengthCandidateProtons;;", 40, 0, 80);
+
     ///////////////////////////////////
     // Distribution of primary track //
     ///////////////////////////////////
@@ -991,7 +995,8 @@ void RecoClassify3Cat() {
             int numTracksInCylinder = 0;
             int numSmallTracksInCylinder = 0;
 
-            // Information about hits
+            // Secondary particle kinematics
+            std::vector<double> candidateProtonLengths;
 
             // We want to look at multiple random points in the induction and collection plane
             std::vector<int> randomInduction; std::vector<int> randomCollection;
@@ -1104,7 +1109,6 @@ void RecoClassify3Cat() {
                     if (trackLength < CYLINDER_SMALL_TRACK) numSmallTracksInCylinder++;
                 }
 
-
                 // Is track throughgoing?
                 if (
                     !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
@@ -1124,13 +1128,17 @@ void RecoClassify3Cat() {
                     if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksTPCStart++;
                 }
 
+                // Candidate protons
                 if (
                     !isPrimaryTG &&
                     (distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS)
                 ) {
                     tracksNearVertexComp++;
                     hMCTrackLengthsNearVertex->Fill(trackLength);
+                    candidateProtonLengths.push_back(trackLength);
                 }
+
+                // Small tracks
                 if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksComp++;
             }
 
@@ -1179,6 +1187,16 @@ void RecoClassify3Cat() {
                     }
                     hMCTGNumSmallTracksVsThresh->Fill(threshold, nSmallTracks);
                 }
+            }
+
+            // Apply basic selection cuts and look at secondary particles
+            if (
+                numTGTracksComp <= MAX_NUM_TG_TRACKS &&
+                numSmallTracksInCylinder <= ALLOWED_CYLINDER_SMALL_TRACKS &&
+                !isPrimaryTG
+            ) {
+                hMCNumCandidateProtons->Fill(tracksNearVertexComp);
+                for (auto x : candidateProtonLengths) hMCLengthCandidateProtons->Fill(x);
             }
 
             // Loop through clusters and see which would be close to random points
@@ -1441,6 +1459,10 @@ void RecoClassify3Cat() {
         }
         hTotalEvents->Fill(backgroundType);
 
+        //////////////////////
+        // WC2TPC match cut //
+        //////////////////////
+
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) {
             if (backgroundType == 0) {
@@ -1564,10 +1586,11 @@ void RecoClassify3Cat() {
         int numTGTracks              = 0;
         int numSmallTracksInCylinder = 0;
         int numTracksInCylinder      = 0;
+
         for (int trk_idx = 0; trk_idx < recoTrkID->size(); ++trk_idx) {
             if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
 
-            // Check if tracks is through-going
+            // Check if track is through-going
             if (
                 !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
                 !isWithinReducedVolume(recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx))
@@ -1621,8 +1644,6 @@ void RecoClassify3Cat() {
         if (numTGTracks > MAX_NUM_TG_TRACKS) continue;
         hNotManyTGTracks->Fill(backgroundType);
 
-        // Cut on tracks
-        // if (numTracksInCylinder > ALLOWED_CYLINDER_TRACKS) {
         // Cut on small tracks
         if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) {
             if (backgroundType == 0) {
@@ -1662,6 +1683,10 @@ void RecoClassify3Cat() {
         }
         hPrimaryInRedVol->Fill(backgroundType);
 
+        /////////////////////
+        // Primary PID cut //
+        /////////////////////
+
         if (minChi2 == pionChi2 || minChi2 == protonChi2) {
             if (backgroundType == 0) {
                 hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
@@ -1689,8 +1714,6 @@ void RecoClassify3Cat() {
 
         int otherTaggedPion   = 0;
         int otherTaggedProton = 0;
-
-        // TODO: look at tertiary tracks?
 
         for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
             if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
@@ -2235,6 +2258,9 @@ void RecoClassify3Cat() {
     hMCTGClusterSizesCollection0TG->Write("", TObject::kOverwrite);
     hMCTGClusterSizesCollection1TG->Write("", TObject::kOverwrite);
     hMCTGClusterSizesCollection2TG->Write("", TObject::kOverwrite);
+
+    hMCNumCandidateProtons->Write("", TObject::kOverwrite);
+    hMCLengthCandidateProtons->Write("", TObject::kOverwrite);
 
     comparisonsFile->Close();
 
