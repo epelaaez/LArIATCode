@@ -959,10 +959,18 @@ void RecoClassify3Cat() {
         // Separate primary hits into collection and induction
         std::vector<int> hitWC2TPCKeyInduction;
         std::vector<int> hitWC2TPCKeyCollection;
+
+        bool sawPrimaryInduction  = false; 
+        bool sawPrimaryCollection = false;
+
         bool foundHitNegativeTime = false;
         for (size_t i = 0; i < hitWC2TPCKey->size(); ++i) {
             // Only care about hits inside the reduced volume
             auto [i_hit, j_hit] = find_unique_position(recoTrackHitIndices, hitWC2TPCKey->at(i));
+
+            if (fHitPlane->at(hitWC2TPCKey->at(i)) == 0) sawPrimaryInduction = true;
+            else if (fHitPlane->at(hitWC2TPCKey->at(i)) == 1) sawPrimaryCollection = true;
+
             if (!isWithinReducedVolume(
                 recoTrackHitX->at(i_hit)[j_hit],
                 recoTrackHitY->at(i_hit)[j_hit],
@@ -980,6 +988,10 @@ void RecoClassify3Cat() {
             hTimePrimaryHits->Fill(fHitT->at(hitWC2TPCKey->at(i)));
         }
         if (foundHitNegativeTime) numEventsPrimaryHitNegativeTime++;
+
+        if (!sawPrimaryCollection) numEventsNoCollection++;
+        if (!sawPrimaryInduction) numEventsNoInduction++;
+        if (!sawPrimaryCollection && !sawPrimaryInduction) numEventsNoEither++;
 
         // For data-MC comparisons
         hMCNumWC2TPCMatch->Fill(WC2TPCsize);
@@ -1002,9 +1014,7 @@ void RecoClassify3Cat() {
             std::vector<int> randomInduction; std::vector<int> randomCollection;
             
             numEventsPrimaryReco++;
-            if (hitWC2TPCKeyInduction.size() == 0) {
-                numEventsNoInduction++;
-            } else {
+            if (hitWC2TPCKeyInduction.size() != 0) {
                 randomInduction.push_back(0);
 
                 for (int i = 1; i < (int) hitWC2TPCKeyInduction.size(); ++i) {
@@ -1014,9 +1024,7 @@ void RecoClassify3Cat() {
                     if (dX > MAX_IN_CLUSTER_X_SEPARATION && dW > MAX_IN_CLUSTER_W_SEPARATION) randomInduction.push_back(i);
                 }
             }
-            if (hitWC2TPCKeyCollection.size() == 0) {
-                numEventsNoCollection++;
-            } else {
+            if (hitWC2TPCKeyCollection.size() != 0) {
                 randomCollection.push_back(0);
 
                 for (int i = 1; i < (int) hitWC2TPCKeyCollection.size(); ++i) {
@@ -1026,11 +1034,6 @@ void RecoClassify3Cat() {
                     if (dX > MAX_IN_CLUSTER_X_SEPARATION && dW > MAX_IN_CLUSTER_W_SEPARATION) randomCollection.push_back(i);
                 }
             }
-
-            if (
-                hitWC2TPCKeyCollection.size() == 0 &&
-                hitWC2TPCKeyInduction.size() == 0
-            ) numEventsNoEither++;
 
             int numUnrecoHitsInduction  = 0;
             int numUnrecoHitsCollection = 0;
@@ -1539,46 +1542,6 @@ void RecoClassify3Cat() {
             breakPointZ = wcMatchZPos->at(bestBreakPoint);
         }
 
-        // At this point, we want to fill the incident kinetic energy histograms
-        double WCKE             = TMath::Sqrt(WCTrackMomentum * WCTrackMomentum + PionMass * PionMass) - PionMass;
-        double calculatedEnLoss = energyLossCalculation(); 
-        if (isData) {
-            double tanThetaCosPhi = TMath::Tan(WCTheta) * TMath::Cos(WCPhi);
-            double tanThetaSinPhi = TMath::Tan(WCTheta) * TMath::Sin(WCPhi);
-            double den            = TMath::Sqrt(1 + tanThetaCosPhi * tanThetaCosPhi);
-            double onTheFlyPz     = WCTrackMomentum / den;
-            double onTheFlyPx     = onTheFlyPz * tanThetaSinPhi;
-            calculatedEnLoss      = energyLossCalculation(WC4PrimaryX, onTheFlyPx, isData);
-        } else { calculatedEnLoss = energyLossCalculation(WC4PrimaryX, trajectoryInitialMomentumX, isData); }
-        const double initialKE = WCKE - calculatedEnLoss;
-
-        double energyDeposited = 0;
-        for (size_t iDep = 0; iDep < wcMatchDEDX->size(); ++iDep) {
-            // If we are past detected breaking point, exit loop
-            if (wcMatchZPos->at(iDep) > breakPointZ) break;
-
-            // If larger than threshold, continue
-            if (wcMatchDEDX->at(iDep) > HIT_DEDX_THRESHOLD) continue;
-
-            // Else, add to energy deposited so far
-            energyDeposited += wcMatchEDep->at(iDep);
-            
-            // Add to incident KE if inside reduced volume
-            if (isWithinReducedVolume(wcMatchXPos->at(iDep), wcMatchYPos->at(iDep), wcMatchZPos->at(iDep))) {
-                hIncidentKE->Fill(initialKE - energyDeposited);
-
-                // Background breakdown
-                if (truthPrimaryPDG == -211) {
-                    hIncidentKEPion->Fill(initialKE - energyDeposited);
-                } else if (truthPrimaryPDG == 13) {
-                    hIncidentKEMuon->Fill(initialKE - energyDeposited);
-                } else if (truthPrimaryPDG == 11) {
-                    hIncidentKEElectron->Fill(initialKE - energyDeposited);
-                }
-            }
-        }
-        double energyAtVertex = initialKE - energyDeposited;
-
         ////////////////////////////////
         // Cylinder and TG track cuts //
         ////////////////////////////////
@@ -1661,6 +1624,50 @@ void RecoClassify3Cat() {
             continue;
         }
         hNotAnElectron->Fill(backgroundType);
+
+        //////////////////////
+        // Incident KE fill //
+        //////////////////////
+
+        // At this point, we want to fill the incident kinetic energy histograms
+        double WCKE             = TMath::Sqrt(WCTrackMomentum * WCTrackMomentum + PionMass * PionMass) - PionMass;
+        double calculatedEnLoss = energyLossCalculation(); 
+        if (isData) {
+            double tanThetaCosPhi = TMath::Tan(WCTheta) * TMath::Cos(WCPhi);
+            double tanThetaSinPhi = TMath::Tan(WCTheta) * TMath::Sin(WCPhi);
+            double den            = TMath::Sqrt(1 + tanThetaCosPhi * tanThetaCosPhi);
+            double onTheFlyPz     = WCTrackMomentum / den;
+            double onTheFlyPx     = onTheFlyPz * tanThetaSinPhi;
+            calculatedEnLoss      = energyLossCalculation(WC4PrimaryX, onTheFlyPx, isData);
+        } else { calculatedEnLoss = energyLossCalculation(WC4PrimaryX, trajectoryInitialMomentumX, isData); }
+        const double initialKE = WCKE - calculatedEnLoss;
+
+        double energyDeposited = 0;
+        for (size_t iDep = 0; iDep < wcMatchDEDX->size(); ++iDep) {
+            // If we are past detected breaking point, exit loop
+            if (wcMatchZPos->at(iDep) > breakPointZ) break;
+
+            // If larger than threshold, continue
+            if (wcMatchDEDX->at(iDep) > HIT_DEDX_THRESHOLD) continue;
+
+            // Else, add to energy deposited so far
+            energyDeposited += wcMatchEDep->at(iDep);
+            
+            // Add to incident KE if inside reduced volume
+            if (isWithinReducedVolume(wcMatchXPos->at(iDep), wcMatchYPos->at(iDep), wcMatchZPos->at(iDep))) {
+                hIncidentKE->Fill(initialKE - energyDeposited);
+
+                // Background breakdown
+                if (truthPrimaryPDG == -211) {
+                    hIncidentKEPion->Fill(initialKE - energyDeposited);
+                } else if (truthPrimaryPDG == 13) {
+                    hIncidentKEMuon->Fill(initialKE - energyDeposited);
+                } else if (truthPrimaryPDG == 11) {
+                    hIncidentKEElectron->Fill(initialKE - energyDeposited);
+                }
+            }
+        }
+        double energyAtVertex = initialKE - energyDeposited;
 
         ////////////////////////
         // Reduced volume cut //
@@ -2021,8 +2028,6 @@ void RecoClassify3Cat() {
         if (
             numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION &&
             numClustersCollection < MAX_NUM_CLUSTERS_COLLECTION
-            // largestClusterSizeInduction < MAX_LARGEST_CLUSTER_INDUCTION &&
-            // largestClusterSizeCollection < MAX_LARGEST_CLUSTER_COLLECTION // last two do not have an effect
         ) {
             hPionAbs0p->Fill(backgroundType);
 
