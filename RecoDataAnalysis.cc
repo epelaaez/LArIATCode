@@ -290,8 +290,8 @@ void RecoDataAnalysis() {
     TH2D* hTOFVsTOFMass             = new TH2D("hTOFVsTOFMass", "TOFVsTOFMass;TOF [ns];TOF Mass [MeV/c^2]", 35, 10, 80, 50, 0, 1200);
 
     // Kinematics
-    TH1D* hNumCandidateProtons    = new TH1D("hNumCandidateProtons", "hNumCandidateProtons;;", 10, 0, 10);
-    TH1D* hLengthCandidateProtons = new TH1D("hLengthCandidateProtons", "hLengthCandidateProtons;;", 40, 0, 80);
+    TH1D* hNumCandidateProtons    = new TH1D("hNumCandidateProtons", "NumCandidateProtons;;", 10, 0, 10);
+    TH1D* hLengthCandidateProtons = new TH1D("hLengthCandidateProtons", "LengthCandidateProtons;;", 40, 0, 80);
 
     ///////////////////////////////////
     // Distribution of primary track //
@@ -355,7 +355,7 @@ void RecoDataAnalysis() {
         tree->GetEntry(i);
 
         // Make script go faster
-        // if (i > 50000) break;
+        if (i > 100000) break;
 
         // Fill for all events
         hTOFMass->Fill(std::abs(TOFMass));
