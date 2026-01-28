@@ -46,6 +46,10 @@ void Unfold() {
     std::unique_ptr<TFile> EnergyRecoFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/energyreco/Measure.root"));
     TH2D* EnergyRecoCovariance = (TH2D*) EnergyRecoFile->Get("hMeasureCovMatrix");
 
+    // Beam line muon covariance
+    std::unique_ptr<TFile> BeamlineMuFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/beamlinemu/Measure.root"));
+    TH2D* BeamlineMuCovariance = (TH2D*) BeamlineMuFile->Get("hMeasureCovMatrix");
+
     // Convert histograms into matrices/vectors
     TVectorD Measure(N); H2V(MeasureNominal, Measure);
     TVectorD TrueSignal(N); H2V(TrueNominal, TrueSignal);
@@ -54,13 +58,15 @@ void Unfold() {
     std::vector<TH2D*> CovarianceMatrices = {
         StatCovariance, 
         GeneratorCovariance,
-        EnergyRecoCovariance
+        EnergyRecoCovariance,
+        BeamlineMuCovariance
     };
 
     std::vector<std::string> CovarianceLabels = {
         "MCStat",
         "Generator",
-        "EnergyReco"
+        "EnergyReco",
+        "BeamlineMu"
     };
 
     std::vector<TMatrixD> Covariances; Covariances.reserve(CovarianceMatrices.size());

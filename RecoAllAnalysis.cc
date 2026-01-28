@@ -1009,8 +1009,6 @@ void RecoAllAnalysis() {
     c1->SaveAs(SaveDir +  "dEdxProfiles/AllProfiles.png");
     delete c1;
 
-    return;
-
     // Absorption Np vertex reco
     int betterVertexNp = 0;
     int worseVertexNp  = 0;
@@ -1442,7 +1440,7 @@ void RecoAllAnalysis() {
         }
 
         // Look at energy profile for events we are interested in
-        if (event == 200920) {
+        if (event == 200920 || event == 199813) {
             int caloPoints = wcMatchResR->size();
 
             TH2D *hDEDXProfile = new TH2D(
@@ -1464,7 +1462,8 @@ void RecoAllAnalysis() {
             hDEDXProfile->SetMinimum(0);
             hDEDXProfile->SetMaximum(1);
             hDEDXProfile->Draw("COLZ");
-            Overlay_dEdx_RR_Reference_PP(gProton, gPion, gMuonTG, true, wcMatchResR->at(73));
+            if (event == 200920) Overlay_dEdx_RR_Reference_PP(gProton, gPion, gMuonTG, true, wcMatchResR->at(73));
+            else Overlay_dEdx_RR_Reference_PP(gProton, gPion, gMuonTG, false, 0);
             c1->SaveAs(SaveDir +  "dEdxProfiles/" + event + ".png");
             
             delete c1;

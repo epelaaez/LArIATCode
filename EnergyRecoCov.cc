@@ -840,7 +840,7 @@ void EnergyRecoCov() {
 
         double energyDeposited = 0;
 
-        // To compute uncertianties
+        // To compute uncertainties
         int validDeposition = 0;
 
         for (size_t iDep = 0; iDep < wcMatchDEDX->size(); ++iDep) {

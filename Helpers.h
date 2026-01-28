@@ -89,6 +89,10 @@ const double maxY = 20.0;
 const double minZ =  3.0;
 const double maxZ = 87.0;
 
+// Uncertainty on beamline muon and electron composition
+const double MUON_COMP_UNC     = 0.02;
+const double ELECTRON_COMP_UNC = 0.02;
+
 // Values for chi^2 secondary fits
 double PION_CHI2_PION_VALUE     = 1.125;
 double PION_CHI2_PROTON_VALUE   = 1.125;
