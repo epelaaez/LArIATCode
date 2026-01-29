@@ -302,46 +302,6 @@ void RecoClassify3Cat() {
     TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "RECREATE");
     TFile* nominalFile     = new TFile("/exp/lariat/app/users/epelaez/histos/nominal/Reco.root", "RECREATE");
 
-    /////////////////////////////////////
-    // Files with estimated background //
-    /////////////////////////////////////
-
-    TString chExchXSecEstimateFile = "/exp/lariat/app/users/epelaez/analysis/estimated/ch_exch.txt";
-    std::ifstream chFile(chExchXSecEstimateFile.Data());
-    std::vector<double> chExchLowBin, chExchHighBin, chExchEstimate;
-    if (!chFile.is_open()) {
-        std::cerr << "Failed to open " << chExchXSecEstimateFile << std::endl;
-    } else {
-        std::string line;
-        while (std::getline(chFile, line)) {
-            if (line.empty()) continue;
-            if (line[0] == '#') continue;
-            size_t p1 = line.find(',');
-            if (p1 == std::string::npos) continue;
-            size_t p2 = line.find(',', p1 + 1);
-            if (p2 == std::string::npos) continue;
-            try {
-                double x = std::stod(line.substr(0, p1));
-                double y = std::stod(line.substr(p1 + 1, p2 - p1 - 1));
-                double z = std::stod(line.substr(p2 + 1));
-                chExchLowBin.push_back(x);
-                chExchHighBin.push_back(y);
-                chExchEstimate.push_back(z);
-            } catch (...) {
-                // ignore malformed lines
-                continue;
-            }
-        }
-        chFile.close();
-        std::cout << "Loaded " << chExchLowBin.size() << " charge-exchange points from " << chExchXSecEstimateFile << std::endl;
-    }
-
-    // TODO: load real uncertainty
-    std::vector<double> chExchEstimateUnc;
-    for (size_t i = 0; i < chExchEstimate.size(); ++i) {
-        chExchEstimateUnc.push_back(0.1 * chExchEstimate[i]);  // Placeholder for real uncertainty
-    }
-
     ///////////////////////
     // Create histograms //
     ///////////////////////
@@ -2316,7 +2276,8 @@ void RecoClassify3Cat() {
         NUM_SIGNAL_TYPES, NUM_BINS_KE,
         TotalEventsHistos,
         TrueRecoAsByBin,
-        hIncidentKECorrected,
+        hIncidentKE,
+        hTrueIncidentKE,
         hResponseMatrix
     );
 
@@ -2340,7 +2301,7 @@ void RecoClassify3Cat() {
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
             int index      = flattenIndex(iSignal, iBin, NUM_BINS_KE);
-            Measure(index) = XSEC_UNITS * (RecoSignals[iSignal]->GetBinContent(iBin + 1) / hIncidentKECorrected->GetBinContent(iBin + 1));
+            Measure(index) = XSEC_UNITS * (RecoSignals[iSignal]->GetBinContent(iBin + 1) / hIncidentKE->GetBinContent(iBin + 1));
         }
     }
 
@@ -2349,7 +2310,7 @@ void RecoClassify3Cat() {
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
             int index     = flattenIndex(iSignal, iBin, NUM_BINS_KE);
-            Signal(index) = XSEC_UNITS * (TotalEventsHistos[iSignal]->GetBinContent(iBin + 1) / hIncidentKECorrected->GetBinContent(iBin + 1));
+            Signal(index) = XSEC_UNITS * (TotalEventsHistos[iSignal]->GetBinContent(iBin + 1) / hTrueIncidentKE->GetBinContent(iBin + 1));
         }
     }
 
@@ -2362,11 +2323,6 @@ void RecoClassify3Cat() {
         "hMeasureVectorNominal", "hMeasureVectorNominal;;", 
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
     ); V2H(Measure, hMeasureVectorNominal);
-
-    // Load covariance matrices
-    std::unique_ptr<TFile> GeneratorFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/generator/Measure.root"));
-    TH2D* GeneratorCovariance = (TH2D*) GeneratorFile->Get("hMeasureCovMatrix");
-    TMatrixD GeneratorCov(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); H2M(GeneratorCovariance, GeneratorCov, kTRUE);
 
     // Construct statistical covariance matrix
     TMatrixD StatCovariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); StatCovariance.Zero();
@@ -2386,12 +2342,9 @@ void RecoClassify3Cat() {
         }
     }
 
-    // Add all covariances
+    // Add all covariances (in this script, only care about MC stat)
     TMatrixD Covariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); Covariance.Zero();
     Covariance += StatCovariance;
-    Covariance += GeneratorCov;
-
-    std::vector<TMatrixD> AllCovariances = {StatCovariance, GeneratorCov};
 
     // Convert response histogram to matrix
     TMatrixD Response(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); 
@@ -2516,7 +2469,7 @@ void RecoClassify3Cat() {
             unfXSec->SetBinError(iBin, xsecErr);
 
             // True cross-section, no error bars
-            trueXSec->SetBinContent(iBin, XSEC_UNITS * (TotalEventsHistos[i]->GetBinContent(iBin) / hIncidentKECorrected->GetBinContent(iBin)));
+            trueXSec->SetBinContent(iBin, XSEC_UNITS * (TotalEventsHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)));
         }
 
         // Make contents per 50 MeV
@@ -2526,8 +2479,8 @@ void RecoClassify3Cat() {
 
     // True "other" cross-section
     for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
-        hTruePionOtherCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueOtherKE->GetBinContent(iBin) / hIncidentKECorrected->GetBinContent(iBin)));
-        hTruePionChExchCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueChExchKE->GetBinContent(iBin) / hIncidentKECorrected->GetBinContent(iBin)));
+        hTruePionOtherCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueOtherKE->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)));
+        hTruePionChExchCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueChExchKE->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)));
     }
     reweightOneDHisto(hTruePionOtherCrossSection, 50.); reweightOneDHisto(hTruePionChExchCrossSection, 50.);
 
