@@ -1723,9 +1723,9 @@ void GetResponseMatrix(
     int SizeOuter, int SizeInner,
     const std::vector<TH1D*>& TotalEventsHistos,
     const std::vector<std::vector<std::vector<TH1D*>>>& TrueRecoAsByBin,
-    const TH1D* IncidentFlux,
-    TH2D* ReponseMatrix,
-    bool UseIncidentFlux
+    const TH1D* RecoIncidentFlux,
+    const TH1D* TrueIncidentFlux,
+    TH2D* ReponseMatrix
 ) {
     for (int iOuterSignalBin = 0; iOuterSignalBin < SizeOuter; ++iOuterSignalBin) {
         for (int iOuterEnergyBin = 0; iOuterEnergyBin < SizeInner; ++iOuterEnergyBin) {
@@ -1741,9 +1741,7 @@ void GetResponseMatrix(
                     if (denom > 0) prob = TrueRecoAsByBin.at(iOuterSignalBin).at(iOuterEnergyBin).at(iInnerSignalBin)->GetBinContent(iInnerEnergyBin + 1) / denom;
 
                     // Scale for different incident flux between energy bins
-                    if (UseIncidentFlux) {
-                        prob = prob * (IncidentFlux->GetBinContent(iOuterEnergyBin + 1) / IncidentFlux->GetBinContent(iInnerEnergyBin + 1));
-                    }
+                    prob = prob * (TrueIncidentFlux->GetBinContent(iOuterEnergyBin + 1) / RecoIncidentFlux->GetBinContent(iInnerEnergyBin + 1));
 
                     ReponseMatrix->SetBinContent(column + 1, row + 1, prob);
                 }

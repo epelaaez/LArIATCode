@@ -1163,7 +1163,8 @@ void EnergyRecoCov() {
         NUM_SIGNAL_TYPES, NUM_BINS_KE,
         TotalEventsHistosNom,
         TrueRecoAsByBinNom,
-        hPionIncidentCorrectedKENom,
+        hPionIncidentKENom,
+        hTrueIncidentKENom,
         hResponseMatrixNominal
     );
 
@@ -1177,13 +1178,15 @@ void EnergyRecoCov() {
         );
         std::vector<TH1D*> TotalEventsUniv = {TruePionAbs0pKEUnivs[iUniv], TruePionAbsNpKEUnivs[iUniv], TruePionScatterKEUnivs[iUniv]};
         std::vector<std::vector<std::vector<TH1D*>>> TrueRecoAsByBinUniv = {TrueAbs0pAsByBinUnivs[iUniv], TrueAbsNpAsByBinUnivs[iUniv], TrueScatterAsByBinUnivs[iUniv]};
-        TH1D* IncidentFluxUniv = PionIncidentCorrectedKEUnivs[iUniv];
+        TH1D* RecoIncidentFluxUniv = PionIncidentKEUnivs[iUniv];
+        TH1D* TrueIncidentFluxUniv = TrueIncidentKEUnivs[iUniv];
         
         GetResponseMatrix(
             NUM_SIGNAL_TYPES, NUM_BINS_KE,
             TotalEventsUniv,
             TrueRecoAsByBinUniv,
-            IncidentFluxUniv,
+            RecoIncidentFluxUniv,
+            TrueIncidentFluxUniv,
             hResponseMatrixUniv
         );
 
@@ -1199,40 +1202,10 @@ void EnergyRecoCov() {
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
             int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
-            double xsec =  XSEC_UNITS * (TotalEventsHistosNom[iSignal]->GetBinContent(iBin + 1) / hPionIncidentCorrectedKENom->GetBinContent(iBin + 1));
+            double xsec =  XSEC_UNITS * (TotalEventsHistosNom[iSignal]->GetBinContent(iBin + 1) / hTrueIncidentKENom->GetBinContent(iBin + 1));
             hSignalNominal->SetBinContent(index + 1,  xsec); TotalEventsHistosNom[iSignal]->SetBinContent(iBin + 1,  xsec);
         }
     }
-
-    // Compose signal vectors for all universes
-    // std::vector<TH1D*> SignalVectorUnivs;
-    // SignalVectorUnivs.reserve(NUM_UNIVERSES);
-    // for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
-    //     TH1D* hSignal = new TH1D(Form("hSignal_Univ%d", iUniv), Form("Signal Vector for Universe %d", iUniv), NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
-
-    //     // Fill it with flattened (signal, bin) content
-    //     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
-    //         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
-    //             int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
-                
-    //             double content = 0;
-    //             if (iSignal == 0) {
-    //                 content = XSEC_UNITS * (TruePionAbs0pKEUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
-    //                 TruePionAbs0pKEUnivs[iUniv]->SetBinContent(iBin + 1, content);
-    //             } else if (iSignal == 1) {
-    //                 content = XSEC_UNITS * (TruePionAbsNpKEUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
-    //                 TruePionAbsNpKEUnivs[iUniv]->SetBinContent(iBin + 1, content);
-    //             } else if (iSignal == 2) {
-    //                 content = XSEC_UNITS * (TruePionScatterKEUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
-    //                 TruePionScatterKEUnivs[iUniv]->SetBinContent(iBin + 1, content);
-    //             }
-
-    //             hSignal->SetBinContent(index + 1, content);
-    //             hSignal->SetBinError(index + 1, 0.0);
-    //         }
-    //     }
-    //     SignalVectorUnivs.push_back(hSignal);
-    // }
 
     //////////////////////////////
     // Background cross-section //
@@ -1243,7 +1216,7 @@ void EnergyRecoCov() {
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
             int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
-            double xsec = XSEC_UNITS * (RecoBkgSignals[iSignal]->GetBinContent(iBin + 1) / hPionIncidentCorrectedKENom->GetBinContent(iBin + 1));
+            double xsec = XSEC_UNITS * (RecoBkgSignals[iSignal]->GetBinContent(iBin + 1) / hPionIncidentKENom->GetBinContent(iBin + 1));
             hBackgroundNominal->SetBinContent(index + 1, xsec); RecoBkgSignals[iSignal]->SetBinContent(iBin + 1, xsec);
         }
     }
@@ -1259,13 +1232,13 @@ void EnergyRecoCov() {
 
                 double content = 0;
                 if (iSignal == 0) {
-                    content = XSEC_UNITS * (PionAbs0pKEBkgUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
+                    content = XSEC_UNITS * (PionAbs0pKEBkgUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentKEUnivs[iUniv]->GetBinContent(iBin + 1));
                     PionAbs0pKEBkgUnivs[iUniv]->SetBinContent(iBin + 1, content);
                 } else if (iSignal == 1) {
-                    content = XSEC_UNITS * (PionAbsNpKEBkgUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
+                    content = XSEC_UNITS * (PionAbsNpKEBkgUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentKEUnivs[iUniv]->GetBinContent(iBin + 1));
                     PionAbsNpKEBkgUnivs[iUniv]->SetBinContent(iBin + 1, content);
                 } else if (iSignal == 2) {
-                    content = XSEC_UNITS * (PionScatterKEBkgUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentCorrectedKEUnivs[iUniv]->GetBinContent(iBin + 1));
+                    content = XSEC_UNITS * (PionScatterKEBkgUnivs[iUniv]->GetBinContent(iBin + 1) / PionIncidentKEUnivs[iUniv]->GetBinContent(iBin + 1));
                     PionScatterKEBkgUnivs[iUniv]->SetBinContent(iBin + 1, content);
                 }
 
@@ -1285,7 +1258,7 @@ void EnergyRecoCov() {
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
             int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
-            double xsec = XSEC_UNITS * (RecoSignals[iSignal]->GetBinContent(iBin + 1) / hPionIncidentCorrectedKENom->GetBinContent(iBin + 1));
+            double xsec = XSEC_UNITS * (RecoSignals[iSignal]->GetBinContent(iBin + 1) / hPionIncidentKENom->GetBinContent(iBin + 1));
             hMeasureNominal->SetBinContent(index + 1, xsec); RecoSignals[iSignal]->SetBinContent(iBin + 1, xsec);
         }
     }

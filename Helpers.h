@@ -90,8 +90,8 @@ const double minZ =  3.0;
 const double maxZ = 87.0;
 
 // Uncertainty on beamline muon and electron composition
-const double MUON_COMP_UNC     = 0.02;
-const double ELECTRON_COMP_UNC = 0.02;
+const double MUON_COMP_UNC     = 0.26;
+const double ELECTRON_COMP_UNC = 1.00;
 
 // Values for chi^2 secondary fits
 double PION_CHI2_PION_VALUE     = 1.125;
@@ -368,7 +368,7 @@ TVectorD WienerSVD(TMatrixD Response, TVectorD Signal, TVectorD Measure, TMatrix
 std::vector<TH1D*> MakeUniverseHists(const std::string& baseName, const std::string& title, int nBins, const double* binEdges, int nUniverses);
 std::vector<std::vector<std::vector<TH1D*>>> MakeUniverseHistBlock(const std::string& baseName, const std::string& titleFmt, int nUniverses, int nOuter, int nInner, int nbins, const double* binEdges);
 
-void GetResponseMatrix(int SizeOuter, int SizeInner, const std::vector<TH1D*>& TotalEventsHistos, const std::vector<std::vector<std::vector<TH1D*>>>& TrueRecoAsByBin, const TH1D* IncidentFlux, TH2D* ReponseMatrix, bool UseIncidentFlux = true);
+void GetResponseMatrix(int SizeOuter, int SizeInner, const std::vector<TH1D*>& TotalEventsHistos, const std::vector<std::vector<std::vector<TH1D*>>>& TrueRecoAsByBin, const TH1D* RecoIncidentFlux, const TH1D* TrueIncidentFlux, TH2D* ReponseMatrix);
 void GetCovMatrix(TH1* RecoHisto, std::vector<TH1D*> UnivRecoHisto, TH2* CovMatrix);
 void GetFracCovAndCorrMatrix(TH1* RecoHisto, TH2* CovMatrix, TH2* FracCovMatrix, TH2* CorrMatrix);
 double FindQuantile(double frac, std::vector<double>& xs_in);
