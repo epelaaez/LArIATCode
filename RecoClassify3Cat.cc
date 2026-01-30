@@ -306,8 +306,6 @@ void RecoClassify3Cat() {
     // Create histograms //
     ///////////////////////
 
-    NUM_SIGNAL_TYPES = 3;
-
     TH1D* hTotalEvents = new TH1D("hTotalEvents", "hTotalEvents", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
 
     // Histograms with classified events
@@ -2281,18 +2279,18 @@ void RecoClassify3Cat() {
         hResponseMatrix
     );
 
-    // Before unfolding, we have to remove the estimated backgrounds
+    // Construct large background vector
+    TVectorD Background(NUM_SIGNAL_TYPES * NUM_BINS_KE);
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
-        // Apply ratio to reco signal
-        for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
-            double reco = RecoSignals[iSignal]->GetBinContent(iBin);
+        for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
+            double reco = RecoSignals[iSignal]->GetBinContent(iBin + 1);
             double inc  = hIncidentKE->GetBinContent(iBin + 1);
             double bkg  = 0;
             for (int iBkg = 0; iBkg < RecoSignalBackgrounds[iSignal].size(); ++iBkg) {
-                bkg += RecoSignalBackgrounds[iSignal][iBkg]->GetBinContent(iBin);
+                bkg += RecoSignalBackgrounds[iSignal][iBkg]->GetBinContent(iBin + 1);
             }
-            RecoSignals[iSignal]->SetBinContent(iBin, reco - bkg);
-            RecoSignals[iSignal]->SetBinError(iBin, std::sqrt(reco * (1 - (reco / inc))));
+            int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+            Background(index) = XSEC_UNITS * (bkg / inc);
         }
     }
 
@@ -2323,14 +2321,27 @@ void RecoClassify3Cat() {
         "hMeasureVectorNominal", "hMeasureVectorNominal;;", 
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
     ); V2H(Measure, hMeasureVectorNominal);
+    TH1D* hBackgroundVectorNominal = new TH1D(
+        "hBackgroundVectorNominal", "hBackgroundVectorNominal;;", 
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
+    ); V2H(Background, hBackgroundVectorNominal);
+
+    // Subtract background from measured
+    TVectorD MeasureMinusBackground = Measure - Background;
+    TH1D* hMeasureMinusBackgroundNominal = new TH1D(
+        "hMeasureMinusBackgroundNominal", "hMeasureMinusBackgroundNominal;;", 
+        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
+    ); V2H(MeasureMinusBackground, hMeasureMinusBackgroundNominal);
 
     // Construct statistical covariance matrix
     TMatrixD StatCovariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); StatCovariance.Zero();
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
-            int index   = flattenIndex(iSignal, iBin, NUM_BINS_KE);
-            double N    = RecoSignals[iSignal]->GetBinContent(iBin + 1);
-            double Ninc = hIncidentKE->GetBinContent(iBin + 1);
+            int index    = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+            double Nreco = Measure(index); 
+            double Nbkg  = Background(index);
+            double Ninc  = hIncidentKE->GetBinContent(iBin + 1);
+            double N     = Nreco - Nbkg;
 
             double numSigma = (Ninc>0.0 && N>0.0 ? std::sqrt(N*(1.0 - N/Ninc)) : 0.0);
             double denSigma = (Ninc>0.0 ? std::sqrt(Ninc) : 0.0);
@@ -2361,7 +2372,7 @@ void RecoClassify3Cat() {
     TVectorD UnfoldedReco = WienerSVD(
         Response,
         Signal,
-        Measure,
+        MeasureMinusBackground,
         Covariance,
         0, // 0: unit, 2: second derivative
         0, // smoothing parameter
@@ -2422,6 +2433,7 @@ void RecoClassify3Cat() {
     // Save stuff to nominal file
     nominalFile->cd();
     hMeasureVectorNominal->Write("", TObject::kOverwrite);
+    hBackgroundVectorNominal->Write("", TObject::kOverwrite);
     hSignalVectorNominal->Write("", TObject::kOverwrite);
     hResponseMatrix->Write("", TObject::kOverwrite);
     hStatCovariance->Write("", TObject::kOverwrite);
@@ -2916,7 +2928,7 @@ void RecoClassify3Cat() {
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
     );
-    GetFracCovAndCorrMatrix(hMeasureVectorNominal, hCovariance, hFracCovMatrix, hCorrMatrix);
+    GetFracCovAndCorrMatrix(hMeasureMinusBackgroundNominal, hCovariance, hFracCovMatrix, hCorrMatrix);
 
     TH2D* hUnfFracCovMatrix = new TH2D(
         "Unfolded Fractional Covariance", "Unfolded Fractional Covariance;Reco (j, #beta);True (i, #alpha)",

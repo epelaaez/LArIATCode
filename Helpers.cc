@@ -2188,3 +2188,224 @@ void PrintTruthUnfoldedStatShapePlot(
     delete ShapeErrorBand;
     delete TotErrorBand;
 }
+
+
+void PrintFDPlot(
+    const TString& SaveDir,
+    const TString& Name,
+    TH1* hTrue,
+    TH1* hNomTrue,
+    TH1* hUnfolded,
+    TH1* hSysts,
+    const TString& PlotTitle,
+    const TString& XTitle,
+    const TString& YTitle,
+    std::pair<double, double> chi,
+    std::pair<int, int> ndof,
+    std::pair<double, double> pval,
+    std::pair<double, double> sigma,
+    int FontStyle,
+    double TextSize
+) {
+    const int nb = hUnfolded->GetNbinsX();
+
+    // Optional: if you also want total stat⊕shape as a separate band
+    TGraphAsymmErrors* TotErrorBand   = new TGraphAsymmErrors(nb);
+
+    for (int iBin = 1; iBin <= nb; ++iBin) {
+        const double xnom = hUnfolded->GetXaxis()->GetBinCenter(iBin);
+        const double ynom = hUnfolded->GetBinContent(iBin);
+
+        const double s_tot = hSysts->GetBinContent(iBin);
+
+        const int ip = iBin - 1; // TGraph point index is 0-based
+
+        TotErrorBand->SetPoint(ip, xnom, ynom);
+        TotErrorBand->SetPointError(ip, 0.0, 0.0, s_tot, s_tot);
+    }
+
+    // Canvas
+    static int ic = 0;
+    TCanvas* c = new TCanvas(Form("c_ts_%d", ic++), "", 1400, 1000);
+    c->SetLeftMargin(0.14);
+    c->SetRightMargin(0.05);
+    c->SetBottomMargin(0.14);
+    c->SetTopMargin(0.10);
+    c->SetTicks(1,1);
+
+    gStyle->SetGridStyle(3); // 3 = dotted
+    gStyle->SetGridWidth(1);
+    c->SetGridx(1);
+    c->SetGridy(1);
+
+    // Style: truth (red step)
+    hTrue->SetLineColor(kRed);
+    hTrue->SetLineWidth(3);
+    hTrue->SetFillStyle(0);
+
+    // Style: nom truth (blue step)
+    hNomTrue->SetLineColor(kBlue);
+    hNomTrue->SetLineWidth(3);
+    hNomTrue->SetFillStyle(0);
+
+    // Style: unfolded points
+    hUnfolded->SetMarkerStyle(20);
+    hUnfolded->SetMarkerSize(1.0);
+    hUnfolded->SetMarkerColor(kBlack);
+    hUnfolded->SetLineColor(kBlack);
+
+    // Style: error bars (vertical "I" bars)
+    TotErrorBand->SetLineColor(kBlack);
+    TotErrorBand->SetLineWidth(2);
+    TotErrorBand->SetMarkerStyle(1);
+    TotErrorBand->SetMarkerSize(0.0);
+
+    gStyle->SetEndErrorSize(4);
+
+    // Style title
+    hTrue->SetTitle(PlotTitle);
+    gStyle->SetTitleFont(FontStyle, "t");
+    gStyle->SetTitleSize(TextSize * 1.1, "t");
+    gStyle->SetTitleAlign(23); // centered, top
+    gStyle->SetTitleX(0.5);
+    gStyle->SetTitleY(0.98);
+
+    hTrue->GetXaxis()->SetTitle(XTitle);
+    hTrue->GetXaxis()->CenterTitle(true);
+    hTrue->GetXaxis()->SetTitleFont(FontStyle);
+    hTrue->GetXaxis()->SetLabelFont(FontStyle);
+    hTrue->GetXaxis()->SetTitleSize(TextSize);
+    hTrue->GetXaxis()->SetLabelSize(TextSize * 0.85);
+    hTrue->GetXaxis()->SetTitleOffset(1.15);
+
+    hTrue->GetYaxis()->SetTitle(YTitle);
+    hTrue->GetYaxis()->CenterTitle(true);
+    hTrue->GetYaxis()->SetTitleFont(FontStyle);
+    hTrue->GetYaxis()->SetLabelFont(FontStyle);
+    hTrue->GetYaxis()->SetTitleSize(TextSize);
+    hTrue->GetYaxis()->SetLabelSize(TextSize * 0.85);
+    hTrue->GetYaxis()->SetTitleOffset(1.0);
+
+    // Plot title positioning
+    hTrue->SetTitleFont(FontStyle, "t");
+    hTrue->SetTitleSize(TextSize * 1.05, "t");
+    hTrue->SetTitleOffset(0.95, "t");
+    
+    // Major + minor tick density
+    hTrue->GetXaxis()->SetNdivisions(7, 5, 0, kTRUE);
+    hTrue->GetYaxis()->SetNdivisions(5, 5, 0, kTRUE);
+
+    hTrue->GetXaxis()->SetTickLength(0.02);
+    hTrue->GetYaxis()->SetTickLength(0.02);
+
+    // Set Y range to include outer bars
+    double ymax = 0.0;
+    for (int iBin = 1; iBin <= nb; ++iBin) {
+        const double y_true = hTrue->GetBinContent(iBin);
+        const double y_unf  = hUnfolded->GetBinContent(iBin);
+        const double s_tot   = std::max(0.0, hSysts->GetBinContent(iBin));
+        ymax = std::max(ymax, std::max(y_true, y_unf + s_tot));
+    }
+    if (ymax <= 0) ymax = 1.0;
+    hTrue->SetMaximum(1.35 * ymax);
+    hTrue->SetMinimum(0.0);
+
+    // Draw order: truth -> outer bars -> inner bars -> points
+    hTrue->Draw("HIST");
+    hNomTrue->Draw("HIST SAME");
+    TotErrorBand->Draw("E1 SAME");
+    hUnfolded->Draw("PE1 SAME");
+
+    // Legend: use the graphs with option "e" so the legend glyph is a vertical error bar
+    TLegend* leg = new TLegend(0.15, 0.70, 0.55, 0.85);
+    leg->SetBorderSize(0);
+    // leg->SetNColumns(2);
+    leg->SetFillStyle(1001);
+    leg->SetFillColor(kWhite);
+    leg->SetTextFont(FontStyle);
+    leg->SetTextSize(TextSize * 0.75);
+
+    std::ostringstream oss1, oss2;
+    oss1 << std::fixed << std::setprecision(1);
+    oss2 << std::fixed << std::setprecision(1);
+
+    oss1 << "Fake True (#chi^{2}/N_{dof} = "
+        << chi.first << "/" << ndof.first
+        << ", p = " << pval.first
+        << ", #sigma = " << sigma.first << ")";
+
+    oss2 << "Nominal True (#chi^{2}/N_{dof} = "
+        << chi.second << "/" << ndof.second
+        << ", p = " << pval.second
+        << ", #sigma = " << sigma.second << ")";
+
+    std::string fakeTrue = oss1.str();
+    std::string nominalTrue = oss2.str();
+
+    leg->AddEntry(hTrue, fakeTrue.c_str(), "l");
+    leg->AddEntry(hNomTrue, nominalTrue.c_str(), "l");
+    leg->AddEntry(hUnfolded, "Unfolded", "pe");
+    leg->Draw();
+
+    c->Update();
+    c->Print(SaveDir + Name + ".png");
+
+    delete leg;
+    delete c;
+    delete TotErrorBand;
+}
+
+void CalcChiSquared(
+    TH1D* h_model, // true
+    TH1D* h_data,  // unfolded
+    TH2D* cov,     // unfolded cov
+    double &chi, 
+    int &ndof, 
+    double &pval, 
+    double &sigma
+) {
+	// Clone them so we can scale them 
+	TH1D* h_model_clone = (TH1D*)h_model->Clone();
+	TH1D* h_data_clone  = (TH1D*)h_data->Clone();
+	TH2D* h_cov_clone   = (TH2D*)cov->Clone();
+	int NBins = h_cov_clone->GetNbinsX();
+
+	// Getting covariance matrix in TMatrix form
+	TMatrixD cov_m;
+	cov_m.Clear();
+	cov_m.ResizeTo(NBins,NBins);
+
+	// loop over rows
+	for (int i = 0; i < NBins; i++) {			
+		// loop over columns
+		for (int j = 0; j < NBins; j++) {
+			cov_m[i][j] = h_cov_clone->GetBinContent(i+1, j+1);
+		}
+	}
+	TMatrixD copy_cov_m = cov_m;
+
+	// Inverting the covariance matrix
+	TMatrixD inverse_cov_m = cov_m.Invert();
+
+	// Calculating the chi2 = Summation_ij{ (x_i - mu_j)*E_ij^(-1)*(x_j - mu_j)  }
+	// x = data, mu = model, E^(-1) = inverted covariance matrix 
+	chi = 0.;
+	
+	for (int i = 0; i < NBins; i++) {
+		//double XWidth = h_data_clone->GetBinWidth(i+1);
+		for (int j = 0; j < NBins; j++) {
+			//double YWidth = h_data_clone->GetBinWidth(i+1);
+			double diffi = h_data_clone->GetBinContent(i+1) - h_model_clone->GetBinContent(i+1);
+			double diffj = h_data_clone->GetBinContent(j+1) - h_model_clone->GetBinContent(j+1);
+			double LocalChi = diffi * inverse_cov_m[i][j] * diffj;
+			chi += LocalChi;
+		}
+	}
+	ndof = h_data_clone->GetNbinsX();
+	pval = TMath::Prob(chi, ndof);
+	sigma = TMath::Sqrt( TMath::ChisquareQuantile( 1-pval, 1 ) ); 
+
+	delete h_model_clone;
+	delete h_data_clone;
+	delete h_cov_clone;
+}

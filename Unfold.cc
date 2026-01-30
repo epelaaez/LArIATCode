@@ -31,11 +31,12 @@ void Unfold() {
 
     // Load nominal histograms
     std::unique_ptr<TFile> NominalFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/nominal/Reco.root"));
-    TH1D* MeasureNominal  = (TH1D*) NominalFile->Get("hMeasureVectorNominal");
-    TH1D* TrueNominal     = (TH1D*) NominalFile->Get("hSignalVectorNominal");
-    TH2D* ResponseNominal = (TH2D*) NominalFile->Get("hResponseMatrix");
+    TH1D* MeasureNominal    = (TH1D*) NominalFile->Get("hMeasureVectorNominal");
+    TH1D* BackgroundNominal = (TH1D*) NominalFile->Get("hBackgroundVectorNominal");
+    TH1D* TrueNominal       = (TH1D*) NominalFile->Get("hSignalVectorNominal");
+    TH2D* ResponseNominal   = (TH2D*) NominalFile->Get("hResponseMatrix");
 
-    // Statistical covariance
+    // MC stat covariance
     TH2D* StatCovariance = (TH2D*) NominalFile->Get("hStatCovariance");
 
     // Generator covariance
@@ -56,6 +57,7 @@ void Unfold() {
 
     // Convert histograms into matrices/vectors
     TVectorD Measure(N); H2V(MeasureNominal, Measure);
+    TVectorD Background(N); H2V(BackgroundNominal, Background);
     TVectorD TrueSignal(N); H2V(TrueNominal, TrueSignal);
     TMatrixD Response(N, N); H2M(ResponseNominal, Response, kTRUE);
 
@@ -91,11 +93,14 @@ void Unfold() {
     TMatrixD UnfoldCov(N, N);
     TMatrixD CovRotation(N, N);
 
+    // Subtract background from measured
+    TVectorD MeasureMinusBackground = Measure - Background;
+
     // Unfold using the total covariance matrix
     TVectorD Unfolded = WienerSVD(
         Response,
         TrueSignal,
-        Measure,
+        MeasureMinusBackground,
         TotalCovariance,
         0,
         0,
@@ -104,7 +109,7 @@ void Unfold() {
         UnfoldCov, 
         CovRotation,
         AddSmearInverse
-    ); 
+    );
     TH1D* hUnfolded = new TH1D("hUnfolded", "hUnfolded;;", N, 0, N); V2H(Unfolded, hUnfolded);
     TMatrixD CovRotationT(TMatrixD::kTransposed, CovRotation);
 
