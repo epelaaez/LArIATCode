@@ -15,7 +15,7 @@
 #include "Helpers.cc"
 #include "FakeDataHelper.h"
 
-void FakeData1() {
+void FakeData() {
     // Set defaults
     gStyle->SetOptStat(0); // get rid of stats box
     TH1D::SetDefaultSumw2();
@@ -34,7 +34,9 @@ void FakeData1() {
 
     int FontStyle = 132;
     double TextSize = 0.06;
-    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/FakeData/Sample1/";
+    int sample = 3;
+    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/FakeData/Sample" + TString::Itoa(sample, 10) + "/";
+    std::cout << SaveDir << std::endl;
 
     // Load file with data products
     TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
@@ -42,7 +44,15 @@ void FakeData1() {
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
     // Fake data configuration
-    FakeDataFD::Scenario FDScenario = FakeDataFD::Scenario::FDa;
+    FakeDataFD::Scenario FDScenario;
+    if (sample == 1) {
+        FDScenario = FakeDataFD::Scenario::FDa;
+    }
+    else if (sample == 2) {
+        FDScenario = FakeDataFD::Scenario::FDb;
+    } else if (sample == 3) {
+        FDScenario = FakeDataFD::Scenario::FDc;
+    }
 
     ///////////////////
     // Load branches //
@@ -980,7 +990,7 @@ void FakeData1() {
     // Save to file //
     //////////////////
 
-    TFile* saveFile = new TFile("/exp/lariat/app/users/epelaez/histos/fake_data/FD1.root", "RECREATE");
+    TFile* saveFile = new TFile(("/exp/lariat/app/users/epelaez/histos/fake_data/FD" + TString::Itoa(sample, 10) + ".root").Data(), "RECREATE");
     saveFile->cd();
     hSignal->Write("", TObject::kOverwrite);
     hMeasure->Write("", TObject::kOverwrite);

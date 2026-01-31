@@ -39,16 +39,20 @@ void UnfoldFD() {
     TH1D* FD1True = (TH1D*) FD1File->Get("hSignal");
     TH1D* FD1Reco = (TH1D*) FD1File->Get("hMeasure");
 
+    std::unique_ptr<TFile> FD2File(TFile::Open("/exp/lariat/app/users/epelaez/histos/fake_data/FD2.root"));
+    TH1D* FD2True = (TH1D*) FD2File->Get("hSignal");
+    TH1D* FD2Reco = (TH1D*) FD2File->Get("hMeasure");
+
     std::vector<TH1D*> FDTrue = {
-        FD1True
+        FD1True, FD2True
     };
 
     std::vector<TH1D*> FDReco = {
-        FD1Reco
+        FD1Reco, FD2Reco
     };
 
     std::vector<std::string> FDLabel = {
-        "Sample1"
+        "Sample1", "Sample2"
     };
 
     // MC stat covariance
@@ -137,9 +141,9 @@ void UnfoldFD() {
         // Populate output
         for (int i = 0; i < N; ++i) {
             auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE);
-            const double var   = UnfoldCov(i,i);
+            const double var   = UnfoldCov(i, i);
             const double sigma = std::sqrt(std::max(0.0, var));
-            hUnfoldedUnc->SetBinContent(i, sigma);
+            hUnfoldedUnc->SetBinContent(i + 1, sigma);
         }
 
         // Get chi2, ndof, pval, sigma
@@ -158,7 +162,7 @@ void UnfoldFD() {
             hUnfolded,
             hUnfoldedUnc,
             "Unfolded Total Vector",
-            "Kinetic Energy [MeV]",
+            "Bin number",
             "Cross section [barn]",
             {f_chi, n_chi},
             {f_ndof, n_ndof},

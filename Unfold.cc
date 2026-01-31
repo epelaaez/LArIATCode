@@ -467,6 +467,84 @@ void Unfold() {
         TwoDDisplayNumbers.push_back(false);
     }
 
+    // Get total covariance
+    TH2D* totalunfcov = new TH2D(
+        "Total Unfolded Covariance",
+        "Total Unfolded Covariance;Reco (j, #beta);True (i, #alpha)",
+        N, 0, N,
+        N, 0, N
+    ); M2H(UnfoldCov, totalunfcov);
+
+    TH2D* totalunffraccov = new TH2D(
+        "Total Unfolded Frac. Covariance",
+        "Total Unfolded Frac. Covariance;Reco (j, #beta);True (i, #alpha)",
+        N, 0, N,
+        N, 0, N
+    );
+    TH2D* totalunfcorr = new TH2D(
+        "Total Unfolded Correlation",
+        "Total Unfolded Correlation;Reco (j, #beta);True (i, #alpha)",
+        N, 0, N,
+        N, 0, N
+    );
+
+    GetFracCovAndCorrMatrix(hUnfolded, totalunfcov, totalunffraccov, totalunfcorr);
+
+    TwoDPlots.push_back(totalunfcov);
+    TwoDTitles.push_back("TotalUnfoldedCovariance");
+    TwoDRanges.push_back({0,0});
+    TwoDDisplayNumbers.push_back(false);
+
+    TwoDPlots.push_back(totalunffraccov);
+    TwoDTitles.push_back("TotalUnfoldedFracCovariance");
+    TwoDRanges.push_back({0,0});
+    TwoDDisplayNumbers.push_back(false);
+
+    TwoDPlots.push_back(totalunfcorr);
+    TwoDTitles.push_back("TotalUnfoldedCorrelation");
+    TwoDRanges.push_back({-1,-1});
+    TwoDDisplayNumbers.push_back(false);
+
+    // Total covariance before unfolding
+    TH2D* totalcov = new TH2D(
+        "Total Covariance",
+        "Total Covariance;Reco (j, #beta);True (i, #alpha)",
+        N, 0, N,
+        N, 0, N
+    ); M2H(TotalCovariance, totalcov);
+
+    TH2D* totalfraccov = new TH2D(
+        "Total Frac. Covariance",
+        "Total Frac. Covariance;Reco (j, #beta);True (i, #alpha)",
+        N, 0, N,
+        N, 0, N
+    );
+    TH2D* totalcorr = new TH2D(
+        "Total Correlation",
+        "Total Correlation;Reco (j, #beta);True (i, #alpha)",
+        N, 0, N,
+        N, 0, N
+    );
+
+    TH1D* MeasureMinusBkg = new TH1D("MeasureMinusBkg", "MeasureMinusBkg;;", N, 0, N);
+    V2H(MeasureMinusBackground, MeasureMinusBkg);
+    GetFracCovAndCorrMatrix(MeasureMinusBkg, totalcov, totalfraccov, totalcorr);
+
+    TwoDPlots.push_back(totalcov);
+    TwoDTitles.push_back("TotalCovariance");
+    TwoDRanges.push_back({0,0});
+    TwoDDisplayNumbers.push_back(false);
+
+    TwoDPlots.push_back(totalfraccov);
+    TwoDTitles.push_back("TotalFracCovariance");
+    TwoDRanges.push_back({0,0});
+    TwoDDisplayNumbers.push_back(false);
+
+    TwoDPlots.push_back(totalcorr);
+    TwoDTitles.push_back("TotalCorrelation");
+    TwoDRanges.push_back({-1,-1});
+    TwoDDisplayNumbers.push_back(false);
+
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles, TwoDRanges, TwoDDisplayNumbers);
 
     ////////////////////////
@@ -482,7 +560,7 @@ void Unfold() {
         hUncStatTemp,
         hUncTotal,
         "Unfolded Total Vector",
-        "Kinetic Energy [MeV]",
+        "Bin number",
         "Cross section [barn]"
     );
 

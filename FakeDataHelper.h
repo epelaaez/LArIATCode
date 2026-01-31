@@ -4,8 +4,7 @@ namespace FakeDataFD {
         Nominal = 0,  // no reweighting (weight = 1)
         FDa,
         FDb,
-        FDc,
-        FDd
+        FDc
     };
 
     inline bool IsAbs0p(int id) {
@@ -72,98 +71,66 @@ namespace FakeDataFD {
 
             case Scenario::FDa:
                 // FD-1a:
-                // Low:  0p x1.3, Np x0.7, scat x1.0
-                // Mid:  unchanged
-                // High: 0p x0.8, Np x1.3, scat x1.0
                 switch (region) {
                     case ERegion::Low:
-                        w0p_raw    = 1.3;
-                        wNp_raw    = 0.7;
-                        wScatt_raw = 1.0;
+                        w0p_raw    = 1.6;
+                        wNp_raw    = 0.4;
+                        wScatt_raw = 0.8;
                         break;
                     case ERegion::Mid:
-                        w0p_raw    = 1.0;
-                        wNp_raw    = 1.0;
+                        w0p_raw    = 1.2;
+                        wNp_raw    = 0.8;
                         wScatt_raw = 1.0;
                         break;
                     case ERegion::High:
                         w0p_raw    = 0.8;
-                        wNp_raw    = 1.3;
-                        wScatt_raw = 1.0;
+                        wNp_raw    = 1.0;
+                        wScatt_raw = 1.4;
                         break;
                     }
                 return;
 
             case Scenario::FDb:
                 // FD-1b:
-                // Low:  0p x1.4, Np x0.6, scat x1.0
-                // Mid:  0p x0.9, Np x1.1, scat x1.0
-                // High: 0p x0.7, Np x1.4, scat x1.0
-                switch (region) {
-                    case ERegion::Low:
-                        w0p_raw    = 1.4;
-                        wNp_raw    = 0.6;
-                        wScatt_raw = 1.0;
-                        break;
-                    case ERegion::Mid:
-                        w0p_raw    = 0.9;
-                        wNp_raw    = 1.1;
-                        wScatt_raw = 1.0;
-                        break;
-                    case ERegion::High:
-                        w0p_raw    = 0.7;
-                        wNp_raw    = 1.4;
-                        wScatt_raw = 1.0;
-                        break;
-                    }
-                return;
-
-            case Scenario::FDc:
-                // FD-1c:
-                // Low:  unchanged
                 // Mid:  0p x0.9, Np x0.9, scat x1.4 (Δ-like scattering bump)
-                // High: 0p x1.1, Np x1.1, scat x0.8
                 switch (region) {
                     case ERegion::Low:
-                        w0p_raw    = 1.0;
-                        wNp_raw    = 1.0;
-                        wScatt_raw = 1.0;
+                        w0p_raw    = 0.8;
+                        wNp_raw    = 0.8;
+                        wScatt_raw = 0.8;
                         break;
                     case ERegion::Mid:
-                        w0p_raw    = 0.9;
-                        wNp_raw    = 0.9;
-                        wScatt_raw = 1.4;
+                        w0p_raw    = 0.8;
+                        wNp_raw    = 0.8;
+                        wScatt_raw = 1.6;
                         break;
                     case ERegion::High:
-                        w0p_raw    = 1.1;
-                        wNp_raw    = 1.1;
+                        w0p_raw    = 1.2;
+                        wNp_raw    = 1.2;
                         wScatt_raw = 0.8;
                         break;
                     }
                 return;
 
-            case Scenario::FDd:
-                // FD-1d:
-                // Low:  0p x1.1, Np x0.6, scat x1.2
-                // Mid:  0p x1.0, Np x0.7, scat x1.2
-                // High: 0p x0.9, Np x0.6, scat x1.3
+            case Scenario::FDc:
+                // Uniform 20% increase
                 switch (region) {
                     case ERegion::Low:
-                        w0p_raw    = 1.1;
-                        wNp_raw    = 0.6;
+                        w0p_raw    = 1.2;
+                        wNp_raw    = 1.2;
                         wScatt_raw = 1.2;
                         break;
                     case ERegion::Mid:
-                        w0p_raw    = 1.0;
-                        wNp_raw    = 0.7;
+                        w0p_raw    = 1.2;
+                        wNp_raw    = 1.2;
                         wScatt_raw = 1.2;
                         break;
                     case ERegion::High:
-                        w0p_raw    = 0.9;
-                        wNp_raw    = 0.6;
-                        wScatt_raw = 1.3;
+                        w0p_raw    = 1.2;
+                        wNp_raw    = 1.2;
+                        wScatt_raw = 1.2;
                         break;
-                }
+                    }
                 return;
         }
         throw std::runtime_error("Unknown FakeData::Scenario");

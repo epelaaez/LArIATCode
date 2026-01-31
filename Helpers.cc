@@ -2329,15 +2329,17 @@ void PrintFDPlot(
     oss1 << std::fixed << std::setprecision(1);
     oss2 << std::fixed << std::setprecision(1);
 
-    oss1 << "Fake True (#chi^{2}/N_{dof} = "
+    oss1 << "Fake True ("
         << chi.first << "/" << ndof.first
-        << ", p = " << pval.first
-        << ", #sigma = " << sigma.first << ")";
+        << ", " << pval.first
+        << ", " << (sigma.first >= 8 ? ">8.0" : Form("%.2g", sigma.first)) 
+        << "#sigma)";
 
-    oss2 << "Nominal True (#chi^{2}/N_{dof} = "
+    oss2 << "Nominal True ("
         << chi.second << "/" << ndof.second
-        << ", p = " << pval.second
-        << ", #sigma = " << sigma.second << ")";
+        << ", " << pval.second
+        << ", " << (sigma.second >= 8 ? ">8.0" : Form("%.2g", sigma.second)) 
+        << "#sigma)";
 
     std::string fakeTrue = oss1.str();
     std::string nominalTrue = oss2.str();
@@ -2379,13 +2381,40 @@ void CalcChiSquared(
 	for (int i = 0; i < NBins; i++) {			
 		// loop over columns
 		for (int j = 0; j < NBins; j++) {
-			cov_m[i][j] = h_cov_clone->GetBinContent(i+1, j+1);
+            cov_m[i][j] = h_cov_clone->GetBinContent(i+1, j+1);
 		}
 	}
 	TMatrixD copy_cov_m = cov_m;
 
-	// Inverting the covariance matrix
-	TMatrixD inverse_cov_m = cov_m.Invert();
+	// Eigen-decomposition
+    TMatrixDEigen eig(cov_m);
+    TMatrixD evals  = eig.GetEigenValues();
+    TMatrixD evecs  = eig.GetEigenVectors();
+
+    double maxEval = 0.0;
+    for (int k = 0; k < NBins; ++k) {
+        if (evals[k][k] > maxEval) maxEval = evals[k][k];
+    }
+
+    // Build diagonal matrix of 1/λ with cutoff
+    double tol = 1e-3 * maxEval;
+    TMatrixD Dinv(NBins, NBins);
+    Dinv.Zero();
+
+    int nModesKept = 0;
+    for (int k = 0; k < NBins; ++k) {
+        if (evals[k][k] > tol) {
+            Dinv(k,k) = 1.0 / evals[k][k];
+            ++nModesKept;
+        } else {
+            // Regularize: treat this mode as unconstrained -> 0 in inverse
+            Dinv(k,k) = 0.0;
+        }
+    }
+
+    // Pseudo-inverse: V * Dinv * V^T
+    TMatrixD evecsT(TMatrixD::kTransposed, evecs);
+    TMatrixD inverse_cov_m = evecs * Dinv * evecsT;
 
 	// Calculating the chi2 = Summation_ij{ (x_i - mu_j)*E_ij^(-1)*(x_j - mu_j)  }
 	// x = data, mu = model, E^(-1) = inverted covariance matrix 
@@ -2401,9 +2430,14 @@ void CalcChiSquared(
 			chi += LocalChi;
 		}
 	}
-	ndof = h_data_clone->GetNbinsX();
-	pval = TMath::Prob(chi, ndof);
-	sigma = TMath::Sqrt( TMath::ChisquareQuantile( 1-pval, 1 ) ); 
+	// ndof  = h_data_clone->GetNbinsX();
+    ndof = nModesKept;
+    pval = TMath::Prob(chi, ndof);
+    if (pval < 1e-16) {
+        sigma = 8.0;
+    } else {
+        sigma = TMath::Sqrt(TMath::ChisquareQuantile(1 - pval, 1));
+    }
 
 	delete h_model_clone;
 	delete h_data_clone;
