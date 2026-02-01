@@ -2397,7 +2397,7 @@ void CalcChiSquared(
     }
 
     // Build diagonal matrix of 1/λ with cutoff
-    double tol = 1e-3 * maxEval;
+    double tol = 1e-4 * maxEval;
     TMatrixD Dinv(NBins, NBins);
     Dinv.Zero();
 

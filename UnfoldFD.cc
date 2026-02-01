@@ -38,25 +38,37 @@ void UnfoldFD() {
     std::unique_ptr<TFile> FD1File(TFile::Open("/exp/lariat/app/users/epelaez/histos/fake_data/FD1.root"));
     TH1D* FD1True = (TH1D*) FD1File->Get("hSignal");
     TH1D* FD1Reco = (TH1D*) FD1File->Get("hMeasure");
+    TH1D* FD1Inc  = (TH1D*) FD1File->Get("hPionIncidentKE");
 
     std::unique_ptr<TFile> FD2File(TFile::Open("/exp/lariat/app/users/epelaez/histos/fake_data/FD2.root"));
     TH1D* FD2True = (TH1D*) FD2File->Get("hSignal");
     TH1D* FD2Reco = (TH1D*) FD2File->Get("hMeasure");
+    TH1D* FD2Inc  = (TH1D*) FD2File->Get("hPionIncidentKE");
+
+    std::unique_ptr<TFile> FD3File(TFile::Open("/exp/lariat/app/users/epelaez/histos/fake_data/FD3.root"));
+    TH1D* FD3True = (TH1D*) FD3File->Get("hSignal");
+    TH1D* FD3Reco = (TH1D*) FD3File->Get("hMeasure");
+    TH1D* FD3Inc  = (TH1D*) FD3File->Get("hPionIncidentKE");
 
     std::vector<TH1D*> FDTrue = {
-        FD1True, FD2True
+        FD1True, FD2True, FD3True
     };
 
     std::vector<TH1D*> FDReco = {
-        FD1Reco, FD2Reco
+        FD1Reco, FD2Reco, FD3Reco
+    };
+
+    std::vector<TH1D*> FDInc = {
+        FD1Inc, FD2Inc, FD3Inc
     };
 
     std::vector<std::string> FDLabel = {
-        "Sample1", "Sample2"
+        "Sample1", "Sample2", "Sample3"
     };
 
     // MC stat covariance
-    TH2D* StatCovariance = (TH2D*) NominalFile->Get("hStatCovariance");
+    std::unique_ptr<TFile> MCStatFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/mcstat/Measure.root"));
+    TH2D* MCStatCovariance = (TH2D*) MCStatFile->Get("hMeasureCovMatrix");
 
     // Generator covariance
     std::unique_ptr<TFile> GeneratorFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/generator/Measure.root"));
@@ -79,7 +91,7 @@ void UnfoldFD() {
     TMatrixD Response(N, N); H2M(ResponseNominal, Response, kTRUE);
 
     std::vector<TH2D*> CovarianceMatrices = {
-        StatCovariance, 
+        MCStatCovariance, 
         GeneratorCovariance,
         EnergyRecoCovariance,
         BeamlineMuCovariance,
@@ -114,13 +126,32 @@ void UnfoldFD() {
         // Vectors to store output
         TMatrixD AddSmear(N, N); TMatrixD AddSmearInverse(N, N);
         TVectorD WF(N); TMatrixD UnfoldCov(N, N); TMatrixD CovRotation(N, N);
+        
+        // Construct statistical covariance
+        TMatrixD StatCovariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); StatCovariance.Zero();
+        for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
+            for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
+                int index    = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+                double Ninc  = FDInc[iFDUniv]->GetBinContent(iBin + 1);
+                double N     = MeasureMinusBackground(index);
+
+                double numSigma = (Ninc>0.0 && N>0.0 ? std::sqrt(N*(1.0 - N/Ninc)) : 0.0);
+                double denSigma = (Ninc>0.0 ? std::sqrt(Ninc) : 0.0);
+
+                double xs       = N / Ninc;
+                double relVarXS = (N>0.0 && Ninc>0.0 ? std::pow(numSigma/N + denSigma/Ninc, 2) : 0.0);
+
+                StatCovariance(index, index) = xs * xs * relVarXS * XSEC_UNITS;
+            }
+        }
+        TMatrixD ThisTotalCovariance = TotalCovariance + StatCovariance;
 
         // Unfold
         TVectorD Unfolded = WienerSVD(
             Response,
             True,
             MeasureMinusBackground,
-            TotalCovariance,
+            ThisTotalCovariance,
             0,
             0,
             AddSmear,

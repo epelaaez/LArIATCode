@@ -36,7 +36,7 @@ void Unfold() {
     TH1D* TrueNominal       = (TH1D*) NominalFile->Get("hSignalVectorNominal");
     TH2D* ResponseNominal   = (TH2D*) NominalFile->Get("hResponseMatrix");
 
-    // MC stat covariance
+    // Stat covariance
     TH2D* StatCovariance = (TH2D*) NominalFile->Get("hStatCovariance");
 
     // Generator covariance
@@ -55,6 +55,10 @@ void Unfold() {
     std::unique_ptr<TFile> BeamlineElFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/beamlineel/Measure.root"));
     TH2D* BeamlineElCovariance = (TH2D*) BeamlineElFile->Get("hMeasureCovMatrix");
 
+    // MC stat covariance
+    std::unique_ptr<TFile> MCStatFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/mcstat/Measure.root"));
+    TH2D* MCStatCovariance = (TH2D*) MCStatFile->Get("hMeasureCovMatrix");
+
     // Convert histograms into matrices/vectors
     TVectorD Measure(N); H2V(MeasureNominal, Measure);
     TVectorD Background(N); H2V(BackgroundNominal, Background);
@@ -62,7 +66,8 @@ void Unfold() {
     TMatrixD Response(N, N); H2M(ResponseNominal, Response, kTRUE);
 
     std::vector<TH2D*> CovarianceMatrices = {
-        StatCovariance, 
+        StatCovariance,
+        MCStatCovariance, 
         GeneratorCovariance,
         EnergyRecoCovariance,
         BeamlineMuCovariance,
@@ -70,6 +75,7 @@ void Unfold() {
     };
 
     std::vector<std::string> CovarianceLabels = {
+        "Stat",
         "MCStat",
         "Generator",
         "EnergyReco",
@@ -136,6 +142,8 @@ void Unfold() {
 
     // Unfolded total uncertainty
     TH1D* hUncTotal     = new TH1D("hUncTotal", "hUncTotal;Bin (i, #alpha);Cross section [barn] per 50 MeV", N, 0, N);
+    TH1D* hUncStat      = new TH1D("hUncStat", "hUncStat;Bin (i, #alpha);Cross section [barn] per 50 MeV", N, 0, N);
+    TH1D* hUncShape     = new TH1D("hUncShape", "hUncShape;Bin (i, #alpha);Cross section [barn] per 50 MeV", N, 0, N);
     TH1D* hFracUncTotal = new TH1D("hFracUncTotal", "hFracUncTotal;Bin (i, #alpha);Cross section unc. [%]", N, 0, N);
 
     // Total uncertainty per interaction type
@@ -152,6 +160,16 @@ void Unfold() {
     TH1D* AbsNpUncTotal   = new TH1D("AbsNpUncTotal", "AbsNpUncTotal;Kinetic Energy [MeV];Cross section [barn] per 50 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* ScatterUncTotal = new TH1D("ScatterUncTotal", "ScatterUncTotal;Kinetic Energy [MeV];Cross section [barn] per 50 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
     std::vector<TH1D*> TotalUncPerInteraction = {Abs0pUncTotal, AbsNpUncTotal, ScatterUncTotal};
+
+    TH1D* Abs0pUncStat  = new TH1D("Abs0pUncStat", "Abs0pUncStat;Kinetic Energy [MeV];Cross section [barn] per 50 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* AbsNpUncStat  = new TH1D("AbsNpUncStat", "AbsNpUncStat;Kinetic Energy [MeV];Cross section [barn] per 50 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* ScatterUncStat  = new TH1D("ScatterUncStat", "ScatterUncStat;Kinetic Energy [MeV];Cross section [barn] per 50 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    std::vector<TH1D*> StatUncPerInteraction = {Abs0pUncStat, AbsNpUncStat, ScatterUncStat};
+
+    TH1D* Abs0pUncShape = new TH1D("Abs0pUncShape", "Abs0pUncShape;Kinetic Energy [MeV];Cross section [barn] per 50 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* AbsNpUncShape = new TH1D("AbsNpUncShape", "AbsNpUncShape;Kinetic Energy [MeV];Cross section [barn] per 50 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* ScatterUncShape = new TH1D("ScatterUncShape", "ScatterUncShape;Kinetic Energy [MeV];Cross section [barn] per 50 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    std::vector<TH1D*> ShapeUncPerInteraction = {Abs0pUncShape, AbsNpUncShape, ScatterUncShape};
 
     TH1D* Abs0pFracUncTotal   = new TH1D("Abs0pFracUncTotal", "Abs0pFracUncTotal;Kinetic Energy [MeV];Cross section [barn] per 50 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* AbsNpFracUncTotal   = new TH1D("AbsNpFracUncTotal", "AbsNpFracUncTotal;Kinetic Energy [MeV];Cross section [barn] per 50 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
@@ -172,18 +190,34 @@ void Unfold() {
         const double sigma   = std::sqrt(std::max(0.0, var));
         const double fracPct = (std::fabs(x) > 0.0) ? (100.0 * sigma / std::fabs(x)) : 0.0;
 
+        const double statvar  = UnfCovSources[0](i,i);
+        double shapevar = 0.0;
+        for (int j = 1; j < (int) UnfCovSources.size(); ++j) {
+            shapevar += UnfCovSources[j](i,i);
+        }
+        const double statsigma  = std::sqrt(std::max(0.0, statvar));
+        const double shapesigma = std::sqrt(std::max(0.0, shapevar));
+
         hUncTotal->SetBinContent(i + 1, sigma);
         hFracUncTotal->SetBinContent(i + 1, fracPct);
+
+        hUncStat->SetBinContent(i + 1, statsigma);
+        hUncShape->SetBinContent(i + 1, shapesigma);
 
         UnfPerInteraction[signalBin]->SetBinContent(energyBin + 1, x);
         UnfPerInteraction[signalBin]->SetBinError(energyBin + 1, sigma);
 
         TotalUncPerInteraction[signalBin]->SetBinContent(energyBin + 1, sigma);
         TotalFracUncPerInteraction[signalBin]->SetBinContent(energyBin + 1, fracPct);
+
+        StatUncPerInteraction[signalBin]->SetBinContent(energyBin + 1, statsigma);
+        ShapeUncPerInteraction[signalBin]->SetBinContent(energyBin + 1, shapesigma);
     }
     for (int i = 0; i < NUM_SIGNAL_TYPES; ++i) {
         reweightOneDHisto(UnfPerInteraction[i], 50.);
         reweightOneDHisto(TotalUncPerInteraction[i], 50.);
+        reweightOneDHisto(StatUncPerInteraction[i], 50.);
+        reweightOneDHisto(ShapeUncPerInteraction[i], 50.);
     }
 
     // Total-from-sources in quadrature (per bin) (store sigma, variance, and %)
@@ -551,14 +585,13 @@ void Unfold() {
     // Final "nice" plots //
     ////////////////////////
 
-    TH1D* hUncStatTemp = new TH1D("hUncStatTemp", "hUncStatTemp;Bin (i, #alpha);Cross section [barn] per 50 MeV", N, 0, N);
     PrintTruthUnfoldedStatShapePlot(
         SaveDir,
         "TotalUnf",
         TrueNominal,
         hUnfolded,
-        hUncStatTemp,
-        hUncTotal,
+        hUncStat,
+        hUncShape,
         "Unfolded Total Vector",
         "Bin number",
         "Cross section [barn]"
@@ -575,14 +608,13 @@ void Unfold() {
     }
     for (int i = 0; i < NUM_SIGNAL_TYPES; ++i) reweightOneDHisto(TrueKE[i],  50.);
 
-    TH1D* hStatDummy = new TH1D("hStatDummy", ";Kinetic Energy [MeV];#sigma", NUM_BINS_KE, ARRAY_KE_BINS.data());
     PrintTruthUnfoldedStatShapePlot(
         SaveDir,
         "Abs0pUnf",
         TrueKE[0],
         UnfPerInteraction[0],
-        hStatDummy,
-        TotalUncPerInteraction[0],
+        StatUncPerInteraction[0],
+        ShapeUncPerInteraction[0],
         "Unfolded Absorption 0p",
         "Kinetic Energy [MeV]",
         "Cross section [barn] per 50 MeV"
@@ -592,8 +624,8 @@ void Unfold() {
         "AbsNpUnf",
         TrueKE[1],
         UnfPerInteraction[1],
-        hStatDummy,
-        TotalUncPerInteraction[1],
+        StatUncPerInteraction[1],
+        ShapeUncPerInteraction[1],
         "Unfolded Absorption Np",
         "Kinetic Energy [MeV]",
         "Cross section [barn] per 50 MeV"
@@ -603,8 +635,8 @@ void Unfold() {
         "ScatterUnf",
         TrueKE[2],
         UnfPerInteraction[2],
-        hStatDummy,
-        TotalUncPerInteraction[2],
+        StatUncPerInteraction[2],
+        ShapeUncPerInteraction[2],
         "Unfolded Scatter",
         "Kinetic Energy [MeV]",
         "Cross section [barn] per 50 MeV"

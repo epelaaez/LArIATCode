@@ -113,22 +113,22 @@ namespace FakeDataFD {
                 return;
 
             case Scenario::FDc:
-                // Uniform 20% increase
+                // Uniform 50% increase
                 switch (region) {
                     case ERegion::Low:
-                        w0p_raw    = 1.2;
-                        wNp_raw    = 1.2;
-                        wScatt_raw = 1.2;
+                        w0p_raw    = 1.5;
+                        wNp_raw    = 1.5;
+                        wScatt_raw = 1.5;
                         break;
                     case ERegion::Mid:
-                        w0p_raw    = 1.2;
-                        wNp_raw    = 1.2;
-                        wScatt_raw = 1.2;
+                        w0p_raw    = 1.5;
+                        wNp_raw    = 1.5;
+                        wScatt_raw = 1.5;
                         break;
                     case ERegion::High:
-                        w0p_raw    = 1.2;
-                        wNp_raw    = 1.2;
-                        wScatt_raw = 1.2;
+                        w0p_raw    = 1.5;
+                        wNp_raw    = 1.5;
+                        wScatt_raw = 1.5;
                         break;
                     }
                 return;
