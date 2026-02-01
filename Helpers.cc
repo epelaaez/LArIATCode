@@ -2044,9 +2044,6 @@ void PrintTruthUnfoldedStatShapePlot(
     TGraphAsymmErrors* StatErrorBand  = new TGraphAsymmErrors(nb);
     TGraphAsymmErrors* ShapeErrorBand = new TGraphAsymmErrors(nb);
 
-    // Optional: if you also want total stat⊕shape as a separate band
-    TGraphAsymmErrors* TotErrorBand   = new TGraphAsymmErrors(nb);
-
     for (int iBin = 1; iBin <= nb; ++iBin) {
         const double xnom = hUnfolded->GetXaxis()->GetBinCenter(iBin);
         const double ynom = hUnfolded->GetBinContent(iBin);
@@ -2060,13 +2057,9 @@ void PrintTruthUnfoldedStatShapePlot(
         StatErrorBand->SetPoint(ip, xnom, ynom);
         StatErrorBand->SetPointError(ip, 0.0, 0.0, s_stat, s_stat);
 
-        // ShapeErrorBand shows the *outer* envelope; here I interpret "shape" as
-        // the additional component on top of stat, so the outer bar is total.
+        // Shape is outer, so should have total
         ShapeErrorBand->SetPoint(ip, xnom, ynom);
         ShapeErrorBand->SetPointError(ip, 0.0, 0.0, s_tot, s_tot);
-
-        TotErrorBand->SetPoint(ip, xnom, ynom);
-        TotErrorBand->SetPointError(ip, 0.0, 0.0, s_tot, s_tot);
     }
 
     // Canvas
@@ -2107,7 +2100,7 @@ void PrintTruthUnfoldedStatShapePlot(
     StatErrorBand->SetMarkerStyle(1);
     StatErrorBand->SetMarkerSize(0.0);
 
-    gStyle->SetEndErrorSize(4);
+    gStyle->SetEndErrorSize(6);
 
     // Style title
     hTrue->SetTitle(PlotTitle);
@@ -2161,8 +2154,8 @@ void PrintTruthUnfoldedStatShapePlot(
 
     // Draw order: truth -> outer bars -> inner bars -> points
     hTrue->Draw("HIST");
-    ShapeErrorBand->Draw("E1 SAME");
     StatErrorBand->Draw("E1 SAME");
+    ShapeErrorBand->Draw("E1 SAME");
     hUnfolded->Draw("P SAME");
 
     // Legend: use the graphs with option "e" so the legend glyph is a vertical error bar
@@ -2186,7 +2179,6 @@ void PrintTruthUnfoldedStatShapePlot(
     delete c;
     delete StatErrorBand;
     delete ShapeErrorBand;
-    delete TotErrorBand;
 }
 
 
@@ -2332,13 +2324,13 @@ void PrintFDPlot(
     oss1 << "Fake True ("
         << chi.first << "/" << ndof.first
         << ", " << pval.first
-        << ", " << (sigma.first >= 8 ? ">8.0" : Form("%.2g", sigma.first)) 
+        << ", " << (sigma.first >= 8 ? ">8.0" : Form("%.2f", sigma.first)) 
         << "#sigma)";
 
     oss2 << "Nominal True ("
         << chi.second << "/" << ndof.second
         << ", " << pval.second
-        << ", " << (sigma.second >= 8 ? ">8.0" : Form("%.2g", sigma.second)) 
+        << ", " << (sigma.second >= 8 ? ">8.0" : Form("%.2f", sigma.second)) 
         << "#sigma)";
 
     std::string fakeTrue = oss1.str();

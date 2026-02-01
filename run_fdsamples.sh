@@ -5,3 +5,4 @@
 root -l -b -q 'FakeData.cc(1)'
 root -l -b -q 'FakeData.cc(2)'
 root -l -b -q 'FakeData.cc(3)'
+root -l -b -q 'FakeData.cc(4)'

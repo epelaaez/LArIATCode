@@ -198,6 +198,11 @@ void Unfold() {
         const double statsigma  = std::sqrt(std::max(0.0, statvar));
         const double shapesigma = std::sqrt(std::max(0.0, shapevar));
 
+        std::cout << "Bin " << i << ": x = " << x << ", sigma = " << sigma << ", fracPct = " << fracPct << std::endl;
+        std::cout << "   " << "stat sigma = " << statsigma << ", shape sigma = " << shapesigma << std::endl;
+        std::cout << "   stat + shape in quadrature = " << std::sqrt(statsigma*statsigma + shapesigma*shapesigma) << std::endl;
+        std::cout << "   stat + shape linearly = " << (statsigma + shapesigma) << std::endl;
+
         hUncTotal->SetBinContent(i + 1, sigma);
         hFracUncTotal->SetBinContent(i + 1, fracPct);
 

@@ -4,7 +4,8 @@ namespace FakeDataFD {
         Nominal = 0,  // no reweighting (weight = 1)
         FDa,
         FDb,
-        FDc
+        FDc,
+        FDd
     };
 
     inline bool IsAbs0p(int id) {
@@ -16,12 +17,22 @@ namespace FakeDataFD {
     }
 
     inline bool IsScattering(int id) {
-    switch (id) {
-        case 6:  // Inelastic scattering
-        case 12: // Elastic scattering
-            return true;
-        default:
-            return false;
+        switch (id) {
+            case 6:  // Inelastic scattering
+            case 12: // Elastic scattering
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    inline bool IsChargeExchange(int id) {
+        switch (id) {
+            case 7:  // Charge exchange 
+            case 8:  // Double charge exchange
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -57,12 +68,14 @@ namespace FakeDataFD {
         ERegion region,
         double &w0p_raw,
         double &wNp_raw,
-        double &wScatt_raw
+        double &wScatt_raw,
+        double &wchexch_raw
     ) {
         // Default: no change
-        w0p_raw    = 1.0;
-        wNp_raw    = 1.0;
-        wScatt_raw = 1.0;
+        w0p_raw     = 1.0;
+        wNp_raw     = 1.0;
+        wScatt_raw  = 1.0;
+        wchexch_raw = 1.0;
 
         switch (scenario) {
             case Scenario::Nominal:
@@ -87,7 +100,7 @@ namespace FakeDataFD {
                         wNp_raw    = 1.0;
                         wScatt_raw = 1.4;
                         break;
-                    }
+                }
                 return;
 
             case Scenario::FDb:
@@ -109,7 +122,7 @@ namespace FakeDataFD {
                         wNp_raw    = 1.2;
                         wScatt_raw = 0.8;
                         break;
-                    }
+                }
                 return;
 
             case Scenario::FDc:
@@ -130,7 +143,30 @@ namespace FakeDataFD {
                         wNp_raw    = 1.5;
                         wScatt_raw = 1.5;
                         break;
-                    }
+                }
+                return;
+
+            case Scenario::FDd:
+                switch (region) {
+                    case ERegion::Low:
+                        w0p_raw     = 1.0;
+                        wNp_raw     = 1.0;
+                        wScatt_raw  = 0.8;
+                        wchexch_raw = 1.5;
+                        break;
+                    case ERegion::Mid:
+                        w0p_raw     = 1.0;
+                        wNp_raw     = 1.0;
+                        wScatt_raw  = 0.8;
+                        wchexch_raw = 1.5;
+                        break;
+                    case ERegion::High:
+                        w0p_raw     = 1.0;
+                        wNp_raw     = 1.0;
+                        wScatt_raw  = 0.8;
+                        wchexch_raw = 1.5;
+                        break;
+                }
                 return;
         }
         throw std::runtime_error("Unknown FakeData::Scenario");
@@ -144,25 +180,35 @@ namespace FakeDataFD {
         double trueKE
     ) {
         // Non-signal categories: leave unchanged.
-        const bool is0p    = IsAbs0p(id);
-        const bool isNp    = IsAbsNp(id);
-        const bool isScatt = IsScattering(id);
+        const bool is0p     = IsAbs0p(id);
+        const bool isNp     = IsAbsNp(id);
+        const bool isScatt  = IsScattering(id);
+        const bool isChexch = IsChargeExchange(id);
 
-        if (!is0p && !isNp && !isScatt) {
+        if (!is0p && !isNp && !isScatt && !isChexch) {
             return 1.0;
         }
 
         const ERegion region = GetEnergyRegion(trueKE);
 
-        double w0p_raw    = 1.0;
-        double wNp_raw    = 1.0;
-        double wScatt_raw = 1.0;
+        double w0p_raw     = 1.0;
+        double wNp_raw     = 1.0;
+        double wScatt_raw  = 1.0;
+        double wchexch_raw = 1.0;
 
-        GetRawChannelWeights(scenario, region, w0p_raw, wNp_raw, wScatt_raw);
+        GetRawChannelWeights(
+            scenario, 
+            region, 
+            w0p_raw, 
+            wNp_raw, 
+            wScatt_raw,
+            wchexch_raw
+        );
 
-        if (is0p)    return w0p_raw;
-        if (isNp)    return wNp_raw;
-        if (isScatt) return wScatt_raw;
+        if (is0p)     return w0p_raw;
+        if (isNp)     return wNp_raw;
+        if (isScatt)  return wScatt_raw;
+        if (isChexch) return wchexch_raw;
 
         return 1.0;
     }

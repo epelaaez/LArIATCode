@@ -46,11 +46,12 @@ void FakeData(int sample = 1) {
     FakeDataFD::Scenario FDScenario;
     if (sample == 1) {
         FDScenario = FakeDataFD::Scenario::FDa;
-    }
-    else if (sample == 2) {
+    } else if (sample == 2) {
         FDScenario = FakeDataFD::Scenario::FDb;
     } else if (sample == 3) {
         FDScenario = FakeDataFD::Scenario::FDc;
+    } else if (sample == 4) {
+        FDScenario = FakeDataFD::Scenario::FDd;
     }
 
     ///////////////////

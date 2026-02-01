@@ -2337,19 +2337,17 @@ void RecoClassify3Cat() {
     TMatrixD StatCovariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); StatCovariance.Zero();
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
-            int index    = flattenIndex(iSignal, iBin, NUM_BINS_KE);
-            double Nreco = Measure(index); 
-            double Nbkg  = Background(index);
-            double Ninc  = hIncidentKE->GetBinContent(iBin + 1);
-            double N     = Nreco - Nbkg;
+            int index   = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+            double Ninc = hIncidentKE->GetBinContent(iBin + 1);
+            double N    = Measure(index) * Ninc / XSEC_UNITS;
 
             double numSigma = (Ninc>0.0 && N>0.0 ? std::sqrt(N*(1.0 - N/Ninc)) : 0.0);
             double denSigma = (Ninc>0.0 ? std::sqrt(Ninc) : 0.0);
 
-            double xs       = N / Ninc;
+            double xs       = (N / Ninc) * XSEC_UNITS;
             double relVarXS = (N>0.0 && Ninc>0.0 ? std::pow(numSigma/N + denSigma/Ninc, 2) : 0.0);
 
-            StatCovariance(index, index) = xs * xs * relVarXS * XSEC_UNITS;
+            StatCovariance(index, index) = xs * xs * relVarXS;
         }
     }
 
