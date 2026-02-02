@@ -1385,7 +1385,7 @@ void GeneratorCov() {
         TextSize,
         FontStyle,
         "Measured Cross Section",
-        "Kinetic Energy [MeV]",
+        "Bin number",
         "Cross Section [barn]"
     );
 

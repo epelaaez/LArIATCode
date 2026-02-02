@@ -1161,7 +1161,7 @@ void MCStatCov() {
             NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
         );
         std::vector<TH1D*> TotalEventsUniv = {hTruePionAbs0pKENom, hTruePionAbsNpKENom, hTruePionScatterKENom};
-        std::vector<std::vector<std::vector<TH1D*>>> TrueRecoAsByBinUniv = {TrueAbs0pAsByBinNom, TrueAbsNpAsByBinNom, TrueScatterAsByBinNom};
+        std::vector<std::vector<std::vector<TH1D*>>> TrueRecoAsByBinUniv = {TrueAbs0pAsByBinUnivs[iUniv], TrueAbsNpAsByBinUnivs[iUniv], TrueScatterAsByBinUnivs[iUniv]};
         TH1D* RecoIncidentFluxUniv = PionIncidentKEUnivs[iUniv];
         TH1D* TrueIncidentFluxUniv = TrueIncidentKEUnivs[iUniv];
         
@@ -1340,7 +1340,7 @@ void MCStatCov() {
         TextSize,
         FontStyle,
         "Measured Cross Section",
-        "Kinetic Energy [MeV]",
+        "Bin number",
         "Cross Section [barn]"
     );
 

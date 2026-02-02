@@ -2328,18 +2328,19 @@ void RecoClassify3Cat() {
 
     // Subtract background from measured
     TVectorD MeasureMinusBackground = Measure - Background;
-    TH1D* hMeasureMinusBackgroundNominal = new TH1D(
-        "hMeasureMinusBackgroundNominal", "hMeasureMinusBackgroundNominal;;", 
-        NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
-    ); V2H(MeasureMinusBackground, hMeasureMinusBackgroundNominal);
 
     // Construct statistical covariance matrix
+    double mc_scaling = NUM_DATA_EVENTS / NUM_MC_EVENTS; // as a rough estimate, scale to number of data events
     TMatrixD StatCovariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); StatCovariance.Zero();
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
             int index   = flattenIndex(iSignal, iBin, NUM_BINS_KE);
             double Ninc = hIncidentKE->GetBinContent(iBin + 1);
             double N    = Measure(index) * Ninc / XSEC_UNITS;
+
+            // Scale to data to estimate stat systematics
+            Ninc = Ninc * mc_scaling;
+            N    = N * mc_scaling;
 
             double numSigma = (Ninc>0.0 && N>0.0 ? std::sqrt(N*(1.0 - N/Ninc)) : 0.0);
             double denSigma = (Ninc>0.0 ? std::sqrt(Ninc) : 0.0);
@@ -2587,11 +2588,11 @@ void RecoClassify3Cat() {
         {"Corrected", "True"},
 
         // Interacting KE
-        {"All (no bkg.)", "True", "Abs Np", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
-        {"All (no bkg.)", "True", "Abs Np", "Scatter", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
-        {"All (no bkg.)", "True", "Abs 0p", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
-        {"All (no bkg.)", "True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon", "Electron", "Other"},
-        {"All (no bkg.)", "True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
+        {"All", "True", "Abs Np", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"All", "True", "Abs Np", "Scatter", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
+        {"All", "True", "Abs 0p", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"All", "True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"All", "True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
 
         // True interacting KE
         {"All"},
@@ -2911,6 +2912,33 @@ void RecoClassify3Cat() {
         PlotsAsPoints
     );
 
+    ////////////////////////////////////////////////
+    // Get universes for statistical fluctuations //
+    ////////////////////////////////////////////////
+
+    TH1D* hMeasure1 = new TH1D(Form("hMeasure_Univ%d", 1), Form("Measured Vector for Universe %d", 1), NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    TH1D* hMeasure2 = new TH1D(Form("hMeasure_Univ%d", 2), Form("Measured Vector for Universe %d", 2), NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+    for (int i = 1; i <= NUM_SIGNAL_TYPES * NUM_BINS_KE; ++i) {
+        double xsec  = hMeasureVectorNominal->GetBinContent(i);
+        double sigma = std::sqrt(hCovariance->GetBinContent(i, i));
+        hMeasure1->SetBinContent(i, xsec + sigma);
+        hMeasure2->SetBinContent(i, xsec - sigma);
+    }
+    std::vector<TH1D*> MeasureVectorUnivs = {hMeasure1, hMeasure2};
+
+    DrawHistosWithErrorBands(
+        hMeasureVectorNominal,
+        MeasureVectorUnivs,
+        SaveDir,
+        "Covariance",
+        "Measure",
+        TextSize,
+        FontStyle,
+        "Measured Cross Section",
+        "Bin number",
+        "Cross Section [barn]"
+    );
+
     ///////////////////////////
     // Two-dimensional plots //
     ///////////////////////////
@@ -2926,7 +2954,7 @@ void RecoClassify3Cat() {
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE,
         NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE
     );
-    GetFracCovAndCorrMatrix(hMeasureMinusBackgroundNominal, hCovariance, hFracCovMatrix, hCorrMatrix);
+    GetFracCovAndCorrMatrix(hMeasureVectorNominal, hCovariance, hFracCovMatrix, hCorrMatrix);
 
     TH2D* hUnfFracCovMatrix = new TH2D(
         "Unfolded Fractional Covariance", "Unfolded Fractional Covariance;Reco (j, #beta);True (i, #alpha)",
