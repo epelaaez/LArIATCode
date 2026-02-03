@@ -35,9 +35,9 @@ int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 // Signal types
 int NUM_SIGNAL_TYPES = 3; // 0p abs, Np abs, scattering
 
-// For scaling
-double NUM_DATA_EVENTS = 40000; // estimated, from paper
-double NUM_MC_EVENTS   = 493581;
+// For scaling: events before RV cut
+double NUM_DATA_EVENTS = 12147 * (346349 / 100000);
+double NUM_MC_EVENTS   = 166643;
 
 struct EventInfo {
     int run; int subrun; int event; bool isData;

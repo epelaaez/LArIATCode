@@ -347,6 +347,8 @@ void RecoDataAnalysis() {
     // Loop over events //
     //////////////////////
 
+    int candidateInteractingEvents = 0;
+
     Int_t NumEntries = (Int_t) tree->GetEntries();
     std::cout << "Num entries: " << NumEntries << std::endl;
 
@@ -842,6 +844,8 @@ void RecoDataAnalysis() {
         // Reduced volume cut //
         ////////////////////////
 
+        candidateInteractingEvents++;
+
         if (isPrimaryTG) continue;
 
         ///////////////////////////////////
@@ -877,6 +881,9 @@ void RecoDataAnalysis() {
         }
         hNumCandidateProtons->Fill(numCandidateProtons);
     }
+
+    std::cout << "Number of events before RV cut: " << candidateInteractingEvents << std::endl;
+    std::cout << std::endl;
     
     double numMCEvents   = hMCNumTGTracks->Integral(0, hMCNumTGTracks->GetNbinsX() + 1);
     double numDataEvents = hNumTGTracks->Integral(0, hNumTGTracks->GetNbinsX() + 1);
