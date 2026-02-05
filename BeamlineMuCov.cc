@@ -896,7 +896,7 @@ void BeamlineMuCov() {
             );
             double thisTrackLength = sqrt(
                 std::pow(recoBeginX->at(trk_idx) - recoEndX->at(trk_idx), 2) +
-                std::pow(recoBeginY->at(trk_idx) - recoEndY->at(trk_idx), 2) + 
+                std::pow(recoBeginY->at(trk_idx) - recoEndY->at(trk_idx), 2) +
                 std::pow(recoBeginZ->at(trk_idx) - recoEndZ->at(trk_idx), 2)
             );
 
@@ -1155,7 +1155,7 @@ void BeamlineMuCov() {
         std::vector<TH1D*> TotalEventsUniv = {hTruePionAbs0pKENom, hTruePionAbsNpKENom, hTruePionScatterKENom};
         std::vector<std::vector<std::vector<TH1D*>>> TrueRecoAsByBinUniv = {TrueAbs0pAsByBinNom, TrueAbsNpAsByBinNom, TrueScatterAsByBinNom};
         TH1D* RecoIncidentFluxUniv = PionIncidentKEUnivs[iUniv];
-        TH1D* TrueIncidentFluxUniv = TrueIncidentKEUnivs[iUniv];
+        TH1D* TrueIncidentFluxUniv = hTrueIncidentKENom;
         
         GetResponseMatrix(
             NUM_SIGNAL_TYPES, NUM_BINS_KE,

@@ -1155,7 +1155,7 @@ void BeamlineElCov() {
         std::vector<TH1D*> TotalEventsUniv = {hTruePionAbs0pKENom, hTruePionAbsNpKENom, hTruePionScatterKENom};
         std::vector<std::vector<std::vector<TH1D*>>> TrueRecoAsByBinUniv = {TrueAbs0pAsByBinNom, TrueAbsNpAsByBinNom, TrueScatterAsByBinNom};
         TH1D* RecoIncidentFluxUniv = PionIncidentKEUnivs[iUniv];
-        TH1D* TrueIncidentFluxUniv = TrueIncidentKEUnivs[iUniv];
+        TH1D* TrueIncidentFluxUniv = hTrueIncidentKENom;
         
         GetResponseMatrix(
             NUM_SIGNAL_TYPES, NUM_BINS_KE,
