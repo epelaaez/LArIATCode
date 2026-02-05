@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Detsim script gets stuck otherwise
+unset DISPLAY
+unset XAUTHORITY
+
 # Usage:
 #   sh run_chunks.sh FILELIST FCL NCHUNKS OUTDIR OUTNAME [STARTK]
 #
