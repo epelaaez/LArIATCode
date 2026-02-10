@@ -33,7 +33,7 @@ void RecoAnalysis() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/RecoAnalysis/";
 
     // Load root file
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoEval_histo.root"; 
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30 
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoEval");
 
