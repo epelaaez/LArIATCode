@@ -864,6 +864,8 @@ void printBackgroundInfo(TH1D* background_histo, std::ostream& os) {
     os << "  Capture at rest: " << captureAtRest << "    " << 100 * (captureAtRest / (double) total) << "%" << std::endl;
     os << "  Decay: " << pionDecay << "    " << 100 * (pionDecay / (double) total) << "%" << std::endl;
     os << "  Other: " << other << "    " << 100 * (other / (double) total) << "%" << std::endl;
+    os << "  --------" << std::endl;
+    os << "  Total: " << total << std::endl;
 }
 
 void printEventInfo(EventInfo event, std::ostream& os) {

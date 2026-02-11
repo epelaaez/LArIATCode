@@ -951,10 +951,7 @@ void FakeData(int sample = 1) {
         }
 
         // Fill abs 0p
-        if (
-            numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION &&
-            numClustersCollection < MAX_NUM_CLUSTERS_COLLECTION
-        ) {
+        if (numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION) {
             hPionAbs0p->Fill(energyAtVertex, fd_weight);
             continue;
         }

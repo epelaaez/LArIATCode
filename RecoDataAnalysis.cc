@@ -352,6 +352,11 @@ void RecoDataAnalysis() {
     Int_t NumEntries = (Int_t) tree->GetEntries();
     std::cout << "Num entries: " << NumEntries << std::endl;
 
+    // Keep track of event counts for stat estimations
+    int eventCount0TG = 0;
+    int eventCount1TG = 0;
+    int eventCount2TG = 0;
+
     int numValidEvents = 0;
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
@@ -832,6 +837,11 @@ void RecoDataAnalysis() {
         // TG track cut //
         //////////////////
 
+        // Grab data about number of events with each cutoff
+        if (numTGTracks <= 0) eventCount0TG++;
+        if (numTGTracks <= 1) eventCount1TG++;
+        if (numTGTracks <= 2) eventCount2TG++;
+
         if (numTGTracks > MAX_NUM_TG_TRACKS) continue;
         
         //////////////////
@@ -881,6 +891,12 @@ void RecoDataAnalysis() {
         }
         hNumCandidateProtons->Fill(numCandidateProtons);
     }
+
+    std::cout << std::endl;
+    std::cout << "Number of events with at most 0 TG tracks: " << eventCount0TG << std::endl;
+    std::cout << "Number of events with at most 1 TG tracks: " << eventCount1TG << std::endl;
+    std::cout << "Number of events with at most 2 TG tracks: " << eventCount2TG << std::endl;
+    std::cout << std::endl;
 
     std::cout << "Number of events before RV cut: " << candidateInteractingEvents << std::endl;
     std::cout << std::endl;

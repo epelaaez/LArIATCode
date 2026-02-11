@@ -298,6 +298,7 @@ void RecoClassify3Cat() {
 
     std::ofstream outFileAbs0pBkg("files/Classify3Cat/Abs0pBackground.txt");
     std::ofstream outFileLowProb("files/Classify3Cat/LowProbability.txt");
+    std::ofstream outFileEvents("files/Classify3Cat/GoodEvents.txt");
 
     TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "RECREATE");
     TFile* nominalFile     = new TFile("/exp/lariat/app/users/epelaez/histos/nominal/Reco.root", "RECREATE");
@@ -692,6 +693,11 @@ void RecoClassify3Cat() {
     int numEventsNoEither     = 0;
 
     int numEventsPrimaryHitNegativeTime = 0;
+
+    // Keep track of event counts for stat estimations
+    int eventCount0TG = 0;
+    int eventCount1TG = 0;
+    int eventCount2TG = 0;
 
     for (Int_t i = 0; i < NumEntries; ++i) {
         tree->GetEntry(i);
@@ -1561,6 +1567,11 @@ void RecoClassify3Cat() {
             hNumTGTracksOther->Fill(numTGTracks);
         }
 
+        // Grab data about number of events with each cutoff
+        if (numTGTracks <= 0) eventCount0TG++;
+        if (numTGTracks <= 1) eventCount1TG++;
+        if (numTGTracks <= 2) eventCount2TG++;
+
         // Perform TG track cut
         if (numTGTracks > MAX_NUM_TG_TRACKS) continue;
         hNotManyTGTracks->Fill(backgroundType);
@@ -1795,6 +1806,7 @@ void RecoClassify3Cat() {
                 hPionScatterKEAbsNp->Fill(energyAtVertex);
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hPionScatterKETrue->Fill(energyAtVertex);
+                outFileEvents << "True scatter as scatter: " << run << " " << subrun << " " << event << std::endl;
             } else if (backgroundType == 2) {
                 hPionScatterKEMuon->Fill(energyAtVertex);
 
@@ -1841,6 +1853,7 @@ void RecoClassify3Cat() {
                 hPionAbsNpKEAbs0p->Fill(energyAtVertex);
             } else if (backgroundType == 1) {
                 hPionAbsNpKETrue->Fill(energyAtVertex);
+                outFileEvents << "True abs np as abs np: " << run << " " << subrun << " " << event << std::endl;
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hPionAbsNpKEScatter->Fill(energyAtVertex);
             } else if (backgroundType == 2) {
@@ -1983,15 +1996,13 @@ void RecoClassify3Cat() {
             hNumClustersCollectionOther->Fill(numClustersCollection);
         }
 
-        if (
-            numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION &&
-            numClustersCollection < MAX_NUM_CLUSTERS_COLLECTION
-        ) {
+        if (numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION) {
             hPionAbs0p->Fill(backgroundType);
 
             hPionAbs0pKE->Fill(energyAtVertex);
             if (backgroundType == 0) {
                 hPionAbs0pKETrue->Fill(energyAtVertex);
+                outFileEvents << "True abs 0p as abs 0p: " << run << " " << subrun << " " << event << std::endl;
             } else if (backgroundType == 1) {
                 hPionAbs0pKEAbsNp->Fill(energyAtVertex);
             } else if (backgroundType == 7) {
@@ -2099,6 +2110,11 @@ void RecoClassify3Cat() {
 
     std::cout << std::endl;
     std::cout << "Number of scattering events modified: " << scatteringsModified << std::endl;
+
+    std::cout << std::endl;
+    std::cout << "Number of events with at most 0 TG tracks: " << eventCount0TG << std::endl;
+    std::cout << "Number of events with at most 1 TG tracks: " << eventCount1TG << std::endl;
+    std::cout << "Number of events with at most 2 TG tracks: " << eventCount2TG << std::endl;
 
     //////////////////////////////////
     // Breakdown of rejected events //
@@ -2330,7 +2346,6 @@ void RecoClassify3Cat() {
     TVectorD MeasureMinusBackground = Measure - Background;
 
     // Construct statistical covariance matrix
-    double mc_scaling = NUM_DATA_EVENTS / NUM_MC_EVENTS; // as a rough estimate, scale to number of data events
     TMatrixD StatCovariance(NUM_SIGNAL_TYPES * NUM_BINS_KE, NUM_SIGNAL_TYPES * NUM_BINS_KE); StatCovariance.Zero();
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
@@ -2339,8 +2354,8 @@ void RecoClassify3Cat() {
             double N    = Measure(index) * Ninc / XSEC_UNITS;
 
             // Scale to data to estimate stat systematics
-            Ninc = Ninc * mc_scaling;
-            N    = N * mc_scaling;
+            Ninc = Ninc * MC_SCALING;
+            N    = N * MC_SCALING;
 
             double numSigma = (Ninc>0.0 && N>0.0 ? std::sqrt(N*(1.0 - N/Ninc)) : 0.0);
             double denSigma = (Ninc>0.0 ? std::sqrt(Ninc) : 0.0);

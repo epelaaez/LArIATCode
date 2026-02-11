@@ -35,9 +35,22 @@ int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 // Signal types
 int NUM_SIGNAL_TYPES = 3; // 0p abs, Np abs, scattering
 
-// For scaling: events before RV cut
-double NUM_DATA_EVENTS = 12147 * (346349 / 100000);
-double NUM_MC_EVENTS   = 166643;
+// Number of events at each data quality cut
+double TG0_MC_EVENTS = 118999;
+double TG1_MC_EVENTS = 156432;
+double TG2_MC_EVENTS = 176123;
+
+double TG0_DATA_EVENTS = 4742;
+double TG1_DATA_EVENTS = 9041;
+double TG2_DATA_EVENTS = 12867;
+
+// For scaling: events before RV cut (beam-line mass, WC2TPC match, TG tracks)
+double TOTAL_DATA_EVENTS      = 346349;
+double RESTRICTED_DATA_EVENTS = 100000;
+double TOTAL_MC_EVENTS        = 493581;
+double NUM_DATA_EVENTS        = TG1_DATA_EVENTS * (TOTAL_DATA_EVENTS / RESTRICTED_DATA_EVENTS);
+double NUM_MC_EVENTS          = TG1_MC_EVENTS * (TOTAL_DATA_EVENTS / TOTAL_MC_EVENTS);
+double MC_SCALING             = NUM_DATA_EVENTS / NUM_MC_EVENTS;
 
 struct EventInfo {
     int run; int subrun; int event; bool isData;
@@ -188,7 +201,7 @@ double SLICED_CONE_SMALL_TRACK          = 5.0;
 int    SLICED_CONE_ALLOWED_SMALL_TRACKS = 0;
 
 // Number of allowed TG tracks
-int MAX_NUM_TG_TRACKS = 2;
+int MAX_NUM_TG_TRACKS = 1;
 
 // Parameters for BDT model
 int BDT_NUM_RECO_TRKS = 5;
