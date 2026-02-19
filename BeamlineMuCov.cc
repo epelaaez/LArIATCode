@@ -1226,12 +1226,16 @@ void BeamlineMuCov() {
     // Measured cross-section //
     ////////////////////////////
 
+    // Get raw counts vector
+    TH1D* hRawCountsNominal = new TH1D("hRawCountsNominal", "hRawCountsNominal;;", NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+
     // Get nominal measure vector
     TH1D* hMeasureNominal = new TH1D("hMeasureVectorNominal", "hMeasureVectorNominal;;", NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
     for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
         for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
             int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
             double xsec = XSEC_UNITS * (RecoSignals[iSignal]->GetBinContent(iBin + 1) / hPionIncidentKENom->GetBinContent(iBin + 1));
+            hRawCountsNominal->SetBinContent(index + 1, RecoSignals[iSignal]->GetBinContent(iBin + 1));
             hMeasureNominal->SetBinContent(index + 1, xsec); RecoSignals[iSignal]->SetBinContent(iBin + 1, xsec);
         }
     }
@@ -1239,10 +1243,17 @@ void BeamlineMuCov() {
     // Get nominal true cross-section in vector form
     TVectorD SignalNom(NUM_SIGNAL_TYPES * NUM_BINS_KE); H2V(hSignalNominal, SignalNom);
 
+    // Compose raw counts vector for all counts
+    std::vector<TH1D*> RawCountsUnivs;
+    RawCountsUnivs.reserve(NUM_UNIVERSES);
+
     // Compose measured vectors for all universes
     std::vector<TH1D*> MeasureVectorUnivs;
     MeasureVectorUnivs.reserve(NUM_UNIVERSES);
     for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+        // Raw counts 
+        TH1D* hRawCounts = new TH1D(Form("hRawCounts_Univ%d", iUniv), Form("Raw Counts Vector for Universe %d", iUniv), NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
+
         // One TH1D holding all signals flattened
         TH1D* hMeasure = new TH1D(Form("hMeasure_Univ%d", iUniv), Form("Measured Vector for Universe %d", iUniv), NUM_SIGNAL_TYPES * NUM_BINS_KE, 0, NUM_SIGNAL_TYPES * NUM_BINS_KE);
 
@@ -1255,7 +1266,9 @@ void BeamlineMuCov() {
         // Fill it with flattened (signal, bin) content
         for (int iSignal = 0; iSignal < NUM_SIGNAL_TYPES; ++iSignal) {
             for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
-                int index     = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+                int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+                hRawCounts->SetBinContent(index + 1, M(index) * hPionIncidentKENom->GetBinContent(iBin + 1) / XSEC_UNITS);
+                hRawCounts->SetBinError(index + 1, 0.0);
 
                 // double content = 0;
                 if (iSignal == 0) {
@@ -1277,6 +1290,7 @@ void BeamlineMuCov() {
             }
         }
         MeasureVectorUnivs.push_back(hMeasure);
+        RawCountsUnivs.push_back(hRawCounts);
     }
 
     // Use TMatrices/Vectors to compute response equation
@@ -1331,6 +1345,68 @@ void BeamlineMuCov() {
         "Measured Cross Section",
         "Bin number",
         "Cross Section [barn]"
+    );
+
+    // Incident vector 
+    TH2D* hIncidentCovMatrix = new TH2D(
+        "hIncidentCovMatrix", "hIncidentCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
+        NUM_BINS_KE, ARRAY_KE_BINS.data(),
+        NUM_BINS_KE, ARRAY_KE_BINS.data()
+    );
+    TH2D* hIncidentFracCovMatrix = new TH2D(
+        "hIncidentFracCovMatrix", "hIncidentFracCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
+        NUM_BINS_KE, ARRAY_KE_BINS.data(),
+        NUM_BINS_KE, ARRAY_KE_BINS.data()
+    );
+    TH2D* hIncidentCorrMatrix = new TH2D(
+        "hIncidentCorrMatrix", "hIncidentCorrMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
+        NUM_BINS_KE, ARRAY_KE_BINS.data(),
+        NUM_BINS_KE, ARRAY_KE_BINS.data()
+    );
+    GetCovMatrix(hPionIncidentKENom, PionIncidentKEUnivs, hIncidentCovMatrix);
+    GetFracCovAndCorrMatrix(hPionIncidentKENom, hIncidentCovMatrix, hIncidentFracCovMatrix, hIncidentCorrMatrix);
+    DrawHistosWithErrorBands(
+        hPionIncidentKENom,
+        PionIncidentKEUnivs,
+        SaveDir,
+        "BeamlineMu",
+        "IncidentFlux",
+        TextSize,
+        FontStyle,
+        "Incident Flux",
+        "Kinetic Energy [MeV]",
+        "Slices"
+    );
+
+    // Reconstructed raw counts 
+    TH2D* hRawCountsCovMatrix = new TH2D(
+        "hRawCountsCovMatrix", "hRawCountsCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
+        NUM_BINS_KE, ARRAY_KE_BINS.data(),
+        NUM_BINS_KE, ARRAY_KE_BINS.data()
+    );
+    TH2D* hRawCountsFracCovMatrix = new TH2D(
+        "hRawCountsFracCovMatrix", "hRawCountsFracCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
+        NUM_BINS_KE, ARRAY_KE_BINS.data(),
+        NUM_BINS_KE, ARRAY_KE_BINS.data()
+    );
+    TH2D* hRawCountsCorrMatrix = new TH2D(
+        "hRawCountsCorrMatrix", "hRawCountsCorrMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
+        NUM_BINS_KE, ARRAY_KE_BINS.data(),
+        NUM_BINS_KE, ARRAY_KE_BINS.data()
+    );
+    GetCovMatrix(hRawCountsNominal, RawCountsUnivs, hRawCountsCovMatrix);
+    GetFracCovAndCorrMatrix(hRawCountsNominal, hRawCountsCovMatrix, hRawCountsFracCovMatrix, hRawCountsCorrMatrix);
+    DrawHistosWithErrorBands(
+        hRawCountsNominal,
+        RawCountsUnivs,
+        SaveDir,
+        "BeamlineMu",
+        "RawCounts",
+        TextSize,
+        FontStyle,
+        "Reconstructed Counts",
+        "Kinetic Energy [MeV]",
+        "Counts"
     );
 
     // Abs 0p
@@ -1442,7 +1518,13 @@ void BeamlineMuCov() {
         hAbsNpCorrMatrix,
         hScatterCovMatrix,
         hScatterFracCovMatrix,
-        hScatterCorrMatrix
+        hScatterCorrMatrix,
+        hIncidentCovMatrix,
+        hIncidentFracCovMatrix,
+        hIncidentCorrMatrix,
+        hRawCountsCovMatrix,
+        hRawCountsFracCovMatrix,
+        hRawCountsCorrMatrix
     };
 
     std::vector<TString> TwoDTitles = {
@@ -1457,7 +1539,13 @@ void BeamlineMuCov() {
         "BeamlineMu/AbsNpCorrelation",
         "BeamlineMu/ScatterCovariance",
         "BeamlineMu/ScatterFracCovariance",
-        "BeamlineMu/ScatterCorrelation"
+        "BeamlineMu/ScatterCorrelation",
+        "BeamlineMu/IncidentCovariance",
+        "BeamlineMu/IncidentFracCovariance",
+        "BeamlineMu/IncidentCorrelation",
+        "BeamlineMu/RawCountsCovariance",
+        "BeamlineMu/RawCountsFracCovariance",
+        "BeamlineMu/RawCountsCorrelation"
     };
 
     std::vector<std::pair<double,double>> TwoDRanges = {

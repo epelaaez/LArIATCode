@@ -48,7 +48,7 @@ void GeneratorCov() {
 
     // Get file with weights
     // TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/WeightsAll_histo.root"; // all 20%
-    TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/WeightsAllChExch_histo.root"; // ch exch 50%
+    TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/WeightsAllFinal_histo.root"; // ch exch 50%
     std::unique_ptr<TFile> WeightsFile(TFile::Open(RootWeightsFilePath));
     TDirectory* WeightsDirectory = (TDirectory*)WeightsFile->Get("CalculateWeights");
     TTree* w_tree = (TTree*) WeightsDirectory->Get<TTree>("WeightsTree");
@@ -732,6 +732,14 @@ void GeneratorCov() {
                 }
             }
         }
+        if (backgroundType == 12) {
+            double avg = 0;
+            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+                avg += evt_weights->at(iUniv);
+            }
+            avg /= NUM_UNIVERSES;
+            std::cout << "Average weight: " << avg << std::endl;
+        }
 
         if (backgroundType == 0) {
             hTruePionAbs0pKENom->Fill(truthPrimaryVertexKE * 1000);
@@ -1386,6 +1394,37 @@ void GeneratorCov() {
         "Cross Section [barn]"
     );
 
+    // Incident vector 
+    TH2D* hIncidentCovMatrix = new TH2D(
+        "hIncidentCovMatrix", "hIncidentCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
+        NUM_BINS_KE, ARRAY_KE_BINS.data(),
+        NUM_BINS_KE, ARRAY_KE_BINS.data()
+    );
+    TH2D* hIncidentFracCovMatrix = new TH2D(
+        "hIncidentFracCovMatrix", "hIncidentFracCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
+        NUM_BINS_KE, ARRAY_KE_BINS.data(),
+        NUM_BINS_KE, ARRAY_KE_BINS.data()
+    );
+    TH2D* hIncidentCorrMatrix = new TH2D(
+        "hIncidentCorrMatrix", "hIncidentCorrMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
+        NUM_BINS_KE, ARRAY_KE_BINS.data(),
+        NUM_BINS_KE, ARRAY_KE_BINS.data()
+    );
+    GetCovMatrix(hPionIncidentKENom, PionIncidentKEUnivs, hIncidentCovMatrix);
+    GetFracCovAndCorrMatrix(hPionIncidentKENom, hIncidentCovMatrix, hIncidentFracCovMatrix, hIncidentCorrMatrix);
+    DrawHistosWithErrorBands(
+        hPionIncidentKENom,
+        PionIncidentKEUnivs,
+        SaveDir,
+        "Generator",
+        "IncidentFlux",
+        TextSize,
+        FontStyle,
+        "Incident Flux",
+        "Kinetic Energy [MeV]",
+        "Slices"
+    );
+
     // Abs 0p
     TH2D* hAbs0pCovMatrix = new TH2D(
         "hAbs0pCovMatrix", "hAbs0pCovMatrix;Kinetic Energy [MeV];Kinetic Energy [MeV]",
@@ -1466,6 +1505,16 @@ void GeneratorCov() {
     );
     GetCovMatrix(hPionScatterKENom, PionScatterKEUnivs, hScatterCovMatrix);
     GetFracCovAndCorrMatrix(hPionScatterKENom, hScatterCovMatrix, hScatterFracCovMatrix, hScatterCorrMatrix);
+    
+    std::cout << "Scatter covariance matrix: " << std::endl;
+    for (int i = 0; i < NUM_BINS_KE; ++i) {
+        for (int j = 0; j < NUM_BINS_KE; ++j) {
+            if (i == j) std::cout << "Bin " << i << ": " << std::endl;
+            if (i == j) std::cout << "  " << hScatterCovMatrix->GetBinContent(i + 1, j + 1) << " " << std::endl;
+            if (i == j) std::cout << "  " << hPionScatterKENom->GetBinContent(i + 1) << " " << std::endl;;
+        }        
+        std::cout << std::endl;
+    }
     DrawHistosWithErrorBands(
         hPionScatterKENom, 
         PionScatterKEUnivs, 
