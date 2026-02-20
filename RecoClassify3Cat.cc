@@ -2471,6 +2471,10 @@ void RecoClassify3Cat() {
     TH1D* hTrueTotalCrossSection      = new TH1D("hTrueTotalCrossSection", "hTrueTotalCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     // TODO: some sort of check with the total?
 
+    TH1D* hTruePionAbs0pNoThinCrossSection   = new TH1D("hTruePionAbs0pNoThinCrossSection", "hTruePionAbs0pNoThinCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTruePionAbsNpNoThinCrossSection   = new TH1D("hTruePionAbsNpNoThinCrossSection", "hTruePionAbsNpNoThinCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTruePionScatterNoThinCrossSection = new TH1D("hTruePionScatterNoThinCrossSection", "hTruePionScatterNoThinCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+
     std::vector<TH1D*> UnfoldedCrossSections = {
         hPionAbs0pCrossSection,
         hPionAbsNpCrossSection,
@@ -2483,9 +2487,16 @@ void RecoClassify3Cat() {
         hTruePionScatterCrossSection
     };
 
+    std::vector<TH1D*> TrueNoThinCrossSections = {
+        hTruePionAbs0pNoThinCrossSection,
+        hTruePionAbsNpNoThinCrossSection,
+        hTruePionScatterNoThinCrossSection
+    };
+
     for (int i = 0; i < UnfoldedCrossSections.size(); ++i) {
         TH1D* unfXSec  = UnfoldedCrossSections[i];
         TH1D* trueXSec = TrueCrossSections[i];
+        TH1D* trueNoThinXSec = TrueNoThinCrossSections[i];
 
         for (int iBin = 1; iBin <= NUM_BINS_KE; ++iBin) {
             double xsecErr     = UnfoldedRecoHistos[i]->GetBinError(iBin);
@@ -2496,11 +2507,13 @@ void RecoClassify3Cat() {
 
             // True cross-section, no error bars
             trueXSec->SetBinContent(iBin, XSEC_UNITS * (TotalEventsHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)));
+            trueNoThinXSec->SetBinContent(iBin, XSEC_UNITS * (-std::log(1 - (TotalEventsHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)))));
         }
 
         // Make contents per 50 MeV
         reweightOneDHisto(unfXSec, 50.);
         reweightOneDHisto(trueXSec, 50.);
+        reweightOneDHisto(trueNoThinXSec, 50.);
     }
 
     // True "other" cross-section
@@ -2577,6 +2590,11 @@ void RecoClassify3Cat() {
         // Total true-cross section
         {hTruePionAbs0pCrossSection, hTruePionAbsNpCrossSection, hTruePionScatterCrossSection, hTruePionChExchCrossSection, hTruePionOtherCrossSection},
 
+        // Total true-cross section with no thin-slice approximation
+        {hTruePionAbs0pCrossSection, hTruePionAbs0pNoThinCrossSection},
+        {hTruePionAbsNpCrossSection, hTruePionAbsNpNoThinCrossSection},
+        {hTruePionScatterCrossSection, hTruePionScatterNoThinCrossSection},
+
         // Unreconstructed hits
         {hHitClusterInductionSizesAbs0p, hHitClusterInductionSizesAbsNp, hHitClusterInductionSizesMuon, hHitClusterInductionSizesElectron, hHitClusterInductionSizesScatter, hHitClusterInductionSizesChExch, hHitClusterInductionSizesOther},
         {hLargeHitClusterInductionAbs0p, hLargeHitClusterInductionAbsNp, hLargeHitClusterInductionMuon, hLargeHitClusterInductionElectron, hLargeHitClusterInductionScatter, hLargeHitClusterInductionChExch, hLargeHitClusterInductionOther},
@@ -2632,6 +2650,11 @@ void RecoClassify3Cat() {
         // Total true-cross section
         {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other"},
 
+        // Total true-cross section with no thin-slice approximation
+        {"Thin-slice", "Log."},
+        {"Thin-slice", "Log."},
+        {"Thin-slice", "Log."},
+
         // Unreconstructed hits
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
@@ -2685,6 +2708,11 @@ void RecoClassify3Cat() {
         // Total true-cross section
         "CrossSection/TotalTrueCrossSection",
 
+        // Total true-cross section with no thin-slice approximation
+        "CrossSection/Abs0pLogComp",
+        "CrossSection/AbsNpLogComp",
+        "CrossSection/ScatterLogComp",
+
         // Unreconstructed hits
         "Hits/ClusterSizesInduction",
         "Hits/NumLargeClustersInduction",
@@ -2736,6 +2764,11 @@ void RecoClassify3Cat() {
         "Kinetic energy [MeV]",
 
         // Total true-cross section
+        "Kinetic energy [MeV]",
+
+        // Total true-cross section with no thin-slice approximation
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
 
         // Unreconstructed hits
@@ -2791,6 +2824,11 @@ void RecoClassify3Cat() {
         // Total true-cross section
         "Cross section [barn] per 50 MeV",
 
+        // Total true-cross section with no thin-slice approximation
+        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 50 MeV",
+
         // Unreconstructed hits
         "Counts",
         "Counts",
@@ -2844,6 +2882,11 @@ void RecoClassify3Cat() {
         // Total true-cross section
         true,
 
+        // Total true-cross section with no thin-slice approximation
+        false,
+        false,
+        false,
+
         // Unreconstructed hits
         true,
         true,
@@ -2896,6 +2939,11 @@ void RecoClassify3Cat() {
 
         // Total true-cross section
         {false, false, false, false, false},
+
+        // Total true-cross section with no thin-slice approximation
+        {false, false},
+        {false, false},
+        {false, false},
 
         // Unreconstructed hits
         {false, false, false, false, false, false, false},
