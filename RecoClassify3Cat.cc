@@ -1214,16 +1214,38 @@ void RecoClassify3Cat() {
         ////////////////////////////
 
         // Scattering only if degree > THRESHOLD and energy > THRESHOLD
-        double scatteringAngle = -9999;
+        double scatteringAngle  = -9999;
+        double scatteringEnergy = -9999;
+
         if (backgroundType == 12 || backgroundType == 6) {
             if (backgroundType == 12) {
-                scatteringAngle = trajectoryInteractionAngle;
+                scatteringAngle      = trajectoryInteractionAngle;
+                scatteringEnergy     = trajectoryInteractionKE;
+                truthPrimaryVertexKE = trajectoryInteractionKE; // in case we do not modify anything
             } else if (backgroundType == 6) {
-                scatteringAngle = truthScatteringAngle;
+                scatteringAngle  = truthScatteringAngle;
+                scatteringEnergy = truthScatteredPionKE; 
             }
 
-            // std::cout << "Initial scattering angle: " << scatteringAngle * (180 / TMath::Pi()) << " for interaction " << backgroundType << std::endl;
+            // If outgoing pion below threshold, absorption
+            if (scatteringEnergy < PION_SCATTERING_ENERGY_THRESHOLD) {
+                if (backgroundType == 12) backgroundType = 0;
+                else if (backgroundType == 6) {
+                    int numVisibleProtons = 0;
+                    for (int i = 0; i < truthPrimaryDaughtersPDG->size(); ++i) {
+                        if (truthPrimaryDaughtersPDG->at(i) == 2212) {
+                            if (
+                                truthPrimaryDaughtersKE->at(i) > PROTON_ENERGY_LOWER_BOUND &&
+                                truthPrimaryDaughtersKE->at(i) < PROTON_ENERGY_UPPER_BOUND
+                            ) numVisibleProtons++;
+                        }
+                    }
+                    if (numVisibleProtons == 0) backgroundType = 0;
+                    else backgroundType = 1;
+                }
+            }
 
+            // If pion above threshold but angle not large enough, go to next interaction and check there
             if (scatteringAngle < SCATTERING_ANGLE_THRESHOLD) {
                 scatteringsModified++;
 
@@ -1231,43 +1253,41 @@ void RecoClassify3Cat() {
                 for (int iInteraction = 0; iInteraction < secondaryInteractionTypes->size(); ++iInteraction) {
                     int currentInteraction = secondaryInteractionTypes->at(iInteraction);
                     scatteringAngle        = secondaryInteractionAngle->at(iInteraction);
+                    scatteringEnergy       = secondaryInteractionInteractingKE->at(iInteraction);
 
+                    // Get scattering energy for inelastic scattering from outgoing pion kinematics
+                    if (currentInteraction == 6) {
+                        for (int i = 0; i < secondaryInteractionDaughtersPDG->at(iInteraction).size(); ++i) {
+                            if (secondaryInteractionDaughtersPDG->at(iInteraction)[i] == -211) {
+                                scatteringEnergy = secondaryInteractionDaughtersKE->at(iInteraction)[i];
+                                break;
+                            }
+                        }
+                    }
+
+                    // Add incident slices true contributions
                     for (int iContribution = 0; iContribution < secondaryIncidentKEContributions->at(iInteraction).size(); ++iContribution) {
                         trueIncidentKEContributions->push_back(secondaryIncidentKEContributions->at(iInteraction)[iContribution]);
                     }
 
-                    // std::cout << "  Current interaction: " << currentInteraction << ", scattering angle: " << scatteringAngle * (180 / TMath::Pi()) << std::endl;
-
+                    // If scattering but outgoing below threshold, absorption
                     if (
                         (currentInteraction == 6 || currentInteraction == 12) &&
-                        scatteringAngle < SCATTERING_ANGLE_THRESHOLD
+                        scatteringEnergy < PION_SCATTERING_ENERGY_THRESHOLD
                     ) {
-                        // We want to keep going
-                        continue;
-                    } else {
-                        // We found non-scattering interaction or scattering interaction 
-                        // with angle above our threshold value
-                        backgroundType = currentInteraction;
-
-                        if (backgroundType == 6 || backgroundType == 12) {
-                            // Look at outgoing particles
-                            int secondaryVisibleProtons = 0; double scatteringEnergy = 0;
+                        if (currentInteraction == 12) backgroundType = 0;
+                        else if (currentInteraction == 6) {
+                            int numVisibleProtons = 0;
                             for (int i = 0; i < secondaryInteractionDaughtersPDG->at(iInteraction).size(); ++i) {
-                                if (secondaryInteractionDaughtersPDG->at(iInteraction)[i] == -211) {
-                                    scatteringEnergy = secondaryInteractionDaughtersKE->at(iInteraction)[i];
-                                } else if (secondaryInteractionDaughtersPDG->at(iInteraction)[i] == 2212) {
+                                if (secondaryInteractionDaughtersPDG->at(iInteraction)[i] == 2212) {
                                     if (
                                         secondaryInteractionDaughtersKE->at(iInteraction)[i] > PROTON_ENERGY_LOWER_BOUND &&
                                         secondaryInteractionDaughtersKE->at(iInteraction)[i] < PROTON_ENERGY_UPPER_BOUND
-                                    ) secondaryVisibleProtons++;
+                                    ) numVisibleProtons++;
                                 }
                             }
-
-                            // If scattering energy is below threshold, absorption
-                            if (scatteringEnergy < PION_SCATTERING_ENERGY_THRESHOLD) {
-                                if (secondaryVisibleProtons == 0) backgroundType = 0;
-                                else backgroundType = 1;
-                            }
+                            if (numVisibleProtons == 0) backgroundType = 0;
+                            else backgroundType = 1;
                         }
                         truthPrimaryVertexKE = secondaryInteractionInteractingKE->at(iInteraction);
                         truthPrimaryVertexX  = secondaryInteractionXPosition->at(iInteraction);
@@ -1275,32 +1295,24 @@ void RecoClassify3Cat() {
                         truthPrimaryVertexZ  = secondaryInteractionZPosition->at(iInteraction);
                         break;
                     }
-                }
-                // std::cout << "new interaction : " << backgroundType << std::endl;
-                // std::cout << std::endl;
-            } else {
-                // If initial interaction has valid angle, first correct for vertex energy 
-                if (backgroundType == 12) truthPrimaryVertexKE = trajectoryInteractionKE;
 
-                // Check if outgoing pion is above threshold
-                if (backgroundType == 6 && truthScatteredPionKE < PION_SCATTERING_ENERGY_THRESHOLD) {
-                    int secondaryVisibleProtons = 0;
-                    for (int i = 0; i < truthPrimaryDaughtersPDG->size(); ++i) {
-                        if (truthPrimaryDaughtersPDG->at(i) == 2212) {
-                            if (
-                                truthPrimaryDaughtersKE->at(i) > PROTON_ENERGY_LOWER_BOUND &&
-                                truthPrimaryDaughtersKE->at(i) < PROTON_ENERGY_UPPER_BOUND
-                            ) secondaryVisibleProtons++;
-                        }
+                    // If scattering energy above threshold but angle not large enough, keep going
+                    if (
+                        (currentInteraction == 6 || currentInteraction == 12) &&
+                        scatteringAngle < SCATTERING_ANGLE_THRESHOLD
+                    ) {
+                        // We want to keep going
+                        continue;
+                    } else {
+                        // We found non-scattering interaction or scattering interaction with angle and energy above our threshold value
+                        backgroundType       = currentInteraction;
+                        truthPrimaryVertexKE = secondaryInteractionInteractingKE->at(iInteraction);
+                        truthPrimaryVertexX  = secondaryInteractionXPosition->at(iInteraction);
+                        truthPrimaryVertexY  = secondaryInteractionYPosition->at(iInteraction);
+                        truthPrimaryVertexZ  = secondaryInteractionZPosition->at(iInteraction);
+                        break;
                     }
-                    if (secondaryVisibleProtons == 0) backgroundType = 0;
-                    else backgroundType = 1;
-                } else if (backgroundType == 12 && trajectoryInteractionKE < PION_SCATTERING_ENERGY_THRESHOLD) {
-                    // If outgoing pion from elastic scattering has energy lower than threshold, we
-                    // label it as 0p absorption since there are no other products in an elastic scattering
-                    backgroundType = 0;
                 }
-
             }
         }
 
@@ -2510,10 +2522,10 @@ void RecoClassify3Cat() {
             trueNoThinXSec->SetBinContent(iBin, XSEC_UNITS * (-std::log(1 - (TotalEventsHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)))));
         }
 
-        // Make contents per 50 MeV
-        reweightOneDHisto(unfXSec, 50.);
-        reweightOneDHisto(trueXSec, 50.);
-        reweightOneDHisto(trueNoThinXSec, 50.);
+        // Make contents per 100 MeV
+        reweightOneDHisto(unfXSec, 100.);
+        reweightOneDHisto(trueXSec, 100.);
+        reweightOneDHisto(trueNoThinXSec, 100.);
     }
 
     // True "other" cross-section
@@ -2521,7 +2533,7 @@ void RecoClassify3Cat() {
         hTruePionOtherCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueOtherKE->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)));
         hTruePionChExchCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueChExchKE->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)));
     }
-    reweightOneDHisto(hTruePionOtherCrossSection, 50.); reweightOneDHisto(hTruePionChExchCrossSection, 50.);
+    reweightOneDHisto(hTruePionOtherCrossSection, 100.); reweightOneDHisto(hTruePionChExchCrossSection, 100.);
 
     ///////////////////////////
     // Make plots per 50 MeV //
@@ -2817,17 +2829,17 @@ void RecoClassify3Cat() {
         "Counts",
 
         // Cross-sections (unfolded)
-        "Cross section [barn] per 50 MeV",
-        "Cross section [barn] per 50 MeV",
-        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 100 MeV",
+        "Cross section [barn] per 100 MeV",
+        "Cross section [barn] per 100 MeV",
 
         // Total true-cross section
-        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 100 MeV",
 
         // Total true-cross section with no thin-slice approximation
-        "Cross section [barn] per 50 MeV",
-        "Cross section [barn] per 50 MeV",
-        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 100 MeV",
+        "Cross section [barn] per 100 MeV",
+        "Cross section [barn] per 100 MeV",
 
         // Unreconstructed hits
         "Counts",
