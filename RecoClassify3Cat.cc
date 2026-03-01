@@ -493,6 +493,10 @@ void RecoClassify3Cat() {
     TH1D* hNumTGTracksChExch   = new TH1D("hNumTGTracksChExch", "hNumTGTracksChExch", 10, 0, 10);
     TH1D* hNumTGTracksOther    = new TH1D("hNumTGTracksOther", "hNumTGTracksOther", 10, 0, 10);
 
+    TH1D* hNumTGTracksPrimaryMuon     = new TH1D("hNumTGTracksPrimaryMuon", "hNumTGTracksPrimaryMuon", 10, 0, 10);
+    TH1D* hNumTGTracksPrimaryPion     = new TH1D("hNumTGTracksPrimaryPion", "hNumTGTracksPrimaryPion", 10, 0, 10);
+    TH1D* hNumTGTracksPrimaryElectron = new TH1D("hNumTGTracksPrimaryElectron", "hNumTGTracksPrimaryElectron", 10, 0, 10);
+
     ////////////////////////////////
     // Study unreconstructed hits //
     ////////////////////////////////
@@ -1568,18 +1572,25 @@ void RecoClassify3Cat() {
         // Save data about TG tracks
         if (backgroundType == 0) {
             hNumTGTracksAbs0p->Fill(numTGTracks);
+            hNumTGTracksPrimaryPion->Fill(numTGTracks);
         } else if (backgroundType == 1) {
             hNumTGTracksAbsNp->Fill(numTGTracks);
+            hNumTGTracksPrimaryPion->Fill(numTGTracks);
         } else if (backgroundType == 2) {
             hNumTGTracksMuon->Fill(numTGTracks);
+            hNumTGTracksPrimaryMuon->Fill(numTGTracks);
         } else if (backgroundType == 3) {
-            hNumTGTracksElectron->Fill(numTGTracks);    
+            hNumTGTracksElectron->Fill(numTGTracks);
+            hNumTGTracksPrimaryElectron->Fill(numTGTracks);
         } else if (backgroundType == 6 || backgroundType == 12) {
             hNumTGTracksScatter->Fill(numTGTracks);
+            hNumTGTracksPrimaryPion->Fill(numTGTracks);
         } else if (backgroundType == 7) {
             hNumTGTracksChExch->Fill(numTGTracks);
+            hNumTGTracksPrimaryPion->Fill(numTGTracks);
         } else {
             hNumTGTracksOther->Fill(numTGTracks);
+            hNumTGTracksPrimaryPion->Fill(numTGTracks);
         }
 
         // Grab data about number of events with each cutoff
@@ -2627,7 +2638,8 @@ void RecoClassify3Cat() {
         {hTimePrimaryHits},
 
         // Through-going tracks
-        {hNumTGTracksAbs0p, hNumTGTracksAbsNp, hNumTGTracksMuon, hNumTGTracksElectron, hNumTGTracksScatter, hNumTGTracksChExch, hNumTGTracksOther}
+        {hNumTGTracksAbs0p, hNumTGTracksAbsNp, hNumTGTracksMuon, hNumTGTracksElectron, hNumTGTracksScatter, hNumTGTracksChExch, hNumTGTracksOther},
+        {hNumTGTracksPrimaryMuon, hNumTGTracksPrimaryPion, hNumTGTracksPrimaryElectron}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2685,7 +2697,8 @@ void RecoClassify3Cat() {
         {"All time hits"},
 
         // Through-going tracks
-        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"}
+        {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
+        {"Muon", "Pion", "Electron"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -2743,7 +2756,8 @@ void RecoClassify3Cat() {
         "Hits/PrimaryTimeHits",
 
         // Through-going tracks
-        "TGTracks/NumTGTracks"
+        "TGTracks/NumTGTracks",
+        "TGTracks/NumTGTracksPrimary"
     };
 
     std::vector<TString> XLabels = {
@@ -2801,6 +2815,7 @@ void RecoClassify3Cat() {
         "Hit time [us]",
 
         // Through-going tracks
+        "# of TG tracks",
         "# of TG tracks"
     };
 
@@ -2859,6 +2874,7 @@ void RecoClassify3Cat() {
         "Counts",
 
         // Through-going tracks
+        "Counts",
         "Counts"
     };
 
@@ -2917,6 +2933,7 @@ void RecoClassify3Cat() {
         true,
 
         // Through-going tracks
+        true,
         true
     };
 
@@ -2975,7 +2992,8 @@ void RecoClassify3Cat() {
         {false},
 
         // Through-going tracks
-        {false, false, false, false, false, false, false}
+        {false, false, false, false, false, false, false},
+        {false, false, false}
     };
 
     printOneDPlots(
