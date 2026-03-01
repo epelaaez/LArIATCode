@@ -47,7 +47,7 @@ void GeneratorCov() {
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
     // Get file with weights
-    TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/WeightsAllFinal_histo.root";
+    TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/WeightsAllGen_histo.root";
     std::unique_ptr<TFile> WeightsFile(TFile::Open(RootWeightsFilePath));
     TDirectory* WeightsDirectory = (TDirectory*)WeightsFile->Get("CalculateWeights");
     TTree* w_tree = (TTree*) WeightsDirectory->Get<TTree>("WeightsTree");
@@ -756,6 +756,9 @@ void GeneratorCov() {
         ///////////////////////////
         // Get truth information //
         ///////////////////////////
+
+        if (trueIncidentKEContributions->size() == 0) truthPrimaryVertexKE = 0;
+        else truthPrimaryVertexKE = trueIncidentKEContributions->back() / 1000.0;
 
         int TrueEnergyBin = getBin(truthPrimaryVertexKE * 1000, ARRAY_KE_BINS);
 

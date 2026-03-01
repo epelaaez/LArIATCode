@@ -725,6 +725,9 @@ void MCStatCov() {
         // Get truth information //
         ///////////////////////////
 
+        if (trueIncidentKEContributions->size() == 0) truthPrimaryVertexKE = 0;
+        else truthPrimaryVertexKE = trueIncidentKEContributions->back() / 1000.0;
+
         int TrueEnergyBin = getBin(truthPrimaryVertexKE * 1000, ARRAY_KE_BINS);
 
         if (validTrueIncidentKE) {

@@ -18,6 +18,7 @@ True abs np as abs np: 1 0 199860
 True scatter as scatter: 1 0 199883
 True scatter as scatter: 1 0 199894
 True scatter as scatter: 1 0 199928
+True scatter as scatter: 1 0 199943
 True abs np as abs np: 1 0 200012
 True abs np as abs np: 1 0 200061
 True abs np as abs np: 1 0 200189
@@ -79,6 +80,7 @@ True abs 0p as abs 0p: 1 0 201892
 True scatter as scatter: 1 0 201899
 True abs np as abs np: 1 0 201904
 True abs np as abs np: 1 0 202041
+True scatter as scatter: 1 0 202077
 True abs np as abs np: 1 0 202108
 True abs 0p as abs 0p: 1 0 202115
 True abs np as abs np: 1 0 202118
@@ -237,6 +239,7 @@ True abs np as abs np: 1 0 6068
 True abs np as abs np: 1 0 6085
 True abs np as abs np: 1 0 6104
 True abs np as abs np: 1 0 6125
+True scatter as scatter: 1 0 6174
 True abs np as abs np: 1 0 6197
 True abs 0p as abs 0p: 1 0 61806
 True scatter as scatter: 1 0 61849
@@ -440,6 +443,7 @@ True scatter as scatter: 1 0 66847
 True abs np as abs np: 1 0 66863
 True scatter as scatter: 1 0 66929
 True abs 0p as abs 0p: 1 0 66955
+True scatter as scatter: 1 0 66964
 True scatter as scatter: 1 0 66987
 True abs np as abs np: 1 0 66996
 True abs np as abs np: 1 0 67008
@@ -610,6 +614,7 @@ True abs np as abs np: 1 0 83364
 True scatter as scatter: 1 0 83377
 True abs np as abs np: 1 0 83395
 True abs np as abs np: 1 0 83400
+True scatter as scatter: 1 0 83434
 True abs np as abs np: 1 0 83438
 True abs np as abs np: 1 0 83441
 True scatter as scatter: 1 0 83481
@@ -1033,6 +1038,7 @@ True abs 0p as abs 0p: 1 0 105254
 True scatter as scatter: 1 0 105300
 True scatter as scatter: 1 0 105397
 True scatter as scatter: 1 0 105406
+True scatter as scatter: 1 0 105407
 True abs np as abs np: 1 0 105471
 True abs np as abs np: 1 0 105497
 True abs np as abs np: 1 0 105549
@@ -1327,6 +1333,7 @@ True abs 0p as abs 0p: 1 0 112409
 True abs np as abs np: 1 0 112414
 True scatter as scatter: 1 0 112425
 True abs np as abs np: 1 0 112449
+True scatter as scatter: 1 0 112463
 True abs 0p as abs 0p: 1 0 112507
 True abs 0p as abs 0p: 1 0 112527
 True abs np as abs np: 1 0 112591
@@ -1473,7 +1480,6 @@ True scatter as scatter: 1 0 125220
 True scatter as scatter: 1 0 125296
 True abs np as abs np: 1 0 125371
 True abs np as abs np: 1 0 125395
-True abs 0p as abs 0p: 1 0 125410
 True scatter as scatter: 1 0 125422
 True abs np as abs np: 1 0 125429
 True abs np as abs np: 1 0 125430
@@ -2261,6 +2267,7 @@ True scatter as scatter: 1 0 173659
 True abs np as abs np: 1 0 173687
 True abs 0p as abs 0p: 1 0 173728
 True abs np as abs np: 1 0 173773
+True scatter as scatter: 1 0 173839
 True abs 0p as abs 0p: 1 0 173840
 True scatter as scatter: 1 0 173844
 True scatter as scatter: 1 0 173897
@@ -2495,6 +2502,7 @@ True scatter as scatter: 1 0 179042
 True scatter as scatter: 1 0 179061
 True scatter as scatter: 1 0 179145
 True abs 0p as abs 0p: 1 0 179171
+True scatter as scatter: 1 0 179193
 True abs np as abs np: 1 0 179194
 True abs np as abs np: 1 0 179215
 True scatter as scatter: 1 0 179250
@@ -2920,6 +2928,7 @@ True abs np as abs np: 1 0 244328
 True abs np as abs np: 1 0 244333
 True scatter as scatter: 1 0 244334
 True scatter as scatter: 1 0 244351
+True scatter as scatter: 1 0 244403
 True abs np as abs np: 1 0 244490
 True abs np as abs np: 1 0 244496
 True scatter as scatter: 1 0 244512
@@ -3103,9 +3112,11 @@ True abs np as abs np: 1 0 263891
 True scatter as scatter: 1 0 263911
 True abs 0p as abs 0p: 1 0 263917
 True abs 0p as abs 0p: 1 0 263927
+True scatter as scatter: 1 0 263941
 True scatter as scatter: 1 0 263967
 True scatter as scatter: 1 0 263968
 True abs np as abs np: 1 0 264092
+True scatter as scatter: 1 0 264138
 True abs np as abs np: 1 0 264243
 True abs np as abs np: 1 0 264254
 True scatter as scatter: 1 0 264280
@@ -3188,7 +3199,6 @@ True scatter as scatter: 1 0 266268
 True scatter as scatter: 1 0 266278
 True abs np as abs np: 1 0 266345
 True scatter as scatter: 1 0 266425
-True abs 0p as abs 0p: 1 0 266443
 True scatter as scatter: 1 0 266461
 True abs np as abs np: 1 0 266486
 True scatter as scatter: 1 0 266505
@@ -3310,6 +3320,7 @@ True abs np as abs np: 1 0 269392
 True scatter as scatter: 1 0 269455
 True abs np as abs np: 1 0 269478
 True scatter as scatter: 1 0 269503
+True scatter as scatter: 1 0 269514
 True abs 0p as abs 0p: 1 0 269563
 True scatter as scatter: 1 0 269593
 True abs 0p as abs 0p: 1 0 269600
@@ -3467,6 +3478,7 @@ True abs 0p as abs 0p: 1 0 280070
 True scatter as scatter: 1 0 280084
 True abs np as abs np: 1 0 280124
 True abs np as abs np: 1 0 280171
+True scatter as scatter: 1 0 280232
 True scatter as scatter: 1 0 280249
 True abs 0p as abs 0p: 1 0 280250
 True abs np as abs np: 1 0 280321
@@ -3509,6 +3521,7 @@ True abs np as abs np: 1 0 27976
 True abs np as abs np: 1 0 27999
 True abs 0p as abs 0p: 1 0 28037
 True scatter as scatter: 1 0 28041
+True scatter as scatter: 1 0 28065
 True abs 0p as abs 0p: 1 0 28079
 True scatter as scatter: 1 0 28105
 True abs 0p as abs 0p: 1 0 28124
@@ -3580,6 +3593,7 @@ True scatter as scatter: 1 0 282428
 True scatter as scatter: 1 0 282453
 True scatter as scatter: 1 0 282545
 True abs np as abs np: 1 0 282574
+True scatter as scatter: 1 0 282586
 True abs np as abs np: 1 0 282617
 True scatter as scatter: 1 0 282729
 True scatter as scatter: 1 0 282901
@@ -3616,6 +3630,7 @@ True scatter as scatter: 1 0 28431
 True scatter as scatter: 1 0 28445
 True abs np as abs np: 1 0 28447
 True abs np as abs np: 1 0 28456
+True scatter as scatter: 1 0 28465
 True scatter as scatter: 1 0 28478
 True scatter as scatter: 1 0 28597
 True scatter as scatter: 1 0 28606
@@ -3734,6 +3749,7 @@ True abs np as abs np: 1 0 289405
 True scatter as scatter: 1 0 289454
 True abs np as abs np: 1 0 289472
 True abs np as abs np: 1 0 289485
+True scatter as scatter: 1 0 289538
 True scatter as scatter: 1 0 289548
 True scatter as scatter: 1 0 289580
 True scatter as scatter: 1 0 289595
@@ -3886,6 +3902,7 @@ True scatter as scatter: 1 0 308485
 True scatter as scatter: 1 0 308490
 True scatter as scatter: 1 0 308524
 True scatter as scatter: 1 0 308531
+True scatter as scatter: 1 0 308535
 True scatter as scatter: 1 0 308537
 True abs 0p as abs 0p: 1 0 308630
 True scatter as scatter: 1 0 308633
@@ -4061,6 +4078,7 @@ True scatter as scatter: 1 0 313524
 True scatter as scatter: 1 0 313577
 True scatter as scatter: 1 0 313586
 True abs np as abs np: 1 0 313618
+True scatter as scatter: 1 0 313690
 True abs np as abs np: 1 0 313710
 True scatter as scatter: 1 0 313713
 True scatter as scatter: 1 0 313725
@@ -4148,7 +4166,6 @@ True scatter as scatter: 1 0 315616
 True abs np as abs np: 1 0 315624
 True abs np as abs np: 1 0 315629
 True scatter as scatter: 1 0 315660
-True abs 0p as abs 0p: 1 0 315677
 True scatter as scatter: 1 0 315710
 True scatter as scatter: 1 0 315763
 True scatter as scatter: 1 0 315809
@@ -4421,6 +4438,7 @@ True scatter as scatter: 1 0 328229
 True scatter as scatter: 1 0 328255
 True abs np as abs np: 1 0 328276
 True scatter as scatter: 1 0 328281
+True scatter as scatter: 1 0 328282
 True scatter as scatter: 1 0 328318
 True scatter as scatter: 1 0 328326
 True scatter as scatter: 1 0 328332
@@ -4641,6 +4659,7 @@ True abs 0p as abs 0p: 1 0 345433
 True scatter as scatter: 1 0 345467
 True abs 0p as abs 0p: 1 0 345520
 True abs np as abs np: 1 0 345531
+True scatter as scatter: 1 0 345561
 True scatter as scatter: 1 0 345577
 True scatter as scatter: 1 0 345688
 True abs 0p as abs 0p: 1 0 345713
@@ -4720,6 +4739,7 @@ True abs np as abs np: 1 0 347732
 True abs 0p as abs 0p: 1 0 347745
 True abs 0p as abs 0p: 1 0 347781
 True abs np as abs np: 1 0 347782
+True scatter as scatter: 1 0 347794
 True abs np as abs np: 1 0 347795
 True scatter as scatter: 1 0 347808
 True abs np as abs np: 1 0 347840
@@ -4728,6 +4748,7 @@ True scatter as scatter: 1 0 347880
 True abs np as abs np: 1 0 347954
 True scatter as scatter: 1 0 347962
 True abs np as abs np: 1 0 348007
+True scatter as scatter: 1 0 348131
 True abs 0p as abs 0p: 1 0 348155
 True abs np as abs np: 1 0 348175
 True scatter as scatter: 1 0 348190
@@ -4836,6 +4857,7 @@ True scatter as scatter: 1 0 350595
 True scatter as scatter: 1 0 350628
 True abs np as abs np: 1 0 350629
 True abs 0p as abs 0p: 1 0 350633
+True scatter as scatter: 1 0 350656
 True scatter as scatter: 1 0 350661
 True scatter as scatter: 1 0 350747
 True scatter as scatter: 1 0 350853
@@ -5602,6 +5624,7 @@ True abs 0p as abs 0p: 1 0 385655
 True scatter as scatter: 1 0 385678
 True abs np as abs np: 1 0 385715
 True abs np as abs np: 1 0 385717
+True scatter as scatter: 1 0 385774
 True abs 0p as abs 0p: 1 0 385832
 True abs 0p as abs 0p: 1 0 385858
 True abs np as abs np: 1 0 385882
@@ -5726,6 +5749,7 @@ True scatter as scatter: 1 0 392334
 True abs np as abs np: 1 0 392410
 True abs np as abs np: 1 0 392441
 True scatter as scatter: 1 0 392457
+True scatter as scatter: 1 0 392483
 True abs 0p as abs 0p: 1 0 392501
 True scatter as scatter: 1 0 392548
 True scatter as scatter: 1 0 392555
@@ -5825,6 +5849,7 @@ True abs np as abs np: 1 0 395126
 True scatter as scatter: 1 0 395176
 True scatter as scatter: 1 0 39202
 True abs np as abs np: 1 0 39242
+True scatter as scatter: 1 0 39248
 True abs np as abs np: 1 0 39262
 True abs np as abs np: 1 0 39275
 True scatter as scatter: 1 0 39276
@@ -5994,6 +6019,7 @@ True scatter as scatter: 1 0 404944
 True scatter as scatter: 1 0 404957
 True scatter as scatter: 1 0 404987
 True scatter as scatter: 1 0 404994
+True scatter as scatter: 1 0 405002
 True scatter as scatter: 1 0 405018
 True abs 0p as abs 0p: 1 0 405031
 True abs 0p as abs 0p: 1 0 405053
@@ -6225,7 +6251,6 @@ True scatter as scatter: 1 0 414048
 True scatter as scatter: 1 0 414051
 True abs np as abs np: 1 0 414053
 True scatter as scatter: 1 0 414056
-True abs 0p as abs 0p: 1 0 414063
 True scatter as scatter: 1 0 414102
 True abs np as abs np: 1 0 414160
 True scatter as scatter: 1 0 414177
@@ -6798,7 +6823,6 @@ True abs np as abs np: 1 0 221880
 True scatter as scatter: 1 0 221888
 True scatter as scatter: 1 0 221912
 True abs np as abs np: 1 0 221913
-True abs 0p as abs 0p: 1 0 221941
 True abs np as abs np: 1 0 222014
 True scatter as scatter: 1 0 222021
 True scatter as scatter: 1 0 222030
@@ -7044,12 +7068,14 @@ True scatter as scatter: 1 0 444041
 True abs np as abs np: 1 0 444071
 True abs 0p as abs 0p: 1 0 444079
 True scatter as scatter: 1 0 444122
+True scatter as scatter: 1 0 444142
 True abs 0p as abs 0p: 1 0 444159
 True abs 0p as abs 0p: 1 0 444180
 True scatter as scatter: 1 0 444188
 True abs np as abs np: 1 0 444285
 True abs np as abs np: 1 0 444288
 True scatter as scatter: 1 0 444306
+True scatter as scatter: 1 0 444320
 True abs 0p as abs 0p: 1 0 444352
 True abs np as abs np: 1 0 444359
 True scatter as scatter: 1 0 444369
@@ -7325,12 +7351,14 @@ True abs np as abs np: 1 0 454929
 True abs np as abs np: 1 0 454942
 True scatter as scatter: 1 0 454943
 True abs np as abs np: 1 0 454973
+True scatter as scatter: 1 0 454985
 True abs np as abs np: 1 0 4266
 True scatter as scatter: 1 0 4321
 True scatter as scatter: 1 0 4358
 True scatter as scatter: 1 0 4365
 True scatter as scatter: 1 0 4387
 True abs np as abs np: 1 0 45628
+True scatter as scatter: 1 0 45666
 True abs np as abs np: 1 0 45716
 True scatter as scatter: 1 0 45720
 True abs np as abs np: 1 0 458035
@@ -7363,6 +7391,7 @@ True abs np as abs np: 1 0 458999
 True scatter as scatter: 1 0 459041
 True scatter as scatter: 1 0 459076
 True abs np as abs np: 1 0 459128
+True scatter as scatter: 1 0 459146
 True scatter as scatter: 1 0 459173
 True scatter as scatter: 1 0 459194
 True scatter as scatter: 1 0 459196
@@ -7377,6 +7406,7 @@ True scatter as scatter: 1 0 459429
 True scatter as scatter: 1 0 459434
 True abs np as abs np: 1 0 459473
 True scatter as scatter: 1 0 459496
+True scatter as scatter: 1 0 459498
 True scatter as scatter: 1 0 459501
 True abs np as abs np: 1 0 459544
 True scatter as scatter: 1 0 459562
@@ -7474,6 +7504,7 @@ True abs 0p as abs 0p: 1 0 464621
 True scatter as scatter: 1 0 464626
 True abs np as abs np: 1 0 464644
 True abs np as abs np: 1 0 464675
+True scatter as scatter: 1 0 464680
 True abs np as abs np: 1 0 464687
 True scatter as scatter: 1 0 464694
 True scatter as scatter: 1 0 464697
@@ -7837,10 +7868,12 @@ True scatter as scatter: 1 0 480394
 True scatter as scatter: 1 0 480397
 True abs 0p as abs 0p: 1 0 480407
 True scatter as scatter: 1 0 480414
+True scatter as scatter: 1 0 480446
 True scatter as scatter: 1 0 480476
 True scatter as scatter: 1 0 480486
 True abs np as abs np: 1 0 480490
 True scatter as scatter: 1 0 480554
+True scatter as scatter: 1 0 480555
 True abs 0p as abs 0p: 1 0 480561
 True abs 0p as abs 0p: 1 0 480570
 True scatter as scatter: 1 0 480595
@@ -7967,7 +8000,6 @@ True scatter as scatter: 1 0 483844
 True abs np as abs np: 1 0 483874
 True scatter as scatter: 1 0 483897
 True scatter as scatter: 1 0 483916
-True abs 0p as abs 0p: 1 0 483917
 True abs 0p as abs 0p: 1 0 483920
 True scatter as scatter: 1 0 483936
 True abs np as abs np: 1 0 483944
@@ -8318,6 +8350,7 @@ True abs 0p as abs 0p: 1 0 497008
 True scatter as scatter: 1 0 497032
 True abs np as abs np: 1 0 497045
 True abs np as abs np: 1 0 497124
+True scatter as scatter: 1 0 497131
 True scatter as scatter: 1 0 1201
 True scatter as scatter: 1 0 1235
 True scatter as scatter: 1 0 1256
@@ -8364,6 +8397,7 @@ True abs np as abs np: 1 0 158741
 True scatter as scatter: 1 0 158847
 True abs np as abs np: 1 0 158876
 True scatter as scatter: 1 0 158880
+True scatter as scatter: 1 0 158936
 True scatter as scatter: 1 0 158947
 True scatter as scatter: 1 0 158965
 True abs 0p as abs 0p: 1 0 158978
@@ -8390,7 +8424,6 @@ True abs np as abs np: 1 0 159552
 True abs np as abs np: 1 0 159591
 True scatter as scatter: 1 0 159599
 True abs 0p as abs 0p: 1 0 159629
-True abs 0p as abs 0p: 1 0 159654
 True abs np as abs np: 1 0 159667
 True scatter as scatter: 1 0 159681
 True scatter as scatter: 1 0 159702
@@ -8517,7 +8550,6 @@ True scatter as scatter: 1 0 58302
 True abs np as abs np: 1 0 58310
 True scatter as scatter: 1 0 58419
 True abs np as abs np: 1 0 58442
-True abs 0p as abs 0p: 1 0 58444
 True abs 0p as abs 0p: 1 0 58467
 True scatter as scatter: 1 0 58479
 True abs 0p as abs 0p: 1 0 58563
@@ -8615,7 +8647,6 @@ True abs 0p as abs 0p: 1 0 117859
 True abs np as abs np: 1 0 117889
 True abs 0p as abs 0p: 1 0 117905
 True scatter as scatter: 1 0 117943
-True abs 0p as abs 0p: 1 0 117961
 True abs np as abs np: 1 0 117996
 True abs np as abs np: 1 0 117999
 True scatter as scatter: 1 0 118042
@@ -8726,6 +8757,7 @@ True abs np as abs np: 1 0 120221
 True abs np as abs np: 1 0 120267
 True scatter as scatter: 1 0 120269
 True scatter as scatter: 1 0 120304
+True scatter as scatter: 1 0 120305
 True scatter as scatter: 1 0 120368
 True abs 0p as abs 0p: 1 0 120476
 True abs 0p as abs 0p: 1 0 120479
@@ -8782,6 +8814,7 @@ True abs np as abs np: 1 0 30240
 True scatter as scatter: 1 0 30242
 True abs np as abs np: 1 0 30280
 True scatter as scatter: 1 0 30331
+True scatter as scatter: 1 0 30357
 True abs np as abs np: 1 0 30360
 True scatter as scatter: 1 0 30389
 True scatter as scatter: 1 0 30466
@@ -8843,6 +8876,7 @@ True abs np as abs np: 1 0 306647
 True abs np as abs np: 1 0 306759
 True scatter as scatter: 1 0 306767
 True abs np as abs np: 1 0 306782
+True scatter as scatter: 1 0 306787
 True abs 0p as abs 0p: 1 0 306806
 True abs 0p as abs 0p: 1 0 306834
 True scatter as scatter: 1 0 306844
@@ -9431,6 +9465,7 @@ True scatter as scatter: 1 0 366418
 True abs 0p as abs 0p: 1 0 366489
 True scatter as scatter: 1 0 366688
 True abs 0p as abs 0p: 1 0 366815
+True scatter as scatter: 1 0 366844
 True abs np as abs np: 1 0 366848
 True scatter as scatter: 1 0 366851
 True scatter as scatter: 1 0 366865
@@ -9478,6 +9513,7 @@ True abs 0p as abs 0p: 1 0 386225
 True scatter as scatter: 1 0 386261
 True abs np as abs np: 1 0 386296
 True scatter as scatter: 1 0 386337
+True scatter as scatter: 1 0 386419
 True scatter as scatter: 1 0 386420
 True abs np as abs np: 1 0 386423
 True abs 0p as abs 0p: 1 0 386456
@@ -9609,6 +9645,7 @@ True scatter as scatter: 1 0 491476
 True scatter as scatter: 1 0 491477
 True scatter as scatter: 1 0 491522
 True scatter as scatter: 1 0 491525
+True scatter as scatter: 1 0 491527
 True scatter as scatter: 1 0 491582
 True scatter as scatter: 1 0 491614
 True scatter as scatter: 1 0 491685
@@ -9710,6 +9747,7 @@ True scatter as scatter: 1 0 86081
 True abs np as abs np: 1 0 86093
 True scatter as scatter: 1 0 86105
 True abs np as abs np: 1 0 86123
+True scatter as scatter: 1 0 86129
 True abs np as abs np: 1 0 86177
 True scatter as scatter: 1 0 86187
 True scatter as scatter: 1 0 86206
@@ -10320,6 +10358,7 @@ True scatter as scatter: 1 0 208688
 True scatter as scatter: 1 0 208751
 True abs np as abs np: 1 0 208776
 True abs np as abs np: 1 0 208805
+True scatter as scatter: 1 0 208807
 True abs np as abs np: 1 0 208808
 True scatter as scatter: 1 0 208813
 True abs np as abs np: 1 0 208831
@@ -10351,6 +10390,7 @@ True scatter as scatter: 1 0 49711
 True scatter as scatter: 1 0 49747
 True abs 0p as abs 0p: 1 0 49779
 True abs 0p as abs 0p: 1 0 497254
+True scatter as scatter: 1 0 497290
 True scatter as scatter: 1 0 497293
 True abs 0p as abs 0p: 1 0 497303
 True scatter as scatter: 1 0 497309
@@ -10360,6 +10400,7 @@ True scatter as scatter: 1 0 497457
 True abs 0p as abs 0p: 1 0 497479
 True abs 0p as abs 0p: 1 0 497520
 True scatter as scatter: 1 0 497536
+True scatter as scatter: 1 0 497566
 True abs np as abs np: 1 0 497584
 True scatter as scatter: 1 0 497603
 True scatter as scatter: 1 0 497615
@@ -10555,6 +10596,7 @@ True abs 0p as abs 0p: 1 0 463383
 True abs np as abs np: 1 0 463437
 True abs np as abs np: 1 0 463454
 True scatter as scatter: 1 0 463471
+True scatter as scatter: 1 0 463498
 True abs np as abs np: 1 0 463518
 True abs np as abs np: 1 0 463585
 True abs np as abs np: 1 0 463636
@@ -10693,6 +10735,7 @@ True abs np as abs np: 1 0 4134
 True abs 0p as abs 0p: 1 0 4137
 True scatter as scatter: 1 0 4154
 True scatter as scatter: 1 0 4183
+True scatter as scatter: 1 0 4195
 True abs np as abs np: 1 0 43463
 True abs 0p as abs 0p: 1 0 43477
 True scatter as scatter: 1 0 43500
@@ -10763,6 +10806,7 @@ True scatter as scatter: 1 0 438436
 True scatter as scatter: 1 0 438442
 True scatter as scatter: 1 0 438510
 True abs np as abs np: 1 0 438511
+True scatter as scatter: 1 0 438578
 True abs np as abs np: 1 0 438634
 True scatter as scatter: 1 0 438663
 True scatter as scatter: 1 0 438679
@@ -11158,6 +11202,7 @@ True abs np as abs np: 1 0 239327
 True abs 0p as abs 0p: 1 0 239331
 True abs np as abs np: 1 0 239364
 True abs np as abs np: 1 0 239428
+True scatter as scatter: 1 0 239431
 True abs np as abs np: 1 0 239463
 True abs np as abs np: 1 0 239492
 True scatter as scatter: 1 0 239512
@@ -11189,6 +11234,7 @@ True abs np as abs np: 1 0 239997
 True abs np as abs np: 1 0 240083
 True scatter as scatter: 1 0 240099
 True abs 0p as abs 0p: 1 0 240155
+True scatter as scatter: 1 0 240280
 True abs np as abs np: 1 0 240294
 True scatter as scatter: 1 0 240300
 True abs np as abs np: 1 0 240317
@@ -11350,6 +11396,7 @@ True abs np as abs np: 1 0 337928
 True abs np as abs np: 1 0 337971
 True abs 0p as abs 0p: 1 0 337972
 True scatter as scatter: 1 0 337984
+True scatter as scatter: 1 0 337988
 True scatter as scatter: 1 0 337989
 True scatter as scatter: 1 0 47407
 True abs np as abs np: 1 0 47421
@@ -11492,6 +11539,7 @@ True abs 0p as abs 0p: 1 0 362261
 True scatter as scatter: 1 0 362297
 True abs np as abs np: 1 0 362319
 True abs np as abs np: 1 0 362330
+True scatter as scatter: 1 0 362361
 True abs np as abs np: 1 0 362401
 True abs np as abs np: 1 0 362416
 True abs np as abs np: 1 0 362457
@@ -11815,6 +11863,7 @@ True abs 0p as abs 0p: 1 0 235130
 True scatter as scatter: 1 0 235148
 True abs 0p as abs 0p: 1 0 235199
 True scatter as scatter: 1 0 235231
+True scatter as scatter: 1 0 235251
 True abs 0p as abs 0p: 1 0 235259
 True abs np as abs np: 1 0 235276
 True abs 0p as abs 0p: 1 0 235291
@@ -12088,6 +12137,7 @@ True abs np as abs np: 1 0 190801
 True abs np as abs np: 1 0 190817
 True abs np as abs np: 1 0 190822
 True abs np as abs np: 1 0 190869
+True scatter as scatter: 1 0 190870
 True abs 0p as abs 0p: 1 0 37210
 True scatter as scatter: 1 0 37269
 True scatter as scatter: 1 0 37300
@@ -12209,6 +12259,7 @@ True scatter as scatter: 1 0 67886
 True scatter as scatter: 1 0 67893
 True abs 0p as abs 0p: 1 0 67899
 True abs np as abs np: 1 0 67906
+True scatter as scatter: 1 0 67921
 True scatter as scatter: 1 0 67960
 True scatter as scatter: 1 0 67969
 True scatter as scatter: 1 0 68005
@@ -12384,6 +12435,7 @@ True abs np as abs np: 1 0 213909
 True scatter as scatter: 1 0 213922
 True scatter as scatter: 1 0 213942
 True scatter as scatter: 1 0 213971
+True scatter as scatter: 1 0 214092
 True scatter as scatter: 1 0 214129
 True abs 0p as abs 0p: 1 0 214222
 True abs np as abs np: 1 0 214228
@@ -12826,6 +12878,7 @@ True scatter as scatter: 1 0 185223
 True abs 0p as abs 0p: 1 0 185228
 True abs np as abs np: 1 0 185247
 True abs 0p as abs 0p: 1 0 185266
+True scatter as scatter: 1 0 185321
 True scatter as scatter: 1 0 185330
 True scatter as scatter: 1 0 185337
 True abs np as abs np: 1 0 185424
@@ -13386,6 +13439,7 @@ True scatter as scatter: 1 0 50310
 True scatter as scatter: 1 0 50348
 True abs 0p as abs 0p: 1 0 50362
 True abs 0p as abs 0p: 1 0 50456
+True scatter as scatter: 1 0 50465
 True scatter as scatter: 1 0 50466
 True scatter as scatter: 1 0 50488
 True abs np as abs np: 1 0 50507
@@ -13555,6 +13609,7 @@ True abs np as abs np: 1 0 274045
 True abs np as abs np: 1 0 274055
 True abs 0p as abs 0p: 1 0 274253
 True scatter as scatter: 1 0 274268
+True scatter as scatter: 1 0 274282
 True scatter as scatter: 1 0 274294
 True abs np as abs np: 1 0 274341
 True abs np as abs np: 1 0 274423
@@ -13672,6 +13727,7 @@ True scatter as scatter: 1 0 253172
 True abs np as abs np: 1 0 253177
 True abs np as abs np: 1 0 253221
 True scatter as scatter: 1 0 253222
+True scatter as scatter: 1 0 253245
 True scatter as scatter: 1 0 253259
 True abs np as abs np: 1 0 253281
 True abs 0p as abs 0p: 1 0 253333
@@ -13991,7 +14047,6 @@ True abs np as abs np: 1 0 140512
 True scatter as scatter: 1 0 140521
 True abs np as abs np: 1 0 140534
 True scatter as scatter: 1 0 140536
-True abs 0p as abs 0p: 1 0 140635
 True abs np as abs np: 1 0 140642
 True scatter as scatter: 1 0 140643
 True abs np as abs np: 1 0 140647
@@ -14123,6 +14178,7 @@ True abs np as abs np: 1 0 329678
 True scatter as scatter: 1 0 329682
 True abs 0p as abs 0p: 1 0 329685
 True scatter as scatter: 1 0 329698
+True scatter as scatter: 1 0 329702
 True scatter as scatter: 1 0 329705
 True abs np as abs np: 1 0 329738
 True abs np as abs np: 1 0 329774
@@ -14319,6 +14375,7 @@ True abs np as abs np: 1 0 78994
 True scatter as scatter: 1 0 78996
 True abs np as abs np: 1 0 79012
 True abs 0p as abs 0p: 1 0 79039
+True scatter as scatter: 1 0 79083
 True scatter as scatter: 1 0 79096
 True scatter as scatter: 1 0 79123
 True scatter as scatter: 1 0 79150
@@ -14368,6 +14425,7 @@ True abs 0p as abs 0p: 1 0 428465
 True scatter as scatter: 1 0 428483
 True scatter as scatter: 1 0 428500
 True abs 0p as abs 0p: 1 0 428516
+True scatter as scatter: 1 0 428542
 True scatter as scatter: 1 0 428564
 True abs 0p as abs 0p: 1 0 428618
 True scatter as scatter: 1 0 428641
@@ -14727,6 +14785,7 @@ True scatter as scatter: 1 0 302831
 True scatter as scatter: 1 0 302896
 True abs 0p as abs 0p: 1 0 302947
 True scatter as scatter: 1 0 302969
+True scatter as scatter: 1 0 302982
 True scatter as scatter: 1 0 302998
 True scatter as scatter: 1 0 303023
 True scatter as scatter: 1 0 303078
@@ -14794,6 +14853,7 @@ True scatter as scatter: 1 0 304945
 True abs np as abs np: 1 0 304951
 True scatter as scatter: 1 0 304956
 True scatter as scatter: 1 0 24607
+True scatter as scatter: 1 0 24610
 True abs np as abs np: 1 0 24697
 True scatter as scatter: 1 0 24737
 True abs np as abs np: 1 0 247814
@@ -14949,7 +15009,6 @@ True abs np as abs np: 1 0 121917
 True scatter as scatter: 1 0 121965
 True abs np as abs np: 1 0 121970
 True abs np as abs np: 1 0 122086
-True abs 0p as abs 0p: 1 0 122118
 True abs 0p as abs 0p: 1 0 122134
 True abs 0p as abs 0p: 1 0 122152
 True scatter as scatter: 1 0 122190
@@ -15096,7 +15155,6 @@ True abs 0p as abs 0p: 1 0 80829
 True abs np as abs np: 1 0 80840
 True abs np as abs np: 1 0 80886
 True scatter as scatter: 1 0 80894
-True abs 0p as abs 0p: 1 0 80929
 True scatter as scatter: 1 0 80939
 True abs 0p as abs 0p: 1 0 80983
 True abs np as abs np: 1 0 80995
@@ -15229,6 +15287,7 @@ True abs np as abs np: 1 0 474304
 True abs np as abs np: 1 0 474337
 True scatter as scatter: 1 0 474356
 True abs np as abs np: 1 0 474440
+True scatter as scatter: 1 0 474453
 True scatter as scatter: 1 0 474474
 True scatter as scatter: 1 0 474481
 True scatter as scatter: 1 0 474512
@@ -15494,6 +15553,7 @@ True scatter as scatter: 1 0 139514
 True abs np as abs np: 1 0 139516
 True abs 0p as abs 0p: 1 0 139614
 True abs 0p as abs 0p: 1 0 139619
+True scatter as scatter: 1 0 139668
 True scatter as scatter: 1 0 139680
 True abs np as abs np: 1 0 139693
 True abs np as abs np: 1 0 139703
@@ -15554,6 +15614,7 @@ True abs 0p as abs 0p: 1 0 431958
 True abs np as abs np: 1 0 432073
 True scatter as scatter: 1 0 432074
 True abs np as abs np: 1 0 432076
+True scatter as scatter: 1 0 432147
 True abs 0p as abs 0p: 1 0 432344
 True scatter as scatter: 1 0 432355
 True abs np as abs np: 1 0 432418
@@ -15580,6 +15641,7 @@ True abs np as abs np: 1 0 432783
 True abs np as abs np: 1 0 432790
 True scatter as scatter: 1 0 432795
 True abs 0p as abs 0p: 1 0 432797
+True scatter as scatter: 1 0 432880
 True abs np as abs np: 1 0 432885
 True scatter as scatter: 1 0 432888
 True abs 0p as abs 0p: 1 0 432984
@@ -15620,6 +15682,7 @@ True scatter as scatter: 1 0 433859
 True abs np as abs np: 1 0 433882
 True scatter as scatter: 1 0 433896
 True scatter as scatter: 1 0 433904
+True scatter as scatter: 1 0 433907
 True abs 0p as abs 0p: 1 0 433994
 True abs np as abs np: 1 0 45229
 True abs np as abs np: 1 0 45249
@@ -15650,7 +15713,6 @@ True scatter as scatter: 1 0 455371
 True abs np as abs np: 1 0 455380
 True abs np as abs np: 1 0 455412
 True abs 0p as abs 0p: 1 0 455419
-True abs 0p as abs 0p: 1 0 455423
 True abs 0p as abs 0p: 1 0 455426
 True abs np as abs np: 1 0 455441
 True abs np as abs np: 1 0 455509
@@ -15794,6 +15856,7 @@ True scatter as scatter: 1 0 275753
 True scatter as scatter: 1 0 275809
 True scatter as scatter: 1 0 275868
 True abs np as abs np: 1 0 275893
+True scatter as scatter: 1 0 275917
 True abs np as abs np: 1 0 275967
 True abs np as abs np: 1 0 276050
 True abs 0p as abs 0p: 1 0 276069
@@ -16089,6 +16152,7 @@ True abs 0p as abs 0p: 1 0 368181
 True abs np as abs np: 1 0 368185
 True abs 0p as abs 0p: 1 0 368211
 True scatter as scatter: 1 0 368233
+True scatter as scatter: 1 0 368240
 True scatter as scatter: 1 0 368262
 True abs np as abs np: 1 0 368278
 True scatter as scatter: 1 0 368298
@@ -16291,7 +16355,6 @@ True abs np as abs np: 1 0 130333
 True abs 0p as abs 0p: 1 0 130337
 True scatter as scatter: 1 0 130344
 True abs np as abs np: 1 0 130384
-True abs 0p as abs 0p: 1 0 130390
 True abs np as abs np: 1 0 130408
 True scatter as scatter: 1 0 130430
 True scatter as scatter: 1 0 130521
@@ -16507,6 +16570,7 @@ True abs np as abs np: 1 0 261545
 True abs np as abs np: 1 0 261551
 True abs np as abs np: 1 0 261595
 True scatter as scatter: 1 0 261606
+True scatter as scatter: 1 0 261640
 True scatter as scatter: 1 0 261652
 True abs np as abs np: 1 0 261664
 True scatter as scatter: 1 0 261686
@@ -16553,6 +16617,7 @@ True scatter as scatter: 1 0 262847
 True abs np as abs np: 1 0 262911
 True abs 0p as abs 0p: 1 0 262916
 True scatter as scatter: 1 0 262941
+True scatter as scatter: 1 0 262951
 True abs np as abs np: 1 0 262956
 True abs 0p as abs 0p: 1 0 262982
 True abs np as abs np: 1 0 35439
@@ -16608,6 +16673,7 @@ True scatter as scatter: 1 0 357289
 True scatter as scatter: 1 0 357352
 True abs np as abs np: 1 0 357372
 True scatter as scatter: 1 0 357391
+True scatter as scatter: 1 0 357420
 True scatter as scatter: 1 0 357489
 True abs np as abs np: 1 0 357561
 True scatter as scatter: 1 0 357570
@@ -17028,6 +17094,7 @@ True scatter as scatter: 1 0 129
 True abs np as abs np: 1 0 171
 True scatter as scatter: 1 0 3604
 True abs np as abs np: 1 0 3612
+True scatter as scatter: 1 0 3627
 True scatter as scatter: 1 0 3703
 True abs 0p as abs 0p: 1 0 3724
 True abs np as abs np: 1 0 3737

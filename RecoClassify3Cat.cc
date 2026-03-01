@@ -1404,6 +1404,9 @@ void RecoClassify3Cat() {
             hTrueMuonTypes->Fill(muonType);
         }
 
+        if (trueIncidentKEContributions->size() == 0) truthPrimaryVertexKE = 0;
+        else truthPrimaryVertexKE = trueIncidentKEContributions->back() / 1000.0;
+
         // Get true energy bin
         int TrueEnergyBin = getBin(truthPrimaryVertexKE * 1000, ARRAY_KE_BINS);
 
