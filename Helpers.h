@@ -2,14 +2,13 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <cmath>
 #include "TGraph.h"
 
 //////////////////////
 // Global constants //
 //////////////////////
-
-// Run through this many events
-int USE_NUM_EVENTS = 50000; 
 
 std::map<int, std::string> backgroundTypes = {
     {0, "Abs 0p"},
@@ -34,6 +33,9 @@ int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 
 // Signal types
 int NUM_SIGNAL_TYPES = 3; // 0p abs, Np abs, scattering
+
+// Run through this many events
+int USE_NUM_EVENTS = 50000;
 
 // Number of events at each data quality cut
 double TG0_MC_EVENTS = 118999;
@@ -394,3 +396,5 @@ void DrawErrorBand(TH1* nom, TGraphAsymmErrors* band, int bandCol, double alpha)
 void PrintTruthUnfoldedStatShapePlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* hUnfolded, TH1* hStat, TH1* hShape, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle = 132, double TextSize = 0.06);
 void PrintFDPlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* hNomTrue, TH1* hUnfolded, TH1* hSysts, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, std::pair<double, double> chi, std::pair<int, int> ndof, std::pair<double, double> pval, std::pair<double, double> sigma, int FontStyle = 132, double TextSize = 0.06);
 void CalcChiSquared(TH1D* h_model, TH1D* h_data, TH2D* cov, double &chi, int &ndof, double &pval, double &sigma);
+
+void PrintDataVsMCContribPlot(const TString& SaveDir, const TString& Name, TH1* hData, const std::vector<TH1*>& mcHists, const std::vector<TString>& mcLabels, const std::vector<int>& mcColors, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle, double TextSize, bool UsePoissonDataErrors = true, TH1* hMCAbsUnc = nullptr, bool DrawRatio = true);

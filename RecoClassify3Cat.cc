@@ -497,6 +497,15 @@ void RecoClassify3Cat() {
     TH1D* hNumTGTracksPrimaryPion     = new TH1D("hNumTGTracksPrimaryPion", "hNumTGTracksPrimaryPion", 10, 0, 10);
     TH1D* hNumTGTracksPrimaryElectron = new TH1D("hNumTGTracksPrimaryElectron", "hNumTGTracksPrimaryElectron", 10, 0, 10);
 
+    //////////////////////////////
+    // Small tracks in cylinder //
+    //////////////////////////////
+
+    TH1D* hSmallTrksInCylinder          = new TH1D("hSmallTrksInCylinder", "hSmallTrksInCylinder", 10, 0, 10);
+    TH1D* hSmallTrksInCylinderPions     = new TH1D("hSmallTrksInCylinderPions", "hSmallTrksInCylinderPions", 10, 0, 10);
+    TH1D* hSmallTrksInCylinderMuons     = new TH1D("hSmallTrksInCylinderMuons", "hSmallTrksInCylinderMuons", 10, 0, 10);
+    TH1D* hSmallTrksInCylinderElectrons = new TH1D("hSmallTrksInCylinderElectrons", "hSmallTrksInCylinderElectrons", 10, 0, 10);
+
     ////////////////////////////////
     // Study unreconstructed hits //
     ////////////////////////////////
@@ -1602,6 +1611,16 @@ void RecoClassify3Cat() {
         if (numTGTracks > MAX_NUM_TG_TRACKS) continue;
         hNotManyTGTracks->Fill(backgroundType);
 
+        // Save data about small tracks in cylinder
+        if (truthPrimaryPDG == -211) {
+            hSmallTrksInCylinderPions->Fill(numSmallTracksInCylinder);
+        } else if (truthPrimaryPDG == 13) {
+            hSmallTrksInCylinderMuons->Fill(numSmallTracksInCylinder);
+        } else if (truthPrimaryPDG == 11) {
+            hSmallTrksInCylinderElectrons->Fill(numSmallTracksInCylinder);
+        }
+        hSmallTrksInCylinder->Fill(numSmallTracksInCylinder);
+
         // Cut on small tracks
         if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) {
             if (backgroundType == 0) {
@@ -2639,7 +2658,11 @@ void RecoClassify3Cat() {
 
         // Through-going tracks
         {hNumTGTracksAbs0p, hNumTGTracksAbsNp, hNumTGTracksMuon, hNumTGTracksElectron, hNumTGTracksScatter, hNumTGTracksChExch, hNumTGTracksOther},
-        {hNumTGTracksPrimaryMuon, hNumTGTracksPrimaryPion, hNumTGTracksPrimaryElectron}
+        {hNumTGTracksPrimaryMuon, hNumTGTracksPrimaryPion, hNumTGTracksPrimaryElectron},
+
+        // Small tracks
+        {hSmallTrksInCylinder},
+        {hSmallTrksInCylinderPions, hSmallTrksInCylinderMuons, hSmallTrksInCylinderElectrons}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -2698,7 +2721,11 @@ void RecoClassify3Cat() {
 
         // Through-going tracks
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
-        {"Muon", "Pion", "Electron"}
+        {"Muon", "Pion", "Electron"},
+
+        // Small tracks
+        {"All"},
+        {"Pions", "Muons", "Electrons"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -2757,7 +2784,11 @@ void RecoClassify3Cat() {
 
         // Through-going tracks
         "TGTracks/NumTGTracks",
-        "TGTracks/NumTGTracksPrimary"
+        "TGTracks/NumTGTracksPrimary",
+
+        // Small tracks
+        "Cylinder/SmallTrksInCylinder",
+        "Cylinder/SmallTrksInCylinderBreakdown"
     };
 
     std::vector<TString> XLabels = {
@@ -2816,7 +2847,11 @@ void RecoClassify3Cat() {
 
         // Through-going tracks
         "# of TG tracks",
-        "# of TG tracks"
+        "# of TG tracks",
+
+        // Small tracks
+        "# of small tracks",
+        "# of small tracks"
     };
 
     std::vector<TString> YLabels = {
@@ -2874,6 +2909,10 @@ void RecoClassify3Cat() {
         "Counts",
 
         // Through-going tracks
+        "Counts",
+        "Counts",
+
+        // Small tracks
         "Counts",
         "Counts"
     };
@@ -2934,6 +2973,10 @@ void RecoClassify3Cat() {
 
         // Through-going tracks
         true,
+        true,
+
+        // Small tracks
+        true,
         true
     };
 
@@ -2993,6 +3036,10 @@ void RecoClassify3Cat() {
 
         // Through-going tracks
         {false, false, false, false, false, false, false},
+        {false, false, false},
+
+        // Small tracks
+        {false},
         {false, false, false}
     };
 
@@ -3118,4 +3165,50 @@ void RecoClassify3Cat() {
     };
 
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles, TwoDRanges, TwoDDisplayNumbers);
+
+    ////////////////////////////////////
+    // Save everything from later use //
+    ////////////////////////////////////
+
+    TString outPath = "/exp/lariat/app/users/epelaez/histos/nominal/RecoClassify3Cat_AllHists.root";
+    TFile outAll(outPath, "RECREATE");
+    outAll.cd();
+
+    std::unordered_set<std::string> written;
+
+    // Helper lambda: write once by name
+    auto writeOnce = [&](TObject* obj) {
+        if (!obj) return;
+        const std::string name = obj->GetName();
+        if (name.empty()) return;
+        if (written.insert(name).second) {
+            obj->Write(name.c_str(), TObject::kOverwrite);
+        }
+    };
+
+    // 1D groups
+    for (auto& group : PlotGroups) {
+        for (auto* h : group) writeOnce(h);
+    }
+
+    // 2D plots
+    for (auto* h2 : TwoDPlots) writeOnce(h2);
+
+    // Other important hist collections
+    for (auto* h : UnfoldedRecoHistos) writeOnce(h);
+
+    writeOnce(hUnfReco);
+    writeOnce(hResponseMatrix);
+    writeOnce(hResponseInvMatrix);
+    writeOnce(hCovariance);
+    writeOnce(hUnfCovariance);
+    writeOnce(hFracCovMatrix);
+    writeOnce(hCorrMatrix);
+    writeOnce(hUnfFracCovMatrix);
+    writeOnce(hUnfCorrMatrix);
+
+    outAll.Write();
+    outAll.Close();
+
+    std::cout << "\nWrote " << written.size() << " objects to " << outPath << std::endl;
 }

@@ -425,9 +425,9 @@ void RecoDataAnalysis() {
         bool isPrimaryTG = !isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ);
 
         // Loop over reconstructed tracks
-        int numSmallTracks = 0; 
-        int numTracksNearVertex = 0; 
-        int smallTracksTPCStart = 0; 
+        int numSmallTracks = 0;
+        int numTracksNearVertex = 0;
+        int smallTracksTPCStart = 0;
         int numTGTracks = 0;
         int numTracksInCylinder = 0;
         int numSmallTracksInCylinder = 0;
@@ -928,11 +928,18 @@ void RecoDataAnalysis() {
     std::cout << "Num valid data TG events with no other TG: " << hNumTracksInCylinder0TG->Integral() << std::endl;
     std::cout << "Num valid data TG events with at most one more TG: " << hNumTracksInCylinder1TG->Integral() << std::endl;
     std::cout << "Num valid data TG events with at most two more TG: " << hNumTracksInCylinder2TG->Integral() << std::endl;
+    std::cout << std::endl;
 
     double scaling0TG = hNumTracksInCylinder0TG->Integral() / hMCNumTracksInCylinder0TG->Integral();
     double scaling1TG = hNumTracksInCylinder1TG->Integral() / hMCNumTracksInCylinder1TG->Integral();
     double scaling2TG = hNumTracksInCylinder2TG->Integral() / hMCNumTracksInCylinder2TG->Integral();
     double scalingKin = hNumCandidateProtons->Integral() / hMCNumCandidateProtons->Integral();
+
+    std::cout << "Scaling 0 TG: " << scaling0TG << std::endl;
+    std::cout << "Scaling 1 TG: " << scaling1TG << std::endl;
+    std::cout << "Scaling 2 TG: " << scaling2TG << std::endl;
+    std::cout << "Scaling Kin: " << scalingKin << std::endl;
+    std::cout << std::endl;
 
     // Scale MC histograms to data histograms using event counts
     hMCNumWC2TPCMatch->Scale(hNumWC2TPCMatch->Integral() / hMCNumWC2TPCMatch->Integral());

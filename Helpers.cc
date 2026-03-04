@@ -1,15 +1,12 @@
 #include "Helpers.h"
 
-#include <vector>
-#include <string>
-#include <algorithm>
-#include "TGraph.h"
-
 double energyLossCalculation() { return 40.; }
 
 double energyLossCalculation(double x, double px, bool isData) {
     // x in cm and px in MeV
-    double discriminant = 0.0733 * px + 1.3 * x - 31; 
+    double discriminant = 0.0733 * px + 1.3 * x - 31; // original code 
+    // double discriminant = px + 0.02 * x - 0.4; // paper
+    
     if (discriminant > 0) {
         // particles going through the halo hole
         if (isData) return 17.5;
@@ -2436,4 +2433,366 @@ void CalcChiSquared(
 	delete h_model_clone;
 	delete h_data_clone;
 	delete h_cov_clone;
+}
+
+//////////////////////
+// Data vs MC plots //
+//////////////////////
+
+static inline void GarwoodInterval(double n, double alpha, double &lo, double &hi) {
+    if (n <= 0.0) {
+        lo = 0.0;
+        hi = 0.5 * TMath::ChisquareQuantile(1.0 - alpha/2.0, 2.0*(n + 1.0));
+        return;
+    }
+    lo = 0.5 * TMath::ChisquareQuantile(alpha/2.0, 2.0*n);
+    hi = 0.5 * TMath::ChisquareQuantile(1.0 - alpha/2.0, 2.0*(n + 1.0));
+}
+
+static inline TGraphAsymmErrors* MakeDataGraphPoisson(const TH1* h, double alpha=0.3173) {
+    const int nb = h->GetNbinsX();
+    auto *g = new TGraphAsymmErrors(nb);
+    for (int i=1;i<=nb;++i){
+        const double x  = h->GetXaxis()->GetBinCenter(i);
+        const double ex = 0.5*h->GetXaxis()->GetBinWidth(i);
+        const double n  = std::max(0.0, h->GetBinContent(i));
+
+        double lo=0, hi=0;
+        GarwoodInterval(n, alpha, lo, hi);
+
+        const int ip=i-1;
+        g->SetPoint(ip, x, n);
+        g->SetPointError(ip, ex, ex, n-lo, hi-n);
+    }
+    g->SetMarkerStyle(20);
+    g->SetMarkerSize(1.0);
+    g->SetLineColor(kBlack);
+    g->SetMarkerColor(kBlack);
+    return g;
+}
+
+static inline TGraphAsymmErrors* MakeMCTotalBand_TotalUncOnly(
+    const TH1* hMCTotal,
+    const TH1* hMCAbsUnc   // must be same binning; contents are sigma_total per bin
+) {
+    if (!hMCAbsUnc) return nullptr;
+
+    const int nb = hMCTotal->GetNbinsX();
+    auto *g = new TGraphAsymmErrors(nb);
+
+    for (int i=1;i<=nb;++i){
+        const double x  = hMCTotal->GetXaxis()->GetBinCenter(i);
+        const double ex = 0.5*hMCTotal->GetXaxis()->GetBinWidth(i);
+        const double y  = hMCTotal->GetBinContent(i);
+
+        const double s_tot = std::max(0.0, hMCAbsUnc->GetBinContent(i));
+
+        const int ip=i-1;
+        g->SetPoint(ip, x, y);
+        g->SetPointError(ip, ex, ex, s_tot, s_tot);
+    }
+
+    g->SetFillStyle(3004);
+    g->SetFillColor(kBlack);
+    g->SetLineColor(kBlack);
+    g->SetLineWidth(1);
+    g->SetMarkerStyle(1);
+    g->SetMarkerSize(0.0);
+    return g;
+}
+
+void PrintDataVsMCContribPlot(
+    const TString& SaveDir,
+    const TString& Name,
+    TH1* hData,
+    const std::vector<TH1*>& mcHists,
+    const std::vector<TString>& mcLabels,
+    const std::vector<int>& mcColors,
+    const TString& PlotTitle,
+    const TString& XTitle,
+    const TString& YTitle,
+    int FontStyle,
+    double TextSize,
+    bool UsePoissonDataErrors,
+    TH1* hMCAbsUnc,
+    bool DrawRatio
+) {
+    if (!hData) { std::cerr << "PrintDataVsMCContribPlot: null hData.\n"; return; }
+    if (mcHists.empty()) { std::cerr << "PrintDataVsMCContribPlot: mcHists empty.\n"; return; }
+
+    const int nb = hData->GetNbinsX();
+    for (auto *h : mcHists) {
+        if (!h) { std::cerr << "PrintDataVsMCContribPlot: null MC hist.\n"; return; }
+        if (h->GetNbinsX() != nb) { std::cerr << "PrintDataVsMCContribPlot: nbins mismatch.\n"; return; }
+    }
+    if (hMCAbsUnc && hMCAbsUnc->GetNbinsX()!=nb) {
+        std::cerr << "PrintDataVsMCContribPlot: hMCAbsUnc nbins mismatch.\n";
+        return;
+    }
+
+    static int ic = 0;
+    const int uid = ic++;
+
+    // Pad split fractions
+    const double botFrac = 0.30;
+    const double topFrac = 1.0 - botFrac;
+    // Scale factor so that fonts in the smaller bottom pad appear the same
+    // physical size as those in the top pad
+    const double rScale = topFrac / botFrac;  // ~2.333
+
+    // Build total MC and stack
+    TH1* hMCTotal = (TH1*)mcHists[0]->Clone(Form("hMCTotal_%d", uid));
+    hMCTotal->SetDirectory(nullptr);
+    hMCTotal->Reset("ICESM");
+
+    THStack* st = new THStack(Form("st_%d", uid), "");
+
+    std::vector<TH1*> mcClones;
+    mcClones.reserve(mcHists.size());
+
+    for (size_t i = 0; i < mcHists.size(); ++i) {
+        TH1* h = (TH1*)mcHists[i]->Clone(Form("mc_%d_%zu", uid, i));
+        h->SetDirectory(nullptr);
+
+        const int col = (!mcColors.empty() && (int)i < (int)mcColors.size()) ? mcColors[i]
+                                                                             : (int)(kAzure + (int)i);
+        h->SetFillColor(col);
+        h->SetLineColor(kBlack);
+        h->SetLineWidth(1);
+
+        st->Add(h, "HIST");
+        hMCTotal->Add(h);
+        mcClones.push_back(h);
+    }
+
+    // Safe clone of uncertainty hist (protect against file ownership)
+    TH1* hMCAbsUncSafe = nullptr;
+    if (hMCAbsUnc) {
+        hMCAbsUncSafe = (TH1*)hMCAbsUnc->Clone(Form("hMCAbsUncSafe_%d", uid));
+        hMCAbsUncSafe->SetDirectory(nullptr);
+    }
+
+    // Data points
+    TGraphAsymmErrors* gData = nullptr;
+    if (UsePoissonDataErrors) {
+        gData = MakeDataGraphPoisson(hData);
+    } else {
+        gData = new TGraphAsymmErrors(hData);
+        gData->SetMarkerStyle(20);
+        gData->SetMarkerSize(1.0);
+        gData->SetLineColor(kBlack);
+        gData->SetMarkerColor(kBlack);
+    }
+
+    // MC band
+    TGraphAsymmErrors* gMCBand = MakeMCTotalBand_TotalUncOnly(hMCTotal, hMCAbsUncSafe);
+
+    // Canvas + pads
+    TCanvas* c = new TCanvas(Form("c_dmc_%d", uid), "", 1400, DrawRatio ? 1200 : 1000);
+    c->SetTicks(1,1);
+
+    TPad *pTop=nullptr, *pBot=nullptr;
+    if (DrawRatio) {
+        pTop = new TPad(Form("pTop_%d", uid), "", 0, botFrac, 1, 1);
+        pBot = new TPad(Form("pBot_%d", uid), "", 0, 0.00,    1, botFrac);
+        pTop->SetLeftMargin(0.14); pTop->SetRightMargin(0.05); pTop->SetBottomMargin(0.02); pTop->SetTopMargin(0.10);
+        pBot->SetLeftMargin(0.14); pBot->SetRightMargin(0.05); pBot->SetBottomMargin(0.35); pBot->SetTopMargin(0.08);
+
+        pTop->Draw(); pBot->Draw();
+        pTop->cd();
+    } else {
+        c->SetLeftMargin(0.14);
+        c->SetRightMargin(0.05);
+        c->SetBottomMargin(0.14);
+        c->SetTopMargin(0.10);
+    }
+
+    gStyle->SetGridStyle(3);
+    gStyle->SetGridWidth(1);
+    if (pTop) { pTop->SetGridx(1); pTop->SetGridy(1); }
+    else      { c->SetGridx(1);    c->SetGridy(1);    }
+
+    // Frame for top pad
+    TH1* hFrame = (TH1*)hData->Clone(Form("hFrame_%d", uid));
+    hFrame->SetDirectory(nullptr);
+    hFrame->Reset("ICESM");
+    hFrame->SetTitle(PlotTitle);
+
+    gStyle->SetTitleFont(FontStyle, "t");
+    gStyle->SetTitleSize(TextSize * 1.1, "t");
+    gStyle->SetTitleAlign(23);
+    gStyle->SetTitleX(0.5);
+    gStyle->SetTitleY(0.98);
+
+    hFrame->GetXaxis()->SetTitle(XTitle);
+    hFrame->GetXaxis()->CenterTitle(true);
+    hFrame->GetXaxis()->SetTitleFont(FontStyle);
+    hFrame->GetXaxis()->SetLabelFont(FontStyle);
+    hFrame->GetXaxis()->SetTitleSize(TextSize);
+    hFrame->GetXaxis()->SetLabelSize(TextSize * 0.85);
+    hFrame->GetXaxis()->SetTitleOffset(1.15);
+
+    hFrame->GetYaxis()->SetTitle(YTitle);
+    hFrame->GetYaxis()->CenterTitle(true);
+    hFrame->GetYaxis()->SetTitleFont(FontStyle);
+    hFrame->GetYaxis()->SetLabelFont(FontStyle);
+    hFrame->GetYaxis()->SetTitleSize(TextSize);
+    hFrame->GetYaxis()->SetLabelSize(TextSize * 0.85);
+    hFrame->GetYaxis()->SetTitleOffset(1.0);
+
+    if (DrawRatio) {
+        hFrame->GetXaxis()->SetLabelSize(0.0);
+        hFrame->GetXaxis()->SetTitleSize(0.0);
+    }
+
+    double ymax = 0.0;
+    for (int i=1;i<=nb;++i){
+        const double d  = std::max(0.0, hData->GetBinContent(i));
+        const double mc = std::max(0.0, hMCTotal->GetBinContent(i));
+        const double s  = (hMCAbsUncSafe ? std::max(0.0, hMCAbsUncSafe->GetBinContent(i)) : 0.0);
+        ymax = std::max(ymax, std::max(d, mc + s));
+    }
+    if (ymax <= 0) ymax = 1.0;
+    hFrame->SetMaximum(1.35 * ymax);
+    hFrame->SetMinimum(0.0);
+
+    hFrame->Draw("HIST");
+    st->Draw("HIST SAME");
+    if (gMCBand) gMCBand->Draw("E2 SAME");
+    gData->Draw("P SAME");
+
+    TLegend* leg = new TLegend(0.18, 0.70, 0.60, 0.88);
+    leg->SetBorderSize(0);
+    leg->SetFillStyle(1001);
+    leg->SetFillColor(kWhite);
+    leg->SetTextFont(FontStyle);
+    leg->SetTextSize(TextSize * 0.75);
+
+    leg->AddEntry(gData, "Data", "p");
+    for (size_t i=0;i<mcClones.size();++i){
+        const TString lab = (!mcLabels.empty() && (int)i < (int)mcLabels.size()) ? mcLabels[i]
+                                                                                 : Form("MC %zu", i);
+        leg->AddEntry(mcClones[i], lab, "f");
+    }
+    if (gMCBand) leg->AddEntry(gMCBand, "MC unc.", "f");
+    leg->Draw();
+
+    // ---- Ratio objects declared OUTSIDE so we can delete AFTER printing ----
+    TH1* hR = nullptr;
+    TGraphAsymmErrors* gRatio = nullptr;
+    TGraphAsymmErrors* gRatioBand = nullptr;
+    TLine* l1 = nullptr;
+
+    if (DrawRatio) {
+        pBot->cd();
+        pBot->SetGridx(1); pBot->SetGridy(1);
+
+        gRatio = new TGraphAsymmErrors(nb);
+        gRatioBand = new TGraphAsymmErrors(nb);
+
+        for (int i=1;i<=nb;++i){
+            const double x  = hData->GetXaxis()->GetBinCenter(i);
+            const double ex = 0.5*hData->GetXaxis()->GetBinWidth(i);
+
+            const double d  = std::max(0.0, hData->GetBinContent(i));
+            const double mc = hMCTotal->GetBinContent(i);
+
+            const int ip=i-1;
+            double xx, yy;
+            gData->GetPoint(ip, xx, yy);
+            const double ed_lo = gData->GetErrorYlow(ip);
+            const double ed_hi = gData->GetErrorYhigh(ip);
+
+            if (mc > 0.0) {
+                gRatio->SetPoint(ip, x, d/mc);
+                gRatio->SetPointError(ip, ex, ex, ed_lo/mc, ed_hi/mc);
+
+                const double s = (hMCAbsUncSafe ? std::max(0.0, hMCAbsUncSafe->GetBinContent(i)) : 0.0);
+                gRatioBand->SetPoint(ip, x, 1.0);
+                gRatioBand->SetPointError(ip, ex, ex, s/mc, s/mc);
+            } else {
+                gRatio->SetPoint(ip, x, 0.0);
+                gRatio->SetPointError(ip, ex, ex, 0.0, 0.0);
+                gRatioBand->SetPoint(ip, x, 1.0);
+                gRatioBand->SetPointError(ip, ex, ex, 0.0, 0.0);
+            }
+        }
+
+        gRatio->SetMarkerStyle(20);
+        gRatio->SetMarkerSize(1.0);
+        gRatio->SetLineColor(kBlack);
+        gRatio->SetMarkerColor(kBlack);
+
+        gRatioBand->SetFillStyle(3004);
+        gRatioBand->SetFillColor(kBlack);
+        gRatioBand->SetLineColor(kBlack);
+        gRatioBand->SetLineWidth(1);
+        gRatioBand->SetMarkerStyle(1);
+
+        hR = (TH1*)hData->Clone(Form("hRatioFrame_%d", uid));
+        hR->SetDirectory(nullptr);
+        hR->Reset("ICESM");
+        hR->SetTitle("");
+
+        // Scale font sizes by rScale so they appear the same physical size
+        // as in the top pad, which is (topFrac/botFrac) times taller.
+        const double rTitleSize = TextSize * rScale;
+        const double rLabelSize = TextSize * 0.85 * rScale;
+
+        hR->GetXaxis()->SetTitle(XTitle);
+        hR->GetXaxis()->CenterTitle(true);
+        hR->GetXaxis()->SetTitleFont(FontStyle);
+        hR->GetXaxis()->SetLabelFont(FontStyle);
+        hR->GetXaxis()->SetTitleSize(rTitleSize);
+        hR->GetXaxis()->SetLabelSize(rLabelSize);
+        hR->GetXaxis()->SetTitleOffset(1.15);  // match top pad
+
+        hR->GetYaxis()->SetTitle("Data/MC");
+        hR->GetYaxis()->CenterTitle(true);
+        hR->GetYaxis()->SetTitleFont(FontStyle);
+        hR->GetYaxis()->SetLabelFont(FontStyle);
+        hR->GetYaxis()->SetTitleSize(rTitleSize);
+        hR->GetYaxis()->SetLabelSize(rLabelSize);
+        hR->GetYaxis()->SetTitleOffset(0.35);
+
+        hR->GetXaxis()->SetNdivisions(7, 5, 0, kTRUE);
+        hR->GetYaxis()->SetNdivisions(5, 5, 0, kTRUE);
+        hR->GetXaxis()->SetTickLength(0.02 * rScale);  // scale tick length too
+        hR->GetYaxis()->SetTickLength(0.02 * rScale);
+
+        hR->SetMinimum(0.0);
+        hR->SetMaximum(2.0);
+
+        hR->Draw("HIST");
+        gRatioBand->Draw("E2 SAME");
+        gRatio->Draw("P SAME");
+
+        l1 = new TLine(hData->GetXaxis()->GetXmin(), 1.0,
+                       hData->GetXaxis()->GetXmax(), 1.0);
+        l1->SetLineStyle(2);
+        l1->SetLineWidth(2);
+        l1->Draw("SAME");
+    }
+
+    c->Update();
+    c->Print(SaveDir + Name + ".png");
+
+    // Cleanup (NOW safe to delete ratio primitives)
+    delete l1;
+    delete hR;
+    delete gRatio;
+    delete gRatioBand;
+
+    delete leg;
+    delete gData;
+    delete gMCBand;
+
+    delete hFrame;
+    delete hMCTotal;
+
+    delete st;
+    for (auto *h : mcClones) delete h;
+
+    delete hMCAbsUncSafe;
+    delete c;
 }
