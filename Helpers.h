@@ -186,6 +186,10 @@ double PION_SCATTERING_ENERGY_THRESHOLD = 0.05; // in GeV / c
 static const std::vector<double> ARRAY_KE_BINS = {0., 100., 200., 300., 400., 600.};
 static const int                   NUM_BINS_KE = static_cast<int>(ARRAY_KE_BINS.size()) - 1;
 
+// Bins for energy bins (finer)
+static const std::vector<double> ARRAY_KE_FINE_BINS = {0., 50., 100., 150., 200., 250., 300., 350., 400., 450., 500., 550., 600.};
+static const int                   NUM_BINS_KE_FINE = static_cast<int>(ARRAY_KE_FINE_BINS.size()) - 1;
+
 // TOF mass cut
 double PI_MU_EL_MASS_CUTOFF = 350.;
 

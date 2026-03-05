@@ -332,6 +332,12 @@ void RecoClassify3Cat() {
     TH1D* hIncidentKEMuon     = new TH1D("hIncidentKEMuon", "hIncidentKEMuon;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTrueIncidentKE     = new TH1D("hTrueIncidentKE", "hTrueIncidentKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
+    // Incident kinetic energy (finer binning)
+    TH1D* hIncidentKEFine         = new TH1D("hIncidentKEFine", "hIncidentKEFine;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hIncidentKEPionFine     = new TH1D("hIncidentKEPionFine", "hIncidentKEPionFine;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hIncidentKEElectronFine = new TH1D("hIncidentKEElectronFine", "hIncidentKEElectronFine;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hIncidentKEMuonFine     = new TH1D("hIncidentKEMuonFine", "hIncidentKEMuonFine;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+
     // True interacting flux
     TH1D* hTrueAllKE   = new TH1D("hTrueAllKE", "hTrueAllKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTrueOtherKE = new TH1D("hTrueOtherKE", "hTrueOtherKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
@@ -1666,18 +1672,22 @@ void RecoClassify3Cat() {
 
             // Else, add to energy deposited so far
             energyDeposited += wcMatchEDep->at(iDep);
-            
+
             // Add to incident KE if inside reduced volume
             if (isWithinReducedVolume(wcMatchXPos->at(iDep), wcMatchYPos->at(iDep), wcMatchZPos->at(iDep))) {
                 hIncidentKE->Fill(initialKE - energyDeposited);
+                hIncidentKEFine->Fill(initialKE - energyDeposited);
 
                 // Background breakdown
                 if (truthPrimaryPDG == -211) {
                     hIncidentKEPion->Fill(initialKE - energyDeposited);
+                    hIncidentKEPionFine->Fill(initialKE - energyDeposited);
                 } else if (truthPrimaryPDG == 13) {
                     hIncidentKEMuon->Fill(initialKE - energyDeposited);
+                    hIncidentKEMuonFine->Fill(initialKE - energyDeposited);
                 } else if (truthPrimaryPDG == 11) {
                     hIncidentKEElectron->Fill(initialKE - energyDeposited);
+                    hIncidentKEElectronFine->Fill(initialKE - energyDeposited);
                 }
             }
         }
@@ -2603,6 +2613,7 @@ void RecoClassify3Cat() {
     std::vector<std::vector<TH1*>> PlotGroups = {
         // Incident KE
         {hIncidentKE, hIncidentKEPion, hIncidentKEMuon, hIncidentKEElectron},
+        {hIncidentKEFine, hIncidentKEPionFine, hIncidentKEMuonFine, hIncidentKEElectronFine},
         {hIncidentKECorrected, hTrueIncidentKE},
 
         // Interacting KE
@@ -2668,6 +2679,7 @@ void RecoClassify3Cat() {
     std::vector<std::vector<TString>> PlotLabelGroups = {
         // Incident KE
         {"All", "Pions", "Muons", "Electrons"},
+        {"All", "Pions", "Muons", "Electrons"},
         {"Corrected", "True"},
 
         // Interacting KE
@@ -2731,6 +2743,7 @@ void RecoClassify3Cat() {
     std::vector<TString> PlotTitles = {
         // Incident KE
         "Incident/IncidentKE",
+        "Incident/IncidentKEFine",
         "Incident/IncidentKECorrected",
 
         // Interacting KE
@@ -2793,6 +2806,7 @@ void RecoClassify3Cat() {
 
     std::vector<TString> XLabels = {
         // Incident KE
+        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
 
@@ -2858,6 +2872,7 @@ void RecoClassify3Cat() {
         // Incident KE
         "Counts",
         "Counts",
+        "Counts",
 
         // Interacting KE
         "Counts",
@@ -2919,6 +2934,7 @@ void RecoClassify3Cat() {
 
     std::vector<bool> PlotStacked = {
         // Incident KE
+        true,
         true,
         false,
 
@@ -2982,6 +2998,7 @@ void RecoClassify3Cat() {
 
     std::vector<std::vector<bool>> PlotsAsPoints = {
         // Incident KE
+        {true, false, false, false},
         {true, false, false, false},
         {true, false},
 

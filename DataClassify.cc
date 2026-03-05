@@ -50,6 +50,13 @@ void DataClassify() {
     TH1D* hMCIncidentKEElectron = dynamic_cast<TH1D*>(fNom->Get("hIncidentKEElectron"));
     TH1D* hMCIncidentKEMuon     = dynamic_cast<TH1D*>(fNom->Get("hIncidentKEMuon"));
 
+    TH1D* HMCIncidentKEPionFine     = dynamic_cast<TH1D*>(fNom->Get("hIncidentKEPionFine"));
+    TH1D* HMCIncidentKEElectronFine = dynamic_cast<TH1D*>(fNom->Get("hIncidentKEElectronFine"));
+    TH1D* HMCIncidentKEMuonFine     = dynamic_cast<TH1D*>(fNom->Get("hIncidentKEMuonFine"));
+
+    double totalincidentmc = hMCIncidentKEPion->Integral() + hMCIncidentKEElectron->Integral() + hMCIncidentKEMuon->Integral();
+    std::cout << hMCIncidentKEPion->Integral() / totalincidentmc << " " << hMCIncidentKEElectron->Integral() / totalincidentmc << " " << hMCIncidentKEMuon->Integral() / totalincidentmc << std::endl;
+
     TH1D* hMCSmallTrksInCylinderPions     = dynamic_cast<TH1D*>(fNom->Get("hSmallTrksInCylinderPions"));
     TH1D* hMCSmallTrksInCylinderElectrons = dynamic_cast<TH1D*>(fNom->Get("hSmallTrksInCylinderElectrons"));
     TH1D* hMCSmallTrksInCylinderMuons     = dynamic_cast<TH1D*>(fNom->Get("hSmallTrksInCylinderMuons"));
@@ -198,7 +205,8 @@ void DataClassify() {
     TH1D* hPionScatterKE = new TH1D("hPionScatterKE", "hPionScatterKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // Incident kinetic energy
-    TH1D* hIncidentKE = new TH1D("hIncidentKE", "hIncidentKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hIncidentKE     = new TH1D("hIncidentKE", "hIncidentKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hIncidentKEFine = new TH1D("hIncidentKEFine", "hIncidentKEFine;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
 
     //////////////////////
     // Loop over events //
@@ -387,6 +395,7 @@ void DataClassify() {
             // Add to incident KE if inside reduced volume
             if (isWithinReducedVolume(wcMatchXPos->at(iDep), wcMatchYPos->at(iDep), wcMatchZPos->at(iDep))) {
                 hIncidentKE->Fill(initialKE - energyDeposited);
+                hIncidentKEFine->Fill(initialKE - energyDeposited);
             }
         }
         double energyAtVertex = initialKE - energyDeposited;
@@ -406,6 +415,10 @@ void DataClassify() {
     hMCSmallTrksInCylinderPions->Scale(SCALING_FACTOR);
     hMCSmallTrksInCylinderElectrons->Scale(SCALING_FACTOR);
     hMCSmallTrksInCylinderMuons->Scale(SCALING_FACTOR);
+
+    HMCIncidentKEPionFine->Scale(SCALING_FACTOR);
+    HMCIncidentKEElectronFine->Scale(SCALING_FACTOR);
+    HMCIncidentKEMuonFine->Scale(SCALING_FACTOR);
 
     //////////////////
     // Create plots //
@@ -429,7 +442,8 @@ void DataClassify() {
         hSmallTracksInCylinder,
 
         // Incident KE
-        hIncidentKE
+        hIncidentKE,
+        hIncidentKEFine
     };
 
     std::vector<std::vector<TH1*>> PlotMCGroups = {
@@ -437,7 +451,8 @@ void DataClassify() {
         {hMCSmallTrksInCylinderPions, hMCSmallTrksInCylinderMuons, hMCSmallTrksInCylinderElectrons},
 
         // Incident KE
-        {hMCIncidentKEPion, hMCIncidentKEMuon, hMCIncidentKEElectron}
+        {hMCIncidentKEPion, hMCIncidentKEMuon, hMCIncidentKEElectron},
+        {HMCIncidentKEPionFine, HMCIncidentKEMuonFine, HMCIncidentKEElectronFine}
     };
 
     std::vector<std::vector<TString>> PlotMCLabelGroups = {
@@ -445,6 +460,7 @@ void DataClassify() {
         {"Pion", "Muon", "Electron"},
         
         // Incident KE
+        {"Pion", "Muon", "Electron"},
         {"Pion", "Muon", "Electron"}
     };
 
@@ -453,7 +469,8 @@ void DataClassify() {
         "Cylinder/SmallTracks",
 
         // Incident KE
-        "Incident/IncidentKE"
+        "Incident/IncidentKE",
+        "Incident/IncidentKEFine"
     };
 
     std::vector<TString> PlotTitle = {
@@ -461,6 +478,7 @@ void DataClassify() {
         "Small Tracks in Cylinder",
 
         // Incident KE
+        "Incident Kinetic Energy",
         "Incident Kinetic Energy"
     };
 
@@ -469,6 +487,7 @@ void DataClassify() {
         "# of small tracks in cylinder",
 
         // Incident KE
+        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]"
     };
 
@@ -477,6 +496,7 @@ void DataClassify() {
         "Counts",
 
         // Incident KE
+        "Counts",
         "Counts"
     };
 
