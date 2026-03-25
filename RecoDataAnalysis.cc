@@ -31,15 +31,15 @@ void RecoDataAnalysis() {
 
     int FontStyle = 132;
     double TextSize = 0.06;
-    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/RecoDataAnalysis/";
+    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis_he/figs/RecoDataAnalysis/";
 
     // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/DataAll_histo.root";
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAllNeg100.root";
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNDataEval");
 
     // Load file with MC comparison histograms
-    TString MCCompFilePath = "/exp/lariat/app/users/epelaez/files/DataMCComparisons.root";
+    TString MCCompFilePath = "/exp/lariat/app/users/epelaez/files/DataMCComparisons_he.root";
     std::unique_ptr<TFile> MCFile(TFile::Open(MCCompFilePath));
 
     ///////////////////

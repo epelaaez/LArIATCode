@@ -38,10 +38,10 @@ void BeamlineElCov() {
 
     int FontStyle = 132;
     double TextSize = 0.06;
-    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Systematics/";
+    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis_he/figs/Systematics/";
 
     // Load file with data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAllNeg100.root";
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
@@ -1502,7 +1502,7 @@ void BeamlineElCov() {
     // Save covariance matrix //
     ////////////////////////////
 
-    TFile* saveFile = new TFile("/exp/lariat/app/users/epelaez/histos/beamlineel/Measure.root", "RECREATE");
+    TFile* saveFile = new TFile("/exp/lariat/app/users/epelaez/histos_he/beamlineel/Measure.root", "RECREATE");
     saveFile->cd();
     hMeasureCovMatrix->Write("", TObject::kOverwrite);
     saveFile->Close();

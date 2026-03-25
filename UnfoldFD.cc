@@ -24,33 +24,33 @@ void UnfoldFD() {
 
     int FontStyle = 132;
     double TextSize = 0.06;
-    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/FakeData/";
+    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis_he/figs/FakeData/";
 
     int N = NUM_SIGNAL_TYPES * NUM_BINS_KE;
 
     // Load nominal response matrix and true
-    std::unique_ptr<TFile> NominalFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/nominal/Reco.root"));
+    std::unique_ptr<TFile> NominalFile(TFile::Open("/exp/lariat/app/users/epelaez/histos_he/nominal/Reco.root"));
     TH1D* TrueNominal     = (TH1D*) NominalFile->Get("hSignalVectorNominal");
     TH2D* ResponseNominal = (TH2D*) NominalFile->Get("hResponseMatrix");
     TH1D* BackgroundNominal = (TH1D*) NominalFile->Get("hBackgroundVectorNominal");
 
     // Load fake data samples
-    std::unique_ptr<TFile> FD1File(TFile::Open("/exp/lariat/app/users/epelaez/histos/fake_data/FD1.root"));
+    std::unique_ptr<TFile> FD1File(TFile::Open("/exp/lariat/app/users/epelaez/histos_he/fake_data/FD1.root"));
     TH1D* FD1True = (TH1D*) FD1File->Get("hSignal");
     TH1D* FD1Reco = (TH1D*) FD1File->Get("hMeasure");
     TH1D* FD1Inc  = (TH1D*) FD1File->Get("hPionIncidentKE");
 
-    std::unique_ptr<TFile> FD2File(TFile::Open("/exp/lariat/app/users/epelaez/histos/fake_data/FD2.root"));
+    std::unique_ptr<TFile> FD2File(TFile::Open("/exp/lariat/app/users/epelaez/histos_he/fake_data/FD2.root"));
     TH1D* FD2True = (TH1D*) FD2File->Get("hSignal");
     TH1D* FD2Reco = (TH1D*) FD2File->Get("hMeasure");
     TH1D* FD2Inc  = (TH1D*) FD2File->Get("hPionIncidentKE");
 
-    std::unique_ptr<TFile> FD3File(TFile::Open("/exp/lariat/app/users/epelaez/histos/fake_data/FD3.root"));
+    std::unique_ptr<TFile> FD3File(TFile::Open("/exp/lariat/app/users/epelaez/histos_he/fake_data/FD3.root"));
     TH1D* FD3True = (TH1D*) FD3File->Get("hSignal");
     TH1D* FD3Reco = (TH1D*) FD3File->Get("hMeasure");
     TH1D* FD3Inc  = (TH1D*) FD3File->Get("hPionIncidentKE");
 
-    std::unique_ptr<TFile> FD4File(TFile::Open("/exp/lariat/app/users/epelaez/histos/fake_data/FD4.root"));
+    std::unique_ptr<TFile> FD4File(TFile::Open("/exp/lariat/app/users/epelaez/histos_he/fake_data/FD4.root"));
     TH1D* FD4True = (TH1D*) FD4File->Get("hSignal");
     TH1D* FD4Reco = (TH1D*) FD4File->Get("hMeasure");
     TH1D* FD4Inc  = (TH1D*) FD4File->Get("hPionIncidentKE");
@@ -72,23 +72,23 @@ void UnfoldFD() {
     };
 
     // MC stat covariance
-    std::unique_ptr<TFile> MCStatFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/mcstat/Measure.root"));
+    std::unique_ptr<TFile> MCStatFile(TFile::Open("/exp/lariat/app/users/epelaez/histos_he/mcstat/Measure.root"));
     TH2D* MCStatCovariance = (TH2D*) MCStatFile->Get("hMeasureCovMatrix");
 
     // Generator covariance
-    std::unique_ptr<TFile> GeneratorFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/generator/Measure.root"));
+    std::unique_ptr<TFile> GeneratorFile(TFile::Open("/exp/lariat/app/users/epelaez/histos_he/generator/Measure.root"));
     TH2D* GeneratorCovariance = (TH2D*) GeneratorFile->Get("hMeasureCovMatrix");
 
     // Energy reconstruction covariance
-    std::unique_ptr<TFile> EnergyRecoFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/energyreco/Measure.root"));
+    std::unique_ptr<TFile> EnergyRecoFile(TFile::Open("/exp/lariat/app/users/epelaez/histos_he/energyreco/Measure.root"));
     TH2D* EnergyRecoCovariance = (TH2D*) EnergyRecoFile->Get("hMeasureCovMatrix");
 
     // Beam line muon covariance
-    std::unique_ptr<TFile> BeamlineMuFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/beamlinemu/Measure.root"));
+    std::unique_ptr<TFile> BeamlineMuFile(TFile::Open("/exp/lariat/app/users/epelaez/histos_he/beamlinemu/Measure.root"));
     TH2D* BeamlineMuCovariance = (TH2D*) BeamlineMuFile->Get("hMeasureCovMatrix");
 
     // Beam line electron covariance
-    std::unique_ptr<TFile> BeamlineElFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/beamlineel/Measure.root"));
+    std::unique_ptr<TFile> BeamlineElFile(TFile::Open("/exp/lariat/app/users/epelaez/histos_he/beamlineel/Measure.root"));
     TH2D* BeamlineElCovariance = (TH2D*) BeamlineElFile->Get("hMeasureCovMatrix");
 
     // Convert histograms into matrices/vectors

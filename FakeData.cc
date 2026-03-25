@@ -34,11 +34,11 @@ void FakeData(int sample = 1) {
 
     int FontStyle = 132;
     double TextSize = 0.06;
-    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/FakeData/Sample" + TString::Itoa(sample, 10) + "/";
+    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis_he/figs/FakeData/Sample" + TString::Itoa(sample, 10) + "/";
     std::cout << "Generating Sample: " << sample << std::endl;
 
     // Load file with data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAllNeg100.root";
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
@@ -990,7 +990,7 @@ void FakeData(int sample = 1) {
     // Save to file //
     //////////////////
 
-    TFile* saveFile = new TFile(("/exp/lariat/app/users/epelaez/histos/fake_data/FD" + TString::Itoa(sample, 10) + ".root").Data(), "RECREATE");
+    TFile* saveFile = new TFile(("/exp/lariat/app/users/epelaez/histos_he/fake_data_he/FD" + TString::Itoa(sample, 10) + ".root").Data(), "RECREATE");
     saveFile->cd();
     hSignal->Write("", TObject::kOverwrite);
     hMeasure->Write("", TObject::kOverwrite);

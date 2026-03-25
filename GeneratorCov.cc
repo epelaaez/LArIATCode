@@ -39,15 +39,14 @@ void GeneratorCov() {
 
     int FontStyle = 132;
     double TextSize = 0.06;
-    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Systematics/";
+    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis_he/figs/Systematics/";
 
     // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAllNeg100.root";
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
     // Get file with weights
-    // TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/WeightsAll_histo.root"; // all 20%
     TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/WeightsAllChExch_histo.root"; // ch exch 50%
     std::unique_ptr<TFile> WeightsFile(TFile::Open(RootWeightsFilePath));
     TDirectory* WeightsDirectory = (TDirectory*)WeightsFile->Get("CalculateWeights");
@@ -61,7 +60,7 @@ void GeneratorCov() {
     }
 
     // Get nominal measured histogram
-    TString NominalFilePath = "/exp/lariat/app/users/epelaez/histos/nominal/Reco.root";
+    TString NominalFilePath = "/exp/lariat/app/users/epelaez/histos_he/nominal/Reco.root";
     std::unique_ptr<TFile> NominalFile(TFile::Open(NominalFilePath));
 
     TH1D* hMeasureVectorNominal = (TH1D*) NominalFile->Get("hMeasureVectorNominal");
@@ -1555,7 +1554,7 @@ void GeneratorCov() {
     // Save covariance matrix //
     ////////////////////////////
 
-    TFile* saveFile = new TFile("/exp/lariat/app/users/epelaez/histos/generator/Measure.root", "RECREATE");
+    TFile* saveFile = new TFile("/exp/lariat/app/users/epelaez/histos_he/generator/Measure.root", "RECREATE");
     saveFile->cd();
     hMeasureCovMatrix->Write("", TObject::kOverwrite);
     saveFile->Close();

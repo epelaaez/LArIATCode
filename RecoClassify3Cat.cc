@@ -33,10 +33,10 @@ void RecoClassify3Cat() {
 
     int FontStyle = 132;
     double TextSize = 0.06;
-    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Classify3Cat/";
+    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis_he/figs/Classify3Cat/";
 
     // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAllNeg100.root";
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
@@ -299,8 +299,8 @@ void RecoClassify3Cat() {
     std::ofstream outFileAbs0pBkg("files/Classify3Cat/Abs0pBackground.txt");
     std::ofstream outFileLowProb("files/Classify3Cat/LowProbability.txt");
 
-    TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "RECREATE");
-    TFile* nominalFile     = new TFile("/exp/lariat/app/users/epelaez/histos/nominal/Reco.root", "RECREATE");
+    TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons_he.root", "RECREATE");
+    TFile* nominalFile     = new TFile("/exp/lariat/app/users/epelaez/histos_he/nominal/Reco.root", "RECREATE");
 
     ///////////////////////
     // Create histograms //
@@ -2507,8 +2507,8 @@ void RecoClassify3Cat() {
     // Save histograms to text files //
     ///////////////////////////////////
 
-    histoToText(hTrueAllKE, "/exp/lariat/app/users/epelaez/analysis/files/Flux/InteractingFlux.txt");
-    histoToText(hTrueIncidentKE, "/exp/lariat/app/users/epelaez/analysis/files/Flux/IncidentFlux.txt");
+    histoToText(hTrueAllKE, "/exp/lariat/app/users/epelaez/analysis_he/files/Flux/InteractingFlux.txt");
+    histoToText(hTrueIncidentKE, "/exp/lariat/app/users/epelaez/analysis_he/files/Flux/IncidentFlux.txt");
 
     //////////////////
     // Create plots //
