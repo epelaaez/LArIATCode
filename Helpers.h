@@ -35,7 +35,7 @@ int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 int NUM_SIGNAL_TYPES = 3; // 0p abs, Np abs, scattering
 
 // Run through this many events
-int USE_NUM_EVENTS = 50000;
+int USE_NUM_EVENTS = 20000;
 
 // Number of events at each data quality cut
 double TG0_MC_EVENTS = 118999;

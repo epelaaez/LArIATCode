@@ -5,8 +5,8 @@
 namespace fs = std::filesystem;
 
 int main() {
-    std::string directory_path = "/pnfs/lariat/persistent/users/epelaez/reco_files/"; 
-    std::string output_file = "files.list";
+    std::string directory_path = "/pnfs/lariat/persistent/users/epelaez/reco_mc_neg_100a/reco/chunks/"; 
+    std::string output_file = "files_neg100_reco.list";
     
     std::ofstream list_file(output_file);
     if (!list_file) {

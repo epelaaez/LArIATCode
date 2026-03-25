@@ -54,12 +54,32 @@ void DataClassify() {
     TH1D* HMCIncidentKEElectronFine = dynamic_cast<TH1D*>(fNom->Get("hIncidentKEElectronFine"));
     TH1D* HMCIncidentKEMuonFine     = dynamic_cast<TH1D*>(fNom->Get("hIncidentKEMuonFine"));
 
-    double totalincidentmc = hMCIncidentKEPion->Integral() + hMCIncidentKEElectron->Integral() + hMCIncidentKEMuon->Integral();
-    std::cout << hMCIncidentKEPion->Integral() / totalincidentmc << " " << hMCIncidentKEElectron->Integral() / totalincidentmc << " " << hMCIncidentKEMuon->Integral() / totalincidentmc << std::endl;
+    // double totalincidentmc = hMCIncidentKEPion->Integral() + hMCIncidentKEElectron->Integral() + hMCIncidentKEMuon->Integral();
+    // std::cout << hMCIncidentKEPion->Integral() / totalincidentmc << " " << hMCIncidentKEElectron->Integral() / totalincidentmc << " " << hMCIncidentKEMuon->Integral() / totalincidentmc << std::endl;
 
     TH1D* hMCSmallTrksInCylinderPions     = dynamic_cast<TH1D*>(fNom->Get("hSmallTrksInCylinderPions"));
     TH1D* hMCSmallTrksInCylinderElectrons = dynamic_cast<TH1D*>(fNom->Get("hSmallTrksInCylinderElectrons"));
     TH1D* hMCSmallTrksInCylinderMuons     = dynamic_cast<TH1D*>(fNom->Get("hSmallTrksInCylinderMuons"));
+
+    TH1D* hMCFrontFaceKEPion     = dynamic_cast<TH1D*>(fNom->Get("hFrontFaceKEPion"));
+    TH1D* hMCFrontFaceKEElectron = dynamic_cast<TH1D*>(fNom->Get("hFrontFaceKEElectron"));
+    TH1D* hMCFrontFaceKEMuon     = dynamic_cast<TH1D*>(fNom->Get("hFrontFaceKEMuon"));
+
+    TH1D* hMCWCKEPion     = dynamic_cast<TH1D*>(fNom->Get("hWCKEPion"));
+    TH1D* hMCWCKEMuon     = dynamic_cast<TH1D*>(fNom->Get("hWCKEMuon"));
+    TH1D* hMCWCKEElectron = dynamic_cast<TH1D*>(fNom->Get("hWCKEElectron"));
+
+    TH1D* hMCWCHitsPion     = dynamic_cast<TH1D*>(fNom->Get("hWCHitsPion"));
+    TH1D* hMCWCHitsMuon     = dynamic_cast<TH1D*>(fNom->Get("hWCHitsMuon"));
+    TH1D* hMCWCHitsElectron = dynamic_cast<TH1D*>(fNom->Get("hWCHitsElectron"));
+
+    TH1D* hMCRadDistWC4Pion     = dynamic_cast<TH1D*>(fNom->Get("hRadDistWC4Pion"));
+    TH1D* hMCRadDistWC4Muon     = dynamic_cast<TH1D*>(fNom->Get("hRadDistWC4Muon"));
+    TH1D* hMCRadDistWC4Electron = dynamic_cast<TH1D*>(fNom->Get("hRadDistWC4Electron"));
+
+    TH1D* hMCRadDistMidPlanePion     = dynamic_cast<TH1D*>(fNom->Get("hRadDistMidPlanePion"));
+    TH1D* hMCRadDistMidPlaneMuon     = dynamic_cast<TH1D*>(fNom->Get("hRadDistMidPlaneMuon"));
+    TH1D* hMCRadDistMidPlaneElectron = dynamic_cast<TH1D*>(fNom->Get("hRadDistMidPlaneElectron"));
 
     ///////////////////
     // Load branches //
@@ -208,6 +228,17 @@ void DataClassify() {
     TH1D* hIncidentKE     = new TH1D("hIncidentKE", "hIncidentKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hIncidentKEFine = new TH1D("hIncidentKEFine", "hIncidentKEFine;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
 
+    // Kinetic energy at the front face of the TPC
+    TH1D* hFrontFaceKE = new TH1D("hFrontFaceKE", "hFrontFaceKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+
+    // Wire chamber kinetic energy (before energy loss correction)
+    TH1D* hWCKE = new TH1D("hWCKE", "hWCKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+
+    // Wire-chamber quality
+    TH1D* hWCHits          = new TH1D("hWCHits", "hWCHits", 10, 0, 10);
+    TH1D* hRadDistMidPlane = new TH1D("hRadDistMidPlane", "hRadDistMidPlane", 60, 0.0, 20.);
+    TH1D* hRadDistWC4      = new TH1D("hRadDistWC4", "RadDistWC4", 90, 0.0, 30.);
+
     //////////////////////
     // Loop over events //
     //////////////////////
@@ -227,20 +258,82 @@ void DataClassify() {
         // Wire-chamber and other initial cuts //
         /////////////////////////////////////////
         
-        if (wcNumHits != 8) continue;
+        hWCHits->Fill(wcNumHits);
+        // if (wcNumHits != 8) continue;
+
+        // std::cout << "==== Entry " << i << " ====\n";
+        // std::cout << "wcNumHits = " << wcNumHits << "\n";
+
+        // auto printVec = [](const std::string& name, const std::vector<double>* v) {
+        //     std::cout << name << " = ";
+        //     if (!v) {
+        //         std::cout << "nullptr\n";
+        //         return;
+        //     }
+
+        //     std::cout << "[ ";
+        //     for (size_t j = 0; j < v->size(); ++j) {
+        //         std::cout << v->at(j);
+        //         if (j + 1 < v->size()) std::cout << ", ";
+        //     }
+        //     std::cout << " ]\n";
+        // };
+
+        // printVec("wcHit0", wcHit0);
+        // printVec("wcHit1", wcHit1);
+        // printVec("wcHit2", wcHit2);
+        // printVec("wcHit3", wcHit3);
+
+        // Project downstream to midplane @ -437.97 (without angular corrections)
+        std::vector<double> midUp = projToZ(*wcHit0, *wcHit1, -437.97);
+        // Use this point and WC3 to project up to WC4
+        std::vector<double> projDown = projToZ(midUp, *wcHit2, -95.0);
+        // Requires some corrections because magnets are not the same
+        projDown[0] -= tan(1.32 * TMath::Pi() / 180.0) * (-95.0 - -437.97);
+
+        // Compare x and y coordinate in projection and real hit for WC4
+        double radDistWC4 = TMath::Sqrt(pow(projDown[0] - wcHit3->at(0), 2.) + pow(projDown[1] - wcHit3->at(1), 2.));
+
+        // Project upstream to midplane @ -437.97
+        std::vector<double> midDown = projToZ(*wcHit2, *wcHit3, -437.97);
+        midDown[0] -= tan(1.32 * TMath::Pi() / 180.0) * (-339.57 - -437.97);
+        // double midPlaneDist = TMath::Sqrt(pow(midUp[0] - midDown[0] + 0.75, 2) + pow(midUp[1] - midDown[1], 2));
+        double midPlaneDist = TMath::Sqrt(pow(midUp[0] - midDown[0], 2) + pow(midUp[1] - midDown[1], 2));
+
+        hRadDistMidPlane->Fill(midPlaneDist);
+        hRadDistWC4->Fill(radDistWC4);
+
+        // Cuts
+        // if (radDistWC4 > 8.0) continue;
+        // if (midPlaneDist > 3.0) continue;
 
         // Check projected tracks go through all apertures
         bool Magnet1ApertureCheck = CheckUpstreamMagnetAperture(*wcHit0, *wcHit1);
-        bool Magnet2ApertureCheck = CheckDownstreamMagnetAperture(*wcHit3, *wcHit2);
-        bool DSColApertureCheck   = CheckDownstreamCollimatorAperture(*wcHit3, *wcHit2);
+        bool Magnet2ApertureCheck = CheckDownstreamMagnetAperture(*wcHit2, *wcHit3);
+        bool DSColApertureCheck   = CheckDownstreamCollimatorAperture(*wcHit2, *wcHit3);
 
-        if (!Magnet1ApertureCheck || !Magnet2ApertureCheck || !DSColApertureCheck) continue;
+        // if (!Magnet1ApertureCheck || !Magnet2ApertureCheck || !DSColApertureCheck) continue;
 
         // Candidate mass cut, keep pions, muons and electrons
         if (std::abs(TOFMass) > PI_MU_EL_MASS_CUTOFF) continue;
 
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) continue;
+
+        // Check WC and front-face momentum
+        double WCKE             = TMath::Sqrt(WCTrackMomentum * WCTrackMomentum + PionMass * PionMass) - PionMass;
+        double calculatedEnLoss = energyLossCalculation();
+        if (isData) {
+            double tanThetaCosPhi = TMath::Tan(WCTheta) * TMath::Cos(WCPhi);
+            double tanThetaSinPhi = TMath::Tan(WCTheta) * TMath::Sin(WCPhi);
+            double den            = TMath::Sqrt(1 + tanThetaCosPhi * tanThetaCosPhi);
+            double onTheFlyPz     = WCTrackMomentum / den;
+            double onTheFlyPx     = onTheFlyPz * tanThetaSinPhi;
+            calculatedEnLoss      = energyLossCalculation(WC4PrimaryX, onTheFlyPx, isData);
+        }
+        const double initialKE = WCKE - calculatedEnLoss;
+        hFrontFaceKE->Fill(initialKE);
+        hWCKE->Fill(WCKE);
 
         /////////////////////////////////////////
         // All this are valid events, analyze! //
@@ -369,18 +462,6 @@ void DataClassify() {
         // Incident KE fill //
         //////////////////////
 
-        double WCKE             = TMath::Sqrt(WCTrackMomentum * WCTrackMomentum + PionMass * PionMass) - PionMass;
-        double calculatedEnLoss = energyLossCalculation();
-        if (isData) {
-            double tanThetaCosPhi = TMath::Tan(WCTheta) * TMath::Cos(WCPhi);
-            double tanThetaSinPhi = TMath::Tan(WCTheta) * TMath::Sin(WCPhi);
-            double den            = TMath::Sqrt(1 + tanThetaCosPhi * tanThetaCosPhi);
-            double onTheFlyPz     = WCTrackMomentum / den;
-            double onTheFlyPx     = onTheFlyPz * tanThetaSinPhi;
-            calculatedEnLoss      = energyLossCalculation(WC4PrimaryX, onTheFlyPx, isData);
-        }
-        const double initialKE = WCKE - calculatedEnLoss;
-
         double energyDeposited = 0.0;
         for (size_t iDep = 0; iDep < wcMatchDEDX->size(); ++iDep) {
             // If we are past detected breaking point, exit loop
@@ -406,7 +487,9 @@ void DataClassify() {
     std::cout << hSmallTracksInCylinder->Integral() << " events in data" << std::endl;
     std::cout << std::endl;
 
-    double SCALING_FACTOR = hSmallTracksInCylinder->Integral() / (hMCSmallTrksInCylinderMuons->Integral() + hMCSmallTrksInCylinderPions->Integral() + hMCSmallTrksInCylinderElectrons->Integral());
+    double SCALING_FACTOR     = hSmallTracksInCylinder->Integral() / (hMCSmallTrksInCylinderMuons->Integral() + hMCSmallTrksInCylinderPions->Integral() + hMCSmallTrksInCylinderElectrons->Integral());
+    double SCALING_FACTOR_PRE = hFrontFaceKE->Integral() / (hMCFrontFaceKEPion->Integral() + hMCFrontFaceKEMuon->Integral() + hMCFrontFaceKEElectron->Integral());
+    double SCALING_FACTOR_WC  = hWCHits->Integral() / (hMCWCHitsPion->Integral() + hMCWCHitsMuon->Integral() + hMCWCHitsElectron->Integral());
 
     hMCIncidentKEPion->Scale(SCALING_FACTOR);
     hMCIncidentKEElectron->Scale(SCALING_FACTOR);
@@ -419,6 +502,26 @@ void DataClassify() {
     HMCIncidentKEPionFine->Scale(SCALING_FACTOR);
     HMCIncidentKEElectronFine->Scale(SCALING_FACTOR);
     HMCIncidentKEMuonFine->Scale(SCALING_FACTOR);
+
+    hMCFrontFaceKEPion->Scale(SCALING_FACTOR_PRE);
+    hMCFrontFaceKEElectron->Scale(SCALING_FACTOR_PRE);
+    hMCFrontFaceKEMuon->Scale(SCALING_FACTOR_PRE);
+
+    hMCWCKEPion->Scale(SCALING_FACTOR_PRE);
+    hMCWCKEMuon->Scale(SCALING_FACTOR_PRE);
+    hMCWCKEElectron->Scale(SCALING_FACTOR_PRE);
+
+    hMCWCHitsPion->Scale(SCALING_FACTOR_WC);
+    hMCWCHitsMuon->Scale(SCALING_FACTOR_WC);
+    hMCWCHitsElectron->Scale(SCALING_FACTOR_WC);
+
+    hMCRadDistMidPlanePion->Scale(SCALING_FACTOR_WC);
+    hMCRadDistMidPlaneMuon->Scale(SCALING_FACTOR_WC);
+    hMCRadDistMidPlaneElectron->Scale(SCALING_FACTOR_WC);
+
+    hMCRadDistWC4Pion->Scale(SCALING_FACTOR_WC);
+    hMCRadDistWC4Muon->Scale(SCALING_FACTOR_WC);
+    hMCRadDistWC4Electron->Scale(SCALING_FACTOR_WC);
 
     //////////////////
     // Create plots //
@@ -438,64 +541,113 @@ void DataClassify() {
     };
 
     std::vector<TH1*> PlotDataGroups = {
+        // WC quality
+        hWCHits,
+        hRadDistWC4,
+        hRadDistMidPlane,
+
         // Cylinder
         hSmallTracksInCylinder,
 
         // Incident KE
         hIncidentKE,
-        hIncidentKEFine
+        hIncidentKEFine,
+        hFrontFaceKE,
+        hWCKE
     };
 
     std::vector<std::vector<TH1*>> PlotMCGroups = {
+        // WC quality
+        {hMCWCHitsPion, hMCWCHitsMuon, hMCWCHitsElectron},
+        {hMCRadDistWC4Pion, hMCRadDistWC4Muon, hMCRadDistWC4Electron},
+        {hMCRadDistMidPlanePion, hMCRadDistMidPlaneMuon, hMCRadDistMidPlaneElectron},
+        
         // Cylinder
         {hMCSmallTrksInCylinderPions, hMCSmallTrksInCylinderMuons, hMCSmallTrksInCylinderElectrons},
 
         // Incident KE
         {hMCIncidentKEPion, hMCIncidentKEMuon, hMCIncidentKEElectron},
-        {HMCIncidentKEPionFine, HMCIncidentKEMuonFine, HMCIncidentKEElectronFine}
+        {HMCIncidentKEPionFine, HMCIncidentKEMuonFine, HMCIncidentKEElectronFine},
+        {hMCFrontFaceKEPion, hMCFrontFaceKEMuon, hMCFrontFaceKEElectron},
+        {hMCWCKEPion, hMCWCKEMuon, hMCWCKEElectron}
     };
 
     std::vector<std::vector<TString>> PlotMCLabelGroups = {
+        // WC quality
+        {"Pion", "Muon", "Electron"},
+        {"Pion", "Muon", "Electron"},
+        {"Pion", "Muon", "Electron"},
+        
         // Cylinder
         {"Pion", "Muon", "Electron"},
         
         // Incident KE
         {"Pion", "Muon", "Electron"},
+        {"Pion", "Muon", "Electron"},
+        {"Pion", "Muon", "Electron"},
         {"Pion", "Muon", "Electron"}
     };
 
     std::vector<TString> PlotName = {
+        // WC quality
+        "WCQuality/NumHits",
+        "WCQuality/RadDistWC4",
+        "WCQuality/RadDistMidPlane",
+
         // Cylinder 
         "Cylinder/SmallTracks",
 
         // Incident KE
         "Incident/IncidentKE",
-        "Incident/IncidentKEFine"
+        "Incident/IncidentKEFine",
+        "Incident/FrontFaceKE",
+        "Incident/WireChamberKE"
     };
 
     std::vector<TString> PlotTitle = {
+        // WC Quality
+        "Number of Wire-Chamber Hits",
+        "Proj. to WC hit",
+        "Up to downstream proj. distance",
+
         // Cylinder
         "Small Tracks in Cylinder",
 
         // Incident KE
         "Incident Kinetic Energy",
-        "Incident Kinetic Energy"
+        "Incident Kinetic Energy (Fine Binning)",
+        "Front-Face Kinetic Energy",
+        "Wire-Chamber Kinetic Energy"
     };
 
     std::vector<TString> XLabels = {
+        // WC Quality
+        "# of hits",
+        "Proj. to WC hit distance [cm]",
+        "Upstream to downstream proj. distance [cm]",
+
         // Cylinder
         "# of small tracks in cylinder",
 
         // Incident KE
         "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]"
     };
 
     std::vector<TString> YLabels = {
+        // WC Quality
+        "Counts",
+        "Counts",
+        "Counts",
+
         // Cylinder
         "Counts",
 
         // Incident KE
+        "Counts",
+        "Counts",
         "Counts",
         "Counts"
     };

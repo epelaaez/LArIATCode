@@ -328,14 +328,14 @@ void RecoDataAnalysis() {
         100, -40., 40.,
         100, -15., 15.
     );
-    TH1D* hRadDistWC4 = new TH1D("hRadDistWC4", "RadDistWC4", 80, 0.0, 40.);
+    TH1D* hRadDistWC4 = new TH1D("hRadDistWC4", "RadDistWC4", 90, 0.0, 30.);
 
     TH2D* hMidPlaneCoinc = new TH2D(
         "hMidPlaneCoinc", "MidPlaneCoinc;up_{x} - down_{x};up_{y} - down_{y}",
         100, -20., 20.,
         100, -5., 5.
     );
-    TH1D* hRadDistMidPlane = new TH1D("hRadDistMidPlane", "RadDistMidPlane", 60, 0.0, 30.);
+    TH1D* hRadDistMidPlane = new TH1D("hRadDistMidPlane", "RadDistMidPlane", 60, 0.0, 20.);
 
     ///////////////////////////////////////////////////
     // Distribution of hits matched to primary track //
@@ -362,7 +362,7 @@ void RecoDataAnalysis() {
         tree->GetEntry(i);
 
         // Make script go faster
-        if (i > 100000) break;
+        // if (i > USE_NUM_EVENTS) break;
 
         // Fill for all events
         hTOFMass->Fill(std::abs(TOFMass));
@@ -389,22 +389,21 @@ void RecoDataAnalysis() {
         double radDistWC4 = TMath::Sqrt(pow(projDown[0] - wcHit3->at(0), 2.) + pow(projDown[1] - wcHit3->at(1), 2.));
         hRadDistWC4->Fill(radDistWC4);
 
-        // if (radDistWC4 > 8.0) continue; // TODO: figure out number
-
         // Project upstream to midplane @ -437.97
-        std::vector<double> midDown = projToZ(*wcHit3, *wcHit2, -437.97);
+        std::vector<double> midDown = projToZ(*wcHit2, *wcHit3, -437.97);
         midDown[0] -= tan(1.32 * TMath::Pi() / 180.0) * (-339.57 - -437.97);
 
         hMidPlaneCoinc->Fill(midUp[0] - midDown[0], midUp[1] - midDown[1]);
-        double midPlaneDist = TMath::Sqrt(pow(midUp[0] - midDown[0], 2) + pow(midUp[1] - midDown[1], 2));
+        double midPlaneDist = TMath::Sqrt(pow(midUp[0] - midDown[0] + 0.75, 2) + pow(midUp[1] - midDown[1], 2));
         hRadDistMidPlane->Fill(midPlaneDist);
 
-        // if (midPlaneDist > 3.0) continue;
+        if (radDistWC4 > 8.0) continue;
+        if (midPlaneDist > 3.0) continue;
 
         // Check projected tracks go through all apertures
         bool Magnet1ApertureCheck = CheckUpstreamMagnetAperture(*wcHit0, *wcHit1);
-        bool Magnet2ApertureCheck = CheckDownstreamMagnetAperture(*wcHit3, *wcHit2);
-        bool DSColApertureCheck   = CheckDownstreamCollimatorAperture(*wcHit3, *wcHit2);
+        bool Magnet2ApertureCheck = CheckDownstreamMagnetAperture(*wcHit2, *wcHit3);
+        bool DSColApertureCheck   = CheckDownstreamCollimatorAperture(*wcHit2, *wcHit3);
 
         if (!Magnet1ApertureCheck || !Magnet2ApertureCheck || !DSColApertureCheck) continue;
 

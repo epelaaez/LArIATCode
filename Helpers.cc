@@ -1278,7 +1278,14 @@ bool EqualApprox(const TMatrixD& A, const TMatrixD& B, double rtol, double atol)
 bool CheckUpstreamMagnetAperture(const std::vector<double>& hit1, const std::vector<double>& hit2) {
    std::vector<double> USHit = projToZ(hit1, hit2, zcentMagnet1[0]);
    std::vector<double> DSHit = projToZ(hit1, hit2, zcentMagnet1[1]);
-   
+
+    // std::cout << "upstream magnet" << std::endl;
+    // std::cout << USHit[0] << "   " << xboundMagnet1[0] << "  " << xboundMagnet1[1] << std::endl;
+    // std::cout << USHit[1] << "   " << yboundMagnet1[0] << "  " << yboundMagnet1[1] << std::endl;
+    // std::cout << DSHit[0] << "   " << xboundMagnet1[2] << "  " << xboundMagnet1[3] << std::endl;
+    // std::cout << DSHit[1] << "   " << yboundMagnet1[2] << "  " << yboundMagnet1[3] << std::endl;
+    // std::cout << std::endl;
+
    if (USHit[0] < xboundMagnet1[0] || USHit[0] > xboundMagnet1[1]) return false;      // Upstream Aperture X Check
    else if (USHit[1] < yboundMagnet1[0] || USHit[1] > yboundMagnet1[1]) return false; // Upstream Aperture Y Check
    else if (DSHit[0] < xboundMagnet1[2] || DSHit[0] > xboundMagnet1[3]) return false; // Downstream Aperture X check
@@ -1292,6 +1299,13 @@ bool CheckDownstreamMagnetAperture(const std::vector<double>& hit1, const std::v
    std::vector<double> USHit = projToZ(hit1,hit2,zcentMagnet2[0]);
    std::vector<double> DSHit = projToZ(hit1,hit2,zcentMagnet2[1]);
    
+    // std::cout << "downstream magnet" << std::endl;
+    // std::cout << USHit[0] << "   " << xboundMagnet2[0] << "  " << xboundMagnet2[1] << std::endl;
+    // std::cout << USHit[1] << "   " << yboundMagnet2[0] << "  " << yboundMagnet2[1] << std::endl;
+    // std::cout << DSHit[0] << "   " << xboundMagnet2[2] << "  " << xboundMagnet2[3] << std::endl;
+    // std::cout << DSHit[1] << "   " << yboundMagnet2[2] << "  " << yboundMagnet2[3] << std::endl;
+    // std::cout << std::endl;
+
     if (USHit[0] < xboundMagnet2[0] || USHit[0] > xboundMagnet2[1]) return false;      // Upstream Aperture X check
     else if (USHit[1] < yboundMagnet2[0] || USHit[1] > yboundMagnet2[1]) return false; // Upstream Aperture Y Check
     else if (DSHit[0] < xboundMagnet2[2] || DSHit[0] > xboundMagnet2[3]) return false; // Downstream Aperture X Check   
@@ -1304,6 +1318,13 @@ bool CheckDownstreamMagnetAperture(const std::vector<double>& hit1, const std::v
 bool CheckDownstreamCollimatorAperture(const std::vector<double>& hit1, const std::vector<double>& hit2) {
    std::vector<double> USHit = projToZ(hit1,hit2,zcentDSCol[0]);
    std::vector<double> DSHit = projToZ(hit1,hit2,zcentDSCol[1]);
+
+    // std::cout << "downstream collimator" << std::endl;
+    // std::cout << USHit[0] << "   " << xboundDSCol[0] << "  " << xboundDSCol[1] << std::endl;
+    // std::cout << USHit[1] << "   " << yboundDSCol[0] << "  " << yboundDSCol[1] << std::endl;
+    // std::cout << DSHit[0] << "   " << xboundDSCol[2] << "  " << xboundDSCol[3] << std::endl;
+    // std::cout << DSHit[1] << "   " << yboundDSCol[2] << "  " << yboundDSCol[3] << std::endl;
+    // std::cout << std::endl;
    
    if (USHit[0] < xboundDSCol[0] || USHit[0] > xboundDSCol[1]) return false;      // Upstream Aperture X Check
    else if (USHit[1] < yboundDSCol[0] || USHit[1] > yboundDSCol[1]) return false; // Upstream Aperture Y Check

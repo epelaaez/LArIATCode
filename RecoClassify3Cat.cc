@@ -36,7 +36,8 @@ void RecoClassify3Cat() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Classify3Cat/";
 
     // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
+    // TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_temp_histo.root"; // RV at z = 30
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
@@ -105,6 +106,18 @@ void RecoClassify3Cat() {
     tree->SetBranchAddress("wcMatchDaughtersProcess", &wcMatchDaughtersProcess);
     tree->SetBranchAddress("wcMatchProcess", &wcMatchProcess);
     tree->SetBranchAddress("wcMatchPDG", &wcMatchPDG);
+
+    // WC quality data
+    int wcNumHits;
+    std::vector<double>* wcHit0 = nullptr;
+    std::vector<double>* wcHit1 = nullptr;
+    std::vector<double>* wcHit2 = nullptr;
+    std::vector<double>* wcHit3 = nullptr;
+    tree->SetBranchAddress("wcNumHits", &wcNumHits);
+    tree->SetBranchAddress("wcHit0", &wcHit0);
+    tree->SetBranchAddress("wcHit1", &wcHit1);
+    tree->SetBranchAddress("wcHit2", &wcHit2);
+    tree->SetBranchAddress("wcHit3", &wcHit3);
 
     // Reco information
     std::vector<double>* recoMeanDEDX      = nullptr;
@@ -316,6 +329,7 @@ void RecoClassify3Cat() {
 
     // Events composition after each cut
     TH1D* hDataProdsAndWC2TPC = new TH1D("hDataProdsAndWC2TPC", "hDataProdsAndWC2TPC;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
+    TH1D* hWCQualityCuts      = new TH1D("hWCQualityCuts", "hWCQualityCuts;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D* hNotManyTGTracks    = new TH1D("hNotManyTGTracks", "hNotManyTGTracks;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D* hNotAnElectron      = new TH1D("hNotAnElectron", "hNotAnElectron;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
     TH1D* hPrimaryInRedVol    = new TH1D("hPrimaryInRedVol", "hPrimaryInRedVol;;", NUM_BACKGROUND_TYPES, 0, NUM_BACKGROUND_TYPES);
@@ -337,6 +351,18 @@ void RecoClassify3Cat() {
     TH1D* hIncidentKEPionFine     = new TH1D("hIncidentKEPionFine", "hIncidentKEPionFine;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
     TH1D* hIncidentKEElectronFine = new TH1D("hIncidentKEElectronFine", "hIncidentKEElectronFine;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
     TH1D* hIncidentKEMuonFine     = new TH1D("hIncidentKEMuonFine", "hIncidentKEMuonFine;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+
+    // Front-face kinetic energy
+    TH1D* hFrontFaceKE         = new TH1D("hFrontFaceKE", "hFrontFaceKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFaceKEPion     = new TH1D("hFrontFaceKEPion", "hFrontFaceKEPion;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFaceKEElectron = new TH1D("hFrontFaceKEElectron", "hFrontFaceKEElectron;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFaceKEMuon     = new TH1D("hFrontFaceKEMuon", "hFrontFaceKEMuon;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+
+    // Wire-chamber momentum
+    TH1D* hWCKE         = new TH1D("hWCKE", "hWCKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());  
+    TH1D* hWCKEPion     = new TH1D("hWCKEPion", "hWCKEPion;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());  
+    TH1D* hWCKEMuon     = new TH1D("hWCKEMuon", "hWCKEMuon;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());  
+    TH1D* hWCKEElectron = new TH1D("hWCKEElectron", "hWCKEElectron;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());  
 
     // True interacting flux
     TH1D* hTrueAllKE   = new TH1D("hTrueAllKE", "hTrueAllKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
@@ -689,6 +715,25 @@ void RecoClassify3Cat() {
     ////////////////
 
     TH1D* hTrueMuonTypes = new TH1D("hTrueMuonTypes", "hTrueMuonTypes", 4, 0, 4);
+
+    ////////////////
+    // WC quality //
+    ////////////////
+
+    TH1D* hWCHits         = new TH1D("hWCHits", "hWCHits", 10, 0, 10);
+    TH1D* hWCHitsPion     = new TH1D("hWCHitsPion", "hWCHitsPion", 10, 0, 10);
+    TH1D* hWCHitsMuon     = new TH1D("hWCHitsMuon", "hWCHitsMuon", 10, 0, 10);
+    TH1D* hWCHitsElectron = new TH1D("hWCHitsElectron", "hWCHitsElectron", 10, 0, 10);
+
+    TH1D* hRadDistWC4         = new TH1D("hRadDistWC4", "RadDistWC4", 90, 0.0, 30.);
+    TH1D* hRadDistWC4Pion     = new TH1D("hRadDistWC4Pion", "hRadDistWC4Pion", 90, 0.0, 30.);
+    TH1D* hRadDistWC4Muon     = new TH1D("hRadDistWC4Muon", "hRadDistWC4Muon", 90, 0.0, 30.);
+    TH1D* hRadDistWC4Electron = new TH1D("hRadDistWC4Electron", "hRadDistWC4Electron", 90, 0.0, 30.);
+
+    TH1D* hRadDistMidPlane         = new TH1D("hRadDistMidPlane", "hRadDistMidPlane", 60, 0.0, 20.);
+    TH1D* hRadDistMidPlanePion     = new TH1D("hRadDistMidPlanePion", "hRadDistMidPlanePion", 60, 0.0, 20.);
+    TH1D* hRadDistMidPlaneMuon     = new TH1D("hRadDistMidPlaneMuon", "hRadDistMidPlaneMuon", 60, 0.0, 20.);
+    TH1D* hRadDistMidPlaneElectron = new TH1D("hRadDistMidPlaneElectron", "hRadDistMidPlaneElectron", 60, 0.0, 20.);
 
     //////////////////////
     // Loop over events //
@@ -1482,6 +1527,129 @@ void RecoClassify3Cat() {
         }
         hDataProdsAndWC2TPC->Fill(backgroundType);
 
+        //////////////////////////
+        // Wire-chamber quality //
+        //////////////////////////
+        
+        hWCHits->Fill(wcNumHits);
+        if (truthPrimaryPDG == -211) {
+            hWCHitsPion->Fill(wcNumHits);
+        } else if (truthPrimaryPDG == 13) {
+            hWCHitsMuon->Fill(wcNumHits);
+        } else if (truthPrimaryPDG == 11) {
+            hWCHitsElectron->Fill(wcNumHits);
+        }
+
+        // if (wcNumHits != 8) continue;
+
+        // std::cout << "==== Entry " << i << " ====\n";
+        // std::cout << "wcNumHits = " << wcNumHits << "\n";
+
+        // auto printVec = [](const std::string& name, const std::vector<double>* v) {
+        //     std::cout << name << " = ";
+        //     if (!v) {
+        //         std::cout << "nullptr\n";
+        //         return;
+        //     }
+
+        //     std::cout << "[ ";
+        //     for (size_t j = 0; j < v->size(); ++j) {
+        //         std::cout << v->at(j);
+        //         if (j + 1 < v->size()) std::cout << ", ";
+        //     }
+        //     std::cout << " ]\n";
+        // };
+
+        // printVec("wcHit0", wcHit0);
+        // printVec("wcHit1", wcHit1);
+        // printVec("wcHit2", wcHit2);
+        // printVec("wcHit3", wcHit3);
+
+        for (auto* v : {wcHit0, wcHit1, wcHit2}) {
+            if (!v) continue;
+            for (double& x : *v) x *= 0.1;
+        }
+
+        // Project downstream to midplane @ -437.97 (without angular corrections)
+        std::vector<double> midUp = projToZ(*wcHit0, *wcHit1, -437.97);
+        // Use this point and WC3 to project up to WC4
+        std::vector<double> projDown = projToZ(midUp, *wcHit2, -95.0);
+        // Requires some corrections because magnets are not the same
+        projDown[0] -= tan(1.32 * TMath::Pi() / 180.0) * (-95.0 - -437.97);
+
+        // Compare x and y coordinate in projection and real hit for WC4
+        double radDistWC4 = TMath::Sqrt(pow(projDown[0] - wcHit3->at(0), 2.) + pow(projDown[1] - wcHit3->at(1), 2.));
+
+        hRadDistWC4->Fill(radDistWC4);
+        if (truthPrimaryPDG == -211) {
+            hRadDistWC4Pion->Fill(radDistWC4);
+        } else if (truthPrimaryPDG == 13) {
+            hRadDistWC4Muon->Fill(radDistWC4);
+        } else if (truthPrimaryPDG == 11) {
+            hRadDistWC4Electron->Fill(radDistWC4);
+        }
+
+        // Project upstream to midplane @ -437.97
+        std::vector<double> midDown = projToZ(*wcHit2, *wcHit3, -437.97);
+        midDown[0] -= tan(1.32 * TMath::Pi() / 180.0) * (-339.57 - -437.97);
+        double midPlaneDist = TMath::Sqrt(pow(midUp[0] - midDown[0], 2) + pow(midUp[1] - midDown[1], 2));
+
+        hRadDistMidPlane->Fill(midPlaneDist);
+        if (truthPrimaryPDG == -211) {
+            hRadDistMidPlanePion->Fill(midPlaneDist);
+        } else if (truthPrimaryPDG == 13) {
+            hRadDistMidPlaneMuon->Fill(midPlaneDist);
+        } else if (truthPrimaryPDG == 11) {
+            hRadDistMidPlaneElectron->Fill(midPlaneDist);
+        }
+
+        // Cuts
+        // if (radDistWC4 > 8.0) continue;
+        // if (midPlaneDist > 3.0) continue;
+
+        // Check projected tracks go through all apertures
+        bool Magnet1ApertureCheck = CheckUpstreamMagnetAperture(*wcHit0, *wcHit1);
+        bool Magnet2ApertureCheck = CheckDownstreamMagnetAperture(*wcHit2, *wcHit3);
+        bool DSColApertureCheck   = CheckDownstreamCollimatorAperture(*wcHit2, *wcHit3);
+
+        // if (!Magnet1ApertureCheck || !Magnet2ApertureCheck || !DSColApertureCheck) continue;
+
+        hWCQualityCuts->Fill(backgroundType);
+
+        //////////////////////////////////
+        // Check WC/front-face momentum //
+        //////////////////////////////////
+
+        double WCKE             = TMath::Sqrt(WCTrackMomentum * WCTrackMomentum + PionMass * PionMass) - PionMass;
+        double calculatedEnLoss = energyLossCalculation(); 
+        if (isData) {
+            double tanThetaCosPhi = TMath::Tan(WCTheta) * TMath::Cos(WCPhi);
+            double tanThetaSinPhi = TMath::Tan(WCTheta) * TMath::Sin(WCPhi);
+            double den            = TMath::Sqrt(1 + tanThetaCosPhi * tanThetaCosPhi);
+            double onTheFlyPz     = WCTrackMomentum / den;
+            double onTheFlyPx     = onTheFlyPz * tanThetaSinPhi;
+            calculatedEnLoss      = energyLossCalculation(WC4PrimaryX, onTheFlyPx, isData);
+        } else { calculatedEnLoss = energyLossCalculation(WC4PrimaryX, trajectoryInitialMomentumX, isData); }
+        const double initialKE = WCKE - calculatedEnLoss;
+
+        hWCKE->Fill(WCKE);
+        if (truthPrimaryPDG == -211) {
+            hWCKEPion->Fill(WCKE);
+        } else if (truthPrimaryPDG == 13) {
+            hWCKEMuon->Fill(WCKE);
+        } else if (truthPrimaryPDG == 11) {
+            hWCKEElectron->Fill(WCKE);
+        }
+
+        hFrontFaceKE->Fill(initialKE);
+        if (truthPrimaryPDG == -211) {
+            hFrontFaceKEPion->Fill(initialKE);
+        } else if (truthPrimaryPDG == 13) {
+            hFrontFaceKEMuon->Fill(initialKE);
+        } else if (truthPrimaryPDG == 11) {
+            hFrontFaceKEElectron->Fill(initialKE);
+        }
+
         //////////////////////////////////////
         // Back to classification algorithm //
         //////////////////////////////////////
@@ -1648,19 +1816,6 @@ void RecoClassify3Cat() {
         //////////////////////
         // Incident KE fill //
         //////////////////////
-
-        // At this point, we want to fill the incident kinetic energy histograms
-        double WCKE             = TMath::Sqrt(WCTrackMomentum * WCTrackMomentum + PionMass * PionMass) - PionMass;
-        double calculatedEnLoss = energyLossCalculation(); 
-        if (isData) {
-            double tanThetaCosPhi = TMath::Tan(WCTheta) * TMath::Cos(WCPhi);
-            double tanThetaSinPhi = TMath::Tan(WCTheta) * TMath::Sin(WCPhi);
-            double den            = TMath::Sqrt(1 + tanThetaCosPhi * tanThetaCosPhi);
-            double onTheFlyPz     = WCTrackMomentum / den;
-            double onTheFlyPx     = onTheFlyPz * tanThetaSinPhi;
-            calculatedEnLoss      = energyLossCalculation(WC4PrimaryX, onTheFlyPx, isData);
-        } else { calculatedEnLoss = energyLossCalculation(WC4PrimaryX, trajectoryInitialMomentumX, isData); }
-        const double initialKE = WCKE - calculatedEnLoss;
 
         double energyDeposited = 0;
         for (size_t iDep = 0; iDep < wcMatchDEDX->size(); ++iDep) {
@@ -2185,6 +2340,10 @@ void RecoClassify3Cat() {
     printBackgroundInfo(hDataProdsAndWC2TPC, std::cout);
 
     std::cout << std::endl;
+    std::cout << "Events passing wire-chamber quality cuts: " << std::endl;
+    printBackgroundInfo(hWCQualityCuts, std::cout);
+
+    std::cout << std::endl;
     std::cout << "Events with number of TG tracks below threshold: " << std::endl;
     printBackgroundInfo(hNotManyTGTracks, std::cout);
 
@@ -2611,10 +2770,17 @@ void RecoClassify3Cat() {
     };
 
     std::vector<std::vector<TH1*>> PlotGroups = {
+        // WC quality
+        {hWCHits, hWCHitsPion, hWCHitsMuon, hWCHitsElectron},
+        {hRadDistWC4, hRadDistWC4Pion, hRadDistWC4Muon, hRadDistWC4Electron},
+        {hRadDistMidPlane, hRadDistMidPlanePion, hRadDistMidPlaneMuon, hRadDistMidPlaneElectron},
+
         // Incident KE
         {hIncidentKE, hIncidentKEPion, hIncidentKEMuon, hIncidentKEElectron},
         {hIncidentKEFine, hIncidentKEPionFine, hIncidentKEMuonFine, hIncidentKEElectronFine},
         {hIncidentKECorrected, hTrueIncidentKE},
+        {hFrontFaceKE, hFrontFaceKEPion, hFrontFaceKEMuon, hFrontFaceKEElectron},
+        {hWCKE, hWCKEPion, hWCKEMuon, hWCKEElectron},
 
         // Interacting KE
         {hPionAbs0pKE, hPionAbs0pKETrue, hPionAbs0pKEAbsNp, hPionAbs0pKEScatter, hPionAbs0pKEChExch, hPionAbs0pKEMuon, hPionAbs0pKEElectron, hPionAbs0pKEOther},
@@ -2677,10 +2843,17 @@ void RecoClassify3Cat() {
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
+        // WC quality
+        {"All", "Pions", "Muons", "Electrons"},
+        {"All", "Pions", "Muons", "Electrons"},
+        {"All", "Pions", "Muons", "Electrons"},
+
         // Incident KE
         {"All", "Pions", "Muons", "Electrons"},
         {"All", "Pions", "Muons", "Electrons"},
         {"Corrected", "True"},
+        {"All", "Pions", "Muons", "Electrons"},
+        {"All", "Pions", "Muons", "Electrons"},
 
         // Interacting KE
         {"All", "True", "Abs Np", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
@@ -2741,10 +2914,17 @@ void RecoClassify3Cat() {
     };
 
     std::vector<TString> PlotTitles = {
+        // WC quality
+        "WCQuality/WCHits",
+        "WCQuality/RadDistWC4",
+        "WCQuality/RadDistMidPlane",
+
         // Incident KE
         "Incident/IncidentKE",
         "Incident/IncidentKEFine",
         "Incident/IncidentKECorrected",
+        "Incident/FrontFaceKE",
+        "Incident/WireChamberKE",
 
         // Interacting KE
         "RecoInteracting/Abs0pInteractingKE",
@@ -2805,7 +2985,14 @@ void RecoClassify3Cat() {
     };
 
     std::vector<TString> XLabels = {
+        // WC quality
+        "# of hits",
+        "Proj. to WC hit distance [cm]",
+        "Upstream to downstream proj. distance [cm]",
+
         // Incident KE
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
@@ -2869,7 +3056,14 @@ void RecoClassify3Cat() {
     };
 
     std::vector<TString> YLabels = {
+        // WC quality
+        "Counts",
+        "Counts",
+        "Counts",
+
         // Incident KE
+        "Counts",
+        "Counts",
         "Counts",
         "Counts",
         "Counts",
@@ -2933,10 +3127,17 @@ void RecoClassify3Cat() {
     };
 
     std::vector<bool> PlotStacked = {
+        // WC quality
+        true,
+        true,
+        true,
+        
         // Incident KE
         true,
         true,
         false,
+        true,
+        true,
 
         // Interacting KE
         true,
@@ -2997,10 +3198,17 @@ void RecoClassify3Cat() {
     };
 
     std::vector<std::vector<bool>> PlotsAsPoints = {
+        // WC quality
+        {true, false, false, false},
+        {true, false, false, false},
+        {true, false, false, false},
+
         // Incident KE
         {true, false, false, false},
         {true, false, false, false},
         {true, false},
+        {true, false, false, false},
+        {true, false, false, false},
 
         // Interacting KE
         {true, false, false, false, false, false, false, false},
