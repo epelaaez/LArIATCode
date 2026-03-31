@@ -36,8 +36,7 @@ void RecoClassify3Cat() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Classify3Cat/";
 
     // Load file with NN data products
-    // TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_temp_histo.root"; // RV at z = 30
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
 
@@ -1817,7 +1816,7 @@ void RecoClassify3Cat() {
         // Incident KE fill //
         //////////////////////
 
-        double energyDeposited = 0;
+        double energyDeposited = 0.0;
         for (size_t iDep = 0; iDep < wcMatchDEDX->size(); ++iDep) {
             // If we are past detected breaking point, exit loop
             if (wcMatchZPos->at(iDep) > breakPointZ) break;

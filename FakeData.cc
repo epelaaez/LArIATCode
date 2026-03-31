@@ -591,8 +591,6 @@ void FakeData(int sample = 1) {
 
             // If pion above threshold but angle not large enough, go to next interaction and check there
             if (scatteringAngle < SCATTERING_ANGLE_THRESHOLD) {
-                scatteringsModified++;
-
                 // Use secondary interaction
                 for (int iInteraction = 0; iInteraction < secondaryInteractionTypes->size(); ++iInteraction) {
                     int currentInteraction = secondaryInteractionTypes->at(iInteraction);
