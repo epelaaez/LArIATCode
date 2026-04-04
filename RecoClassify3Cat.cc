@@ -431,8 +431,7 @@ void RecoClassify3Cat() {
 
     // True charge exchange
     TH1D* hTrueChExchKE          = new TH1D("hTrueChExchKE", "hTrueChExchKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueChExchKEAsAbs0p   = new TH1D("hTrueChExchKEAsAbs0p", "hTrueChExchKEAsAbs0p;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueChExchKEAsAbsNp   = new TH1D("hTrueChExchKEAsAbsNp", "hTrueChExchKEAsAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueChExchKEAsAbs     = new TH1D("hTrueChExchKEAsAbs", "hTrueChExchKEAsAbs;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTrueChExchKEAsScatter = new TH1D("hTrueChExchKEAsScatter", "hTrueChExchKEAsScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTrueChExchKERejected  = new TH1D("hTrueChExchKERejected", "hTrueChExchKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
@@ -1368,11 +1367,8 @@ void RecoClassify3Cat() {
         }
 
         // Fill in true interaction energy histograms
-        if (backgroundType == 0) {
-            hTrueAbs0pKE->Fill(truthPrimaryVertexKE * 1000);
-            hTrueAllKE->Fill(truthPrimaryVertexKE * 1000);
-        } else if (backgroundType == 1) {
-            hTrueAbsNpKE->Fill(truthPrimaryVertexKE * 1000);
+        if (backgroundType == 0 || backgroundType == 1) {
+            hTrueAbsKE->Fill(truthPrimaryVertexKE * 1000);
             hTrueAllKE->Fill(truthPrimaryVertexKE * 1000);
         } else if (backgroundType == 6 || backgroundType == 12) {
             hTrueScatterKE->Fill(truthPrimaryVertexKE * 1000);
@@ -1397,12 +1393,9 @@ void RecoClassify3Cat() {
 
         // If no track matched to wire-chamber, skip
         if (WC2TPCtrkID == -99999) {
-            if (backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
-                hTrueAbs0pKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
-                hTrueAbsNpKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
+            if (backgroundType == 0 || backgroundType == 1) {
+                hTrueAbsKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbsKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueScatterKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
@@ -1523,7 +1516,7 @@ void RecoClassify3Cat() {
         } else if (backgroundType == 2) {
             hNumTGTracksMuon->Fill(numTGTracks);
         } else if (backgroundType == 3) {
-            hNumTGTracksElectron->Fill(numTGTracks);    
+            hNumTGTracksElectron->Fill(numTGTracks);
         } else if (backgroundType == 6 || backgroundType == 12) {
             hNumTGTracksScatter->Fill(numTGTracks);
         } else if (backgroundType == 7) {
@@ -1538,12 +1531,9 @@ void RecoClassify3Cat() {
 
         // Cut on small tracks
         if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) {
-            if (backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
-                hTrueAbs0pKERejElectron->Fill(truthPrimaryVertexKE * 1000);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
-                hTrueAbsNpKERejElectron->Fill(truthPrimaryVertexKE * 1000);
+            if (backgroundType == 0 || backgroundType == 1) {
+                hTrueAbsKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbsKERejElectron->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueScatterKERejElectron->Fill(truthPrimaryVertexKE * 1000);
@@ -1603,12 +1593,9 @@ void RecoClassify3Cat() {
         ////////////////////////
 
         if (!isWithinReducedVolume(breakPointX, breakPointY, breakPointZ)) {
-            if (backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
-                hTrueAbs0pKERejRedVol->Fill(truthPrimaryVertexKE * 1000);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
-                hTrueAbsNpKERejRedVol->Fill(truthPrimaryVertexKE * 1000);
+            if (backgroundType == 0 || backgroundType == 1) {
+                hTrueAbsKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbsKERejRedVol->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueScatterKERejRedVol->Fill(truthPrimaryVertexKE * 1000);
@@ -1624,12 +1611,9 @@ void RecoClassify3Cat() {
         /////////////////////
 
         if (minChi2 == pionChi2 || minChi2 == protonChi2) {
-            if (backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
-                hTrueAbs0pKERejPID->Fill(truthPrimaryVertexKE * 1000);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
-                hTrueAbsNpKERejPID->Fill(truthPrimaryVertexKE * 1000);
+            if (backgroundType == 0 || backgroundType == 1) {
+                hTrueAbsKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbsKERejPID->Fill(truthPrimaryVertexKE * 1000);
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                 hTrueScatterKERejPID->Fill(truthPrimaryVertexKE * 1000);
@@ -1741,12 +1725,9 @@ void RecoClassify3Cat() {
         if (totalTaggedPions > 0) {
             if (totalTaggedPions > 1 || newSecondaryPion) {
                 // reject events with > 1 tagged pion
-                if (backgroundType == 0) {
-                    hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
-                    hTrueAbs0pKERejManyPions->Fill(truthPrimaryVertexKE * 1000);
-                } else if (backgroundType == 1) {
-                    hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
-                    hTrueAbsNpKERejManyPions->Fill(truthPrimaryVertexKE * 1000);
+                if (backgroundType == 0 || backgroundType == 1) {
+                    hTrueAbsKERejected->Fill(truthPrimaryVertexKE * 1000);
+                    hTrueAbsKERejManyPions->Fill(truthPrimaryVertexKE * 1000);
                 } else if (backgroundType == 6 || backgroundType == 12) {
                     hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
                     hTrueScatterKERejManyPions->Fill(truthPrimaryVertexKE * 1000);
@@ -1760,10 +1741,8 @@ void RecoClassify3Cat() {
             hPionScatter->Fill(backgroundType);
 
             hPionScatterKE->Fill(energyAtVertex);
-            if (backgroundType == 0) {
-                hPionScatterKEAbs0p->Fill(energyAtVertex);
-            } else if (backgroundType == 1) {
-                hPionScatterKEAbsNp->Fill(energyAtVertex);
+            if (backgroundType == 0 || backgroundType == 1) {
+                hPionScatterKEAbs->Fill(energyAtVertex);
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hPionScatterKETrue->Fill(energyAtVertex);
                 outFileEvents << "True scatter as scatter: " << run << " " << subrun << " " << event << std::endl;
@@ -1785,15 +1764,12 @@ void RecoClassify3Cat() {
                 hPionScatterKEOther->Fill(energyAtVertex);
             }
 
-            if (backgroundType == 0) {
-                hTrueAbs0pKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
+            if (backgroundType == 0 || backgroundType == 1) {
+                hTrueAbsKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueAbsAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
             } else if (backgroundType == 6 || backgroundType == 12) {
                 hTrueScatterKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
+                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
             } else if (backgroundType == 7) {
                 hTrueChExchKEAsScatter->Fill(truthPrimaryVertexKE * 1000);
             }
@@ -1806,37 +1782,31 @@ void RecoClassify3Cat() {
 
         if (totalTaggedProtons > 0) {
             // Select as Np absorption
-            hPionAbsNp->Fill(backgroundType);
+            hPionAbs->Fill(backgroundType);
 
-            hPionAbsNpKE->Fill(energyAtVertex);
-            if (backgroundType == 0) {
-                hPionAbsNpKEAbs0p->Fill(energyAtVertex);
-            } else if (backgroundType == 1) {
-                hPionAbsNpKETrue->Fill(energyAtVertex);
-                outFileEvents << "True abs np as abs np: " << run << " " << subrun << " " << event << std::endl;
+            hPionAbsKE->Fill(energyAtVertex);
+            if (backgroundType == 0 || backgroundType == 1) {
+                hPionAbsKETrue->Fill(energyAtVertex);
             } else if (backgroundType == 6 || backgroundType == 12) {
-                hPionAbsNpKEScatter->Fill(energyAtVertex);
+                hPionAbsKEScatter->Fill(energyAtVertex);
             } else if (backgroundType == 2) {
-                hPionAbsNpKEMuon->Fill(energyAtVertex);
+                hPionAbsKEMuon->Fill(energyAtVertex);
             } else if (backgroundType == 3) {
-                hPionAbsNpKEElectron->Fill(energyAtVertex);
+                hPionAbsKEElectron->Fill(energyAtVertex);
             } else if (backgroundType == 7) {
-                hPionAbsNpKEChExch->Fill(energyAtVertex);
+                hPionAbsKEChExch->Fill(energyAtVertex);
             } else {
-                hPionAbsNpKEOther->Fill(energyAtVertex);
+                hPionAbsKEOther->Fill(energyAtVertex);
             }
 
-            if (backgroundType == 0) {
-                hTrueAbs0pKEAsAbsNp->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKEAsAbsNp->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+            if (backgroundType == 0 || backgroundType == 1) {
+                hTrueAbsKEAsAbs->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueAbsAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
             } else if (backgroundType == 6 || backgroundType == 12) {
-                hTrueScatterKEAsAbsNp->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+                hTrueScatterKEAsAbs->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
             } else if (backgroundType == 7) {
-                hTrueChExchKEAsAbsNp->Fill(truthPrimaryVertexKE * 1000);
+                hTrueChExchKEAsAbs->Fill(truthPrimaryVertexKE * 1000);
             }
 
             continue;
@@ -1956,47 +1926,40 @@ void RecoClassify3Cat() {
             hNumClustersCollectionOther->Fill(numClustersCollection);
         }
 
-        if (
-            numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION
-        ) {
-            hPionAbs0p->Fill(backgroundType);
+        if (numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION) {
+            hPionAbs->Fill(backgroundType);
 
-            hPionAbs0pKE->Fill(energyAtVertex);
-            if (backgroundType == 0) {
-                hPionAbs0pKETrue->Fill(energyAtVertex);
+            hPionAbsKE->Fill(energyAtVertex);
+            if (backgroundType == 0 || backgroundType == 1) {
+                hPionAbsKETrue->Fill(energyAtVertex);
                 outFileEvents << "True abs 0p as abs 0p: " << run << " " << subrun << " " << event << std::endl;
-            } else if (backgroundType == 1) {
-                hPionAbs0pKEAbsNp->Fill(energyAtVertex);
             } else if (backgroundType == 7) {
-                hPionAbs0pKEChExch->Fill(energyAtVertex);
+                hPionAbsKEChExch->Fill(energyAtVertex);
             } else if (backgroundType == 6 || backgroundType == 12) {
-                hPionAbs0pKEScatter->Fill(energyAtVertex);
+                hPionAbsKEScatter->Fill(energyAtVertex);
             } else if (backgroundType == 2) {
-                hPionAbs0pKEMuon->Fill(energyAtVertex);
+                hPionAbsKEMuon->Fill(energyAtVertex);
                 if (muonType == 0) {
-                    hPionAbs0pKEMuonTG->Fill(energyAtVertex);
+                    hPionAbsKEMuonTG->Fill(energyAtVertex);
                 } else if (muonType == 1) {
-                    hPionAbs0pKEMuonDecay->Fill(energyAtVertex);
+                    hPionAbsKEMuonDecay->Fill(energyAtVertex);
                 } else if (muonType == 2) {
-                    hPionAbs0pKEMuonCAR->Fill(energyAtVertex);
+                    hPionAbsKEMuonCAR->Fill(energyAtVertex);
                 }
             } else if (backgroundType == 3) {
-                hPionAbs0pKEElectron->Fill(energyAtVertex);
+                hPionAbsKEElectron->Fill(energyAtVertex);
             } else {
-                hPionAbs0pKEOther->Fill(energyAtVertex);
+                hPionAbsKEOther->Fill(energyAtVertex);
             }
 
-            if (backgroundType == 0) {
-                hTrueAbs0pKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+            if (backgroundType == 0 || backgroundType == 1) {
+                hTrueAbsKEAsAbs->Fill(truthPrimaryVertexKE * 1000);
+                if (TrueEnergyBin != -1) TrueAbsAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
             } else if (backgroundType == 6 || backgroundType == 12) {
-                hTrueScatterKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+                hTrueScatterKEAsAbs->Fill(truthPrimaryVertexKE * 1000);
                 if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
             } else if (backgroundType == 7) {
-                hTrueChExchKEAsAbs0p->Fill(truthPrimaryVertexKE * 1000);
+                hTrueChExchKEAsAbs->Fill(truthPrimaryVertexKE * 1000);
             }
 
             continue;
@@ -2027,12 +1990,9 @@ void RecoClassify3Cat() {
         }
 
         // Anything left here is rejected
-        if (backgroundType == 0) {
-            hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
-            hTrueAbs0pKERejClusters->Fill(truthPrimaryVertexKE * 1000);
-        } else if (backgroundType == 1) {
-            hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
-            hTrueAbsNpKERejClusters->Fill(truthPrimaryVertexKE * 1000);
+        if (backgroundType == 0 || backgroundType == 1) {
+            hTrueAbsKERejected->Fill(truthPrimaryVertexKE * 1000);
+            hTrueAbsKERejClusters->Fill(truthPrimaryVertexKE * 1000);
         } else if (backgroundType == 6 || backgroundType == 12) {
             hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
             hTrueScatterKERejClusters->Fill(truthPrimaryVertexKE * 1000);
@@ -2124,16 +2084,10 @@ void RecoClassify3Cat() {
     std::cout << "=======================================================" << std::endl;
 
     std::cout << std::endl;
-    std::cout << "Pion abs 0p total reco " <<  hPionAbs0p->Integral() << " with composition: " << std::endl;
-    printBackgroundInfo(hPionAbs0p, std::cout);
-    std::cout << "Purity: " << hPionAbs0p->GetBinContent(1) / hPionAbs0p->Integral() << std::endl;
-    std::cout << "Efficiency: " << hPionAbs0p->GetBinContent(1) / hTotalEvents->GetBinContent(1) << std::endl;
-
-    std::cout << std::endl;
-    std::cout << "Pion abs Np total reco " <<  hPionAbsNp->Integral() << " with composition: " << std::endl;
-    printBackgroundInfo(hPionAbsNp, std::cout);
-    std::cout << "Purity: " << hPionAbsNp->GetBinContent(2) / hPionAbsNp->Integral() << std::endl;
-    std::cout << "Efficiency: " << hPionAbsNp->GetBinContent(2) / hTotalEvents->GetBinContent(2) << std::endl;
+    std::cout << "Pion abs total reco " <<  hPionAbs->Integral() << " with composition: " << std::endl;
+    printBackgroundInfo(hPionAbs, std::cout);
+    std::cout << "Purity: " << (hPionAbs->GetBinContent(1) + hPionAbs->GetBinContent(2)) / hPionAbs->Integral() << std::endl;
+    std::cout << "Efficiency: " << (hPionAbs->GetBinContent(1) + hPionAbs->GetBinContent(2)) / (hTotalEvents->GetBinContent(1) + hTotalEvents->GetBinContent(2)) << std::endl;
 
     std::cout << std::endl;
     std::cout << "Pion scattering total reco " << hPionScatter->Integral() << " with composition: " << std::endl;
@@ -2359,11 +2313,8 @@ void RecoClassify3Cat() {
     // Get cross-section using corrrected fluxes //
     ///////////////////////////////////////////////
 
-    TH1D* hPionAbs0pCrossSection     = new TH1D("hPionAbs0pCrossSection", "hPionAbs0pCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTruePionAbs0pCrossSection = new TH1D("hTruePionAbs0pCrossSection", "hTruePionAbs0pCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-
-    TH1D* hPionAbsNpCrossSection     = new TH1D("hPionAbsNpCrossSection", "hPionAbsNpCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTruePionAbsNpCrossSection = new TH1D("hTruePionAbsNpCrossSection", "hTruePionAbsNpCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsCrossSection     = new TH1D("hPionAbsCrossSection", "hPionAbsCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTruePionAbsCrossSection = new TH1D("hTruePionAbsCrossSection", "hTruePionAbsCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     TH1D* hPionScatterCrossSection     = new TH1D("hPionScatterCrossSection", "hPionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTruePionScatterCrossSection = new TH1D("hTruePionScatterCrossSection", "hTruePionScatterCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
@@ -2371,17 +2322,14 @@ void RecoClassify3Cat() {
     TH1D* hTruePionChExchCrossSection = new TH1D("hTruePionChExchCrossSection", "hTruePionChExchCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTruePionOtherCrossSection  = new TH1D("hTruePionOtherCrossSection", "hTruePionOtherCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTrueTotalCrossSection      = new TH1D("hTrueTotalCrossSection", "hTrueTotalCrossSection;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    // TODO: some sort of check with the total?
 
     std::vector<TH1D*> UnfoldedCrossSections = {
-        hPionAbs0pCrossSection,
-        hPionAbsNpCrossSection,
+        hPionAbsCrossSection,
         hPionScatterCrossSection
     };
 
     std::vector<TH1D*> TrueCrossSections = {
-        hTruePionAbs0pCrossSection,
-        hTruePionAbsNpCrossSection,
+        hTruePionAbsCrossSection,
         hTruePionScatterCrossSection
     };
 
@@ -2400,9 +2348,9 @@ void RecoClassify3Cat() {
             trueXSec->SetBinContent(iBin, XSEC_UNITS * (TotalEventsHistos[i]->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)));
         }
 
-        // Make contents per 50 MeV
-        reweightOneDHisto(unfXSec, 50.);
-        reweightOneDHisto(trueXSec, 50.);
+        // Make contents per 100 MeV
+        reweightOneDHisto(unfXSec, 100.);
+        reweightOneDHisto(trueXSec, 100.);
     }
 
     // True "other" cross-section
@@ -2410,7 +2358,7 @@ void RecoClassify3Cat() {
         hTruePionOtherCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueOtherKE->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)));
         hTruePionChExchCrossSection->SetBinContent(iBin, XSEC_UNITS * (hTrueChExchKE->GetBinContent(iBin) / hTrueIncidentKE->GetBinContent(iBin)));
     }
-    reweightOneDHisto(hTruePionOtherCrossSection, 50.); reweightOneDHisto(hTruePionChExchCrossSection, 50.);
+    reweightOneDHisto(hTruePionOtherCrossSection, 100.); reweightOneDHisto(hTruePionChExchCrossSection, 100.);
 
     ///////////////////////////
     // Make plots per 50 MeV //
@@ -2447,34 +2395,29 @@ void RecoClassify3Cat() {
         {hIncidentKECorrected, hTrueIncidentKE},
 
         // Interacting KE
-        {hPionAbs0pKE, hPionAbs0pKETrue, hPionAbs0pKEAbsNp, hPionAbs0pKEScatter, hPionAbs0pKEChExch, hPionAbs0pKEMuon, hPionAbs0pKEElectron, hPionAbs0pKEOther},
-        {hPionAbs0pKE, hPionAbs0pKETrue, hPionAbs0pKEAbsNp, hPionAbs0pKEScatter, hPionAbs0pKEChExch, hPionAbs0pKEMuonTG, hPionAbs0pKEMuonDecay, hPionAbs0pKEMuonCAR, hPionAbs0pKEElectron, hPionAbs0pKEOther},
-        {hPionAbsNpKE, hPionAbsNpKETrue, hPionAbsNpKEAbs0p, hPionAbsNpKEScatter, hPionAbsNpKEChExch, hPionAbsNpKEMuon, hPionAbsNpKEElectron, hPionAbsNpKEOther},
-        {hPionScatterKE, hPionScatterKETrue, hPionScatterKEAbs0p, hPionScatterKEAbsNp, hPionScatterKEChExch, hPionScatterKEMuon, hPionScatterKEElectron, hPionScatterKEOther},
-        {hPionScatterKE, hPionScatterKETrue, hPionScatterKEAbs0p, hPionScatterKEAbsNp, hPionScatterKEChExch, hPionScatterKEMuonTG, hPionScatterKEMuonDecay, hPionScatterKEMuonCAR, hPionScatterKEElectron, hPionScatterKEOther},
+        {hPionAbsKE, hPionAbsKETrue, hPionAbsKEScatter, hPionAbsKEChExch, hPionAbsKEMuon, hPionAbsKEElectron, hPionAbsKEOther},
+        {hPionScatterKE, hPionScatterKETrue, hPionScatterKEAbs, hPionScatterKEChExch, hPionScatterKEMuon, hPionScatterKEElectron, hPionScatterKEOther},
+        {hPionScatterKE, hPionScatterKETrue, hPionScatterKEAbs, hPionScatterKEChExch, hPionScatterKEMuonTG, hPionScatterKEMuonDecay, hPionScatterKEMuonCAR, hPionScatterKEElectron, hPionScatterKEOther},
 
         // True interacting KE
         {hTrueAllKE},
-        {hTrueAbs0pKE, hTrueAbsNpKE, hTrueScatterKE, hTrueChExchKE, hTrueOtherKE},
+        {hTrueAbsKE, hTrueScatterKE, hTrueChExchKE, hTrueOtherKE},
 
         // True events classified breakdown
-        {hTrueAbs0pKEAsAbs0p, hTrueAbs0pKEAsAbsNp, hTrueAbs0pKEAsScatter, hTrueAbs0pKERejected},
-        {hTrueAbsNpKEAsAbs0p, hTrueAbsNpKEAsAbsNp, hTrueAbsNpKEAsScatter, hTrueAbsNpKERejected},
-        {hTrueScatterKEAsAbs0p, hTrueScatterKEAsAbsNp, hTrueScatterKEAsScatter, hTrueScatterKERejected},
-        {hTrueChExchKEAsAbs0p, hTrueChExchKEAsAbsNp, hTrueChExchKEAsScatter, hTrueChExchKERejected},
+        {hTrueAbsKEAsAbs, hTrueAbsKEAsScatter, hTrueAbsKERejected},
+        {hTrueScatterKEAsAbs, hTrueScatterKEAsScatter, hTrueScatterKERejected},
+        {hTrueChExchKEAsAbs, hTrueChExchKEAsScatter, hTrueChExchKERejected},
 
         // Rejected events
-        {hTrueAbs0pKERejDataProds, hTrueAbs0pKERejElectron, hTrueAbs0pKERejRedVol, hTrueAbs0pKERejPID, hTrueAbs0pKERejManyPions, hTrueAbs0pKERejClusters},
-        {hTrueAbsNpKERejDataProds, hTrueAbsNpKERejElectron, hTrueAbsNpKERejRedVol, hTrueAbsNpKERejPID, hTrueAbsNpKERejManyPions, hTrueAbsNpKERejClusters},
+        {hTrueAbsKERejDataProds, hTrueAbsKERejElectron, hTrueAbsKERejRedVol, hTrueAbsKERejPID, hTrueAbsKERejManyPions, hTrueAbsKERejClusters},
         {hTrueScatterKERejDataProds, hTrueScatterKERejElectron, hTrueScatterKERejRedVol, hTrueScatterKERejPID, hTrueScatterKERejManyPions, hTrueScatterKERejClusters},
 
         // Cross-sections (unfolded)
-        {hTruePionAbs0pCrossSection, hPionAbs0pCrossSection},
-        {hTruePionAbsNpCrossSection, hPionAbsNpCrossSection},
+        {hTruePionAbsCrossSection, hPionAbsCrossSection},
         {hTruePionScatterCrossSection, hPionScatterCrossSection},
 
         // Total true-cross section
-        {hTruePionAbs0pCrossSection, hTruePionAbsNpCrossSection, hTruePionScatterCrossSection, hTruePionChExchCrossSection, hTruePionOtherCrossSection},
+        {hTruePionAbsCrossSection, hTruePionScatterCrossSection, hTruePionChExchCrossSection, hTruePionOtherCrossSection},
 
         // Unreconstructed hits
         {hHitClusterInductionSizesAbs0p, hHitClusterInductionSizesAbsNp, hHitClusterInductionSizesMuon, hHitClusterInductionSizesElectron, hHitClusterInductionSizesScatter, hHitClusterInductionSizesChExch, hHitClusterInductionSizesOther},
@@ -2502,34 +2445,29 @@ void RecoClassify3Cat() {
         {"Corrected", "True"},
 
         // Interacting KE
-        {"All", "True", "Abs Np", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
-        {"All", "True", "Abs Np", "Scatter", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
-        {"All", "True", "Abs 0p", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
-        {"All", "True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon", "Electron", "Other"},
-        {"All", "True", "Abs 0p", "Abs Np", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
+        {"All", "True", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"All", "True", "Abs", "Ch. exch.", "Muon", "Electron", "Other"},
+        {"All", "True", "Abs", "Ch. exch.", "Muon TG", "Muon decay", "Muon CAR", "Electron", "Other"},
 
         // True interacting KE
         {"All"},
-        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other"},
+        {"Abs", "Scatter", "Ch. exch.", "Other"},
 
         // True events classified breakdown
-        {"Abs 0p", "Abs Np", "Scatter", "Rejected"},
-        {"Abs 0p", "Abs Np", "Scatter", "Rejected"},
-        {"Abs 0p", "Abs Np", "Scatter", "Rejected"},
-        {"Abs 0p", "Abs Np", "Scatter", "Rejected"},
+        {"Abs", "Scatter", "Rejected"},
+        {"Abs", "Scatter", "Rejected"},
+        {"Abs", "Scatter", "Rejected"},
 
         // Rejected events
-        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
         {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
         {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
 
         // Cross-sections (unfolded)
         {"True", "Unf."},
         {"True", "Unf."},
-        {"True", "Unf."},
 
         // Total true-cross section
-        {"Abs 0p", "Abs Np", "Scatter", "Ch. exch.", "Other"},
+        {"Abs", "Scatter", "Ch. exch.", "Other"},
 
         // Unreconstructed hits
         {"Abs 0p", "Abs Np", "Muon", "Electron", "Scatter", "Ch. exch.", "Other"},
@@ -2555,9 +2493,7 @@ void RecoClassify3Cat() {
         "Incident/IncidentKECorrected",
 
         // Interacting KE
-        "RecoInteracting/Abs0pInteractingKE",
-        "RecoInteracting/Abs0pInteractingKEDetailed",
-        "RecoInteracting/AbsNpInteractingKE",
+        "RecoInteracting/AbsInteractingKE",
         "RecoInteracting/ScatterInteractingKE",
         "RecoInteracting/ScatterInteractingKEDetailed",
 
@@ -2566,19 +2502,16 @@ void RecoClassify3Cat() {
         "TrueInteracting/AllInteractingBreakdown",
 
         // True events classified breakdown
-        "TrueInteracting/TrueAbs0pBreakdown",
-        "TrueInteracting/TrueAbsNpBreakdown",
+        "TrueInteracting/TrueAbsBreakdown",
         "TrueInteracting/TrueScatterBreakdown",
         "TrueInteracting/TrueChExchBreakdown",
 
         // Rejected events
-        "Rejected/TrueAbs0pRej",
-        "Rejected/TrueAbsNpRej",
+        "Rejected/TrueAbsRej",
         "Rejected/TrueScatterRej",
 
         // True cross-section (unfolded)
-        "CrossSection/PionAbs0pCrossSection",
-        "CrossSection/PionAbsNpCrossSection",
+        "CrossSection/PionAbsCrossSection",
         "CrossSection/PionScatterCrossSection",
 
         // Total true-cross section
@@ -2611,8 +2544,6 @@ void RecoClassify3Cat() {
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
-        "Kinetic energy [MeV]",
-        "Kinetic energy [MeV]",
 
         // True interacting KE
         "Kinetic energy [MeV]",
@@ -2622,15 +2553,12 @@ void RecoClassify3Cat() {
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
-        "Kinetic energy [MeV]",
 
         // Rejected events
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
-        "Kinetic energy [MeV]",
 
         // Cross-sections (unfolded)
-        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
 
@@ -2664,8 +2592,6 @@ void RecoClassify3Cat() {
         "Counts",
         "Counts",
         "Counts",
-        "Counts",
-        "Counts",
 
         // True interacting KE
         "Counts",
@@ -2675,20 +2601,17 @@ void RecoClassify3Cat() {
         "Counts",
         "Counts",
         "Counts",
-        "Counts",
 
         // Rejected events
         "Counts",
         "Counts",
-        "Counts",
 
         // Cross-sections (unfolded)
-        "Cross section [barn] per 50 MeV",
-        "Cross section [barn] per 50 MeV",
-        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 100 MeV",
+        "Cross section [barn] per 100 MeV",
 
         // Total true-cross section
-        "Cross section [barn] per 50 MeV",
+        "Cross section [barn] per 100 MeV",
 
         // Unreconstructed hits
         "Counts",
@@ -2717,8 +2640,6 @@ void RecoClassify3Cat() {
         true,
         true,
         true,
-        true,
-        true,
 
         // True interacting KE
         true,
@@ -2728,15 +2649,12 @@ void RecoClassify3Cat() {
         true,
         true,
         true,
-        true,
 
         // Rejected events
         true,
         true,
-        true,
 
         // Cross-sections (unfolded)
-        false,
         false,
         false,
 
@@ -2768,8 +2686,6 @@ void RecoClassify3Cat() {
 
         // Interacting KE
         {true, false, false, false, false, false, false, false},
-        {true, false, false, false, false, false, false, false, false, false},
-        {true, false, false, false, false, false, false, false},
         {true, false, false, false, false, false, false, false},
         {true, false, false, false, false, false, false, false, false, false},
 
@@ -2781,15 +2697,12 @@ void RecoClassify3Cat() {
         {false, false, false, false, false},
         {false, false, false, false, false},
         {false, false, false, false, false},
-        {false, false, false, false, false},
 
         // Rejected events
         {false, false, false, false, false, false},
         {false, false, false, false, false, false},
-        {false, false, false, false, false, false},
 
         // Cross-sections (unfolded)
-        {false, true},
         {false, true},
         {false, true},
 
