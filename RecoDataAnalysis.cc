@@ -34,7 +34,7 @@ void RecoDataAnalysis() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/RecoDataAnalysis/";
 
     // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/DataAll_histo.root";
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/DataNeg60_histo.root";
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("RecoNNDataEval");
 

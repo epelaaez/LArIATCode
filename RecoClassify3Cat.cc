@@ -369,7 +369,7 @@ void RecoClassify3Cat() {
 
     // Interacting pion abs 0p energy
     TH1D* hPionAbs0pKE         = new TH1D("hPionAbs0pKE", "hPionAbs0pKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hPionAbs0pKETrue     = new TH1D("hPionAbs0PKETrue", "hPionAbs0PKETrue;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbs0pKETrue     = new TH1D("hPionAbs0pKETrue", "hPionAbs0pKETrue;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hPionAbs0pKEAbsNp    = new TH1D("hPionAbs0pKEAbsNp", "hPionAbs0pKEAbsNp;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hPionAbs0pKEScatter  = new TH1D("hPionAbs0pKEScatter", "hPionAbs0pKEScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hPionAbs0pKEChExch   = new TH1D("hPionAbs0pKEChExch", "hPionAbs0pKEChExch;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
@@ -916,7 +916,6 @@ void RecoClassify3Cat() {
             
             for (int iAllHit = 0; iAllHit < fHitKey->size(); ++iAllHit) {
                 // Skip already used hits, and those reconstructed in tracks
-                // if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit) || (fHitPlane->at(iAllHit) == 1)) continue;
                 if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit)) continue;
 
                 // Clusters have to be in same plane

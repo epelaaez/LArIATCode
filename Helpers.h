@@ -35,7 +35,7 @@ int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 int NUM_SIGNAL_TYPES = 3; // 0p abs, Np abs, scattering
 
 // Run through this many events
-int USE_NUM_EVENTS = 20000;
+int USE_NUM_EVENTS = 50000;
 
 // Number of events at each data quality cut
 double TG0_MC_EVENTS = 118999;
@@ -398,6 +398,7 @@ double FindQuantile(double frac, std::vector<double>& xs_in);
 void DrawHistosWithErrorBands(TH1D* RecoHisto, std::vector<TH1D*> UnivRecoHisto, const TString& dir, const TString& SystName, const TString& PlotName, double textSize, int fontStyle, const TString& title, const TString& xlabel, const TString& ylabel);
 void DrawErrorBand(TH1* nom, TGraphAsymmErrors* band, int bandCol, double alpha);
 void PrintTruthUnfoldedStatShapePlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* hUnfolded, TH1* hStat, TH1* hShape, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle = 132, double TextSize = 0.06);
+void PrintDataUnfoldedStatShapePlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* hUnfolded, TH1* hStat, TH1* hShape, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle = 132, double TextSize = 0.06);
 void PrintFDPlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* hNomTrue, TH1* hUnfolded, TH1* hSysts, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, std::pair<double, double> chi, std::pair<int, int> ndof, std::pair<double, double> pval, std::pair<double, double> sigma, int FontStyle = 132, double TextSize = 0.06);
 void CalcChiSquared(TH1D* h_model, TH1D* h_data, TH2D* cov, double &chi, int &ndof, double &pval, double &sigma);
 
