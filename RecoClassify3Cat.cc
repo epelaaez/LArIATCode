@@ -1503,28 +1503,6 @@ void RecoClassify3Cat() {
         }
         hTotalEvents->Fill(backgroundType);
 
-        //////////////////////
-        // WC2TPC match cut //
-        //////////////////////
-
-        // If no track matched to wire-chamber, skip
-        if (WC2TPCtrkID == -99999) {
-            if (backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
-                hTrueAbs0pKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
-            } else if (backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
-                hTrueAbsNpKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
-            } else if (backgroundType == 6 || backgroundType == 12) {
-                hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
-                hTrueScatterKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
-            } else if (backgroundType == 7) {
-                hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
-            }
-            continue;
-        }
-        hDataProdsAndWC2TPC->Fill(backgroundType);
-
         //////////////////////////
         // Wire-chamber quality //
         //////////////////////////
@@ -1613,6 +1591,28 @@ void RecoClassify3Cat() {
         // if (!Magnet1ApertureCheck || !Magnet2ApertureCheck || !DSColApertureCheck) continue;
 
         hWCQualityCuts->Fill(backgroundType);
+
+        //////////////////////
+        // WC2TPC match cut //
+        //////////////////////
+
+        // If no track matched to wire-chamber, skip
+        if (WC2TPCtrkID == -99999) {
+            if (backgroundType == 0) {
+                hTrueAbs0pKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbs0pKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
+            } else if (backgroundType == 1) {
+                hTrueAbsNpKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueAbsNpKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
+            } else if (backgroundType == 6 || backgroundType == 12) {
+                hTrueScatterKERejected->Fill(truthPrimaryVertexKE * 1000);
+                hTrueScatterKERejDataProds->Fill(truthPrimaryVertexKE * 1000);
+            } else if (backgroundType == 7) {
+                hTrueChExchKERejected->Fill(truthPrimaryVertexKE * 1000);
+            }
+            continue;
+        }
+        hDataProdsAndWC2TPC->Fill(backgroundType);
 
         //////////////////////////////////
         // Check WC/front-face momentum //
