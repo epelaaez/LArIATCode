@@ -608,4 +608,40 @@ void DataUnfold2() {
         "Kinetic Energy [MeV]",
         "Cross section [barn] per 100 MeV"
     );
+
+    ////////////////////////////////////
+    // Save everything from later use //
+    ////////////////////////////////////
+
+    TString outPath = "/exp/lariat/app/users/epelaez/histos/data/Unfold2.root";
+    TFile outAll(outPath, "RECREATE");
+    outAll.cd();
+
+    std::unordered_set<std::string> written;
+
+    // Helper lambda: write once by name
+    auto writeOnce = [&](TObject* obj) {
+        if (!obj) return;
+        const std::string name = obj->GetName();
+        if (name.empty()) return;
+        if (written.insert(name).second) {
+            obj->Write(name.c_str(), TObject::kOverwrite);
+        }
+    };
+
+    // 1D groups
+    for (auto& group : PlotGroups) {
+        for (auto* h : group) writeOnce(h);
+    }
+
+    // 1D data plots
+    for (auto* h : UnfPerInteraction) writeOnce(h);
+    for (auto* h : StatUncPerInteraction) writeOnce(h);
+    for (auto* h : ShapeUncPerInteraction) writeOnce(h);
+    for (auto* h : TrueKE) writeOnce(h);
+
+    outAll.Write();
+    outAll.Close();
+
+    std::cout << "\nWrote " << written.size() << " objects to " << outPath << std::endl;
 }
