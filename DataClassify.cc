@@ -41,6 +41,10 @@ void DataClassify() {
     // Load nominal MC histos
     TString NominalHistsPath = "/exp/lariat/app/users/epelaez/histos/nominal/RecoClassify3Cat_AllHists.root";
     std::unique_ptr<TFile> fNom(TFile::Open(NominalHistsPath, "READ"));
+
+    // Load nominal MC histos (abs + scatt)
+    TString NominalAbsScattHistsPath = "/exp/lariat/app/users/epelaez/analysis_abs_scatt/histos/nominal/RecoClassify3Cat_AllHists.root";
+    std::unique_ptr<TFile> fNomAbsScatt(TFile::Open(NominalAbsScattHistsPath, "READ"));
     
     ///////////////////////
     // Counters for cuts //
@@ -122,6 +126,22 @@ void DataClassify() {
     TH1D* hMCPionScatterKEMuon     = dynamic_cast<TH1D*>(fNom->Get("hPionScatterKEMuon"));
     TH1D* hMCPionScatterKEElectron = dynamic_cast<TH1D*>(fNom->Get("hPionScatterKEElectron"));
     TH1D* hMCPionScatterKEOther    = dynamic_cast<TH1D*>(fNom->Get("hPionScatterKEOther"));
+
+    // Abs interacting KE (abs + scatt)
+    TH1D* hMCPionAbsKETrue     = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionAbsKETrue"));
+    TH1D* hMCPionAbsKEScatter  = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionAbsKEScatter"));
+    TH1D* hMCPionAbsKEChExch   = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionAbsKEChExch"));
+    TH1D* hMCPionAbsKEMuon     = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionAbsKEMuon"));
+    TH1D* hMCPionAbsKEElectron = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionAbsKEElectron"));
+    TH1D* hMCPionAbsKEOther    = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionAbsKEOther"));
+
+    // Abs interacting KE
+    TH1D* hMCPionScatterKETrue2     = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionScatterKETrue"));
+    TH1D* hMCPionScatterKEAbs2      = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionScatterKEAbs"));
+    TH1D* hMCPionScatterKEChExch2   = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionScatterKEChExch"));
+    TH1D* hMCPionScatterKEMuon2     = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionScatterKEMuon"));
+    TH1D* hMCPionScatterKEElectron2 = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionScatterKEElectron"));
+    TH1D* hMCPionScatterKEOther2    = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionScatterKEOther"));
 
     ///////////////////
     // Load branches //
@@ -886,7 +906,9 @@ void DataClassify() {
         hMCIncidentKEPionFine, hMCIncidentKEElectronFine, hMCIncidentKEMuonFine,
         hMCPionAbs0pKETrue, hMCPionAbs0pKEAbsNp, hMCPionAbs0pKEScatter, hMCPionAbs0pKEChExch, hMCPionAbs0pKEMuon, hMCPionAbs0pKEElectron, hMCPionAbs0pKEOther,
         hMCPionAbsNpKETrue, hMCPionAbsNpKEAbs0p, hMCPionAbsNpKEScatter, hMCPionAbsNpKEChExch, hMCPionAbsNpKEMuon, hMCPionAbsNpKEElectron, hMCPionAbsNpKEOther,
-        hMCPionScatterKETrue, hMCPionScatterKEAbs0p, hMCPionScatterKEAbsNp, hMCPionScatterKEChExch, hMCPionScatterKEMuon, hMCPionScatterKEElectron, hMCPionScatterKEOther
+        hMCPionScatterKETrue, hMCPionScatterKEAbs0p, hMCPionScatterKEAbsNp, hMCPionScatterKEChExch, hMCPionScatterKEMuon, hMCPionScatterKEElectron, hMCPionScatterKEOther,
+        hMCPionAbsKETrue, hMCPionAbsKEScatter, hMCPionAbsKEChExch, hMCPionAbsKEMuon, hMCPionAbsKEElectron, hMCPionAbsKEOther,
+        hMCPionScatterKETrue2, hMCPionScatterKEAbs2, hMCPionScatterKEChExch2, hMCPionScatterKEMuon2, hMCPionScatterKEElectron2, hMCPionScatterKEOther2
     };
 
     std::vector<TH1*> scaleByPre = {
@@ -1034,6 +1056,10 @@ void DataClassify() {
         // Interacting KE
         hPionAbs0pKE,
         hPionAbsNpKE,
+        hPionScatterKE,
+
+        // Interacting KE (abs + scatt)
+        hPionAbsKE,
         hPionScatterKE
     };
 
@@ -1055,7 +1081,11 @@ void DataClassify() {
         // Interacting KE
         {hMCPionAbs0pKETrue, hMCPionAbs0pKEAbsNp, hMCPionAbs0pKEScatter, hMCPionAbs0pKEChExch, hMCPionAbs0pKEMuon, hMCPionAbs0pKEElectron, hMCPionAbs0pKEOther},
         {hMCPionAbsNpKETrue, hMCPionAbsNpKEAbs0p, hMCPionAbsNpKEScatter, hMCPionAbsNpKEChExch, hMCPionAbsNpKEMuon, hMCPionAbsNpKEElectron, hMCPionAbsNpKEOther},
-        {hMCPionScatterKETrue, hMCPionScatterKEAbs0p, hMCPionScatterKEAbsNp, hMCPionScatterKEChExch, hMCPionScatterKEMuon, hMCPionScatterKEElectron, hMCPionScatterKEOther}
+        {hMCPionScatterKETrue, hMCPionScatterKEAbs0p, hMCPionScatterKEAbsNp, hMCPionScatterKEChExch, hMCPionScatterKEMuon, hMCPionScatterKEElectron, hMCPionScatterKEOther},
+
+        // Interacting KE (abs + scatt)
+        {hMCPionAbsKETrue, hMCPionAbsKEScatter, hMCPionAbsKEChExch, hMCPionAbsKEMuon, hMCPionAbsKEElectron, hMCPionAbsKEOther},
+        {hMCPionScatterKETrue2, hMCPionScatterKEAbs2, hMCPionScatterKEChExch2, hMCPionScatterKEMuon2, hMCPionScatterKEElectron2, hMCPionScatterKEOther2}
     };
 
     std::vector<std::vector<TString>> PlotMCLabelGroups = {
@@ -1076,7 +1106,11 @@ void DataClassify() {
         // Interacting KE
         {"True", "Abs Np", "Scatter", "Ch. Exch.", "Muon", "Electron", "Other"},
         {"True", "Abs 0p", "Scatter", "Ch. Exch.", "Muon", "Electron", "Other"},
-        {"True", "Abs 0p", "Abs Np", "Ch. Exch.", "Muon", "Electron", "Other"}
+        {"True", "Abs 0p", "Abs Np", "Ch. Exch.", "Muon", "Electron", "Other"},
+
+        // Interacting KE (abs + scatt)
+        {"True", "Scatter", "Ch. Exch.", "Muon", "Electron", "Other"},
+        {"True", "Abs", "Ch. Exch.", "Muon", "Electron", "Other"},
     };
 
     std::vector<TString> PlotName = {
@@ -1097,7 +1131,11 @@ void DataClassify() {
         // Interacting KE
         "Interacting/PionAbs0pKE",
         "Interacting/PionAbsNpKE",
-        "Interacting/PionScatterKE"
+        "Interacting/PionScatterKE",
+
+        // Interacting KE (abs + scatt)
+        "InteractingAbsScatt/PionAbsKE",
+        "InteractingAbsScatt/PionScatterKE"
     };
 
     std::vector<TString> PlotTitle = {
@@ -1118,6 +1156,10 @@ void DataClassify() {
         // Interacting KE
         "Abs 0p Kinetic Energy",
         "Abs Np Kinetic Energy",
+        "Scatter Kinetic Energy",
+
+        // Interacting KE (abs + scatt)
+        "Abs Kinetic Energy",
         "Scatter Kinetic Energy"
     };
 
@@ -1139,6 +1181,10 @@ void DataClassify() {
         // Interacting KE
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
+
+        // Interacting KE (abs + scatt)
+        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]"
     };
 
@@ -1159,6 +1205,10 @@ void DataClassify() {
 
         // Interacting KE
         "Counts",
+        "Counts",
+        "Counts",
+
+        // Interacting KE (abs + scatt)
         "Counts",
         "Counts"
     };
