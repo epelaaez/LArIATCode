@@ -140,16 +140,6 @@ void RecoClassify3Cat() {
     tree->SetBranchAddress("isTrackNearVertex", &isTrackNearVertex);
     tree->SetBranchAddress("isTrackInverted", &isTrackInverted);
 
-    // Reco truth-match information
-    std::vector<int>*         matchedIdentity = nullptr;
-    std::vector<int>*         matchedTrkID    = nullptr;
-    std::vector<double>*      matchedKEnergy  = nullptr;
-    std::vector<std::string>* matchedProcess  = nullptr;
-    tree->SetBranchAddress("matchedIdentity", &matchedIdentity);
-    tree->SetBranchAddress("matchedTrkID", &matchedTrkID);
-    tree->SetBranchAddress("matchedKEnergy", &matchedKEnergy);
-    tree->SetBranchAddress("matchedProcess", &matchedProcess);
-
     // Calorimetry information
     std::vector<std::vector<double>>* recoResR = nullptr;
     std::vector<std::vector<double>>* recoDEDX = nullptr;
@@ -214,7 +204,6 @@ void RecoClassify3Cat() {
     tree->SetBranchAddress("truthSecondaryVertexZ", &truthSecondaryVertexZ);
 
     // Individual hit information
-    double primaryEndPointHitW, primaryEndPointHitX;
     std::vector<int>*   fHitKey = nullptr;
     std::vector<int>*   fHitPlane = nullptr;
     std::vector<int>*   hitRecoAsTrackKey = nullptr;
@@ -225,8 +214,6 @@ void RecoClassify3Cat() {
     std::vector<float>* fHitChargeCol = nullptr;
     std::vector<int>*   hitWC2TPCKey = nullptr;
     std::vector<int>*   hitThroughTrack = nullptr;
-    tree->SetBranchAddress("primaryEndPointHitW", &primaryEndPointHitW);
-    tree->SetBranchAddress("primaryEndPointHitX", &primaryEndPointHitX);
     tree->SetBranchAddress("fHitKey", &fHitKey);
     tree->SetBranchAddress("fHitPlane", &fHitPlane);
     tree->SetBranchAddress("hitRecoAsTrackKey", &hitRecoAsTrackKey);
