@@ -2982,3 +2982,134 @@ void PrintDataVsMCContribPlot(
     delete hMCAbsUncSafe;
     delete c;
 }
+
+int fillSignalInformation(
+    int pdg,
+    double vx, double vy, double vz,
+    bool interactionInTrajectory,
+    std::string trajectoryInteractionLabel,
+    std::vector<int> daughtersPDG, 
+    std::vector<std::string> daughtersProcess, 
+    std::vector<double> daughtersKE,
+    bool saveNumProtons,
+    int& numVisibleProtons
+) {
+    bool isPionAbsorptionSignalTemp = true;
+
+    if (pdg != -211) isPionAbsorptionSignalTemp = false;
+    if (!isWithinReducedVolume(vx, vy, vz)) isPionAbsorptionSignalTemp = false;
+
+    int numDaughters = daughtersPDG.size();
+    int tempNumVisibleProtons = 0;
+    for (int iDaughter = 0; iDaughter < numDaughters; iDaughter++) {
+        if ((daughtersPDG[iDaughter] == 11) && (daughtersProcess[iDaughter] == "hIoni")) { continue; }
+        else if ((daughtersPDG[iDaughter] == 111) || (daughtersPDG[iDaughter] == 211) || (daughtersPDG[iDaughter] == -211)) { isPionAbsorptionSignalTemp = false; }
+        else if ((daughtersPDG[iDaughter] == 13) || (daughtersPDG[iDaughter] == -13)) { isPionAbsorptionSignalTemp = false; } // muon
+        else if ((daughtersPDG[iDaughter] == 321) || (daughtersPDG[iDaughter] == -321) || (daughtersPDG[iDaughter] == 311)) { isPionAbsorptionSignalTemp = false; } // kaon
+        else if ((daughtersProcess[iDaughter] == "Decay") || (daughtersProcess[iDaughter] == "hBertiniCaptureAtRest")) { isPionAbsorptionSignalTemp = false; }
+        else if (
+            daughtersProcess[iDaughter] == "pi-Inelastic" &&
+            daughtersPDG[iDaughter] == 2212 &&
+            daughtersKE[iDaughter] >= PROTON_ENERGY_LOWER_BOUND &&
+            daughtersKE[iDaughter] <= PROTON_ENERGY_UPPER_BOUND
+        ) {
+            tempNumVisibleProtons++;
+        }
+    }
+
+    // If we have elastic scattering in trajectory, we do not consider it a signal,
+    // but we want information about the interaction after the elastic scattering
+    if (interactionInTrajectory && trajectoryInteractionLabel == "hadElastic") isPionAbsorptionSignalTemp = false;
+
+    if (saveNumProtons) numVisibleProtons = tempNumVisibleProtons;
+
+    if (isPionAbsorptionSignalTemp) {
+        // Event is signal!
+        if (tempNumVisibleProtons == 0) return 0;
+        else if (tempNumVisibleProtons > 0) return 1;
+    } else {
+        // Event is background, classify it
+        return getBackgroundInteractionType(
+            pdg,
+            vx, vy, vz,
+            interactionInTrajectory,
+            trajectoryInteractionLabel,
+            daughtersPDG,
+            daughtersProcess,
+            daughtersKE
+        );
+    }
+    return -1; // should not be returned ever
+}
+
+int getBackgroundInteractionType(
+    int pdg,
+    double vx, double vy, double vz,
+    bool interactionInTrajectory,
+    std::string trajectoryInteractionLabel,
+    std::vector<int> daughtersPDG, 
+    std::vector<std::string> daughtersProcess, 
+    std::vector<double> daughtersKE
+) {
+    // We first care about ID of the primary particle
+    if (pdg != -211) {
+        if (pdg == 13) { return 2; }
+        else if (pdg == 11) { return 3; }
+        else { return 4; }
+    }
+
+    // If interaction not in reduced volume, flag as outside reduced volume
+    if (!isWithinReducedVolume(vx, vy, vz)) { return 5; }
+
+    // Check for elastic scattering in trajectory (already checked it's inside reduced volume)
+    if (interactionInTrajectory && trajectoryInteractionLabel == "hadElastic") { return 12; }
+
+    // If interaction is inside reduced volume, check daughters
+    int numDaughters = daughtersPDG.size();
+    int numNegativePions = 0; int numNeutralPions = 0; int numPositivePions = 0;
+    for (int iDaughter = 0; iDaughter < numDaughters; iDaughter++) {
+        if (daughtersPDG[iDaughter] == -211) {
+            numNegativePions++; 
+        } else if (daughtersPDG[iDaughter] == 111) {
+            numNeutralPions++;
+        } else if (daughtersPDG[iDaughter] == 211) {
+            numPositivePions++;
+        } else if (daughtersProcess[iDaughter] == "hBertiniCaptureAtRest") {
+            return 9;
+        } else if (daughtersProcess[iDaughter] == "Decay") {
+            return 10;
+        }
+    }
+
+    if ((numNegativePions + numNeutralPions + numPositivePions) > 0) {
+        if ((numNegativePions == 1) && (numNeutralPions == 0) && (numPositivePions == 0)) {
+            return 6;
+        } else if ((numNegativePions == 0) && (numNeutralPions == 1) && (numPositivePions == 0)) {
+            return 7;
+        } else if ((numNegativePions == 0) && (numNeutralPions == 0) && (numPositivePions == 1)) {
+            return 8;
+        }
+    }
+
+    // If not flagged at this point, label as other
+    return 11;
+}
+
+std::string ProcessToString(int proc) {
+    switch (proc) {
+        case 0:  return "primary";
+        case 1:  return "pi-Inelastic";
+        case 2:  return "neutronInelastic";
+        case 3:  return "hadElastic";
+        case 4:  return "nCapture";
+        case 5:  return "CHIPSNuclearCaptureAtRest";
+        case 6:  return "Decay";
+        case 7:  return "KaonZeroLInelastic";
+        case 8:  return "CoulombScat";
+        case 9:  return "muMinusCaptureAtRest";
+        case 10: return "protonInelastic";
+        case 11: return "kaon+Inelastic";
+        case 12: return "hBertiniCaptureAtRest";
+        default: return "Unknown";
+    }
+}

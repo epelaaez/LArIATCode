@@ -54,6 +54,12 @@ double NUM_DATA_EVENTS        = TG1_DATA_EVENTS * (TOTAL_DATA_EVENTS / RESTRICTE
 double NUM_MC_EVENTS          = TG1_MC_EVENTS * (TOTAL_DATA_EVENTS / TOTAL_MC_EVENTS);
 double MC_SCALING             = NUM_DATA_EVENTS / NUM_MC_EVENTS;
 
+// Drift velocity 
+double DRIFT_VELOCITY = 0.14732; // cm / \mu s
+
+// Track pitch
+const double TRACK_PITCH = 0.47;
+
 struct EventInfo {
     int run; int subrun; int event; bool isData;
     float vertexX; float vertexY; float vertexZ;
@@ -416,3 +422,7 @@ void PrintFDPlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* h
 void CalcChiSquared(TH1D* h_model, TH1D* h_data, TH2D* cov, double &chi, int &ndof, double &pval, double &sigma);
 
 void PrintDataVsMCContribPlot(const TString& SaveDir, const TString& Name, TH1* hData, const std::vector<TH1*>& mcHists, const std::vector<TString>& mcLabels, const std::vector<int>& mcColors, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle, double TextSize, bool UsePoissonDataErrors = true, TH1* hMCAbsUnc = nullptr, bool DrawRatio = true);
+
+int fillSignalInformation(int pdg, double vx, double vy, double vz, bool interactionInTrajectory, std::string trajectoryInteractionLabel, std::vector<int> daughtersPDG, std::vector<std::string> daughtersProcess,  std::vector<double> daughtersKE, bool saveNumProtons, int& numVisibleProtons);
+int getBackgroundInteractionType(int pdg, double vx, double vy, double vz, bool interactionInTrajectory, std::string trajectoryInteractionLabel, std::vector<int> daughtersPDG, std::vector<std::string> daughtersProcess, std::vector<double> daughtersKE);
+std::string ProcessToString(int proc);
