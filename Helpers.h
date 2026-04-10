@@ -35,7 +35,10 @@ int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 int NUM_SIGNAL_TYPES = 3; // 0p abs, Np abs, scattering
 
 // Run through this many events
-int USE_NUM_EVENTS = 50000;
+int USE_NUM_EVENTS = 200000;
+
+// Test threshold for TG tracks
+int N_TG_TRACKS = 3;
 
 // Number of events at each data quality cut
 double TG0_MC_EVENTS = 118999;
@@ -59,6 +62,10 @@ double DRIFT_VELOCITY = 0.14732; // cm / \mu s
 
 // Track pitch
 const double TRACK_PITCH = 0.47;
+
+// Wire-chamber quality
+double MAX_RAD_DIST_WC4   = 8.0; // original 8.0
+double MAX_MID_PLANE_DIST = 3.0; // original 3.0
 
 struct EventInfo {
     int run; int subrun; int event; bool isData;
