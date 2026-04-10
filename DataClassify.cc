@@ -374,14 +374,28 @@ void DataClassify() {
     Int_t NumEntries = (Int_t) tree->GetEntries();
     std::cout << "Num entries: " << NumEntries << std::endl;
 
-    bool verbose = true;
+    bool verbose = false;
 
     for (Int_t i = 0; i < NumEntries; ++i) {
+        // For some reason, these events crash
+        if (
+            i == 199835 ||
+            i == 311635
+        ) continue;
+
+        // Get tree entry and reset variables
+        std::cout << std::endl;
+        std::cout << "=================================" << std::endl;
+        std::cout << "Getting tree entry: " << i << std::endl;
         tree->GetEntry(i);
+        std::cout << "Got tree entry" << std::endl;
+        std::cout << "Reseting variables" << std::endl;
         EventVariables ev;
+        std::cout << "Variables reset" << std::endl;
+        std::cout << "=================================" << std::endl;
 
         // Make script go faster
-        // if (i > USE_NUM_EVENTS) break;
+        if (i > USE_NUM_EVENTS) break;
 
         TotalEvents++;
 
@@ -1065,8 +1079,7 @@ void DataClassify() {
     // Diagnostics
     std::cout << std::endl;
     std::cout << "DIAGNOSTICS" << std::endl;
-    std::cout << "==================================" << std::endl;
-    std::cout << std::endl;
+    std::cout << "=================================" << std::endl;
 
     std::cout << std::endl;
     std::cout << hMCSmallTrksInCylinderMuons->Integral() + hMCSmallTrksInCylinderPions->Integral() + hMCSmallTrksInCylinderElectrons->Integral() << " events in MC" << std::endl;
@@ -1090,8 +1103,7 @@ void DataClassify() {
     std::cout << "    Events selected as absorption 0p:            " << EventsSelectedAsAbs0p << "(" << ((double) EventsSelectedAsAbs0p / TotalEvents) * 100. << "%)" << std::endl;
     std::cout << std::endl;
 
-    std::cout << std::endl;
-    std::cout << "==================================" << std::endl;
+    std::cout << "=================================" << std::endl;
     std::cout << std::endl;
 
     double SCALING_FACTOR     = hSmallTracksInCylinder->Integral() / (hMCSmallTrksInCylinderMuons->Integral() + hMCSmallTrksInCylinderPions->Integral() + hMCSmallTrksInCylinderElectrons->Integral());
