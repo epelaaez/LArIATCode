@@ -38,9 +38,9 @@ void FakeData(int sample = 1) {
     std::cout << "Generating Sample: " << sample << std::endl;
 
     // Load file with data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/RecoAll_histo.root"; // RV at z = 30
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/anatree_60a/histo.root";
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
-    TDirectory* Directory = (TDirectory*)File->Get("RecoNNAllEval");
+    TDirectory* Directory = (TDirectory*)File->Get("anatree");
 
     // Fake data configuration
     FakeDataFD::Scenario FDScenario;
@@ -59,252 +59,172 @@ void FakeData(int sample = 1) {
     ///////////////////
 
     // Load tree and branches
-    TTree* tree = (TTree*) Directory->Get<TTree>("RecoNNAllEvalTree");
+    TTree* tree = (TTree*) Directory->Get<TTree>("anatree");
 
-    int run, subrun, event; bool isData;
+    // Run information
+    int run, subrun, event; bool isData = false;
     tree->SetBranchAddress("run", &run); 
     tree->SetBranchAddress("subrun", &subrun); 
     tree->SetBranchAddress("event", &event);
-    tree->SetBranchAddress("isData", &isData);
 
-    // Signal information
-    int backgroundType, numVisibleProtons; 
-    tree->SetBranchAddress("backgroundType", &backgroundType);
-    tree->SetBranchAddress("numVisibleProtons", &numVisibleProtons);
+    // Track information
+    const int kMaxTrack = 100; // 10000
+    int   ntracks_reco;                       tree->SetBranchAddress("ntracks_reco",    &ntracks_reco);
+    float trkvtxx[kMaxTrack];                 tree->SetBranchAddress("trkvtxx",          &trkvtxx);
+    float trkvtxy[kMaxTrack];                 tree->SetBranchAddress("trkvtxy",          &trkvtxy);
+    float trkvtxz[kMaxTrack];                 tree->SetBranchAddress("trkvtxz",          &trkvtxz);
+    float trkendx[kMaxTrack];                 tree->SetBranchAddress("trkendx",          &trkendx);
+    float trkendy[kMaxTrack];                 tree->SetBranchAddress("trkendy",          &trkendy);
+    float trkendz[kMaxTrack];                 tree->SetBranchAddress("trkendz",          &trkendz);
+    // float trkstartdcosx[kMaxTrack];           tree->SetBranchAddress("trkstartdcosx",    &trkstartdcosx);
+    // float trkstartdcosy[kMaxTrack];           tree->SetBranchAddress("trkstartdcosy",    &trkstartdcosy);
+    // float trkstartdcosz[kMaxTrack];           tree->SetBranchAddress("trkstartdcosz",    &trkstartdcosz);
+    // float trkenddcosx[kMaxTrack];             tree->SetBranchAddress("trkenddcosx",      &trkenddcosx);
+    // float trkenddcosy[kMaxTrack];             tree->SetBranchAddress("trkenddcosy",      &trkenddcosy);
+    // float trkenddcosz[kMaxTrack];             tree->SetBranchAddress("trkenddcosz",      &trkenddcosz);
+    // float trklength[kMaxTrack];               tree->SetBranchAddress("trklength",        &trklength);
+    int   trkWCtoTPCMatch[kMaxTrack];         tree->SetBranchAddress("trkWCtoTPCMatch",  &trkWCtoTPCMatch);
 
-    // WC match information
-    int WC2TPCtrkID, WC2TPCsize;
-    double WCTrackMomentum, WCTheta, WCPhi, WC4PrimaryX;
-    double WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY, WC2TPCPrimaryBeginZ;
-    double WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ;
-    std::vector<double>* wcMatchResR = nullptr;
-    std::vector<double>* wcMatchDEDX = nullptr;
-    std::vector<double>* wcMatchEDep = nullptr;
-    std::vector<double>* wcMatchXPos = nullptr;
-    std::vector<double>* wcMatchYPos = nullptr;
-    std::vector<double>* wcMatchZPos = nullptr;
-    tree->SetBranchAddress("WC2TPCtrkID", &WC2TPCtrkID);
-    tree->SetBranchAddress("WC2TPCsize", &WC2TPCsize);
-    tree->SetBranchAddress("WCTrackMomentum", &WCTrackMomentum);
-    tree->SetBranchAddress("WCTheta", &WCTheta);
-    tree->SetBranchAddress("WCPhi", &WCPhi);
-    tree->SetBranchAddress("WC4PrimaryX", &WC4PrimaryX);
-    tree->SetBranchAddress("WC2TPCPrimaryBeginX", &WC2TPCPrimaryBeginX);
-    tree->SetBranchAddress("WC2TPCPrimaryBeginY", &WC2TPCPrimaryBeginY);
-    tree->SetBranchAddress("WC2TPCPrimaryBeginZ", &WC2TPCPrimaryBeginZ);
-    tree->SetBranchAddress("WC2TPCPrimaryEndX", &WC2TPCPrimaryEndX);
-    tree->SetBranchAddress("WC2TPCPrimaryEndY", &WC2TPCPrimaryEndY);
-    tree->SetBranchAddress("WC2TPCPrimaryEndZ", &WC2TPCPrimaryEndZ);
-    tree->SetBranchAddress("wcMatchResR", &wcMatchResR);
-    tree->SetBranchAddress("wcMatchDEDX", &wcMatchDEDX);
-    tree->SetBranchAddress("wcMatchEDep", &wcMatchEDep);
-    tree->SetBranchAddress("wcMatchXPos", &wcMatchXPos);
-    tree->SetBranchAddress("wcMatchYPos", &wcMatchYPos);
-    tree->SetBranchAddress("wcMatchZPos", &wcMatchZPos);
-
-    // WC match location information
-    std::vector<double>* WC2TPCLocationsX = nullptr;
-    std::vector<double>* WC2TPCLocationsY = nullptr;
-    std::vector<double>* WC2TPCLocationsZ = nullptr;
-    tree->SetBranchAddress("WC2TPCLocationsX", &WC2TPCLocationsX);
-    tree->SetBranchAddress("WC2TPCLocationsY", &WC2TPCLocationsY);
-    tree->SetBranchAddress("WC2TPCLocationsZ", &WC2TPCLocationsZ);
-
-    // WC match truth information
-    int                       wcMatchPDG;
-    std::string*              wcMatchProcess          = new std::string();
-    std::vector<int>*         wcMatchDaughtersPDG     = nullptr;
-    std::vector<std::string>* wcMatchDaughtersProcess = nullptr;
-    tree->SetBranchAddress("wcMatchDaughtersPDG", &wcMatchDaughtersPDG);
-    tree->SetBranchAddress("wcMatchDaughtersProcess", &wcMatchDaughtersProcess);
-    tree->SetBranchAddress("wcMatchProcess", &wcMatchProcess);
-    tree->SetBranchAddress("wcMatchPDG", &wcMatchPDG);
-
-    // Reco information
-    std::vector<double>* recoMeanDEDX      = nullptr;
-    std::vector<double>* recoEndX          = nullptr;
-    std::vector<double>* recoEndY          = nullptr;
-    std::vector<double>* recoEndZ          = nullptr;
-    std::vector<double>* recoBeginX        = nullptr;
-    std::vector<double>* recoBeginY        = nullptr;
-    std::vector<double>* recoBeginZ        = nullptr;
-    std::vector<int>*    recoTrkID         = nullptr;
-    std::vector<bool>*   isTrackNearVertex = nullptr;
-    std::vector<bool>*   isTrackInverted   = nullptr;
-    tree->SetBranchAddress("recoMeanDEDX", &recoMeanDEDX);
-    tree->SetBranchAddress("recoEndX", &recoEndX);
-    tree->SetBranchAddress("recoEndY", &recoEndY);
-    tree->SetBranchAddress("recoEndZ", &recoEndZ);
-    tree->SetBranchAddress("recoBeginX", &recoBeginX);
-    tree->SetBranchAddress("recoBeginY", &recoBeginY);
-    tree->SetBranchAddress("recoBeginZ", &recoBeginZ);
-    tree->SetBranchAddress("recoTrkID", &recoTrkID);
-    tree->SetBranchAddress("isTrackNearVertex", &isTrackNearVertex);
-    tree->SetBranchAddress("isTrackInverted", &isTrackInverted);
-
-    // Reco truth-match information
-    std::vector<int>*         matchedIdentity = nullptr;
-    std::vector<int>*         matchedTrkID    = nullptr;
-    std::vector<double>*      matchedKEnergy  = nullptr;
-    std::vector<std::string>* matchedProcess  = nullptr;
-    tree->SetBranchAddress("matchedIdentity", &matchedIdentity);
-    tree->SetBranchAddress("matchedTrkID", &matchedTrkID);
-    tree->SetBranchAddress("matchedKEnergy", &matchedKEnergy);
-    tree->SetBranchAddress("matchedProcess", &matchedProcess);
+    // Wire-chamber track information
+    const int kMaxWCTracks = 1; // 1000
+    int   nwctrks;                              tree->SetBranchAddress("nwctrks",           &nwctrks);
+    // float wctrk_XFaceCoor[kMaxWCTracks];        tree->SetBranchAddress("wctrk_XFaceCoor",   &wctrk_XFaceCoor);
+    // float wctrk_YFaceCoor[kMaxWCTracks];        tree->SetBranchAddress("wctrk_YFaceCoor",   &wctrk_YFaceCoor);
+    float wctrk_momentum[kMaxWCTracks];         tree->SetBranchAddress("wctrk_momentum",    &wctrk_momentum);
+    // float wctrk_Px[kMaxWCTracks];               tree->SetBranchAddress("wctrk_Px",          &wctrk_Px);
+    // float wctrk_Py[kMaxWCTracks];               tree->SetBranchAddress("wctrk_Py",          &wctrk_Py);
+    // float wctrk_Pz[kMaxWCTracks];               tree->SetBranchAddress("wctrk_Pz",          &wctrk_Pz);
+    float wctrk_theta[kMaxWCTracks];            tree->SetBranchAddress("wctrk_theta",        &wctrk_theta);
+    float wctrk_phi[kMaxWCTracks];              tree->SetBranchAddress("wctrk_phi",          &wctrk_phi);
+    // float wctrk_residual[kMaxWCTracks];         tree->SetBranchAddress("wctrk_residual",     &wctrk_residual);
+    // int   wctrk_wcmissed[kMaxWCTracks];         tree->SetBranchAddress("wctrk_wcmissed",     &wctrk_wcmissed);
+    int   wctrk_picky[kMaxWCTracks];            tree->SetBranchAddress("wctrk_picky",        &wctrk_picky);
+    // float wctrk_XDist[kMaxWCTracks];            tree->SetBranchAddress("wctrk_XDist",        &wctrk_XDist);
+    // float wctrk_YDist[kMaxWCTracks];            tree->SetBranchAddress("wctrk_YDist",        &wctrk_YDist);
+    // float wctrk_ZDist[kMaxWCTracks];            tree->SetBranchAddress("wctrk_ZDist",        &wctrk_ZDist);
+    // float wctrk_YKink[kMaxWCTracks];            tree->SetBranchAddress("wctrk_YKink",        &wctrk_YKink);
+    // int   wctrk_WC1XMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC1XMult",     &wctrk_WC1XMult);
+    // int   wctrk_WC1YMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC1YMult",     &wctrk_WC1YMult);
+    // int   wctrk_WC2XMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC2XMult",     &wctrk_WC2XMult);
+    // int   wctrk_WC2YMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC2YMult",     &wctrk_WC2YMult);
+    // int   wctrk_WC3XMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC3XMult",     &wctrk_WC3XMult);
+    // int   wctrk_WC3YMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC3YMult",     &wctrk_WC3YMult);
+    // int   wctrk_WC4XMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC4XMult",     &wctrk_WC4XMult);
+    // int   wctrk_WC4YMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC4YMult",     &wctrk_WC4YMult);
+    // float XWireHist[kMaxWCTracks][1000];         tree->SetBranchAddress("XWireHist",          &XWireHist);
+    // float YWireHist[kMaxWCTracks][1000];         tree->SetBranchAddress("YWireHist",          &YWireHist);
+    // float XAxisHist[kMaxWCTracks][1000];         tree->SetBranchAddress("XAxisHist",          &XAxisHist);
+    // float YAxisHist[kMaxWCTracks][1000];         tree->SetBranchAddress("YAxisHist",          &YAxisHist);
+    // float WC1xPos[kMaxWCTracks];                 tree->SetBranchAddress("WC1xPos",            &WC1xPos);
+    // float WC1yPos[kMaxWCTracks];                 tree->SetBranchAddress("WC1yPos",            &WC1yPos);
+    // float WC1zPos[kMaxWCTracks];                 tree->SetBranchAddress("WC1zPos",            &WC1zPos);
+    // float WC2xPos[kMaxWCTracks];                 tree->SetBranchAddress("WC2xPos",            &WC2xPos);
+    // float WC2yPos[kMaxWCTracks];                 tree->SetBranchAddress("WC2yPos",            &WC2yPos);
+    // float WC2zPos[kMaxWCTracks];                 tree->SetBranchAddress("WC2zPos",            &WC2zPos);
+    // float WC3xPos[kMaxWCTracks];                 tree->SetBranchAddress("WC3xPos",            &WC3xPos);
+    // float WC3yPos[kMaxWCTracks];                 tree->SetBranchAddress("WC3yPos",            &WC3yPos);
+    // float WC3zPos[kMaxWCTracks];                 tree->SetBranchAddress("WC3zPos",            &WC3zPos);
+    float WC4xPos[kMaxWCTracks];                 tree->SetBranchAddress("WC4xPos",            &WC4xPos);
+    // float WC4yPos[kMaxWCTracks];                 tree->SetBranchAddress("WC4yPos",            &WC4yPos);
+    // float WC4zPos[kMaxWCTracks];                 tree->SetBranchAddress("WC4zPos",            &WC4zPos);
 
     // Calorimetry information
-    std::vector<std::vector<double>>* recoResR = nullptr;
-    std::vector<std::vector<double>>* recoDEDX = nullptr;
-    tree->SetBranchAddress("recoResR", &recoResR);
-    tree->SetBranchAddress("recoDEDX", &recoDEDX);
+    const int kMaxTrackHits = 1000; // 1000
+    int   ntrkcalopts[kMaxTrack][2];                    tree->SetBranchAddress("ntrkcalopts", &ntrkcalopts);
+    // float trkpida[kMaxTrack][2];                        tree->SetBranchAddress("trkpida",     &trkpida);
+    // float trkke[kMaxTrack][2];                          tree->SetBranchAddress("trkke",       &trkke);
+    float trkdedx[kMaxTrack][2][kMaxTrackHits];         tree->SetBranchAddress("trkdedx",     &trkdedx);
+    // float trkdqdx[kMaxTrack][2][kMaxTrackHits];         tree->SetBranchAddress("trkdqdx",     &trkdqdx);
+    float trkrr[kMaxTrack][2][kMaxTrackHits];           tree->SetBranchAddress("trkrr",       &trkrr);
+    float trkpitch[kMaxTrack][2][kMaxTrackHits];        tree->SetBranchAddress("trkpitch",    &trkpitch);
+    float trkxyz[kMaxTrack][2][kMaxTrackHits][3];       tree->SetBranchAddress("trkxyz",      &trkxyz);
 
-    // Truth-level information
-    int truthPrimaryPDG, truthPrimaryID;
-    double truthPrimaryVertexX, truthPrimaryVertexY, truthPrimaryVertexZ;
-    double truthPrimaryIncidentKE, truthPrimaryVertexKE;
-    std::vector<int>*         truthPrimaryDaughtersPDG     = nullptr;
-    std::vector<std::string>* truthPrimaryDaughtersProcess = nullptr;
-    std::vector<double>*      truthPrimaryDaughtersKE      = nullptr;
-    tree->SetBranchAddress("truthPrimaryPDG", &truthPrimaryPDG);
-    tree->SetBranchAddress("truthPrimaryID", &truthPrimaryID);
-    tree->SetBranchAddress("truthPrimaryIncidentKE", &truthPrimaryIncidentKE);
-    tree->SetBranchAddress("truthPrimaryVertexKE", &truthPrimaryVertexKE);
-    tree->SetBranchAddress("truthPrimaryVertexX", &truthPrimaryVertexX);
-    tree->SetBranchAddress("truthPrimaryVertexY", &truthPrimaryVertexY);
-    tree->SetBranchAddress("truthPrimaryVertexZ", &truthPrimaryVertexZ);
-    tree->SetBranchAddress("truthPrimaryDaughtersPDG", &truthPrimaryDaughtersPDG);
-    tree->SetBranchAddress("truthPrimaryDaughtersProcess", &truthPrimaryDaughtersProcess);
-    tree->SetBranchAddress("truthPrimaryDaughtersKE", &truthPrimaryDaughtersKE);
+    // Trajectory information for tracks
+    const int kMaxTrajHits = 1000; // 1000
+    int   nTrajPoint[kMaxTrack];                  tree->SetBranchAddress("nTrajPoint", &nTrajPoint);
+    // float pHat0_X[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("pHat0_X",    &pHat0_X);
+    // float pHat0_Y[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("pHat0_Y",    &pHat0_Y);
+    // float pHat0_Z[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("pHat0_Z",    &pHat0_Z);
+    float trjPt_X[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("trjPt_X",    &trjPt_X);
+    float trjPt_Y[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("trjPt_Y",    &trjPt_Y);
+    float trjPt_Z[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("trjPt_Z",    &trjPt_Z);
 
-    // True particle location information
-    std::vector<double>* truthPrimaryLocationX = nullptr;
-    std::vector<double>* truthPrimaryLocationY = nullptr;
-    std::vector<double>* truthPrimaryLocationZ = nullptr;
-    tree->SetBranchAddress("truthPrimaryLocationX", &truthPrimaryLocationX);
-    tree->SetBranchAddress("truthPrimaryLocationY", &truthPrimaryLocationY);
-    tree->SetBranchAddress("truthPrimaryLocationZ", &truthPrimaryLocationZ);
+    // Geant4 information for truth tracks
+    const int kMaxPrimaries      = 4000; // 20000
+    const int kMaxPrimaryPart    = 60;   // 50
+    const int kMaxTruePrimaryPts = 1000; // 5000
+    int   no_primaries;                                   tree->SetBranchAddress("no_primaries",        &no_primaries);
+    int   geant_list_size;                                tree->SetBranchAddress("geant_list_size",      &geant_list_size);
+    int   pdg[kMaxPrimaries];                             tree->SetBranchAddress("pdg",                  &pdg);
+    float Mass[kMaxPrimaries];                            tree->SetBranchAddress("Mass",                 &Mass);
+    // float StartPointx[kMaxPrimaries];                     tree->SetBranchAddress("StartPointx",          &StartPointx);
+    // float StartPointy[kMaxPrimaries];                     tree->SetBranchAddress("StartPointy",          &StartPointy);
+    float StartPointz[kMaxPrimaries];                     tree->SetBranchAddress("StartPointz",          &StartPointz);
+    float Eng[kMaxPrimaries];                             tree->SetBranchAddress("Eng",                  &Eng);
+    float Px[kMaxPrimaries];                              tree->SetBranchAddress("Px",                   &Px);
+    float Py[kMaxPrimaries];                              tree->SetBranchAddress("Py",                   &Py);
+    float Pz[kMaxPrimaries];                              tree->SetBranchAddress("Pz",                   &Pz);
+    float EndPointx[kMaxPrimaries];                       tree->SetBranchAddress("EndPointx",            &EndPointx);
+    float EndPointy[kMaxPrimaries];                       tree->SetBranchAddress("EndPointy",            &EndPointy);
+    float EndPointz[kMaxPrimaries];                       tree->SetBranchAddress("EndPointz",            &EndPointz);
+    float EndEng[kMaxPrimaries];                          tree->SetBranchAddress("EndEng",               &EndEng);
+    float EndPx[kMaxPrimaries];                           tree->SetBranchAddress("EndPx",                &EndPx);
+    float EndPy[kMaxPrimaries];                           tree->SetBranchAddress("EndPy",                &EndPy);
+    float EndPz[kMaxPrimaries];                           tree->SetBranchAddress("EndPz",                &EndPz);
+    // float StartT[kMaxPrimaries];                          tree->SetBranchAddress("StartT",               &StartT);
+    // float EndT[kMaxPrimaries];                            tree->SetBranchAddress("EndT",                 &EndT);
+    // float PathLenInTpcAV[kMaxPrimaries];                  tree->SetBranchAddress("PathLenInTpcAV",       &PathLenInTpcAV);
+    // bool  StartInTpcAV[kMaxPrimaries];                    tree->SetBranchAddress("StartInTpcAV",         &StartInTpcAV);
+    // bool  EndInTpcAV[kMaxPrimaries];                      tree->SetBranchAddress("EndInTpcAV",           &EndInTpcAV);
+    int   Process[kMaxPrimaries];                         tree->SetBranchAddress("Process",              &Process);
+    int   NumberDaughters[kMaxPrimaries];                 tree->SetBranchAddress("NumberDaughters",      &NumberDaughters);
+    int   TrackId[kMaxPrimaries];                         tree->SetBranchAddress("TrackId",              &TrackId);
+    int   Mother[kMaxPrimaries];                          tree->SetBranchAddress("Mother",               &Mother);
+    int   process_primary[kMaxPrimaries];                 tree->SetBranchAddress("process_primary",      &process_primary);
+    // std::vector<std::string> G4Process;                   tree->SetBranchAddress("G4Process",            &G4Process);
+    // std::vector<std::string> G4FinalProcess;              tree->SetBranchAddress("G4FinalProcess",       &G4FinalProcess);
+    std::vector<int>*         InteractionPoint = nullptr;            tree->SetBranchAddress("InteractionPoint",     &InteractionPoint);
+    std::vector<int>*         InteractionPointType = nullptr;        tree->SetBranchAddress("InteractionPointType", &InteractionPointType);
+    int   NTrTrajPts[kMaxPrimaryPart];                    tree->SetBranchAddress("NTrTrajPts",           &NTrTrajPts);
+    float MidPosX[kMaxPrimaryPart][kMaxTruePrimaryPts];   tree->SetBranchAddress("MidPosX",              &MidPosX);
+    float MidPosY[kMaxPrimaryPart][kMaxTruePrimaryPts];   tree->SetBranchAddress("MidPosY",              &MidPosY);
+    float MidPosZ[kMaxPrimaryPart][kMaxTruePrimaryPts];   tree->SetBranchAddress("MidPosZ",              &MidPosZ);
+    float MidPx[kMaxPrimaryPart][kMaxTruePrimaryPts];     tree->SetBranchAddress("MidPx",                &MidPx);
+    float MidPy[kMaxPrimaryPart][kMaxTruePrimaryPts];     tree->SetBranchAddress("MidPy",                &MidPy);
+    float MidPz[kMaxPrimaryPart][kMaxTruePrimaryPts];     tree->SetBranchAddress("MidPz",                &MidPz);
 
-    // Truth-level interaction information
-    bool         interactionInTrajectory;
-    std::string* trajectoryInteractionLabel = new std::string();
-    double       trajectoryInteractionAngle;
-    double       trajectoryInteractionX, trajectoryInteractionY, trajectoryInteractionZ;
-    double       trajectoryInteractionKE;
-    double       trajectoryInitialMomentumX;
-    tree->SetBranchAddress("interactionInTrajectory", &interactionInTrajectory);
-    tree->SetBranchAddress("trajectoryInteractionLabel", &trajectoryInteractionLabel);
-    tree->SetBranchAddress("trajectoryInteractionAngle", &trajectoryInteractionAngle);
-    tree->SetBranchAddress("trajectoryInteractionX", &trajectoryInteractionX);
-    tree->SetBranchAddress("trajectoryInteractionY", &trajectoryInteractionY);
-    tree->SetBranchAddress("trajectoryInteractionZ", &trajectoryInteractionZ);
-    tree->SetBranchAddress("trajectoryInteractionKE", &trajectoryInteractionKE);
-    tree->SetBranchAddress("trajectoryInitialMomentumX", &trajectoryInitialMomentumX);
+    // Information about wire plane hits
+    const int kMaxHits = 1000;
+    int    nhits;                              tree->SetBranchAddress("nhits",              &nhits);
+    int    hit_plane[kMaxHits];                tree->SetBranchAddress("hit_plane",           hit_plane);
+    // int    hit_wire[kMaxHits];                 tree->SetBranchAddress("hit_wire",            hit_wire);
+    int    hit_channel[kMaxHits];              tree->SetBranchAddress("hit_channel",         hit_channel);
+    int    hit_trkid[kMaxHits];               tree->SetBranchAddress("hit_trkid",           hit_trkid);
+    // float  hit_peakT[kMaxHits];               tree->SetBranchAddress("hit_peakT",           hit_peakT);
+    // float  hit_charge[kMaxHits];              tree->SetBranchAddress("hit_charge",           hit_charge);
+    // float  hit_electrons[kMaxHits];           tree->SetBranchAddress("hit_electrons",        hit_electrons);
+    // float  hit_ph[kMaxHits];                  tree->SetBranchAddress("hit_ph",               hit_ph);
+    // float  hit_rms[kMaxHits];                 tree->SetBranchAddress("hit_rms",              hit_rms);
+    // float  hit_tstart[kMaxHits];              tree->SetBranchAddress("hit_tstart",           hit_tstart);
+    // float  hit_tend[kMaxHits];                tree->SetBranchAddress("hit_tend",             hit_tend);
+    float  hit_driftT[kMaxHits];              tree->SetBranchAddress("hit_driftT",           hit_driftT);
+    // float  hit_dQds[kMaxHits];               tree->SetBranchAddress("hit_dQds",             hit_dQds);
+    // float  hit_dEds[kMaxHits];               tree->SetBranchAddress("hit_dEds",             hit_dEds);
+    // float  hit_ds[kMaxHits];                 tree->SetBranchAddress("hit_ds",               hit_ds);
+    // float  hit_resrange[kMaxHits];            tree->SetBranchAddress("hit_resrange",         hit_resrange);
+    float  hit_x[kMaxHits];                  tree->SetBranchAddress("hit_x",                hit_x);
+    float  hit_y[kMaxHits];                  tree->SetBranchAddress("hit_y",                hit_y);
+    float  hit_z[kMaxHits];                  tree->SetBranchAddress("hit_z",                hit_z);
+    // int    hit_g4id[kMaxHits];               tree->SetBranchAddress("hit_g4id",             hit_g4id);
+    // float  hit_g4frac[kMaxHits];             tree->SetBranchAddress("hit_g4frac",           hit_g4frac);
+    // float  hit_g4nelec[kMaxHits];            tree->SetBranchAddress("hit_g4nelec",          hit_g4nelec);
+    // float  hit_g4energy[kMaxHits];           tree->SetBranchAddress("hit_g4energy",         hit_g4energy);
 
-    // Truth-level secondary pion interaction information
-    std::vector<int>*         truthSecondaryPionDaughtersPDG     = nullptr;
-    std::vector<std::string>* truthSecondaryPionDaughtersProcess = nullptr;
-    std::vector<double>*      truthSecondaryPionDaughtersKE      = nullptr;
-    double truthScatteringAngle, truthSecondaryVertexX, truthSecondaryVertexY, truthSecondaryVertexZ, truthScatteredPionLength, truthScatteredPionKE;
-    tree->SetBranchAddress("truthSecondaryPionDaughtersPDG", &truthSecondaryPionDaughtersPDG);
-    tree->SetBranchAddress("truthSecondaryPionDaughtersProcess", &truthSecondaryPionDaughtersProcess);
-    tree->SetBranchAddress("truthSecondaryPionDaughtersKE", &truthSecondaryPionDaughtersKE);
-    tree->SetBranchAddress("truthScatteringAngle", &truthScatteringAngle);
-    tree->SetBranchAddress("truthScatteredPionLength", &truthScatteredPionLength);
-    tree->SetBranchAddress("truthScatteredPionKE", &truthScatteredPionKE);
-    tree->SetBranchAddress("truthSecondaryVertexX", &truthSecondaryVertexX);
-    tree->SetBranchAddress("truthSecondaryVertexY", &truthSecondaryVertexY);
-    tree->SetBranchAddress("truthSecondaryVertexZ", &truthSecondaryVertexZ);
-
-    // Individual hit information
-    double primaryEndPointHitW, primaryEndPointHitX;
-    std::vector<int>*   fHitKey = nullptr;
-    std::vector<int>*   fHitPlane = nullptr;
-    std::vector<int>*   hitRecoAsTrackKey = nullptr;
-    std::vector<float>* fHitT = nullptr;
-    std::vector<float>* fHitX = nullptr;
-    std::vector<float>* fHitW = nullptr;
-    std::vector<float>* fHitCharge = nullptr;
-    std::vector<float>* fHitChargeCol = nullptr;
-    std::vector<int>*   hitWC2TPCKey = nullptr;
-    std::vector<int>*   hitThroughTrack = nullptr;
-    tree->SetBranchAddress("primaryEndPointHitW", &primaryEndPointHitW);
-    tree->SetBranchAddress("primaryEndPointHitX", &primaryEndPointHitX);
-    tree->SetBranchAddress("fHitKey", &fHitKey);
-    tree->SetBranchAddress("fHitPlane", &fHitPlane);
-    tree->SetBranchAddress("hitRecoAsTrackKey", &hitRecoAsTrackKey);
-    tree->SetBranchAddress("fHitT", &fHitT);
-    tree->SetBranchAddress("fHitX", &fHitX);
-    tree->SetBranchAddress("fHitW", &fHitW);
-    tree->SetBranchAddress("fHitCharge", &fHitCharge);
-    tree->SetBranchAddress("fHitChargeCol", &fHitChargeCol);
-    tree->SetBranchAddress("hitWC2TPCKey", &hitWC2TPCKey);
-    tree->SetBranchAddress("hitThroughTrack", &hitThroughTrack);
-
-    // Hits reconstructed into full tracks
-    std::vector<std::vector<int>>* recoTrackHitIndices  = nullptr;
-    std::vector<std::vector<double>>*     recoTrackHitX = nullptr; 
-    std::vector<std::vector<double>>*     recoTrackHitY = nullptr; 
-    std::vector<std::vector<double>>*     recoTrackHitZ = nullptr; 
-    tree->SetBranchAddress("recoTrackHitIndices", &recoTrackHitIndices);
-    tree->SetBranchAddress("recoTrackHitX", &recoTrackHitX);
-    tree->SetBranchAddress("recoTrackHitY", &recoTrackHitY);
-    tree->SetBranchAddress("recoTrackHitZ", &recoTrackHitZ);
-
-    // Truth level incident KE information
-    bool validTrueIncidentKE;
-    std::vector<double>* trueIncidentKEContributions = nullptr;
-    tree->SetBranchAddress("validTrueIncidentKE", &validTrueIncidentKE);
-    tree->SetBranchAddress("trueIncidentKEContributions", &trueIncidentKEContributions);
-
-    // Truth level charge exchange information
-    std::vector<int>* chExchShowerPDGs = nullptr;
-    std::vector<int>* chExchShowerIDs = nullptr;
-    std::vector<std::vector<double>>* chExchShowerStart = nullptr;
-    std::vector<std::vector<double>>* chExchShowerEnd = nullptr;
-    std::vector<int>* chExchShowerNeutralPionDaughtersID = nullptr;
-    tree->SetBranchAddress("chExchShowerPDGs", &chExchShowerPDGs);
-    tree->SetBranchAddress("chExchShowerIDs", &chExchShowerIDs);
-    tree->SetBranchAddress("chExchShowerStart", &chExchShowerStart);
-    tree->SetBranchAddress("chExchShowerEnd", &chExchShowerEnd);
-    tree->SetBranchAddress("chExchShowerNeutralPionDaughtersID", &chExchShowerNeutralPionDaughtersID);
-
-    // Primaries information
-    std::vector<double>* primariesStartX = nullptr;
-    std::vector<double>* primariesStartY = nullptr;
-    std::vector<double>* primariesStartZ = nullptr;
-    std::vector<double>* primariesEndX = nullptr;
-    std::vector<double>* primariesEndY = nullptr;
-    std::vector<double>* primariesEndZ = nullptr;
-    std::vector<int>*    primariesID = nullptr;
-    tree->SetBranchAddress("primariesStartX", &primariesStartX);
-    tree->SetBranchAddress("primariesStartY", &primariesStartY);
-    tree->SetBranchAddress("primariesStartZ", &primariesStartZ);
-    tree->SetBranchAddress("primariesEndX", &primariesEndX);
-    tree->SetBranchAddress("primariesEndY", &primariesEndY);
-    tree->SetBranchAddress("primariesEndZ", &primariesEndZ);
-    tree->SetBranchAddress("primariesID", &primariesID);
-
-    // Information about post-scattering interactions
-    std::vector<int>*                 secondaryInteractionTypes = nullptr;
-    std::vector<int>*                 secondaryInteractionTrkID = nullptr;
-    std::vector<double>*              secondaryInteractionInteractingKE = nullptr;
-    std::vector<double>*              secondaryInteractionAngle = nullptr;
-    std::vector<double>*              secondaryInteractionXPosition = nullptr;
-    std::vector<double>*              secondaryInteractionYPosition = nullptr;
-    std::vector<double>*              secondaryInteractionZPosition = nullptr;
-    std::vector<std::vector<int>>*    secondaryInteractionDaughtersPDG = nullptr;
-    std::vector<std::vector<double>>* secondaryInteractionDaughtersKE = nullptr;
-    std::vector<std::vector<double>>* secondaryIncidentKEContributions = nullptr;
-    tree->SetBranchAddress("secondaryInteractionTypes", &secondaryInteractionTypes);
-    tree->SetBranchAddress("secondaryInteractionTrkID", &secondaryInteractionTrkID);
-    tree->SetBranchAddress("secondaryInteractionInteractingKE", &secondaryInteractionInteractingKE);
-    tree->SetBranchAddress("secondaryInteractionAngle", &secondaryInteractionAngle);
-    tree->SetBranchAddress("secondaryInteractionXPosition", &secondaryInteractionXPosition);
-    tree->SetBranchAddress("secondaryInteractionYPosition", &secondaryInteractionYPosition);
-    tree->SetBranchAddress("secondaryInteractionZPosition", &secondaryInteractionZPosition);
-    tree->SetBranchAddress("secondaryInteractionDaughtersPDG", &secondaryInteractionDaughtersPDG);
-    tree->SetBranchAddress("secondaryInteractionDaughtersKE", &secondaryInteractionDaughtersKE);
-    tree->SetBranchAddress("secondaryIncidentKEContributions", &secondaryIncidentKEContributions);
+    // Simchannel information
+    const int kMaxIDE = 5000;
+    int maxTrackIDE;          tree->SetBranchAddress("maxTrackIDE", &maxTrackIDE);
+    float IDEEnergy[kMaxIDE]; tree->SetBranchAddress("IDEEnergy",   &IDEEnergy);
+    float IDEPos[kMaxIDE][3]; tree->SetBranchAddress("IDEPos",      &IDEPos);
 
     ///////////////////////
     // Create histograms //
@@ -335,22 +255,531 @@ void FakeData(int sample = 1) {
     Int_t NumEntries = (Int_t) tree->GetEntries();
     std::cout << "Num entries: " << NumEntries << std::endl;
 
+    bool verbose = false;
+
     for (Int_t i = 0; i < NumEntries; ++i) {
+        // For some reason crashes
+        if (i == 1402) continue;
+
+        // Get tree entry and reset variables
+        std::cout << std::endl;
+        std::cout << "=================================" << std::endl;
+        std::cout << "Getting tree entry: " << i << std::endl;
         tree->GetEntry(i);
+        std::cout << "Got tree entry" << std::endl;
+        std::cout << "Reseting variables" << std::endl;
+        EventVariables ev;
+        std::cout << "Variables reset" << std::endl;
+        std::cout << "=================================" << std::endl;
+
+        //////////////////////////////////////
+        // Construct variables I care about //
+        //////////////////////////////////////
+
+        // Load track information
+        if (verbose) std::cout << std::endl;
+        if (verbose) std::cout << "=================================" << std::endl;
+        if (verbose) std::cout << "Event: " << event << std::endl;
+        if (verbose) std::cout << "Geant4 list size: " << geant_list_size << std::endl;
+        if (verbose) std::cout << "Number of primaries: " << no_primaries << std::endl;
+        
+        // First, we just want to grab WC to TPC match
+        int primaryTrackIdx = -1;
+        for (size_t trk_idx = 0; trk_idx < ntracks_reco; ++trk_idx) {
+            if (trkWCtoTPCMatch[trk_idx]) {
+                // Grab position information
+                ev.WC2TPCPrimaryBeginX = trkvtxx[trk_idx];
+                ev.WC2TPCPrimaryBeginY = trkvtxy[trk_idx];
+                ev.WC2TPCPrimaryBeginZ = trkvtxz[trk_idx];
+                ev.WC2TPCPrimaryEndX   = trkendx[trk_idx];
+                ev.WC2TPCPrimaryEndY   = trkendy[trk_idx];
+                ev.WC2TPCPrimaryEndZ   = trkendz[trk_idx];
+
+                // Grab calorimetry information (in collection plane)
+                ev.wcMatchResR.assign(trkrr[trk_idx][1], trkrr[trk_idx][1] + ntrkcalopts[trk_idx][1]);
+                ev.wcMatchDEDX.assign(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + ntrkcalopts[trk_idx][1]);
+
+                for (size_t dep_idx = 0; dep_idx < ntrkcalopts[trk_idx][1]; ++dep_idx) {
+                    ev.wcMatchEDep.push_back(trkdedx[trk_idx][1][dep_idx] * trkpitch[trk_idx][1][dep_idx]);
+                    ev.wcMatchXPos.push_back(trkxyz[trk_idx][1][dep_idx][0]);
+                    ev.wcMatchYPos.push_back(trkxyz[trk_idx][1][dep_idx][1]);
+                    ev.wcMatchZPos.push_back(trkxyz[trk_idx][1][dep_idx][2]);
+                }
+
+                // Get location information
+                ev.WC2TPCLocationsX.assign(trjPt_X[trk_idx], trjPt_X[trk_idx] + nTrajPoint[trk_idx]);
+                ev.WC2TPCLocationsY.assign(trjPt_Y[trk_idx], trjPt_Y[trk_idx] + nTrajPoint[trk_idx]);
+                ev.WC2TPCLocationsZ.assign(trjPt_Z[trk_idx], trjPt_Z[trk_idx] + nTrajPoint[trk_idx]);
+
+                // Set flag and index
+                primaryTrackIdx = trk_idx;
+                ev.WC2TPCMatch     = true;
+                ev.WC2TPCsize++;
+            }
+        }
+
+        if (verbose) std::cout << "Found WC2TPC match: " << ev.WC2TPCMatch  << std::endl;
+
+        // Copy vertex and end for all tracks
+        ev.recoEndX.assign(trkendx,  trkendx  + ntracks_reco);
+        ev.recoEndY.assign(trkendy,  trkendy  + ntracks_reco);
+        ev.recoEndZ.assign(trkendz,  trkendz  + ntracks_reco);
+        ev.recoBeginX.assign(trkvtxx, trkvtxx + ntracks_reco);
+        ev.recoBeginY.assign(trkvtxy, trkvtxy + ntracks_reco);
+        ev.recoBeginZ.assign(trkvtxz, trkvtxz + ntracks_reco);
+
+        // Now, we want to loop through all tracks
+        for (size_t trk_idx = 0; trk_idx < ntracks_reco; ++trk_idx) {
+            // Grab calorimetry information
+            ev.recoResR.push_back(std::vector<double>(trkrr[trk_idx][1], trkrr[trk_idx][1] + ntrkcalopts[trk_idx][1]));
+            ev.recoDEDX.push_back(std::vector<double>(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + ntrkcalopts[trk_idx][1]));
+
+            // Check reversed
+            double startDistance = distance(trkvtxx[trk_idx], ev.WC2TPCPrimaryEndX, trkvtxy[trk_idx], ev.WC2TPCPrimaryEndY, trkvtxz[trk_idx], ev.WC2TPCPrimaryEndZ);
+            double endDistance   = distance(trkendx[trk_idx], ev.WC2TPCPrimaryEndX, trkendy[trk_idx], ev.WC2TPCPrimaryEndY, trkendz[trk_idx], ev.WC2TPCPrimaryEndZ);
+
+            if (startDistance > endDistance && !trkWCtoTPCMatch[trk_idx]) {
+                ev.isTrackInverted.push_back(true);
+
+                std::swap(ev.recoEndX[trk_idx], ev.recoBeginX[trk_idx]);
+                std::swap(ev.recoEndY[trk_idx], ev.recoBeginY[trk_idx]);
+                std::swap(ev.recoEndZ[trk_idx], ev.recoBeginZ[trk_idx]);
+
+                std::reverse(ev.recoResR[trk_idx].begin(), ev.recoResR[trk_idx].end());
+                std::reverse(ev.recoDEDX[trk_idx].begin(), ev.recoDEDX[trk_idx].end());
+            } else {
+                ev.isTrackInverted.push_back(false);
+            }
+        }
+
+        // Load wire-chamber track information
+        ev.WCTrackMomentum = wctrk_momentum[0];
+        ev.WCTheta         = wctrk_theta[0];
+        ev.WCPhi           = wctrk_phi[0];
+        ev.WC4PrimaryX     = WC4xPos[0];
+
+        // In case we overwrite for elastic scattering
+        double primaryGeantEndX, primaryGeantEndY, primaryGeantEndZ; 
+
+        // Get information about Geant4 primary particles
+        int iPrimary = 0;
+        TVector3 vtxPion, outPion;
+        for (size_t true_idx = 0; true_idx < geant_list_size; ++true_idx) {
+            // Get truth primary
+            if (process_primary[true_idx] && StartPointz[true_idx] == -100.) {
+                ev.truthPrimaryPDG        = pdg[true_idx];
+                ev.truthPrimaryVertexX    = EndPointx[true_idx];
+                ev.truthPrimaryVertexY    = EndPointy[true_idx];
+                ev.truthPrimaryVertexZ    = EndPointz[true_idx];
+                ev.truthPrimaryVertexKE   = EndEng[true_idx] - Mass[true_idx];
+                vtxPion                   = TVector3(EndPx[true_idx], EndPy[true_idx], EndPz[true_idx]);
+
+                primaryGeantEndX = EndPointx[true_idx]; primaryGeantEndY = EndPointy[true_idx]; primaryGeantEndZ = EndPointz[true_idx];
+
+                if (verbose) std::cout << "Interacting pion mom.: " << EndPx[true_idx] << "   " << EndPy[true_idx] << "   " << EndPz[true_idx] << std::endl;
+                if (verbose) std::cout << "Primary id: " << TrackId[true_idx] << std::endl;
+                if (verbose) std::cout << "Primary pdg: " << pdg[true_idx] << std::endl;
+                if (verbose) std::cout << "Number traj points " << NTrTrajPts[true_idx] << std::endl;
+                if (verbose) std::cout << "Number daughters " << NumberDaughters[true_idx] << std::endl;
+                int found = 0;
+
+                // Get daughters
+                for (size_t inner_idx = 0; inner_idx < geant_list_size; ++inner_idx) {
+                    // Find daughters of primary
+                    if (Mother[inner_idx] == TrackId[true_idx]) {
+                        found++;
+                        ev.truthPrimaryDaughtersPDG.push_back(pdg[inner_idx]);
+                        ev.truthPrimaryDaughtersProcess.push_back(ProcessToString(Process[inner_idx]));
+                        ev.truthPrimaryDaughtersKE.push_back(Eng[inner_idx] - Mass[inner_idx]);
+
+                        // Get daughter -211
+                        if (pdg[inner_idx] == -211) {
+                            ev.truthScatteredPionKE = Eng[inner_idx] - Mass[inner_idx];
+                            outPion              = TVector3(Px[inner_idx], Py[inner_idx], Pz[inner_idx]);
+                        }
+                    }
+                }
+                if (verbose) std::cout << "Found primary daughters: " << found << std::endl;
+                
+                // Get initial momentum for energy loss
+                ev.trajectoryInitialMomentumX = 1000 * MidPx[iPrimary][0];
+
+                // Get trajectory information
+                ev.truthPrimaryLocationX.assign(MidPosX[iPrimary], MidPosX[iPrimary] + NTrTrajPts[true_idx]);
+                ev.truthPrimaryLocationY.assign(MidPosY[iPrimary], MidPosY[iPrimary] + NTrTrajPts[true_idx]);
+                ev.truthPrimaryLocationZ.assign(MidPosZ[iPrimary], MidPosZ[iPrimary] + NTrTrajPts[true_idx]);
+
+                // Get interaction in trajectory
+                float lastTPCX = -999, lastTPCY = -999, lastTPCZ = -999;
+                ev.interactionInTrajectory = false;
+                if (verbose) std::cout << "Looking at trajectory" << std::endl;
+                if (InteractionPoint->at(0) != NTrTrajPts[true_idx] - 1) {
+                    for (int i_point = 0; i_point < InteractionPoint->size(); ++i_point) {
+                        if (i_point >= InteractionPointType->size()) continue;
+
+                        if (verbose) std::cout << "   Point: " << InteractionPoint->at(i_point) << "   Interaction: " << InteractionPointType->at(i_point) << std::endl;
+
+                        // "hadElastic" is type 3
+                        if (InteractionPointType->at(i_point) == 3) {
+                            // Get kinetic energy at this point
+                            float p = std::sqrt(
+                                MidPx[iPrimary][InteractionPoint->at(i_point)]*MidPx[iPrimary][InteractionPoint->at(i_point)] + 
+                                MidPy[iPrimary][InteractionPoint->at(i_point)]*MidPy[iPrimary][InteractionPoint->at(i_point)] + 
+                                MidPz[iPrimary][InteractionPoint->at(i_point)]*MidPz[iPrimary][InteractionPoint->at(i_point)]
+                            );
+                            float KE = std::sqrt(p*p + Mass[true_idx]*Mass[true_idx]) - Mass[true_idx];
+
+                            if (!ev.interactionInTrajectory) {
+                                // First interaction in trajectory
+                                ev.interactionInTrajectory    = true;
+                                ev.trajectoryInteractionLabel = "hadElastic";
+                                ev.trajectoryInteractionKE    = KE;
+
+                                lastTPCX = MidPosX[iPrimary][InteractionPoint->at(i_point)];
+                                lastTPCY = MidPosY[iPrimary][InteractionPoint->at(i_point)];
+                                lastTPCZ = MidPosZ[iPrimary][InteractionPoint->at(i_point)];
+
+                                ev.truthPrimaryVertexX = lastTPCX;
+                                ev.truthPrimaryVertexY = lastTPCY;
+                                ev.truthPrimaryVertexZ = lastTPCZ;
+
+                                TVector3 momBefore, momAfter;
+                                if (InteractionPoint->at(i_point) - 1 >= 0) {
+                                    momBefore = TVector3(
+                                        MidPx[iPrimary][InteractionPoint->at(i_point)-1], 
+                                        MidPy[iPrimary][InteractionPoint->at(i_point)-1], 
+                                        MidPz[iPrimary][InteractionPoint->at(i_point)-1]
+                                    );
+                                } else {
+                                    momBefore = TVector3(
+                                        MidPx[iPrimary][InteractionPoint->at(i_point)], 
+                                        MidPy[iPrimary][InteractionPoint->at(i_point)],
+                                        MidPz[iPrimary][InteractionPoint->at(i_point)]
+                                    );
+                                }
+                                momAfter                      = TVector3(MidPx[iPrimary][InteractionPoint->at(i_point)], MidPy[iPrimary][InteractionPoint->at(i_point)], MidPz[iPrimary][InteractionPoint->at(i_point)]);
+                                ev.trajectoryInteractionAngle = momBefore.Angle(momAfter);
+                            } else if (ev.interactionInTrajectory) {
+                                // Subsequent interactions in trajectory
+                                ev.secondaryInteractionTypes.push_back(12);
+                                ev.secondaryInteractionXPosition.push_back(MidPosX[iPrimary][InteractionPoint->at(i_point)]);
+                                ev.secondaryInteractionYPosition.push_back(MidPosY[iPrimary][InteractionPoint->at(i_point)]);
+                                ev.secondaryInteractionZPosition.push_back(MidPosZ[iPrimary][InteractionPoint->at(i_point)]);
+                                ev.secondaryInteractionInteractingKE.push_back(KE);
+
+                                ev.secondaryInteractionDaughtersPDG.push_back({});
+                                ev.secondaryInteractionDaughtersKE.push_back({});
+
+                                TVector3 momBefore, momAfter;
+                                if (InteractionPoint->at(i_point) - 1 >= 0) {
+                                    momBefore = TVector3(
+                                        MidPx[iPrimary][InteractionPoint->at(i_point)-1], 
+                                        MidPy[iPrimary][InteractionPoint->at(i_point)-1], 
+                                        MidPz[iPrimary][InteractionPoint->at(i_point)-1]
+                                    );
+                                } else {
+                                    momBefore = TVector3(
+                                        MidPx[iPrimary][InteractionPoint->at(i_point)], 
+                                        MidPy[iPrimary][InteractionPoint->at(i_point)],
+                                        MidPz[iPrimary][InteractionPoint->at(i_point)]
+                                    );
+                                }
+                                momAfter                   = TVector3(MidPx[iPrimary][InteractionPoint->at(i_point)], MidPy[iPrimary][InteractionPoint->at(i_point)], MidPz[iPrimary][InteractionPoint->at(i_point)]);
+                                ev.secondaryInteractionAngle.push_back(momBefore.Angle(momAfter));
+                            }
+                        }
+                    }
+                    if (verbose) std::cout << "Finished trajectory" << std::endl;
+                }
+
+                // If no interaction in trajectory, last point found by looping backwards
+                if (!ev.interactionInTrajectory) {
+                    for (int i = ev.truthPrimaryLocationX.size() - 1; i >= 0; i--) {
+                        if (isWithinActiveVolume(ev.truthPrimaryLocationX.at(i), ev.truthPrimaryLocationY.at(i), ev.truthPrimaryLocationZ.at(i))) {
+                            lastTPCX = ev.truthPrimaryLocationX.at(i);
+                            lastTPCY = ev.truthPrimaryLocationY.at(i);
+                            lastTPCZ = ev.truthPrimaryLocationZ.at(i);
+                            break;
+                        }
+                    }
+                }
+
+                // Find first point in TPC
+                float firstTPCX  = -999, firstTPCY  = -999, firstTPCZ  = -999;
+                float firstTPCPx = -999, firstTPCPy = -999, firstTPCPz = -999;
+                for (size_t i = 0; i < ev.truthPrimaryLocationX.size() - 1; i++) {
+                    if (isWithinActiveVolume(ev.truthPrimaryLocationX.at(i), ev.truthPrimaryLocationY.at(i), ev.truthPrimaryLocationZ.at(i))) {
+                        firstTPCX = ev.truthPrimaryLocationX.at(i);
+                        firstTPCY = ev.truthPrimaryLocationY.at(i);
+                        firstTPCZ = ev.truthPrimaryLocationZ.at(i);
+
+                        firstTPCPx = MidPx[iPrimary][i];
+                        firstTPCPy = MidPy[iPrimary][i];
+                        firstTPCPz = MidPz[iPrimary][i];
+                        break;
+                    }
+                }
+
+                // Get true incident KE
+                ev.validTrueIncidentKE = true;
+                if (ev.truthPrimaryPDG != -211) ev.validTrueIncidentKE = false;
+                if (firstTPCX == -999)          ev.validTrueIncidentKE = false;
+                if (firstTPCX == lastTPCX)      ev.validTrueIncidentKE = false;
+
+                double totalLength = distance(firstTPCX, lastTPCX, firstTPCY, lastTPCY, firstTPCZ, lastTPCZ);
+                
+                if (verbose) std::cout << "First TPC point: " << firstTPCX << "  " << firstTPCY << "  " << firstTPCZ << std::endl;
+                if (verbose) std::cout << "Last TPC point:  " << lastTPCX << "  " << lastTPCY << "  " << lastTPCZ << std::endl;
+                if (verbose) std::cout << "Total length:    " << totalLength << std::endl;
+                if (verbose) std::cout << "Is true incident valid: " << ev.validTrueIncidentKE << std::endl;
+
+                // If length more than track pitch, get contributions
+                if (ev.validTrueIncidentKE && totalLength >= TRACK_PITCH) {
+                    std::map<double, TVector3> orderedUniformTrjPts;
+                    auto positionVector0 = TVector3(firstTPCX, firstTPCY, firstTPCZ);
+                    auto positionVector1 = TVector3(lastTPCX, lastTPCY, lastTPCZ);
+                    orderedUniformTrjPts[positionVector0.Z()] = positionVector0;
+                    orderedUniformTrjPts[positionVector1.Z()] = positionVector1;
+
+                    int numberPts = (int) (totalLength / TRACK_PITCH);
+                    for (int iPoint = 1; iPoint <= numberPts; ++iPoint) {
+                        auto newPoint = positionVector0 + iPoint * (TRACK_PITCH / totalLength) * (positionVector1 - positionVector0);
+                        orderedUniformTrjPts[newPoint.Z()] = newPoint;
+                    }
+
+                    // If distance between last point and second to last is less than 0.235, eliminate second to last
+                    auto lastPt         = (orderedUniformTrjPts.rbegin())->second;
+                    auto secondtoLastPt = (std::next(orderedUniformTrjPts.rbegin()))->second;
+                    double lastDist     = distance(lastPt.X(), secondtoLastPt.X(), lastPt.Y(), secondtoLastPt.Y(), lastPt.Z(), secondtoLastPt.Z());
+                    if (lastDist < (TRACK_PITCH / 2)) orderedUniformTrjPts.erase((std::next(orderedUniformTrjPts.rbegin()))->first);
+
+                    double trueKineticEnergy = 1000 * (
+                        TMath::Sqrt(
+                            firstTPCPx * firstTPCPx + 
+                            firstTPCPy * firstTPCPy +
+                            firstTPCPz * firstTPCPz +
+                            Mass[true_idx] * Mass[true_idx]
+                        ) - Mass[true_idx]
+                    );
+                    for (auto it = std::next(orderedUniformTrjPts.begin()), old_it = orderedUniformTrjPts.begin(); it != orderedUniformTrjPts.end(); it++, old_it++) {
+                        auto oldPos        = old_it->second;
+                        auto currentPos    = it->second;
+                        double uniformDist = (currentPos - oldPos).Mag();
+
+                        double currentDepEnergy = 0.;
+                        for (int i = 0; i < maxTrackIDE; i++) {
+                            if (IDEPos[i][2] < oldPos.Z())     continue;
+                            if (IDEPos[i][2] > currentPos.Z()) continue;
+                            currentDepEnergy += IDEEnergy[i];
+                        }
+
+                        // Skip tiny depositions
+                        if (currentDepEnergy / uniformDist < 0.1) continue;
+
+                        // Calculate current KE
+                        trueKineticEnergy -= currentDepEnergy;
+
+                        if (isWithinReducedVolume(currentPos.X(), currentPos.Y(), currentPos.Z())) {
+                            ev.trueIncidentKEContributions.push_back(trueKineticEnergy);
+                        }
+
+                        // std::cout << "Step " << std::distance(orderedUniformTrjPts.begin(), it)
+                        // << ": oldPos=("     << oldPos.X()     << ", " << oldPos.Y()     << ", " << oldPos.Z()     << ")"
+                        // << "  currentPos=(" << currentPos.X() << ", " << currentPos.Y() << ", " << currentPos.Z() << ")"
+                        // << "  dist="        << uniformDist
+                        // << "  KE="          << trueKineticEnergy
+                        // << "  depEnergy="   << currentDepEnergy
+                        // << std::endl;
+                    }
+                } else if (ev.validTrueIncidentKE) {
+                    // If length less than track pitch, empty contributions
+                    ev.trueIncidentKEContributions.push_back({});
+                }
+
+                // Only one primary starting at -100 (particle gun)
+                break;
+            } else if (process_primary[true_idx]) iPrimary++;
+        }
+
+        if (!(ev.truthPrimaryPDG == -211 || ev.truthPrimaryPDG == 11 || ev.truthPrimaryPDG == 13)) {
+            std::cout << "Weird primary PDG: " << ev.truthPrimaryPDG << ", skipping event" << std::endl;
+            continue;
+        }
+
+        // Get scattering angle
+        ev.truthScatteringAngle = vtxPion.Angle(outPion);
+
+        // Get information about wire hits
+        std::map<int, std::vector<int>>    trackHitMap;
+        std::map<int, std::vector<double>> trackHitXMap;
+        std::map<int, std::vector<double>> trackHitYMap;
+        std::map<int, std::vector<double>> trackHitZMap;
+
+        for (size_t i_hit = 0; i_hit < nhits; ++i_hit) {
+            ev.fHitPlane.push_back(hit_plane[i_hit]);
+            ev.fHitT.push_back(hit_driftT[i_hit]);
+            ev.fHitX.push_back(hit_driftT[i_hit] * DRIFT_VELOCITY);
+            ev.fHitW.push_back(hit_channel[i_hit]);
+
+            // If it is -9, no match to a track
+            if (hit_trkid[i_hit] != -9) {
+                ev.hitRecoAsTrackKey.push_back(i_hit);
+                if (hit_trkid[i_hit] == primaryTrackIdx) ev.hitWC2TPCKey.push_back(i_hit);
+
+                trackHitMap[hit_trkid[i_hit]].push_back(i_hit);
+                trackHitXMap[hit_trkid[i_hit]].push_back(hit_x[i_hit]);
+                trackHitYMap[hit_trkid[i_hit]].push_back(hit_y[i_hit]);
+                trackHitZMap[hit_trkid[i_hit]].push_back(hit_z[i_hit]);
+            }
+        }
+
+        // Fill out vectors
+        for (auto& [trkid, hits] : trackHitMap) {
+            if (trkid >= (int) ev.recoTrackHitIndices.size()) {
+                ev.recoTrackHitIndices.resize(trkid + 1);
+                ev.recoTrackHitX.resize(trkid + 1);
+                ev.recoTrackHitY.resize(trkid + 1);
+                ev.recoTrackHitZ.resize(trkid + 1);
+            }
+            ev.recoTrackHitIndices[trkid] = hits;
+            ev.recoTrackHitX[trkid]       = trackHitXMap[trkid];
+            ev.recoTrackHitY[trkid]       = trackHitYMap[trkid];
+            ev.recoTrackHitZ[trkid]       = trackHitZMap[trkid];
+        }
+
+        // Sanity check
+        // for (size_t i_trk = 0; i_trk < recoTrackHitIndices->size(); ++i_trk) {
+        //     std::cout << "Track " << i_trk << ":" << std::endl;
+        //     for (int idx : (*recoTrackHitIndices)[i_trk]) {
+        //         std::cout << "  hit index=" << idx << "  hit_trkid=" << hit_trkid[idx] << std::endl;
+        //     }
+        // }
+
+        if (verbose) std::cout << "Hits associated to WC2TPC match: " << ev.hitWC2TPCKey.size() << std::endl;
+
+        // Get truth background type
+        ev.backgroundType = fillSignalInformation(
+            ev.truthPrimaryPDG,
+            ev.truthPrimaryVertexX,
+            ev.truthPrimaryVertexY,
+            ev.truthPrimaryVertexZ,
+            ev.interactionInTrajectory,
+            ev.trajectoryInteractionLabel,
+            ev.truthPrimaryDaughtersPDG,
+            ev.truthPrimaryDaughtersProcess,
+            ev.truthPrimaryDaughtersKE,
+            true,
+            ev.numVisibleProtons
+        );
+
+        if (verbose) std::cout << "Background type: " << ev.backgroundType << std::endl;
+
+        // For elastic scattering, record what happens at end of track
+        if (ev.backgroundType == 12) {
+            ev.secondaryInteractionTypes.push_back(
+                fillSignalInformation(
+                    ev.truthPrimaryPDG,
+                    primaryGeantEndX,
+                    primaryGeantEndY,
+                    primaryGeantEndZ,
+                    false,
+                    "",
+                    ev.truthPrimaryDaughtersPDG,
+                    ev.truthPrimaryDaughtersProcess,
+                    ev.truthPrimaryDaughtersKE,
+                    false,
+                    ev.numVisibleProtons
+                )
+            );
+            ev.secondaryInteractionInteractingKE.push_back(ev.truthPrimaryVertexKE);
+            ev.secondaryInteractionAngle.push_back(ev.truthScatteringAngle);
+            ev.secondaryInteractionXPosition.push_back(primaryGeantEndX);
+            ev.secondaryInteractionYPosition.push_back(primaryGeantEndY);
+            ev.secondaryInteractionZPosition.push_back(primaryGeantEndZ);
+            ev.secondaryInteractionDaughtersPDG.push_back(ev.truthPrimaryDaughtersPDG);
+            ev.secondaryInteractionDaughtersKE.push_back(ev.truthPrimaryDaughtersKE);
+        }
+
+        // Grab incident KE for secondary interactions along primary track
+        for (int i_seg = 0; i_seg < ev.secondaryInteractionXPosition.size(); i_seg++) {
+            TVector3 segStart;
+            if (i_seg == 0) {
+                segStart = TVector3(
+                    ev.truthPrimaryVertexX,
+                    ev.truthPrimaryVertexY,
+                    ev.truthPrimaryVertexZ
+                );
+            } else {
+                segStart = TVector3(
+                    ev.secondaryInteractionXPosition.at(i_seg - 1),
+                    ev.secondaryInteractionYPosition.at(i_seg - 1),
+                    ev.secondaryInteractionZPosition.at(i_seg - 1)
+                );
+            }
+            
+            auto segEnd   = TVector3(
+                ev.secondaryInteractionXPosition.at(i_seg),
+                ev.secondaryInteractionYPosition.at(i_seg),
+                ev.secondaryInteractionZPosition.at(i_seg)
+            );
+
+            if ((segEnd - segStart).Mag() < TRACK_PITCH) {
+                ev.secondaryIncidentKEContributions.push_back({});
+                continue;
+            }
+
+            std::map<double, TVector3> orderedUniformTrjPtsSecondary;
+            orderedUniformTrjPtsSecondary[segStart.Z()] = segStart;
+            orderedUniformTrjPtsSecondary[segEnd.Z()]   = segEnd;
+
+            double segLength = (segEnd - segStart).Mag();
+            int numberPts    = (int)(segLength / TRACK_PITCH);
+            for (int iPoint = 1; iPoint <= numberPts; ++iPoint) {
+                auto newPoint = segStart + iPoint * (TRACK_PITCH / segLength) * (segEnd - segStart);
+                orderedUniformTrjPtsSecondary[newPoint.Z()] = newPoint;
+            }
+
+            // If distance between last point and second to last is less than half pitch, eliminate second to last
+            auto lastPt         = (orderedUniformTrjPtsSecondary.rbegin())->second;
+            auto secondtoLastPt = (std::next(orderedUniformTrjPtsSecondary.rbegin()))->second;
+            double lastDist     = distance(lastPt.X(), secondtoLastPt.X(), lastPt.Y(), secondtoLastPt.Y(), lastPt.Z(), secondtoLastPt.Z());
+            if (lastDist < (TRACK_PITCH / 2)) orderedUniformTrjPtsSecondary.erase((std::next(orderedUniformTrjPtsSecondary.rbegin()))->first);
+
+            std::vector<double> segIncidentKE = {};
+            double segKineticEnergy = ev.secondaryInteractionInteractingKE.at(i_seg) * 1000;
+            for (auto it = std::next(orderedUniformTrjPtsSecondary.begin()), old_it = orderedUniformTrjPtsSecondary.begin(); it != orderedUniformTrjPtsSecondary.end(); it++, old_it++) {
+                auto oldPos     = old_it->second;
+                auto currentPos = it->second;
+                double uniformDist = (currentPos - oldPos).Mag();
+
+                double currentDepEnergy = 0.;
+                for (int i = 0; i < maxTrackIDE; i++) {
+                    if (IDEPos[i][2] < oldPos.Z())     continue;
+                    if (IDEPos[i][2] > currentPos.Z()) continue;
+                    currentDepEnergy += IDEEnergy[i];
+                }
+
+                if (currentDepEnergy / uniformDist < 0.1) continue;
+
+                segKineticEnergy -= currentDepEnergy;
+
+                if (isWithinReducedVolume(currentPos.X(), currentPos.Y(), currentPos.Z())) {
+                    segIncidentKE.push_back(segKineticEnergy);
+                }
+            }
+            ev.secondaryIncidentKEContributions.push_back(segIncidentKE);
+        }
 
         // Make script go faster
         // if (i > USE_NUM_EVENTS) break;
 
-        // Get unordered set for hits in tracks
-        std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
-
-        // Sanity check
-        removeRepeatedPoints(WC2TPCLocationsX, WC2TPCLocationsY, WC2TPCLocationsZ);
+        std::unordered_set<int> hitsInTracks(ev.hitRecoAsTrackKey.begin(), ev.hitRecoAsTrackKey.end());
 
         // Extend reco cylinder
-        std::vector<double>* wcX = new std::vector<double>(*WC2TPCLocationsX);
-        std::vector<double>* wcY = new std::vector<double>(*WC2TPCLocationsY);
-        std::vector<double>* wcZ = new std::vector<double>(*WC2TPCLocationsZ);
+        removeRepeatedPoints(&ev.WC2TPCLocationsX, &ev.WC2TPCLocationsY, &ev.WC2TPCLocationsZ);
+        std::vector<double>* wcX = new std::vector<double>(ev.WC2TPCLocationsX);
+        std::vector<double>* wcY = new std::vector<double>(ev.WC2TPCLocationsY);
+        std::vector<double>* wcZ = new std::vector<double>(ev.WC2TPCLocationsZ);
 
         // Get direction to end cylinder
         int numPoints = wcX->size();
@@ -375,28 +804,14 @@ void FakeData(int sample = 1) {
             wcZ->push_back(points.back()[2] + scale * avgDir[2]);
         }
 
-        int validPrimaryIdx = -1;
-        for (size_t i = 0; i < primariesID->size(); ++i) {
-            if (primariesID->at(i) == truthPrimaryID) {
-                validPrimaryIdx = i;
-                break;
-            }
-        }
-
         // Extend truth cylinder
-        std::vector<double>* truthCylinderLocationX = new std::vector<double>(*truthPrimaryLocationX);
-        std::vector<double>* truthCylinderLocationY = new std::vector<double>(*truthPrimaryLocationY);
-        std::vector<double>* truthCylinderLocationZ = new std::vector<double>(*truthPrimaryLocationZ);
+        std::vector<double>* truthCylinderLocationX = new std::vector<double>(ev.truthPrimaryLocationX);
+        std::vector<double>* truthCylinderLocationY = new std::vector<double>(ev.truthPrimaryLocationY);
+        std::vector<double>* truthCylinderLocationZ = new std::vector<double>(ev.truthPrimaryLocationZ);
 
         if (truthCylinderLocationX->size() == 0) {
-            truthCylinderLocationX->push_back(primariesStartX->at(validPrimaryIdx));
-            truthCylinderLocationY->push_back(primariesStartY->at(validPrimaryIdx));
-            truthCylinderLocationZ->push_back(primariesStartZ->at(validPrimaryIdx));
-
-            truthCylinderLocationX->push_back(primariesEndX->at(validPrimaryIdx));
-            truthCylinderLocationY->push_back(primariesEndY->at(validPrimaryIdx));
-            truthCylinderLocationZ->push_back(primariesEndZ->at(validPrimaryIdx));
-        } 
+            std::cout << "Primary trajectory has no size" << std::endl;
+        }
 
         // Get direction to end cylinder
         int truthNumPoints = truthCylinderLocationX->size();
@@ -425,17 +840,17 @@ void FakeData(int sample = 1) {
         int numTotalHitsNearPrimary            = 0;
         int numUnRecoHitsNearPrimaryInduction  = 0;
         int numUnRecoHitsNearPrimaryCollection = 0;
-        for (size_t iHit = 0; iHit < fHitKey->size(); ++iHit) {
-            double hitX     = fHitX->at(iHit);
-            double hitW     = fHitW->at(iHit);
-            int    hitPlane = fHitPlane->at(iHit);
+        for (size_t iHit = 0; iHit < nhits; ++iHit) {
+            double hitX     = ev.fHitX.at(iHit);
+            double hitW     = ev.fHitW.at(iHit);
+            int    hitPlane = ev.fHitPlane.at(iHit);
 
             // Check if hit is near vertex of the primary
             if (isHitNearPrimary(
-                hitWC2TPCKey,
-                fHitX,
-                fHitW,
-                fHitPlane,
+                &ev.hitWC2TPCKey,
+                &ev.fHitX,
+                &ev.fHitW,
+                &ev.fHitPlane,
                 hitX,
                 hitW,
                 hitPlane,
@@ -467,11 +882,11 @@ void FakeData(int sample = 1) {
             
             // First, check if we have already used this hit
             int   thisHitKey       = candidateHits.at(iHit);
-            int   thisHitPlane     = fHitPlane->at(thisHitKey);
-            float thisHitW         = fHitW->at(thisHitKey);
-            float thisHitX         = fHitX->at(thisHitKey);
-            float thisHitCharge    = fHitCharge->at(thisHitKey);
-            float thisHitChargeCol = fHitChargeCol->at(thisHitKey);
+            int   thisHitPlane     = ev.fHitPlane.at(thisHitKey);
+            float thisHitW         = ev.fHitW.at(thisHitKey);
+            float thisHitX         = ev.fHitX.at(thisHitKey);
+            float thisHitCharge    = -1;
+            float thisHitChargeCol = -1;
             
             if (usedHits.count(thisHitKey)) continue;           
             
@@ -487,16 +902,15 @@ void FakeData(int sample = 1) {
             clusterCharge.push_back(thisHitCharge);
             clusterChargeCol.push_back(thisHitChargeCol);
             
-            for (int iAllHit = 0; iAllHit < fHitKey->size(); ++iAllHit) {
+            for (int iAllHit = 0; iAllHit < nhits; ++iAllHit) {
                 // Skip already used hits, and those reconstructed in tracks
-                // if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit) || (fHitPlane->at(iAllHit) == 1)) continue;
                 if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit)) continue;
 
                 // Clusters have to be in same plane
-                if (fHitPlane->at(iAllHit) != thisHitPlane) continue;
+                if (ev.fHitPlane.at(iAllHit) != thisHitPlane) continue;
 
-                float internalHitW  = fHitW->at(iAllHit);
-                float internalHitX  = fHitX->at(iAllHit);
+                float internalHitW  = ev.fHitW.at(iAllHit);
+                float internalHitX  = ev.fHitX.at(iAllHit);
                 float dW            = std::abs(internalHitW - thisHitW);
                 float dX            = std::abs(internalHitX - thisHitX);
                 float distance      = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
@@ -514,10 +928,10 @@ void FakeData(int sample = 1) {
                 if (distance < MAX_IN_CLUSTER_SEPARATION) {
                     usedHits.insert(iAllHit);
                     clusterKeys.push_back(iAllHit);
-                    clusterX.push_back(fHitX->at(iAllHit));
-                    clusterW.push_back(fHitW->at(iAllHit));
-                    clusterCharge.push_back(fHitCharge->at(iAllHit));
-                    clusterChargeCol.push_back(fHitChargeCol->at(iAllHit));
+                    clusterX.push_back(ev.fHitX.at(iAllHit));
+                    clusterW.push_back(ev.fHitW.at(iAllHit));
+                    clusterCharge.push_back(-1);
+                    clusterChargeCol.push_back(-1);
                 }
             }
 
@@ -561,55 +975,59 @@ void FakeData(int sample = 1) {
         double scatteringAngle  = -9999;
         double scatteringEnergy = -9999;
 
-        if (backgroundType == 12 || backgroundType == 6) {
-            if (backgroundType == 12) {
-                scatteringAngle      = trajectoryInteractionAngle;
-                scatteringEnergy     = trajectoryInteractionKE;
-                truthPrimaryVertexKE = trajectoryInteractionKE; // in case we do not modify anything
-            } else if (backgroundType == 6) {
-                scatteringAngle  = truthScatteringAngle;
-                scatteringEnergy = truthScatteredPionKE; 
+        // Modify scatterings
+        if (ev.backgroundType == 12 || ev.backgroundType == 6) {
+            if (ev.backgroundType == 12) {
+                scatteringAngle         = ev.trajectoryInteractionAngle;
+                scatteringEnergy        = ev.trajectoryInteractionKE;
+                ev.truthPrimaryVertexKE = ev.trajectoryInteractionKE; // in case we do not modify anything
             }
+            else if (ev.backgroundType == 6) {
+                scatteringAngle  = ev.truthScatteringAngle;
+                scatteringEnergy = ev.truthScatteredPionKE; 
+            }
+
+            if (verbose) std::cout << "Checking if elastic scattering is above threshold, with angle " << scatteringAngle << " and KE " << scatteringEnergy << std::endl;
 
             // If outgoing pion below threshold, absorption
             if (scatteringEnergy < PION_SCATTERING_ENERGY_THRESHOLD) {
-                if (backgroundType == 12) backgroundType = 0;
-                else if (backgroundType == 6) {
-                    int numVisibleProtons = 0;
-                    for (int i = 0; i < truthPrimaryDaughtersPDG->size(); ++i) {
-                        if (truthPrimaryDaughtersPDG->at(i) == 2212) {
+                if (ev.backgroundType == 12) ev.backgroundType = 0;
+                else if (ev.backgroundType == 6) {
+                    int tempNumVisibleProtons = 0;
+                    for (int i = 0; i < ev.truthPrimaryDaughtersPDG.size(); ++i) {
+                        if (ev.truthPrimaryDaughtersPDG.at(i) == 2212) {
                             if (
-                                truthPrimaryDaughtersKE->at(i) > PROTON_ENERGY_LOWER_BOUND &&
-                                truthPrimaryDaughtersKE->at(i) < PROTON_ENERGY_UPPER_BOUND
-                            ) numVisibleProtons++;
+                                ev.truthPrimaryDaughtersKE.at(i) > PROTON_ENERGY_LOWER_BOUND &&
+                                ev.truthPrimaryDaughtersKE.at(i) < PROTON_ENERGY_UPPER_BOUND
+                            ) tempNumVisibleProtons++;
                         }
                     }
-                    if (numVisibleProtons == 0) backgroundType = 0;
-                    else backgroundType = 1;
+                    if (tempNumVisibleProtons == 0) ev.backgroundType = 0;
+                    else ev.backgroundType = 1;
+                    ev.numVisibleProtons = tempNumVisibleProtons;
                 }
             }
-
             // If pion above threshold but angle not large enough, go to next interaction and check there
-            if (scatteringAngle < SCATTERING_ANGLE_THRESHOLD) {
-                // Use secondary interaction
-                for (int iInteraction = 0; iInteraction < secondaryInteractionTypes->size(); ++iInteraction) {
-                    int currentInteraction = secondaryInteractionTypes->at(iInteraction);
-                    scatteringAngle        = secondaryInteractionAngle->at(iInteraction);
-                    scatteringEnergy       = secondaryInteractionInteractingKE->at(iInteraction);
+            else if (scatteringAngle < SCATTERING_ANGLE_THRESHOLD) {
+                // Use secondary interaction for 
+                for (int iInteraction = 0; iInteraction < ev.secondaryInteractionTypes.size(); ++iInteraction) {
+                    int currentInteraction = ev.secondaryInteractionTypes.at(iInteraction);
+                    scatteringAngle        = ev.secondaryInteractionAngle.at(iInteraction);
+                    scatteringEnergy       = ev.secondaryInteractionInteractingKE.at(iInteraction);
 
                     // Get scattering energy for inelastic scattering from outgoing pion kinematics
                     if (currentInteraction == 6) {
-                        for (int i = 0; i < secondaryInteractionDaughtersPDG->at(iInteraction).size(); ++i) {
-                            if (secondaryInteractionDaughtersPDG->at(iInteraction)[i] == -211) {
-                                scatteringEnergy = secondaryInteractionDaughtersKE->at(iInteraction)[i];
+                        for (int i = 0; i < ev.secondaryInteractionDaughtersPDG.at(iInteraction).size(); ++i) {
+                            if (ev.secondaryInteractionDaughtersPDG.at(iInteraction)[i] == -211) {
+                                scatteringEnergy = ev.secondaryInteractionDaughtersKE.at(iInteraction)[i];
                                 break;
                             }
                         }
                     }
 
                     // Add incident slices true contributions
-                    for (int iContribution = 0; iContribution < secondaryIncidentKEContributions->at(iInteraction).size(); ++iContribution) {
-                        trueIncidentKEContributions->push_back(secondaryIncidentKEContributions->at(iInteraction)[iContribution]);
+                    for (int iContribution = 0; iContribution < ev.secondaryIncidentKEContributions.at(iInteraction).size(); ++iContribution) {
+                        ev.trueIncidentKEContributions.push_back(ev.secondaryIncidentKEContributions.at(iInteraction)[iContribution]);
                     }
 
                     // If scattering but outgoing below threshold, absorption
@@ -617,29 +1035,29 @@ void FakeData(int sample = 1) {
                         (currentInteraction == 6 || currentInteraction == 12) &&
                         scatteringEnergy < PION_SCATTERING_ENERGY_THRESHOLD
                     ) {
-                        if (currentInteraction == 12) backgroundType = 0;
+                        if (currentInteraction == 12) ev.backgroundType = 0;
                         else if (currentInteraction == 6) {
-                            int numVisibleProtons = 0;
-                            for (int i = 0; i < secondaryInteractionDaughtersPDG->at(iInteraction).size(); ++i) {
-                                if (secondaryInteractionDaughtersPDG->at(iInteraction)[i] == 2212) {
+                            int tempNumVisibleProtons = 0;
+                            for (int i = 0; i < ev.secondaryInteractionDaughtersPDG.at(iInteraction).size(); ++i) {
+                                if (ev.secondaryInteractionDaughtersPDG.at(iInteraction)[i] == 2212) {
                                     if (
-                                        secondaryInteractionDaughtersKE->at(iInteraction)[i] > PROTON_ENERGY_LOWER_BOUND &&
-                                        secondaryInteractionDaughtersKE->at(iInteraction)[i] < PROTON_ENERGY_UPPER_BOUND
-                                    ) numVisibleProtons++;
+                                        ev.secondaryInteractionDaughtersKE.at(iInteraction)[i] > PROTON_ENERGY_LOWER_BOUND &&
+                                        ev.secondaryInteractionDaughtersKE.at(iInteraction)[i] < PROTON_ENERGY_UPPER_BOUND
+                                    ) tempNumVisibleProtons++;
                                 }
                             }
-                            if (numVisibleProtons == 0) backgroundType = 0;
-                            else backgroundType = 1;
+                            if (tempNumVisibleProtons == 0) ev.backgroundType = 0;
+                            else ev.backgroundType = 1;
+                            ev.numVisibleProtons = tempNumVisibleProtons;
                         }
-                        truthPrimaryVertexKE = secondaryInteractionInteractingKE->at(iInteraction);
-                        truthPrimaryVertexX  = secondaryInteractionXPosition->at(iInteraction);
-                        truthPrimaryVertexY  = secondaryInteractionYPosition->at(iInteraction);
-                        truthPrimaryVertexZ  = secondaryInteractionZPosition->at(iInteraction);
+                        ev.truthPrimaryVertexKE = ev.secondaryInteractionInteractingKE.at(iInteraction);
+                        ev.truthPrimaryVertexX  = ev.secondaryInteractionXPosition.at(iInteraction);
+                        ev.truthPrimaryVertexY  = ev.secondaryInteractionYPosition.at(iInteraction);
+                        ev.truthPrimaryVertexZ  = ev.secondaryInteractionZPosition.at(iInteraction);
                         break;
                     }
-
                     // If scattering energy above threshold but angle not large enough, keep going
-                    if (
+                    else if (
                         (currentInteraction == 6 || currentInteraction == 12) &&
                         scatteringAngle < SCATTERING_ANGLE_THRESHOLD
                     ) {
@@ -647,11 +1065,11 @@ void FakeData(int sample = 1) {
                         continue;
                     } else {
                         // We found non-scattering interaction or scattering interaction with angle and energy above our threshold value
-                        backgroundType       = currentInteraction;
-                        truthPrimaryVertexKE = secondaryInteractionInteractingKE->at(iInteraction);
-                        truthPrimaryVertexX  = secondaryInteractionXPosition->at(iInteraction);
-                        truthPrimaryVertexY  = secondaryInteractionYPosition->at(iInteraction);
-                        truthPrimaryVertexZ  = secondaryInteractionZPosition->at(iInteraction);
+                        ev.backgroundType       = currentInteraction;
+                        ev.truthPrimaryVertexKE = ev.secondaryInteractionInteractingKE.at(iInteraction);
+                        ev.truthPrimaryVertexX  = ev.secondaryInteractionXPosition.at(iInteraction);
+                        ev.truthPrimaryVertexY  = ev.secondaryInteractionYPosition.at(iInteraction);
+                        ev.truthPrimaryVertexZ  = ev.secondaryInteractionZPosition.at(iInteraction);
                         break;
                     }
                 }
@@ -662,10 +1080,10 @@ void FakeData(int sample = 1) {
         // Get weight for this event //
         ///////////////////////////////
 
-        double fd_weight= FakeDataFD::GetFDWeight(FDScenario, backgroundType, truthPrimaryVertexKE * 1000);
+        double fd_weight= FakeDataFD::GetFDWeight(FDScenario, ev.backgroundType, ev.truthPrimaryVertexKE * 1000);
         // if (fd_weight != 1) {
-        //     std::cout << "Background type: " << backgroundType << std::endl;
-        //     std::cout << "Truth primary vertex KE: " << truthPrimaryVertexKE * 1000 << " MeV" << std::endl;
+        //     std::cout << "Background type: " << ev.backgroundType << std::endl;
+        //     std::cout << "Truth primary vertex KE: " << ev.truthPrimaryVertexKE * 1000 << " MeV" << std::endl;
         //     std::cout << "Fake data weight applied: " << fd_weight << std::endl;
         //     std::cout << std::endl;
         // }
@@ -674,26 +1092,26 @@ void FakeData(int sample = 1) {
         // True spectrum //
         ///////////////////
 
-        if (trueIncidentKEContributions->size() == 0) truthPrimaryVertexKE = 0;
-        else truthPrimaryVertexKE = trueIncidentKEContributions->back() / 1000.0;
+        if (ev.trueIncidentKEContributions.size() == 0) ev.truthPrimaryVertexKE = 0;
+        else ev.truthPrimaryVertexKE = ev.trueIncidentKEContributions.back() / 1000.0;
 
         // Get true energy bin
-        int TrueEnergyBin = getBin(truthPrimaryVertexKE * 1000, ARRAY_KE_BINS);
+        int TrueEnergyBin = getBin(ev.truthPrimaryVertexKE * 1000, ARRAY_KE_BINS);
 
         // Add true incident KE
-        if (validTrueIncidentKE) {
-            for (double x : *trueIncidentKEContributions) {
+        if (ev.validTrueIncidentKE) {
+            for (double x : ev.trueIncidentKEContributions) {
                 hTrueIncidentKE->Fill(x);
             }
         }
 
         // True interaction histograms
-        if (backgroundType == 0) {
-            hTruePionAbs0p->Fill(truthPrimaryVertexKE * 1000, fd_weight);
-        } else if (backgroundType == 1) {
-            hTruePionAbsNp->Fill(truthPrimaryVertexKE * 1000, fd_weight);
-        } else if (backgroundType == 6 || backgroundType == 12) {
-            hTruePionScatter->Fill(truthPrimaryVertexKE * 1000, fd_weight);
+        if (ev.backgroundType == 0) {
+            hTruePionAbs0p->Fill(ev.truthPrimaryVertexKE * 1000, fd_weight);
+        } else if (ev.backgroundType == 1) {
+            hTruePionAbsNp->Fill(ev.truthPrimaryVertexKE * 1000, fd_weight);
+        } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
+            hTruePionScatter->Fill(ev.truthPrimaryVertexKE * 1000, fd_weight);
         }
 
         //////////////////////////////
@@ -701,7 +1119,7 @@ void FakeData(int sample = 1) {
         //////////////////////////////
 
         // Reject stuff with no data products
-        if (WC2TPCtrkID == -99999) continue;
+        if (!ev.WC2TPCMatch || ev.WC2TPCsize != 1) continue;
 
         ////////////////////////////////
         // Cylinder and TG track cuts //
@@ -710,29 +1128,29 @@ void FakeData(int sample = 1) {
         int numSmallTracksInCylinder = 0;
         int numTracksInCylinder      = 0;
         int numTGTracks              = 0;
-        for (int trk_idx = 0; trk_idx < recoTrkID->size(); ++trk_idx) {
-            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+        for (int trk_idx = 0; trk_idx < ev.recoBeginX.size(); ++trk_idx) {
+            if (trkWCtoTPCMatch[trk_idx]) continue;
 
             // Check if tracks is through-going
             if (
-                !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
-                !isWithinReducedVolume(recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx))
+                !isWithinReducedVolume(ev.recoBeginX.at(trk_idx), ev.recoBeginY.at(trk_idx), ev.recoBeginZ.at(trk_idx)) &&
+                !isWithinReducedVolume(ev.recoEndX.at(trk_idx), ev.recoEndY.at(trk_idx), ev.recoEndZ.at(trk_idx))
             ) numTGTracks++;
 
             double trackLength = sqrt(
-                pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
-                pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
-                pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+                pow(ev.recoEndX.at(trk_idx) - ev.recoBeginX.at(trk_idx), 2) +
+                pow(ev.recoEndY.at(trk_idx) - ev.recoBeginY.at(trk_idx), 2) +
+                pow(ev.recoEndZ.at(trk_idx) - ev.recoBeginZ.at(trk_idx), 2)
             );
 
             bool startInCylinder = IsPointInsideTrackCylinder(
                 wcX, wcY, wcZ,
-                recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
+                ev.recoBeginX.at(trk_idx), ev.recoBeginY.at(trk_idx), ev.recoBeginZ.at(trk_idx),
                 CYLINDER_RADIUS
             );
             bool endInCylinder = IsPointInsideTrackCylinder(
                 wcX, wcY, wcZ,
-                recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
+                ev.recoEndX.at(trk_idx), ev.recoEndY.at(trk_idx), ev.recoEndZ.at(trk_idx),
                 CYLINDER_RADIUS
             );
 
@@ -756,25 +1174,25 @@ void FakeData(int sample = 1) {
         // Primary track PID //
         ///////////////////////
 
-        int totalCaloPoints = wcMatchDEDX->size();
+        int totalCaloPoints = ev.wcMatchDEDX.size();
         int nRemoveOutliers = 2;
         int nRemoveEnds     = 3;
         int minPoints       = 5;
 
         // Get chi^2 fits, primary tracks are already checked for reversal in first module
-        double pionChi2   = computeReducedChi2(gPion, *wcMatchResR,  *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
-        double MIPChi2    = computeReducedChi2(gMuonTG, *wcMatchResR, *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
-        double protonChi2 = computeReducedChi2(gProton, *wcMatchResR, *wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        double pionChi2   = computeReducedChi2(  gPion, ev.wcMatchResR, ev.wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        double MIPChi2    = computeReducedChi2(gMuonTG, ev.wcMatchResR, ev.wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
+        double protonChi2 = computeReducedChi2(gProton, ev.wcMatchResR, ev.wcMatchDEDX, false, totalCaloPoints, nRemoveOutliers, nRemoveEnds);
 
         double minStitchedChi2 = std::numeric_limits<double>::max();
         int bestBreakPoint = -1;
         if (totalCaloPoints >= 4 * nRemoveEnds + 2 * nRemoveOutliers + 2 * minPoints) {
             for (int caloBreakPoint = 2 * nRemoveEnds + nRemoveOutliers + minPoints; caloBreakPoint < totalCaloPoints - (2 * nRemoveEnds + nRemoveOutliers + minPoints); ++caloBreakPoint) {
-                std::vector<double> leftResR(wcMatchResR->begin(), wcMatchResR->begin() + caloBreakPoint);
-                std::vector<double> leftDEDX(wcMatchDEDX->begin(), wcMatchDEDX->begin() + caloBreakPoint);
+                std::vector<double> leftResR(ev.wcMatchResR.begin(), ev.wcMatchResR.begin() + caloBreakPoint);
+                std::vector<double> leftDEDX(ev.wcMatchDEDX.begin(), ev.wcMatchDEDX.begin() + caloBreakPoint);
 
-                std::vector<double> rightResR(wcMatchResR->begin() + caloBreakPoint, wcMatchResR->end());
-                std::vector<double> rightDEDX(wcMatchDEDX->begin() + caloBreakPoint, wcMatchDEDX->end());
+                std::vector<double> rightResR(ev.wcMatchResR.begin() + caloBreakPoint, ev.wcMatchResR.end());
+                std::vector<double> rightDEDX(ev.wcMatchDEDX.begin() + caloBreakPoint, ev.wcMatchDEDX.end());
 
                 // Shift right-hand side to fix r.r.
                 for (int i = 0; i < rightResR.size(); ++i) {
@@ -797,33 +1215,33 @@ void FakeData(int sample = 1) {
         double minChi2 = std::min({minStitchedChi2, pionChi2, MIPChi2, protonChi2});
 
         // If primary track stitched, get break point, otherwise break point is end of track
-        double breakPointX = WC2TPCPrimaryEndX; 
-        double breakPointY = WC2TPCPrimaryEndY; 
-        double breakPointZ = WC2TPCPrimaryEndZ;
+        double breakPointX = ev.WC2TPCPrimaryEndX; 
+        double breakPointY = ev.WC2TPCPrimaryEndY; 
+        double breakPointZ = ev.WC2TPCPrimaryEndZ;
         if (minChi2 == minStitchedChi2) {
-            breakPointX = wcMatchXPos->at(bestBreakPoint);
-            breakPointY = wcMatchYPos->at(bestBreakPoint);
-            breakPointZ = wcMatchZPos->at(bestBreakPoint);
+            breakPointX = ev.wcMatchXPos.at(bestBreakPoint);
+            breakPointY = ev.wcMatchYPos.at(bestBreakPoint);
+            breakPointZ = ev.wcMatchZPos.at(bestBreakPoint);
         }
 
         // At this point, we want to fill the incident kinetic energy histograms
-        double WCKE             = TMath::Sqrt(WCTrackMomentum * WCTrackMomentum + PionMass * PionMass) - PionMass;
-        double calculatedEnLoss = energyLossCalculation(WC4PrimaryX, trajectoryInitialMomentumX, isData);
+        double WCKE             = TMath::Sqrt(ev.WCTrackMomentum * ev.WCTrackMomentum + PionMass * PionMass) - PionMass;
+        double calculatedEnLoss = energyLossCalculation(ev.WC4PrimaryX, ev.trajectoryInitialMomentumX, isData);
         const double initialKE  = WCKE - calculatedEnLoss;
 
         double energyDeposited = 0;
-        for (size_t iDep = 0; iDep < wcMatchDEDX->size(); ++iDep) {
+        for (size_t iDep = 0; iDep < ev.wcMatchDEDX.size(); ++iDep) {
             // If we are past detected breaking point, exit loop
-            if (wcMatchZPos->at(iDep) > breakPointZ) break;
+            if (ev.wcMatchZPos.at(iDep) > breakPointZ) break;
 
             // If larger than threshold, continue
-            if (wcMatchDEDX->at(iDep) > HIT_DEDX_THRESHOLD) continue;
+            if (ev.wcMatchDEDX.at(iDep) > HIT_DEDX_THRESHOLD) continue;
 
             // Else, add to energy deposited so far
-            energyDeposited += wcMatchEDep->at(iDep);
+            energyDeposited += ev.wcMatchEDep.at(iDep);
             
             // Add to incident KE if inside reduced volume
-            if (isWithinReducedVolume(wcMatchXPos->at(iDep), wcMatchYPos->at(iDep), wcMatchZPos->at(iDep))) {
+            if (isWithinReducedVolume(ev.wcMatchXPos.at(iDep), ev.wcMatchYPos.at(iDep), ev.wcMatchZPos.at(iDep))) {
                 hPionIncidentKE->Fill(initialKE - energyDeposited);
             }
         }
@@ -846,32 +1264,32 @@ void FakeData(int sample = 1) {
         int otherTaggedPion   = 0;
         int otherTaggedProton = 0;
 
-        for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
-            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+        for (size_t trk_idx = 0; trk_idx < ev.recoBeginX.size(); ++trk_idx) {
+            if (trkWCtoTPCMatch[trk_idx]) continue;
 
             // Have to re-check track ordering for stitched case
             double distanceFromStart = distance(
-                recoBeginX->at(trk_idx), breakPointX, 
-                recoBeginY->at(trk_idx), breakPointY,
-                recoBeginZ->at(trk_idx), breakPointZ
+                ev.recoBeginX.at(trk_idx), breakPointX, 
+                ev.recoBeginY.at(trk_idx), breakPointY,
+                ev.recoBeginZ.at(trk_idx), breakPointZ
             );
             double distanceFromEnd = distance(
-                recoEndX->at(trk_idx), breakPointX, 
-                recoEndY->at(trk_idx), breakPointY,
-                recoEndZ->at(trk_idx), breakPointZ
+                ev.recoEndX.at(trk_idx), breakPointX, 
+                ev.recoEndY.at(trk_idx), breakPointY,
+                ev.recoEndZ.at(trk_idx), breakPointZ
             );
             double thisTrackLength = sqrt(
-                std::pow(recoBeginX->at(trk_idx) - recoEndX->at(trk_idx), 2) +
-                std::pow(recoBeginY->at(trk_idx) - recoEndY->at(trk_idx), 2) + 
-                std::pow(recoBeginZ->at(trk_idx) - recoEndZ->at(trk_idx), 2)
+                pow(ev.recoBeginX.at(trk_idx) - ev.recoEndX.at(trk_idx), 2) +
+                pow(ev.recoBeginY.at(trk_idx) - ev.recoEndY.at(trk_idx), 2) + 
+                pow(ev.recoBeginZ.at(trk_idx) - ev.recoEndZ.at(trk_idx), 2)
             );
 
             if ((distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS)) {
-                std::vector<double> secondaryDEDX = recoDEDX->at(trk_idx);
-                std::vector<double> secondaryResR = recoResR->at(trk_idx);
+                std::vector<double> secondaryDEDX = ev.recoDEDX.at(trk_idx);
+                std::vector<double> secondaryResR = ev.recoResR.at(trk_idx);
 
                 bool secondaryReversed  = false;
-                bool originallyReversed = isTrackInverted->at(trk_idx);
+                bool originallyReversed = ev.isTrackInverted.at(trk_idx);
                 if (distanceFromEnd < distanceFromStart) secondaryReversed = true;
                 // If it was originally reversed, we do not reverse again
                 if (originallyReversed && secondaryReversed) secondaryReversed = false; 
@@ -903,8 +1321,8 @@ void FakeData(int sample = 1) {
         // If the new secondary track looks like a pion, the stitching is non-sensical, and we should revert
         bool newSecondaryPion = false;
         if (minChi2 == minStitchedChi2) {
-            std::vector<double> newSecondaryResR(wcMatchResR->begin(), wcMatchResR->begin() + bestBreakPoint);
-            std::vector<double> newSecondaryDEDX(wcMatchDEDX->begin(), wcMatchDEDX->begin() + bestBreakPoint);
+            std::vector<double> newSecondaryResR(ev.wcMatchResR.begin(), ev.wcMatchResR.begin() + bestBreakPoint);
+            std::vector<double> newSecondaryDEDX(ev.wcMatchDEDX.begin(), ev.wcMatchDEDX.begin() + bestBreakPoint);
 
             double newPionChi2   = computeReducedChi2(gPion, newSecondaryResR, newSecondaryDEDX, false, newSecondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
             double newProtonChi2 = computeReducedChi2(gProton, newSecondaryResR, newSecondaryDEDX, false, newSecondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);

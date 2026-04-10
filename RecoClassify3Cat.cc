@@ -14,110 +14,6 @@
 
 #include "Helpers.cc"
 
-struct EventVariables {
-    // WC match calorimetry
-    std::vector<double> wcMatchResR;
-    std::vector<double> wcMatchDEDX;
-    std::vector<double> wcMatchEDep;
-    std::vector<double> wcMatchXPos;
-    std::vector<double> wcMatchYPos;
-    std::vector<double> wcMatchZPos;
-
-    // WC2TPC location
-    std::vector<double> WC2TPCLocationsX;
-    std::vector<double> WC2TPCLocationsY;
-    std::vector<double> WC2TPCLocationsZ;
-
-    // Reco track endpoints
-    std::vector<double> recoEndX;
-    std::vector<double> recoEndY;
-    std::vector<double> recoEndZ;
-    std::vector<double> recoBeginX;
-    std::vector<double> recoBeginY;
-    std::vector<double> recoBeginZ;
-    std::vector<bool>   isTrackInverted;
-
-    // Reco calorimetry
-    std::vector<std::vector<double>> recoResR;
-    std::vector<std::vector<double>> recoDEDX;
-
-    // Truth primary daughters
-    std::vector<int>         truthPrimaryDaughtersPDG;
-    std::vector<std::string> truthPrimaryDaughtersProcess;
-    std::vector<double>      truthPrimaryDaughtersKE;
-
-    // Truth primary trajectory
-    std::vector<double> truthPrimaryLocationX;
-    std::vector<double> truthPrimaryLocationY;
-    std::vector<double> truthPrimaryLocationZ;
-
-    // Truth primary scalars
-    int    truthPrimaryPDG        = -999;
-    int    truthPrimaryID         = -999;
-    double truthPrimaryVertexX    = -999;
-    double truthPrimaryVertexY    = -999;
-    double truthPrimaryVertexZ    = -999;
-    double truthPrimaryVertexKE   = -999;
-
-    // WC track scalars
-    int    WC2TPCsize          = 0;
-    bool   WC2TPCMatch         = false;
-    double WCTrackMomentum     = -999;
-    double WCTheta             = -999;
-    double WCPhi               = -999;
-    double WC4PrimaryX         = -999;
-    double WC2TPCPrimaryBeginX = -999;
-    double WC2TPCPrimaryBeginY = -999;
-    double WC2TPCPrimaryBeginZ = -999;
-    double WC2TPCPrimaryEndX   = -999;
-    double WC2TPCPrimaryEndY   = -999;
-    double WC2TPCPrimaryEndZ   = -999;
-
-    // Hit information
-    std::vector<int>   fHitPlane;
-    std::vector<int>   hitRecoAsTrackKey;
-    std::vector<int>   hitWC2TPCKey;
-    std::vector<float> fHitT;
-    std::vector<float> fHitX;
-    std::vector<float> fHitW;
-
-    // Trajectory interaction
-    bool        interactionInTrajectory    = false;
-    std::string trajectoryInteractionLabel = "";
-    double      trajectoryInteractionAngle = -999;
-    double      trajectoryInteractionKE    = -999;
-    double      trajectoryInitialMomentumX = -999;
-
-    // Reco track hits
-    std::vector<std::vector<int>>    recoTrackHitIndices;
-    std::vector<std::vector<double>> recoTrackHitX;
-    std::vector<std::vector<double>> recoTrackHitY;
-    std::vector<std::vector<double>> recoTrackHitZ;
-
-    // Scattering truth
-    double truthScatteringAngle = -999;
-    double truthScatteredPionKE = -999;
-
-    // Secondary interactions
-    std::vector<int>                 secondaryInteractionTypes;
-    std::vector<double>              secondaryInteractionInteractingKE;
-    std::vector<double>              secondaryInteractionAngle;
-    std::vector<double>              secondaryInteractionXPosition;
-    std::vector<double>              secondaryInteractionYPosition;
-    std::vector<double>              secondaryInteractionZPosition;
-    std::vector<std::vector<int>>    secondaryInteractionDaughtersPDG;
-    std::vector<std::vector<double>> secondaryInteractionDaughtersKE;
-    std::vector<std::vector<double>> secondaryIncidentKEContributions;
-
-    // Incident KE
-    bool                validTrueIncidentKE      = true;
-    std::vector<double> trueIncidentKEContributions;
-
-    // Classification
-    int backgroundType    = -1;
-    int numVisibleProtons = 0;
-};
-
 void RecoClassify3Cat() {
     // Set defaults
     gStyle->SetOptStat(0); // get rid of stats box
@@ -140,7 +36,7 @@ void RecoClassify3Cat() {
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Classify3Cat/";
 
     // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/anatree_60a/histo.root"; // RV at z = 30
+    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/anatree_60a/histo.root";
     std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
     TDirectory* Directory = (TDirectory*)File->Get("anatree");
 
@@ -1512,7 +1408,7 @@ void RecoClassify3Cat() {
 
         // For data-MC comparisons
         hMCNumWC2TPCMatch->Fill(ev.WC2TPCsize);
-        if (ev.WC2TPCMatch) {
+        if (ev.WC2TPCMatch && ev.WC2TPCsize == 1) {
             hMCPrimaryTrackPosition->Fill(ev.WC2TPCPrimaryBeginX, ev.WC2TPCPrimaryBeginY);
 
             bool isPrimaryTG = !isWithinReducedVolume(ev.WC2TPCPrimaryEndX, ev.WC2TPCPrimaryEndY, ev.WC2TPCPrimaryEndZ);
@@ -1792,7 +1688,7 @@ void RecoClassify3Cat() {
         double scatteringAngle  = -9999;
         double scatteringEnergy = -9999;
         
-        // Modify elastic scatterings
+        // Modify scatterings
         if (ev.backgroundType == 12 || ev.backgroundType == 6) {
             if (ev.backgroundType == 12) {
                 scatteringAngle         = ev.trajectoryInteractionAngle;
@@ -1967,7 +1863,7 @@ void RecoClassify3Cat() {
         //////////////////////
 
         // If no track matched to wire-chamber, skip
-        if (!ev.WC2TPCMatch) {
+        if (!ev.WC2TPCMatch || ev.WC2TPCsize != 1) {
             if (ev.backgroundType == 0) {
                 hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
                 hTrueAbs0pKERejDataProds->Fill(ev.truthPrimaryVertexKE * 1000);

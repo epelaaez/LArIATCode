@@ -264,6 +264,183 @@ double zcentMagnet1[2] = { (-501.95-494.98)/2, (-449.49-456.46)/2};
 double zcentMagnet2[2] = { (-432.04-427.50)/2, (-381.27-385.81)/2};
 double zcentDSCol[2]   = { (-296.67-297.36)/2, (-205.94-206.63)/2};
 
+/////////////////////
+// Event variables //
+/////////////////////
+
+struct EventVariables {
+    // WC match calorimetry
+    std::vector<double> wcMatchResR;
+    std::vector<double> wcMatchDEDX;
+    std::vector<double> wcMatchEDep;
+    std::vector<double> wcMatchXPos;
+    std::vector<double> wcMatchYPos;
+    std::vector<double> wcMatchZPos;
+
+    // WC2TPC location
+    std::vector<double> WC2TPCLocationsX;
+    std::vector<double> WC2TPCLocationsY;
+    std::vector<double> WC2TPCLocationsZ;
+
+    // Reco track endpoints
+    std::vector<double> recoEndX;
+    std::vector<double> recoEndY;
+    std::vector<double> recoEndZ;
+    std::vector<double> recoBeginX;
+    std::vector<double> recoBeginY;
+    std::vector<double> recoBeginZ;
+    std::vector<bool>   isTrackInverted;
+
+    // Reco calorimetry
+    std::vector<std::vector<double>> recoResR;
+    std::vector<std::vector<double>> recoDEDX;
+
+    // Truth primary daughters
+    std::vector<int>         truthPrimaryDaughtersPDG;
+    std::vector<std::string> truthPrimaryDaughtersProcess;
+    std::vector<double>      truthPrimaryDaughtersKE;
+
+    // Truth primary trajectory
+    std::vector<double> truthPrimaryLocationX;
+    std::vector<double> truthPrimaryLocationY;
+    std::vector<double> truthPrimaryLocationZ;
+
+    // Truth primary scalars
+    int    truthPrimaryPDG        = -999;
+    int    truthPrimaryID         = -999;
+    double truthPrimaryVertexX    = -999;
+    double truthPrimaryVertexY    = -999;
+    double truthPrimaryVertexZ    = -999;
+    double truthPrimaryVertexKE   = -999;
+
+    // WC track scalars
+    int    WC2TPCsize          = 0;
+    bool   WC2TPCMatch         = false;
+    double WCTrackMomentum     = -999;
+    double WCTheta             = -999;
+    double WCPhi               = -999;
+    double WC4PrimaryX         = -999;
+    double WC2TPCPrimaryBeginX = -999;
+    double WC2TPCPrimaryBeginY = -999;
+    double WC2TPCPrimaryBeginZ = -999;
+    double WC2TPCPrimaryEndX   = -999;
+    double WC2TPCPrimaryEndY   = -999;
+    double WC2TPCPrimaryEndZ   = -999;
+
+    // Hit information
+    std::vector<int>   fHitPlane;
+    std::vector<int>   hitRecoAsTrackKey;
+    std::vector<int>   hitWC2TPCKey;
+    std::vector<float> fHitT;
+    std::vector<float> fHitX;
+    std::vector<float> fHitW;
+
+    // Trajectory interaction
+    bool        interactionInTrajectory    = false;
+    std::string trajectoryInteractionLabel = "";
+    double      trajectoryInteractionAngle = -999;
+    double      trajectoryInteractionKE    = -999;
+    double      trajectoryInitialMomentumX = -999;
+
+    // Reco track hits
+    std::vector<std::vector<int>>    recoTrackHitIndices;
+    std::vector<std::vector<double>> recoTrackHitX;
+    std::vector<std::vector<double>> recoTrackHitY;
+    std::vector<std::vector<double>> recoTrackHitZ;
+
+    // Scattering truth
+    double truthScatteringAngle = -999;
+    double truthScatteredPionKE = -999;
+
+    // Secondary interactions
+    std::vector<int>                 secondaryInteractionTypes;
+    std::vector<double>              secondaryInteractionInteractingKE;
+    std::vector<double>              secondaryInteractionAngle;
+    std::vector<double>              secondaryInteractionXPosition;
+    std::vector<double>              secondaryInteractionYPosition;
+    std::vector<double>              secondaryInteractionZPosition;
+    std::vector<std::vector<int>>    secondaryInteractionDaughtersPDG;
+    std::vector<std::vector<double>> secondaryInteractionDaughtersKE;
+    std::vector<std::vector<double>> secondaryIncidentKEContributions;
+
+    // Incident KE
+    bool                validTrueIncidentKE      = true;
+    std::vector<double> trueIncidentKEContributions;
+
+    // Classification
+    int backgroundType    = -1;
+    int numVisibleProtons = 0;
+};
+
+struct EventVariablesData {
+    // Picky track
+    int wcTrackPicky;
+
+    // WC match calorimetry
+    std::vector<double> wcMatchResR;
+    std::vector<double> wcMatchDEDX;
+    std::vector<double> wcMatchEDep;
+    std::vector<double> wcMatchXPos;
+    std::vector<double> wcMatchYPos;
+    std::vector<double> wcMatchZPos;
+
+    // WC2TPC location
+    std::vector<double> WC2TPCLocationsX;
+    std::vector<double> WC2TPCLocationsY;
+    std::vector<double> WC2TPCLocationsZ;
+
+    // Reco track endpoints
+    std::vector<double> recoEndX;
+    std::vector<double> recoEndY;
+    std::vector<double> recoEndZ;
+    std::vector<double> recoBeginX;
+    std::vector<double> recoBeginY;
+    std::vector<double> recoBeginZ;
+    std::vector<bool>   isTrackInverted;
+
+    // Reco calorimetry
+    std::vector<std::vector<double>> recoResR;
+    std::vector<std::vector<double>> recoDEDX;
+
+    // WC track scalars
+    int    WC2TPCsize          = 0;
+    bool   WC2TPCMatch         = false;
+    double WCTrackMomentum     = -999;
+    double WCTheta             = -999;
+    double WCPhi               = -999;
+    double WC4PrimaryX         = -999;
+    double WC2TPCPrimaryBeginX = -999;
+    double WC2TPCPrimaryBeginY = -999;
+    double WC2TPCPrimaryBeginZ = -999;
+    double WC2TPCPrimaryEndX   = -999;
+    double WC2TPCPrimaryEndY   = -999;
+    double WC2TPCPrimaryEndZ   = -999;
+
+    // WC quality data
+    std::vector<double> wcHit0;
+    std::vector<double> wcHit1;
+    std::vector<double> wcHit2;
+    std::vector<double> wcHit3;
+
+    // Hit information
+    std::vector<int>   fHitPlane;
+    std::vector<int>   hitRecoAsTrackKey;
+    std::vector<int>   hitWC2TPCKey;
+    std::vector<float> fHitT;
+    std::vector<float> fHitX;
+    std::vector<float> fHitW;
+
+    // Reco track hits
+    std::vector<std::vector<int>>    recoTrackHitIndices;
+    std::vector<std::vector<double>> recoTrackHitX;
+    std::vector<std::vector<double>> recoTrackHitY;
+    std::vector<std::vector<double>> recoTrackHitZ;
+
+    // TOF information
+    double TOFMass   = -999;
+    double tofObject = -999;
+};
+
 //////////////////////
 // Helper functions //
 //////////////////////

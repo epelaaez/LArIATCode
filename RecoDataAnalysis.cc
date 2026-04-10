@@ -13,75 +13,6 @@
 
 #include "Helpers.cc"
 
-struct EventVariables {
-    // Picky track
-    int wcTrackPicky;
-
-    // WC match calorimetry
-    std::vector<double> wcMatchResR;
-    std::vector<double> wcMatchDEDX;
-    std::vector<double> wcMatchEDep;
-    std::vector<double> wcMatchXPos;
-    std::vector<double> wcMatchYPos;
-    std::vector<double> wcMatchZPos;
-
-    // WC2TPC location
-    std::vector<double> WC2TPCLocationsX;
-    std::vector<double> WC2TPCLocationsY;
-    std::vector<double> WC2TPCLocationsZ;
-
-    // Reco track endpoints
-    std::vector<double> recoEndX;
-    std::vector<double> recoEndY;
-    std::vector<double> recoEndZ;
-    std::vector<double> recoBeginX;
-    std::vector<double> recoBeginY;
-    std::vector<double> recoBeginZ;
-    std::vector<bool>   isTrackInverted;
-
-    // Reco calorimetry
-    std::vector<std::vector<double>> recoResR;
-    std::vector<std::vector<double>> recoDEDX;
-
-    // WC track scalars
-    int    WC2TPCsize          = 0;
-    bool   WC2TPCMatch         = false;
-    double WCTrackMomentum     = -999;
-    double WCTheta             = -999;
-    double WCPhi               = -999;
-    double WC4PrimaryX         = -999;
-    double WC2TPCPrimaryBeginX = -999;
-    double WC2TPCPrimaryBeginY = -999;
-    double WC2TPCPrimaryBeginZ = -999;
-    double WC2TPCPrimaryEndX   = -999;
-    double WC2TPCPrimaryEndY   = -999;
-    double WC2TPCPrimaryEndZ   = -999;
-
-    // WC quality data
-    std::vector<double> wcHit0;
-    std::vector<double> wcHit1;
-    std::vector<double> wcHit2;
-    std::vector<double> wcHit3;
-
-    // Hit information
-    std::vector<int>   fHitPlane;
-    std::vector<int>   hitRecoAsTrackKey;
-    std::vector<int>   hitWC2TPCKey;
-    std::vector<float> fHitT;
-    std::vector<float> fHitX;
-    std::vector<float> fHitW;
-
-    // Reco track hits
-    std::vector<std::vector<int>>    recoTrackHitIndices;
-    std::vector<std::vector<double>> recoTrackHitX;
-    std::vector<std::vector<double>> recoTrackHitY;
-    std::vector<std::vector<double>> recoTrackHitZ;
-
-    // TOF information
-    double TOFMass   = -999;
-    double tofObject = -999;
-};
-
 void RecoDataAnalysis() {
     // Set defaults
     gStyle->SetOptStat(0); // get rid of stats box
@@ -477,7 +408,7 @@ void RecoDataAnalysis() {
         tree->GetEntry(i);
         std::cout << "Got tree entry" << std::endl;
         std::cout << "Reseting variables" << std::endl;
-        EventVariables ev;
+        EventVariablesData ev;
         std::cout << "Variables reset" << std::endl;
         std::cout << "=================================" << std::endl;
 
