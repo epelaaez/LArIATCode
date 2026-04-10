@@ -57,7 +57,6 @@ struct EventVariables {
     double truthPrimaryVertexX    = -999;
     double truthPrimaryVertexY    = -999;
     double truthPrimaryVertexZ    = -999;
-    double truthPrimaryIncidentKE = -999;
     double truthPrimaryVertexKE   = -999;
 
     // WC track scalars
@@ -242,7 +241,7 @@ void RecoClassify3Cat() {
 
     // Geant4 information for truth tracks
     const int kMaxPrimaries      = 4000; // 20000
-    const int kMaxPrimaryPart    = 50;   // 50
+    const int kMaxPrimaryPart    = 60;   // 50
     const int kMaxTruePrimaryPts = 1000; // 5000
     int   no_primaries;                                   tree->SetBranchAddress("no_primaries",        &no_primaries);
     int   geant_list_size;                                tree->SetBranchAddress("geant_list_size",      &geant_list_size);
@@ -654,18 +653,23 @@ void RecoClassify3Cat() {
 
     TH1D* hMCNumWC2TPCMatch      = new TH1D("hMCNumWC2TPCMatch", "hMCNumWC2TPCMatch", 10, 0, 10);
 
+    TH1D* hMCNumTracksInCylinder    = new TH1D("hMCNumTracksInCylinder", "hMCNumTracksInCylinder", 10, 0, 10);
     TH1D* hMCNumTracksInCylinder0TG = new TH1D("hMCNumTracksInCylinder0TG", "hMCNumTracksInCylinder0TG", 10, 0, 10);
     TH1D* hMCNumTracksInCylinder1TG = new TH1D("hMCNumTracksInCylinder1TG", "hMCNumTracksInCylinder1TG", 10, 0, 10);
     TH1D* hMCNumTracksInCylinder2TG = new TH1D("hMCNumTracksInCylinder2TG", "hMCNumTracksInCylinder2TG", 10, 0, 10);
+    TH1D* hMCNumTracksInCylinderNTG = new TH1D("hMCNumTracksInCylinderNTG", "hMCNumTracksInCylinderNTG", 10, 0, 10);
 
+    TH1D* hMCNumSmallTracksInCylinder    = new TH1D("hMCNumSmallTracksInCylinder", "hMCNumSmallTracksInCylinder", 10, 0, 10);
     TH1D* hMCNumSmallTracksInCylinder0TG = new TH1D("hMCNumSmallTracksInCylinder0TG", "hMCNumSmallTracksInCylinder0TG", 10, 0, 10);
     TH1D* hMCNumSmallTracksInCylinder1TG = new TH1D("hMCNumSmallTracksInCylinder1TG", "hMCNumSmallTracksInCylinder1TG", 10, 0, 10);
     TH1D* hMCNumSmallTracksInCylinder2TG = new TH1D("hMCNumSmallTracksInCylinder2TG", "hMCNumSmallTracksInCylinder2TG", 10, 0, 10);
+    TH1D* hMCNumSmallTracksInCylinderNTG = new TH1D("hMCNumSmallTracksInCylinderNTG", "hMCNumSmallTracksInCylinderNTG", 10, 0, 10);
 
     TH1D* hMCTGSmallTracks    = new TH1D("hMCTGSmallTracks", "hMCTGSmallTracks;;", 10, 0, 10);
     TH1D* hMCTGSmallTracks0TG = new TH1D("hMCTGSmallTracks0TG", "hMCTGSmallTracks0TG;;", 10, 0, 10);
     TH1D* hMCTGSmallTracks1TG = new TH1D("hMCTGSmallTracks1TG", "hMCTGSmallTracks1TG;;", 10, 0, 10);
     TH1D* hMCTGSmallTracks2TG = new TH1D("hMCTGSmallTracks2TG", "hMCTGSmallTracks2TG;;", 10, 0, 10);
+    TH1D* hMCTGSmallTracksNTG = new TH1D("hMCTGSmallTracksNTG", "hMCTGSmallTracksNTG;;", 10, 0, 10);
 
     TH1D* hMCTGTrackLengths         = new TH1D("hMCTGTrackLengths", "hMCTGTrackLengths;;", 25, 0, 50);
     TH1D* hMCTracksNearVertex       = new TH1D("hMCTracksNearVertex", "hMCTracksNearVertex;;", 10, 0, 10);
@@ -675,37 +679,41 @@ void RecoClassify3Cat() {
     TH2D* hMCSmallVsTGTracks          = new TH2D("hMCSmallVsTGTracks", "MCSmallVsTGTracks;Small Tracks;TG Tracks", 15, 0, 15, 15, 0, 15);
     TH2D* hMCTGNumSmallTracksVsThresh = new TH2D("hMCTGNumSmallTracksVsThresh", "MCTGNumSmallTracksVsThresh;Small Track Length Threshold (cm);Num Small Tracks", 10, 0, 40, 15, 0, 15);
 
+    TH1D* hMCTGUnreconstructedHitsInduction    = new TH1D("hMCTGUnreconstructedHitsInduction", "hMCTGUnreconstructedHitsInduction;;", 30, 0, 30);
     TH1D* hMCTGUnreconstructedHitsInduction0TG = new TH1D("hMCTGUnreconstructedHitsInduction0TG", "hMCTGUnreconstructedHitsInduction0TG;;", 30, 0, 30);
     TH1D* hMCTGUnreconstructedHitsInduction1TG = new TH1D("hMCTGUnreconstructedHitsInduction1TG", "hMCTGUnreconstructedHitsInduction1TG;;", 30, 0, 30);
     TH1D* hMCTGUnreconstructedHitsInduction2TG = new TH1D("hMCTGUnreconstructedHitsInduction2TG", "hMCTGUnreconstructedHitsInduction2TG;;", 30, 0, 30);
+    TH1D* hMCTGUnreconstructedHitsInductionNTG = new TH1D("hMCTGUnreconstructedHitsInductionNTG", "hMCTGUnreconstructedHitsInductionNTG;;", 30, 0, 30);
 
+    TH1D* hMCTGUnreconstructedHitsCollection    = new TH1D("hMCTGUnreconstructedHitsCollection", "hMCTGUnreconstructedHitsCollection;;", 30, 0, 30);
     TH1D* hMCTGUnreconstructedHitsCollection0TG = new TH1D("hMCTGUnreconstructedHitsCollection0TG", "hMCTGUnreconstructedHitsCollection0TG;;", 30, 0, 30);
     TH1D* hMCTGUnreconstructedHitsCollection1TG = new TH1D("hMCTGUnreconstructedHitsCollection1TG", "hMCTGUnreconstructedHitsCollection1TG;;", 30, 0, 30);
     TH1D* hMCTGUnreconstructedHitsCollection2TG = new TH1D("hMCTGUnreconstructedHitsCollection2TG", "hMCTGUnreconstructedHitsCollection2TG;;", 30, 0, 30);
+    TH1D* hMCTGUnreconstructedHitsCollectionNTG = new TH1D("hMCTGUnreconstructedHitsCollectionNTG", "hMCTGUnreconstructedHitsCollectionNTG;;", 30, 0, 30);
 
+    TH1D* hMCTGNumClustersInduction    = new TH1D("hMCTGNumClustersInduction", "hMCTGNumClustersInduction;;", 10, 0, 10);
     TH1D* hMCTGNumClustersInduction0TG = new TH1D("hMCTGNumClustersInduction0TG", "hMCTGNumClustersInduction0TG;;", 10, 0, 10);
     TH1D* hMCTGNumClustersInduction1TG = new TH1D("hMCTGNumClustersInduction1TG", "hMCTGNumClustersInduction1TG;;", 10, 0, 10);
     TH1D* hMCTGNumClustersInduction2TG = new TH1D("hMCTGNumClustersInduction2TG", "hMCTGNumClustersInduction2TG;;", 10, 0, 10);
+    TH1D* hMCTGNumClustersInductionNTG = new TH1D("hMCTGNumClustersInductionNTG", "hMCTGNumClustersInductionNTG;;", 10, 0, 10);
 
+    TH1D* hMCTGNumClustersCollection    = new TH1D("hMCTGNumClustersCollection", "hMCTGNumClustersCollection;;", 10, 0, 10);
     TH1D* hMCTGNumClustersCollection0TG = new TH1D("hMCTGNumClustersCollection0TG", "hMCTGNumClustersCollection0TG;;", 10, 0, 10);
     TH1D* hMCTGNumClustersCollection1TG = new TH1D("hMCTGNumClustersCollection1TG", "hMCTGNumClustersCollection1TG;;", 10, 0, 10);
     TH1D* hMCTGNumClustersCollection2TG = new TH1D("hMCTGNumClustersCollection2TG", "hMCTGNumClustersCollection2TG;;", 10, 0, 10);
+    TH1D* hMCTGNumClustersCollectionNTG = new TH1D("hMCTGNumClustersCollectionNTG", "hMCTGNumClustersCollectionNTG;;", 10, 0, 10);
 
+    TH1D* hMCTGClusterSizesInduction    = new TH1D("hMCTGClusterSizesInduction", "hMCTGClusterSizesInduction;;", 15, 0, 30);
     TH1D* hMCTGClusterSizesInduction0TG = new TH1D("hMCTGClusterSizesInduction0TG", "hMCTGClusterSizesInduction0TG;;", 15, 0, 30);
     TH1D* hMCTGClusterSizesInduction1TG = new TH1D("hMCTGClusterSizesInduction1TG", "hMCTGClusterSizesInduction1TG;;", 15, 0, 30);
     TH1D* hMCTGClusterSizesInduction2TG = new TH1D("hMCTGClusterSizesInduction2TG", "hMCTGClusterSizesInduction2TG;;", 15, 0, 30);
+    TH1D* hMCTGClusterSizesInductionNTG = new TH1D("hMCTGClusterSizesInductionNTG", "hMCTGClusterSizesInductionNTG;;", 15, 0, 30);
 
+    TH1D* hMCTGClusterSizesCollection    = new TH1D("hMCTGClusterSizesCollection", "hMCTGClusterSizesCollection;;", 15, 0, 30);
     TH1D* hMCTGClusterSizesCollection0TG = new TH1D("hMCTGClusterSizesCollection0TG", "hMCTGClusterSizesCollection0TG;;", 15, 0, 30);
     TH1D* hMCTGClusterSizesCollection1TG = new TH1D("hMCTGClusterSizesCollection1TG", "hMCTGClusterSizesCollection1TG;;", 15, 0, 30);
     TH1D* hMCTGClusterSizesCollection2TG = new TH1D("hMCTGClusterSizesCollection2TG", "hMCTGClusterSizesCollection2TG;;", 15, 0, 30);
-
-    TH1D* hMCTGLargestClusterInduction0TG = new TH1D("hMCTGLargestClusterInduction0TG", "hMCTGLargestClusterInduction0TG;;", 20, 0, 20);
-    TH1D* hMCTGLargestClusterInduction1TG = new TH1D("hMCTGLargestClusterInduction1TG", "hMCTGLargestClusterInduction1TG;;", 20, 0, 20);
-    TH1D* hMCTGLargestClusterInduction2TG = new TH1D("hMCTGLargestClusterInduction2TG", "hMCTGLargestClusterInduction2TG;;", 20, 0, 20);
-
-    TH1D* hMCTGLargestClusterCollection0TG = new TH1D("hMCTGLargestClusterCollection0TG", "hMCTGLargestClusterCollection0TG;;", 20, 0, 20);
-    TH1D* hMCTGLargestClusterCollection1TG = new TH1D("hMCTGLargestClusterCollection1TG", "hMCTGLargestClusterCollection1TG;;", 20, 0, 20);
-    TH1D* hMCTGLargestClusterCollection2TG = new TH1D("hMCTGLargestClusterCollection2TG", "hMCTGLargestClusterCollection2TG;;", 20, 0, 20);
+    TH1D* hMCTGClusterSizesCollectionNTG = new TH1D("hMCTGClusterSizesCollectionNTG", "hMCTGClusterSizesCollectionNTG;;", 15, 0, 30);
 
     // Data-MC comparisons for secondary particle kinematics to validate unfolding
     TH1D* hMCNumCandidateProtons    = new TH1D("hMCNumCandidateProtons", "hMCNumCandidateProtons;;", 10, 0, 10);
@@ -748,19 +756,22 @@ void RecoClassify3Cat() {
     int eventCount1TG = 0;
     int eventCount2TG = 0;
 
-    bool verbose = true;
+    bool verbose = false;
 
     for (Int_t i = 0; i < NumEntries; ++i) {
+        // For some reason crashes
+        if (i == 1402) continue;
+
         // Get tree entry and reset variables
-        if (verbose) std::cout << std::endl;
-        if (verbose) std::cout << "=================================" << std::endl;
-        if (verbose) std::cout << "Getting tree entry: " << i << std::endl;
+        std::cout << std::endl;
+        std::cout << "=================================" << std::endl;
+        std::cout << "Getting tree entry: " << i << std::endl;
         tree->GetEntry(i);
-        if (verbose) std::cout << "Got tree entry" << std::endl;
-        if (verbose) std::cout << "Reseting variables" << std::endl;
+        std::cout << "Got tree entry" << std::endl;
+        std::cout << "Reseting variables" << std::endl;
         EventVariables ev;
-        if (verbose) std::cout << "Variables reset" << std::endl;
-        if (verbose) std::cout << "=================================" << std::endl;
+        std::cout << "Variables reset" << std::endl;
+        std::cout << "=================================" << std::endl;
 
         //////////////////////////////////////
         // Construct variables I care about //
@@ -848,6 +859,9 @@ void RecoClassify3Cat() {
         ev.WCPhi           = wctrk_phi[0];
         ev.WC4PrimaryX     = WC4xPos[0];
 
+        // In case we overwrite for elastic scattering
+        double primaryGeantEndX, primaryGeantEndY, primaryGeantEndZ; 
+
         // Get information about Geant4 primary particles
         int iPrimary = 0;
         TVector3 vtxPion, outPion;
@@ -858,9 +872,10 @@ void RecoClassify3Cat() {
                 ev.truthPrimaryVertexX    = EndPointx[true_idx];
                 ev.truthPrimaryVertexY    = EndPointy[true_idx];
                 ev.truthPrimaryVertexZ    = EndPointz[true_idx];
-                ev.truthPrimaryIncidentKE = Eng[true_idx] - Mass[true_idx];
                 ev.truthPrimaryVertexKE   = EndEng[true_idx] - Mass[true_idx];
-                vtxPion                = TVector3(EndPx[true_idx], EndPy[true_idx], EndPz[true_idx]);
+                vtxPion                   = TVector3(EndPx[true_idx], EndPy[true_idx], EndPz[true_idx]);
+
+                primaryGeantEndX = EndPointx[true_idx]; primaryGeantEndY = EndPointy[true_idx]; primaryGeantEndZ = EndPointz[true_idx];
 
                 if (verbose) std::cout << "Interacting pion mom.: " << EndPx[true_idx] << "   " << EndPy[true_idx] << "   " << EndPz[true_idx] << std::endl;
                 if (verbose) std::cout << "Primary id: " << TrackId[true_idx] << std::endl;
@@ -921,52 +936,56 @@ void RecoClassify3Cat() {
                                 ev.trajectoryInteractionLabel = "hadElastic";
                                 ev.trajectoryInteractionKE    = KE;
 
-                                lastTPCX = MidPosX[iPrimary][i_point];
-                                lastTPCY = MidPosY[iPrimary][i_point];
-                                lastTPCZ = MidPosZ[iPrimary][i_point];
+                                lastTPCX = MidPosX[iPrimary][InteractionPoint->at(i_point)];
+                                lastTPCY = MidPosY[iPrimary][InteractionPoint->at(i_point)];
+                                lastTPCZ = MidPosZ[iPrimary][InteractionPoint->at(i_point)];
+
+                                ev.truthPrimaryVertexX = lastTPCX;
+                                ev.truthPrimaryVertexY = lastTPCY;
+                                ev.truthPrimaryVertexZ = lastTPCZ;
 
                                 TVector3 momBefore, momAfter;
-                                if (i_point - 1 >= 0) {
+                                if (InteractionPoint->at(i_point) - 1 >= 0) {
                                     momBefore = TVector3(
-                                        MidPx[iPrimary][i_point-1], 
-                                        MidPy[iPrimary][i_point-1], 
-                                        MidPz[iPrimary][i_point-1]
+                                        MidPx[iPrimary][InteractionPoint->at(i_point)-1], 
+                                        MidPy[iPrimary][InteractionPoint->at(i_point)-1], 
+                                        MidPz[iPrimary][InteractionPoint->at(i_point)-1]
                                     );
                                 } else {
                                     momBefore = TVector3(
-                                        MidPx[iPrimary][i_point], 
-                                        MidPy[iPrimary][i_point],
-                                        MidPz[iPrimary][i_point]
+                                        MidPx[iPrimary][InteractionPoint->at(i_point)], 
+                                        MidPy[iPrimary][InteractionPoint->at(i_point)],
+                                        MidPz[iPrimary][InteractionPoint->at(i_point)]
                                     );
                                 }
-                                momAfter                   = TVector3(MidPx[iPrimary][i_point], MidPy[iPrimary][i_point], MidPz[iPrimary][i_point]);
+                                momAfter                      = TVector3(MidPx[iPrimary][InteractionPoint->at(i_point)], MidPy[iPrimary][InteractionPoint->at(i_point)], MidPz[iPrimary][InteractionPoint->at(i_point)]);
                                 ev.trajectoryInteractionAngle = momBefore.Angle(momAfter);
                             } else if (ev.interactionInTrajectory) {
                                 // Subsequent interactions in trajectory
                                 ev.secondaryInteractionTypes.push_back(12);
-                                ev.secondaryInteractionXPosition.push_back(MidPosX[iPrimary][i_point]);
-                                ev.secondaryInteractionYPosition.push_back(MidPosY[iPrimary][i_point]);
-                                ev.secondaryInteractionZPosition.push_back(MidPosZ[iPrimary][i_point]);
+                                ev.secondaryInteractionXPosition.push_back(MidPosX[iPrimary][InteractionPoint->at(i_point)]);
+                                ev.secondaryInteractionYPosition.push_back(MidPosY[iPrimary][InteractionPoint->at(i_point)]);
+                                ev.secondaryInteractionZPosition.push_back(MidPosZ[iPrimary][InteractionPoint->at(i_point)]);
                                 ev.secondaryInteractionInteractingKE.push_back(KE);
 
                                 ev.secondaryInteractionDaughtersPDG.push_back({});
                                 ev.secondaryInteractionDaughtersKE.push_back({});
 
                                 TVector3 momBefore, momAfter;
-                                if (i_point - 1 >= 0) {
+                                if (InteractionPoint->at(i_point) - 1 >= 0) {
                                     momBefore = TVector3(
-                                        MidPx[iPrimary][i_point-1], 
-                                        MidPy[iPrimary][i_point-1], 
-                                        MidPz[iPrimary][i_point-1]
+                                        MidPx[iPrimary][InteractionPoint->at(i_point)-1], 
+                                        MidPy[iPrimary][InteractionPoint->at(i_point)-1], 
+                                        MidPz[iPrimary][InteractionPoint->at(i_point)-1]
                                     );
                                 } else {
                                     momBefore = TVector3(
-                                        MidPx[iPrimary][i_point], 
-                                        MidPy[iPrimary][i_point],
-                                        MidPz[iPrimary][i_point]
+                                        MidPx[iPrimary][InteractionPoint->at(i_point)], 
+                                        MidPy[iPrimary][InteractionPoint->at(i_point)],
+                                        MidPz[iPrimary][InteractionPoint->at(i_point)]
                                     );
                                 }
-                                momAfter                   = TVector3(MidPx[iPrimary][i_point], MidPy[iPrimary][i_point], MidPz[iPrimary][i_point]);
+                                momAfter                   = TVector3(MidPx[iPrimary][InteractionPoint->at(i_point)], MidPy[iPrimary][InteractionPoint->at(i_point)], MidPz[iPrimary][InteractionPoint->at(i_point)]);
                                 ev.secondaryInteractionAngle.push_back(momBefore.Angle(momAfter));
                             }
                         }
@@ -987,12 +1006,17 @@ void RecoClassify3Cat() {
                 }
 
                 // Find first point in TPC
-                float firstTPCX = -999, firstTPCY = -999, firstTPCZ = -999;
+                float firstTPCX  = -999, firstTPCY  = -999, firstTPCZ  = -999;
+                float firstTPCPx = -999, firstTPCPy = -999, firstTPCPz = -999;
                 for (size_t i = 0; i < ev.truthPrimaryLocationX.size() - 1; i++) {
                     if (isWithinActiveVolume(ev.truthPrimaryLocationX.at(i), ev.truthPrimaryLocationY.at(i), ev.truthPrimaryLocationZ.at(i))) {
                         firstTPCX = ev.truthPrimaryLocationX.at(i);
                         firstTPCY = ev.truthPrimaryLocationY.at(i);
                         firstTPCZ = ev.truthPrimaryLocationZ.at(i);
+
+                        firstTPCPx = MidPx[iPrimary][i];
+                        firstTPCPy = MidPy[iPrimary][i];
+                        firstTPCPz = MidPz[iPrimary][i];
                         break;
                     }
                 }
@@ -1004,9 +1028,14 @@ void RecoClassify3Cat() {
                 if (firstTPCX == lastTPCX)      ev.validTrueIncidentKE = false;
 
                 double totalLength = distance(firstTPCX, lastTPCX, firstTPCY, lastTPCY, firstTPCZ, lastTPCZ);
-                if (totalLength < TRACK_PITCH) ev.validTrueIncidentKE = false;
+                
+                if (verbose) std::cout << "First TPC point: " << firstTPCX << "  " << firstTPCY << "  " << firstTPCZ << std::endl;
+                if (verbose) std::cout << "Last TPC point:  " << lastTPCX << "  " << lastTPCY << "  " << lastTPCZ << std::endl;
+                if (verbose) std::cout << "Total length:    " << totalLength << std::endl;
                 if (verbose) std::cout << "Is true incident valid: " << ev.validTrueIncidentKE << std::endl;
-                if (ev.validTrueIncidentKE) {
+
+                // If length more than track pitch, get contributions
+                if (ev.validTrueIncidentKE && totalLength >= TRACK_PITCH) {
                     std::map<double, TVector3> orderedUniformTrjPts;
                     auto positionVector0 = TVector3(firstTPCX, firstTPCY, firstTPCZ);
                     auto positionVector1 = TVector3(lastTPCX, lastTPCY, lastTPCZ);
@@ -1025,7 +1054,14 @@ void RecoClassify3Cat() {
                     double lastDist     = distance(lastPt.X(), secondtoLastPt.X(), lastPt.Y(), secondtoLastPt.Y(), lastPt.Z(), secondtoLastPt.Z());
                     if (lastDist < (TRACK_PITCH / 2)) orderedUniformTrjPts.erase((std::next(orderedUniformTrjPts.rbegin()))->first);
 
-                    double trueKineticEnergy = ev.truthPrimaryIncidentKE * 1000; // to MeV
+                    double trueKineticEnergy = 1000 * (
+                        TMath::Sqrt(
+                            firstTPCPx * firstTPCPx + 
+                            firstTPCPy * firstTPCPy +
+                            firstTPCPz * firstTPCPz +
+                            Mass[true_idx] * Mass[true_idx]
+                        ) - Mass[true_idx]
+                    );
                     for (auto it = std::next(orderedUniformTrjPts.begin()), old_it = orderedUniformTrjPts.begin(); it != orderedUniformTrjPts.end(); it++, old_it++) {
                         auto oldPos        = old_it->second;
                         auto currentPos    = it->second;
@@ -1056,77 +1092,19 @@ void RecoClassify3Cat() {
                         // << "  depEnergy="   << currentDepEnergy
                         // << std::endl;
                     }
-
-                    // Now do the same for secondary tracks, segmented by interaction points
-                    for (int i_seg = 0; i_seg < ev.secondaryInteractionXPosition.size(); i_seg++) {
-                        TVector3 segStart;
-                        if (i_seg == 0) {
-                            segStart = TVector3(
-                                lastTPCX,
-                                lastTPCY,
-                                lastTPCZ
-                            );
-                        } else {
-                            segStart = TVector3(
-                                ev.secondaryInteractionXPosition.at(i_seg - 1),
-                                ev.secondaryInteractionYPosition.at(i_seg - 1),
-                                ev.secondaryInteractionZPosition.at(i_seg - 1)
-                            );
-                        }
-                        
-                        auto segEnd   = TVector3(
-                            ev.secondaryInteractionXPosition.at(i_seg),
-                            ev.secondaryInteractionYPosition.at(i_seg),
-                            ev.secondaryInteractionZPosition.at(i_seg)
-                        );
-
-                        std::map<double, TVector3> orderedUniformTrjPtsSecondary;
-                        orderedUniformTrjPtsSecondary[segStart.Z()] = segStart;
-                        orderedUniformTrjPtsSecondary[segEnd.Z()]   = segEnd;
-
-                        double segLength = (segEnd - segStart).Mag();
-                        int numberPts    = (int)(segLength / TRACK_PITCH);
-                        for (int iPoint = 1; iPoint <= numberPts; ++iPoint) {
-                            auto newPoint = segStart + iPoint * (TRACK_PITCH / segLength) * (segEnd - segStart);
-                            orderedUniformTrjPtsSecondary[newPoint.Z()] = newPoint;
-                        }
-
-                        // If distance between last point and second to last is less than half pitch, eliminate second to last
-                        auto lastPt         = (orderedUniformTrjPtsSecondary.rbegin())->second;
-                        auto secondtoLastPt = (std::next(orderedUniformTrjPtsSecondary.rbegin()))->second;
-                        double lastDist     = distance(lastPt.X(), secondtoLastPt.X(), lastPt.Y(), secondtoLastPt.Y(), lastPt.Z(), secondtoLastPt.Z());
-                        if (lastDist < (TRACK_PITCH / 2)) orderedUniformTrjPtsSecondary.erase((std::next(orderedUniformTrjPtsSecondary.rbegin()))->first);
-
-                        std::vector<double> segIncidentKE = {};
-                        double segKineticEnergy = ev.secondaryInteractionInteractingKE.at(i_seg) * 1000;
-
-                        for (auto it = std::next(orderedUniformTrjPtsSecondary.begin()), old_it = orderedUniformTrjPtsSecondary.begin(); it != orderedUniformTrjPtsSecondary.end(); it++, old_it++) {
-                            auto oldPos     = old_it->second;
-                            auto currentPos = it->second;
-                            double uniformDist = (currentPos - oldPos).Mag();
-
-                            double currentDepEnergy = 0.;
-                            for (int i = 0; i < maxTrackIDE; i++) {
-                                if (IDEPos[i][2] < oldPos.Z())     continue;
-                                if (IDEPos[i][2] > currentPos.Z()) continue;
-                                currentDepEnergy += IDEEnergy[i];
-                            }
-
-                            if (currentDepEnergy / uniformDist < 0.1) continue;
-
-                            segKineticEnergy -= currentDepEnergy;
-
-                            if (isWithinReducedVolume(currentPos.X(), currentPos.Y(), currentPos.Z())) {
-                                segIncidentKE.push_back(segKineticEnergy);
-                            }
-                        }
-
-                        ev.secondaryIncidentKEContributions.push_back(segIncidentKE);
-                    }
+                } else if (ev.validTrueIncidentKE) {
+                    // If length less than track pitch, empty contributions
+                    ev.trueIncidentKEContributions.push_back({});
                 }
+
                 // Only one primary starting at -100 (particle gun)
                 break;
             } else if (process_primary[true_idx]) iPrimary++;
+        }
+
+        if (!(ev.truthPrimaryPDG == -211 || ev.truthPrimaryPDG == 11 || ev.truthPrimaryPDG == 13)) {
+            std::cout << "Weird primary PDG: " << ev.truthPrimaryPDG << ", skipping event" << std::endl;
+            continue;
         }
 
         // Get scattering angle
@@ -1196,6 +1174,102 @@ void RecoClassify3Cat() {
         );
 
         if (verbose) std::cout << "Background type: " << ev.backgroundType << std::endl;
+
+        // For elastic scattering, record what happens at end of track
+        if (ev.backgroundType == 12) {
+            ev.secondaryInteractionTypes.push_back(
+                fillSignalInformation(
+                    ev.truthPrimaryPDG,
+                    primaryGeantEndX,
+                    primaryGeantEndY,
+                    primaryGeantEndZ,
+                    false,
+                    "",
+                    ev.truthPrimaryDaughtersPDG,
+                    ev.truthPrimaryDaughtersProcess,
+                    ev.truthPrimaryDaughtersKE,
+                    false,
+                    ev.numVisibleProtons
+                )
+            );
+            ev.secondaryInteractionInteractingKE.push_back(ev.truthPrimaryVertexKE);
+            ev.secondaryInteractionAngle.push_back(ev.truthScatteringAngle);
+            ev.secondaryInteractionXPosition.push_back(primaryGeantEndX);
+            ev.secondaryInteractionYPosition.push_back(primaryGeantEndY);
+            ev.secondaryInteractionZPosition.push_back(primaryGeantEndZ);
+            ev.secondaryInteractionDaughtersPDG.push_back(ev.truthPrimaryDaughtersPDG);
+            ev.secondaryInteractionDaughtersKE.push_back(ev.truthPrimaryDaughtersKE);
+        }
+
+        // Grab incident KE for secondary interactions along primary track
+        for (int i_seg = 0; i_seg < ev.secondaryInteractionXPosition.size(); i_seg++) {
+            TVector3 segStart;
+            if (i_seg == 0) {
+                segStart = TVector3(
+                    ev.truthPrimaryVertexX,
+                    ev.truthPrimaryVertexY,
+                    ev.truthPrimaryVertexZ
+                );
+            } else {
+                segStart = TVector3(
+                    ev.secondaryInteractionXPosition.at(i_seg - 1),
+                    ev.secondaryInteractionYPosition.at(i_seg - 1),
+                    ev.secondaryInteractionZPosition.at(i_seg - 1)
+                );
+            }
+            
+            auto segEnd   = TVector3(
+                ev.secondaryInteractionXPosition.at(i_seg),
+                ev.secondaryInteractionYPosition.at(i_seg),
+                ev.secondaryInteractionZPosition.at(i_seg)
+            );
+
+            if ((segEnd - segStart).Mag() < TRACK_PITCH) {
+                ev.secondaryIncidentKEContributions.push_back({});
+                continue;
+            }
+
+            std::map<double, TVector3> orderedUniformTrjPtsSecondary;
+            orderedUniformTrjPtsSecondary[segStart.Z()] = segStart;
+            orderedUniformTrjPtsSecondary[segEnd.Z()]   = segEnd;
+
+            double segLength = (segEnd - segStart).Mag();
+            int numberPts    = (int)(segLength / TRACK_PITCH);
+            for (int iPoint = 1; iPoint <= numberPts; ++iPoint) {
+                auto newPoint = segStart + iPoint * (TRACK_PITCH / segLength) * (segEnd - segStart);
+                orderedUniformTrjPtsSecondary[newPoint.Z()] = newPoint;
+            }
+
+            // If distance between last point and second to last is less than half pitch, eliminate second to last
+            auto lastPt         = (orderedUniformTrjPtsSecondary.rbegin())->second;
+            auto secondtoLastPt = (std::next(orderedUniformTrjPtsSecondary.rbegin()))->second;
+            double lastDist     = distance(lastPt.X(), secondtoLastPt.X(), lastPt.Y(), secondtoLastPt.Y(), lastPt.Z(), secondtoLastPt.Z());
+            if (lastDist < (TRACK_PITCH / 2)) orderedUniformTrjPtsSecondary.erase((std::next(orderedUniformTrjPtsSecondary.rbegin()))->first);
+
+            std::vector<double> segIncidentKE = {};
+            double segKineticEnergy = ev.secondaryInteractionInteractingKE.at(i_seg) * 1000;
+            for (auto it = std::next(orderedUniformTrjPtsSecondary.begin()), old_it = orderedUniformTrjPtsSecondary.begin(); it != orderedUniformTrjPtsSecondary.end(); it++, old_it++) {
+                auto oldPos     = old_it->second;
+                auto currentPos = it->second;
+                double uniformDist = (currentPos - oldPos).Mag();
+
+                double currentDepEnergy = 0.;
+                for (int i = 0; i < maxTrackIDE; i++) {
+                    if (IDEPos[i][2] < oldPos.Z())     continue;
+                    if (IDEPos[i][2] > currentPos.Z()) continue;
+                    currentDepEnergy += IDEEnergy[i];
+                }
+
+                if (currentDepEnergy / uniformDist < 0.1) continue;
+
+                segKineticEnergy -= currentDepEnergy;
+
+                if (isWithinReducedVolume(currentPos.X(), currentPos.Y(), currentPos.Z())) {
+                    segIncidentKE.push_back(segKineticEnergy);
+                }
+            }
+            ev.secondaryIncidentKEContributions.push_back(segIncidentKE);
+        }
 
         // Make script go faster
         // if (i > USE_NUM_EVENTS) break;
@@ -1595,6 +1669,10 @@ void RecoClassify3Cat() {
             if (isPrimaryTG) {
                 hMCSmallVsTGTracks->Fill(smallTracksComp, numTGTracksComp);
                 hMCTGSmallTracks->Fill(smallTracksComp);
+                hMCNumTracksInCylinder->Fill(numTracksInCylinder);
+                hMCNumSmallTracksInCylinder->Fill(numSmallTracksInCylinder);
+                hMCTGUnreconstructedHitsInduction->Fill(numUnrecoHitsInduction);
+                hMCTGUnreconstructedHitsCollection->Fill(numUnrecoHitsCollection);
 
                 if (numTGTracksComp == 0) {
                     hMCTGSmallTracks0TG->Fill(smallTracksComp);
@@ -1616,6 +1694,13 @@ void RecoClassify3Cat() {
                     hMCNumSmallTracksInCylinder2TG->Fill(numSmallTracksInCylinder);
                     hMCTGUnreconstructedHitsInduction2TG->Fill(numUnrecoHitsInduction);
                     hMCTGUnreconstructedHitsCollection2TG->Fill(numUnrecoHitsCollection);
+                }
+                if (numTGTracksComp <= N_TG_TRACKS) {
+                    hMCTGSmallTracksNTG->Fill(smallTracksComp);
+                    hMCNumTracksInCylinderNTG->Fill(numTracksInCylinder);
+                    hMCNumSmallTracksInCylinderNTG->Fill(numSmallTracksInCylinder);
+                    hMCTGUnreconstructedHitsInductionNTG->Fill(numUnrecoHitsInduction);
+                    hMCTGUnreconstructedHitsCollectionNTG->Fill(numUnrecoHitsCollection);
                 }
 
                 // Scan over small track length thresholds and fill 2D histogram
@@ -1656,23 +1741,30 @@ void RecoClassify3Cat() {
                     if (std::find(candidateRandomHitsInduction.begin(), candidateRandomHitsInduction.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsInduction.end()) {
                         numClustersInduction++;
                         if (isPrimaryTG) {
+                            hMCTGClusterSizesInduction->Fill(thisCluster.clusterSize);
                             if (numTGTracksComp == 0) hMCTGClusterSizesInduction0TG->Fill(thisCluster.clusterSize);
                             if (numTGTracksComp <= 1) hMCTGClusterSizesInduction1TG->Fill(thisCluster.clusterSize);
                             if (numTGTracksComp <= 2) hMCTGClusterSizesInduction2TG->Fill(thisCluster.clusterSize);
+                            if (numTGTracksComp <= N_TG_TRACKS) hMCTGClusterSizesInductionNTG->Fill(thisCluster.clusterSize);
                         }
                         break;
                     } else if (std::find(candidateRandomHitsCollection.begin(), candidateRandomHitsCollection.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsCollection.end()) {
                         numClustersCollection++;
                         if (isPrimaryTG) {
+                            hMCTGClusterSizesCollection->Fill(thisCluster.clusterSize);
                             if (numTGTracksComp == 0) hMCTGClusterSizesCollection0TG->Fill(thisCluster.clusterSize);
                             if (numTGTracksComp <= 1) hMCTGClusterSizesCollection1TG->Fill(thisCluster.clusterSize);
                             if (numTGTracksComp <= 2) hMCTGClusterSizesCollection2TG->Fill(thisCluster.clusterSize);
+                            if (numTGTracksComp <= N_TG_TRACKS) hMCTGClusterSizesCollectionNTG->Fill(thisCluster.clusterSize);
                         }
                         break;
                     }
                 }
             }
             if (isPrimaryTG) {
+                hMCTGNumClustersInduction->Fill(numClustersInduction);
+                hMCTGNumClustersCollection->Fill(numClustersCollection);   
+
                 if (numTGTracksComp == 0) {
                     hMCTGNumClustersInduction0TG->Fill(numClustersInduction);
                     hMCTGNumClustersCollection0TG->Fill(numClustersCollection);   
@@ -1685,6 +1777,10 @@ void RecoClassify3Cat() {
                     hMCTGNumClustersInduction2TG->Fill(numClustersInduction);
                     hMCTGNumClustersCollection2TG->Fill(numClustersCollection);
                 }
+                if (numTGTracksComp <= N_TG_TRACKS) {
+                    hMCTGNumClustersInductionNTG->Fill(numClustersInduction);
+                    hMCTGNumClustersCollectionNTG->Fill(numClustersCollection);
+                }
             }
         }
 
@@ -1695,16 +1791,20 @@ void RecoClassify3Cat() {
         // Scattering only if degree > THRESHOLD and energy > THRESHOLD
         double scatteringAngle  = -9999;
         double scatteringEnergy = -9999;
-
+        
+        // Modify elastic scatterings
         if (ev.backgroundType == 12 || ev.backgroundType == 6) {
             if (ev.backgroundType == 12) {
-                scatteringAngle      = ev.trajectoryInteractionAngle;
-                scatteringEnergy     = ev.trajectoryInteractionKE;
+                scatteringAngle         = ev.trajectoryInteractionAngle;
+                scatteringEnergy        = ev.trajectoryInteractionKE;
                 ev.truthPrimaryVertexKE = ev.trajectoryInteractionKE; // in case we do not modify anything
-            } else if (ev.backgroundType == 6) {
+            }
+            else if (ev.backgroundType == 6) {
                 scatteringAngle  = ev.truthScatteringAngle;
                 scatteringEnergy = ev.truthScatteredPionKE; 
             }
+
+            if (verbose) std::cout << "Checking if elastic scattering is above threshold, with angle " << scatteringAngle << " and KE " << scatteringEnergy << std::endl;
 
             // If outgoing pion below threshold, absorption
             if (scatteringEnergy < PION_SCATTERING_ENERGY_THRESHOLD) {
@@ -1724,17 +1824,15 @@ void RecoClassify3Cat() {
                     ev.numVisibleProtons = tempNumVisibleProtons;
                 }
             }
-
-
             // If pion above threshold but angle not large enough, go to next interaction and check there
-            if (scatteringAngle < SCATTERING_ANGLE_THRESHOLD) {
+            else if (scatteringAngle < SCATTERING_ANGLE_THRESHOLD) {
                 scatteringsModified++;
-                // Use secondary interaction
+                // Use secondary interaction for 
                 for (int iInteraction = 0; iInteraction < ev.secondaryInteractionTypes.size(); ++iInteraction) {
                     int currentInteraction = ev.secondaryInteractionTypes.at(iInteraction);
                     scatteringAngle        = ev.secondaryInteractionAngle.at(iInteraction);
                     scatteringEnergy       = ev.secondaryInteractionInteractingKE.at(iInteraction);
-                    std::cout << "hereee " << std::endl;
+
                     // Get scattering energy for inelastic scattering from outgoing pion kinematics
                     if (currentInteraction == 6) {
                         for (int i = 0; i < ev.secondaryInteractionDaughtersPDG.at(iInteraction).size(); ++i) {
@@ -1744,8 +1842,7 @@ void RecoClassify3Cat() {
                             }
                         }
                     }
-                    std::cout << ev.secondaryInteractionTypes.size() << std::endl;
-                    std::cout << ev.secondaryIncidentKEContributions.at(iInteraction).size() << std::endl;
+
                     // Add incident slices true contributions
                     for (int iContribution = 0; iContribution < ev.secondaryIncidentKEContributions.at(iInteraction).size(); ++iContribution) {
                         ev.trueIncidentKEContributions.push_back(ev.secondaryIncidentKEContributions.at(iInteraction)[iContribution]);
@@ -1777,9 +1874,8 @@ void RecoClassify3Cat() {
                         ev.truthPrimaryVertexZ  = ev.secondaryInteractionZPosition.at(iInteraction);
                         break;
                     }
-
                     // If scattering energy above threshold but angle not large enough, keep going
-                    if (
+                    else if (
                         (currentInteraction == 6 || currentInteraction == 12) &&
                         scatteringAngle < SCATTERING_ANGLE_THRESHOLD
                     ) {
@@ -2669,11 +2765,6 @@ void RecoClassify3Cat() {
 
     comparisonsFile->cd();
 
-    hMCTGSmallTracks->Write("", TObject::kOverwrite);
-    hMCTGSmallTracks0TG->Write("", TObject::kOverwrite);
-    hMCTGSmallTracks1TG->Write("", TObject::kOverwrite);
-    hMCTGSmallTracks2TG->Write("", TObject::kOverwrite);
-
     hMCTracksNearVertex->Write("", TObject::kOverwrite);
     hMCTrackLengthsNearVertex->Write("", TObject::kOverwrite);
 
@@ -2682,40 +2773,61 @@ void RecoClassify3Cat() {
     hMCTGTrackLengths->Write("", TObject::kOverwrite);
     hMCTGNumSmallTracksVsThresh->Write("", TObject::kOverwrite);
     hMCNumWC2TPCMatch->Write("", TObject::kOverwrite);
+    hMCPrimaryTrackPosition->Write("", TObject::kOverwrite);
 
+    hMCTGSmallTracks->Write("", TObject::kOverwrite);
+    hMCTGSmallTracks0TG->Write("", TObject::kOverwrite);
+    hMCTGSmallTracks1TG->Write("", TObject::kOverwrite);
+    hMCTGSmallTracks2TG->Write("", TObject::kOverwrite);
+    hMCTGSmallTracksNTG->Write("", TObject::kOverwrite);
+
+    hMCNumTracksInCylinder->Write("", TObject::kOverwrite);
     hMCNumTracksInCylinder0TG->Write("", TObject::kOverwrite);
     hMCNumTracksInCylinder1TG->Write("", TObject::kOverwrite);
     hMCNumTracksInCylinder2TG->Write("", TObject::kOverwrite);
+    hMCNumTracksInCylinderNTG->Write("", TObject::kOverwrite);
 
+    hMCNumSmallTracksInCylinder->Write("", TObject::kOverwrite);
     hMCNumSmallTracksInCylinder0TG->Write("", TObject::kOverwrite);
     hMCNumSmallTracksInCylinder1TG->Write("", TObject::kOverwrite);
     hMCNumSmallTracksInCylinder2TG->Write("", TObject::kOverwrite);
+    hMCNumSmallTracksInCylinderNTG->Write("", TObject::kOverwrite);
 
-    hMCPrimaryTrackPosition->Write("", TObject::kOverwrite);
-
+    hMCTGUnreconstructedHitsInduction->Write("", TObject::kOverwrite);
     hMCTGUnreconstructedHitsInduction0TG->Write("", TObject::kOverwrite);
     hMCTGUnreconstructedHitsInduction1TG->Write("", TObject::kOverwrite);
     hMCTGUnreconstructedHitsInduction2TG->Write("", TObject::kOverwrite);
+    hMCTGUnreconstructedHitsInductionNTG->Write("", TObject::kOverwrite);
 
+    hMCTGUnreconstructedHitsCollection->Write("", TObject::kOverwrite);
     hMCTGUnreconstructedHitsCollection0TG->Write("", TObject::kOverwrite);
     hMCTGUnreconstructedHitsCollection1TG->Write("", TObject::kOverwrite);
     hMCTGUnreconstructedHitsCollection2TG->Write("", TObject::kOverwrite);
+    hMCTGUnreconstructedHitsCollectionNTG->Write("", TObject::kOverwrite);
 
+    hMCTGNumClustersInduction->Write("", TObject::kOverwrite);
     hMCTGNumClustersInduction0TG->Write("", TObject::kOverwrite);
     hMCTGNumClustersInduction1TG->Write("", TObject::kOverwrite);
     hMCTGNumClustersInduction2TG->Write("", TObject::kOverwrite);
+    hMCTGNumClustersInductionNTG->Write("", TObject::kOverwrite);
 
+    hMCTGNumClustersCollection->Write("", TObject::kOverwrite);
     hMCTGNumClustersCollection0TG->Write("", TObject::kOverwrite);
     hMCTGNumClustersCollection1TG->Write("", TObject::kOverwrite);
     hMCTGNumClustersCollection2TG->Write("", TObject::kOverwrite);
-
+    hMCTGNumClustersCollectionNTG->Write("", TObject::kOverwrite);
+    
+    hMCTGClusterSizesInduction->Write("", TObject::kOverwrite);
     hMCTGClusterSizesInduction0TG->Write("", TObject::kOverwrite);
     hMCTGClusterSizesInduction1TG->Write("", TObject::kOverwrite);
     hMCTGClusterSizesInduction2TG->Write("", TObject::kOverwrite);
+    hMCTGClusterSizesInductionNTG->Write("", TObject::kOverwrite);
 
+    hMCTGClusterSizesCollection->Write("", TObject::kOverwrite);
     hMCTGClusterSizesCollection0TG->Write("", TObject::kOverwrite);
     hMCTGClusterSizesCollection1TG->Write("", TObject::kOverwrite);
     hMCTGClusterSizesCollection2TG->Write("", TObject::kOverwrite);
+    hMCTGClusterSizesCollectionNTG->Write("", TObject::kOverwrite);
 
     hMCNumCandidateProtons->Write("", TObject::kOverwrite);
     hMCLengthCandidateProtons->Write("", TObject::kOverwrite);
