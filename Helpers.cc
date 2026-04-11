@@ -2983,6 +2983,219 @@ void PrintDataVsMCContribPlot(
     delete c;
 }
 
+void PrintDataVsTwoMCPlot(
+    const TString& SaveDir,
+    const TString& Name,
+    TH1* hData,
+    TH1* hMC1,
+    TH1* hMC2,
+    const TString& label1,
+    const TString& label2,
+    int color1,
+    int color2,
+    const TString& PlotTitle,
+    const TString& XTitle,
+    const TString& YTitle,
+    int FontStyle,
+    double TextSize
+) {
+    if (!hData || !hMC1 || !hMC2) {
+        std::cerr << "PrintDataVsTwoMCPlot: null histogram pointer.\n";
+        return;
+    }
+
+    const int nb = hData->GetNbinsX();
+    if (hMC1->GetNbinsX() != nb || hMC2->GetNbinsX() != nb) {
+        std::cerr << "PrintDataVsTwoMCPlot: bin mismatch.\n";
+        return;
+    }
+
+    static int uid = 0; uid++;
+
+    // ── Canvas + pads ─────────────────────────────────────────────────────────
+    const double botFrac = 0.30;
+    const double topFrac = 1.0 - botFrac;
+    const double rScale  = topFrac / botFrac;
+
+    TCanvas* c = new TCanvas(Form("c_d2mc_%d", uid), "", 1400, 1200);
+    c->SetTicks(1, 1);
+
+    TPad* pTop = new TPad(Form("pTop_%d", uid), "", 0, botFrac, 1, 1);
+    TPad* pBot = new TPad(Form("pBot_%d", uid), "", 0, 0,       1, botFrac);
+
+    pTop->SetLeftMargin(0.14); pTop->SetRightMargin(0.05);
+    pTop->SetBottomMargin(0.02); pTop->SetTopMargin(0.10);
+    pBot->SetLeftMargin(0.14); pBot->SetRightMargin(0.05);
+    pBot->SetBottomMargin(0.35); pBot->SetTopMargin(0.08);
+
+    pTop->Draw(); pBot->Draw();
+
+    gStyle->SetGridStyle(3);
+    gStyle->SetGridWidth(1);
+    gStyle->SetTitleFont(FontStyle, "t");
+    gStyle->SetTitleSize(TextSize * 1.1, "t");
+    gStyle->SetTitleAlign(23);
+    gStyle->SetTitleX(0.5);
+    gStyle->SetTitleY(0.98);
+
+    // ── Style helpers ─────────────────────────────────────────────────────────
+    auto styleAxesTop = [&](TH1* h) {
+        h->SetTitle(PlotTitle);
+        h->GetXaxis()->SetLabelSize(0.0);
+        h->GetXaxis()->SetTitleSize(0.0);
+        h->GetYaxis()->SetTitle(YTitle);
+        h->GetYaxis()->CenterTitle(true);
+        h->GetYaxis()->SetTitleFont(FontStyle);
+        h->GetYaxis()->SetLabelFont(FontStyle);
+        h->GetYaxis()->SetTitleSize(TextSize);
+        h->GetYaxis()->SetLabelSize(TextSize * 0.85);
+        h->GetYaxis()->SetTitleOffset(1.0);
+        h->GetYaxis()->SetNdivisions(5, 5, 0, kTRUE);
+        h->GetYaxis()->SetTickLength(0.02);
+    };
+
+    auto styleAxesBot = [&](TH1* h) {
+        h->SetTitle("");
+        h->GetXaxis()->SetTitle(XTitle);
+        h->GetXaxis()->CenterTitle(true);
+        h->GetXaxis()->SetTitleFont(FontStyle);
+        h->GetXaxis()->SetLabelFont(FontStyle);
+        h->GetXaxis()->SetTitleSize(TextSize * rScale);
+        h->GetXaxis()->SetLabelSize(TextSize * 0.85 * rScale);
+        h->GetXaxis()->SetTitleOffset(1.15);
+        h->GetXaxis()->SetNdivisions(7, 5, 0, kTRUE);
+        h->GetXaxis()->SetTickLength(0.02 * rScale);
+        h->GetYaxis()->SetTitle("Data / MC");
+        h->GetYaxis()->CenterTitle(true);
+        h->GetYaxis()->SetTitleFont(FontStyle);
+        h->GetYaxis()->SetLabelFont(FontStyle);
+        h->GetYaxis()->SetTitleSize(TextSize * rScale);
+        h->GetYaxis()->SetLabelSize(TextSize * 0.85 * rScale);
+        h->GetYaxis()->SetTitleOffset(0.35);
+        h->GetYaxis()->SetNdivisions(5, 5, 0, kTRUE);
+        h->GetYaxis()->SetTickLength(0.02 * rScale);
+    };
+
+    // ── Poisson data graph ────────────────────────────────────────────────────
+    TGraphAsymmErrors* gData = MakeDataGraphPoisson(hData);
+
+    // ── Style MC lines ────────────────────────────────────────────────────────
+    TH1* h1 = (TH1*) hMC1->Clone(Form("h1_%d", uid));
+    TH1* h2 = (TH1*) hMC2->Clone(Form("h2_%d", uid));
+    h1->SetDirectory(nullptr);
+    h2->SetDirectory(nullptr);
+
+    h1->SetLineColor(color1); h1->SetLineWidth(3); h1->SetFillStyle(0);
+    h2->SetLineColor(color2); h2->SetLineWidth(3); h2->SetFillStyle(0);
+
+    // ── Top pad ───────────────────────────────────────────────────────────────
+    pTop->cd();
+    pTop->SetGridx(1); pTop->SetGridy(1);
+
+    // Frame
+    TH1* hFrame = (TH1*) hData->Clone(Form("hFrame_%d", uid));
+    hFrame->SetDirectory(nullptr);
+    hFrame->Reset("ICESM");
+    styleAxesTop(hFrame);
+
+    double ymax = 0.0;
+    for (int i = 1; i <= nb; ++i) {
+        ymax = std::max(ymax, std::max({
+            hData->GetBinContent(i),
+            hMC1->GetBinContent(i),
+            hMC2->GetBinContent(i)
+        }));
+    }
+    if (ymax <= 0) ymax = 1.0;
+    hFrame->SetMaximum(1.35 * ymax);
+    hFrame->SetMinimum(0.0);
+
+    hFrame->Draw("HIST");
+    h1->Draw("HIST SAME");
+    h2->Draw("HIST SAME");
+    gData->Draw("P SAME");
+
+    TLegend* leg = new TLegend(0.18, 0.70, 0.55, 0.88);
+    leg->SetBorderSize(0);
+    leg->SetFillStyle(1001);
+    leg->SetFillColor(kWhite);
+    leg->SetTextFont(FontStyle);
+    leg->SetTextSize(TextSize * 0.75);
+    leg->AddEntry(gData, "Data",   "p");
+    leg->AddEntry(h1,    label1,   "l");
+    leg->AddEntry(h2,    label2,   "l");
+    leg->Draw();
+
+    // ── Bottom pad: two independent ratio curves ───────────────────────────────
+    pBot->cd();
+    pBot->SetGridx(1); pBot->SetGridy(1);
+
+    TGraphAsymmErrors* gRatio1 = new TGraphAsymmErrors(nb);
+    TGraphAsymmErrors* gRatio2 = new TGraphAsymmErrors(nb);
+
+    for (int i = 1; i <= nb; ++i) {
+        const int    ip  = i - 1;
+        const double x   = hData->GetXaxis()->GetBinCenter(i);
+        const double ex  = 0.5 * hData->GetXaxis()->GetBinWidth(i);
+        const double d   = std::max(0.0, hData->GetBinContent(i));
+        const double mc1 = hMC1->GetBinContent(i);
+        const double mc2 = hMC2->GetBinContent(i);
+
+        // Poisson errors on data from the graph already computed above
+        const double ed_lo = gData->GetErrorYlow(ip);
+        const double ed_hi = gData->GetErrorYhigh(ip);
+
+        auto setRatioPoint = [&](TGraphAsymmErrors* g, double mc) {
+            if (mc > 0.0) {
+                g->SetPoint(ip, x, d / mc);
+                g->SetPointError(ip, ex, ex, ed_lo / mc, ed_hi / mc);
+            } else {
+                g->SetPoint(ip, x, 0.0);
+                g->SetPointError(ip, ex, ex, 0.0, 0.0);
+            }
+        };
+
+        setRatioPoint(gRatio1, mc1);
+        setRatioPoint(gRatio2, mc2);
+    }
+
+    gRatio1->SetMarkerStyle(20); gRatio1->SetMarkerSize(1.0);
+    gRatio1->SetMarkerColor(color1); gRatio1->SetLineColor(color1);
+
+    gRatio2->SetMarkerStyle(21); gRatio2->SetMarkerSize(1.0);
+    gRatio2->SetMarkerColor(color2); gRatio2->SetLineColor(color2);
+
+    // Ratio frame
+    TH1* hRFrame = (TH1*) hData->Clone(Form("hRFrame_%d", uid));
+    hRFrame->SetDirectory(nullptr);
+    hRFrame->Reset("ICESM");
+    styleAxesBot(hRFrame);
+    hRFrame->SetMinimum(0.0);
+    hRFrame->SetMaximum(2.0);
+
+    hRFrame->Draw("HIST");
+    gRatio1->Draw("P SAME");
+    gRatio2->Draw("P SAME");
+
+    TLine* unity = new TLine(
+        hData->GetXaxis()->GetXmin(), 1.0,
+        hData->GetXaxis()->GetXmax(), 1.0
+    );
+    unity->SetLineStyle(2); unity->SetLineWidth(2); unity->Draw("SAME");
+
+    c->Update();
+    c->Print(SaveDir + Name + ".png");
+
+    // Cleanup
+    delete leg;
+    delete unity;
+    delete gRatio1; delete gRatio2;
+    delete gData;
+    delete hRFrame; delete hFrame;
+    delete h1; delete h2;
+    delete c;
+}
+
 int fillSignalInformation(
     int pdg,
     double vx, double vy, double vz,
@@ -3111,5 +3324,198 @@ std::string ProcessToString(int proc) {
         case 11: return "kaon+Inelastic";
         case 12: return "hBertiniCaptureAtRest";
         default: return "Unknown";
+    }
+}
+
+void printEventVariables(const EventVariables& t, std::ofstream& out) {
+    // Helper lambdas
+    auto printVec = [&out](const std::string& name, const auto& vec) {
+        out << name << " (" << vec.size() << "): ";
+        for (const auto& v : vec) out << v << " ";
+        out << "\n";
+    };
+    auto printVecVec = [&out](const std::string& name, const auto& vv) {
+        out << name << " (" << vv.size() << " tracks):\n";
+        for (size_t i = 0; i < vv.size(); ++i) {
+            out << "  [" << i << "]: ";
+            for (const auto& v : vv[i]) out << v << " ";
+            out << "\n";
+        }
+    };
+
+    out << std::boolalpha;
+    out << "========== EventVariables ==========\n";
+
+    // Classification
+    out << "\n-- Classification --\n";
+    out << "backgroundType:    " << t.backgroundType    << "\n";
+    out << "numVisibleProtons: " << t.numVisibleProtons << "\n";
+
+    // WC match calorimetry
+    out << "\n-- WC Match Calorimetry --\n";
+    printVec("wcMatchResR", t.wcMatchResR);
+    printVec("wcMatchDEDX", t.wcMatchDEDX);
+    printVec("wcMatchEDep", t.wcMatchEDep);
+    printVec("wcMatchXPos", t.wcMatchXPos);
+    printVec("wcMatchYPos", t.wcMatchYPos);
+    printVec("wcMatchZPos", t.wcMatchZPos);
+
+    // WC2TPC location
+    // out << "\n-- WC2TPC Locations --\n";
+    // printVec("WC2TPCLocationsX", t.WC2TPCLocationsX);
+    // printVec("WC2TPCLocationsY", t.WC2TPCLocationsY);
+    // printVec("WC2TPCLocationsZ", t.WC2TPCLocationsZ);
+
+    // Reco track endpoints
+    // out << "\n-- Reco Track Endpoints --\n";
+    // printVec("recoEndX",        t.recoEndX);
+    // printVec("recoEndY",        t.recoEndY);
+    // printVec("recoEndZ",        t.recoEndZ);
+    // printVec("recoBeginX",      t.recoBeginX);
+    // printVec("recoBeginY",      t.recoBeginY);
+    // printVec("recoBeginZ",      t.recoBeginZ);
+    // printVec("isTrackInverted", t.isTrackInverted);
+
+    // Reco calorimetry
+    // out << "\n-- Reco Calorimetry --\n";
+    // printVecVec("recoResR", t.recoResR);
+    // printVecVec("recoDEDX", t.recoDEDX);
+
+    // Truth primary scalars
+    out << "\n-- Truth Primary Scalars --\n";
+    out << "truthPrimaryPDG:      " << t.truthPrimaryPDG      << "\n";
+    out << "truthPrimaryVertexX:  " << t.truthPrimaryVertexX  << "\n";
+    out << "truthPrimaryVertexY:  " << t.truthPrimaryVertexY  << "\n";
+    out << "truthPrimaryVertexZ:  " << t.truthPrimaryVertexZ  << "\n";
+    out << "truthPrimaryVertexKE: " << t.truthPrimaryVertexKE << "\n";
+
+    // Truth primary daughters
+    out << "\n-- Truth Primary Daughters --\n";
+    printVec("truthPrimaryDaughtersPDG",     t.truthPrimaryDaughtersPDG);
+    printVec("truthPrimaryDaughtersProcess", t.truthPrimaryDaughtersProcess);
+    printVec("truthPrimaryDaughtersKE",      t.truthPrimaryDaughtersKE);
+
+    // Truth primary trajectory
+    out << "\n-- Truth Primary Trajectory --\n";
+    printVec("truthPrimaryLocationX", t.truthPrimaryLocationX);
+    printVec("truthPrimaryLocationY", t.truthPrimaryLocationY);
+    printVec("truthPrimaryLocationZ", t.truthPrimaryLocationZ);
+
+    // WC track scalars
+    // out << "\n-- WC Track Scalars --\n";
+    // out << "WC2TPCsize:          " << t.WC2TPCsize          << "\n";
+    // out << "WC2TPCMatch:         " << t.WC2TPCMatch         << "\n";
+    // out << "WCTrackMomentum:     " << t.WCTrackMomentum     << "\n";
+    // out << "WCTheta:             " << t.WCTheta             << "\n";
+    // out << "WCPhi:               " << t.WCPhi               << "\n";
+    // out << "WC4PrimaryX:         " << t.WC4PrimaryX         << "\n";
+    // out << "WC2TPCPrimaryBeginX: " << t.WC2TPCPrimaryBeginX << "\n";
+    // out << "WC2TPCPrimaryBeginY: " << t.WC2TPCPrimaryBeginY << "\n";
+    // out << "WC2TPCPrimaryBeginZ: " << t.WC2TPCPrimaryBeginZ << "\n";
+    // out << "WC2TPCPrimaryEndX:   " << t.WC2TPCPrimaryEndX   << "\n";
+    // out << "WC2TPCPrimaryEndY:   " << t.WC2TPCPrimaryEndY   << "\n";
+    // out << "WC2TPCPrimaryEndZ:   " << t.WC2TPCPrimaryEndZ   << "\n";
+
+    // Hit information
+    // out << "\n-- Hit Information --\n";
+    // printVec("fHitPlane",         t.fHitPlane);
+    // printVec("hitRecoAsTrackKey", t.hitRecoAsTrackKey);
+    // printVec("hitWC2TPCKey",      t.hitWC2TPCKey);
+    // printVec("fHitT",             t.fHitT);
+    // printVec("fHitX",             t.fHitX);
+    // printVec("fHitW",             t.fHitW);
+
+    // Trajectory interaction
+    out << "\n-- Trajectory Interaction --\n";
+    out << "interactionInTrajectory:    " << t.interactionInTrajectory    << "\n";
+    out << "trajectoryInteractionLabel: " << t.trajectoryInteractionLabel << "\n";
+    out << "trajectoryInteractionAngle: " << t.trajectoryInteractionAngle << "\n";
+    out << "trajectoryInteractionKE:    " << t.trajectoryInteractionKE    << "\n";
+    out << "trajectoryInitialMomentumX: " << t.trajectoryInitialMomentumX << "\n";
+
+    // Scattering truth
+    out << "\n-- Scattering Truth --\n";
+    out << "truthScatteringAngle: " << t.truthScatteringAngle << " (threshold: " << SCATTERING_ANGLE_THRESHOLD << ")" << "\n";
+    out << "truthScatteredPionKE: " << t.truthScatteredPionKE << " (threshold: " << PION_SCATTERING_ENERGY_THRESHOLD << ")" <<"\n";
+
+    // Reco track hits
+    out << "\n-- Reco Track Hits --\n";
+    printVecVec("recoTrackHitIndices", t.recoTrackHitIndices);
+    printVecVec("recoTrackHitX",       t.recoTrackHitX);
+    printVecVec("recoTrackHitY",       t.recoTrackHitY);
+    printVecVec("recoTrackHitZ",       t.recoTrackHitZ);
+
+    // Secondary interactions
+    out << "\n-- Secondary Interactions --\n";
+    printVec("secondaryInteractionTypes",         t.secondaryInteractionTypes);
+    printVec("secondaryInteractionInteractingKE", t.secondaryInteractionInteractingKE);
+    printVec("secondaryInteractionAngle",         t.secondaryInteractionAngle);
+    printVec("secondaryInteractionXPosition",     t.secondaryInteractionXPosition);
+    printVec("secondaryInteractionYPosition",     t.secondaryInteractionYPosition);
+    printVec("secondaryInteractionZPosition",     t.secondaryInteractionZPosition);
+    printVecVec("secondaryInteractionDaughtersPDG", t.secondaryInteractionDaughtersPDG);
+    printVecVec("secondaryInteractionDaughtersKE",  t.secondaryInteractionDaughtersKE);
+    printVecVec("secondaryIncidentKEContributions", t.secondaryIncidentKEContributions);
+
+    // Incident KE
+    out << "\n-- Incident KE --\n";
+    out << "validTrueIncidentKE: " << t.validTrueIncidentKE << "\n";
+    printVec("trueIncidentKEContributions", t.trueIncidentKEContributions);
+
+    out << "====================================\n";
+}
+
+// Reweighing
+void ApplyWeights(TH1* h, const TH1* weights) {
+    if (!h || !weights)
+        throw std::invalid_argument("ApplyWeights: null histogram pointer");
+    if (h->GetNbinsX() != weights->GetNbinsX())
+        throw std::invalid_argument("ApplyWeights: bin mismatch");
+
+    for (int i = 1; i <= h->GetNbinsX(); ++i) {
+        const double w    = weights->GetBinContent(i);
+        const double werr = weights->GetBinError(i);
+        const double c    = h->GetBinContent(i);
+        const double cerr = h->GetBinError(i);
+
+        h->SetBinContent(i, c * w);
+        double rel = 0.0;
+        if (c > 0.0 && w > 0.0)
+            rel = std::sqrt((cerr / c) * (cerr / c) + (werr / w) * (werr / w));
+        h->SetBinError(i, c * w * rel);
+    }
+}
+
+void ComputeReweightingWeights(const TH1* source, const TH1* target, TH1* weights) {
+    if (!source || !target || !weights)
+        throw std::invalid_argument("ComputeReweightingWeights: null histogram pointer");
+
+    const int nBins = source->GetNbinsX();
+    if (target->GetNbinsX() != nBins || weights->GetNbinsX() != nBins)
+        throw std::invalid_argument("ComputeReweightingWeights: histogram bin mismatch");
+
+    const double sourceIntegral = source->Integral();
+    const double targetIntegral = target->Integral();
+    if (sourceIntegral == 0.0 || targetIntegral == 0.0)
+        throw std::runtime_error("ComputeReweightingWeights: empty histogram");
+
+    weights->Reset();
+
+    for (int i = 1; i <= nBins; ++i) {
+        const double s = source->GetBinContent(i) / sourceIntegral;
+        const double t = target->GetBinContent(i) / targetIntegral;
+
+        if (s == 0.0) {
+            weights->SetBinContent(i, 0.0);
+            weights->SetBinError  (i, 0.0);
+        } else {
+            const double w       = t / s;
+            const double sigma_s = source->GetBinError(i) / sourceIntegral;
+            const double sigma_t = target->GetBinError(i) / targetIntegral;
+            const double rel_err = std::sqrt(  (sigma_s / s) * (sigma_s / s)
+                                             + (sigma_t / t) * (sigma_t / t));
+            weights->SetBinContent(i, w);
+            weights->SetBinError  (i, w * rel_err);
+        }
     }
 }

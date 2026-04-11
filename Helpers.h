@@ -35,7 +35,7 @@ int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 int NUM_SIGNAL_TYPES = 3; // 0p abs, Np abs, scattering
 
 // Run through this many events
-int USE_NUM_EVENTS = 200000;
+int USE_NUM_EVENTS = 50000;
 
 // Test threshold for TG tracks
 int N_TG_TRACKS = 3;
@@ -307,7 +307,6 @@ struct EventVariables {
 
     // Truth primary scalars
     int    truthPrimaryPDG        = -999;
-    int    truthPrimaryID         = -999;
     double truthPrimaryVertexX    = -999;
     double truthPrimaryVertexY    = -999;
     double truthPrimaryVertexZ    = -999;
@@ -606,7 +605,14 @@ void PrintFDPlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* h
 void CalcChiSquared(TH1D* h_model, TH1D* h_data, TH2D* cov, double &chi, int &ndof, double &pval, double &sigma);
 
 void PrintDataVsMCContribPlot(const TString& SaveDir, const TString& Name, TH1* hData, const std::vector<TH1*>& mcHists, const std::vector<TString>& mcLabels, const std::vector<int>& mcColors, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle, double TextSize, bool UsePoissonDataErrors = true, TH1* hMCAbsUnc = nullptr, bool DrawRatio = true);
+void PrintDataVsTwoMCPlot(const TString& SaveDir, const TString& Name, TH1* hData, TH1* hMC1, TH1* hMC2, const TString& label1, const TString& label2, int color1, int color2, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle, double TextSize);
 
 int fillSignalInformation(int pdg, double vx, double vy, double vz, bool interactionInTrajectory, std::string trajectoryInteractionLabel, std::vector<int> daughtersPDG, std::vector<std::string> daughtersProcess,  std::vector<double> daughtersKE, bool saveNumProtons, int& numVisibleProtons);
 int getBackgroundInteractionType(int pdg, double vx, double vy, double vz, bool interactionInTrajectory, std::string trajectoryInteractionLabel, std::vector<int> daughtersPDG, std::vector<std::string> daughtersProcess, std::vector<double> daughtersKE);
 std::string ProcessToString(int proc);
+
+void printEventVariables(const EventVariables& t, std::ofstream& out);
+
+// Reweighing
+void ApplyWeights(TH1* h, const TH1* weights);
+void ComputeReweightingWeights(const TH1* source, const TH1* target, TH1* weights);
