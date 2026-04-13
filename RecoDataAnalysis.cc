@@ -33,10 +33,10 @@ void RecoDataAnalysis() {
     double TextSize = 0.06;
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/RecoDataAnalysis/";
 
-    // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/anatree_60a_data/histo.root";
-    std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
-    TDirectory* Directory = (TDirectory*)File->Get("anatree");
+    // Load files
+    TChain* Chain = new TChain("anatree/anatree");
+    Chain->Add("/exp/lariat/app/users/epelaez/files/anatree_60a_data/chunks/*.root");
+    std::cout << "Files:   " << Chain->GetListOfFiles()->GetEntries() << std::endl;
 
     // Load file with MC comparison histograms
     TString MCCompFilePath = "/exp/lariat/app/users/epelaez/files/DataMCComparisons.root";
@@ -50,129 +50,74 @@ void RecoDataAnalysis() {
     // Load branches //
     ///////////////////
 
-    // Load tree and branches
-    TTree* tree = (TTree*) Directory->Get<TTree>("anatree");
-
     int run, subrun, event; bool isData = true;
-    tree->SetBranchAddress("run", &run);
-    tree->SetBranchAddress("subrun", &subrun);
-    tree->SetBranchAddress("event", &event);
+    Chain->SetBranchAddress("run", &run);
+    Chain->SetBranchAddress("subrun", &subrun);
+    Chain->SetBranchAddress("event", &event);
 
     // Track information
     const int kMaxTrack = 100; // 10000
-    int   ntracks_reco;                       tree->SetBranchAddress("ntracks_reco",    &ntracks_reco);
-    float trkvtxx[kMaxTrack];                 tree->SetBranchAddress("trkvtxx",          &trkvtxx);
-    float trkvtxy[kMaxTrack];                 tree->SetBranchAddress("trkvtxy",          &trkvtxy);
-    float trkvtxz[kMaxTrack];                 tree->SetBranchAddress("trkvtxz",          &trkvtxz);
-    float trkendx[kMaxTrack];                 tree->SetBranchAddress("trkendx",          &trkendx);
-    float trkendy[kMaxTrack];                 tree->SetBranchAddress("trkendy",          &trkendy);
-    float trkendz[kMaxTrack];                 tree->SetBranchAddress("trkendz",          &trkendz);
-    // float trkstartdcosx[kMaxTrack];           tree->SetBranchAddress("trkstartdcosx",    &trkstartdcosx);
-    // float trkstartdcosy[kMaxTrack];           tree->SetBranchAddress("trkstartdcosy",    &trkstartdcosy);
-    // float trkstartdcosz[kMaxTrack];           tree->SetBranchAddress("trkstartdcosz",    &trkstartdcosz);
-    // float trkenddcosx[kMaxTrack];             tree->SetBranchAddress("trkenddcosx",      &trkenddcosx);
-    // float trkenddcosy[kMaxTrack];             tree->SetBranchAddress("trkenddcosy",      &trkenddcosy);
-    // float trkenddcosz[kMaxTrack];             tree->SetBranchAddress("trkenddcosz",      &trkenddcosz);
-    // float trklength[kMaxTrack];               tree->SetBranchAddress("trklength",        &trklength);
-    int   trkWCtoTPCMatch[kMaxTrack];         tree->SetBranchAddress("trkWCtoTPCMatch",  &trkWCtoTPCMatch);
+    int   ntracks_reco;                       Chain->SetBranchAddress("ntracks_reco",    &ntracks_reco);
+    static float trkvtxx[kMaxTrack];                 Chain->SetBranchAddress("trkvtxx",          &trkvtxx);
+    static float trkvtxy[kMaxTrack];                 Chain->SetBranchAddress("trkvtxy",          &trkvtxy);
+    static float trkvtxz[kMaxTrack];                 Chain->SetBranchAddress("trkvtxz",          &trkvtxz);
+    static float trkendx[kMaxTrack];                 Chain->SetBranchAddress("trkendx",          &trkendx);
+    static float trkendy[kMaxTrack];                 Chain->SetBranchAddress("trkendy",          &trkendy);
+    static float trkendz[kMaxTrack];                 Chain->SetBranchAddress("trkendz",          &trkendz);
+    static int   trkWCtoTPCMatch[kMaxTrack];         Chain->SetBranchAddress("trkWCtoTPCMatch",  &trkWCtoTPCMatch);
 
     // Wire-chamber track information
     const int kMaxWCTracks = 100; // 1000
-    float beamline_mass;                        tree->SetBranchAddress("beamline_mass",     &beamline_mass);
-    int   nwctrks;                              tree->SetBranchAddress("nwctrks",           &nwctrks);
-    // float wctrk_XFaceCoor[kMaxWCTracks];        tree->SetBranchAddress("wctrk_XFaceCoor",   &wctrk_XFaceCoor);
-    // float wctrk_YFaceCoor[kMaxWCTracks];        tree->SetBranchAddress("wctrk_YFaceCoor",   &wctrk_YFaceCoor);
-    float wctrk_momentum[kMaxWCTracks];         tree->SetBranchAddress("wctrk_momentum",    &wctrk_momentum);
-    // float wctrk_Px[kMaxWCTracks];               tree->SetBranchAddress("wctrk_Px",          &wctrk_Px);
-    // float wctrk_Py[kMaxWCTracks];               tree->SetBranchAddress("wctrk_Py",          &wctrk_Py);
-    // float wctrk_Pz[kMaxWCTracks];               tree->SetBranchAddress("wctrk_Pz",          &wctrk_Pz);
-    float wctrk_theta[kMaxWCTracks];            tree->SetBranchAddress("wctrk_theta",        &wctrk_theta);
-    float wctrk_phi[kMaxWCTracks];              tree->SetBranchAddress("wctrk_phi",          &wctrk_phi);
-    // float wctrk_residual[kMaxWCTracks];         tree->SetBranchAddress("wctrk_residual",     &wctrk_residual);
-    // int   wctrk_wcmissed[kMaxWCTracks];         tree->SetBranchAddress("wctrk_wcmissed",     &wctrk_wcmissed);
-    int   wctrk_picky[kMaxWCTracks];            tree->SetBranchAddress("wctrk_picky",        &wctrk_picky);
-    // float wctrk_XDist[kMaxWCTracks];            tree->SetBranchAddress("wctrk_XDist",        &wctrk_XDist);
-    // float wctrk_YDist[kMaxWCTracks];            tree->SetBranchAddress("wctrk_YDist",        &wctrk_YDist);
-    // float wctrk_ZDist[kMaxWCTracks];            tree->SetBranchAddress("wctrk_ZDist",        &wctrk_ZDist);
-    // float wctrk_YKink[kMaxWCTracks];            tree->SetBranchAddress("wctrk_YKink",        &wctrk_YKink);
-    // int   wctrk_WC1XMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC1XMult",     &wctrk_WC1XMult);
-    // int   wctrk_WC1YMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC1YMult",     &wctrk_WC1YMult);
-    // int   wctrk_WC2XMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC2XMult",     &wctrk_WC2XMult);
-    // int   wctrk_WC2YMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC2YMult",     &wctrk_WC2YMult);
-    // int   wctrk_WC3XMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC3XMult",     &wctrk_WC3XMult);
-    // int   wctrk_WC3YMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC3YMult",     &wctrk_WC3YMult);
-    // int   wctrk_WC4XMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC4XMult",     &wctrk_WC4XMult);
-    // int   wctrk_WC4YMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC4YMult",     &wctrk_WC4YMult);
-    // float XWireHist[kMaxWCTracks][1000];         tree->SetBranchAddress("XWireHist",          &XWireHist);
-    // float YWireHist[kMaxWCTracks][1000];         tree->SetBranchAddress("YWireHist",          &YWireHist);
-    // float XAxisHist[kMaxWCTracks][1000];         tree->SetBranchAddress("XAxisHist",          &XAxisHist);
-    // float YAxisHist[kMaxWCTracks][1000];         tree->SetBranchAddress("YAxisHist",          &YAxisHist);
-    float WC1xPos[kMaxWCTracks];                 tree->SetBranchAddress("WC1xPos",            &WC1xPos);
-    float WC1yPos[kMaxWCTracks];                 tree->SetBranchAddress("WC1yPos",            &WC1yPos);
-    float WC1zPos[kMaxWCTracks];                 tree->SetBranchAddress("WC1zPos",            &WC1zPos);
-    float WC2xPos[kMaxWCTracks];                 tree->SetBranchAddress("WC2xPos",            &WC2xPos);
-    float WC2yPos[kMaxWCTracks];                 tree->SetBranchAddress("WC2yPos",            &WC2yPos);
-    float WC2zPos[kMaxWCTracks];                 tree->SetBranchAddress("WC2zPos",            &WC2zPos);
-    float WC3xPos[kMaxWCTracks];                 tree->SetBranchAddress("WC3xPos",            &WC3xPos);
-    float WC3yPos[kMaxWCTracks];                 tree->SetBranchAddress("WC3yPos",            &WC3yPos);
-    float WC3zPos[kMaxWCTracks];                 tree->SetBranchAddress("WC3zPos",            &WC3zPos);
-    float WC4xPos[kMaxWCTracks];                 tree->SetBranchAddress("WC4xPos",            &WC4xPos);
-    float WC4yPos[kMaxWCTracks];                 tree->SetBranchAddress("WC4yPos",            &WC4yPos);
-    float WC4zPos[kMaxWCTracks];                 tree->SetBranchAddress("WC4zPos",            &WC4zPos);
+    float beamline_mass;                        Chain->SetBranchAddress("beamline_mass",     &beamline_mass);
+    int   nwctrks;                              Chain->SetBranchAddress("nwctrks",           &nwctrks);
+    static float wctrk_momentum[kMaxWCTracks];         Chain->SetBranchAddress("wctrk_momentum",    &wctrk_momentum);
+    static float wctrk_theta[kMaxWCTracks];            Chain->SetBranchAddress("wctrk_theta",        &wctrk_theta);
+    static float wctrk_phi[kMaxWCTracks];              Chain->SetBranchAddress("wctrk_phi",          &wctrk_phi);
+    static int   wctrk_picky[kMaxWCTracks];            Chain->SetBranchAddress("wctrk_picky",        &wctrk_picky);
+    static float WC1xPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC1xPos",            &WC1xPos);
+    static float WC1yPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC1yPos",            &WC1yPos);
+    static float WC1zPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC1zPos",            &WC1zPos);
+    static float WC2xPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC2xPos",            &WC2xPos);
+    static float WC2yPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC2yPos",            &WC2yPos);
+    static float WC2zPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC2zPos",            &WC2zPos);
+    static float WC3xPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC3xPos",            &WC3xPos);
+    static float WC3yPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC3yPos",            &WC3yPos);
+    static float WC3zPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC3zPos",            &WC3zPos);
+    static float WC4xPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC4xPos",            &WC4xPos);
+    static float WC4yPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC4yPos",            &WC4yPos);
+    static float WC4zPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC4zPos",            &WC4zPos);
 
     // Calorimetry information
     const int kMaxTrackHits = 1000; // 1000
-    int   ntrkcalopts[kMaxTrack][2];                    tree->SetBranchAddress("ntrkcalopts", &ntrkcalopts);
-    // float trkpida[kMaxTrack][2];                        tree->SetBranchAddress("trkpida",     &trkpida);
-    // float trkke[kMaxTrack][2];                          tree->SetBranchAddress("trkke",       &trkke);
-    float trkdedx[kMaxTrack][2][kMaxTrackHits];         tree->SetBranchAddress("trkdedx",     &trkdedx);
-    // float trkdqdx[kMaxTrack][2][kMaxTrackHits];         tree->SetBranchAddress("trkdqdx",     &trkdqdx);
-    float trkrr[kMaxTrack][2][kMaxTrackHits];           tree->SetBranchAddress("trkrr",       &trkrr);
-    float trkpitch[kMaxTrack][2][kMaxTrackHits];        tree->SetBranchAddress("trkpitch",    &trkpitch);
-    float trkxyz[kMaxTrack][2][kMaxTrackHits][3];       tree->SetBranchAddress("trkxyz",      &trkxyz);
+    static int   ntrkcalopts[kMaxTrack][2];                    Chain->SetBranchAddress("ntrkcalopts", &ntrkcalopts);
+    static float trkdedx[kMaxTrack][2][kMaxTrackHits];         Chain->SetBranchAddress("trkdedx",     &trkdedx);
+    static float trkrr[kMaxTrack][2][kMaxTrackHits];           Chain->SetBranchAddress("trkrr",       &trkrr);
+    static float trkpitch[kMaxTrack][2][kMaxTrackHits];        Chain->SetBranchAddress("trkpitch",    &trkpitch);
+    static float trkxyz[kMaxTrack][2][kMaxTrackHits][3];       Chain->SetBranchAddress("trkxyz",      &trkxyz);
 
     // Trajectory information for tracks
     const int kMaxTrajHits = 1000; // 1000
-    int   nTrajPoint[kMaxTrack];                  tree->SetBranchAddress("nTrajPoint", &nTrajPoint);
-    // float pHat0_X[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("pHat0_X",    &pHat0_X);
-    // float pHat0_Y[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("pHat0_Y",    &pHat0_Y);
-    // float pHat0_Z[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("pHat0_Z",    &pHat0_Z);
-    float trjPt_X[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("trjPt_X",    &trjPt_X);
-    float trjPt_Y[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("trjPt_Y",    &trjPt_Y);
-    float trjPt_Z[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("trjPt_Z",    &trjPt_Z);
+    static int   nTrajPoint[kMaxTrack];                  Chain->SetBranchAddress("nTrajPoint", &nTrajPoint);
+    static float trjPt_X[kMaxTrack][kMaxTrajHits];       Chain->SetBranchAddress("trjPt_X",    &trjPt_X);
+    static float trjPt_Y[kMaxTrack][kMaxTrajHits];       Chain->SetBranchAddress("trjPt_Y",    &trjPt_Y);
+    static float trjPt_Z[kMaxTrack][kMaxTrajHits];       Chain->SetBranchAddress("trjPt_Z",    &trjPt_Z);
 
     // Information about wire plane hits
     const int kMaxHits = 1000;
-    int    nhits;                              tree->SetBranchAddress("nhits",              &nhits);
-    int    hit_plane[kMaxHits];                tree->SetBranchAddress("hit_plane",           hit_plane);
-    // int    hit_wire[kMaxHits];                 tree->SetBranchAddress("hit_wire",            hit_wire);
-    int    hit_channel[kMaxHits];              tree->SetBranchAddress("hit_channel",         hit_channel);
-    int    hit_trkid[kMaxHits];               tree->SetBranchAddress("hit_trkid",           hit_trkid);
-    // float  hit_peakT[kMaxHits];               tree->SetBranchAddress("hit_peakT",           hit_peakT);
-    // float  hit_charge[kMaxHits];              tree->SetBranchAddress("hit_charge",           hit_charge);
-    // float  hit_electrons[kMaxHits];           tree->SetBranchAddress("hit_electrons",        hit_electrons);
-    // float  hit_ph[kMaxHits];                  tree->SetBranchAddress("hit_ph",               hit_ph);
-    // float  hit_rms[kMaxHits];                 tree->SetBranchAddress("hit_rms",              hit_rms);
-    // float  hit_tstart[kMaxHits];              tree->SetBranchAddress("hit_tstart",           hit_tstart);
-    // float  hit_tend[kMaxHits];                tree->SetBranchAddress("hit_tend",             hit_tend);
-    float  hit_driftT[kMaxHits];              tree->SetBranchAddress("hit_driftT",           hit_driftT);
-    // float  hit_dQds[kMaxHits];               tree->SetBranchAddress("hit_dQds",             hit_dQds);
-    // float  hit_dEds[kMaxHits];               tree->SetBranchAddress("hit_dEds",             hit_dEds);
-    // float  hit_ds[kMaxHits];                 tree->SetBranchAddress("hit_ds",               hit_ds);
-    // float  hit_resrange[kMaxHits];            tree->SetBranchAddress("hit_resrange",         hit_resrange);
-    float  hit_x[kMaxHits];                  tree->SetBranchAddress("hit_x",                hit_x);
-    float  hit_y[kMaxHits];                  tree->SetBranchAddress("hit_y",                hit_y);
-    float  hit_z[kMaxHits];                  tree->SetBranchAddress("hit_z",                hit_z);
-    // int    hit_g4id[kMaxHits];               tree->SetBranchAddress("hit_g4id",             hit_g4id);
-    // float  hit_g4frac[kMaxHits];             tree->SetBranchAddress("hit_g4frac",           hit_g4frac);
-    // float  hit_g4nelec[kMaxHits];            tree->SetBranchAddress("hit_g4nelec",          hit_g4nelec);
-    // float  hit_g4energy[kMaxHits];           tree->SetBranchAddress("hit_g4energy",         hit_g4energy);
+    int    nhits;                              Chain->SetBranchAddress("nhits",              &nhits);
+    static int    hit_plane[kMaxHits];         Chain->SetBranchAddress("hit_plane",           hit_plane);
+    static int    hit_channel[kMaxHits];       Chain->SetBranchAddress("hit_channel",         hit_channel);
+    static int    hit_trkid[kMaxHits];         Chain->SetBranchAddress("hit_trkid",           hit_trkid);
+    static float  hit_driftT[kMaxHits];        Chain->SetBranchAddress("hit_driftT",           hit_driftT);
+    static float  hit_x[kMaxHits];             Chain->SetBranchAddress("hit_x",                hit_x);
+    static float  hit_y[kMaxHits];             Chain->SetBranchAddress("hit_y",                hit_y);
+    static float  hit_z[kMaxHits];             Chain->SetBranchAddress("hit_z",                hit_z);
 
     // TOF object
     const int kMaxTOF = 10;
-    int ntof;                     tree->SetBranchAddress("ntof",          &ntof);
-    float tof[kMaxTOF];           tree->SetBranchAddress("tof",           tof);
-    float tof_timestamp[kMaxTOF]; tree->SetBranchAddress("tof_timestamp", tof_timestamp);
+    int ntof;                     Chain->SetBranchAddress("ntof",          &ntof);
+    static float tof[kMaxTOF];           Chain->SetBranchAddress("tof",           tof);
+    static float tof_timestamp[kMaxTOF]; Chain->SetBranchAddress("tof_timestamp", tof_timestamp);
 
     /////////////////////
     // Load histograms //
@@ -382,9 +327,6 @@ void RecoDataAnalysis() {
 
     int candidateInteractingEvents = 0;
 
-    Int_t NumEntries = (Int_t) tree->GetEntries();
-    std::cout << "Num entries: " << NumEntries << std::endl;
-
     bool verbose = true;
 
     // Keep track of event counts for stat estimations
@@ -394,23 +336,22 @@ void RecoDataAnalysis() {
     int eventCountNTG = 0;
 
     int numValidEvents = 0;
-    for (Int_t i = 0; i < NumEntries; ++i) {
+    
+    Long64_t i = 0;
+    while (Chain->GetEntry(i++) > 0) {
         // For some reason, these events crash
-        if (
-            i == 199835 ||
-            i == 311635
-        ) continue;
+        if (SKIP_INDICES_DATA.count(i)) continue;
 
         // Get tree entry and reset variables
-        std::cout << std::endl;
-        std::cout << "=================================" << std::endl;
-        std::cout << "Getting tree entry: " << i << std::endl;
-        tree->GetEntry(i);
-        std::cout << "Got tree entry" << std::endl;
-        std::cout << "Reseting variables" << std::endl;
+        if (verbose) std::cout << std::endl;
+        if (verbose) std::cout << "=================================" << std::endl;
+        if (verbose) std::cout << "Getting tree entry: " << i << std::endl;
+        Chain->GetEntry(i);
+        if (verbose) std::cout << "Got tree entry" << std::endl;
+        if (verbose) std::cout << "Reseting variables" << std::endl;
         EventVariablesData ev;
-        std::cout << "Variables reset" << std::endl;
-        std::cout << "=================================" << std::endl;
+        if (verbose) std::cout << "Variables reset" << std::endl;
+        if (verbose) std::cout << "=================================" << std::endl;
 
         // Make script go faster
         if (i > USE_NUM_EVENTS) break;
@@ -426,7 +367,7 @@ void RecoDataAnalysis() {
         
         // First, we just want to grab WC to TPC match
         int primaryTrackIdx = -1;
-        for (size_t trk_idx = 0; trk_idx < ntracks_reco; ++trk_idx) {
+        for (size_t trk_idx = 0; trk_idx < std::min(ntracks_reco, kMaxTrack); ++trk_idx) {
             if (trkWCtoTPCMatch[trk_idx]) {
                 // Grab position information
                 ev.WC2TPCPrimaryBeginX = trkvtxx[trk_idx];
@@ -437,10 +378,11 @@ void RecoDataAnalysis() {
                 ev.WC2TPCPrimaryEndZ   = trkendz[trk_idx];
 
                 // Grab calorimetry information (in collection plane)
-                ev.wcMatchResR.assign(trkrr[trk_idx][1], trkrr[trk_idx][1] + ntrkcalopts[trk_idx][1]);
-                ev.wcMatchDEDX.assign(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + ntrkcalopts[trk_idx][1]);
+                int npts_dedx = std::min(ntrkcalopts[trk_idx][1], kMaxTrackHits);
+                ev.wcMatchResR.assign(trkrr[trk_idx][1], trkrr[trk_idx][1] + npts_dedx);
+                ev.wcMatchDEDX.assign(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + npts_dedx);
 
-                for (size_t dep_idx = 0; dep_idx < ntrkcalopts[trk_idx][1]; ++dep_idx) {
+                for (size_t dep_idx = 0; dep_idx < std::min(ntrkcalopts[trk_idx][1], kMaxTrackHits); ++dep_idx) {
                     ev.wcMatchEDep.push_back(trkdedx[trk_idx][1][dep_idx] * trkpitch[trk_idx][1][dep_idx]);
                     ev.wcMatchXPos.push_back(trkxyz[trk_idx][1][dep_idx][0]);
                     ev.wcMatchYPos.push_back(trkxyz[trk_idx][1][dep_idx][1]);
@@ -448,9 +390,10 @@ void RecoDataAnalysis() {
                 }
 
                 // Get location information
-                ev.WC2TPCLocationsX.assign(trjPt_X[trk_idx], trjPt_X[trk_idx] + nTrajPoint[trk_idx]);
-                ev.WC2TPCLocationsY.assign(trjPt_Y[trk_idx], trjPt_Y[trk_idx] + nTrajPoint[trk_idx]);
-                ev.WC2TPCLocationsZ.assign(trjPt_Z[trk_idx], trjPt_Z[trk_idx] + nTrajPoint[trk_idx]);
+                int npts_wc2tpc = std::min(nTrajPoint[trk_idx], kMaxTrack);
+                ev.WC2TPCLocationsX.assign(trjPt_X[trk_idx], trjPt_X[trk_idx] + npts_wc2tpc);
+                ev.WC2TPCLocationsY.assign(trjPt_Y[trk_idx], trjPt_Y[trk_idx] + npts_wc2tpc);
+                ev.WC2TPCLocationsZ.assign(trjPt_Z[trk_idx], trjPt_Z[trk_idx] + npts_wc2tpc);
 
                 // Set flag and index
                 primaryTrackIdx = trk_idx;
@@ -469,18 +412,19 @@ void RecoDataAnalysis() {
         if (verbose) std::cout << "TOF: " << ev.tofObject  << std::endl;
 
         // Copy vertex and end for all tracks
-        ev.recoEndX.assign(trkendx,  trkendx  + ntracks_reco);
-        ev.recoEndY.assign(trkendy,  trkendy  + ntracks_reco);
-        ev.recoEndZ.assign(trkendz,  trkendz  + ntracks_reco);
-        ev.recoBeginX.assign(trkvtxx, trkvtxx + ntracks_reco);
-        ev.recoBeginY.assign(trkvtxy, trkvtxy + ntracks_reco);
-        ev.recoBeginZ.assign(trkvtxz, trkvtxz + ntracks_reco);
+        int npts_trk = std::min(ntracks_reco, kMaxTrack);
+        ev.recoEndX.assign(trkendx,  trkendx  + npts_trk);
+        ev.recoEndY.assign(trkendy,  trkendy  + npts_trk);
+        ev.recoEndZ.assign(trkendz,  trkendz  + npts_trk);
+        ev.recoBeginX.assign(trkvtxx, trkvtxx + npts_trk);
+        ev.recoBeginY.assign(trkvtxy, trkvtxy + npts_trk);
+        ev.recoBeginZ.assign(trkvtxz, trkvtxz + npts_trk);
 
         // Now, we want to loop through all tracks
-        for (size_t trk_idx = 0; trk_idx < ntracks_reco; ++trk_idx) {
+        for (size_t trk_idx = 0; trk_idx < std::min(ntracks_reco, kMaxTrack); ++trk_idx) {
             // Grab calorimetry information
-            ev.recoResR.push_back(std::vector<double>(trkrr[trk_idx][1], trkrr[trk_idx][1] + ntrkcalopts[trk_idx][1]));
-            ev.recoDEDX.push_back(std::vector<double>(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + ntrkcalopts[trk_idx][1]));
+            ev.recoResR.push_back(std::vector<double>(trkrr[trk_idx][1], trkrr[trk_idx][1] + std::min(ntrkcalopts[trk_idx][1], kMaxTrackHits)));
+            ev.recoDEDX.push_back(std::vector<double>(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + std::min(ntrkcalopts[trk_idx][1], kMaxTrackHits)));
 
             // Check reversed
             double startDistance = distance(trkvtxx[trk_idx], ev.WC2TPCPrimaryEndX, trkvtxy[trk_idx], ev.WC2TPCPrimaryEndY, trkvtxz[trk_idx], ev.WC2TPCPrimaryEndZ);
@@ -524,11 +468,15 @@ void RecoDataAnalysis() {
         std::map<int, std::vector<double>> trackHitYMap;
         std::map<int, std::vector<double>> trackHitZMap;
 
-        for (size_t i_hit = 0; i_hit < nhits; ++i_hit) {
+        for (size_t i_hit = 0; i_hit < std::min(nhits, kMaxHits); ++i_hit) {
             ev.fHitPlane.push_back(hit_plane[i_hit]);
-            ev.fHitT.push_back(hit_driftT[i_hit]);
-            ev.fHitX.push_back(hit_driftT[i_hit] * DRIFT_VELOCITY);
-            ev.fHitW.push_back(hit_channel[i_hit]);
+            ev.fHitT.push_back(SAMPLING_RATE * hit_driftT[i_hit]);
+            ev.fHitX.push_back(SAMPLING_RATE * hit_driftT[i_hit] * DRIFT_VELOCITY);
+            if (hit_channel[i_hit] < 240) {
+                ev.fHitW.push_back(hit_channel[i_hit] * 0.4);
+            } else {
+                ev.fHitW.push_back((hit_channel[i_hit] - 240) * 0.4);
+            }
 
             // If it is -9, no match to a track
             if (hit_trkid[i_hit] != -9) {
@@ -793,7 +741,7 @@ void RecoDataAnalysis() {
 
         // Reconstruct hit clusters
         std::vector<int> candidateHits;
-        for (size_t iHit = 0; iHit < nhits; ++iHit) {
+        for (size_t iHit = 0; iHit < std::min(nhits, kMaxHits); ++iHit) {
             // Skip hits already in tracks
             if (hitsInTracks.count(iHit) > 0) continue;
 
@@ -846,7 +794,7 @@ void RecoDataAnalysis() {
             clusterCharge.push_back(thisHitCharge);
             clusterChargeCol.push_back(thisHitChargeCol);
             
-            for (int iAllHit = 0; iAllHit < nhits; ++iAllHit) {
+            for (int iAllHit = 0; iAllHit < std::min(nhits, kMaxHits); ++iAllHit) {
                 // Skip already used hits, and those reconstructed in tracks
                 if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit)) continue;
 

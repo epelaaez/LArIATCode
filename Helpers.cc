@@ -3467,10 +3467,8 @@ void printEventVariables(const EventVariables& t, std::ofstream& out) {
 
 // Reweighing
 void ApplyWeights(TH1* h, const TH1* weights) {
-    if (!h || !weights)
-        throw std::invalid_argument("ApplyWeights: null histogram pointer");
-    if (h->GetNbinsX() != weights->GetNbinsX())
-        throw std::invalid_argument("ApplyWeights: bin mismatch");
+    if (!h || !weights) throw std::invalid_argument("ApplyWeights: null histogram pointer");
+    if (h->GetNbinsX() != weights->GetNbinsX()) throw std::invalid_argument("ApplyWeights: bin mismatch");
 
     for (int i = 1; i <= h->GetNbinsX(); ++i) {
         const double w    = weights->GetBinContent(i);

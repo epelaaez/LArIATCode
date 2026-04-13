@@ -35,189 +35,103 @@ void RecoClassify3Cat() {
     double TextSize = 0.06;
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Classify3Cat/";
 
-    // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/anatree_60a/histo.root";
-    std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
-    TDirectory* Directory = (TDirectory*)File->Get("anatree");
+    // Load files
+    TChain* Chain = new TChain("anatree/anatree");
+    Chain->Add("/exp/lariat/app/users/epelaez/files/anatree_60a/chunks/*.root");
+    std::cout << "Files:   " << Chain->GetListOfFiles()->GetEntries() << std::endl;
 
     ///////////////////
     // Load branches //
     ///////////////////
 
-    // Load tree and branches
-    TTree* tree = (TTree*) Directory->Get<TTree>("anatree");
-
     // Run information
     int run, subrun, event; bool isData = false;
-    tree->SetBranchAddress("run", &run); 
-    tree->SetBranchAddress("subrun", &subrun); 
-    tree->SetBranchAddress("event", &event);
+    Chain->SetBranchAddress("run", &run); 
+    Chain->SetBranchAddress("subrun", &subrun); 
+    Chain->SetBranchAddress("event", &event);
 
     // Track information
-    const int kMaxTrack = 100; // 10000
-    int   ntracks_reco;                       tree->SetBranchAddress("ntracks_reco",    &ntracks_reco);
-    float trkvtxx[kMaxTrack];                 tree->SetBranchAddress("trkvtxx",          &trkvtxx);
-    float trkvtxy[kMaxTrack];                 tree->SetBranchAddress("trkvtxy",          &trkvtxy);
-    float trkvtxz[kMaxTrack];                 tree->SetBranchAddress("trkvtxz",          &trkvtxz);
-    float trkendx[kMaxTrack];                 tree->SetBranchAddress("trkendx",          &trkendx);
-    float trkendy[kMaxTrack];                 tree->SetBranchAddress("trkendy",          &trkendy);
-    float trkendz[kMaxTrack];                 tree->SetBranchAddress("trkendz",          &trkendz);
-    // float trkstartdcosx[kMaxTrack];           tree->SetBranchAddress("trkstartdcosx",    &trkstartdcosx);
-    // float trkstartdcosy[kMaxTrack];           tree->SetBranchAddress("trkstartdcosy",    &trkstartdcosy);
-    // float trkstartdcosz[kMaxTrack];           tree->SetBranchAddress("trkstartdcosz",    &trkstartdcosz);
-    // float trkenddcosx[kMaxTrack];             tree->SetBranchAddress("trkenddcosx",      &trkenddcosx);
-    // float trkenddcosy[kMaxTrack];             tree->SetBranchAddress("trkenddcosy",      &trkenddcosy);
-    // float trkenddcosz[kMaxTrack];             tree->SetBranchAddress("trkenddcosz",      &trkenddcosz);
-    // float trklength[kMaxTrack];               tree->SetBranchAddress("trklength",        &trklength);
-    int   trkWCtoTPCMatch[kMaxTrack];         tree->SetBranchAddress("trkWCtoTPCMatch",  &trkWCtoTPCMatch);
+    int   ntracks_reco;                       Chain->SetBranchAddress("ntracks_reco",    &ntracks_reco);
+    static float trkvtxx[kMaxTrack];                 Chain->SetBranchAddress("trkvtxx",          &trkvtxx);
+    static float trkvtxy[kMaxTrack];                 Chain->SetBranchAddress("trkvtxy",          &trkvtxy);
+    static float trkvtxz[kMaxTrack];                 Chain->SetBranchAddress("trkvtxz",          &trkvtxz);
+    static float trkendx[kMaxTrack];                 Chain->SetBranchAddress("trkendx",          &trkendx);
+    static float trkendy[kMaxTrack];                 Chain->SetBranchAddress("trkendy",          &trkendy);
+    static float trkendz[kMaxTrack];                 Chain->SetBranchAddress("trkendz",          &trkendz);
+    static int   trkWCtoTPCMatch[kMaxTrack];         Chain->SetBranchAddress("trkWCtoTPCMatch",  &trkWCtoTPCMatch);
 
     // Wire-chamber track information
-    const int kMaxWCTracks = 1; // 1000
-    int   nwctrks;                              tree->SetBranchAddress("nwctrks",           &nwctrks);
-    // float wctrk_XFaceCoor[kMaxWCTracks];        tree->SetBranchAddress("wctrk_XFaceCoor",   &wctrk_XFaceCoor);
-    // float wctrk_YFaceCoor[kMaxWCTracks];        tree->SetBranchAddress("wctrk_YFaceCoor",   &wctrk_YFaceCoor);
-    float wctrk_momentum[kMaxWCTracks];         tree->SetBranchAddress("wctrk_momentum",    &wctrk_momentum);
-    // float wctrk_Px[kMaxWCTracks];               tree->SetBranchAddress("wctrk_Px",          &wctrk_Px);
-    // float wctrk_Py[kMaxWCTracks];               tree->SetBranchAddress("wctrk_Py",          &wctrk_Py);
-    // float wctrk_Pz[kMaxWCTracks];               tree->SetBranchAddress("wctrk_Pz",          &wctrk_Pz);
-    float wctrk_theta[kMaxWCTracks];            tree->SetBranchAddress("wctrk_theta",        &wctrk_theta);
-    float wctrk_phi[kMaxWCTracks];              tree->SetBranchAddress("wctrk_phi",          &wctrk_phi);
-    // float wctrk_residual[kMaxWCTracks];         tree->SetBranchAddress("wctrk_residual",     &wctrk_residual);
-    // int   wctrk_wcmissed[kMaxWCTracks];         tree->SetBranchAddress("wctrk_wcmissed",     &wctrk_wcmissed);
-    int   wctrk_picky[kMaxWCTracks];            tree->SetBranchAddress("wctrk_picky",        &wctrk_picky);
-    // float wctrk_XDist[kMaxWCTracks];            tree->SetBranchAddress("wctrk_XDist",        &wctrk_XDist);
-    // float wctrk_YDist[kMaxWCTracks];            tree->SetBranchAddress("wctrk_YDist",        &wctrk_YDist);
-    // float wctrk_ZDist[kMaxWCTracks];            tree->SetBranchAddress("wctrk_ZDist",        &wctrk_ZDist);
-    // float wctrk_YKink[kMaxWCTracks];            tree->SetBranchAddress("wctrk_YKink",        &wctrk_YKink);
-    // int   wctrk_WC1XMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC1XMult",     &wctrk_WC1XMult);
-    // int   wctrk_WC1YMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC1YMult",     &wctrk_WC1YMult);
-    // int   wctrk_WC2XMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC2XMult",     &wctrk_WC2XMult);
-    // int   wctrk_WC2YMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC2YMult",     &wctrk_WC2YMult);
-    // int   wctrk_WC3XMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC3XMult",     &wctrk_WC3XMult);
-    // int   wctrk_WC3YMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC3YMult",     &wctrk_WC3YMult);
-    // int   wctrk_WC4XMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC4XMult",     &wctrk_WC4XMult);
-    // int   wctrk_WC4YMult[kMaxWCTracks];         tree->SetBranchAddress("wctrk_WC4YMult",     &wctrk_WC4YMult);
-    // float XWireHist[kMaxWCTracks][1000];         tree->SetBranchAddress("XWireHist",          &XWireHist);
-    // float YWireHist[kMaxWCTracks][1000];         tree->SetBranchAddress("YWireHist",          &YWireHist);
-    // float XAxisHist[kMaxWCTracks][1000];         tree->SetBranchAddress("XAxisHist",          &XAxisHist);
-    // float YAxisHist[kMaxWCTracks][1000];         tree->SetBranchAddress("YAxisHist",          &YAxisHist);
-    // float WC1xPos[kMaxWCTracks];                 tree->SetBranchAddress("WC1xPos",            &WC1xPos);
-    // float WC1yPos[kMaxWCTracks];                 tree->SetBranchAddress("WC1yPos",            &WC1yPos);
-    // float WC1zPos[kMaxWCTracks];                 tree->SetBranchAddress("WC1zPos",            &WC1zPos);
-    // float WC2xPos[kMaxWCTracks];                 tree->SetBranchAddress("WC2xPos",            &WC2xPos);
-    // float WC2yPos[kMaxWCTracks];                 tree->SetBranchAddress("WC2yPos",            &WC2yPos);
-    // float WC2zPos[kMaxWCTracks];                 tree->SetBranchAddress("WC2zPos",            &WC2zPos);
-    // float WC3xPos[kMaxWCTracks];                 tree->SetBranchAddress("WC3xPos",            &WC3xPos);
-    // float WC3yPos[kMaxWCTracks];                 tree->SetBranchAddress("WC3yPos",            &WC3yPos);
-    // float WC3zPos[kMaxWCTracks];                 tree->SetBranchAddress("WC3zPos",            &WC3zPos);
-    float WC4xPos[kMaxWCTracks];                 tree->SetBranchAddress("WC4xPos",            &WC4xPos);
-    // float WC4yPos[kMaxWCTracks];                 tree->SetBranchAddress("WC4yPos",            &WC4yPos);
-    // float WC4zPos[kMaxWCTracks];                 tree->SetBranchAddress("WC4zPos",            &WC4zPos);
+    int   nwctrks;                              Chain->SetBranchAddress("nwctrks",           &nwctrks);
+    static float wctrk_momentum[kMaxWCTracks];         Chain->SetBranchAddress("wctrk_momentum",    &wctrk_momentum);
+    static float wctrk_theta[kMaxWCTracks];            Chain->SetBranchAddress("wctrk_theta",        &wctrk_theta);
+    static float wctrk_phi[kMaxWCTracks];              Chain->SetBranchAddress("wctrk_phi",          &wctrk_phi);
+    static int   wctrk_picky[kMaxWCTracks];            Chain->SetBranchAddress("wctrk_picky",        &wctrk_picky);
+    static float WC4xPos[kMaxWCTracks];                 Chain->SetBranchAddress("WC4xPos",            &WC4xPos);
 
     // Calorimetry information
-    const int kMaxTrackHits = 1000; // 1000
-    int   ntrkcalopts[kMaxTrack][2];                    tree->SetBranchAddress("ntrkcalopts", &ntrkcalopts);
-    // float trkpida[kMaxTrack][2];                        tree->SetBranchAddress("trkpida",     &trkpida);
-    // float trkke[kMaxTrack][2];                          tree->SetBranchAddress("trkke",       &trkke);
-    float trkdedx[kMaxTrack][2][kMaxTrackHits];         tree->SetBranchAddress("trkdedx",     &trkdedx);
-    // float trkdqdx[kMaxTrack][2][kMaxTrackHits];         tree->SetBranchAddress("trkdqdx",     &trkdqdx);
-    float trkrr[kMaxTrack][2][kMaxTrackHits];           tree->SetBranchAddress("trkrr",       &trkrr);
-    float trkpitch[kMaxTrack][2][kMaxTrackHits];        tree->SetBranchAddress("trkpitch",    &trkpitch);
-    float trkxyz[kMaxTrack][2][kMaxTrackHits][3];       tree->SetBranchAddress("trkxyz",      &trkxyz);
+    static int   ntrkcalopts[kMaxTrack][2];                    Chain->SetBranchAddress("ntrkcalopts", &ntrkcalopts);
+    static float trkdedx[kMaxTrack][2][kMaxTrackHits];         Chain->SetBranchAddress("trkdedx",     &trkdedx);
+    static float trkrr[kMaxTrack][2][kMaxTrackHits];           Chain->SetBranchAddress("trkrr",       &trkrr);
+    static float trkpitch[kMaxTrack][2][kMaxTrackHits];        Chain->SetBranchAddress("trkpitch",    &trkpitch);
+    static float trkxyz[kMaxTrack][2][kMaxTrackHits][3];       Chain->SetBranchAddress("trkxyz",      &trkxyz);
 
     // Trajectory information for tracks
-    const int kMaxTrajHits = 1000; // 1000
-    int   nTrajPoint[kMaxTrack];                  tree->SetBranchAddress("nTrajPoint", &nTrajPoint);
-    // float pHat0_X[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("pHat0_X",    &pHat0_X);
-    // float pHat0_Y[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("pHat0_Y",    &pHat0_Y);
-    // float pHat0_Z[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("pHat0_Z",    &pHat0_Z);
-    float trjPt_X[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("trjPt_X",    &trjPt_X);
-    float trjPt_Y[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("trjPt_Y",    &trjPt_Y);
-    float trjPt_Z[kMaxTrack][kMaxTrajHits];       tree->SetBranchAddress("trjPt_Z",    &trjPt_Z);
+    int   nTrajPoint[kMaxTrack];                  Chain->SetBranchAddress("nTrajPoint", &nTrajPoint);
+    static float trjPt_X[kMaxTrack][kMaxTrajHits];       Chain->SetBranchAddress("trjPt_X",    &trjPt_X);
+    static float trjPt_Y[kMaxTrack][kMaxTrajHits];       Chain->SetBranchAddress("trjPt_Y",    &trjPt_Y);
+    static float trjPt_Z[kMaxTrack][kMaxTrajHits];       Chain->SetBranchAddress("trjPt_Z",    &trjPt_Z);
 
     // Geant4 information for truth tracks
-    const int kMaxPrimaries      = 4000; // 20000
-    const int kMaxPrimaryPart    = 60;   // 50
-    const int kMaxTruePrimaryPts = 1000; // 5000
-    int   no_primaries;                                   tree->SetBranchAddress("no_primaries",        &no_primaries);
-    int   geant_list_size;                                tree->SetBranchAddress("geant_list_size",      &geant_list_size);
-    int   pdg[kMaxPrimaries];                             tree->SetBranchAddress("pdg",                  &pdg);
-    float Mass[kMaxPrimaries];                            tree->SetBranchAddress("Mass",                 &Mass);
-    // float StartPointx[kMaxPrimaries];                     tree->SetBranchAddress("StartPointx",          &StartPointx);
-    // float StartPointy[kMaxPrimaries];                     tree->SetBranchAddress("StartPointy",          &StartPointy);
-    float StartPointz[kMaxPrimaries];                     tree->SetBranchAddress("StartPointz",          &StartPointz);
-    float Eng[kMaxPrimaries];                             tree->SetBranchAddress("Eng",                  &Eng);
-    float Px[kMaxPrimaries];                              tree->SetBranchAddress("Px",                   &Px);
-    float Py[kMaxPrimaries];                              tree->SetBranchAddress("Py",                   &Py);
-    float Pz[kMaxPrimaries];                              tree->SetBranchAddress("Pz",                   &Pz);
-    float EndPointx[kMaxPrimaries];                       tree->SetBranchAddress("EndPointx",            &EndPointx);
-    float EndPointy[kMaxPrimaries];                       tree->SetBranchAddress("EndPointy",            &EndPointy);
-    float EndPointz[kMaxPrimaries];                       tree->SetBranchAddress("EndPointz",            &EndPointz);
-    float EndEng[kMaxPrimaries];                          tree->SetBranchAddress("EndEng",               &EndEng);
-    float EndPx[kMaxPrimaries];                           tree->SetBranchAddress("EndPx",                &EndPx);
-    float EndPy[kMaxPrimaries];                           tree->SetBranchAddress("EndPy",                &EndPy);
-    float EndPz[kMaxPrimaries];                           tree->SetBranchAddress("EndPz",                &EndPz);
-    // float StartT[kMaxPrimaries];                          tree->SetBranchAddress("StartT",               &StartT);
-    // float EndT[kMaxPrimaries];                            tree->SetBranchAddress("EndT",                 &EndT);
-    // float PathLenInTpcAV[kMaxPrimaries];                  tree->SetBranchAddress("PathLenInTpcAV",       &PathLenInTpcAV);
-    // bool  StartInTpcAV[kMaxPrimaries];                    tree->SetBranchAddress("StartInTpcAV",         &StartInTpcAV);
-    // bool  EndInTpcAV[kMaxPrimaries];                      tree->SetBranchAddress("EndInTpcAV",           &EndInTpcAV);
-    int   Process[kMaxPrimaries];                         tree->SetBranchAddress("Process",              &Process);
-    int   NumberDaughters[kMaxPrimaries];                 tree->SetBranchAddress("NumberDaughters",      &NumberDaughters);
-    int   TrackId[kMaxPrimaries];                         tree->SetBranchAddress("TrackId",              &TrackId);
-    int   Mother[kMaxPrimaries];                          tree->SetBranchAddress("Mother",               &Mother);
-    int   process_primary[kMaxPrimaries];                 tree->SetBranchAddress("process_primary",      &process_primary);
-    // std::vector<std::string> G4Process;                   tree->SetBranchAddress("G4Process",            &G4Process);
-    // std::vector<std::string> G4FinalProcess;              tree->SetBranchAddress("G4FinalProcess",       &G4FinalProcess);
-    std::vector<int>*         InteractionPoint = nullptr;            tree->SetBranchAddress("InteractionPoint",     &InteractionPoint);
-    std::vector<int>*         InteractionPointType = nullptr;        tree->SetBranchAddress("InteractionPointType", &InteractionPointType);
-    int   NTrTrajPts[kMaxPrimaryPart];                    tree->SetBranchAddress("NTrTrajPts",           &NTrTrajPts);
-    float MidPosX[kMaxPrimaryPart][kMaxTruePrimaryPts];   tree->SetBranchAddress("MidPosX",              &MidPosX);
-    float MidPosY[kMaxPrimaryPart][kMaxTruePrimaryPts];   tree->SetBranchAddress("MidPosY",              &MidPosY);
-    float MidPosZ[kMaxPrimaryPart][kMaxTruePrimaryPts];   tree->SetBranchAddress("MidPosZ",              &MidPosZ);
-    float MidPx[kMaxPrimaryPart][kMaxTruePrimaryPts];     tree->SetBranchAddress("MidPx",                &MidPx);
-    float MidPy[kMaxPrimaryPart][kMaxTruePrimaryPts];     tree->SetBranchAddress("MidPy",                &MidPy);
-    float MidPz[kMaxPrimaryPart][kMaxTruePrimaryPts];     tree->SetBranchAddress("MidPz",                &MidPz);
+    int   no_primaries;                                   Chain->SetBranchAddress("no_primaries",        &no_primaries);
+    int   geant_list_size;                                Chain->SetBranchAddress("geant_list_size",      &geant_list_size);
+    static int   pdg[kMaxPrimaries];                             Chain->SetBranchAddress("pdg",                  &pdg);
+    static float Mass[kMaxPrimaries];                            Chain->SetBranchAddress("Mass",                 &Mass);
+    static float StartPointz[kMaxPrimaries];                     Chain->SetBranchAddress("StartPointz",          &StartPointz);
+    static float Eng[kMaxPrimaries];                             Chain->SetBranchAddress("Eng",                  &Eng);
+    static float Px[kMaxPrimaries];                              Chain->SetBranchAddress("Px",                   &Px);
+    static float Py[kMaxPrimaries];                              Chain->SetBranchAddress("Py",                   &Py);
+    static float Pz[kMaxPrimaries];                              Chain->SetBranchAddress("Pz",                   &Pz);
+    static float EndPointx[kMaxPrimaries];                       Chain->SetBranchAddress("EndPointx",            &EndPointx);
+    static float EndPointy[kMaxPrimaries];                       Chain->SetBranchAddress("EndPointy",            &EndPointy);
+    static float EndPointz[kMaxPrimaries];                       Chain->SetBranchAddress("EndPointz",            &EndPointz);
+    static float EndEng[kMaxPrimaries];                          Chain->SetBranchAddress("EndEng",               &EndEng);
+    static float EndPx[kMaxPrimaries];                           Chain->SetBranchAddress("EndPx",                &EndPx);
+    static float EndPy[kMaxPrimaries];                           Chain->SetBranchAddress("EndPy",                &EndPy);
+    static float EndPz[kMaxPrimaries];                           Chain->SetBranchAddress("EndPz",                &EndPz);
+    static int   Process[kMaxPrimaries];                         Chain->SetBranchAddress("Process",              &Process);
+    static int   NumberDaughters[kMaxPrimaries];                 Chain->SetBranchAddress("NumberDaughters",      &NumberDaughters);
+    static int   TrackId[kMaxPrimaries];                         Chain->SetBranchAddress("TrackId",              &TrackId);
+    static int   Mother[kMaxPrimaries];                          Chain->SetBranchAddress("Mother",               &Mother);
+    static int   process_primary[kMaxPrimaries];                 Chain->SetBranchAddress("process_primary",      &process_primary);
+    std::vector<int>* InteractionPoint = nullptr;                Chain->SetBranchAddress("InteractionPoint",     &InteractionPoint);
+    std::vector<int>* InteractionPointType = nullptr;            Chain->SetBranchAddress("InteractionPointType", &InteractionPointType);
+    static int   NTrTrajPts[kMaxPrimaryPart];                    Chain->SetBranchAddress("NTrTrajPts",           &NTrTrajPts);
+    static float MidPosX[kMaxPrimaryPart][kMaxTruePrimaryPts];   Chain->SetBranchAddress("MidPosX",              &MidPosX);
+    static float MidPosY[kMaxPrimaryPart][kMaxTruePrimaryPts];   Chain->SetBranchAddress("MidPosY",              &MidPosY);
+    static float MidPosZ[kMaxPrimaryPart][kMaxTruePrimaryPts];   Chain->SetBranchAddress("MidPosZ",              &MidPosZ);
+    static float MidPx[kMaxPrimaryPart][kMaxTruePrimaryPts];     Chain->SetBranchAddress("MidPx",                &MidPx);
+    static float MidPy[kMaxPrimaryPart][kMaxTruePrimaryPts];     Chain->SetBranchAddress("MidPy",                &MidPy);
+    static float MidPz[kMaxPrimaryPart][kMaxTruePrimaryPts];     Chain->SetBranchAddress("MidPz",                &MidPz);
 
     // Information about wire plane hits
-    const int kMaxHits = 1000;
-    int    nhits;                              tree->SetBranchAddress("nhits",              &nhits);
-    int    hit_plane[kMaxHits];                tree->SetBranchAddress("hit_plane",           hit_plane);
-    // int    hit_wire[kMaxHits];                 tree->SetBranchAddress("hit_wire",            hit_wire);
-    int    hit_channel[kMaxHits];              tree->SetBranchAddress("hit_channel",         hit_channel);
-    int    hit_trkid[kMaxHits];               tree->SetBranchAddress("hit_trkid",           hit_trkid);
-    // float  hit_peakT[kMaxHits];               tree->SetBranchAddress("hit_peakT",           hit_peakT);
-    // float  hit_charge[kMaxHits];              tree->SetBranchAddress("hit_charge",           hit_charge);
-    // float  hit_electrons[kMaxHits];           tree->SetBranchAddress("hit_electrons",        hit_electrons);
-    // float  hit_ph[kMaxHits];                  tree->SetBranchAddress("hit_ph",               hit_ph);
-    // float  hit_rms[kMaxHits];                 tree->SetBranchAddress("hit_rms",              hit_rms);
-    // float  hit_tstart[kMaxHits];              tree->SetBranchAddress("hit_tstart",           hit_tstart);
-    // float  hit_tend[kMaxHits];                tree->SetBranchAddress("hit_tend",             hit_tend);
-    float  hit_driftT[kMaxHits];              tree->SetBranchAddress("hit_driftT",           hit_driftT);
-    // float  hit_dQds[kMaxHits];               tree->SetBranchAddress("hit_dQds",             hit_dQds);
-    // float  hit_dEds[kMaxHits];               tree->SetBranchAddress("hit_dEds",             hit_dEds);
-    // float  hit_ds[kMaxHits];                 tree->SetBranchAddress("hit_ds",               hit_ds);
-    // float  hit_resrange[kMaxHits];            tree->SetBranchAddress("hit_resrange",         hit_resrange);
-    float  hit_x[kMaxHits];                  tree->SetBranchAddress("hit_x",                hit_x);
-    float  hit_y[kMaxHits];                  tree->SetBranchAddress("hit_y",                hit_y);
-    float  hit_z[kMaxHits];                  tree->SetBranchAddress("hit_z",                hit_z);
-    // int    hit_g4id[kMaxHits];               tree->SetBranchAddress("hit_g4id",             hit_g4id);
-    // float  hit_g4frac[kMaxHits];             tree->SetBranchAddress("hit_g4frac",           hit_g4frac);
-    // float  hit_g4nelec[kMaxHits];            tree->SetBranchAddress("hit_g4nelec",          hit_g4nelec);
-    // float  hit_g4energy[kMaxHits];           tree->SetBranchAddress("hit_g4energy",         hit_g4energy);
+    int    nhits;                              Chain->SetBranchAddress("nhits",              &nhits);
+    static int    hit_plane[kMaxHits];                Chain->SetBranchAddress("hit_plane",           hit_plane);
+    static int    hit_channel[kMaxHits];              Chain->SetBranchAddress("hit_channel",         hit_channel);
+    static int    hit_trkid[kMaxHits];               Chain->SetBranchAddress("hit_trkid",           hit_trkid);
+    static float  hit_driftT[kMaxHits];              Chain->SetBranchAddress("hit_driftT",           hit_driftT);
+    static float  hit_x[kMaxHits];                  Chain->SetBranchAddress("hit_x",                hit_x);
+    static float  hit_y[kMaxHits];                  Chain->SetBranchAddress("hit_y",                hit_y);
+    static float  hit_z[kMaxHits];                  Chain->SetBranchAddress("hit_z",                hit_z);
 
     // Simchannel information
-    const int kMaxIDE = 5000;
-    int maxTrackIDE;          tree->SetBranchAddress("maxTrackIDE", &maxTrackIDE);
-    float IDEEnergy[kMaxIDE]; tree->SetBranchAddress("IDEEnergy",   &IDEEnergy);
-    float IDEPos[kMaxIDE][3]; tree->SetBranchAddress("IDEPos",      &IDEPos);
+    int maxTrackIDE;          Chain->SetBranchAddress("maxTrackIDE", &maxTrackIDE);
+    static float IDEEnergy[kMaxIDE]; Chain->SetBranchAddress("IDEEnergy",   &IDEEnergy);
+    static float IDEPos[kMaxIDE][3]; Chain->SetBranchAddress("IDEPos",      &IDEPos);
 
     /////////////////////////////////
     // Files for event information //
     /////////////////////////////////
 
-    std::ofstream outFileAbs0pBkg("files/Classify3Cat/Abs0pBackground.txt");
-    std::ofstream outFileLowProb("files/Classify3Cat/LowProbability.txt");
     std::ofstream outFileEvents("files/Classify3Cat/GoodEvents.txt");
 
     TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "RECREATE");
@@ -263,6 +177,11 @@ void RecoClassify3Cat() {
     TH1D* hFrontFaceKEPion     = new TH1D("hFrontFaceKEPion", "hFrontFaceKEPion;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
     TH1D* hFrontFaceKEElectron = new TH1D("hFrontFaceKEElectron", "hFrontFaceKEElectron;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
     TH1D* hFrontFaceKEMuon     = new TH1D("hFrontFaceKEMuon", "hFrontFaceKEMuon;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+
+    TH1D* hFrontFaceKENoWeight         = new TH1D("hFrontFaceKENoWeight", "hFrontFaceKENoWeight;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFaceKEPionNoWeight     = new TH1D("hFrontFaceKEPionNoWeight", "hFrontFaceKEPionNoWeight;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFaceKEElectronNoWeight = new TH1D("hFrontFaceKEElectronNoWeight", "hFrontFaceKEElectronNoWeight;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFaceKEMuonNoWeight     = new TH1D("hFrontFaceKEMuonNoWeight", "hFrontFaceKEMuonNoWeight;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
 
     // Wire-chamber momentum
     TH1D* hWCKE         = new TH1D("hWCKE", "hWCKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());  
@@ -635,9 +554,6 @@ void RecoClassify3Cat() {
     // Loop over events //
     //////////////////////
 
-    Int_t NumEntries = (Int_t) tree->GetEntries();
-    std::cout << "Num entries: " << NumEntries << std::endl;
-
     int scatteringsModified = 0;
 
     int numEventsPrimaryReco  = 0;
@@ -654,20 +570,24 @@ void RecoClassify3Cat() {
 
     bool verbose = false;
 
-    for (Int_t i = 0; i < NumEntries; ++i) {
+    Long64_t i = 0;
+    while (Chain->GetEntry(i++) > 0) {
         // For some reason crashes
-        if (i == 1402) continue;
+        if (SKIP_INDICES.count(i)) continue;
+
+        // Make script go faster
+        if (i > USE_NUM_EVENTS) break;
 
         // Get tree entry and reset variables
-        std::cout << std::endl;
-        std::cout << "=================================" << std::endl;
-        std::cout << "Getting tree entry: " << i << std::endl;
-        tree->GetEntry(i);
-        std::cout << "Got tree entry" << std::endl;
-        std::cout << "Reseting variables" << std::endl;
+        if (verbose) std::cout << std::endl;
+        if (verbose) std::cout << "=================================" << std::endl;
+        if (verbose) std::cout << "Getting tree entry: " << i << std::endl;
+        Chain->GetEntry(i);
+        if (verbose) std::cout << "Got tree entry" << std::endl;
+        if (verbose) std::cout << "Reseting variables" << std::endl;
         EventVariables ev;
-        std::cout << "Variables reset" << std::endl;
-        std::cout << "=================================" << std::endl;
+        if (verbose) std::cout << "Variables reset" << std::endl;
+        if (verbose) std::cout << "=================================" << std::endl;
 
         //////////////////////////////////////
         // Construct variables I care about //
@@ -682,7 +602,7 @@ void RecoClassify3Cat() {
         
         // First, we just want to grab WC to TPC match
         int primaryTrackIdx = -1;
-        for (size_t trk_idx = 0; trk_idx < ntracks_reco; ++trk_idx) {
+        for (size_t trk_idx = 0; trk_idx < std::min(ntracks_reco, kMaxTrack); ++trk_idx) {
             if (trkWCtoTPCMatch[trk_idx]) {
                 // Grab position information
                 ev.WC2TPCPrimaryBeginX = trkvtxx[trk_idx];
@@ -693,10 +613,11 @@ void RecoClassify3Cat() {
                 ev.WC2TPCPrimaryEndZ   = trkendz[trk_idx];
 
                 // Grab calorimetry information (in collection plane)
-                ev.wcMatchResR.assign(trkrr[trk_idx][1], trkrr[trk_idx][1] + ntrkcalopts[trk_idx][1]);
-                ev.wcMatchDEDX.assign(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + ntrkcalopts[trk_idx][1]);
+                int npts_dedx = std::min(ntrkcalopts[trk_idx][1], kMaxTrackHits);
+                ev.wcMatchResR.assign(trkrr[trk_idx][1], trkrr[trk_idx][1] + npts_dedx);
+                ev.wcMatchDEDX.assign(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + npts_dedx);
 
-                for (size_t dep_idx = 0; dep_idx < ntrkcalopts[trk_idx][1]; ++dep_idx) {
+                for (size_t dep_idx = 0; dep_idx < std::min(ntrkcalopts[trk_idx][1], kMaxTrackHits); ++dep_idx) {
                     ev.wcMatchEDep.push_back(trkdedx[trk_idx][1][dep_idx] * trkpitch[trk_idx][1][dep_idx]);
                     ev.wcMatchXPos.push_back(trkxyz[trk_idx][1][dep_idx][0]);
                     ev.wcMatchYPos.push_back(trkxyz[trk_idx][1][dep_idx][1]);
@@ -704,9 +625,10 @@ void RecoClassify3Cat() {
                 }
 
                 // Get location information
-                ev.WC2TPCLocationsX.assign(trjPt_X[trk_idx], trjPt_X[trk_idx] + nTrajPoint[trk_idx]);
-                ev.WC2TPCLocationsY.assign(trjPt_Y[trk_idx], trjPt_Y[trk_idx] + nTrajPoint[trk_idx]);
-                ev.WC2TPCLocationsZ.assign(trjPt_Z[trk_idx], trjPt_Z[trk_idx] + nTrajPoint[trk_idx]);
+                int npts_wc2tpc = std::min(nTrajPoint[trk_idx], kMaxTrack);
+                ev.WC2TPCLocationsX.assign(trjPt_X[trk_idx], trjPt_X[trk_idx] + npts_wc2tpc);
+                ev.WC2TPCLocationsY.assign(trjPt_Y[trk_idx], trjPt_Y[trk_idx] + npts_wc2tpc);
+                ev.WC2TPCLocationsZ.assign(trjPt_Z[trk_idx], trjPt_Z[trk_idx] + npts_wc2tpc);
 
                 // Set flag and index
                 primaryTrackIdx = trk_idx;
@@ -718,18 +640,19 @@ void RecoClassify3Cat() {
         if (verbose) std::cout << "Found WC2TPC match: " << ev.WC2TPCMatch  << std::endl;
 
         // Copy vertex and end for all tracks
-        ev.recoEndX.assign(trkendx,  trkendx  + ntracks_reco);
-        ev.recoEndY.assign(trkendy,  trkendy  + ntracks_reco);
-        ev.recoEndZ.assign(trkendz,  trkendz  + ntracks_reco);
-        ev.recoBeginX.assign(trkvtxx, trkvtxx + ntracks_reco);
-        ev.recoBeginY.assign(trkvtxy, trkvtxy + ntracks_reco);
-        ev.recoBeginZ.assign(trkvtxz, trkvtxz + ntracks_reco);
+        int npts_trk = std::min(ntracks_reco, kMaxTrack);
+        ev.recoEndX.assign(trkendx,  trkendx  + npts_trk);
+        ev.recoEndY.assign(trkendy,  trkendy  + npts_trk);
+        ev.recoEndZ.assign(trkendz,  trkendz  + npts_trk);
+        ev.recoBeginX.assign(trkvtxx, trkvtxx + npts_trk);
+        ev.recoBeginY.assign(trkvtxy, trkvtxy + npts_trk);
+        ev.recoBeginZ.assign(trkvtxz, trkvtxz + npts_trk);
 
         // Now, we want to loop through all tracks
-        for (size_t trk_idx = 0; trk_idx < ntracks_reco; ++trk_idx) {
+        for (size_t trk_idx = 0; trk_idx < std::min(ntracks_reco, kMaxTrack); ++trk_idx) {
             // Grab calorimetry information
-            ev.recoResR.push_back(std::vector<double>(trkrr[trk_idx][1], trkrr[trk_idx][1] + ntrkcalopts[trk_idx][1]));
-            ev.recoDEDX.push_back(std::vector<double>(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + ntrkcalopts[trk_idx][1]));
+            ev.recoResR.push_back(std::vector<double>(trkrr[trk_idx][1], trkrr[trk_idx][1] + std::min(ntrkcalopts[trk_idx][1], kMaxTrackHits)));
+            ev.recoDEDX.push_back(std::vector<double>(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + std::min(ntrkcalopts[trk_idx][1], kMaxTrackHits)));
 
             // Check reversed
             double startDistance = distance(trkvtxx[trk_idx], ev.WC2TPCPrimaryEndX, trkvtxy[trk_idx], ev.WC2TPCPrimaryEndY, trkvtxz[trk_idx], ev.WC2TPCPrimaryEndZ);
@@ -761,13 +684,11 @@ void RecoClassify3Cat() {
         // Get information about Geant4 primary particles
         int iPrimary = 0;
         TVector3 vtxPion, outPion;
+        float lastTPCX = -999, lastTPCY = -999, lastTPCZ = -999;
         for (size_t true_idx = 0; true_idx < geant_list_size; ++true_idx) {
             // Get truth primary
             if (process_primary[true_idx] && StartPointz[true_idx] == -100.) {
                 ev.truthPrimaryPDG        = pdg[true_idx];
-                ev.truthPrimaryVertexX    = EndPointx[true_idx];
-                ev.truthPrimaryVertexY    = EndPointy[true_idx];
-                ev.truthPrimaryVertexZ    = EndPointz[true_idx];
                 ev.truthPrimaryVertexKE   = EndEng[true_idx] - Mass[true_idx];
                 vtxPion                   = TVector3(EndPx[true_idx], EndPy[true_idx], EndPz[true_idx]);
 
@@ -792,7 +713,7 @@ void RecoClassify3Cat() {
                         // Get daughter -211
                         if (pdg[inner_idx] == -211) {
                             ev.truthScatteredPionKE = Eng[inner_idx] - Mass[inner_idx];
-                            outPion              = TVector3(Px[inner_idx], Py[inner_idx], Pz[inner_idx]);
+                            outPion                 = TVector3(Px[inner_idx], Py[inner_idx], Pz[inner_idx]);
                         }
                     }
                 }
@@ -802,29 +723,38 @@ void RecoClassify3Cat() {
                 ev.trajectoryInitialMomentumX = 1000 * MidPx[iPrimary][0];
 
                 // Get trajectory information
-                ev.truthPrimaryLocationX.assign(MidPosX[iPrimary], MidPosX[iPrimary] + NTrTrajPts[true_idx]);
-                ev.truthPrimaryLocationY.assign(MidPosY[iPrimary], MidPosY[iPrimary] + NTrTrajPts[true_idx]);
-                ev.truthPrimaryLocationZ.assign(MidPosZ[iPrimary], MidPosZ[iPrimary] + NTrTrajPts[true_idx]);
+                int npts_truth = std::min(NTrTrajPts[true_idx], kMaxTruePrimaryPts);
+                ev.truthPrimaryLocationX.assign(MidPosX[iPrimary], MidPosX[iPrimary] + npts_truth);
+                ev.truthPrimaryLocationY.assign(MidPosY[iPrimary], MidPosY[iPrimary] + npts_truth);
+                ev.truthPrimaryLocationZ.assign(MidPosZ[iPrimary], MidPosZ[iPrimary] + npts_truth);
+
+                ev.truthPrimaryVertexX = MidPosX[iPrimary][NTrTrajPts[true_idx] - 1];
+                ev.truthPrimaryVertexY = MidPosY[iPrimary][NTrTrajPts[true_idx] - 1];
+                ev.truthPrimaryVertexZ = MidPosZ[iPrimary][NTrTrajPts[true_idx] - 1];
 
                 // Get interaction in trajectory
-                float lastTPCX = -999, lastTPCY = -999, lastTPCZ = -999;
                 ev.interactionInTrajectory = false;
                 if (verbose) std::cout << "Looking at trajectory" << std::endl;
                 if (InteractionPoint->at(0) != NTrTrajPts[true_idx] - 1) {
                     for (int i_point = 0; i_point < InteractionPoint->size(); ++i_point) {
                         if (i_point >= InteractionPointType->size()) continue;
+                        if (!isWithinReducedVolume(
+                            MidPosX[iPrimary][InteractionPoint->at(i_point)], 
+                            MidPosY[iPrimary][InteractionPoint->at(i_point)], 
+                            MidPosZ[iPrimary][InteractionPoint->at(i_point)]
+                        )) continue;
 
                         if (verbose) std::cout << "   Point: " << InteractionPoint->at(i_point) << "   Interaction: " << InteractionPointType->at(i_point) << std::endl;
 
                         // "hadElastic" is type 3
                         if (InteractionPointType->at(i_point) == 3) {
                             // Get kinetic energy at this point
-                            float p = std::sqrt(
-                                MidPx[iPrimary][InteractionPoint->at(i_point)]*MidPx[iPrimary][InteractionPoint->at(i_point)] + 
-                                MidPy[iPrimary][InteractionPoint->at(i_point)]*MidPy[iPrimary][InteractionPoint->at(i_point)] + 
-                                MidPz[iPrimary][InteractionPoint->at(i_point)]*MidPz[iPrimary][InteractionPoint->at(i_point)]
-                            );
-                            float KE = std::sqrt(p*p + Mass[true_idx]*Mass[true_idx]) - Mass[true_idx];
+                            float KE = std::sqrt(
+                                MidPx[iPrimary][InteractionPoint->at(i_point)] * MidPx[iPrimary][InteractionPoint->at(i_point)] + 
+                                MidPy[iPrimary][InteractionPoint->at(i_point)] * MidPy[iPrimary][InteractionPoint->at(i_point)] + 
+                                MidPz[iPrimary][InteractionPoint->at(i_point)] * MidPz[iPrimary][InteractionPoint->at(i_point)] +
+                                Mass[true_idx] * Mass[true_idx]
+                            ) - Mass[true_idx];
 
                             if (!ev.interactionInTrajectory) {
                                 // First interaction in trajectory
@@ -854,7 +784,11 @@ void RecoClassify3Cat() {
                                         MidPz[iPrimary][InteractionPoint->at(i_point)]
                                     );
                                 }
-                                momAfter                      = TVector3(MidPx[iPrimary][InteractionPoint->at(i_point)], MidPy[iPrimary][InteractionPoint->at(i_point)], MidPz[iPrimary][InteractionPoint->at(i_point)]);
+                                momAfter = TVector3(
+                                    MidPx[iPrimary][InteractionPoint->at(i_point)], 
+                                    MidPy[iPrimary][InteractionPoint->at(i_point)], 
+                                    MidPz[iPrimary][InteractionPoint->at(i_point)]
+                                );
                                 ev.trajectoryInteractionAngle = momBefore.Angle(momAfter);
                             } else if (ev.interactionInTrajectory) {
                                 // Subsequent interactions in trajectory
@@ -881,13 +815,17 @@ void RecoClassify3Cat() {
                                         MidPz[iPrimary][InteractionPoint->at(i_point)]
                                     );
                                 }
-                                momAfter                   = TVector3(MidPx[iPrimary][InteractionPoint->at(i_point)], MidPy[iPrimary][InteractionPoint->at(i_point)], MidPz[iPrimary][InteractionPoint->at(i_point)]);
+                                momAfter = TVector3(
+                                    MidPx[iPrimary][InteractionPoint->at(i_point)], 
+                                    MidPy[iPrimary][InteractionPoint->at(i_point)], 
+                                    MidPz[iPrimary][InteractionPoint->at(i_point)]
+                                );
                                 ev.secondaryInteractionAngle.push_back(momBefore.Angle(momAfter));
                             }
                         }
                     }
-                    if (verbose) std::cout << "Finished trajectory" << std::endl;
                 }
+                if (verbose) std::cout << "Finished trajectory" << std::endl;
 
                 // If no interaction in trajectory, last point found by looping backwards
                 if (!ev.interactionInTrajectory) {
@@ -920,8 +858,12 @@ void RecoClassify3Cat() {
                 // Get true incident KE
                 ev.validTrueIncidentKE = true;
                 if (ev.truthPrimaryPDG != -211) ev.validTrueIncidentKE = false;
-                if (firstTPCX == -999)          ev.validTrueIncidentKE = false;
-                if (firstTPCX == lastTPCX)      ev.validTrueIncidentKE = false;
+                if (firstTPCX == -999 || firstTPCY == -999 || firstTPCZ == -999) ev.validTrueIncidentKE = false;
+                if (
+                    firstTPCX == lastTPCX ||
+                    firstTPCY == lastTPCY ||
+                    firstTPCZ == lastTPCZ
+                ) ev.validTrueIncidentKE = false;
 
                 double totalLength = distance(firstTPCX, lastTPCX, firstTPCY, lastTPCY, firstTPCZ, lastTPCZ);
                 
@@ -964,7 +906,7 @@ void RecoClassify3Cat() {
                         double uniformDist = (currentPos - oldPos).Mag();
 
                         double currentDepEnergy = 0.;
-                        for (int i = 0; i < maxTrackIDE; i++) {
+                        for (int i = 0; i < std::min(maxTrackIDE, kMaxIDE); i++) {
                             if (IDEPos[i][2] < oldPos.Z())     continue;
                             if (IDEPos[i][2] > currentPos.Z()) continue;
                             currentDepEnergy += IDEEnergy[i];
@@ -983,6 +925,7 @@ void RecoClassify3Cat() {
                         // std::cout << "Step " << std::distance(orderedUniformTrjPts.begin(), it)
                         // << ": oldPos=("     << oldPos.X()     << ", " << oldPos.Y()     << ", " << oldPos.Z()     << ")"
                         // << "  currentPos=(" << currentPos.X() << ", " << currentPos.Y() << ", " << currentPos.Z() << ")"
+                        // << "  within red vol? " << isWithinReducedVolume(currentPos.X(), currentPos.Y(), currentPos.Z())
                         // << "  dist="        << uniformDist
                         // << "  KE="          << trueKineticEnergy
                         // << "  depEnergy="   << currentDepEnergy
@@ -1012,11 +955,16 @@ void RecoClassify3Cat() {
         std::map<int, std::vector<double>> trackHitYMap;
         std::map<int, std::vector<double>> trackHitZMap;
 
-        for (size_t i_hit = 0; i_hit < nhits; ++i_hit) {
+        if (verbose) std::cout << "Filling out hit information" << std::endl;
+        for (size_t i_hit = 0; i_hit < std::min(nhits, kMaxHits); ++i_hit) {
             ev.fHitPlane.push_back(hit_plane[i_hit]);
-            ev.fHitT.push_back(hit_driftT[i_hit]);
-            ev.fHitX.push_back(hit_driftT[i_hit] * DRIFT_VELOCITY);
-            ev.fHitW.push_back(hit_channel[i_hit]);
+            ev.fHitT.push_back(SAMPLING_RATE * hit_driftT[i_hit]);
+            ev.fHitX.push_back(SAMPLING_RATE * hit_driftT[i_hit] * DRIFT_VELOCITY);
+            if (hit_channel[i_hit] < 240) {
+                ev.fHitW.push_back(hit_channel[i_hit] * 0.4);
+            } else {
+                ev.fHitW.push_back((hit_channel[i_hit] - 240) * 0.4);
+            }
 
             // If it is -9, no match to a track
             if (hit_trkid[i_hit] != -9) {
@@ -1032,6 +980,10 @@ void RecoClassify3Cat() {
 
         // Fill out vectors
         for (auto& [trkid, hits] : trackHitMap) {
+            if (trkid < 0 || trkid >= ntracks_reco) {
+                std::cerr << "WARNING: unexpected trkid=" << trkid << " for entry " << i << ", skipping\n";
+                continue;
+            }
             if (trkid >= (int) ev.recoTrackHitIndices.size()) {
                 ev.recoTrackHitIndices.resize(trkid + 1);
                 ev.recoTrackHitX.resize(trkid + 1);
@@ -1095,6 +1047,8 @@ void RecoClassify3Cat() {
             ev.secondaryInteractionZPosition.push_back(primaryGeantEndZ);
             ev.secondaryInteractionDaughtersPDG.push_back(ev.truthPrimaryDaughtersPDG);
             ev.secondaryInteractionDaughtersKE.push_back(ev.truthPrimaryDaughtersKE);
+
+            ev.truthPrimaryVertexKE = ev.trajectoryInteractionKE;
         }
 
         // Grab incident KE for secondary interactions along primary track
@@ -1102,9 +1056,9 @@ void RecoClassify3Cat() {
             TVector3 segStart;
             if (i_seg == 0) {
                 segStart = TVector3(
-                    ev.truthPrimaryVertexX,
-                    ev.truthPrimaryVertexY,
-                    ev.truthPrimaryVertexZ
+                    primaryGeantEndX,
+                    primaryGeantEndY,
+                    primaryGeantEndZ
                 );
             } else {
                 segStart = TVector3(
@@ -1143,14 +1097,19 @@ void RecoClassify3Cat() {
             if (lastDist < (TRACK_PITCH / 2)) orderedUniformTrjPtsSecondary.erase((std::next(orderedUniformTrjPtsSecondary.rbegin()))->first);
 
             std::vector<double> segIncidentKE = {};
-            double segKineticEnergy = ev.secondaryInteractionInteractingKE.at(i_seg) * 1000;
+            double segKineticEnergy;
+            if (i_seg == 0) {
+                segKineticEnergy = ev.truthPrimaryVertexKE * 1000;
+            } else {
+                segKineticEnergy = ev.secondaryInteractionInteractingKE.at(i_seg-1) * 1000;
+            }
             for (auto it = std::next(orderedUniformTrjPtsSecondary.begin()), old_it = orderedUniformTrjPtsSecondary.begin(); it != orderedUniformTrjPtsSecondary.end(); it++, old_it++) {
                 auto oldPos     = old_it->second;
                 auto currentPos = it->second;
                 double uniformDist = (currentPos - oldPos).Mag();
 
                 double currentDepEnergy = 0.;
-                for (int i = 0; i < maxTrackIDE; i++) {
+                for (int i = 0; i < std::min(maxTrackIDE, kMaxIDE); i++) {
                     if (IDEPos[i][2] < oldPos.Z())     continue;
                     if (IDEPos[i][2] > currentPos.Z()) continue;
                     currentDepEnergy += IDEEnergy[i];
@@ -1166,9 +1125,6 @@ void RecoClassify3Cat() {
             }
             ev.secondaryIncidentKEContributions.push_back(segIncidentKE);
         }
-
-        // Make script go faster
-        // if (i > USE_NUM_EVENTS) break;
 
         // Get unordered set for hits in tracks
         std::unordered_set<int> hitsInTracks(ev.hitRecoAsTrackKey.begin(), ev.hitRecoAsTrackKey.end());
@@ -1240,7 +1196,7 @@ void RecoClassify3Cat() {
         int numTotalHitsNearPrimary            = 0;
         int numUnRecoHitsNearPrimaryInduction  = 0;
         int numUnRecoHitsNearPrimaryCollection = 0;
-        for (size_t iHit = 0; iHit < nhits; ++iHit) {
+        for (size_t iHit = 0; iHit < std::min(nhits, kMaxHits); ++iHit) {
             double hitX     = ev.fHitX.at(iHit);
             double hitW     = ev.fHitW.at(iHit);
             int    hitPlane = ev.fHitPlane.at(iHit);
@@ -1302,7 +1258,7 @@ void RecoClassify3Cat() {
             clusterCharge.push_back(thisHitCharge);
             clusterChargeCol.push_back(thisHitChargeCol);
             
-            for (int iAllHit = 0; iAllHit < nhits; ++iAllHit) {
+            for (int iAllHit = 0; iAllHit < std::min(nhits, kMaxHits); ++iAllHit) {
                 // Skip already used hits, and those reconstructed in tracks
                 if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit)) continue;
 
@@ -1396,9 +1352,9 @@ void RecoClassify3Cat() {
             // Look at hits with negative time
             if (ev.fHitT.at(ev.hitWC2TPCKey.at(i)) < 0) {
                 foundHitNegativeTime = true;
-                hNegativeTimePrimaryHits->Fill(ev.fHitT.at(ev.hitWC2TPCKey.at(i)));
+                hNegativeTimePrimaryHits->Fill(ev.fHitT.at(ev.hitWC2TPCKey.at(i)), ev.weight);
             }
-            hTimePrimaryHits->Fill(ev.fHitT.at(ev.hitWC2TPCKey.at(i)));
+            hTimePrimaryHits->Fill(ev.fHitT.at(ev.hitWC2TPCKey.at(i)), ev.weight);
         }
         if (foundHitNegativeTime) numEventsPrimaryHitNegativeTime++;
 
@@ -1407,9 +1363,9 @@ void RecoClassify3Cat() {
         if (!sawPrimaryCollection && !sawPrimaryInduction) numEventsNoEither++;
 
         // For data-MC comparisons
-        hMCNumWC2TPCMatch->Fill(ev.WC2TPCsize);
+        hMCNumWC2TPCMatch->Fill(ev.WC2TPCsize, ev.weight);
         if (ev.WC2TPCMatch && ev.WC2TPCsize == 1) {
-            hMCPrimaryTrackPosition->Fill(ev.WC2TPCPrimaryBeginX, ev.WC2TPCPrimaryBeginY);
+            hMCPrimaryTrackPosition->Fill(ev.WC2TPCPrimaryBeginX, ev.WC2TPCPrimaryBeginY, ev.weight);
 
             bool isPrimaryTG = !isWithinReducedVolume(ev.WC2TPCPrimaryEndX, ev.WC2TPCPrimaryEndY, ev.WC2TPCPrimaryEndZ);
 
@@ -1454,7 +1410,7 @@ void RecoClassify3Cat() {
             std::vector<int> candidateRandomHitsInduction;
             std::vector<int> candidateRandomHitsCollection;
 
-            for (size_t iHit = 0; iHit < nhits; ++iHit) {
+            for (size_t iHit = 0; iHit < std::min(nhits, kMaxHits); ++iHit) {
                 // Skip hits already in tracks
                 if (hitsInTracks.count(iHit) > 0) continue;
 
@@ -1534,7 +1490,7 @@ void RecoClassify3Cat() {
                 }
 
                 // If the primary track is a throughgoing, record track length
-                if (isPrimaryTG) hMCTGTrackLengths->Fill(trackLength);
+                if (isPrimaryTG) hMCTGTrackLengths->Fill(trackLength, ev.weight);
 
                 // Start of TPC
                 if (
@@ -1550,7 +1506,7 @@ void RecoClassify3Cat() {
                     (distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS)
                 ) {
                     tracksNearVertexComp++;
-                    hMCTrackLengthsNearVertex->Fill(trackLength);
+                    hMCTrackLengthsNearVertex->Fill(trackLength, ev.weight);
                     candidateProtonLengths.push_back(trackLength);
                 }
 
@@ -1558,45 +1514,45 @@ void RecoClassify3Cat() {
                 if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksComp++;
             }
 
-            hMCNumTGTracks->Fill(numTGTracksComp);
+            hMCNumTGTracks->Fill(numTGTracksComp, ev.weight);
 
-            if (!isPrimaryTG) hMCTracksNearVertex->Fill(tracksNearVertexComp);
+            if (!isPrimaryTG) hMCTracksNearVertex->Fill(tracksNearVertexComp, ev.weight);
 
             if (isPrimaryTG) {
-                hMCSmallVsTGTracks->Fill(smallTracksComp, numTGTracksComp);
-                hMCTGSmallTracks->Fill(smallTracksComp);
-                hMCNumTracksInCylinder->Fill(numTracksInCylinder);
-                hMCNumSmallTracksInCylinder->Fill(numSmallTracksInCylinder);
-                hMCTGUnreconstructedHitsInduction->Fill(numUnrecoHitsInduction);
-                hMCTGUnreconstructedHitsCollection->Fill(numUnrecoHitsCollection);
+                hMCSmallVsTGTracks->Fill(smallTracksComp, numTGTracksComp, ev.weight);
+                hMCTGSmallTracks->Fill(smallTracksComp, ev.weight);
+                hMCNumTracksInCylinder->Fill(numTracksInCylinder, ev.weight);
+                hMCNumSmallTracksInCylinder->Fill(numSmallTracksInCylinder, ev.weight);
+                hMCTGUnreconstructedHitsInduction->Fill(numUnrecoHitsInduction, ev.weight);
+                hMCTGUnreconstructedHitsCollection->Fill(numUnrecoHitsCollection, ev.weight);
 
                 if (numTGTracksComp == 0) {
-                    hMCTGSmallTracks0TG->Fill(smallTracksComp);
-                    hMCNumTracksInCylinder0TG->Fill(numTracksInCylinder);
-                    hMCNumSmallTracksInCylinder0TG->Fill(numSmallTracksInCylinder);
-                    hMCTGUnreconstructedHitsInduction0TG->Fill(numUnrecoHitsInduction);
-                    hMCTGUnreconstructedHitsCollection0TG->Fill(numUnrecoHitsCollection);
+                    hMCTGSmallTracks0TG->Fill(smallTracksComp, ev.weight);
+                    hMCNumTracksInCylinder0TG->Fill(numTracksInCylinder, ev.weight);
+                    hMCNumSmallTracksInCylinder0TG->Fill(numSmallTracksInCylinder, ev.weight);
+                    hMCTGUnreconstructedHitsInduction0TG->Fill(numUnrecoHitsInduction, ev.weight);
+                    hMCTGUnreconstructedHitsCollection0TG->Fill(numUnrecoHitsCollection, ev.weight);
                 }
                 if (numTGTracksComp <= 1) {
-                    hMCTGSmallTracks1TG->Fill(smallTracksComp);
-                    hMCNumTracksInCylinder1TG->Fill(numTracksInCylinder);
-                    hMCNumSmallTracksInCylinder1TG->Fill(numSmallTracksInCylinder);
-                    hMCTGUnreconstructedHitsInduction1TG->Fill(numUnrecoHitsInduction);
-                    hMCTGUnreconstructedHitsCollection1TG->Fill(numUnrecoHitsCollection);
+                    hMCTGSmallTracks1TG->Fill(smallTracksComp, ev.weight);
+                    hMCNumTracksInCylinder1TG->Fill(numTracksInCylinder, ev.weight);
+                    hMCNumSmallTracksInCylinder1TG->Fill(numSmallTracksInCylinder, ev.weight);
+                    hMCTGUnreconstructedHitsInduction1TG->Fill(numUnrecoHitsInduction, ev.weight);
+                    hMCTGUnreconstructedHitsCollection1TG->Fill(numUnrecoHitsCollection, ev.weight);
                 }
                 if (numTGTracksComp <= 2) {
-                    hMCTGSmallTracks2TG->Fill(smallTracksComp);
-                    hMCNumTracksInCylinder2TG->Fill(numTracksInCylinder);
-                    hMCNumSmallTracksInCylinder2TG->Fill(numSmallTracksInCylinder);
-                    hMCTGUnreconstructedHitsInduction2TG->Fill(numUnrecoHitsInduction);
-                    hMCTGUnreconstructedHitsCollection2TG->Fill(numUnrecoHitsCollection);
+                    hMCTGSmallTracks2TG->Fill(smallTracksComp, ev.weight);
+                    hMCNumTracksInCylinder2TG->Fill(numTracksInCylinder, ev.weight);
+                    hMCNumSmallTracksInCylinder2TG->Fill(numSmallTracksInCylinder, ev.weight);
+                    hMCTGUnreconstructedHitsInduction2TG->Fill(numUnrecoHitsInduction, ev.weight);
+                    hMCTGUnreconstructedHitsCollection2TG->Fill(numUnrecoHitsCollection, ev.weight);
                 }
                 if (numTGTracksComp <= N_TG_TRACKS) {
-                    hMCTGSmallTracksNTG->Fill(smallTracksComp);
-                    hMCNumTracksInCylinderNTG->Fill(numTracksInCylinder);
-                    hMCNumSmallTracksInCylinderNTG->Fill(numSmallTracksInCylinder);
-                    hMCTGUnreconstructedHitsInductionNTG->Fill(numUnrecoHitsInduction);
-                    hMCTGUnreconstructedHitsCollectionNTG->Fill(numUnrecoHitsCollection);
+                    hMCTGSmallTracksNTG->Fill(smallTracksComp, ev.weight);
+                    hMCNumTracksInCylinderNTG->Fill(numTracksInCylinder, ev.weight);
+                    hMCNumSmallTracksInCylinderNTG->Fill(numSmallTracksInCylinder, ev.weight);
+                    hMCTGUnreconstructedHitsInductionNTG->Fill(numUnrecoHitsInduction, ev.weight);
+                    hMCTGUnreconstructedHitsCollectionNTG->Fill(numUnrecoHitsCollection, ev.weight);
                 }
 
                 // Scan over small track length thresholds and fill 2D histogram
@@ -1612,7 +1568,7 @@ void RecoClassify3Cat() {
                         );
                         if (trackLength < threshold) nSmallTracks++;
                     }
-                    hMCTGNumSmallTracksVsThresh->Fill(threshold, nSmallTracks);
+                    hMCTGNumSmallTracksVsThresh->Fill(threshold, nSmallTracks, ev.weight);
                 }
             }
 
@@ -1622,8 +1578,8 @@ void RecoClassify3Cat() {
                 numSmallTracksInCylinder <= ALLOWED_CYLINDER_SMALL_TRACKS &&
                 !isPrimaryTG
             ) {
-                hMCNumCandidateProtons->Fill(tracksNearVertexComp);
-                for (auto x : candidateProtonLengths) hMCLengthCandidateProtons->Fill(x);
+                hMCNumCandidateProtons->Fill(tracksNearVertexComp, ev.weight);
+                for (auto x : candidateProtonLengths) hMCLengthCandidateProtons->Fill(x, ev.weight);
             }
 
             // Loop through clusters and see which would be close to random points
@@ -1637,45 +1593,45 @@ void RecoClassify3Cat() {
                     if (std::find(candidateRandomHitsInduction.begin(), candidateRandomHitsInduction.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsInduction.end()) {
                         numClustersInduction++;
                         if (isPrimaryTG) {
-                            hMCTGClusterSizesInduction->Fill(thisCluster.clusterSize);
-                            if (numTGTracksComp == 0) hMCTGClusterSizesInduction0TG->Fill(thisCluster.clusterSize);
-                            if (numTGTracksComp <= 1) hMCTGClusterSizesInduction1TG->Fill(thisCluster.clusterSize);
-                            if (numTGTracksComp <= 2) hMCTGClusterSizesInduction2TG->Fill(thisCluster.clusterSize);
-                            if (numTGTracksComp <= N_TG_TRACKS) hMCTGClusterSizesInductionNTG->Fill(thisCluster.clusterSize);
+                            hMCTGClusterSizesInduction->Fill(thisCluster.clusterSize, ev.weight);
+                            if (numTGTracksComp == 0) hMCTGClusterSizesInduction0TG->Fill(thisCluster.clusterSize, ev.weight);
+                            if (numTGTracksComp <= 1) hMCTGClusterSizesInduction1TG->Fill(thisCluster.clusterSize, ev.weight);
+                            if (numTGTracksComp <= 2) hMCTGClusterSizesInduction2TG->Fill(thisCluster.clusterSize, ev.weight);
+                            if (numTGTracksComp <= N_TG_TRACKS) hMCTGClusterSizesInductionNTG->Fill(thisCluster.clusterSize, ev.weight);
                         }
                         break;
                     } else if (std::find(candidateRandomHitsCollection.begin(), candidateRandomHitsCollection.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsCollection.end()) {
                         numClustersCollection++;
                         if (isPrimaryTG) {
-                            hMCTGClusterSizesCollection->Fill(thisCluster.clusterSize);
-                            if (numTGTracksComp == 0) hMCTGClusterSizesCollection0TG->Fill(thisCluster.clusterSize);
-                            if (numTGTracksComp <= 1) hMCTGClusterSizesCollection1TG->Fill(thisCluster.clusterSize);
-                            if (numTGTracksComp <= 2) hMCTGClusterSizesCollection2TG->Fill(thisCluster.clusterSize);
-                            if (numTGTracksComp <= N_TG_TRACKS) hMCTGClusterSizesCollectionNTG->Fill(thisCluster.clusterSize);
+                            hMCTGClusterSizesCollection->Fill(thisCluster.clusterSize, ev.weight);
+                            if (numTGTracksComp == 0) hMCTGClusterSizesCollection0TG->Fill(thisCluster.clusterSize, ev.weight);
+                            if (numTGTracksComp <= 1) hMCTGClusterSizesCollection1TG->Fill(thisCluster.clusterSize, ev.weight);
+                            if (numTGTracksComp <= 2) hMCTGClusterSizesCollection2TG->Fill(thisCluster.clusterSize, ev.weight);
+                            if (numTGTracksComp <= N_TG_TRACKS) hMCTGClusterSizesCollectionNTG->Fill(thisCluster.clusterSize, ev.weight);
                         }
                         break;
                     }
                 }
             }
             if (isPrimaryTG) {
-                hMCTGNumClustersInduction->Fill(numClustersInduction);
-                hMCTGNumClustersCollection->Fill(numClustersCollection);   
+                hMCTGNumClustersInduction->Fill(numClustersInduction, ev.weight);
+                hMCTGNumClustersCollection->Fill(numClustersCollection, ev.weight);
 
                 if (numTGTracksComp == 0) {
-                    hMCTGNumClustersInduction0TG->Fill(numClustersInduction);
-                    hMCTGNumClustersCollection0TG->Fill(numClustersCollection);   
+                    hMCTGNumClustersInduction0TG->Fill(numClustersInduction, ev.weight);
+                    hMCTGNumClustersCollection0TG->Fill(numClustersCollection, ev.weight);
                 }
                 if (numTGTracksComp <= 1) {
-                    hMCTGNumClustersInduction1TG->Fill(numClustersInduction);
-                    hMCTGNumClustersCollection1TG->Fill(numClustersCollection);   
+                    hMCTGNumClustersInduction1TG->Fill(numClustersInduction, ev.weight);
+                    hMCTGNumClustersCollection1TG->Fill(numClustersCollection, ev.weight);
                 }
                 if (numTGTracksComp <= 2) {
-                    hMCTGNumClustersInduction2TG->Fill(numClustersInduction);
-                    hMCTGNumClustersCollection2TG->Fill(numClustersCollection);
+                    hMCTGNumClustersInduction2TG->Fill(numClustersInduction, ev.weight);
+                    hMCTGNumClustersCollection2TG->Fill(numClustersCollection, ev.weight);
                 }
                 if (numTGTracksComp <= N_TG_TRACKS) {
-                    hMCTGNumClustersInductionNTG->Fill(numClustersInduction);
-                    hMCTGNumClustersCollectionNTG->Fill(numClustersCollection);
+                    hMCTGNumClustersInductionNTG->Fill(numClustersInduction, ev.weight);
+                    hMCTGNumClustersCollectionNTG->Fill(numClustersCollection, ev.weight);
                 }
             }
         }
@@ -1691,13 +1647,12 @@ void RecoClassify3Cat() {
         // Modify scatterings
         if (ev.backgroundType == 12 || ev.backgroundType == 6) {
             if (ev.backgroundType == 12) {
-                scatteringAngle         = ev.trajectoryInteractionAngle;
-                scatteringEnergy        = ev.trajectoryInteractionKE;
-                ev.truthPrimaryVertexKE = ev.trajectoryInteractionKE; // in case we do not modify anything
+                scatteringAngle  = ev.trajectoryInteractionAngle;
+                scatteringEnergy = ev.trajectoryInteractionKE;
             }
             else if (ev.backgroundType == 6) {
                 scatteringAngle  = ev.truthScatteringAngle;
-                scatteringEnergy = ev.truthScatteredPionKE; 
+                scatteringEnergy = ev.truthScatteredPionKE;
             }
 
             if (verbose) std::cout << "Checking if elastic scattering is above threshold, with angle " << scatteringAngle << " and KE " << scatteringEnergy << std::endl;
@@ -1708,11 +1663,13 @@ void RecoClassify3Cat() {
                 else if (ev.backgroundType == 6) {
                     int tempNumVisibleProtons = 0;
                     for (int i = 0; i < ev.truthPrimaryDaughtersPDG.size(); ++i) {
-                        if (ev.truthPrimaryDaughtersPDG.at(i) == 2212) {
-                            if (
-                                ev.truthPrimaryDaughtersKE.at(i) > PROTON_ENERGY_LOWER_BOUND &&
-                                ev.truthPrimaryDaughtersKE.at(i) < PROTON_ENERGY_UPPER_BOUND
-                            ) tempNumVisibleProtons++;
+                        if (
+                            ev.truthPrimaryDaughtersPDG.at(i) == 2212 &&
+                            ev.truthPrimaryDaughtersProcess.at(i) == "pi-Inelastic" &&
+                            ev.truthPrimaryDaughtersKE.at(i) >= PROTON_ENERGY_LOWER_BOUND &&
+                            ev.truthPrimaryDaughtersKE.at(i) <= PROTON_ENERGY_UPPER_BOUND
+                        ) {
+                            tempNumVisibleProtons++;
                         }
                     }
                     if (tempNumVisibleProtons == 0) ev.backgroundType = 0;
@@ -1753,11 +1710,12 @@ void RecoClassify3Cat() {
                         else if (currentInteraction == 6) {
                             int tempNumVisibleProtons = 0;
                             for (int i = 0; i < ev.secondaryInteractionDaughtersPDG.at(iInteraction).size(); ++i) {
-                                if (ev.secondaryInteractionDaughtersPDG.at(iInteraction)[i] == 2212) {
-                                    if (
-                                        ev.secondaryInteractionDaughtersKE.at(iInteraction)[i] > PROTON_ENERGY_LOWER_BOUND &&
-                                        ev.secondaryInteractionDaughtersKE.at(iInteraction)[i] < PROTON_ENERGY_UPPER_BOUND
-                                    ) tempNumVisibleProtons++;
+                                if (
+                                    ev.secondaryInteractionDaughtersPDG.at(iInteraction)[i] == 2212 &&
+                                    ev.secondaryInteractionDaughtersKE.at(iInteraction)[i] >= PROTON_ENERGY_LOWER_BOUND &&
+                                    ev.secondaryInteractionDaughtersKE.at(iInteraction)[i] <= PROTON_ENERGY_UPPER_BOUND
+                                ) {
+                                    tempNumVisibleProtons++;
                                 }
                             }
                             if (tempNumVisibleProtons == 0) ev.backgroundType = 0;
@@ -1820,43 +1778,47 @@ void RecoClassify3Cat() {
                 muonType = 3;
             }
 
-            hTrueMuonTypes->Fill(muonType);
+            hTrueMuonTypes->Fill(muonType, ev.weight);
         }
 
+        if (verbose) std::cout << "Original interacting KE: " << ev.truthPrimaryVertexKE << std::endl;
         if (ev.trueIncidentKEContributions.size() == 0) ev.truthPrimaryVertexKE = 0;
         else ev.truthPrimaryVertexKE = ev.trueIncidentKEContributions.back() / 1000.0;
+        if (verbose) for (const auto& ke : ev.trueIncidentKEContributions) {std::cout << ke << " ";}
+        if (verbose) if (ev.trueIncidentKEContributions.size() > 0) std::cout << std::endl;
+        if (verbose) std::cout << "Final interacting KE: " << ev.truthPrimaryVertexKE << std::endl;
 
         // Get true energy bin
         int TrueEnergyBin = getBin(ev.truthPrimaryVertexKE * 1000, ARRAY_KE_BINS);
 
         // Add true incident KE
         if (ev.validTrueIncidentKE) {
-            for (double x : ev.trueIncidentKEContributions) hTrueIncidentKE->Fill(x);
+            for (double x : ev.trueIncidentKEContributions) hTrueIncidentKE->Fill(x, ev.weight);
         }
 
         // Fill in true interaction energy histograms
         if (ev.backgroundType == 0) {
-            hTrueAbs0pKE->Fill(ev.truthPrimaryVertexKE * 1000);
-            hTrueAllKE->Fill(ev.truthPrimaryVertexKE * 1000);
+            hTrueAbs0pKE->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            hTrueAllKE->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
         } else if (ev.backgroundType == 1) {
-            hTrueAbsNpKE->Fill(ev.truthPrimaryVertexKE * 1000);
-            hTrueAllKE->Fill(ev.truthPrimaryVertexKE * 1000);
+            hTrueAbsNpKE->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            hTrueAllKE->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
         } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-            hTrueScatterKE->Fill(ev.truthPrimaryVertexKE * 1000);
-            hTrueAllKE->Fill(ev.truthPrimaryVertexKE * 1000);
+            hTrueScatterKE->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            hTrueAllKE->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
         } else if (ev.backgroundType == 7) {
-            hTrueChExchKE->Fill(ev.truthPrimaryVertexKE * 1000);
-            hTrueAllKE->Fill(ev.truthPrimaryVertexKE * 1000);
+            hTrueChExchKE->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            hTrueAllKE->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
         } else if (
             ev.backgroundType == 8 ||
             ev.backgroundType == 9 ||
             ev.backgroundType == 10 ||
             ev.backgroundType == 11
         ) {
-            hTrueOtherKE->Fill(ev.truthPrimaryVertexKE * 1000);
-            hTrueAllKE->Fill(ev.truthPrimaryVertexKE * 1000);
+            hTrueOtherKE->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            hTrueAllKE->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
         }
-        hTotalEvents->Fill(ev.backgroundType);
+        hTotalEvents->Fill(ev.backgroundType, ev.weight);
 
         //////////////////////
         // WC2TPC match cut //
@@ -1865,20 +1827,20 @@ void RecoClassify3Cat() {
         // If no track matched to wire-chamber, skip
         if (!ev.WC2TPCMatch || ev.WC2TPCsize != 1) {
             if (ev.backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                hTrueAbs0pKERejDataProds->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                hTrueAbs0pKERejDataProds->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             } else if (ev.backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                hTrueAbsNpKERejDataProds->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                hTrueAbsNpKERejDataProds->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                hTrueScatterKERejDataProds->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                hTrueScatterKERejDataProds->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             } else if (ev.backgroundType == 7) {
-                hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             }
             continue;
         }
-        hDataProdsAndWC2TPC->Fill(ev.backgroundType);
+        hDataProdsAndWC2TPC->Fill(ev.backgroundType, ev.weight);
 
         //////////////////////////////////
         // Check WC/front-face momentum //
@@ -1896,22 +1858,26 @@ void RecoClassify3Cat() {
         } else { calculatedEnLoss = energyLossCalculation(ev.WC4PrimaryX, ev.trajectoryInitialMomentumX, isData); }
         const double initialKE = WCKE - calculatedEnLoss;
 
-        hWCKE->Fill(WCKE);
+        hWCKE->Fill(WCKE, ev.weight);
         if (ev.truthPrimaryPDG == -211) {
-            hWCKEPion->Fill(WCKE);
+            hWCKEPion->Fill(WCKE, ev.weight);
         } else if (ev.truthPrimaryPDG == 13) {
-            hWCKEMuon->Fill(WCKE);
+            hWCKEMuon->Fill(WCKE, ev.weight);
         } else if (ev.truthPrimaryPDG == 11) {
-            hWCKEElectron->Fill(WCKE);
+            hWCKEElectron->Fill(WCKE, ev.weight);
         }
 
-        hFrontFaceKE->Fill(initialKE);
+        hFrontFaceKE->Fill(initialKE, ev.weight);
+        hFrontFaceKENoWeight->Fill(initialKE);
         if (ev.truthPrimaryPDG == -211) {
-            hFrontFaceKEPion->Fill(initialKE);
+            hFrontFaceKEPion->Fill(initialKE, ev.weight);
+            hFrontFaceKEPionNoWeight->Fill(initialKE);
         } else if (ev.truthPrimaryPDG == 13) {
-            hFrontFaceKEMuon->Fill(initialKE);
+            hFrontFaceKEMuon->Fill(initialKE, ev.weight);
+            hFrontFaceKEMuonNoWeight->Fill(initialKE);
         } else if (ev.truthPrimaryPDG == 11) {
-            hFrontFaceKEElectron->Fill(initialKE);
+            hFrontFaceKEElectron->Fill(initialKE, ev.weight);
+            hFrontFaceKEElectronNoWeight->Fill(initialKE);
         }
 
         //////////////////////////////////////
@@ -2023,26 +1989,26 @@ void RecoClassify3Cat() {
         
         // Save data about TG tracks
         if (ev.backgroundType == 0) {
-            hNumTGTracksAbs0p->Fill(numTGTracks);
-            hNumTGTracksPrimaryPion->Fill(numTGTracks);
+            hNumTGTracksAbs0p->Fill(numTGTracks, ev.weight);
+            hNumTGTracksPrimaryPion->Fill(numTGTracks, ev.weight);
         } else if (ev.backgroundType == 1) {
-            hNumTGTracksAbsNp->Fill(numTGTracks);
-            hNumTGTracksPrimaryPion->Fill(numTGTracks);
+            hNumTGTracksAbsNp->Fill(numTGTracks, ev.weight);
+            hNumTGTracksPrimaryPion->Fill(numTGTracks, ev.weight);
         } else if (ev.backgroundType == 2) {
-            hNumTGTracksMuon->Fill(numTGTracks);
-            hNumTGTracksPrimaryMuon->Fill(numTGTracks);
+            hNumTGTracksMuon->Fill(numTGTracks, ev.weight);
+            hNumTGTracksPrimaryMuon->Fill(numTGTracks, ev.weight);
         } else if (ev.backgroundType == 3) {
-            hNumTGTracksElectron->Fill(numTGTracks);
-            hNumTGTracksPrimaryElectron->Fill(numTGTracks);
+            hNumTGTracksElectron->Fill(numTGTracks, ev.weight);
+            hNumTGTracksPrimaryElectron->Fill(numTGTracks, ev.weight);
         } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-            hNumTGTracksScatter->Fill(numTGTracks);
-            hNumTGTracksPrimaryPion->Fill(numTGTracks);
+            hNumTGTracksScatter->Fill(numTGTracks, ev.weight);
+            hNumTGTracksPrimaryPion->Fill(numTGTracks, ev.weight);
         } else if (ev.backgroundType == 7) {
-            hNumTGTracksChExch->Fill(numTGTracks);
-            hNumTGTracksPrimaryPion->Fill(numTGTracks);
+            hNumTGTracksChExch->Fill(numTGTracks, ev.weight);
+            hNumTGTracksPrimaryPion->Fill(numTGTracks, ev.weight);
         } else {
-            hNumTGTracksOther->Fill(numTGTracks);
-            hNumTGTracksPrimaryPion->Fill(numTGTracks);
+            hNumTGTracksOther->Fill(numTGTracks, ev.weight);
+            hNumTGTracksPrimaryPion->Fill(numTGTracks, ev.weight);
         }
 
         // Grab data about number of events with each cutoff
@@ -2052,35 +2018,35 @@ void RecoClassify3Cat() {
 
         // Perform TG track cut
         if (numTGTracks > MAX_NUM_TG_TRACKS) continue;
-        hNotManyTGTracks->Fill(ev.backgroundType);
+        hNotManyTGTracks->Fill(ev.backgroundType, ev.weight);
 
         // Save data about small tracks in cylinder
         if (ev.truthPrimaryPDG == -211) {
-            hSmallTrksInCylinderPions->Fill(numSmallTracksInCylinder);
+            hSmallTrksInCylinderPions->Fill(numSmallTracksInCylinder, ev.weight);
         } else if (ev.truthPrimaryPDG == 13) {
-            hSmallTrksInCylinderMuons->Fill(numSmallTracksInCylinder);
+            hSmallTrksInCylinderMuons->Fill(numSmallTracksInCylinder, ev.weight);
         } else if (ev.truthPrimaryPDG == 11) {
-            hSmallTrksInCylinderElectrons->Fill(numSmallTracksInCylinder);
+            hSmallTrksInCylinderElectrons->Fill(numSmallTracksInCylinder, ev.weight);
         }
-        hSmallTrksInCylinder->Fill(numSmallTracksInCylinder);
+        hSmallTrksInCylinder->Fill(numSmallTracksInCylinder, ev.weight);
 
         // Cut on small tracks
         if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) {
             if (ev.backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                hTrueAbs0pKERejElectron->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                hTrueAbs0pKERejElectron->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             } else if (ev.backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                hTrueAbsNpKERejElectron->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                hTrueAbsNpKERejElectron->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                hTrueScatterKERejElectron->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                hTrueScatterKERejElectron->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             } else if (ev.backgroundType == 7) {
-                hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             }
             continue;
         }
-        hNotAnElectron->Fill(ev.backgroundType);
+        hNotAnElectron->Fill(ev.backgroundType, ev.weight);
 
         //////////////////////
         // Incident KE fill //
@@ -2099,19 +2065,19 @@ void RecoClassify3Cat() {
 
             // Add to incident KE if inside reduced volume
             if (isWithinReducedVolume(ev.wcMatchXPos.at(iDep), ev.wcMatchYPos.at(iDep), ev.wcMatchZPos.at(iDep))) {
-                hIncidentKE->Fill(initialKE - energyDeposited);
-                hIncidentKEFine->Fill(initialKE - energyDeposited);
+                hIncidentKE->Fill(initialKE - energyDeposited, ev.weight);
+                hIncidentKEFine->Fill(initialKE - energyDeposited, ev.weight);
 
                 // Background breakdown
                 if (ev.truthPrimaryPDG == -211) {
-                    hIncidentKEPion->Fill(initialKE - energyDeposited);
-                    hIncidentKEPionFine->Fill(initialKE - energyDeposited);
+                    hIncidentKEPion->Fill(initialKE - energyDeposited, ev.weight);
+                    hIncidentKEPionFine->Fill(initialKE - energyDeposited, ev.weight);
                 } else if (ev.truthPrimaryPDG == 13) {
-                    hIncidentKEMuon->Fill(initialKE - energyDeposited);
-                    hIncidentKEMuonFine->Fill(initialKE - energyDeposited);
+                    hIncidentKEMuon->Fill(initialKE - energyDeposited, ev.weight);
+                    hIncidentKEMuonFine->Fill(initialKE - energyDeposited, ev.weight);
                 } else if (ev.truthPrimaryPDG == 11) {
-                    hIncidentKEElectron->Fill(initialKE - energyDeposited);
-                    hIncidentKEElectronFine->Fill(initialKE - energyDeposited);
+                    hIncidentKEElectron->Fill(initialKE - energyDeposited, ev.weight);
+                    hIncidentKEElectronFine->Fill(initialKE - energyDeposited, ev.weight);
                 }
             }
         }
@@ -2123,20 +2089,20 @@ void RecoClassify3Cat() {
 
         if (!isWithinReducedVolume(breakPointX, breakPointY, breakPointZ)) {
             if (ev.backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                hTrueAbs0pKERejRedVol->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                hTrueAbs0pKERejRedVol->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             } else if (ev.backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                hTrueAbsNpKERejRedVol->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                hTrueAbsNpKERejRedVol->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                hTrueScatterKERejRedVol->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                hTrueScatterKERejRedVol->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             } else if (ev.backgroundType == 7) {
-                hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             }
             continue;
         }
-        hPrimaryInRedVol->Fill(ev.backgroundType);
+        hPrimaryInRedVol->Fill(ev.backgroundType, ev.weight);
 
         /////////////////////
         // Primary PID cut //
@@ -2144,20 +2110,20 @@ void RecoClassify3Cat() {
 
         if (minChi2 == pionChi2 || minChi2 == protonChi2) {
             if (ev.backgroundType == 0) {
-                hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                hTrueAbs0pKERejPID->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                hTrueAbs0pKERejPID->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             } else if (ev.backgroundType == 1) {
-                hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                hTrueAbsNpKERejPID->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                hTrueAbsNpKERejPID->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                hTrueScatterKERejPID->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                hTrueScatterKERejPID->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             } else if (ev.backgroundType == 7) {
-                hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             }
             continue;
         }
-        hPrimaryPID->Fill(ev.backgroundType);
+        hPrimaryPID->Fill(ev.backgroundType, ev.weight);
 
         /////////////////////////
         // Secondary track PID //
@@ -2261,106 +2227,106 @@ void RecoClassify3Cat() {
             if (totalTaggedPions > 1 || newSecondaryPion) {
                 // reject events with > 1 tagged pion
                 if (ev.backgroundType == 0) {
-                    hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                    hTrueAbs0pKERejManyPions->Fill(ev.truthPrimaryVertexKE * 1000);
+                    hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                    hTrueAbs0pKERejManyPions->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
                 } else if (ev.backgroundType == 1) {
-                    hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                    hTrueAbsNpKERejManyPions->Fill(ev.truthPrimaryVertexKE * 1000);
+                    hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                    hTrueAbsNpKERejManyPions->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
                 } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                    hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-                    hTrueScatterKERejManyPions->Fill(ev.truthPrimaryVertexKE * 1000);
+                    hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                    hTrueScatterKERejManyPions->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
                 } else if (ev.backgroundType == 7) {
-                    hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
+                    hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
                 }
                 continue;
             }
 
             // Select as scatter
-            hPionScatter->Fill(ev.backgroundType);
+            hPionScatter->Fill(ev.backgroundType, ev.weight);
 
-            hPionScatterKE->Fill(energyAtVertex);
+            hPionScatterKE->Fill(energyAtVertex, ev.weight);
             if (ev.backgroundType == 0) {
-                hPionScatterKEAbs0p->Fill(energyAtVertex);
+                hPionScatterKEAbs0p->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 1) {
-                hPionScatterKEAbsNp->Fill(energyAtVertex);
+                hPionScatterKEAbsNp->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                hPionScatterKETrue->Fill(energyAtVertex);
+                hPionScatterKETrue->Fill(energyAtVertex, ev.weight);
                 outFileEvents << "True scatter as scatter: " << run << " " << subrun << " " << event << std::endl;
             } else if (ev.backgroundType == 2) {
-                hPionScatterKEMuon->Fill(energyAtVertex);
+                hPionScatterKEMuon->Fill(energyAtVertex, ev.weight);
 
                 if (muonType == 0) {
-                    hPionScatterKEMuonTG->Fill(energyAtVertex);
+                    hPionScatterKEMuonTG->Fill(energyAtVertex, ev.weight);
                 } else if (muonType == 1) {
-                    hPionScatterKEMuonDecay->Fill(energyAtVertex);
+                    hPionScatterKEMuonDecay->Fill(energyAtVertex, ev.weight);
                 } else if (muonType == 2) {
-                    hPionScatterKEMuonCAR->Fill(energyAtVertex);
+                    hPionScatterKEMuonCAR->Fill(energyAtVertex, ev.weight);
                 }
             } else if (ev.backgroundType == 3) {
-                hPionScatterKEElectron->Fill(energyAtVertex);
+                hPionScatterKEElectron->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 7) {
-                hPionScatterKEChExch->Fill(energyAtVertex);
+                hPionScatterKEChExch->Fill(energyAtVertex, ev.weight);
             } else {
-                hPionScatterKEOther->Fill(energyAtVertex);
+                hPionScatterKEOther->Fill(energyAtVertex, ev.weight);
             }
 
             if (ev.backgroundType == 0) {
-                hTrueAbs0pKEAsScatter->Fill(ev.truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
+                hTrueAbs0pKEAsScatter->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(2)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 1) {
-                hTrueAbsNpKEAsScatter->Fill(ev.truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
+                hTrueAbsNpKEAsScatter->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(2)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                hTrueScatterKEAsScatter->Fill(ev.truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
+                hTrueScatterKEAsScatter->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(2)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 7) {
-                hTrueChExchKEAsScatter->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueChExchKEAsScatter->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             }
 
             // TODO: maybe check not rejecting more than 1 pion
 
             continue;
         }
-        hNotScatter->Fill(ev.backgroundType);
+        hNotScatter->Fill(ev.backgroundType, ev.weight);
 
         if (totalTaggedProtons > 0) {
             // Select as Np absorption
-            hPionAbsNp->Fill(ev.backgroundType);
+            hPionAbsNp->Fill(ev.backgroundType, ev.weight);
 
-            hPionAbsNpKE->Fill(energyAtVertex);
+            hPionAbsNpKE->Fill(energyAtVertex, ev.weight);
             if (ev.backgroundType == 0) {
-                hPionAbsNpKEAbs0p->Fill(energyAtVertex);
+                hPionAbsNpKEAbs0p->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 1) {
-                hPionAbsNpKETrue->Fill(energyAtVertex);
+                hPionAbsNpKETrue->Fill(energyAtVertex, ev.weight);
                 outFileEvents << "True abs np as abs np: " << run << " " << subrun << " " << event << std::endl;
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                hPionAbsNpKEScatter->Fill(energyAtVertex);
+                hPionAbsNpKEScatter->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 2) {
-                hPionAbsNpKEMuon->Fill(energyAtVertex);
+                hPionAbsNpKEMuon->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 3) {
-                hPionAbsNpKEElectron->Fill(energyAtVertex);
+                hPionAbsNpKEElectron->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 7) {
-                hPionAbsNpKEChExch->Fill(energyAtVertex);
+                hPionAbsNpKEChExch->Fill(energyAtVertex, ev.weight);
             } else {
-                hPionAbsNpKEOther->Fill(energyAtVertex);
+                hPionAbsNpKEOther->Fill(energyAtVertex, ev.weight);
             }
 
             if (ev.backgroundType == 0) {
-                hTrueAbs0pKEAsAbsNp->Fill(ev.truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+                hTrueAbs0pKEAsAbsNp->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 1) {
-                hTrueAbsNpKEAsAbsNp->Fill(ev.truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+                hTrueAbsNpKEAsAbsNp->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                hTrueScatterKEAsAbsNp->Fill(ev.truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+                hTrueScatterKEAsAbsNp->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(1)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 7) {
-                hTrueChExchKEAsAbsNp->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueChExchKEAsAbsNp->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             }
 
             continue;
         }
-        hNotPionAbsNp->Fill(ev.backgroundType);
+        hNotPionAbsNp->Fill(ev.backgroundType, ev.weight);
 
         ////////////////////////////////////////
         // Cluster non-reconstructed hits cut //
@@ -2394,167 +2360,167 @@ void RecoClassify3Cat() {
             }
 
             if (ev.backgroundType == 0) {
-                if (hitClusters[i].plane == 0) hHitClusterInductionSizesAbs0p->Fill(clusterSize);
-                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesAbs0p->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesAbs0p->Fill(clusterSize, ev.weight);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesAbs0p->Fill(clusterSize, ev.weight);
             } else if (ev.backgroundType == 1) {
-                if (hitClusters[i].plane == 0) hHitClusterInductionSizesAbsNp->Fill(clusterSize);
-                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesAbsNp->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesAbsNp->Fill(clusterSize, ev.weight);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesAbsNp->Fill(clusterSize, ev.weight);
             } else if (ev.backgroundType == 2) {
-                if (hitClusters[i].plane == 0) hHitClusterInductionSizesMuon->Fill(clusterSize);
-                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesMuon->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesMuon->Fill(clusterSize, ev.weight);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesMuon->Fill(clusterSize, ev.weight);
             } else if (ev.backgroundType == 3) {
-                if (hitClusters[i].plane == 0) hHitClusterInductionSizesElectron->Fill(clusterSize);
-                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesElectron->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesElectron->Fill(clusterSize, ev.weight);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesElectron->Fill(clusterSize, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                if (hitClusters[i].plane == 0) hHitClusterInductionSizesScatter->Fill(clusterSize);
-                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesScatter->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesScatter->Fill(clusterSize, ev.weight);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesScatter->Fill(clusterSize, ev.weight);
             } else if (ev.backgroundType == 7) {
-                if (hitClusters[i].plane == 0) hHitClusterInductionSizesChExch->Fill(clusterSize);
-                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesChExch->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesChExch->Fill(clusterSize, ev.weight);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesChExch->Fill(clusterSize, ev.weight);
             } else {
-                if (hitClusters[i].plane == 0) hHitClusterInductionSizesOther->Fill(clusterSize);
-                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesOther->Fill(clusterSize);
+                if (hitClusters[i].plane == 0) hHitClusterInductionSizesOther->Fill(clusterSize, ev.weight);
+                else if (hitClusters[i].plane == 1) hHitClusterCollectionSizesOther->Fill(clusterSize, ev.weight);
             }
         }
 
         if (ev.backgroundType == 0) {
-            hLargeHitClusterInductionAbs0p->Fill(numLargeClustersInduction);
-            hLargestHitClusterInductionAbs0p->Fill(largestClusterSizeInduction);
-            hNumClustersInductionAbs0p->Fill(numClustersInduction);
+            hLargeHitClusterInductionAbs0p->Fill(numLargeClustersInduction, ev.weight);
+            hLargestHitClusterInductionAbs0p->Fill(largestClusterSizeInduction, ev.weight);
+            hNumClustersInductionAbs0p->Fill(numClustersInduction, ev.weight);
 
-            hLargeHitClusterCollectionAbs0p->Fill(numLargeClustersCollection);
-            hLargestHitClusterCollectionAbs0p->Fill(largestClusterSizeCollection);
-            hNumClustersCollectionAbs0p->Fill(numClustersCollection);
+            hLargeHitClusterCollectionAbs0p->Fill(numLargeClustersCollection, ev.weight);
+            hLargestHitClusterCollectionAbs0p->Fill(largestClusterSizeCollection, ev.weight);
+            hNumClustersCollectionAbs0p->Fill(numClustersCollection, ev.weight);
         } else if (ev.backgroundType == 1) {
-            hLargeHitClusterInductionAbsNp->Fill(numLargeClustersInduction);
-            hLargestHitClusterInductionAbsNp->Fill(largestClusterSizeInduction);
-            hNumClustersInductionAbsNp->Fill(numClustersInduction);
+            hLargeHitClusterInductionAbsNp->Fill(numLargeClustersInduction, ev.weight);
+            hLargestHitClusterInductionAbsNp->Fill(largestClusterSizeInduction, ev.weight);
+            hNumClustersInductionAbsNp->Fill(numClustersInduction, ev.weight);
 
-            hLargeHitClusterCollectionAbsNp->Fill(numLargeClustersCollection);
-            hLargestHitClusterCollectionAbsNp->Fill(largestClusterSizeCollection);
-            hNumClustersCollectionAbsNp->Fill(numClustersCollection);
+            hLargeHitClusterCollectionAbsNp->Fill(numLargeClustersCollection, ev.weight);
+            hLargestHitClusterCollectionAbsNp->Fill(largestClusterSizeCollection, ev.weight);
+            hNumClustersCollectionAbsNp->Fill(numClustersCollection, ev.weight);
         } else if (ev.backgroundType == 7) {
-            hLargeHitClusterInductionChExch->Fill(numLargeClustersInduction);
-            hLargestHitClusterInductionChExch->Fill(largestClusterSizeInduction);
-            hNumClustersInductionChExch->Fill(numClustersInduction);
+            hLargeHitClusterInductionChExch->Fill(numLargeClustersInduction, ev.weight);
+            hLargestHitClusterInductionChExch->Fill(largestClusterSizeInduction, ev.weight);
+            hNumClustersInductionChExch->Fill(numClustersInduction, ev.weight);
 
-            hLargeHitClusterCollectionChExch->Fill(numLargeClustersCollection);
-            hLargestHitClusterCollectionChExch->Fill(largestClusterSizeCollection);
-            hNumClustersCollectionChExch->Fill(numClustersCollection);
+            hLargeHitClusterCollectionChExch->Fill(numLargeClustersCollection, ev.weight);
+            hLargestHitClusterCollectionChExch->Fill(largestClusterSizeCollection, ev.weight);
+            hNumClustersCollectionChExch->Fill(numClustersCollection, ev.weight);
         } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-            hLargeHitClusterInductionScatter->Fill(numLargeClustersInduction);
-            hLargestHitClusterInductionScatter->Fill(largestClusterSizeInduction);
-            hNumClustersInductionScatter->Fill(numClustersInduction);
+            hLargeHitClusterInductionScatter->Fill(numLargeClustersInduction, ev.weight);
+            hLargestHitClusterInductionScatter->Fill(largestClusterSizeInduction, ev.weight);
+            hNumClustersInductionScatter->Fill(numClustersInduction, ev.weight);
 
-            hLargeHitClusterCollectionScatter->Fill(numLargeClustersCollection);
-            hLargestHitClusterCollectionScatter->Fill(largestClusterSizeCollection);
-            hNumClustersCollectionScatter->Fill(numClustersCollection);
+            hLargeHitClusterCollectionScatter->Fill(numLargeClustersCollection, ev.weight);
+            hLargestHitClusterCollectionScatter->Fill(largestClusterSizeCollection, ev.weight);
+            hNumClustersCollectionScatter->Fill(numClustersCollection, ev.weight);
         } else if (ev.backgroundType == 2) {
-            hLargeHitClusterInductionMuon->Fill(numLargeClustersInduction);
-            hLargestHitClusterInductionMuon->Fill(largestClusterSizeInduction);
-            hNumClustersInductionMuon->Fill(numClustersInduction);
+            hLargeHitClusterInductionMuon->Fill(numLargeClustersInduction, ev.weight);
+            hLargestHitClusterInductionMuon->Fill(largestClusterSizeInduction, ev.weight);
+            hNumClustersInductionMuon->Fill(numClustersInduction, ev.weight);
 
-            hLargeHitClusterCollectionMuon->Fill(numLargeClustersCollection);
-            hLargestHitClusterCollectionMuon->Fill(largestClusterSizeCollection);
-            hNumClustersCollectionMuon->Fill(numClustersCollection);
+            hLargeHitClusterCollectionMuon->Fill(numLargeClustersCollection, ev.weight);
+            hLargestHitClusterCollectionMuon->Fill(largestClusterSizeCollection, ev.weight);
+            hNumClustersCollectionMuon->Fill(numClustersCollection, ev.weight);
         } else if (ev.backgroundType == 3) {
-            hLargeHitClusterInductionElectron->Fill(numLargeClustersInduction);
-            hLargestHitClusterInductionElectron->Fill(largestClusterSizeInduction);
-            hNumClustersInductionElectron->Fill(numClustersInduction);
+            hLargeHitClusterInductionElectron->Fill(numLargeClustersInduction, ev.weight);
+            hLargestHitClusterInductionElectron->Fill(largestClusterSizeInduction, ev.weight);
+            hNumClustersInductionElectron->Fill(numClustersInduction, ev.weight);
 
-            hLargeHitClusterCollectionElectron->Fill(numLargeClustersCollection);
-            hLargestHitClusterCollectionElectron->Fill(largestClusterSizeCollection);
-            hNumClustersCollectionElectron->Fill(numClustersCollection);
+            hLargeHitClusterCollectionElectron->Fill(numLargeClustersCollection, ev.weight);
+            hLargestHitClusterCollectionElectron->Fill(largestClusterSizeCollection, ev.weight);
+            hNumClustersCollectionElectron->Fill(numClustersCollection, ev.weight);
         } else {
-            hLargeHitClusterInductionOther->Fill(numLargeClustersInduction);
-            hLargestHitClusterInductionOther->Fill(largestClusterSizeInduction);
-            hNumClustersInductionOther->Fill(numClustersInduction);
+            hLargeHitClusterInductionOther->Fill(numLargeClustersInduction, ev.weight);
+            hLargestHitClusterInductionOther->Fill(largestClusterSizeInduction, ev.weight);
+            hNumClustersInductionOther->Fill(numClustersInduction, ev.weight);
 
-            hLargeHitClusterCollectionOther->Fill(numLargeClustersCollection);
-            hLargestHitClusterCollectionOther->Fill(largestClusterSizeCollection);
-            hNumClustersCollectionOther->Fill(numClustersCollection);
+            hLargeHitClusterCollectionOther->Fill(numLargeClustersCollection, ev.weight);
+            hLargestHitClusterCollectionOther->Fill(largestClusterSizeCollection, ev.weight);
+            hNumClustersCollectionOther->Fill(numClustersCollection, ev.weight);
         }
 
         if (numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION) {
-            hPionAbs0p->Fill(ev.backgroundType);
+            hPionAbs0p->Fill(ev.backgroundType, ev.weight);
 
-            hPionAbs0pKE->Fill(energyAtVertex);
+            hPionAbs0pKE->Fill(energyAtVertex, ev.weight);
             if (ev.backgroundType == 0) {
-                hPionAbs0pKETrue->Fill(energyAtVertex);
+                hPionAbs0pKETrue->Fill(energyAtVertex, ev.weight);
                 outFileEvents << "True abs 0p as abs 0p: " << run << " " << subrun << " " << event << std::endl;
             } else if (ev.backgroundType == 1) {
-                hPionAbs0pKEAbsNp->Fill(energyAtVertex);
+                hPionAbs0pKEAbsNp->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 7) {
-                hPionAbs0pKEChExch->Fill(energyAtVertex);
+                hPionAbs0pKEChExch->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                hPionAbs0pKEScatter->Fill(energyAtVertex);
+                hPionAbs0pKEScatter->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 2) {
-                hPionAbs0pKEMuon->Fill(energyAtVertex);
+                hPionAbs0pKEMuon->Fill(energyAtVertex, ev.weight);
                 if (muonType == 0) {
-                    hPionAbs0pKEMuonTG->Fill(energyAtVertex);
+                    hPionAbs0pKEMuonTG->Fill(energyAtVertex, ev.weight);
                 } else if (muonType == 1) {
-                    hPionAbs0pKEMuonDecay->Fill(energyAtVertex);
+                    hPionAbs0pKEMuonDecay->Fill(energyAtVertex, ev.weight);
                 } else if (muonType == 2) {
-                    hPionAbs0pKEMuonCAR->Fill(energyAtVertex);
+                    hPionAbs0pKEMuonCAR->Fill(energyAtVertex, ev.weight);
                 }
             } else if (ev.backgroundType == 3) {
-                hPionAbs0pKEElectron->Fill(energyAtVertex);
+                hPionAbs0pKEElectron->Fill(energyAtVertex, ev.weight);
             } else {
-                hPionAbs0pKEOther->Fill(energyAtVertex);
+                hPionAbs0pKEOther->Fill(energyAtVertex, ev.weight);
             }
 
             if (ev.backgroundType == 0) {
-                hTrueAbs0pKEAsAbs0p->Fill(ev.truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+                hTrueAbs0pKEAsAbs0p->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                if (TrueEnergyBin != -1) TrueAbs0pAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 1) {
-                hTrueAbsNpKEAsAbs0p->Fill(ev.truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+                hTrueAbsNpKEAsAbs0p->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                if (TrueEnergyBin != -1) TrueAbsNpAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                hTrueScatterKEAsAbs0p->Fill(ev.truthPrimaryVertexKE * 1000);
-                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+                hTrueScatterKEAsAbs0p->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                if (TrueEnergyBin != -1) TrueScatterAsByBin.at(TrueEnergyBin).at(0)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 7) {
-                hTrueChExchKEAsAbs0p->Fill(ev.truthPrimaryVertexKE * 1000);
+                hTrueChExchKEAsAbs0p->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             }
 
             continue;
         }
-        hNotPionAbs0p->Fill(ev.backgroundType);
+        hNotPionAbs0p->Fill(ev.backgroundType, ev.weight);
 
         if (ev.backgroundType == 0) {
-            hUnRecoHitsInductionAbs0p->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionAbs0p->Fill(numUnRecoHitsNearPrimaryCollection);
+            hUnRecoHitsInductionAbs0p->Fill(numUnRecoHitsNearPrimaryInduction, ev.weight);
+            hUnRecoHitsCollectionAbs0p->Fill(numUnRecoHitsNearPrimaryCollection, ev.weight);
         } else if (ev.backgroundType == 1) {
-            hUnRecoHitsInductionAbsNp->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionAbsNp->Fill(numUnRecoHitsNearPrimaryCollection);
+            hUnRecoHitsInductionAbsNp->Fill(numUnRecoHitsNearPrimaryInduction, ev.weight);
+            hUnRecoHitsCollectionAbsNp->Fill(numUnRecoHitsNearPrimaryCollection, ev.weight);
         } else if (ev.backgroundType == 2) {
-            hUnRecoHitsInductionMuon->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionMuon->Fill(numUnRecoHitsNearPrimaryCollection);
+            hUnRecoHitsInductionMuon->Fill(numUnRecoHitsNearPrimaryInduction, ev.weight);
+            hUnRecoHitsCollectionMuon->Fill(numUnRecoHitsNearPrimaryCollection, ev.weight);
         } else if (ev.backgroundType == 3) {
-            hUnRecoHitsInductionElectron->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionElectron->Fill(numUnRecoHitsNearPrimaryCollection);
+            hUnRecoHitsInductionElectron->Fill(numUnRecoHitsNearPrimaryInduction, ev.weight);
+            hUnRecoHitsCollectionElectron->Fill(numUnRecoHitsNearPrimaryCollection, ev.weight);
         } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-            hUnRecoHitsInductionScatter->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionScatter->Fill(numUnRecoHitsNearPrimaryCollection);
+            hUnRecoHitsInductionScatter->Fill(numUnRecoHitsNearPrimaryInduction, ev.weight);
+            hUnRecoHitsCollectionScatter->Fill(numUnRecoHitsNearPrimaryCollection, ev.weight);
         } else if (ev.backgroundType == 7) {
-            hUnRecoHitsInductionChExch->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionChExch->Fill(numUnRecoHitsNearPrimaryCollection);
+            hUnRecoHitsInductionChExch->Fill(numUnRecoHitsNearPrimaryInduction, ev.weight);
+            hUnRecoHitsCollectionChExch->Fill(numUnRecoHitsNearPrimaryCollection, ev.weight);
         } else {
-            hUnRecoHitsInductionOther->Fill(numUnRecoHitsNearPrimaryInduction);
-            hUnRecoHitsCollectionOther->Fill(numUnRecoHitsNearPrimaryCollection);
+            hUnRecoHitsInductionOther->Fill(numUnRecoHitsNearPrimaryInduction, ev.weight);
+            hUnRecoHitsCollectionOther->Fill(numUnRecoHitsNearPrimaryCollection, ev.weight);
         }
 
         // Anything left here is rejected
         if (ev.backgroundType == 0) {
-            hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-            hTrueAbs0pKERejClusters->Fill(ev.truthPrimaryVertexKE * 1000);
+            hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            hTrueAbs0pKERejClusters->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
         } else if (ev.backgroundType == 1) {
-            hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-            hTrueAbsNpKERejClusters->Fill(ev.truthPrimaryVertexKE * 1000);
+            hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            hTrueAbsNpKERejClusters->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
         } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-            hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
-            hTrueScatterKERejClusters->Fill(ev.truthPrimaryVertexKE * 1000);
+            hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            hTrueScatterKERejClusters->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
         } else if (ev.backgroundType == 7) {
-            hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000);
+            hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
         }
     }
 
@@ -3048,6 +3014,7 @@ void RecoClassify3Cat() {
         {hIncidentKEFine, hIncidentKEPionFine, hIncidentKEMuonFine, hIncidentKEElectronFine},
         {hIncidentKECorrected, hTrueIncidentKE},
         {hFrontFaceKE, hFrontFaceKEPion, hFrontFaceKEMuon, hFrontFaceKEElectron},
+        {hFrontFaceKENoWeight, hFrontFaceKEPionNoWeight, hFrontFaceKEMuonNoWeight, hFrontFaceKEElectronNoWeight},
         {hWCKE, hWCKEPion, hWCKEMuon, hWCKEElectron},
 
         // Interacting KE
@@ -3117,6 +3084,7 @@ void RecoClassify3Cat() {
         {"Corrected", "True"},
         {"All", "Pions", "Muons", "Electrons"},
         {"All", "Pions", "Muons", "Electrons"},
+        {"All", "Pions", "Muons", "Electrons"},
 
         // Interacting KE
         {"All", "True", "Abs Np", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
@@ -3182,6 +3150,7 @@ void RecoClassify3Cat() {
         "Incident/IncidentKEFine",
         "Incident/IncidentKECorrected",
         "Incident/FrontFaceKE",
+        "Incident/FrontFaceKENoWeight",
         "Incident/WireChamberKE",
 
         // Interacting KE
@@ -3244,6 +3213,7 @@ void RecoClassify3Cat() {
 
     std::vector<TString> XLabels = {
         // Incident KE
+        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
@@ -3315,6 +3285,7 @@ void RecoClassify3Cat() {
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
 
         // Interacting KE
         "Counts",
@@ -3381,6 +3352,7 @@ void RecoClassify3Cat() {
         false,
         true,
         true,
+        true,
 
         // Interacting KE
         true,
@@ -3445,6 +3417,7 @@ void RecoClassify3Cat() {
         {true, false, false, false},
         {true, false, false, false},
         {true, false},
+        {true, false, false, false},
         {true, false, false, false},
         {true, false, false, false},
 

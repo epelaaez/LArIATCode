@@ -28,6 +28,32 @@ std::map<int, std::string> backgroundTypes = {
     {14, "Scattering Np"}
 };
 
+static const std::unordered_set<int> SKIP_INDICES = {
+    1402,
+    15345,
+    46200,
+    152596,
+    255737,
+    315186,
+    370495,
+};
+
+static const std::unordered_set<int> SKIP_INDICES_DATA = {
+    199835,
+    311635
+};
+
+// Loading products
+const int kMaxTrack          = 100;  // 10000
+const int kMaxWCTracks       = 1;    // 1000
+const int kMaxTrackHits      = 1000; // 1000
+const int kMaxTrajHits       = 1000; // 1000
+const int kMaxPrimaries      = 4000; // 20000
+const int kMaxPrimaryPart    = 60;   // 50
+const int kMaxTruePrimaryPts = 5000; // 5000
+const int kMaxHits           = 1000; // 20000
+const int kMaxIDE            = 5000; // 5000
+
 // Background types
 int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 
@@ -57,7 +83,10 @@ double NUM_DATA_EVENTS        = TG1_DATA_EVENTS * (TOTAL_DATA_EVENTS / RESTRICTE
 double NUM_MC_EVENTS          = TG1_MC_EVENTS * (TOTAL_DATA_EVENTS / TOTAL_MC_EVENTS);
 double MC_SCALING             = NUM_DATA_EVENTS / NUM_MC_EVENTS;
 
-// Drift velocity 
+// Sampling rate
+double SAMPLING_RATE = 0.128;
+
+// Drift velocity
 double DRIFT_VELOCITY = 0.14732; // cm / \mu s
 
 // Track pitch
@@ -269,6 +298,9 @@ double zcentDSCol[2]   = { (-296.67-297.36)/2, (-205.94-206.63)/2};
 /////////////////////
 
 struct EventVariables {
+    // Weight
+    double weight = 1.0;
+
     // WC match calorimetry
     std::vector<double> wcMatchResR;
     std::vector<double> wcMatchDEDX;
