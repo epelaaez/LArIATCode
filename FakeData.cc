@@ -42,6 +42,11 @@ void FakeData(int sample = 1) {
     Chain->Add("/exp/lariat/app/users/epelaez/files/anatree_60a/chunks/*.root");
     std::cout << "Files:   " << Chain->GetListOfFiles()->GetEntries() << std::endl;
 
+    // Load weights
+    TH1D* hWeightsFrontFace = dynamic_cast<TH1D*>(fWeights->Get(WEIGHTS_NAME));
+    hWeightsFrontFace->SetDirectory(nullptr);
+    fWeights->Close();
+
     // Fake data configuration
     FakeDataFD::Scenario FDScenario;
     if (sample == 1) {
@@ -171,20 +176,17 @@ void FakeData(int sample = 1) {
     bool verbose = false;
 
     Long64_t i = 0;
-    while (Chain->GetEntry(i++) > 0) {
-        // For some reason crashes
-        if (SKIP_INDICES.count(i)) continue;
+    while (true) {
+        if (SKIP_INDICES.count(i)) { i++; continue; }
+        if (Chain->GetEntry(i++) <= 0) break;
 
         // Make script go faster
         // if (i > USE_NUM_EVENTS) break;
 
-        // Get tree entry and reset variables
+        // Reset variables
         if (verbose) std::cout << std::endl;
         if (verbose) std::cout << "=================================" << std::endl;
-        if (verbose) std::cout << "Getting tree entry: " << i << std::endl;
-        Chain->GetEntry(i);
-        if (verbose) std::cout << "Got tree entry" << std::endl;
-        if (verbose) std::cout << "Reseting variables" << std::endl;
+        if (verbose) std::cout << "Got tree entry: " << i << std::endl;
         EventVariables ev;
         if (verbose) std::cout << "Variables reset" << std::endl;
         if (verbose) std::cout << "=================================" << std::endl;
@@ -225,7 +227,7 @@ void FakeData(int sample = 1) {
                 }
 
                 // Get location information
-                int npts_wc2tpc = std::min(nTrajPoint[trk_idx], kMaxTrack);
+                int npts_wc2tpc = std::min(nTrajPoint[trk_idx], kMaxTrajHits);
                 ev.WC2TPCLocationsX.assign(trjPt_X[trk_idx], trjPt_X[trk_idx] + npts_wc2tpc);
                 ev.WC2TPCLocationsY.assign(trjPt_Y[trk_idx], trjPt_Y[trk_idx] + npts_wc2tpc);
                 ev.WC2TPCLocationsZ.assign(trjPt_Z[trk_idx], trjPt_Z[trk_idx] + npts_wc2tpc);
@@ -590,14 +592,6 @@ void FakeData(int sample = 1) {
             ev.recoTrackHitZ[trkid]       = trackHitZMap[trkid];
         }
 
-        // Sanity check
-        // for (size_t i_trk = 0; i_trk < recoTrackHitIndices->size(); ++i_trk) {
-        //     std::cout << "Track " << i_trk << ":" << std::endl;
-        //     for (int idx : (*recoTrackHitIndices)[i_trk]) {
-        //         std::cout << "  hit index=" << idx << "  hit_trkid=" << hit_trkid[idx] << std::endl;
-        //     }
-        // }
-
         if (verbose) std::cout << "Hits associated to WC2TPC match: " << ev.hitWC2TPCKey.size() << std::endl;
 
         // Get truth background type
@@ -724,19 +718,19 @@ void FakeData(int sample = 1) {
 
         // Extend reco cylinder
         removeRepeatedPoints(&ev.WC2TPCLocationsX, &ev.WC2TPCLocationsY, &ev.WC2TPCLocationsZ);
-        std::vector<double>* wcX = new std::vector<double>(ev.WC2TPCLocationsX);
-        std::vector<double>* wcY = new std::vector<double>(ev.WC2TPCLocationsY);
-        std::vector<double>* wcZ = new std::vector<double>(ev.WC2TPCLocationsZ);
+        std::vector<double> wcX(ev.WC2TPCLocationsX);
+        std::vector<double> wcY(ev.WC2TPCLocationsY);
+        std::vector<double> wcZ(ev.WC2TPCLocationsZ);
 
         // Get direction to end cylinder
-        int numPoints = wcX->size();
+        int numPoints = wcX.size();
         int numTail   = std::min(10, numPoints - 1);
         std::vector<std::vector<double>> points;
         for (int j = numPoints - numTail - 1; j < numPoints; ++j) {
             points.push_back({
-                wcX->at(j),
-                wcY->at(j),
-                wcZ->at(j)
+                wcX.at(j),
+                wcY.at(j),
+                wcZ.at(j)
             });
         }
 
@@ -746,9 +740,9 @@ void FakeData(int sample = 1) {
 
             // Extrapolate track to end
             double scale = (maxZ - points.back()[2]) / avgDir[2];
-            wcX->push_back(points.back()[0] + scale * avgDir[0]);
-            wcY->push_back(points.back()[1] + scale * avgDir[1]);
-            wcZ->push_back(points.back()[2] + scale * avgDir[2]);
+            wcX.push_back(points.back()[0] + scale * avgDir[0]);
+            wcY.push_back(points.back()[1] + scale * avgDir[1]);
+            wcZ.push_back(points.back()[2] + scale * avgDir[2]);
         }
 
         //////////////////////////////////
@@ -1001,17 +995,22 @@ void FakeData(int sample = 1) {
             }
         }
 
+        ///////////////////////////////////
+        // Get front face KE and reweigh //
+        ///////////////////////////////////
+
+        // At this point, we want to fill the incident kinetic energy histograms
+        double WCKE             = TMath::Sqrt(ev.WCTrackMomentum * ev.WCTrackMomentum + PionMass * PionMass) - PionMass;
+        double calculatedEnLoss = energyLossCalculation(ev.WC4PrimaryX, ev.trajectoryInitialMomentumX, isData);
+        const double initialKE  = WCKE - calculatedEnLoss;
+
+        ev.weight *= GetKEWeight(hWeightsFrontFace, initialKE);
+
         ///////////////////////////////
         // Get weight for this event //
         ///////////////////////////////
 
         double fd_weight= FakeDataFD::GetFDWeight(FDScenario, ev.backgroundType, ev.truthPrimaryVertexKE * 1000);
-        // if (fd_weight != 1) {
-        //     std::cout << "Background type: " << ev.backgroundType << std::endl;
-        //     std::cout << "Truth primary vertex KE: " << ev.truthPrimaryVertexKE * 1000 << " MeV" << std::endl;
-        //     std::cout << "Fake data weight applied: " << fd_weight << std::endl;
-        //     std::cout << std::endl;
-        // }
 
         ///////////////////
         // True spectrum //
@@ -1026,17 +1025,17 @@ void FakeData(int sample = 1) {
         // Add true incident KE
         if (ev.validTrueIncidentKE) {
             for (double x : ev.trueIncidentKEContributions) {
-                hTrueIncidentKE->Fill(x);
+                hTrueIncidentKE->Fill(x, ev.weight);
             }
         }
 
         // True interaction histograms
         if (ev.backgroundType == 0) {
-            hTruePionAbs0p->Fill(ev.truthPrimaryVertexKE * 1000, fd_weight);
+            hTruePionAbs0p->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight * fd_weight);
         } else if (ev.backgroundType == 1) {
-            hTruePionAbsNp->Fill(ev.truthPrimaryVertexKE * 1000, fd_weight);
+            hTruePionAbsNp->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight * fd_weight);
         } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-            hTruePionScatter->Fill(ev.truthPrimaryVertexKE * 1000, fd_weight);
+            hTruePionScatter->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight * fd_weight);
         }
 
         //////////////////////////////
@@ -1069,12 +1068,12 @@ void FakeData(int sample = 1) {
             );
 
             bool startInCylinder = IsPointInsideTrackCylinder(
-                wcX, wcY, wcZ,
+                &wcX, &wcY, &wcZ,
                 ev.recoBeginX.at(trk_idx), ev.recoBeginY.at(trk_idx), ev.recoBeginZ.at(trk_idx),
                 CYLINDER_RADIUS
             );
             bool endInCylinder = IsPointInsideTrackCylinder(
-                wcX, wcY, wcZ,
+                &wcX, &wcY, &wcZ,
                 ev.recoEndX.at(trk_idx), ev.recoEndY.at(trk_idx), ev.recoEndZ.at(trk_idx),
                 CYLINDER_RADIUS
             );
@@ -1150,10 +1149,6 @@ void FakeData(int sample = 1) {
         }
 
         // At this point, we want to fill the incident kinetic energy histograms
-        double WCKE             = TMath::Sqrt(ev.WCTrackMomentum * ev.WCTrackMomentum + PionMass * PionMass) - PionMass;
-        double calculatedEnLoss = energyLossCalculation(ev.WC4PrimaryX, ev.trajectoryInitialMomentumX, isData);
-        const double initialKE  = WCKE - calculatedEnLoss;
-
         double energyDeposited = 0;
         for (size_t iDep = 0; iDep < ev.wcMatchDEDX.size(); ++iDep) {
             // If we are past detected breaking point, exit loop
@@ -1167,7 +1162,7 @@ void FakeData(int sample = 1) {
             
             // Add to incident KE if inside reduced volume
             if (isWithinReducedVolume(ev.wcMatchXPos.at(iDep), ev.wcMatchYPos.at(iDep), ev.wcMatchZPos.at(iDep))) {
-                hPionIncidentKE->Fill(initialKE - energyDeposited);
+                hPionIncidentKE->Fill(initialKE - energyDeposited, ev.weight);
             }
         }
         double energyAtVertex = initialKE - energyDeposited;
@@ -1279,13 +1274,13 @@ void FakeData(int sample = 1) {
         if (totalTaggedPions > 0) {
             if (totalTaggedPions > 1 || newSecondaryPion) continue;
 
-            hPionScatter->Fill(energyAtVertex, fd_weight);
+            hPionScatter->Fill(energyAtVertex, ev.weight * fd_weight);
             continue;
         }
 
         // Fill abs Np
         if (totalTaggedProtons > 0) {
-            hPionAbsNp->Fill(energyAtVertex, fd_weight);
+            hPionAbsNp->Fill(energyAtVertex, ev.weight * fd_weight);
             continue;
         }
 
@@ -1323,7 +1318,7 @@ void FakeData(int sample = 1) {
 
         // Fill abs 0p
         if (numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION) {
-            hPionAbs0p->Fill(energyAtVertex, fd_weight);
+            hPionAbs0p->Fill(energyAtVertex, ev.weight * fd_weight);
             continue;
         }
     }

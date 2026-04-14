@@ -40,6 +40,11 @@ void RecoClassify3Cat() {
     Chain->Add("/exp/lariat/app/users/epelaez/files/anatree_60a/chunks/*.root");
     std::cout << "Files:   " << Chain->GetListOfFiles()->GetEntries() << std::endl;
 
+    // Load weights
+    TH1D* hWeightsFrontFace = dynamic_cast<TH1D*>(fWeights->Get(WEIGHTS_NAME));
+    hWeightsFrontFace->SetDirectory(nullptr);
+    fWeights->Close();
+
     ///////////////////
     // Load branches //
     ///////////////////
@@ -80,6 +85,9 @@ void RecoClassify3Cat() {
     static float trjPt_X[kMaxTrack][kMaxTrajHits];       Chain->SetBranchAddress("trjPt_X",    &trjPt_X);
     static float trjPt_Y[kMaxTrack][kMaxTrajHits];       Chain->SetBranchAddress("trjPt_Y",    &trjPt_Y);
     static float trjPt_Z[kMaxTrack][kMaxTrajHits];       Chain->SetBranchAddress("trjPt_Z",    &trjPt_Z);
+
+    // Primary track index
+    static int primarytrkkey; Chain->SetBranchAddress("primarytrkkey", &primarytrkkey);
 
     // Geant4 information for truth tracks
     int   no_primaries;                                   Chain->SetBranchAddress("no_primaries",        &no_primaries);
@@ -182,6 +190,11 @@ void RecoClassify3Cat() {
     TH1D* hFrontFaceKEPionNoWeight     = new TH1D("hFrontFaceKEPionNoWeight", "hFrontFaceKEPionNoWeight;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
     TH1D* hFrontFaceKEElectronNoWeight = new TH1D("hFrontFaceKEElectronNoWeight", "hFrontFaceKEElectronNoWeight;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
     TH1D* hFrontFaceKEMuonNoWeight     = new TH1D("hFrontFaceKEMuonNoWeight", "hFrontFaceKEMuonNoWeight;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+
+    TH1D* hFrontFaceKENoWeightPre         = new TH1D("hFrontFaceKENoWeightPre", "hFrontFaceKENoWeightPre;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFaceKEPionNoWeightPre     = new TH1D("hFrontFaceKEPionNoWeightPre", "hFrontFaceKEPionNoWeightPre;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFaceKEElectronNoWeightPre = new TH1D("hFrontFaceKEElectronNoWeightPre", "hFrontFaceKEElectronNoWeightPre;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFaceKEMuonNoWeightPre     = new TH1D("hFrontFaceKEMuonNoWeightPre", "hFrontFaceKEMuonNoWeightPre;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
 
     // Wire-chamber momentum
     TH1D* hWCKE         = new TH1D("hWCKE", "hWCKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());  
@@ -402,21 +415,21 @@ void RecoClassify3Cat() {
     TH1D* hHitClusterCollectionSizesChExch   = new TH1D("hHitClusterCollectionSizesChExch", "hHitClusterCollectionSizesChExch;;", 20, 0, 20);
     TH1D* hHitClusterCollectionSizesOther    = new TH1D("hHitClusterCollectionSizesOther", "hHitClusterCollectionSizesOther;;", 20, 0, 20);
 
-    TH1D* hLargestHitClusterInductionAbs0p    = new TH1D("hLargestHitClusterInductionAbs0p", "hLargestHitClusterInductionAbs0p;;", 20, 0, 20);
-    TH1D* hLargestHitClusterInductionAbsNp    = new TH1D("hLargestHitClusterInductionAbsNp", "hLargestHitClusterInductionAbsNp;;", 20, 0, 20);
-    TH1D* hLargestHitClusterInductionMuon     = new TH1D("hLargestHitClusterInductionMuon", "hLargestHitClusterInductionMuon;;", 20, 0, 20);
-    TH1D* hLargestHitClusterInductionElectron = new TH1D("hLargestHitClusterInductionElectron", "hLargestHitClusterInductionElectron;;", 20, 0, 20);
-    TH1D* hLargestHitClusterInductionScatter  = new TH1D("hLargestHitClusterInductionScatter", "hLargestHitClusterInductionScatter;;", 20, 0, 20);
-    TH1D* hLargestHitClusterInductionChExch   = new TH1D("hLargestHitClusterInductionChExch", "hLargestHitClusterInductionChExch;;", 20, 0, 20);
-    TH1D* hLargestHitClusterInductionOther    = new TH1D("hLargestHitClusterInductionOther", "hLargestHitClusterInductionOther;;", 20, 0, 20);
+    TH1D* hLargestHitClusterInductionAbs0p    = new TH1D("hLargestHitClusterInductionAbs0p", "hLargestHitClusterInductionAbs0p;;", 40, 0, 20);
+    TH1D* hLargestHitClusterInductionAbsNp    = new TH1D("hLargestHitClusterInductionAbsNp", "hLargestHitClusterInductionAbsNp;;", 40, 0, 20);
+    TH1D* hLargestHitClusterInductionMuon     = new TH1D("hLargestHitClusterInductionMuon", "hLargestHitClusterInductionMuon;;", 40, 0, 20);
+    TH1D* hLargestHitClusterInductionElectron = new TH1D("hLargestHitClusterInductionElectron", "hLargestHitClusterInductionElectron;;", 40, 0, 20);
+    TH1D* hLargestHitClusterInductionScatter  = new TH1D("hLargestHitClusterInductionScatter", "hLargestHitClusterInductionScatter;;", 40, 0, 20);
+    TH1D* hLargestHitClusterInductionChExch   = new TH1D("hLargestHitClusterInductionChExch", "hLargestHitClusterInductionChExch;;", 40, 0, 20);
+    TH1D* hLargestHitClusterInductionOther    = new TH1D("hLargestHitClusterInductionOther", "hLargestHitClusterInductionOther;;", 40, 0, 20);
 
-    TH1D* hLargestHitClusterCollectionAbs0p    = new TH1D("hLargestHitClusterCollectionAbs0p", "hLargestHitClusterCollectionAbs0p;;", 20, 0, 20);
-    TH1D* hLargestHitClusterCollectionAbsNp    = new TH1D("hLargestHitClusterCollectionAbsNp", "hLargestHitClusterCollectionAbsNp;;", 20, 0, 20);
-    TH1D* hLargestHitClusterCollectionMuon     = new TH1D("hLargestHitClusterCollectionMuon", "hLargestHitClusterCollectionMuon;;", 20, 0, 20);
-    TH1D* hLargestHitClusterCollectionElectron = new TH1D("hLargestHitClusterCollectionElectron", "hLargestHitClusterCollectionElectron;;", 20, 0, 20);
-    TH1D* hLargestHitClusterCollectionScatter  = new TH1D("hLargestHitClusterCollectionScatter", "hLargestHitClusterCollectionScatter;;", 20, 0, 20);
-    TH1D* hLargestHitClusterCollectionChExch   = new TH1D("hLargestHitClusterCollectionChExch", "hLargestHitClusterCollectionChExch;;", 20, 0, 20);
-    TH1D* hLargestHitClusterCollectionOther    = new TH1D("hLargestHitClusterCollectionOther", "hLargestHitClusterCollectionOther;;", 20, 0, 20);
+    TH1D* hLargestHitClusterCollectionAbs0p    = new TH1D("hLargestHitClusterCollectionAbs0p", "hLargestHitClusterCollectionAbs0p;;", 40, 0, 20);
+    TH1D* hLargestHitClusterCollectionAbsNp    = new TH1D("hLargestHitClusterCollectionAbsNp", "hLargestHitClusterCollectionAbsNp;;", 40, 0, 20);
+    TH1D* hLargestHitClusterCollectionMuon     = new TH1D("hLargestHitClusterCollectionMuon", "hLargestHitClusterCollectionMuon;;", 40, 0, 20);
+    TH1D* hLargestHitClusterCollectionElectron = new TH1D("hLargestHitClusterCollectionElectron", "hLargestHitClusterCollectionElectron;;", 40, 0, 20);
+    TH1D* hLargestHitClusterCollectionScatter  = new TH1D("hLargestHitClusterCollectionScatter", "hLargestHitClusterCollectionScatter;;", 40, 0, 20);
+    TH1D* hLargestHitClusterCollectionChExch   = new TH1D("hLargestHitClusterCollectionChExch", "hLargestHitClusterCollectionChExch;;", 40, 0, 20);
+    TH1D* hLargestHitClusterCollectionOther    = new TH1D("hLargestHitClusterCollectionOther", "hLargestHitClusterCollectionOther;;", 40, 0, 20);
 
     TH1D* hNumClustersInductionAbs0p    = new TH1D("hNumClustersInductionAbs0p", "hNumClustersInductionAbs0p;;", 10, 0, 10);
     TH1D* hNumClustersInductionAbsNp    = new TH1D("hNumClustersInductionAbsNp", "hNumClustersInductionAbsNp;;", 10, 0, 10);
@@ -466,7 +479,12 @@ void RecoClassify3Cat() {
     // Data-MC comparison histograms //
     ///////////////////////////////////
 
-    TH1D* hMCNumWC2TPCMatch      = new TH1D("hMCNumWC2TPCMatch", "hMCNumWC2TPCMatch", 10, 0, 10);
+    TH1D* hMCValidFrontFaceKE         = new TH1D("hMCValidFrontFaceKE", "hMCValidFrontFaceKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hMCValidFrontFaceKEPion     = new TH1D("hMCValidFrontFaceKEPion", "hMCValidFrontFaceKEPion;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hMCValidFrontFaceKEMuon     = new TH1D("hMCValidFrontFaceKEMuon", "hMCValidFrontFaceKEMuon;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hMCValidFrontFaceKEElectron = new TH1D("hMCValidFrontFaceKEElectron", "hMCValidFrontFaceKEElectron;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+
+    TH1D* hMCNumWC2TPCMatch = new TH1D("hMCNumWC2TPCMatch", "hMCNumWC2TPCMatch", 10, 0, 10);
 
     TH1D* hMCNumTracksInCylinder    = new TH1D("hMCNumTracksInCylinder", "hMCNumTracksInCylinder", 10, 0, 10);
     TH1D* hMCNumTracksInCylinder0TG = new TH1D("hMCNumTracksInCylinder0TG", "hMCNumTracksInCylinder0TG", 10, 0, 10);
@@ -505,6 +523,30 @@ void RecoClassify3Cat() {
     TH1D* hMCTGUnreconstructedHitsCollection1TG = new TH1D("hMCTGUnreconstructedHitsCollection1TG", "hMCTGUnreconstructedHitsCollection1TG;;", 30, 0, 30);
     TH1D* hMCTGUnreconstructedHitsCollection2TG = new TH1D("hMCTGUnreconstructedHitsCollection2TG", "hMCTGUnreconstructedHitsCollection2TG;;", 30, 0, 30);
     TH1D* hMCTGUnreconstructedHitsCollectionNTG = new TH1D("hMCTGUnreconstructedHitsCollectionNTG", "hMCTGUnreconstructedHitsCollectionNTG;;", 30, 0, 30);
+
+    TH1D* hMCTGLargestClusterInduction    = new TH1D("hMCTGLargestClusterInduction", "hMCTGLargestClusterInduction;;", 40, 0, 20);
+    TH1D* hMCTGLargestClusterInduction0TG = new TH1D("hMCTGLargestClusterInduction0TG", "hMCTGLargestClusterInduction0TG;;", 40, 0, 20);
+    TH1D* hMCTGLargestClusterInduction1TG = new TH1D("hMCTGLargestClusterInduction1TG", "hMCTGLargestClusterInduction1TG;;", 40, 0, 20);
+    TH1D* hMCTGLargestClusterInduction2TG = new TH1D("hMCTGLargestClusterInduction2TG", "hMCTGLargestClusterInduction2TG;;", 40, 0, 20);
+    TH1D* hMCTGLargestClusterInductionNTG = new TH1D("hMCTGLargestClusterInductionNTG", "hMCTGLargestClusterInductionNTG;;", 40, 0, 20);
+
+    TH1D* hMCTGLargestClusterCollection    = new TH1D("hMCTGLargestClusterCollection", "hMCTGLargestClusterCollection;;", 40, 0, 20);
+    TH1D* hMCTGLargestClusterCollection0TG = new TH1D("hMCTGLargestClusterCollection0TG", "hMCTGLargestClusterCollection0TG;;", 40, 0, 20);
+    TH1D* hMCTGLargestClusterCollection1TG = new TH1D("hMCTGLargestClusterCollection1TG", "hMCTGLargestClusterCollection1TG;;", 40, 0, 20);
+    TH1D* hMCTGLargestClusterCollection2TG = new TH1D("hMCTGLargestClusterCollection2TG", "hMCTGLargestClusterCollection2TG;;", 40, 0, 20);
+    TH1D* hMCTGLargestClusterCollectionNTG = new TH1D("hMCTGLargestClusterCollectionNTG", "hMCTGLargestClusterCollectionNTG;;", 40, 0, 20);
+
+    TH1D* hMCTGNumLargeClustersInduction    = new TH1D("hMCTGNumLargeClustersInduction", "hMCTGNumLargeClustersInduction;;", 5, 0, 5);
+    TH1D* hMCTGNumLargeClustersInduction0TG = new TH1D("hMCTGNumLargeClustersInduction0TG", "hMCTGNumLargeClustersInduction0TG;;", 5, 0, 5);
+    TH1D* hMCTGNumLargeClustersInduction1TG = new TH1D("hMCTGNumLargeClustersInduction1TG", "hMCTGNumLargeClustersInduction1TG;;", 5, 0, 5);
+    TH1D* hMCTGNumLargeClustersInduction2TG = new TH1D("hMCTGNumLargeClustersInduction2TG", "hMCTGNumLargeClustersInduction2TG;;", 5, 0, 5);
+    TH1D* hMCTGNumLargeClustersInductionNTG = new TH1D("hMCTGNumLargeClustersInductionNTG", "hMCTGNumLargeClustersInductionNTG;;", 5, 0, 5);
+
+    TH1D* hMCTGNumLargeClustersCollection    = new TH1D("hMCTGNumLargeClustersCollection", "hMCTGNumLargeClustersCollection;;", 5, 0, 5);
+    TH1D* hMCTGNumLargeClustersCollection0TG = new TH1D("hMCTGNumLargeClustersCollection0TG", "hMCTGNumLargeClustersCollection0TG;;", 5, 0, 5);
+    TH1D* hMCTGNumLargeClustersCollection1TG = new TH1D("hMCTGNumLargeClustersCollection1TG", "hMCTGNumLargeClustersCollection1TG;;", 5, 0, 5);
+    TH1D* hMCTGNumLargeClustersCollection2TG = new TH1D("hMCTGNumLargeClustersCollection2TG", "hMCTGNumLargeClustersCollection2TG;;", 5, 0, 5);
+    TH1D* hMCTGNumLargeClustersCollectionNTG = new TH1D("hMCTGNumLargeClustersCollectionNTG", "hMCTGNumLargeClustersCollectionNTG;;", 5, 0, 5);
 
     TH1D* hMCTGNumClustersInduction    = new TH1D("hMCTGNumClustersInduction", "hMCTGNumClustersInduction;;", 10, 0, 10);
     TH1D* hMCTGNumClustersInduction0TG = new TH1D("hMCTGNumClustersInduction0TG", "hMCTGNumClustersInduction0TG;;", 10, 0, 10);
@@ -571,20 +613,17 @@ void RecoClassify3Cat() {
     bool verbose = false;
 
     Long64_t i = 0;
-    while (Chain->GetEntry(i++) > 0) {
-        // For some reason crashes
-        if (SKIP_INDICES.count(i)) continue;
+    while (true) {
+        if (SKIP_INDICES.count(i)) { i++; continue; }
+        if (Chain->GetEntry(i++) <= 0) break;
 
         // Make script go faster
-        if (i > USE_NUM_EVENTS) break;
+        // if (i > USE_NUM_EVENTS) break;
 
-        // Get tree entry and reset variables
+        // Reset variables
         if (verbose) std::cout << std::endl;
         if (verbose) std::cout << "=================================" << std::endl;
-        if (verbose) std::cout << "Getting tree entry: " << i << std::endl;
-        Chain->GetEntry(i);
-        if (verbose) std::cout << "Got tree entry" << std::endl;
-        if (verbose) std::cout << "Reseting variables" << std::endl;
+        if (verbose) std::cout << "Got tree entry: " << i << std::endl;
         EventVariables ev;
         if (verbose) std::cout << "Variables reset" << std::endl;
         if (verbose) std::cout << "=================================" << std::endl;
@@ -603,7 +642,7 @@ void RecoClassify3Cat() {
         // First, we just want to grab WC to TPC match
         int primaryTrackIdx = -1;
         for (size_t trk_idx = 0; trk_idx < std::min(ntracks_reco, kMaxTrack); ++trk_idx) {
-            if (trkWCtoTPCMatch[trk_idx]) {
+            if (trkWCtoTPCMatch[trk_idx] == 1) {
                 // Grab position information
                 ev.WC2TPCPrimaryBeginX = trkvtxx[trk_idx];
                 ev.WC2TPCPrimaryBeginY = trkvtxy[trk_idx];
@@ -611,6 +650,9 @@ void RecoClassify3Cat() {
                 ev.WC2TPCPrimaryEndX   = trkendx[trk_idx];
                 ev.WC2TPCPrimaryEndY   = trkendy[trk_idx];
                 ev.WC2TPCPrimaryEndZ   = trkendz[trk_idx];
+
+                if (verbose) std::cout << "Begin: " << ev.WC2TPCPrimaryBeginX << " " << ev.WC2TPCPrimaryBeginY << " " << ev.WC2TPCPrimaryBeginZ << std::endl;
+                if (verbose) std::cout << "End:   " << ev.WC2TPCPrimaryEndX << " " << ev.WC2TPCPrimaryEndY << " " << ev.WC2TPCPrimaryEndZ << std::endl;
 
                 // Grab calorimetry information (in collection plane)
                 int npts_dedx = std::min(ntrkcalopts[trk_idx][1], kMaxTrackHits);
@@ -625,10 +667,14 @@ void RecoClassify3Cat() {
                 }
 
                 // Get location information
-                int npts_wc2tpc = std::min(nTrajPoint[trk_idx], kMaxTrack);
+                int npts_wc2tpc = std::min(nTrajPoint[trk_idx], kMaxTrajHits);
                 ev.WC2TPCLocationsX.assign(trjPt_X[trk_idx], trjPt_X[trk_idx] + npts_wc2tpc);
                 ev.WC2TPCLocationsY.assign(trjPt_Y[trk_idx], trjPt_Y[trk_idx] + npts_wc2tpc);
                 ev.WC2TPCLocationsZ.assign(trjPt_Z[trk_idx], trjPt_Z[trk_idx] + npts_wc2tpc);
+
+                if (verbose) std::cout << nTrajPoint[trk_idx] << "  " << kMaxTrajHits << std::endl;
+                if (verbose) std::cout << "(loc.) Begin: " << ev.WC2TPCLocationsX[0] << " " << ev.WC2TPCLocationsY[0] << " " << ev.WC2TPCLocationsZ[0] << std::endl;
+                if (verbose) std::cout << "(loc.) End:   " << ev.WC2TPCLocationsX[npts_wc2tpc - 1] << " " << ev.WC2TPCLocationsY[npts_wc2tpc - 1] << " " << ev.WC2TPCLocationsZ[npts_wc2tpc - 1] << std::endl;
 
                 // Set flag and index
                 primaryTrackIdx = trk_idx;
@@ -636,7 +682,6 @@ void RecoClassify3Cat() {
                 ev.WC2TPCsize++;
             }
         }
-
         if (verbose) std::cout << "Found WC2TPC match: " << ev.WC2TPCMatch  << std::endl;
 
         // Copy vertex and end for all tracks
@@ -1133,19 +1178,19 @@ void RecoClassify3Cat() {
         removeRepeatedPoints(&ev.WC2TPCLocationsX, &ev.WC2TPCLocationsY, &ev.WC2TPCLocationsZ);
 
         // Extend reco cylinder
-        std::vector<double>* wcX = new std::vector<double>(ev.WC2TPCLocationsX);
-        std::vector<double>* wcY = new std::vector<double>(ev.WC2TPCLocationsY);
-        std::vector<double>* wcZ = new std::vector<double>(ev.WC2TPCLocationsZ);
+        std::vector<double> wcX(ev.WC2TPCLocationsX);
+        std::vector<double> wcY(ev.WC2TPCLocationsY);
+        std::vector<double> wcZ(ev.WC2TPCLocationsZ);
 
         // Get direction to end cylinder
-        int numPoints = wcX->size();
+        int numPoints = wcX.size();
         int numTail   = std::min(10, numPoints - 1);
         std::vector<std::vector<double>> points;
         for (int j = numPoints - numTail - 1; j < numPoints; ++j) {
             points.push_back({
-                wcX->at(j),
-                wcY->at(j),
-                wcZ->at(j)
+                wcX.at(j),
+                wcY.at(j),
+                wcZ.at(j)
             });
         }
 
@@ -1155,30 +1200,9 @@ void RecoClassify3Cat() {
 
             // Extrapolate track to end
             double scale = (maxZ - points.back()[2]) / avgDir[2];
-            wcX->push_back(points.back()[0] + scale * avgDir[0]);
-            wcY->push_back(points.back()[1] + scale * avgDir[1]);
-            wcZ->push_back(points.back()[2] + scale * avgDir[2]);
-        }
-
-        // Extend truth cylinder
-        std::vector<double>* truthCylinderLocationX = new std::vector<double>(ev.truthPrimaryLocationX);
-        std::vector<double>* truthCylinderLocationY = new std::vector<double>(ev.truthPrimaryLocationY);
-        std::vector<double>* truthCylinderLocationZ = new std::vector<double>(ev.truthPrimaryLocationZ);
-
-        if (truthCylinderLocationX->size() == 0) {
-            std::cout << "Primary trajectory has no size" << std::endl;
-        }
-
-        // Get direction to end cylinder
-        int truthNumPoints = truthCylinderLocationX->size();
-        int truthNumTail   = std::min(10, truthNumPoints - 1);
-        std::vector<std::vector<double>> truth_points;
-        for (int j = truthNumPoints - truthNumTail; j < truthNumPoints; ++j) {
-            truth_points.push_back({
-                truthCylinderLocationX->at(j),
-                truthCylinderLocationY->at(j),
-                truthCylinderLocationZ->at(j)
-            });
+            wcX.push_back(points.back()[0] + scale * avgDir[0]);
+            wcY.push_back(points.back()[1] + scale * avgDir[1]);
+            wcZ.push_back(points.back()[2] + scale * avgDir[2]);
         }
 
         //////////////////////////////////
@@ -1244,7 +1268,7 @@ void RecoClassify3Cat() {
             float thisHitCharge    = -1;
             float thisHitChargeCol = -1;
             
-            if (usedHits.count(thisHitKey)) continue;           
+            if (usedHits.count(thisHitKey)) continue;
             
             std::vector<int> clusterKeys;
             std::vector<float> clusterX;
@@ -1321,10 +1345,6 @@ void RecoClassify3Cat() {
             }
         }
 
-        ////////////////////////////////////////
-        // Histograms for data-MC comparisons //
-        ////////////////////////////////////////
-
         // Separate primary hits into collection and induction
         std::vector<int> hitWC2TPCKeyInduction;
         std::vector<int> hitWC2TPCKeyCollection;
@@ -1362,12 +1382,48 @@ void RecoClassify3Cat() {
         if (!sawPrimaryInduction) numEventsNoInduction++;
         if (!sawPrimaryCollection && !sawPrimaryInduction) numEventsNoEither++;
 
+        ///////////////////////
+        // Get front face KE //
+        ///////////////////////
+
+        double WCKE             = TMath::Sqrt(ev.WCTrackMomentum * ev.WCTrackMomentum + PionMass * PionMass) - PionMass;
+        double calculatedEnLoss = energyLossCalculation(); 
+        if (isData) {
+            double tanThetaCosPhi = TMath::Tan(ev.WCTheta) * TMath::Cos(ev.WCPhi);
+            double tanThetaSinPhi = TMath::Tan(ev.WCTheta) * TMath::Sin(ev.WCPhi);
+            double den            = TMath::Sqrt(1 + tanThetaCosPhi * tanThetaCosPhi);
+            double onTheFlyPz     = ev.WCTrackMomentum / den;
+            double onTheFlyPx     = onTheFlyPz * tanThetaSinPhi;
+            calculatedEnLoss      = energyLossCalculation(ev.WC4PrimaryX, onTheFlyPx, isData);
+        } else { calculatedEnLoss = energyLossCalculation(ev.WC4PrimaryX, ev.trajectoryInitialMomentumX, isData); }
+        const double initialKE = WCKE - calculatedEnLoss;
+
+        hFrontFaceKENoWeightPre->Fill(initialKE);
+        if (ev.truthPrimaryPDG == -211) {
+            hFrontFaceKEPionNoWeightPre->Fill(initialKE);
+        } else if (ev.truthPrimaryPDG == 13) {
+            hFrontFaceKEMuonNoWeightPre->Fill(initialKE);
+        } else if (ev.truthPrimaryPDG == 11) {
+            hFrontFaceKEElectronNoWeightPre->Fill(initialKE);
+        }
+
+        // Reweigh!
+        ev.weight *= GetKEWeight(hWeightsFrontFace, initialKE);
+
+        /////////////////////////
+        // Data-MC comparisons //
+        /////////////////////////
+
         // For data-MC comparisons
         hMCNumWC2TPCMatch->Fill(ev.WC2TPCsize, ev.weight);
         if (ev.WC2TPCMatch && ev.WC2TPCsize == 1) {
             hMCPrimaryTrackPosition->Fill(ev.WC2TPCPrimaryBeginX, ev.WC2TPCPrimaryBeginY, ev.weight);
 
-            bool isPrimaryTG = !isWithinReducedVolume(ev.WC2TPCPrimaryEndX, ev.WC2TPCPrimaryEndY, ev.WC2TPCPrimaryEndZ);
+            bool isPrimaryTG = (
+                !isWithinReducedVolume(ev.WC2TPCPrimaryEndX, ev.WC2TPCPrimaryEndY, ev.WC2TPCPrimaryEndZ) &&
+                !isWithinReducedVolume(ev.WC2TPCPrimaryBeginX, ev.WC2TPCPrimaryBeginY, ev.WC2TPCPrimaryBeginZ) &&
+                ev.WC2TPCPrimaryEndZ > RmaxZ && ev.WC2TPCPrimaryBeginZ < RminZ
+            );
 
             int smallTracksComp = 0;
             int tracksNearVertexComp = 0;
@@ -1467,12 +1523,12 @@ void RecoClassify3Cat() {
 
                 // Is track contained in 10 cm cylinder?
                 bool startInCylinder = IsPointInsideTrackCylinder(
-                    wcX, wcY, wcZ,
+                    &wcX, &wcY, &wcZ,
                     ev.recoBeginX.at(trk_idx), ev.recoBeginY.at(trk_idx), ev.recoBeginZ.at(trk_idx),
                     CYLINDER_RADIUS
                 );
                 bool endInCylinder = IsPointInsideTrackCylinder(
-                    wcX, wcY, wcZ,
+                    &wcX, &wcY, &wcZ,
                     ev.recoEndX.at(trk_idx), ev.recoEndY.at(trk_idx), ev.recoEndZ.at(trk_idx),
                     CYLINDER_RADIUS
                 );
@@ -1572,6 +1628,22 @@ void RecoClassify3Cat() {
                 }
             }
 
+            // Look at front-face KE for valid tracks
+            if (
+                numTGTracksComp <= MAX_NUM_TG_TRACKS &&
+                numSmallTracksInCylinder <= ALLOWED_CYLINDER_SMALL_TRACKS &&
+                isWithinReducedVolume(ev.WC2TPCPrimaryEndX, ev.WC2TPCPrimaryEndY, ev.WC2TPCPrimaryEndZ)
+            ) {
+                hMCValidFrontFaceKE->Fill(initialKE, ev.weight);
+                if (ev.truthPrimaryPDG == -211) {
+                    hMCValidFrontFaceKEPion->Fill(WCKE, ev.weight);
+                } else if (ev.truthPrimaryPDG == 13) {
+                    hMCValidFrontFaceKEMuon->Fill(WCKE, ev.weight);
+                } else if (ev.truthPrimaryPDG == 11) {
+                    hMCValidFrontFaceKEElectron->Fill(WCKE, ev.weight);
+                }
+            }
+
             // Apply basic selection cuts and look at secondary particles
             if (
                 numTGTracksComp <= MAX_NUM_TG_TRACKS &&
@@ -1583,55 +1655,77 @@ void RecoClassify3Cat() {
             }
 
             // Loop through clusters and see which would be close to random points
-            int numClustersInduction = 0;
-            int numClustersCollection = 0;
+            int numClustersInduction = 0; int numClustersCollection = 0;
+            int numLargeClustersInduction = 0; int numLargeClustersCollection = 0;
+
+            // Largest cluster
+            double largestClusterSizeInduction  = 0; double largestClusterSizeCollection = 0;
 
             for (size_t iCluster = 0; iCluster < hitClusters.size(); ++iCluster) {
                 HitCluster thisCluster = hitClusters[iCluster];
-                
-                for (size_t iHit = 0; iHit < thisCluster.hitKeys.size(); ++iHit) {
-                    if (std::find(candidateRandomHitsInduction.begin(), candidateRandomHitsInduction.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsInduction.end()) {
-                        numClustersInduction++;
-                        if (isPrimaryTG) {
-                            hMCTGClusterSizesInduction->Fill(thisCluster.clusterSize, ev.weight);
-                            if (numTGTracksComp == 0) hMCTGClusterSizesInduction0TG->Fill(thisCluster.clusterSize, ev.weight);
-                            if (numTGTracksComp <= 1) hMCTGClusterSizesInduction1TG->Fill(thisCluster.clusterSize, ev.weight);
-                            if (numTGTracksComp <= 2) hMCTGClusterSizesInduction2TG->Fill(thisCluster.clusterSize, ev.weight);
-                            if (numTGTracksComp <= N_TG_TRACKS) hMCTGClusterSizesInductionNTG->Fill(thisCluster.clusterSize, ev.weight);
-                        }
-                        break;
-                    } else if (std::find(candidateRandomHitsCollection.begin(), candidateRandomHitsCollection.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsCollection.end()) {
-                        numClustersCollection++;
-                        if (isPrimaryTG) {
-                            hMCTGClusterSizesCollection->Fill(thisCluster.clusterSize, ev.weight);
-                            if (numTGTracksComp == 0) hMCTGClusterSizesCollection0TG->Fill(thisCluster.clusterSize, ev.weight);
-                            if (numTGTracksComp <= 1) hMCTGClusterSizesCollection1TG->Fill(thisCluster.clusterSize, ev.weight);
-                            if (numTGTracksComp <= 2) hMCTGClusterSizesCollection2TG->Fill(thisCluster.clusterSize, ev.weight);
-                            if (numTGTracksComp <= N_TG_TRACKS) hMCTGClusterSizesCollectionNTG->Fill(thisCluster.clusterSize, ev.weight);
-                        }
-                        break;
-                    }
+                double clusterSize = thisCluster.clusterSize;
+
+                if (thisCluster.plane == 0) {
+                    if (clusterSize > largestClusterSizeInduction) largestClusterSizeInduction = clusterSize;
+                    numClustersInduction++;
+                    if (isPrimaryTG) hMCTGClusterSizesInduction->Fill(clusterSize);
+                    if (numTGTracksComp == 0 && isPrimaryTG) hMCTGClusterSizesInduction0TG->Fill(clusterSize);
+                    if (numTGTracksComp <= 1 && isPrimaryTG) hMCTGClusterSizesInduction1TG->Fill(clusterSize);
+                    if (numTGTracksComp <= 2 && isPrimaryTG) hMCTGClusterSizesInduction2TG->Fill(clusterSize);
+                    if (numTGTracksComp <= N_TG_TRACKS && isPrimaryTG) hMCTGClusterSizesInductionNTG->Fill(clusterSize);
+                    if (clusterSize > LARGE_CLUSTER_THRESHOLD) numLargeClustersInduction++;
+                }
+                else if (thisCluster.plane == 1) {
+                    if (clusterSize > largestClusterSizeCollection) largestClusterSizeCollection = clusterSize;
+                    numClustersCollection++;
+                    if (isPrimaryTG) hMCTGClusterSizesCollection->Fill(clusterSize);
+                    if (numTGTracksComp == 0 && isPrimaryTG) hMCTGClusterSizesCollection0TG->Fill(clusterSize);
+                    if (numTGTracksComp <= 1 && isPrimaryTG) hMCTGClusterSizesCollection1TG->Fill(clusterSize);
+                    if (numTGTracksComp <= 2 && isPrimaryTG) hMCTGClusterSizesCollection2TG->Fill(clusterSize);
+                    if (numTGTracksComp <= N_TG_TRACKS && isPrimaryTG) hMCTGClusterSizesCollectionNTG->Fill(clusterSize);
+                    if (clusterSize > LARGE_CLUSTER_THRESHOLD) numLargeClustersCollection++;
                 }
             }
+
             if (isPrimaryTG) {
                 hMCTGNumClustersInduction->Fill(numClustersInduction, ev.weight);
                 hMCTGNumClustersCollection->Fill(numClustersCollection, ev.weight);
+                hMCTGLargestClusterInduction->Fill(largestClusterSizeInduction, ev.weight);
+                hMCTGLargestClusterCollection->Fill(largestClusterSizeCollection, ev.weight);
+                hMCTGNumLargeClustersInduction->Fill(numLargeClustersInduction, ev.weight);
+                hMCTGNumLargeClustersCollection->Fill(numLargeClustersCollection, ev.weight);
 
                 if (numTGTracksComp == 0) {
                     hMCTGNumClustersInduction0TG->Fill(numClustersInduction, ev.weight);
                     hMCTGNumClustersCollection0TG->Fill(numClustersCollection, ev.weight);
+                    hMCTGLargestClusterInduction0TG->Fill(largestClusterSizeInduction, ev.weight);
+                    hMCTGLargestClusterCollection0TG->Fill(largestClusterSizeCollection, ev.weight);
+                    hMCTGNumLargeClustersInduction0TG->Fill(numLargeClustersInduction, ev.weight);
+                    hMCTGNumLargeClustersCollection0TG->Fill(numLargeClustersCollection, ev.weight);
                 }
                 if (numTGTracksComp <= 1) {
                     hMCTGNumClustersInduction1TG->Fill(numClustersInduction, ev.weight);
                     hMCTGNumClustersCollection1TG->Fill(numClustersCollection, ev.weight);
+                    hMCTGLargestClusterInduction1TG->Fill(largestClusterSizeInduction, ev.weight);
+                    hMCTGLargestClusterCollection1TG->Fill(largestClusterSizeCollection, ev.weight);
+                    hMCTGNumLargeClustersInduction1TG->Fill(numLargeClustersInduction, ev.weight);
+                    hMCTGNumLargeClustersCollection1TG->Fill(numLargeClustersCollection, ev.weight);
                 }
                 if (numTGTracksComp <= 2) {
                     hMCTGNumClustersInduction2TG->Fill(numClustersInduction, ev.weight);
                     hMCTGNumClustersCollection2TG->Fill(numClustersCollection, ev.weight);
+                    hMCTGLargestClusterInduction2TG->Fill(largestClusterSizeInduction, ev.weight);
+                    hMCTGLargestClusterCollection2TG->Fill(largestClusterSizeCollection, ev.weight);
+                    hMCTGNumLargeClustersInduction2TG->Fill(numLargeClustersInduction, ev.weight);
+                    hMCTGNumLargeClustersCollection2TG->Fill(numLargeClustersCollection, ev.weight);
                 }
                 if (numTGTracksComp <= N_TG_TRACKS) {
                     hMCTGNumClustersInductionNTG->Fill(numClustersInduction, ev.weight);
                     hMCTGNumClustersCollectionNTG->Fill(numClustersCollection, ev.weight);
+                    hMCTGLargestClusterInductionNTG->Fill(largestClusterSizeInduction, ev.weight);
+                    hMCTGLargestClusterCollectionNTG->Fill(largestClusterSizeCollection, ev.weight);
+                    hMCTGNumLargeClustersInductionNTG->Fill(numLargeClustersInduction, ev.weight);
+                    hMCTGNumLargeClustersCollectionNTG->Fill(numLargeClustersCollection, ev.weight);
                 }
             }
         }
@@ -1781,6 +1875,10 @@ void RecoClassify3Cat() {
             hTrueMuonTypes->Fill(muonType, ev.weight);
         }
 
+        ///////////////////////////
+        // Fill true interacting //
+        ///////////////////////////
+
         if (verbose) std::cout << "Original interacting KE: " << ev.truthPrimaryVertexKE << std::endl;
         if (ev.trueIncidentKEContributions.size() == 0) ev.truthPrimaryVertexKE = 0;
         else ev.truthPrimaryVertexKE = ev.trueIncidentKEContributions.back() / 1000.0;
@@ -1845,18 +1943,6 @@ void RecoClassify3Cat() {
         //////////////////////////////////
         // Check WC/front-face momentum //
         //////////////////////////////////
-
-        double WCKE             = TMath::Sqrt(ev.WCTrackMomentum * ev.WCTrackMomentum + PionMass * PionMass) - PionMass;
-        double calculatedEnLoss = energyLossCalculation(); 
-        if (isData) {
-            double tanThetaCosPhi = TMath::Tan(ev.WCTheta) * TMath::Cos(ev.WCPhi);
-            double tanThetaSinPhi = TMath::Tan(ev.WCTheta) * TMath::Sin(ev.WCPhi);
-            double den            = TMath::Sqrt(1 + tanThetaCosPhi * tanThetaCosPhi);
-            double onTheFlyPz     = ev.WCTrackMomentum / den;
-            double onTheFlyPx     = onTheFlyPz * tanThetaSinPhi;
-            calculatedEnLoss      = energyLossCalculation(ev.WC4PrimaryX, onTheFlyPx, isData);
-        } else { calculatedEnLoss = energyLossCalculation(ev.WC4PrimaryX, ev.trajectoryInitialMomentumX, isData); }
-        const double initialKE = WCKE - calculatedEnLoss;
 
         hWCKE->Fill(WCKE, ev.weight);
         if (ev.truthPrimaryPDG == -211) {
@@ -1967,12 +2053,12 @@ void RecoClassify3Cat() {
             );
 
             bool startInCylinder = IsPointInsideTrackCylinder(
-                wcX, wcY, wcZ,
+                &wcX, &wcY, &wcZ,
                 ev.recoBeginX.at(trk_idx), ev.recoBeginY.at(trk_idx), ev.recoBeginZ.at(trk_idx),
                 CYLINDER_RADIUS
             );
             bool endInCylinder = IsPointInsideTrackCylinder(
-                wcX, wcY, wcZ,
+                &wcX, &wcY, &wcZ,
                 ev.recoEndX.at(trk_idx), ev.recoEndY.at(trk_idx), ev.recoEndZ.at(trk_idx),
                 CYLINDER_RADIUS
             );
@@ -2441,7 +2527,11 @@ void RecoClassify3Cat() {
             hNumClustersCollectionOther->Fill(numClustersCollection, ev.weight);
         }
 
-        if (numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION) {
+        if (
+            numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION
+            // numLargeClustersCollection < MAX_NUM_LARGE_CLUSTERS_COLLECTION
+            // numLargeClustersInduction < MAX_NUM_LARGE_CLUSTERS_INDUCTION
+        ) {
             hPionAbs0p->Fill(ev.backgroundType, ev.weight);
 
             hPionAbs0pKE->Fill(energyAtVertex, ev.weight);
@@ -2627,6 +2717,11 @@ void RecoClassify3Cat() {
 
     comparisonsFile->cd();
 
+    hMCValidFrontFaceKE->Write("", TObject::kOverwrite);
+    hMCValidFrontFaceKEPion->Write("", TObject::kOverwrite);
+    hMCValidFrontFaceKEMuon->Write("", TObject::kOverwrite);
+    hMCValidFrontFaceKEElectron->Write("", TObject::kOverwrite);
+
     hMCTracksNearVertex->Write("", TObject::kOverwrite);
     hMCTrackLengthsNearVertex->Write("", TObject::kOverwrite);
 
@@ -2690,6 +2785,30 @@ void RecoClassify3Cat() {
     hMCTGClusterSizesCollection1TG->Write("", TObject::kOverwrite);
     hMCTGClusterSizesCollection2TG->Write("", TObject::kOverwrite);
     hMCTGClusterSizesCollectionNTG->Write("", TObject::kOverwrite);
+
+    hMCTGLargestClusterInduction->Write("", TObject::kOverwrite);
+    hMCTGLargestClusterInduction0TG->Write("", TObject::kOverwrite);
+    hMCTGLargestClusterInduction1TG->Write("", TObject::kOverwrite);
+    hMCTGLargestClusterInduction2TG->Write("", TObject::kOverwrite);
+    hMCTGLargestClusterInductionNTG->Write("", TObject::kOverwrite);
+
+    hMCTGLargestClusterCollection->Write("", TObject::kOverwrite);
+    hMCTGLargestClusterCollection0TG->Write("", TObject::kOverwrite);
+    hMCTGLargestClusterCollection1TG->Write("", TObject::kOverwrite);
+    hMCTGLargestClusterCollection2TG->Write("", TObject::kOverwrite);
+    hMCTGLargestClusterCollectionNTG->Write("", TObject::kOverwrite);
+
+    hMCTGNumLargeClustersInduction->Write("", TObject::kOverwrite);
+    hMCTGNumLargeClustersInduction0TG->Write("", TObject::kOverwrite);
+    hMCTGNumLargeClustersInduction1TG->Write("", TObject::kOverwrite);
+    hMCTGNumLargeClustersInduction2TG->Write("", TObject::kOverwrite);
+    hMCTGNumLargeClustersInductionNTG->Write("", TObject::kOverwrite);
+
+    hMCTGNumLargeClustersCollection->Write("", TObject::kOverwrite);
+    hMCTGNumLargeClustersCollection0TG->Write("", TObject::kOverwrite);
+    hMCTGNumLargeClustersCollection1TG->Write("", TObject::kOverwrite);
+    hMCTGNumLargeClustersCollection2TG->Write("", TObject::kOverwrite);
+    hMCTGNumLargeClustersCollectionNTG->Write("", TObject::kOverwrite);
 
     hMCNumCandidateProtons->Write("", TObject::kOverwrite);
     hMCLengthCandidateProtons->Write("", TObject::kOverwrite);
@@ -3015,6 +3134,7 @@ void RecoClassify3Cat() {
         {hIncidentKECorrected, hTrueIncidentKE},
         {hFrontFaceKE, hFrontFaceKEPion, hFrontFaceKEMuon, hFrontFaceKEElectron},
         {hFrontFaceKENoWeight, hFrontFaceKEPionNoWeight, hFrontFaceKEMuonNoWeight, hFrontFaceKEElectronNoWeight},
+        {hFrontFaceKENoWeightPre, hFrontFaceKEPionNoWeightPre, hFrontFaceKEMuonNoWeightPre, hFrontFaceKEElectronNoWeightPre},
         {hWCKE, hWCKEPion, hWCKEMuon, hWCKEElectron},
 
         // Interacting KE
@@ -3085,6 +3205,7 @@ void RecoClassify3Cat() {
         {"All", "Pions", "Muons", "Electrons"},
         {"All", "Pions", "Muons", "Electrons"},
         {"All", "Pions", "Muons", "Electrons"},
+        {"All", "Pions", "Muons", "Electrons"},
 
         // Interacting KE
         {"All", "True", "Abs Np", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
@@ -3151,6 +3272,7 @@ void RecoClassify3Cat() {
         "Incident/IncidentKECorrected",
         "Incident/FrontFaceKE",
         "Incident/FrontFaceKENoWeight",
+        "Incident/FrontFaceKENoWeightPre",
         "Incident/WireChamberKE",
 
         // Interacting KE
@@ -3213,6 +3335,7 @@ void RecoClassify3Cat() {
 
     std::vector<TString> XLabels = {
         // Incident KE
+        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
@@ -3286,6 +3409,7 @@ void RecoClassify3Cat() {
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
 
         // Interacting KE
         "Counts",
@@ -3353,6 +3477,7 @@ void RecoClassify3Cat() {
         true,
         true,
         true,
+        true,
 
         // Interacting KE
         true,
@@ -3417,6 +3542,7 @@ void RecoClassify3Cat() {
         {true, false, false, false},
         {true, false, false, false},
         {true, false},
+        {true, false, false, false},
         {true, false, false, false},
         {true, false, false, false},
         {true, false, false, false},

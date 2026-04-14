@@ -1,5 +1,8 @@
 #include "Helpers.h"
 
+// File with weights
+TFile* fWeights = TFile::Open("/exp/lariat/app/users/epelaez/histos/data/BeamlineWeights.root", "READ");
+
 double energyLossCalculation() { return 40.; }
 
 double energyLossCalculation(double x, double px, bool isData) {
@@ -3516,4 +3519,10 @@ void ComputeReweightingWeights(const TH1* source, const TH1* target, TH1* weight
             weights->SetBinError  (i, w * rel_err);
         }
     }
+}
+
+double GetKEWeight(TH1D* hWeights, double ke) {
+    int bin = hWeights->FindBin(ke);
+    if (bin < 1 || bin > hWeights->GetNbinsX()) return 1.0;
+    return hWeights->GetBinContent(bin);
 }

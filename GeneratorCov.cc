@@ -46,6 +46,11 @@ void GeneratorCov() {
     Chain->Add("/exp/lariat/app/users/epelaez/files/anatree_60a/chunks/*.root");
     std::cout << "Files:   " << Chain->GetListOfFiles()->GetEntries() << std::endl;
 
+    // Load KE weights
+    TH1D* hWeightsFrontFace = dynamic_cast<TH1D*>(fWeights->Get(WEIGHTS_NAME));
+    hWeightsFrontFace->SetDirectory(nullptr);
+    fWeights->Close();
+
     // Get file with weights
     TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/WeightsAllGen_histo.root";
     std::unique_ptr<TFile> WeightsFile(TFile::Open(RootWeightsFilePath));
@@ -305,20 +310,17 @@ void GeneratorCov() {
     int verbose = false;
 
     Long64_t i = 0;
-    while (Chain->GetEntry(i++) > 0) {
-        // For some reason crashes
-        if (SKIP_INDICES.count(i)) continue;
+    while (true) {
+        if (SKIP_INDICES.count(i)) { i++; continue; }
+        if (Chain->GetEntry(i++) <= 0) break;
 
         // Make script go faster
         // if (i > USE_NUM_EVENTS) break;
 
-        // Get tree entry and reset variables
+        // Reset variables
         if (verbose) std::cout << std::endl;
         if (verbose) std::cout << "=================================" << std::endl;
-        if (verbose) std::cout << "Getting tree entry: " << i << std::endl;
-        Chain->GetEntry(i);
-        if (verbose) std::cout << "Got tree entry" << std::endl;
-        if (verbose) std::cout << "Reseting variables" << std::endl;
+        if (verbose) std::cout << "Got tree entry: " << i << std::endl;
         EventVariables ev;
         if (verbose) std::cout << "Variables reset" << std::endl;
         if (verbose) std::cout << "=================================" << std::endl;
@@ -359,7 +361,7 @@ void GeneratorCov() {
                 }
 
                 // Get location information
-                int npts_wc2tpc = std::min(nTrajPoint[trk_idx], kMaxTrack);
+                int npts_wc2tpc = std::min(nTrajPoint[trk_idx], kMaxTrajHits);
                 ev.WC2TPCLocationsX.assign(trjPt_X[trk_idx], trjPt_X[trk_idx] + npts_wc2tpc);
                 ev.WC2TPCLocationsY.assign(trjPt_Y[trk_idx], trjPt_Y[trk_idx] + npts_wc2tpc);
                 ev.WC2TPCLocationsZ.assign(trjPt_Z[trk_idx], trjPt_Z[trk_idx] + npts_wc2tpc);
@@ -864,19 +866,19 @@ void GeneratorCov() {
 
         // Extend reco cylinder
         removeRepeatedPoints(&ev.WC2TPCLocationsX, &ev.WC2TPCLocationsY, &ev.WC2TPCLocationsZ);
-        std::vector<double>* wcX = new std::vector<double>(ev.WC2TPCLocationsX);
-        std::vector<double>* wcY = new std::vector<double>(ev.WC2TPCLocationsY);
-        std::vector<double>* wcZ = new std::vector<double>(ev.WC2TPCLocationsZ);
+        std::vector<double> wcX(ev.WC2TPCLocationsX);
+        std::vector<double> wcY(ev.WC2TPCLocationsY);
+        std::vector<double> wcZ(ev.WC2TPCLocationsZ);
 
         // Get direction to end cylinder
-        int numPoints = wcX->size();
+        int numPoints = wcX.size();
         int numTail   = std::min(10, numPoints - 1);
         std::vector<std::vector<double>> points;
         for (int j = numPoints - numTail - 1; j < numPoints; ++j) {
             points.push_back({
-                wcX->at(j),
-                wcY->at(j),
-                wcZ->at(j)
+                wcX.at(j),
+                wcY.at(j),
+                wcZ.at(j)
             });
         }
 
@@ -886,9 +888,9 @@ void GeneratorCov() {
 
             // Extrapolate track to end
             double scale = (maxZ - points.back()[2]) / avgDir[2];
-            wcX->push_back(points.back()[0] + scale * avgDir[0]);
-            wcY->push_back(points.back()[1] + scale * avgDir[1]);
-            wcZ->push_back(points.back()[2] + scale * avgDir[2]);
+            wcX.push_back(points.back()[0] + scale * avgDir[0]);
+            wcY.push_back(points.back()[1] + scale * avgDir[1]);
+            wcZ.push_back(points.back()[2] + scale * avgDir[2]);
         }
 
         //////////////////////////////////
@@ -1123,6 +1125,17 @@ void GeneratorCov() {
             }
         }
 
+        ///////////////////////////////////
+        // Get front face KE and reweigh //
+        ///////////////////////////////////
+
+        // At this point, we want to fill the incident kinetic energy histograms
+        double WCKE             = TMath::Sqrt(ev.WCTrackMomentum * ev.WCTrackMomentum + PionMass * PionMass) - PionMass;
+        double calculatedEnLoss = energyLossCalculation(ev.WC4PrimaryX, ev.trajectoryInitialMomentumX, isData);
+        const double initialKE  = WCKE - calculatedEnLoss;
+
+        ev.weight *= GetKEWeight(hWeightsFrontFace, initialKE);
+
         ///////////////////////////
         // Get truth information //
         ///////////////////////////
@@ -1135,25 +1148,25 @@ void GeneratorCov() {
         if (ev.validTrueIncidentKE) {
             for (double x : ev.trueIncidentKEContributions) {
                 // Add to nominal
-                hTrueIncidentKENom->Fill(x);
+                hTrueIncidentKENom->Fill(x, ev.weight);
 
                 // Add to universes. For generator systematics, we do not vary the 
                 // incident flux, just the interacting flux
                 for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
-                    TrueIncidentKEUnivs[iUniv]->Fill(x, 1);
+                    TrueIncidentKEUnivs[iUniv]->Fill(x, ev.weight);
                 }
             }
         }
 
         if (ev.backgroundType == 0) {
-            hTruePionAbs0pKENom->Fill(ev.truthPrimaryVertexKE * 1000);
-            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionAbs0pKEUnivs[iUniv]->Fill(ev.truthPrimaryVertexKE * 1000, evt_weights->at(iUniv));
+            hTruePionAbs0pKENom->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionAbs0pKEUnivs[iUniv]->Fill(ev.truthPrimaryVertexKE * 1000, evt_weights->at(iUniv) * ev.weight);
         } else if (ev.backgroundType == 1) {
-            hTruePionAbsNpKENom->Fill(ev.truthPrimaryVertexKE * 1000);
-            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionAbsNpKEUnivs[iUniv]->Fill(ev.truthPrimaryVertexKE * 1000, evt_weights->at(iUniv));
+            hTruePionAbsNpKENom->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionAbsNpKEUnivs[iUniv]->Fill(ev.truthPrimaryVertexKE * 1000, evt_weights->at(iUniv) * ev.weight);
         } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-            hTruePionScatterKENom->Fill(ev.truthPrimaryVertexKE * 1000);
-            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionScatterKEUnivs[iUniv]->Fill(ev.truthPrimaryVertexKE * 1000, evt_weights->at(iUniv));
+            hTruePionScatterKENom->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionScatterKEUnivs[iUniv]->Fill(ev.truthPrimaryVertexKE * 1000, evt_weights->at(iUniv) * ev.weight);
         }
 
         //////////////////////////////
@@ -1186,12 +1199,12 @@ void GeneratorCov() {
             );
 
             bool startInCylinder = IsPointInsideTrackCylinder(
-                wcX, wcY, wcZ,
+                &wcX, &wcY, &wcZ,
                 ev.recoBeginX.at(trk_idx), ev.recoBeginY.at(trk_idx), ev.recoBeginZ.at(trk_idx),
                 CYLINDER_RADIUS
             );
             bool endInCylinder = IsPointInsideTrackCylinder(
-                wcX, wcY, wcZ,
+                &wcX, &wcY, &wcZ,
                 ev.recoEndX.at(trk_idx), ev.recoEndY.at(trk_idx), ev.recoEndZ.at(trk_idx),
                 CYLINDER_RADIUS
             );
@@ -1267,11 +1280,7 @@ void GeneratorCov() {
         }
 
         // At this point, we want to fill the incident kinetic energy histograms
-        double WCKE             = TMath::Sqrt(ev.WCTrackMomentum * ev.WCTrackMomentum + PionMass * PionMass) - PionMass;
-        double calculatedEnLoss = energyLossCalculation(ev.WC4PrimaryX, ev.trajectoryInitialMomentumX, isData);
-        const double initialKE  = WCKE - calculatedEnLoss;
         double energyDeposited  = 0;
-
         std::vector<double> incidentEnergyDepositions;
         std::vector<double> incidentEnergyDepositionsPion;
         for (size_t iDep = 0; iDep < ev.wcMatchDEDX.size(); ++iDep) {
@@ -1286,11 +1295,11 @@ void GeneratorCov() {
             
             // Add to incident KE if inside reduced volume
             if (isWithinReducedVolume(ev.wcMatchXPos.at(iDep), ev.wcMatchYPos.at(iDep), ev.wcMatchZPos.at(iDep))) {
-                hPionIncidentKENom->Fill(initialKE - energyDeposited);
-                incidentEnergyDepositions.push_back(initialKE - energyDeposited);
+                hPionIncidentKENom->Fill(initialKE - energyDeposited, ev.weight);
+                incidentEnergyDepositions.push_back(initialKE - energyDeposited, ev.weight);
                 if (ev.truthPrimaryPDG == -211) {
-                    hPionIncidentKETrueNom->Fill(initialKE - energyDeposited);
-                    incidentEnergyDepositionsPion.push_back(initialKE - energyDeposited);
+                    hPionIncidentKETrueNom->Fill(initialKE - energyDeposited, ev.weight);
+                    incidentEnergyDepositionsPion.push_back(initialKE - energyDeposited, ev.weight);
                 }
             }
         }
@@ -1300,10 +1309,10 @@ void GeneratorCov() {
         // vary the incident flux, but only the interacting flux through the weights given
         for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
             for (int iDep = 0; iDep < incidentEnergyDepositions.size(); ++iDep) {
-                PionIncidentKEUnivs[iUniv]->Fill(incidentEnergyDepositions[iDep], 1);
+                PionIncidentKEUnivs[iUniv]->Fill(incidentEnergyDepositions[iDep], ev.weight);
             }
             for (int iDep = 0; iDep < incidentEnergyDepositionsPion.size(); ++iDep) {
-                PionIncidentKETrueUnivs[iUniv]->Fill(incidentEnergyDepositionsPion[iDep], 1);
+                PionIncidentKETrueUnivs[iUniv]->Fill(incidentEnergyDepositionsPion[iDep], ev.weight);
             }
         }
 
@@ -1414,27 +1423,27 @@ void GeneratorCov() {
             if (totalTaggedPions > 1 || newSecondaryPion) continue;
 
             // Add weights to scatter
-            hPionScatterKENom->Fill(energyAtVertex);
+            hPionScatterKENom->Fill(energyAtVertex, ev.weight);
             if (ev.backgroundType == 0) {
-                if (TrueEnergyBin != -1) TrueAbs0pAsByBinNom.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
+                if (TrueEnergyBin != -1) TrueAbs0pAsByBinNom.at(TrueEnergyBin).at(2)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 1) {
-                if (TrueEnergyBin != -1) TrueAbsNpAsByBinNom.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
+                if (TrueEnergyBin != -1) TrueAbsNpAsByBinNom.at(TrueEnergyBin).at(2)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(2)->Fill(energyAtVertex);
+                if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(2)->Fill(energyAtVertex, ev.weight);
             } else {
-                hPionScatterKEBkgNom->Fill(energyAtVertex);
+                hPionScatterKEBkgNom->Fill(energyAtVertex, ev.weight);
             }
 
             for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
-                PionScatterKEUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
+                PionScatterKEUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 if (ev.backgroundType == 0) {
-                    if (TrueEnergyBin != -1) TrueAbs0pAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(2)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                    if (TrueEnergyBin != -1) TrueAbs0pAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(2)->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 } else if (ev.backgroundType == 1) {
-                    if (TrueEnergyBin != -1) TrueAbsNpAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(2)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                    if (TrueEnergyBin != -1) TrueAbsNpAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(2)->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                    if (TrueEnergyBin != -1) TrueScatterAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(2)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                    if (TrueEnergyBin != -1) TrueScatterAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(2)->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 } else {
-                    PionScatterKEBkgUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
+                    PionScatterKEBkgUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 }
             }
             continue;
@@ -1442,27 +1451,27 @@ void GeneratorCov() {
 
         if (totalTaggedProtons > 0) {
             // Add weights to abs Np
-            hPionAbsNpKENom->Fill(energyAtVertex);
+            hPionAbsNpKENom->Fill(energyAtVertex, ev.weight);
             if (ev.backgroundType == 0) {
-                if (TrueEnergyBin != -1) TrueAbs0pAsByBinNom.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+                if (TrueEnergyBin != -1) TrueAbs0pAsByBinNom.at(TrueEnergyBin).at(1)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 1) {
-                if (TrueEnergyBin != -1) TrueAbsNpAsByBinNom.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+                if (TrueEnergyBin != -1) TrueAbsNpAsByBinNom.at(TrueEnergyBin).at(1)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(1)->Fill(energyAtVertex);
+                if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(1)->Fill(energyAtVertex, ev.weight);
             } else {
-                hPionAbsNpKEBkgNom->Fill(energyAtVertex);
+                hPionAbsNpKEBkgNom->Fill(energyAtVertex, ev.weight);
             }
             
             for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
-                PionAbsNpKEUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
+                PionAbsNpKEUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 if (ev.backgroundType == 0) {
-                    if (TrueEnergyBin != -1) TrueAbs0pAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(1)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                    if (TrueEnergyBin != -1) TrueAbs0pAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(1)->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 } else if (ev.backgroundType == 1) {
-                    if (TrueEnergyBin != -1) TrueAbsNpAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(1)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                    if (TrueEnergyBin != -1) TrueAbsNpAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(1)->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                    if (TrueEnergyBin != -1) TrueScatterAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(1)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                    if (TrueEnergyBin != -1) TrueScatterAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(1)->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 } else {
-                    PionAbsNpKEBkgUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
+                    PionAbsNpKEBkgUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 }
             }
             continue;
@@ -1502,27 +1511,27 @@ void GeneratorCov() {
 
         if (numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION) {
             // Add weights to abs 0p
-            hPionAbs0pKENom->Fill(energyAtVertex);
+            hPionAbs0pKENom->Fill(energyAtVertex, ev.weight);
             if (ev.backgroundType == 0) {
-                if (TrueEnergyBin != -1) TrueAbs0pAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+                if (TrueEnergyBin != -1) TrueAbs0pAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 1) {
-                if (TrueEnergyBin != -1) TrueAbsNpAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+                if (TrueEnergyBin != -1) TrueAbsNpAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex);
+                if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex, ev.weight);
             } else {
-                hPionAbs0pKEBkgNom->Fill(energyAtVertex);
+                hPionAbs0pKEBkgNom->Fill(energyAtVertex, ev.weight);
             }
 
             for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
-                PionAbs0pKEUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
+                PionAbs0pKEUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 if (ev.backgroundType == 0) {
-                    if (TrueEnergyBin != -1) TrueAbs0pAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(0)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                    if (TrueEnergyBin != -1) TrueAbs0pAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(0)->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 } else if (ev.backgroundType == 1) {
-                    if (TrueEnergyBin != -1) TrueAbsNpAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(0)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                    if (TrueEnergyBin != -1) TrueAbsNpAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(0)->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
-                    if (TrueEnergyBin != -1) TrueScatterAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(0)->Fill(energyAtVertex, evt_weights->at(iUniv));
+                    if (TrueEnergyBin != -1) TrueScatterAsByBinUnivs.at(iUniv).at(TrueEnergyBin).at(0)->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 } else {
-                    PionAbs0pKEBkgUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv));
+                    PionAbs0pKEBkgUnivs[iUniv]->Fill(energyAtVertex, evt_weights->at(iUniv) * ev.weight);
                 }
             }
             continue;

@@ -39,20 +39,27 @@ static const std::unordered_set<int> SKIP_INDICES = {
 };
 
 static const std::unordered_set<int> SKIP_INDICES_DATA = {
-    199835,
     311635
 };
 
 // Loading products
-const int kMaxTrack          = 100;  // 10000
-const int kMaxWCTracks       = 1;    // 1000
-const int kMaxTrackHits      = 1000; // 1000
-const int kMaxTrajHits       = 1000; // 1000
-const int kMaxPrimaries      = 4000; // 20000
-const int kMaxPrimaryPart    = 60;   // 50
-const int kMaxTruePrimaryPts = 5000; // 5000
-const int kMaxHits           = 1000; // 20000
-const int kMaxIDE            = 5000; // 5000
+const int kMaxTrack          = 10000; // 10000
+const int kMaxWCTracks       = 1;     // 1000
+const int kMaxTrackHits      = 1000;  // 1000
+const int kMaxTrajHits       = 1000;  // 1000
+const int kMaxPrimaries      = 20000; // 20000
+const int kMaxPrimaryPart    = 50;    // 50
+const int kMaxTruePrimaryPts = 5000;  // 5000
+const int kMaxHits           = 20000; // 20000
+const int kMaxIDE            = 5000;  // 5000
+
+// Loading products (data)
+const int kMaxTrackData     = 10000; // 10000
+const int kMaxWCTracksData  = 1000;  // 1000
+const int kMaxTrackHitsData = 1000;  // 1000
+const int kMaxTrajHitsData  = 1000;  // 1000
+const int kMaxHitsData      = 20000; // 20000
+const int kMaxTOFData       = 100;   // 100
 
 // Background types
 int NUM_BACKGROUND_TYPES = backgroundTypes.size();
@@ -61,7 +68,7 @@ int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 int NUM_SIGNAL_TYPES = 3; // 0p abs, Np abs, scattering
 
 // Run through this many events
-int USE_NUM_EVENTS = 50000;
+int USE_NUM_EVENTS = 100000;
 
 // Test threshold for TG tracks
 int N_TG_TRACKS = 3;
@@ -82,6 +89,10 @@ double TOTAL_MC_EVENTS        = 493581;
 double NUM_DATA_EVENTS        = TG1_DATA_EVENTS * (TOTAL_DATA_EVENTS / RESTRICTED_DATA_EVENTS);
 double NUM_MC_EVENTS          = TG1_MC_EVENTS * (TOTAL_DATA_EVENTS / TOTAL_MC_EVENTS);
 double MC_SCALING             = NUM_DATA_EVENTS / NUM_MC_EVENTS;
+
+// File with weights
+extern TFile* fWeights;
+const TString WEIGHTS_NAME = "hWeightsFrontFacePre";
 
 // Sampling rate
 double SAMPLING_RATE = 0.128;
@@ -198,11 +209,13 @@ double MAX_IN_CLUSTER_SEPARATION   = 2.5;
 int MINIMUM_HITS_FOR_CLUSTER = 5;
 
 int    NUM_CLUSTERS_THRESHOLD  = 2;
-double LARGE_CLUSTER_THRESHOLD = 10.0;
+double LARGE_CLUSTER_THRESHOLD = 2.0;
 
 // Cluster cut thresholds
 int MAX_NUM_CLUSTERS_INDUCTION        = 1;
 int MAX_NUM_CLUSTERS_COLLECTION       = 1;
+int MAX_NUM_LARGE_CLUSTERS_INDUCTION  = 1;
+int MAX_NUM_LARGE_CLUSTERS_COLLECTION = 1;
 double MAX_LARGEST_CLUSTER_INDUCTION  = 2.;
 double MAX_LARGEST_CLUSTER_COLLECTION = 2.;
 
@@ -648,3 +661,4 @@ void printEventVariables(const EventVariables& t, std::ofstream& out);
 // Reweighing
 void ApplyWeights(TH1* h, const TH1* weights);
 void ComputeReweightingWeights(const TH1* source, const TH1* target, TH1* weights);
+double GetKEWeight(TH1D* hWeights, double ke);
