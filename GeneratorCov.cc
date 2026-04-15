@@ -419,7 +419,6 @@ void GeneratorCov() {
 
         // Get information about Geant4 primary particles
         int iPrimary = 0;
-        int iPrimary = 0;
         TVector3 vtxPion, outPion;
         for (size_t true_idx = 0; true_idx < geant_list_size; ++true_idx) {
             // Get truth primary
@@ -859,7 +858,7 @@ void GeneratorCov() {
 
         // Load weights
         auto it = eventToWeightEntry.find(event);
-        if (!(it == eventToWeightEntry.end())) w_Chain->GetEntry(it->second);
+        if (!(it == eventToWeightEntry.end())) tree_w->GetEntry(it->second);
 
         // Setup hits in tracks
         std::unordered_set<int> hitsInTracks(ev.hitRecoAsTrackKey.begin(), ev.hitRecoAsTrackKey.end());
@@ -1296,10 +1295,10 @@ void GeneratorCov() {
             // Add to incident KE if inside reduced volume
             if (isWithinReducedVolume(ev.wcMatchXPos.at(iDep), ev.wcMatchYPos.at(iDep), ev.wcMatchZPos.at(iDep))) {
                 hPionIncidentKENom->Fill(initialKE - energyDeposited, ev.weight);
-                incidentEnergyDepositions.push_back(initialKE - energyDeposited, ev.weight);
+                incidentEnergyDepositions.push_back(initialKE - energyDeposited);
                 if (ev.truthPrimaryPDG == -211) {
                     hPionIncidentKETrueNom->Fill(initialKE - energyDeposited, ev.weight);
-                    incidentEnergyDepositionsPion.push_back(initialKE - energyDeposited, ev.weight);
+                    incidentEnergyDepositionsPion.push_back(initialKE - energyDeposited);
                 }
             }
         }

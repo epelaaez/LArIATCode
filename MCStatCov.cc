@@ -808,6 +808,7 @@ void MCStatCov() {
             if (lastDist < (TRACK_PITCH / 2)) orderedUniformTrjPtsSecondary.erase((std::next(orderedUniformTrjPtsSecondary.rbegin()))->first);
 
             std::vector<double> segIncidentKE = {};
+            double segKineticEnergy;
             if (i_seg == 0) {
                 segKineticEnergy = ev.truthPrimaryVertexKE * 1000;
             } else {
