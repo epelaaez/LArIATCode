@@ -1493,7 +1493,10 @@ void MCStatCov() {
             }
         }
 
-        if (numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION) {
+        if (
+            // numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION
+            numLargeClustersInduction < MAX_NUM_LARGE_CLUSTERS_INDUCTION
+        ) {
             // Add weights to abs 0p
             hPionAbs0pKENom->Fill(energyAtVertex, ev.weight);
             if (ev.backgroundType == 0) {

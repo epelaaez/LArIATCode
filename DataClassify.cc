@@ -918,7 +918,8 @@ void DataClassify() {
         }
 
         // Perform cut
-        if (numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION) {
+        // if (numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION) {
+        if (numLargeClustersInduction < MAX_NUM_LARGE_CLUSTERS_INDUCTION) {
             EventsSelectedAsAbs0p++;
             hPionAbs0pKE->Fill(energyAtVertex);
             hPionAbsKE->Fill(energyAtVertex);

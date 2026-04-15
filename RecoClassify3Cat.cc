@@ -2528,9 +2528,9 @@ void RecoClassify3Cat() {
         }
 
         if (
-            numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION
+            // numClustersInduction < MAX_NUM_CLUSTERS_INDUCTION
             // numLargeClustersCollection < MAX_NUM_LARGE_CLUSTERS_COLLECTION
-            // numLargeClustersInduction < MAX_NUM_LARGE_CLUSTERS_INDUCTION
+            numLargeClustersInduction < MAX_NUM_LARGE_CLUSTERS_INDUCTION
         ) {
             hPionAbs0p->Fill(ev.backgroundType, ev.weight);
 

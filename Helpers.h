@@ -275,7 +275,7 @@ double SLICED_CONE_SMALL_TRACK          = 5.0;
 int    SLICED_CONE_ALLOWED_SMALL_TRACKS = 0;
 
 // Number of allowed TG tracks
-int MAX_NUM_TG_TRACKS = 1;
+int MAX_NUM_TG_TRACKS = 2;
 
 // Parameters for BDT model
 int BDT_NUM_RECO_TRKS = 5;
