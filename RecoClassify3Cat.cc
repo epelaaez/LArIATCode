@@ -1631,8 +1631,7 @@ void RecoClassify3Cat() {
             // Look at front-face KE for valid tracks
             if (
                 numTGTracksComp <= MAX_NUM_TG_TRACKS &&
-                numSmallTracksInCylinder <= ALLOWED_CYLINDER_SMALL_TRACKS &&
-                isWithinReducedVolume(ev.WC2TPCPrimaryEndX, ev.WC2TPCPrimaryEndY, ev.WC2TPCPrimaryEndZ)
+                numSmallTracksInCylinder <= ALLOWED_CYLINDER_SMALL_TRACKS
             ) {
                 hMCValidFrontFaceKE->Fill(initialKE, ev.weight);
                 if (ev.truthPrimaryPDG == -211) {

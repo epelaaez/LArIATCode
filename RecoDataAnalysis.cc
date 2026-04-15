@@ -1141,6 +1141,9 @@ void RecoDataAnalysis() {
         //////////////////
 
         if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) continue;
+
+        // Check front face KE at this point
+        hFrontFaceKE->Fill(initialKE);
         
         ////////////////////////
         // Reduced volume cut //
@@ -1149,9 +1152,6 @@ void RecoDataAnalysis() {
         candidateInteractingEvents++;
 
         if (!isWithinReducedVolume(ev.WC2TPCPrimaryEndX, ev.WC2TPCPrimaryEndY, ev.WC2TPCPrimaryEndZ)) continue;
-
-        // Check front face KE at this point
-        hFrontFaceKE->Fill(initialKE);
 
         ///////////////////////////////////
         // Secondary particle kinematics //
