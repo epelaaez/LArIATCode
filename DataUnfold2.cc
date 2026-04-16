@@ -100,7 +100,7 @@ void DataUnfold2() {
     TMatrixD CovRotation(N, N);
 
     // Subtract background from measured
-    TVectorD MeasureMinusBackground = Measure;
+    TVectorD MeasureMinusBackground = Measure - Background;
 
     // Unfold using the total covariance matrix
     TVectorD Unfolded = WienerSVD(

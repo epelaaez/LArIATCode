@@ -85,6 +85,10 @@ void DataClassify() {
     TH1D* hMCFrontFaceKEElectron = dynamic_cast<TH1D*>(fNom->Get("hFrontFaceKEElectron"));
     TH1D* hMCFrontFaceKEMuon     = dynamic_cast<TH1D*>(fNom->Get("hFrontFaceKEMuon"));
 
+    TH1D* hMCFrontFacePionKEPion     = dynamic_cast<TH1D*>(fNom->Get("hFrontFacePionKEPion"));
+    TH1D* hMCFrontFacePionKEElectron = dynamic_cast<TH1D*>(fNom->Get("hFrontFacePionKEElectron"));
+    TH1D* hMCFrontFacePionKEMuon     = dynamic_cast<TH1D*>(fNom->Get("hFrontFacePionKEMuon"));
+
     TH1D* hMCWCKEPion     = dynamic_cast<TH1D*>(fNom->Get("hWCKEPion"));
     TH1D* hMCWCKEMuon     = dynamic_cast<TH1D*>(fNom->Get("hWCKEMuon"));
     TH1D* hMCWCKEElectron = dynamic_cast<TH1D*>(fNom->Get("hWCKEElectron"));
@@ -227,7 +231,8 @@ void DataClassify() {
     TH1D* hIncidentKEFine = new TH1D("hIncidentKEFine", "hIncidentKEFine;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
 
     // Kinetic energy at the front face of the TPC
-    TH1D* hFrontFaceKE = new TH1D("hFrontFaceKE", "hFrontFaceKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFaceKE        = new TH1D("hFrontFaceKE", "hFrontFaceKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFaceKEPionCut = new TH1D("hFrontFaceKEPionCut", "hFrontFaceKEPionCut;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
 
     // Wire chamber kinetic energy (before energy loss correction)
     TH1D* hWCKE = new TH1D("hWCKE", "hWCKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
@@ -548,6 +553,8 @@ void DataClassify() {
         if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) continue;
         EventsPassingSmall++;
 
+        hFrontFaceKEPionCut->Fill(initialKE);
+
         ///////////////////////
         // Primary track PID //
         ///////////////////////
@@ -605,6 +612,15 @@ void DataClassify() {
         //////////////////////
         // Incident KE fill //
         //////////////////////
+
+        // Check these are in order
+        if (ev.wcMatchZPos.size() > 1 && ev.wcMatchZPos.front() > ev.wcMatchZPos.back()) {
+            std::reverse(ev.wcMatchZPos.begin(), ev.wcMatchZPos.end());
+            std::reverse(ev.wcMatchDEDX.begin(), ev.wcMatchDEDX.end());
+            std::reverse(ev.wcMatchEDep.begin(), ev.wcMatchEDep.end());
+            std::reverse(ev.wcMatchXPos.begin(), ev.wcMatchXPos.end());
+            std::reverse(ev.wcMatchYPos.begin(), ev.wcMatchYPos.end());
+        }
 
         double energyDeposited = 0.0;
         for (size_t iDep = 0; iDep < ev.wcMatchDEDX.size(); ++iDep) {
@@ -971,7 +987,8 @@ void DataClassify() {
         hMCPionAbsNpKETrue, hMCPionAbsNpKEAbs0p, hMCPionAbsNpKEScatter, hMCPionAbsNpKEChExch, hMCPionAbsNpKEMuon, hMCPionAbsNpKEElectron, hMCPionAbsNpKEOther,
         hMCPionScatterKETrue, hMCPionScatterKEAbs0p, hMCPionScatterKEAbsNp, hMCPionScatterKEChExch, hMCPionScatterKEMuon, hMCPionScatterKEElectron, hMCPionScatterKEOther,
         hMCPionAbsKETrue, hMCPionAbsKEScatter, hMCPionAbsKEChExch, hMCPionAbsKEMuon, hMCPionAbsKEElectron, hMCPionAbsKEOther,
-        hMCPionScatterKETrue2, hMCPionScatterKEAbs2, hMCPionScatterKEChExch2, hMCPionScatterKEMuon2, hMCPionScatterKEElectron2, hMCPionScatterKEOther2
+        hMCPionScatterKETrue2, hMCPionScatterKEAbs2, hMCPionScatterKEChExch2, hMCPionScatterKEMuon2, hMCPionScatterKEElectron2, hMCPionScatterKEOther2,
+        hMCFrontFacePionKEPion, hMCFrontFacePionKEElectron, hMCFrontFacePionKEMuon,
     };
 
     std::vector<TH1*> scaleByPre = {
@@ -1102,6 +1119,7 @@ void DataClassify() {
         hIncidentKE,
         hIncidentKEFine,
         hFrontFaceKE,
+        hFrontFaceKEPionCut,
         hWCKE,
 
         // Interacting KE
@@ -1122,6 +1140,7 @@ void DataClassify() {
         {hMCIncidentKEPion, hMCIncidentKEMuon, hMCIncidentKEElectron},
         {hMCIncidentKEPionFine, hMCIncidentKEMuonFine, hMCIncidentKEElectronFine},
         {hMCFrontFaceKEPion, hMCFrontFaceKEMuon, hMCFrontFaceKEElectron},
+        {hMCFrontFacePionKEPion, hMCFrontFacePionKEMuon, hMCFrontFacePionKEElectron},
         {hMCWCKEPion, hMCWCKEMuon, hMCWCKEElectron},
 
         // Interacting KE
@@ -1139,6 +1158,7 @@ void DataClassify() {
         {"Pion", "Muon", "Electron"},
         
         // Incident KE
+        {"Pion", "Muon", "Electron"},
         {"Pion", "Muon", "Electron"},
         {"Pion", "Muon", "Electron"},
         {"Pion", "Muon", "Electron"},
@@ -1162,6 +1182,7 @@ void DataClassify() {
         "Incident/IncidentKE",
         "Incident/IncidentKEFine",
         "Incident/FrontFaceKE",
+        "Incident/FrontFaceKEPionCut",
         "Incident/WireChamberKE",
 
         // Interacting KE
@@ -1182,6 +1203,7 @@ void DataClassify() {
         "Incident Kinetic Energy",
         "Incident Kinetic Energy (Fine Binning)",
         "Front-Face Kinetic Energy",
+        "Front-Face Kinetic Energy (Pions)",
         "Wire-Chamber Kinetic Energy",
 
         // Interacting KE
@@ -1203,6 +1225,7 @@ void DataClassify() {
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]",
 
         // Interacting KE
         "Kinetic energy [MeV]",
@@ -1219,6 +1242,7 @@ void DataClassify() {
         "Counts",
 
         // Incident KE
+        "Counts",
         "Counts",
         "Counts",
         "Counts",

@@ -186,6 +186,11 @@ void RecoClassify3Cat() {
     TH1D* hFrontFaceKEElectron = new TH1D("hFrontFaceKEElectron", "hFrontFaceKEElectron;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
     TH1D* hFrontFaceKEMuon     = new TH1D("hFrontFaceKEMuon", "hFrontFaceKEMuon;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
 
+    TH1D* hFrontFacePionKE         = new TH1D("hFrontFacePionKE", "hFrontFacePionKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFacePionKEPion     = new TH1D("hFrontFacePionKEPion", "hFrontFacePionKEPion;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFacePionKEElectron = new TH1D("hFrontFacePionKEElectron", "hFrontFacePionKEElectron;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+    TH1D* hFrontFacePionKEMuon     = new TH1D("hFrontFacePionKEMuon", "hFrontFacePionKEMuon;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+
     TH1D* hFrontFaceKENoWeight         = new TH1D("hFrontFaceKENoWeight", "hFrontFaceKENoWeight;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
     TH1D* hFrontFaceKEPionNoWeight     = new TH1D("hFrontFaceKEPionNoWeight", "hFrontFaceKEPionNoWeight;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
     TH1D* hFrontFaceKEElectronNoWeight = new TH1D("hFrontFaceKEElectronNoWeight", "hFrontFaceKEElectronNoWeight;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
@@ -958,7 +963,7 @@ void RecoClassify3Cat() {
                         }
 
                         // Skip tiny depositions
-                        if (currentDepEnergy / uniformDist < 0.1) continue;
+                        // if (currentDepEnergy / uniformDist < 0.1) continue;
 
                         // Calculate current KE
                         trueKineticEnergy -= currentDepEnergy;
@@ -2133,9 +2138,27 @@ void RecoClassify3Cat() {
         }
         hNotAnElectron->Fill(ev.backgroundType, ev.weight);
 
+        hFrontFacePionKE->Fill(initialKE, ev.weight);
+        if (ev.truthPrimaryPDG == -211) {
+            hFrontFacePionKEPion->Fill(initialKE, ev.weight);
+        } else if (ev.truthPrimaryPDG == 13) {
+            hFrontFacePionKEMuon->Fill(initialKE, ev.weight);
+        } else if (ev.truthPrimaryPDG == 11) {
+            hFrontFacePionKEElectron->Fill(initialKE, ev.weight);
+        }
+
         //////////////////////
         // Incident KE fill //
         //////////////////////
+        
+        // Check these are in order
+        if (ev.wcMatchZPos.size() > 1 && ev.wcMatchZPos.front() > ev.wcMatchZPos.back()) {
+            std::reverse(ev.wcMatchZPos.begin(), ev.wcMatchZPos.end());
+            std::reverse(ev.wcMatchDEDX.begin(), ev.wcMatchDEDX.end());
+            std::reverse(ev.wcMatchEDep.begin(), ev.wcMatchEDep.end());
+            std::reverse(ev.wcMatchXPos.begin(), ev.wcMatchXPos.end());
+            std::reverse(ev.wcMatchYPos.begin(), ev.wcMatchYPos.end());
+        }
 
         double energyDeposited = 0.0;
         for (size_t iDep = 0; iDep < ev.wcMatchDEDX.size(); ++iDep) {
@@ -3134,6 +3157,7 @@ void RecoClassify3Cat() {
         {hFrontFaceKE, hFrontFaceKEPion, hFrontFaceKEMuon, hFrontFaceKEElectron},
         {hFrontFaceKENoWeight, hFrontFaceKEPionNoWeight, hFrontFaceKEMuonNoWeight, hFrontFaceKEElectronNoWeight},
         {hFrontFaceKENoWeightPre, hFrontFaceKEPionNoWeightPre, hFrontFaceKEMuonNoWeightPre, hFrontFaceKEElectronNoWeightPre},
+        {hFrontFacePionKE, hFrontFacePionKEPion, hFrontFacePionKEElectron, hFrontFacePionKEMuon},
         {hWCKE, hWCKEPion, hWCKEMuon, hWCKEElectron},
 
         // Interacting KE
@@ -3205,6 +3229,7 @@ void RecoClassify3Cat() {
         {"All", "Pions", "Muons", "Electrons"},
         {"All", "Pions", "Muons", "Electrons"},
         {"All", "Pions", "Muons", "Electrons"},
+        {"All", "Pions", "Muons", "Electrons"},
 
         // Interacting KE
         {"All", "True", "Abs Np", "Scatter", "Ch. exch.", "Muon", "Electron", "Other"},
@@ -3272,6 +3297,7 @@ void RecoClassify3Cat() {
         "Incident/FrontFaceKE",
         "Incident/FrontFaceKENoWeight",
         "Incident/FrontFaceKENoWeightPre",
+        "Incident/FrontFacePionCutKE",
         "Incident/WireChamberKE",
 
         // Interacting KE
@@ -3334,6 +3360,7 @@ void RecoClassify3Cat() {
 
     std::vector<TString> XLabels = {
         // Incident KE
+        "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
@@ -3409,6 +3436,7 @@ void RecoClassify3Cat() {
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
 
         // Interacting KE
         "Counts",
@@ -3477,6 +3505,7 @@ void RecoClassify3Cat() {
         true,
         true,
         true,
+        true,
 
         // Interacting KE
         true,
@@ -3541,6 +3570,7 @@ void RecoClassify3Cat() {
         {true, false, false, false},
         {true, false, false, false},
         {true, false},
+        {true, false, false, false},
         {true, false, false, false},
         {true, false, false, false},
         {true, false, false, false},

@@ -62,6 +62,76 @@ void DataUnfold() {
     TVectorD TrueSignal(N); H2V(TrueNominal, TrueSignal);
     TMatrixD Response(N, N); H2M(ResponseNominal, Response, kTRUE);
 
+    // ============================================================
+    // DEBUG: Print input vectors for AbsNp bins
+    // ============================================================
+    std::cout << "\n========== DEBUG: INPUT VECTORS (AbsNp bins) ==========\n";
+    for (int i = 0; i < N; ++i) {
+        auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE);
+        if (signalBin == 1) { // AbsNp
+            std::cout << "  Flat bin " << i << " (AbsNp, E-bin " << energyBin << "):"
+                      << "  Measure=" << Measure(i)
+                      << "  Background=" << Background(i)
+                      << "  Meas-Bkg=" << Measure(i) - Background(i)
+                      << "  TrueSignal=" << TrueSignal(i)
+                      << std::endl;
+        }
+    }
+
+    // DEBUG: Print response matrix rows for AbsNp
+    std::cout << "\n========== DEBUG: RESPONSE MATRIX (rows = AbsNp bins) ==========\n";
+    for (int i = 0; i < N; ++i) {
+        auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE);
+        if (signalBin == 1) { // AbsNp row
+            double rowSum = 0;
+            std::cout << "  Row " << i << " (AbsNp, E-bin " << energyBin << "): ";
+            for (int j = 0; j < N; ++j) {
+                if (std::fabs(Response(i, j)) > 1e-12) {
+                    auto [sj, ej] = unflattenIndex(j, NUM_BINS_KE);
+                    std::cout << "[col " << j << " (s" << sj << ",e" << ej << ")=" << Response(i, j) << "] ";
+                }
+                rowSum += Response(i, j);
+            }
+            std::cout << "  rowSum=" << rowSum << std::endl;
+        }
+    }
+
+    // DEBUG: Print response matrix columns for AbsNp (what maps INTO AbsNp true bins)
+    std::cout << "\n========== DEBUG: RESPONSE MATRIX (cols = AbsNp bins) ==========\n";
+    for (int j = 0; j < N; ++j) {
+        auto [signalBin, energyBin] = unflattenIndex(j, NUM_BINS_KE);
+        if (signalBin == 1) { // AbsNp column
+            double colSum = 0;
+            std::cout << "  Col " << j << " (AbsNp, E-bin " << energyBin << "): ";
+            for (int i = 0; i < N; ++i) {
+                if (std::fabs(Response(i, j)) > 1e-12) {
+                    auto [si, ei] = unflattenIndex(i, NUM_BINS_KE);
+                    std::cout << "[row " << i << " (s" << si << ",e" << ei << ")=" << Response(i, j) << "] ";
+                }
+                colSum += Response(i, j);
+            }
+            std::cout << "  colSum=" << colSum << std::endl;
+        }
+    }
+
+    // DEBUG: Check diagonal dominance for AbsNp
+    std::cout << "\n========== DEBUG: RESPONSE DIAGONAL vs OFF-DIAGONAL (AbsNp) ==========\n";
+    for (int i = 0; i < N; ++i) {
+        auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE);
+        if (signalBin == 1) {
+            double diag = Response(i, i);
+            double offDiagSum = 0;
+            for (int j = 0; j < N; ++j) {
+                if (j != i) offDiagSum += std::fabs(Response(i, j));
+            }
+            std::cout << "  Bin " << i << " (AbsNp, E-bin " << energyBin << "):"
+                      << "  diag=" << diag
+                      << "  |off-diag| sum=" << offDiagSum
+                      << "  ratio diag/offdiag=" << (offDiagSum > 0 ? diag/offDiagSum : 999)
+                      << std::endl;
+        }
+    }
+
     // Organize covariance matrices
     std::vector<TH2D*> CovarianceMatrices = {
         StatCovariance,
@@ -90,6 +160,18 @@ void DataUnfold() {
         TotalCovariance += Cov;
     }
 
+    // DEBUG: Print total covariance diagonal for AbsNp bins
+    std::cout << "\n========== DEBUG: TOTAL COVARIANCE DIAGONAL (AbsNp) ==========\n";
+    for (int i = 0; i < N; ++i) {
+        auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE);
+        if (signalBin == 1) {
+            std::cout << "  Bin " << i << " (AbsNp, E-bin " << energyBin << "):"
+                      << "  TotalCov(" << i << "," << i << ")=" << TotalCovariance(i, i)
+                      << "  sqrt=" << std::sqrt(std::max(0.0, TotalCovariance(i, i)))
+                      << std::endl;
+        }
+    }
+
     // Vectors to store output
     TMatrixD AddSmear(N, N);
     TMatrixD AddSmearInverse(N, N);
@@ -98,7 +180,7 @@ void DataUnfold() {
     TMatrixD CovRotation(N, N);
 
     // Subtract background from measured
-    TVectorD MeasureMinusBackground = Measure;
+    TVectorD MeasureMinusBackground = Measure - Background;
 
     // Unfold using the total covariance matrix
     TVectorD Unfolded = WienerSVD(
@@ -114,6 +196,118 @@ void DataUnfold() {
         CovRotation,
         AddSmearInverse
     );
+
+    // ============================================================
+    // DEBUG: Print unfolded results for AbsNp
+    // ============================================================
+    std::cout << "\n========== DEBUG: UNFOLDED RESULT (AbsNp bins) ==========\n";
+    for (int i = 0; i < N; ++i) {
+        auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE);
+        if (signalBin == 1) {
+            double sigma = std::sqrt(std::max(0.0, UnfoldCov(i, i)));
+            std::cout << "  Bin " << i << " (AbsNp, E-bin " << energyBin << "):"
+                      << "  Unfolded=" << Unfolded(i)
+                      << "  sigma=" << sigma
+                      << "  Unf/True=" << (TrueSignal(i) != 0 ? Unfolded(i)/TrueSignal(i) : 0)
+                      << (Unfolded(i) < 0 ? "  *** NEGATIVE ***" : "")
+                      << std::endl;
+        }
+    }
+
+    // DEBUG: Print Wiener filter values for AbsNp
+    std::cout << "\n========== DEBUG: WIENER FILTER (AbsNp bins) ==========\n";
+    for (int i = 0; i < N; ++i) {
+        auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE);
+        if (signalBin == 1) {
+            std::cout << "  Bin " << i << " (AbsNp, E-bin " << energyBin << "):"
+                      << "  WF=" << WF(i)
+                      << std::endl;
+        }
+    }
+
+    // DEBUG: Print CovRotation matrix row for AbsNp (how measured bins contribute to unfolded AbsNp)
+    std::cout << "\n========== DEBUG: COV ROTATION ROW (AbsNp bins) ==========\n";
+    std::cout << "  Shows how each measured bin contributes to unfolded AbsNp bins\n";
+    for (int i = 0; i < N; ++i) {
+        auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE);
+        if (signalBin == 1) {
+            std::cout << "  Row " << i << " (AbsNp, E-bin " << energyBin << "): ";
+            // Print the largest (positive and negative) contributions
+            double posSum = 0, negSum = 0;
+            int posCnt = 0, negCnt = 0;
+            for (int j = 0; j < N; ++j) {
+                double val = CovRotation(i, j);
+                if (val > 0) { posSum += val; posCnt++; }
+                else { negSum += val; negCnt++; }
+            }
+            std::cout << "posSum=" << posSum << " (" << posCnt << " entries)"
+                      << "  negSum=" << negSum << " (" << negCnt << " entries)"
+                      << std::endl;
+
+            // Print top 5 positive and negative entries
+            std::vector<std::pair<double, int>> entries;
+            for (int j = 0; j < N; ++j) entries.push_back({CovRotation(i,j), j});
+            std::sort(entries.begin(), entries.end());
+            std::cout << "    Most negative: ";
+            for (int k = 0; k < std::min(5, (int)entries.size()); ++k) {
+                auto [sj, ej] = unflattenIndex(entries[k].second, NUM_BINS_KE);
+                std::cout << "[col " << entries[k].second << " (s" << sj << ",e" << ej << ")=" << entries[k].first << "] ";
+            }
+            std::cout << std::endl;
+            std::cout << "    Most positive: ";
+            for (int k = entries.size()-1; k >= std::max(0, (int)entries.size()-5); --k) {
+                auto [sj, ej] = unflattenIndex(entries[k].second, NUM_BINS_KE);
+                std::cout << "[col " << entries[k].second << " (s" << sj << ",e" << ej << ")=" << entries[k].first << "] ";
+            }
+            std::cout << std::endl;
+        }
+    }
+
+    // DEBUG: Decompose the unfolded value: CovRotation * MeasureMinusBackground
+    std::cout << "\n========== DEBUG: DECOMPOSITION of Unfolded AbsNp ==========\n";
+    std::cout << "  Unfolded(i) = sum_j CovRotation(i,j) * MeasMinusBkg(j)\n";
+    for (int i = 0; i < N; ++i) {
+        auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE);
+        if (signalBin == 1) {
+            double posContrib = 0, negContrib = 0;
+            std::cout << "  Bin " << i << " (AbsNp, E-bin " << energyBin << "):\n";
+            for (int j = 0; j < N; ++j) {
+                double contrib = CovRotation(i, j) * MeasureMinusBackground(j);
+                if (std::fabs(contrib) > 1e-6) {
+                    auto [sj, ej] = unflattenIndex(j, NUM_BINS_KE);
+                    std::cout << "    j=" << j << " (s" << sj << ",e" << ej << ")"
+                              << "  CovRot=" << CovRotation(i,j)
+                              << "  MeasMinBkg=" << MeasureMinusBackground(j)
+                              << "  contrib=" << contrib
+                              << std::endl;
+                }
+                if (contrib > 0) posContrib += contrib;
+                else negContrib += contrib;
+            }
+            std::cout << "    => posContrib=" << posContrib
+                      << "  negContrib=" << negContrib
+                      << "  total=" << posContrib + negContrib
+                      << "  (Unfolded=" << Unfolded(i) << ")"
+                      << std::endl;
+        }
+    }
+
+    // DEBUG: Print AddSmear matrix for AbsNp (additional smearing from regularization)
+    std::cout << "\n========== DEBUG: ADDITIONAL SMEARING MATRIX (AbsNp rows) ==========\n";
+    for (int i = 0; i < N; ++i) {
+        auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE);
+        if (signalBin == 1) {
+            std::cout << "  Row " << i << " (AbsNp, E-bin " << energyBin << "): diag=" << AddSmear(i,i);
+            double offDiag = 0;
+            for (int j = 0; j < N; ++j) {
+                if (j != i) offDiag += std::fabs(AddSmear(i,j));
+            }
+            std::cout << "  |off-diag| sum=" << offDiag << std::endl;
+        }
+    }
+
+    std::cout << "\n========== END DEBUG ==========\n\n";
+
     TH1D* hUnfolded = new TH1D("hUnfolded", "hUnfolded;;", N, 0, N); V2H(Unfolded, hUnfolded);
     TMatrixD CovRotationT(TMatrixD::kTransposed, CovRotation);
 

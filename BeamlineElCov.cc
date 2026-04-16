@@ -626,7 +626,7 @@ void BeamlineElCov() {
                         }
 
                         // Skip tiny depositions
-                        if (currentDepEnergy / uniformDist < 0.1) continue;
+                        // if (currentDepEnergy / uniformDist < 0.1) continue;
 
                         // Calculate current KE
                         trueKineticEnergy -= currentDepEnergy;
@@ -1249,6 +1249,15 @@ void BeamlineElCov() {
             breakPointX = ev.wcMatchXPos.at(bestBreakPoint);
             breakPointY = ev.wcMatchYPos.at(bestBreakPoint);
             breakPointZ = ev.wcMatchZPos.at(bestBreakPoint);
+        }
+
+        // Check these are in order
+        if (ev.wcMatchZPos.size() > 1 && ev.wcMatchZPos.front() > ev.wcMatchZPos.back()) {
+            std::reverse(ev.wcMatchZPos.begin(), ev.wcMatchZPos.end());
+            std::reverse(ev.wcMatchDEDX.begin(), ev.wcMatchDEDX.end());
+            std::reverse(ev.wcMatchEDep.begin(), ev.wcMatchEDep.end());
+            std::reverse(ev.wcMatchXPos.begin(), ev.wcMatchXPos.end());
+            std::reverse(ev.wcMatchYPos.begin(), ev.wcMatchYPos.end());
         }
 
         double energyDeposited  = 0;
