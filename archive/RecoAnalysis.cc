@@ -667,10 +667,6 @@ void RecoAnalysis() {
     std::cout << std::endl;
 
     // Setup for drawing plots
-    std::vector<int> Colors = {
-        kBlack, kBlue, kRed, kGreen
-    };
-
     std::vector<std::vector<TH1*>> PlotGroups = {
         {hProtonMeanDEDXSecondary},
         {hPionMeanDEDXSecondary, hProtonMeanDEDXSecondary},

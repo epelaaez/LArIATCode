@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cmath>
 #include "TGraph.h"
+#include "TColor.h"
 
 //////////////////////
 // Global constants //
@@ -40,6 +41,19 @@ static const std::unordered_set<int> SKIP_INDICES = {
 
 static const std::unordered_set<int> SKIP_INDICES_DATA = {
     311635
+};
+
+std::vector<int> Colors = {
+    TColor::GetColor(64,  64,  64),   // dark charcoal
+    TColor::GetColor(0,   114, 178),  // deep blue
+    TColor::GetColor(213, 94,  0),    // burnt orange
+    TColor::GetColor(0,   158, 115),  // teal green
+    TColor::GetColor(200, 185, 0),    // bright yellow
+    TColor::GetColor(86,  180, 233),  // sky blue
+    TColor::GetColor(204, 121, 167),  // mauve pink
+    TColor::GetColor(0,   158, 115),  // teal green
+    TColor::GetColor(86,  180, 233),  // sky blue
+    TColor::GetColor(204, 121, 167),  // mauve pink
 };
 
 // Loading products
@@ -166,16 +180,20 @@ const double MUON_COMP_UNC     = 0.26;
 const double ELECTRON_COMP_UNC = 1.00;
 
 // Values for chi^2 secondary fits
-double PION_CHI2_PION_VALUE     = 1.125;
-double PION_CHI2_PROTON_VALUE   = 1.125;
-double PROTON_CHI2_PION_VALUE   = 1.375;
-double PROTON_CHI2_PROTON_VALUE = 0.125;
+
+// Classify pions 
+double PION_CHI2_PION_VALUE     = 0.750; // 1.125
+double PROTON_CHI2_PION_VALUE   = 1.375; // 1.375
+
+// Classify protons
+double PION_CHI2_PROTON_VALUE   = 1.375; // 1.125
+double PROTON_CHI2_PROTON_VALUE = 0.750; // 0.125
 
 // Mean dE/dx threshold
 double MEAN_DEDX_THRESHOLD = 4.0;
 
 // Vertex radius
-double VERTEX_RADIUS = 5.0;
+double VERTEX_RADIUS = 10.0;
 
 // Number of points to use in mean dE/dx calculation
 int MEAN_DEDX_NUM_TRAJ_POINTS = 5;
@@ -238,7 +256,7 @@ double SCATTERING_ANGLE_THRESHOLD = 5.0 * (TMath::Pi() / 180);
 double PION_SCATTERING_ENERGY_THRESHOLD = 0.05; // in GeV / c
 
 // Bins for energy bins
-static const std::vector<double> ARRAY_KE_BINS = {0., 100., 200., 300., 400., 600.};
+static const std::vector<double> ARRAY_KE_BINS = {0., 100., 200., 300., 500.};
 static const int                   NUM_BINS_KE = static_cast<int>(ARRAY_KE_BINS.size()) - 1;
 
 // Bins for energy bins (finer)
@@ -257,6 +275,10 @@ static const std::vector<double> ARRAY_KE_FINE_BINS = {
     560., 570., 580., 590., 600.
 };
 static const int NUM_BINS_KE_FINE = static_cast<int>(ARRAY_KE_FINE_BINS.size()) - 1;
+
+// Bins for abs + scattering measurement
+static const std::vector<double> ARRAY_KE_BINS_ABS_SCATT = {0., 100., 200., 300., 400., 500.};
+static const int                   NUM_BINS_KE_ABS_SCATT = static_cast<int>(ARRAY_KE_BINS_ABS_SCATT.size()) - 1;
 
 // TOF mass cut
 double PI_MU_EL_MASS_CUTOFF = 350.;
@@ -317,6 +339,7 @@ struct EventVariables {
     // WC match calorimetry
     std::vector<double> wcMatchResR;
     std::vector<double> wcMatchDEDX;
+    std::vector<double> wcMatchPitch;
     std::vector<double> wcMatchEDep;
     std::vector<double> wcMatchXPos;
     std::vector<double> wcMatchYPos;
@@ -423,6 +446,7 @@ struct EventVariablesData {
     // WC match calorimetry
     std::vector<double> wcMatchResR;
     std::vector<double> wcMatchDEDX;
+    std::vector<double> wcMatchPitch;
     std::vector<double> wcMatchEDep;
     std::vector<double> wcMatchXPos;
     std::vector<double> wcMatchYPos;

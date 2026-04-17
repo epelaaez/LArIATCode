@@ -2,6 +2,7 @@
 #include "TTree.h"
 #include "TString.h"
 #include "TCanvas.h"
+#include "TColor.h"
 #include "TTree.h"
 #include "TVector3.h"
 #include "TMatrixDSym.h"
@@ -79,6 +80,9 @@ void RecoClassify3Cat() {
     static float trkrr[kMaxTrack][2][kMaxTrackHits];           Chain->SetBranchAddress("trkrr",       &trkrr);
     static float trkpitch[kMaxTrack][2][kMaxTrackHits];        Chain->SetBranchAddress("trkpitch",    &trkpitch);
     static float trkxyz[kMaxTrack][2][kMaxTrackHits][3];       Chain->SetBranchAddress("trkxyz",      &trkxyz);
+
+    // Match information
+    static int trkg4id[kMaxTrack]; Chain->SetBranchAddress("trkg4id", &trkg4id);
 
     // Trajectory information for tracks
     int   nTrajPoint[kMaxTrack];                  Chain->SetBranchAddress("nTrajPoint", &nTrajPoint);
@@ -292,12 +296,13 @@ void RecoClassify3Cat() {
         TrueAbs0pAsByBin.push_back(TempVec);
     }
 
-    TH1D* hTrueAbs0pKERejDataProds = new TH1D("hTrueAbs0pKERejDataProds", "hTrueAbs0pKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueAbs0pKERejElectron  = new TH1D("hTrueAbs0pKERejElectron", "hTrueAbs0pKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueAbs0pKERejRedVol    = new TH1D("hTrueAbs0pKERejRedVol", "hTrueAbs0pKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueAbs0pKERejPID       = new TH1D("hTrueAbs0pKERejPID", "hTrueAbs0pKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueAbs0pKERejManyPions = new TH1D("hTrueAbs0pKERejManyPions", "hTrueAbs0pKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueAbs0pKERejClusters  = new TH1D("hTrueAbs0pKERejClusters", "hTrueAbs0pKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejDataProds  = new TH1D("hTrueAbs0pKERejDataProds", "hTrueAbs0pKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejElectron   = new TH1D("hTrueAbs0pKERejElectron", "hTrueAbs0pKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejRedVol     = new TH1D("hTrueAbs0pKERejRedVol", "hTrueAbs0pKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejPID        = new TH1D("hTrueAbs0pKERejPID", "hTrueAbs0pKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejManyPions  = new TH1D("hTrueAbs0pKERejManyPions", "hTrueAbs0pKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejProtonDEDX = new TH1D("hTrueAbs0pKERejProtonDEDX", "hTrueAbs0pKERejProtonDEDX;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs0pKERejClusters   = new TH1D("hTrueAbs0pKERejClusters", "hTrueAbs0pKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // True abs Np
     TH1D* hTrueAbsNpKE          = new TH1D("hTrueAbsNpKE", "hTrueAbsNpKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
@@ -317,12 +322,13 @@ void RecoClassify3Cat() {
         TrueAbsNpAsByBin.push_back(TempVec);
     }
 
-    TH1D* hTrueAbsNpKERejDataProds = new TH1D("hTrueAbsNpKERejDataProds", "hTrueAbsNpKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueAbsNpKERejElectron  = new TH1D("hTrueAbsNpKERejElectron", "hTrueAbsNpKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueAbsNpKERejRedVol    = new TH1D("hTrueAbsNpKERejRedVol", "hTrueAbsNpKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueAbsNpKERejPID       = new TH1D("hTrueAbsNpKERejPID", "hTrueAbsNpKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueAbsNpKERejManyPions = new TH1D("hTrueAbsNpKERejManyPions", "hTrueAbsNpKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueAbsNpKERejClusters  = new TH1D("hTrueAbsNpKERejClusters", "hTrueAbsNpKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejDataProds  = new TH1D("hTrueAbsNpKERejDataProds", "hTrueAbsNpKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejElectron   = new TH1D("hTrueAbsNpKERejElectron", "hTrueAbsNpKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejRedVol     = new TH1D("hTrueAbsNpKERejRedVol", "hTrueAbsNpKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejPID        = new TH1D("hTrueAbsNpKERejPID", "hTrueAbsNpKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejManyPions  = new TH1D("hTrueAbsNpKERejManyPions", "hTrueAbsNpKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejProtonDEDX = new TH1D("hTrueAbsNpKERejProtonDEDX", "hTrueAbsNpKERejProtonDEDX;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbsNpKERejClusters   = new TH1D("hTrueAbsNpKERejClusters", "hTrueAbsNpKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // True scatter
     TH1D* hTrueScatterKE          = new TH1D("hTrueScatterKE", "hTrueScatterKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
@@ -336,18 +342,19 @@ void RecoClassify3Cat() {
     for (int iEnergyBin = 0; iEnergyBin < NUM_BINS_KE; ++iEnergyBin) {
         std::vector<TH1D*> TempVec;
         for (int iInt = 0; iInt < NUM_SIGNAL_TYPES; ++iInt) {
-            TH1D* hTempHist = new TH1D(Form("hTrueAbsScatter_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Abs Scatter KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
+            TH1D* hTempHist = new TH1D(Form("hTrueScatter_%d_Bin_As_%d", iEnergyBin, iInt), Form("True Scatter KE As %d in bin %d", iInt, iEnergyBin), NUM_BINS_KE, ARRAY_KE_BINS.data());
             TempVec.push_back(hTempHist);
         }
         TrueScatterAsByBin.push_back(TempVec);
     }
 
-    TH1D* hTrueScatterKERejDataProds = new TH1D("hTrueScatterKERejDataProds", "hTrueScatterKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueScatterKERejElectron  = new TH1D("hTrueScatterKERejElectron", "hTrueScatterKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueScatterKERejRedVol    = new TH1D("hTrueScatterKERejRedVol", "hTrueScatterKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueScatterKERejPID       = new TH1D("hTrueScatterKERejPID", "hTrueScatterKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueScatterKERejManyPions = new TH1D("hTrueScatterKERejManyPions", "hTrueScatterKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueScatterKERejClusters  = new TH1D("hTrueScatterKERejClusters", "hTrueScatterKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejDataProds  = new TH1D("hTrueScatterKERejDataProds", "hTrueScatterKERejDataProds;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejElectron   = new TH1D("hTrueScatterKERejElectron", "hTrueScatterKERejElectron;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejRedVol     = new TH1D("hTrueScatterKERejRedVol", "hTrueScatterKERejRedVol;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejPID        = new TH1D("hTrueScatterKERejPID", "hTrueScatterKERejPID;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejManyPions  = new TH1D("hTrueScatterKERejManyPions", "hTrueScatterKERejManyPions;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejProtonDEDX = new TH1D("hTrueScatterKERejProtonDEDX", "hTrueScatterKERejProtonDEDX;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueScatterKERejClusters   = new TH1D("hTrueScatterKERejClusters", "hTrueScatterKERejClusters;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
     // True charge exchange
     TH1D* hTrueChExchKE          = new TH1D("hTrueChExchKE", "hTrueChExchKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
@@ -371,6 +378,29 @@ void RecoClassify3Cat() {
     TH1D* hNumTGTracksPrimaryMuon     = new TH1D("hNumTGTracksPrimaryMuon", "hNumTGTracksPrimaryMuon", 10, 0, 10);
     TH1D* hNumTGTracksPrimaryPion     = new TH1D("hNumTGTracksPrimaryPion", "hNumTGTracksPrimaryPion", 10, 0, 10);
     TH1D* hNumTGTracksPrimaryElectron = new TH1D("hNumTGTracksPrimaryElectron", "hNumTGTracksPrimaryElectron", 10, 0, 10);
+
+    /////////////////////////////////
+    // Mean dE/dx secondary tracks //
+    /////////////////////////////////
+
+    TH1D* hMeandEdxSecondaryTracks = new TH1D("hMeandEdxSecondaryTracks", "hMeandEdxSecondaryTracks", 20, 0, 10);
+    TH1D* hMeandEdxSecondaryPions  = new TH1D("hMeandEdxSecondaryPions", "hMeandEdxSecondaryPions", 20, 0, 10);
+    TH1D* hMeandEdxSecondaryProton = new TH1D("hMeandEdxSecondaryProton", "hMeandEdxSecondaryProton", 20, 0, 10);
+    TH1D* hMeandEdxSecondaryOther  = new TH1D("hMeandEdxSecondaryOther", "hMeandEdxSecondaryOther", 20, 0, 10);
+
+    ///////////////////////////
+    // Track pitch and dE/dx //
+    ///////////////////////////
+
+    TH1D* hTrackPitch         = new TH1D("hTrackPitch", "hTrackPitch", 40, 0.2, 0.8);
+    TH1D* hTrackPitchPion     = new TH1D("hTrackPitchPion", "hTrackPitchPion", 40, 0.2, 0.8);
+    TH1D* hTrackPitchMuon     = new TH1D("hTrackPitchMuon", "hTrackPitchMuon", 40, 0.2, 0.8);
+    TH1D* hTrackPitchElectron = new TH1D("hTrackPitchElectron", "hTrackPitchElectron", 40, 0.2, 0.8);
+
+    TH1D* hTrackdEdx         = new TH1D("hTrackdEdx", "hTrackdEdx", 48, 0, 6);
+    TH1D* hTrackdEdxPion     = new TH1D("hTrackdEdxPion", "hTrackdEdxPion", 48, 0, 6);
+    TH1D* hTrackdEdxMuon     = new TH1D("hTrackdEdxMuon", "hTrackdEdxMuon", 48, 0, 6);
+    TH1D* hTrackdEdxElectron = new TH1D("hTrackdEdxElectron", "hTrackdEdxElectron", 48, 0, 6);
 
     //////////////////////////////
     // Small tracks in cylinder //
@@ -663,6 +693,7 @@ void RecoClassify3Cat() {
                 int npts_dedx = std::min(ntrkcalopts[trk_idx][1], kMaxTrackHits);
                 ev.wcMatchResR.assign(trkrr[trk_idx][1], trkrr[trk_idx][1] + npts_dedx);
                 ev.wcMatchDEDX.assign(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + npts_dedx);
+                ev.wcMatchPitch.assign(trkpitch[trk_idx][1], trkpitch[trk_idx][1] + npts_dedx);
 
                 for (size_t dep_idx = 0; dep_idx < std::min(ntrkcalopts[trk_idx][1], kMaxTrackHits); ++dep_idx) {
                     ev.wcMatchEDep.push_back(trkdedx[trk_idx][1][dep_idx] * trkpitch[trk_idx][1][dep_idx]);
@@ -714,8 +745,6 @@ void RecoClassify3Cat() {
                 std::swap(ev.recoEndX[trk_idx], ev.recoBeginX[trk_idx]);
                 std::swap(ev.recoEndY[trk_idx], ev.recoBeginY[trk_idx]);
                 std::swap(ev.recoEndZ[trk_idx], ev.recoBeginZ[trk_idx]);
-
-                std::reverse(ev.recoResR[trk_idx].begin(), ev.recoResR[trk_idx].end());
                 std::reverse(ev.recoDEDX[trk_idx].begin(), ev.recoDEDX[trk_idx].end());
             } else {
                 ev.isTrackInverted.push_back(false);
@@ -2138,6 +2167,10 @@ void RecoClassify3Cat() {
         }
         hNotAnElectron->Fill(ev.backgroundType, ev.weight);
 
+        //////////////////////////////
+        // Save stuff after pion ID //
+        //////////////////////////////
+
         hFrontFacePionKE->Fill(initialKE, ev.weight);
         if (ev.truthPrimaryPDG == -211) {
             hFrontFacePionKEPion->Fill(initialKE, ev.weight);
@@ -2150,20 +2183,39 @@ void RecoClassify3Cat() {
         //////////////////////
         // Incident KE fill //
         //////////////////////
-        
+
         // Check these are in order
+        bool reverseBack = false;
         if (ev.wcMatchZPos.size() > 1 && ev.wcMatchZPos.front() > ev.wcMatchZPos.back()) {
-            std::reverse(ev.wcMatchZPos.begin(), ev.wcMatchZPos.end());
             std::reverse(ev.wcMatchDEDX.begin(), ev.wcMatchDEDX.end());
+            std::reverse(ev.wcMatchPitch.begin(), ev.wcMatchPitch.end());
             std::reverse(ev.wcMatchEDep.begin(), ev.wcMatchEDep.end());
             std::reverse(ev.wcMatchXPos.begin(), ev.wcMatchXPos.end());
             std::reverse(ev.wcMatchYPos.begin(), ev.wcMatchYPos.end());
+            std::reverse(ev.wcMatchZPos.begin(), ev.wcMatchZPos.end());
+            reverseBack = true;
         }
 
         double energyDeposited = 0.0;
         for (size_t iDep = 0; iDep < ev.wcMatchDEDX.size(); ++iDep) {
             // If we are past detected breaking point, exit loop
             if (ev.wcMatchZPos.at(iDep) > breakPointZ) break;
+
+            // Fill histograms
+            if (isWithinReducedVolume(ev.wcMatchXPos.at(iDep), ev.wcMatchYPos.at(iDep), ev.wcMatchZPos.at(iDep))) {
+                hTrackPitch->Fill(ev.wcMatchPitch.at(iDep), ev.weight);
+                hTrackdEdx->Fill(ev.wcMatchDEDX.at(iDep), ev.weight);
+                if (ev.truthPrimaryPDG == -211) {
+                    hTrackPitchPion->Fill(ev.wcMatchPitch.at(iDep), ev.weight);
+                    hTrackdEdxPion->Fill(ev.wcMatchDEDX.at(iDep), ev.weight);
+                } else if (ev.truthPrimaryPDG == 13) {
+                    hTrackPitchMuon->Fill(ev.wcMatchPitch.at(iDep), ev.weight);
+                    hTrackdEdxMuon->Fill(ev.wcMatchDEDX.at(iDep), ev.weight);
+                } else if (ev.truthPrimaryPDG == 11) {
+                    hTrackPitchElectron->Fill(ev.wcMatchPitch.at(iDep), ev.weight);
+                    hTrackdEdxElectron->Fill(ev.wcMatchDEDX.at(iDep), ev.weight);
+                }
+            }            
 
             // If larger than threshold, continue
             if (ev.wcMatchDEDX.at(iDep) > HIT_DEDX_THRESHOLD) continue;
@@ -2190,6 +2242,15 @@ void RecoClassify3Cat() {
             }
         }
         double energyAtVertex = initialKE - energyDeposited;
+
+        if (reverseBack) {
+            std::reverse(ev.wcMatchDEDX.begin(), ev.wcMatchDEDX.end());
+            std::reverse(ev.wcMatchPitch.begin(), ev.wcMatchPitch.end());
+            std::reverse(ev.wcMatchEDep.begin(), ev.wcMatchEDep.end());
+            std::reverse(ev.wcMatchXPos.begin(), ev.wcMatchXPos.end());
+            std::reverse(ev.wcMatchYPos.begin(), ev.wcMatchYPos.end());
+            std::reverse(ev.wcMatchZPos.begin(), ev.wcMatchZPos.end());
+        }
 
         ////////////////////////
         // Reduced volume cut //
@@ -2247,6 +2308,16 @@ void RecoClassify3Cat() {
         for (size_t trk_idx = 0; trk_idx < ev.recoBeginX.size(); ++trk_idx) {
             if (trkWCtoTPCMatch[trk_idx]) continue;
 
+            // Find out track PDG
+            int trackPDG = 0; double trackKE = 0.0;
+            for (size_t true_idx = 0; true_idx < geant_list_size; ++true_idx) {
+                if (trkg4id[trk_idx] == TrackId[true_idx]) {
+                    trackPDG = pdg[true_idx];
+                    trackKE  = Eng[true_idx] - Mass[true_idx];
+                    break;
+                }
+            }
+
             // Have to re-check track ordering for stitched case
             double distanceFromStart = distance(
                 ev.recoBeginX.at(trk_idx), breakPointX, 
@@ -2291,9 +2362,19 @@ void RecoClassify3Cat() {
                     secondaryTaggedOther++;
                     if (secondaryMeanDEDX <= MEAN_DEDX_THRESHOLD) {
                         otherTaggedPion++;
-                    } else {
+                    } else if (secondaryMeanDEDX > MEAN_DEDX_THRESHOLD) {
                         otherTaggedProton++;
                     }
+
+                    hMeandEdxSecondaryTracks->Fill(secondaryMeanDEDX, ev.weight);
+                    if (trackPDG == -211 && trackKE > PION_SCATTERING_ENERGY_THRESHOLD) {
+                        hMeandEdxSecondaryPions->Fill(secondaryMeanDEDX, ev.weight);
+                    } else if (trackPDG == 2212 && trackKE > PROTON_ENERGY_LOWER_BOUND && trackKE < PROTON_ENERGY_UPPER_BOUND) {
+                        hMeandEdxSecondaryProton->Fill(secondaryMeanDEDX, ev.weight);
+                    } else {
+                        hMeandEdxSecondaryOther->Fill(secondaryMeanDEDX, ev.weight);
+                    }
+
                 }
             }
         }
@@ -2390,14 +2471,28 @@ void RecoClassify3Cat() {
             } else if (ev.backgroundType == 7) {
                 hTrueChExchKEAsScatter->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
             }
-
-            // TODO: maybe check not rejecting more than 1 pion
-
             continue;
         }
         hNotScatter->Fill(ev.backgroundType, ev.weight);
 
         if (totalTaggedProtons > 0) {
+            if (secondaryTaggedProton == 0 && otherTaggedProton > 0) {
+                // Reject protons tagged only by mean dE/dx, as these are not very reliable
+                if (ev.backgroundType == 0) {
+                    hTrueAbs0pKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                    hTrueAbs0pKERejProtonDEDX->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                } else if (ev.backgroundType == 1) {
+                    hTrueAbsNpKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                    hTrueAbsNpKERejProtonDEDX->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
+                    hTrueScatterKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                    hTrueScatterKERejProtonDEDX->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                } else if (ev.backgroundType == 7) {
+                    hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+                }
+                continue;
+            }
+
             // Select as Np absorption
             hPionAbsNp->Fill(ev.backgroundType, ev.weight);
 
@@ -3136,19 +3231,6 @@ void RecoClassify3Cat() {
     // Create plots //
     //////////////////
 
-    std::vector<int> Colors = {
-        kBlack,
-        kBlue,
-        kRed,
-        kGreen,
-        kOrange+1,
-        kMagenta,
-        kCyan+1,
-        kViolet+1,
-        kAzure+1,
-        kPink+6
-    };
-
     std::vector<std::vector<TH1*>> PlotGroups = {
         // Incident KE
         {hIncidentKE, hIncidentKEPion, hIncidentKEMuon, hIncidentKEElectron},
@@ -3178,9 +3260,9 @@ void RecoClassify3Cat() {
         {hTrueChExchKEAsAbs0p, hTrueChExchKEAsAbsNp, hTrueChExchKEAsScatter, hTrueChExchKERejected},
 
         // Rejected events
-        {hTrueAbs0pKERejDataProds, hTrueAbs0pKERejElectron, hTrueAbs0pKERejRedVol, hTrueAbs0pKERejPID, hTrueAbs0pKERejManyPions, hTrueAbs0pKERejClusters},
-        {hTrueAbsNpKERejDataProds, hTrueAbsNpKERejElectron, hTrueAbsNpKERejRedVol, hTrueAbsNpKERejPID, hTrueAbsNpKERejManyPions, hTrueAbsNpKERejClusters},
-        {hTrueScatterKERejDataProds, hTrueScatterKERejElectron, hTrueScatterKERejRedVol, hTrueScatterKERejPID, hTrueScatterKERejManyPions, hTrueScatterKERejClusters},
+        {hTrueAbs0pKERejDataProds, hTrueAbs0pKERejElectron, hTrueAbs0pKERejRedVol, hTrueAbs0pKERejPID, hTrueAbs0pKERejManyPions, hTrueAbs0pKERejProtonDEDX, hTrueAbs0pKERejClusters},
+        {hTrueAbsNpKERejDataProds, hTrueAbsNpKERejElectron, hTrueAbsNpKERejRedVol, hTrueAbsNpKERejPID, hTrueAbsNpKERejManyPions, hTrueAbsNpKERejProtonDEDX, hTrueAbsNpKERejClusters},
+        {hTrueScatterKERejDataProds, hTrueScatterKERejElectron, hTrueScatterKERejRedVol, hTrueScatterKERejPID, hTrueScatterKERejManyPions, hTrueScatterKERejProtonDEDX, hTrueScatterKERejClusters},
 
         // Cross-sections (unfolded)
         {hTruePionAbs0pCrossSection, hPionAbs0pCrossSection},
@@ -3217,7 +3299,17 @@ void RecoClassify3Cat() {
 
         // Small tracks
         {hSmallTrksInCylinder},
-        {hSmallTrksInCylinderPions, hSmallTrksInCylinderMuons, hSmallTrksInCylinderElectrons}
+        {hSmallTrksInCylinderPions, hSmallTrksInCylinderMuons, hSmallTrksInCylinderElectrons},
+
+        // Secondary tracks
+        {hMeandEdxSecondaryTracks},
+        {hMeandEdxSecondaryPions, hMeandEdxSecondaryProton, hMeandEdxSecondaryOther},
+
+        // Primary calorimetry
+        {hTrackPitch},
+        {hTrackPitchPion, hTrackPitchMuon, hTrackPitchElectron},
+        {hTrackdEdx},
+        {hTrackdEdxPion, hTrackdEdxMuon, hTrackdEdxElectron}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -3249,9 +3341,9 @@ void RecoClassify3Cat() {
         {"Abs 0p", "Abs Np", "Scatter", "Rejected"},
 
         // Rejected events
-        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
-        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
-        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Hit clusters"},
+        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Proton dE/dx", "Hit clusters"},
+        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Proton dE/dx", "Hit clusters"},
+        {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Proton dE/dx", "Hit clusters"},
 
         // Cross-sections (unfolded)
         {"True", "Unf."},
@@ -3285,6 +3377,16 @@ void RecoClassify3Cat() {
         {"Muon", "Pion", "Electron"},
 
         // Small tracks
+        {"All"},
+        {"Pions", "Muons", "Electrons"},
+
+        // Secondary tracks
+        {"All"},
+        {"Pions", "Protons", "Other"},
+
+        // Primary calorimetry
+        {"All"},
+        {"Pions", "Muons", "Electrons"},
         {"All"},
         {"Pions", "Muons", "Electrons"}
     };
@@ -3355,7 +3457,17 @@ void RecoClassify3Cat() {
 
         // Small tracks
         "Cylinder/SmallTrksInCylinder",
-        "Cylinder/SmallTrksInCylinderBreakdown"
+        "Cylinder/SmallTrksInCylinderBreakdown",
+
+        // Secondary tracks
+        "Secondary/MeandEdx",
+        "Secondary/MeandEdxBreakdown",
+
+        // Primary calorimetry
+        "Calorimetry/TrackPitch",
+        "Calorimetry/TrackPitchBreakdown",
+        "Calorimetry/TrackdEdx",
+        "Calorimetry/TrackdEdxBreakdown"
     };
 
     std::vector<TString> XLabels = {
@@ -3424,7 +3536,17 @@ void RecoClassify3Cat() {
 
         // Small tracks
         "# of small tracks",
-        "# of small tracks"
+        "# of small tracks",
+
+        // Secondary tracks
+        "Mean dE/dx [MeV/cm]",
+        "Mean dE/dx [MeV/cm]",
+
+        // Primary calorimetry
+        "Pitch [cm]",
+        "Pitch [cm]",
+        "dE/dx [MeV/cm]",
+        "dE/dx [MeV/cm]"
     };
 
     std::vector<TString> YLabels = {
@@ -3492,6 +3614,16 @@ void RecoClassify3Cat() {
         "Counts",
 
         // Small tracks
+        "Counts",
+        "Counts",
+
+        // Secondary tracks
+        "Counts",
+        "Counts",
+
+        // Primary calorimetry
+        "Counts",
+        "Counts",
         "Counts",
         "Counts"
     };
@@ -3562,6 +3694,16 @@ void RecoClassify3Cat() {
 
         // Small tracks
         true,
+        true,
+
+        // Secondary tracks
+        true,
+        true,
+
+        // Primary calorimetry
+        true,
+        true,
+        true,
         true
     };
 
@@ -3594,9 +3736,9 @@ void RecoClassify3Cat() {
         {false, false, false, false, false},
 
         // Rejected events
-        {false, false, false, false, false, false},
-        {false, false, false, false, false, false},
-        {false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
+        {false, false, false, false, false, false, false},
 
         // Cross-sections (unfolded)
         {false, true},
@@ -3630,6 +3772,16 @@ void RecoClassify3Cat() {
         {false, false, false},
 
         // Small tracks
+        {false},
+        {false, false, false},
+
+        // Secondary tracks
+        {false},
+        {false, false, false},
+
+        // Primary calorimetry
+        {false},
+        {false, false, false},
         {false},
         {false, false, false}
     };

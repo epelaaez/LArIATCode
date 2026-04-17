@@ -2,6 +2,7 @@
 #include "TTree.h"
 #include "TString.h"
 #include "TCanvas.h"
+#include "TColor.h"
 #include "TTree.h"
 #include "TVector3.h"
 #include "TMatrixDSym.h"
@@ -93,6 +94,11 @@ void DataClassify() {
     TH1D* hMCWCKEMuon     = dynamic_cast<TH1D*>(fNom->Get("hWCKEMuon"));
     TH1D* hMCWCKEElectron = dynamic_cast<TH1D*>(fNom->Get("hWCKEElectron"));
 
+    // Total interacting
+    TH1D* hMCPionAbs0pKE   = dynamic_cast<TH1D*>(fNom->Get("hPionAbs0pKE"));
+    TH1D* hMCPionAbsNpKE   = dynamic_cast<TH1D*>(fNom->Get("hPionAbsNpKE"));
+    TH1D* hMCPionScatterKE = dynamic_cast<TH1D*>(fNom->Get("hPionScatterKE"));
+
     // Abs 0p interacting KE
     TH1D* hMCPionAbs0pKETrue     = dynamic_cast<TH1D*>(fNom->Get("hPionAbs0pKETrue"));
     TH1D* hMCPionAbs0pKEAbsNp    = dynamic_cast<TH1D*>(fNom->Get("hPionAbs0pKEAbsNp"));
@@ -120,7 +126,7 @@ void DataClassify() {
     TH1D* hMCPionScatterKEElectron = dynamic_cast<TH1D*>(fNom->Get("hPionScatterKEElectron"));
     TH1D* hMCPionScatterKEOther    = dynamic_cast<TH1D*>(fNom->Get("hPionScatterKEOther"));
 
-    // Abs interacting KE (abs + scatt)
+    // Abs interacting KE (abs + scattering)
     TH1D* hMCPionAbsKETrue     = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionAbsKETrue"));
     TH1D* hMCPionAbsKEScatter  = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionAbsKEScatter"));
     TH1D* hMCPionAbsKEChExch   = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionAbsKEChExch"));
@@ -135,6 +141,14 @@ void DataClassify() {
     TH1D* hMCPionScatterKEMuon2     = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionScatterKEMuon"));
     TH1D* hMCPionScatterKEElectron2 = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionScatterKEElectron"));
     TH1D* hMCPionScatterKEOther2    = dynamic_cast<TH1D*>(fNomAbsScatt->Get("hPionScatterKEOther"));
+
+    // Track pitch and dE/dx for WC-matched tracks
+    TH1D* hMCTrackPitchPion = dynamic_cast<TH1D*>(fNom->Get("hTrackPitchPion"));
+    TH1D* hMCTrackPitchMuon = dynamic_cast<TH1D*>(fNom->Get("hTrackPitchMuon"));
+    TH1D* hMCTrackPitchElectron = dynamic_cast<TH1D*>(fNom->Get("hTrackPitchElectron"));
+    TH1D* hMCTrackdEdxPion = dynamic_cast<TH1D*>(fNom->Get("hTrackdEdxPion"));
+    TH1D* hMCTrackdEdxMuon = dynamic_cast<TH1D*>(fNom->Get("hTrackdEdxMuon"));
+    TH1D* hMCTrackdEdxElectron = dynamic_cast<TH1D*>(fNom->Get("hTrackdEdxElectron"));
 
     ///////////////////
     // Load branches //
@@ -220,10 +234,11 @@ void DataClassify() {
     };
 
     // Also want to keep track of total abs
-    TH1D* hPionAbsKE = new TH1D("hPionAbsKE", "hPionAbsKE;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hPionAbsKEAbsScatt     = new TH1D("hPionAbsKEAbsScatt", "hPionAbsKEAbsScatt;;", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
+    TH1D* hPionScatterKEAbsScatt = new TH1D("hPionScatterKEAbsScatt", "hPionScatterKEAbsScatt;;", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
 
     std::vector<TH1*> RecoSignalsAbsScatt = {
-        hPionAbsKE, hPionScatterKE
+        hPionAbsKEAbsScatt, hPionScatterKEAbsScatt
     };
 
     // Incident kinetic energy
@@ -233,6 +248,10 @@ void DataClassify() {
     // Kinetic energy at the front face of the TPC
     TH1D* hFrontFaceKE        = new TH1D("hFrontFaceKE", "hFrontFaceKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
     TH1D* hFrontFaceKEPionCut = new TH1D("hFrontFaceKEPionCut", "hFrontFaceKEPionCut;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
+
+    // Pitch and dE/dx
+    TH1D* hTrackPitch = new TH1D("hTrackPitch", "hTrackPitch;;", 40, 0.2, 0.8);
+    TH1D* hTrackdEdx  = new TH1D("hTrackdEdx", "hTrackdEdx;;", 48, 0, 6);
 
     // Wire chamber kinetic energy (before energy loss correction)
     TH1D* hWCKE = new TH1D("hWCKE", "hWCKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
@@ -291,6 +310,7 @@ void DataClassify() {
                 int npts_dedx = std::min(ntrkcalopts[trk_idx][1], kMaxTrackHitsData);
                 ev.wcMatchResR.assign(trkrr[trk_idx][1], trkrr[trk_idx][1] + npts_dedx);
                 ev.wcMatchDEDX.assign(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + npts_dedx);
+                ev.wcMatchPitch.assign(trkpitch[trk_idx][1], trkpitch[trk_idx][1] + npts_dedx);
 
                 for (size_t dep_idx = 0; dep_idx < std::min(ntrkcalopts[trk_idx][1], kMaxTrackHitsData); ++dep_idx) {
                     ev.wcMatchEDep.push_back(trkdedx[trk_idx][1][dep_idx] * trkpitch[trk_idx][1][dep_idx]);
@@ -346,8 +366,6 @@ void DataClassify() {
                 std::swap(ev.recoEndX[trk_idx], ev.recoBeginX[trk_idx]);
                 std::swap(ev.recoEndY[trk_idx], ev.recoBeginY[trk_idx]);
                 std::swap(ev.recoEndZ[trk_idx], ev.recoBeginZ[trk_idx]);
-
-                std::reverse(ev.recoResR[trk_idx].begin(), ev.recoResR[trk_idx].end());
                 std::reverse(ev.recoDEDX[trk_idx].begin(), ev.recoDEDX[trk_idx].end());
             } else {
                 ev.isTrackInverted.push_back(false);
@@ -614,18 +632,26 @@ void DataClassify() {
         //////////////////////
 
         // Check these are in order
+        bool reverseBack = false;
         if (ev.wcMatchZPos.size() > 1 && ev.wcMatchZPos.front() > ev.wcMatchZPos.back()) {
-            std::reverse(ev.wcMatchZPos.begin(), ev.wcMatchZPos.end());
             std::reverse(ev.wcMatchDEDX.begin(), ev.wcMatchDEDX.end());
+            std::reverse(ev.wcMatchPitch.begin(), ev.wcMatchPitch.end());
             std::reverse(ev.wcMatchEDep.begin(), ev.wcMatchEDep.end());
             std::reverse(ev.wcMatchXPos.begin(), ev.wcMatchXPos.end());
             std::reverse(ev.wcMatchYPos.begin(), ev.wcMatchYPos.end());
+            std::reverse(ev.wcMatchZPos.begin(), ev.wcMatchZPos.end());
+            reverseBack = true;
         }
 
         double energyDeposited = 0.0;
         for (size_t iDep = 0; iDep < ev.wcMatchDEDX.size(); ++iDep) {
             // If we are past detected breaking point, exit loop
             if (ev.wcMatchZPos.at(iDep) > breakPointZ) break;
+
+            if (isWithinReducedVolume(ev.wcMatchXPos.at(iDep), ev.wcMatchYPos.at(iDep), ev.wcMatchZPos.at(iDep))) {
+                hTrackPitch->Fill(ev.wcMatchPitch.at(iDep));
+                hTrackdEdx->Fill(ev.wcMatchDEDX.at(iDep));
+            }
 
             // If larger than threshold, continue
             if (ev.wcMatchDEDX.at(iDep) > HIT_DEDX_THRESHOLD) continue;
@@ -640,6 +666,15 @@ void DataClassify() {
             }
         }
         double energyAtVertex = initialKE - energyDeposited;
+
+        if (reverseBack) {
+            std::reverse(ev.wcMatchDEDX.begin(), ev.wcMatchDEDX.end());
+            std::reverse(ev.wcMatchPitch.begin(), ev.wcMatchPitch.end());
+            std::reverse(ev.wcMatchEDep.begin(), ev.wcMatchEDep.end());
+            std::reverse(ev.wcMatchXPos.begin(), ev.wcMatchXPos.end());
+            std::reverse(ev.wcMatchYPos.begin(), ev.wcMatchYPos.end());
+            std::reverse(ev.wcMatchZPos.begin(), ev.wcMatchZPos.end());
+        }
 
         ////////////////////////
         // Reduced volume cut //
@@ -666,8 +701,14 @@ void DataClassify() {
         int otherTaggedPion   = 0;
         int otherTaggedProton = 0;
 
+        int numberOfSecondary           = 0;
+        int numberOfSecondaryNearVertex = 0;
+
+        std::cout << "Break point: (" << breakPointX << ", " << breakPointY << ", " << breakPointZ << ")" << std::endl;
         for (size_t trk_idx = 0; trk_idx < ev.recoBeginX.size(); ++trk_idx) {
             if (trkWCtoTPCMatch[trk_idx]) continue;
+
+            numberOfSecondary++;
 
             // Have to re-check track ordering for stitched case
             double distanceFromStart = distance(
@@ -687,7 +728,11 @@ void DataClassify() {
                 pow(ev.recoBeginZ.at(trk_idx) - ev.recoEndZ.at(trk_idx), 2)
             );
 
+            std::cout << "    " << "Secondary track " << trk_idx << ": length = " << thisTrackLength << ", distance from start = " << distanceFromStart << ", distance from end = " << distanceFromEnd << std::endl;
+
             if ((distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS)) {
+                numberOfSecondaryNearVertex++;
+
                 std::vector<double> secondaryDEDX = ev.recoDEDX.at(trk_idx);
                 std::vector<double> secondaryResR = ev.recoResR.at(trk_idx);
 
@@ -700,6 +745,8 @@ void DataClassify() {
                 double pionChi2          = computeReducedChi2(gPion, secondaryResR, secondaryDEDX, secondaryReversed, secondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
                 double protonChi2        = computeReducedChi2(gProton, secondaryResR, secondaryDEDX, secondaryReversed, secondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
                 double secondaryMeanDEDX = meanDEDX(secondaryDEDX, secondaryReversed, MEAN_DEDX_NUM_TRAJ_POINTS);
+
+                std::cout << "        Pion chi^2: " << pionChi2 << ", Proton chi^2: " << protonChi2 << ", Mean dE/dx: " << secondaryMeanDEDX << std::endl;
 
                 // First, try classifying track using chi^2 fits
                 if ((pionChi2 < PION_CHI2_PION_VALUE) && (protonChi2 > PROTON_CHI2_PION_VALUE)) {
@@ -719,6 +766,12 @@ void DataClassify() {
                 }
             }
         }
+
+        std::cout << "Number of secondary tracks: " << numberOfSecondary << std::endl;
+        std::cout << "Number of secondary tracks near vertex: " << numberOfSecondaryNearVertex << std::endl;
+        std::cout << "Classified as pion: " << secondaryTaggedPion << ", Classified as proton: " << secondaryTaggedProton << ", Not classified with chi^2: " << secondaryTaggedOther << std::endl;
+        std::cout << "Of those not classified with chi^2, classified as pion with mean dE/dx: " << otherTaggedPion << ", classified as proton with mean dE/dx: " << otherTaggedProton << std::endl;
+        std::cout << std::endl;
 
         // For particles where we stitched, we also need to analyze the second part of the primary track
         bool newSecondaryPion = false;
@@ -763,14 +816,17 @@ void DataClassify() {
             // Select as scatter
             EventsSelectedAsScatter++;
             hPionScatterKE->Fill(energyAtVertex);
+            hPionScatterKEAbsScatt->Fill(energyAtVertex);
             continue;
         }
 
         if (totalTaggedProtons > 0) {
+            if (secondaryTaggedProton == 0 && otherTaggedProton > 0) continue;
+
             // Select as Np absorption
             EventsSelectedAsAbsNp++;
             hPionAbsNpKE->Fill(energyAtVertex);
-            hPionAbsKE->Fill(energyAtVertex);
+            hPionAbsKEAbsScatt->Fill(energyAtVertex);
             continue;
         }
 
@@ -916,21 +972,19 @@ void DataClassify() {
         double largestClusterSizeCollection = 0;
 
         for (int i = 0; i < hitClusters.size(); ++i) {
-            double clusterSize = hitClusters[i].clusterSize;
+	        HitCluster thisCluster = hitClusters[i];
+            double clusterSize = thisCluster.clusterSize;
 
-            if (hitClusters[i].plane == 0) {
+            if (thisCluster.plane == 0) {
                 if (clusterSize > largestClusterSizeInduction) largestClusterSizeInduction = clusterSize;
+		        if (clusterSize > LARGE_CLUSTER_THRESHOLD) numLargeClustersInduction++;
                 numClustersInduction++;
             }
-            else if (hitClusters[i].plane == 1) {
+            else if (thisCluster.plane == 1) {
                 if (clusterSize > largestClusterSizeCollection) largestClusterSizeCollection = clusterSize;
+		        if (clusterSize > LARGE_CLUSTER_THRESHOLD) numLargeClustersCollection++;
                 numClustersCollection++;
-            }
-
-            if (clusterSize > LARGE_CLUSTER_THRESHOLD) {
-                if (hitClusters[i].plane == 0) numLargeClustersInduction++;
-                else if (hitClusters[i].plane == 1) numLargeClustersCollection++;
-            }
+            } 
         }
 
         // Perform cut
@@ -938,7 +992,7 @@ void DataClassify() {
         if (numLargeClustersInduction < MAX_NUM_LARGE_CLUSTERS_INDUCTION) {
             EventsSelectedAsAbs0p++;
             hPionAbs0pKE->Fill(energyAtVertex);
-            hPionAbsKE->Fill(energyAtVertex);
+            hPionAbsKEAbsScatt->Fill(energyAtVertex);
             continue;
         }
 
@@ -976,6 +1030,18 @@ void DataClassify() {
     std::cout << "=================================" << std::endl;
     std::cout << std::endl;
 
+    //////////////////////////////////////////
+    // Get total interacting in MC and data //
+    //////////////////////////////////////////
+
+    TH1D* hTotalInteracting = (TH1D*) hPionAbs0pKE->Clone("hTotalInteracting");
+    hTotalInteracting->Add(hPionAbsNpKE);
+    hTotalInteracting->Add(hPionScatterKE);
+
+    TH1D* hMCTotalInteracting = (TH1D*) hMCPionAbs0pKE->Clone("hMCTotalInteracting");
+    hMCTotalInteracting->Add(hMCPionAbsNpKE);
+    hMCTotalInteracting->Add(hMCPionScatterKE);
+
     double SCALING_FACTOR     = hSmallTracksInCylinder->Integral() / (hMCSmallTrksInCylinderMuons->Integral() + hMCSmallTrksInCylinderPions->Integral() + hMCSmallTrksInCylinderElectrons->Integral());
     double SCALING_FACTOR_PRE = hFrontFaceKE->Integral() / (hMCFrontFaceKEPion->Integral() + hMCFrontFaceKEMuon->Integral() + hMCFrontFaceKEElectron->Integral());
 
@@ -989,7 +1055,23 @@ void DataClassify() {
         hMCPionAbsKETrue, hMCPionAbsKEScatter, hMCPionAbsKEChExch, hMCPionAbsKEMuon, hMCPionAbsKEElectron, hMCPionAbsKEOther,
         hMCPionScatterKETrue2, hMCPionScatterKEAbs2, hMCPionScatterKEChExch2, hMCPionScatterKEMuon2, hMCPionScatterKEElectron2, hMCPionScatterKEOther2,
         hMCFrontFacePionKEPion, hMCFrontFacePionKEElectron, hMCFrontFacePionKEMuon,
+        hMCTotalInteracting
     };
+
+    // Area normalize these
+    double mcPitchTotal = hMCTrackPitchPion->Integral() + hMCTrackPitchMuon->Integral() + hMCTrackPitchElectron->Integral();
+    double scalePitch   = hTrackPitch->Integral() / mcPitchTotal;
+
+    hMCTrackPitchPion->Scale(scalePitch);
+    hMCTrackPitchMuon->Scale(scalePitch);
+    hMCTrackPitchElectron->Scale(scalePitch);
+
+    double mcDedxTotal = hMCTrackdEdxPion->Integral() + hMCTrackdEdxMuon->Integral() + hMCTrackdEdxElectron->Integral();
+    double scaleDedx   = hTrackdEdx->Integral() / mcDedxTotal;
+
+    hMCTrackdEdxPion->Scale(scaleDedx);
+    hMCTrackdEdxMuon->Scale(scaleDedx);
+    hMCTrackdEdxElectron->Scale(scaleDedx);
 
     std::vector<TH1*> scaleByPre = {
         hMCFrontFaceKEPion, hMCFrontFaceKEElectron, hMCFrontFaceKEMuon,
@@ -1048,22 +1130,22 @@ void DataClassify() {
     TFile* dataFile = new TFile("/exp/lariat/app/users/epelaez/histos/data/Reco.root", "RECREATE");
 
     // Construct measure and stat cov for abs + scatt measurement
-    TVectorD MeasureAbsScatt(2 * NUM_BINS_KE);
+    TVectorD MeasureAbsScatt(2 * NUM_BINS_KE_ABS_SCATT);
     for (int iSignal = 0; iSignal < 2; ++iSignal) {
-        for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
-            int index = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+        for (int iBin = 0; iBin < NUM_BINS_KE_ABS_SCATT; ++iBin) {
+            int index = flattenIndex(iSignal, iBin, NUM_BINS_KE_ABS_SCATT);
             MeasureAbsScatt(index) = XSEC_UNITS * (RecoSignalsAbsScatt[iSignal]->GetBinContent(iBin + 1) / hIncidentKE->GetBinContent(iBin + 1));
         }
     }
     TH1D* hMeasureVectorAbsScatt = new TH1D(
         "hMeasureVectorAbsScatt", "hMeasureVectorAbsScatt;;", 
-        2 * NUM_BINS_KE, 0, 2 * NUM_BINS_KE
+        2 * NUM_BINS_KE_ABS_SCATT, 0, 2 * NUM_BINS_KE_ABS_SCATT
     ); V2H(MeasureAbsScatt, hMeasureVectorAbsScatt);
 
-    TMatrixD StatCovarianceAbsScatt(2 * NUM_BINS_KE, 2 * NUM_BINS_KE); StatCovarianceAbsScatt.Zero();
+    TMatrixD StatCovarianceAbsScatt(2 * NUM_BINS_KE_ABS_SCATT, 2 * NUM_BINS_KE_ABS_SCATT); StatCovarianceAbsScatt.Zero();
     for (int iSignal = 0; iSignal < 2; ++iSignal) {
-        for (int iBin = 0; iBin < NUM_BINS_KE; ++iBin) {
-            int index   = flattenIndex(iSignal, iBin, NUM_BINS_KE);
+        for (int iBin = 0; iBin < NUM_BINS_KE_ABS_SCATT; ++iBin) {
+            int index   = flattenIndex(iSignal, iBin, NUM_BINS_KE_ABS_SCATT);
             double Ninc = hIncidentKE->GetBinContent(iBin + 1);
             double N    = MeasureAbsScatt(index) * Ninc / XSEC_UNITS;
 
@@ -1078,8 +1160,8 @@ void DataClassify() {
     }
     TH2D* hStatCovarianceAbsScatt = new TH2D(
         "hStatCovarianceAbsScatt", "Statistical Covariance Matrix;(i, #alpha);(j, #beta)",
-        2 * NUM_BINS_KE, 0, 2 * NUM_BINS_KE, 
-        2 * NUM_BINS_KE, 0, 2 * NUM_BINS_KE 
+        2 * NUM_BINS_KE_ABS_SCATT, 0, 2 * NUM_BINS_KE_ABS_SCATT, 
+        2 * NUM_BINS_KE_ABS_SCATT, 0, 2 * NUM_BINS_KE_ABS_SCATT 
     ); M2H(StatCovarianceAbsScatt, hStatCovarianceAbsScatt);
 
     dataFile->cd();
@@ -1098,19 +1180,6 @@ void DataClassify() {
     // Create plots //
     //////////////////
 
-    std::vector<int> Colors = {
-        kBlack,
-        kBlue,
-        kRed,
-        kGreen,
-        kOrange+1,
-        kMagenta,
-        kCyan+1,
-        kViolet+1,
-        kAzure+1,
-        kPink+6
-    };
-
     std::vector<TH1*> PlotDataGroups = {
         // Cylinder
         hSmallTracksInCylinder,
@@ -1128,8 +1197,15 @@ void DataClassify() {
         hPionScatterKE,
 
         // Interacting KE (abs + scatt)
-        hPionAbsKE,
-        hPionScatterKE
+        hPionAbsKEAbsScatt,
+        hPionScatterKEAbsScatt,
+
+        // Total interacting
+        hTotalInteracting,
+
+        // Track calorimetry
+        hTrackPitch,
+        hTrackdEdx
     };
 
     std::vector<std::vector<TH1*>> PlotMCGroups = {
@@ -1150,7 +1226,14 @@ void DataClassify() {
 
         // Interacting KE (abs + scatt)
         {hMCPionAbsKETrue, hMCPionAbsKEScatter, hMCPionAbsKEChExch, hMCPionAbsKEMuon, hMCPionAbsKEElectron, hMCPionAbsKEOther},
-        {hMCPionScatterKETrue2, hMCPionScatterKEAbs2, hMCPionScatterKEChExch2, hMCPionScatterKEMuon2, hMCPionScatterKEElectron2, hMCPionScatterKEOther2}
+        {hMCPionScatterKETrue2, hMCPionScatterKEAbs2, hMCPionScatterKEChExch2, hMCPionScatterKEMuon2, hMCPionScatterKEElectron2, hMCPionScatterKEOther2},
+
+        // Total interacting
+        {hMCTotalInteracting},
+
+        // Track calorimetry
+        {hMCTrackPitchPion, hMCTrackPitchMuon, hMCTrackPitchElectron},
+        {hMCTrackdEdxPion, hMCTrackdEdxMuon, hMCTrackdEdxElectron}
     };
 
     std::vector<std::vector<TString>> PlotMCLabelGroups = {
@@ -1172,6 +1255,13 @@ void DataClassify() {
         // Interacting KE (abs + scatt)
         {"True", "Scatter", "Ch. Exch.", "Muon", "Electron", "Other"},
         {"True", "Abs", "Ch. Exch.", "Muon", "Electron", "Other"},
+
+        // Total interacting
+        {"Selected interacting"},
+
+        // Track calorimetry
+        {"Pion", "Muon", "Electron"},
+        {"Pion", "Muon", "Electron"}
     };
 
     std::vector<TString> PlotName = {
@@ -1192,7 +1282,14 @@ void DataClassify() {
 
         // Interacting KE (abs + scatt)
         "InteractingAbsScatt/PionAbsKE",
-        "InteractingAbsScatt/PionScatterKE"
+        "InteractingAbsScatt/PionScatterKE",
+
+        // Total interacting
+        "Interacting/PionTotalInteractingKE",
+
+        // Track calorimetry
+        "Calorimetry/TrackPitch",
+        "Calorimetry/TrackdEdx"
     };
 
     std::vector<TString> PlotTitle = {
@@ -1213,7 +1310,14 @@ void DataClassify() {
 
         // Interacting KE (abs + scatt)
         "Abs Kinetic Energy",
-        "Scatter Kinetic Energy"
+        "Scatter Kinetic Energy",
+
+        // Total interacting
+        "Total Interacting Kinetic Energy",
+
+        // Track calorimetry
+        "Track Pitch",
+        "Track dE/dx"
     };
 
     std::vector<TString> XLabels = {
@@ -1234,7 +1338,14 @@ void DataClassify() {
 
         // Interacting KE (abs + scatt)
         "Kinetic energy [MeV]",
-        "Kinetic energy [MeV]"
+        "Kinetic energy [MeV]",
+
+        // Total interacting
+        "Kinetic energy [MeV]",
+
+        // Track calorimetry
+        "Pitch [cm]",
+        "dE/dx [MeV/cm]"
     };
 
     std::vector<TString> YLabels = {
@@ -1254,6 +1365,13 @@ void DataClassify() {
         "Counts",
 
         // Interacting KE (abs + scatt)
+        "Counts",
+        "Counts",
+
+        // Total interacting
+        "Counts",
+
+        // Track calorimetry
         "Counts",
         "Counts"
     };

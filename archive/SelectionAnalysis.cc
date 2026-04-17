@@ -301,10 +301,6 @@ void SelectionAnalysis() {
     /////////////////////
 
     // Setup for drawing plots
-    std::vector<int> Colors = {
-        kBlack, kBlue, kRed, kGreen
-    };
-
     std::vector<std::vector<TH1*>> PlotGroups = {
         {hRecoTrueNumProtons, hTruthRecoTrueNumProtons},
         {hRecoNumProtonTracks, hRecoTrueNumProtons}

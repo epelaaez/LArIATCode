@@ -1349,19 +1349,6 @@ void RecoDataAnalysis() {
     // Create plots //
     //////////////////
 
-    std::vector<int> Colors = {
-        kBlack,
-        kBlue,
-        kRed,
-        kGreen,
-        kOrange+1,
-        kMagenta,
-        kCyan+1,
-        kViolet+1,
-        kAzure+1,
-        kPink+6
-    };
-
     std::vector<std::vector<TH1*>> PlotGroups = {
         // TOF
         {hTOFMass},
@@ -2414,7 +2401,6 @@ void RecoDataAnalysis() {
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles, TwoDRanges, TwoDDisplayNumbers);
 
     // Comparisons
-    std::vector<int> speciesColors = {kAzure - 4, kOrange - 3, kGreen - 6};
     std::vector<TString> speciesLabels = {"Pion", "Muon", "Electron"};
 
     PrintDataVsMCContribPlot(
@@ -2423,7 +2409,7 @@ void RecoDataAnalysis() {
         hFrontFaceKE,
         {hMCValidFrontFaceKEPion, hMCValidFrontFaceKEMuon, hMCValidFrontFaceKEElectron},
         speciesLabels,
-        speciesColors,
+        Colors,
         "Front-Face KE After Electron Cut",
         "Kinetic energy [MeV]", "Counts",
         FontStyle, TextSize,

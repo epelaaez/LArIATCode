@@ -112,10 +112,6 @@ void ShowerAnalysis() {
     }
 
     // Setup for drawing plots
-    std::vector<int> Colors = {
-        kBlack, kBlue, kRed, kGreen + 2
-    };
-
     std::vector<std::vector<TH1*>> PlotGroups = {
         {hShowerRecoLengths, hNoShowerRecoLengths},
         {hShowerSmallTracksCount, hNoShowerSmallTracksCount},

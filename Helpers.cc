@@ -74,7 +74,7 @@ bool isHitNearPrimary(
 double computeReducedChi2(const TGraph* theory, std::vector<double> xData, std::vector<double> yData, bool dataReversed, int nPoints, int nOutliersToDiscard, int nTrim) {
     std::vector<double> chi2Contributions;
     if (dataReversed) {
-        std::reverse(xData.begin(), xData.end());
+        // std::reverse(xData.begin(), xData.end());
         std::reverse(yData.begin(), yData.end());
     }
 
@@ -1480,15 +1480,16 @@ TVectorD WienerSVD(
     // Wiener Filter
     TMatrixD W(n, n);
     TMatrixD W0(n, n);
+    double svd_threshold = 1e-10;
     for(Int_t i=0; i<n; i++) {
         for(Int_t j=0; j<n; j++) {
             W(i, j)  = 0;
             W0(i, j) = 0;
             if(i == j) {
-                if (Norm_type == 0 && C_type == 0) {
-                    W(i, j) = 1. / (D(i)*D(i)); // removed 2e-7 tolerance
+                if(D(i) > svd_threshold) {
+                    W(i, j) = 1. / (D(i)*D(i));
                 } else {
-                    W(i, j) = S(i)*S(i) / ( D(i)*D(i)*S(i)*S(i)+1 );
+                    W(i, j) = 0;
                 }
                 WF(i)    = D(i)*D(i)*W(i, j);
                 W0(i, j) = WF(i);
@@ -2390,7 +2391,7 @@ void PrintFDPlot(
     const int nb = hUnfolded->GetNbinsX();
 
     // Optional: if you also want total stat⊕shape as a separate band
-    TGraphAsymmErrors* TotErrorBand   = new TGraphAsymmErrors(nb);
+    TGraphAsymmErrors* TotErrorBand = new TGraphAsymmErrors(nb);
 
     for (int iBin = 1; iBin <= nb; ++iBin) {
         const double xnom = hUnfolded->GetXaxis()->GetBinCenter(iBin);
@@ -2743,9 +2744,8 @@ void PrintDataVsMCContribPlot(
         TH1* h = (TH1*)mcHists[i]->Clone(Form("mc_%d_%zu", uid, i));
         h->SetDirectory(nullptr);
 
-        const int col = (!mcColors.empty() && (int)i < (int)mcColors.size()) ? mcColors[i]
-                                                                             : (int)(kAzure + (int)i);
-        h->SetFillColor(col);
+        const int col = (!mcColors.empty() && (int)i < (int)mcColors.size()) ? mcColors[i] : (int)(kAzure + (int)i);
+        h->SetFillColorAlpha(col, 0.85);
         h->SetLineColor(kBlack);
         h->SetLineWidth(1);
 
@@ -2846,7 +2846,7 @@ void PrintDataVsMCContribPlot(
     hFrame->SetMinimum(0.0);
 
     hFrame->Draw("HIST");
-    st->Draw("HIST SAME");
+    st->Draw("HIST SAME NOCLEAR");
     if (gMCBand) gMCBand->Draw("E2 SAME");
     gData->Draw("P SAME");
 
@@ -2956,8 +2956,7 @@ void PrintDataVsMCContribPlot(
         gRatioBand->Draw("E2 SAME");
         gRatio->Draw("P SAME");
 
-        l1 = new TLine(hData->GetXaxis()->GetXmin(), 1.0,
-                       hData->GetXaxis()->GetXmax(), 1.0);
+        l1 = new TLine(hData->GetXaxis()->GetXmin(), 1.0, hData->GetXaxis()->GetXmax(), 1.0);
         l1->SetLineStyle(2);
         l1->SetLineWidth(2);
         l1->Draw("SAME");

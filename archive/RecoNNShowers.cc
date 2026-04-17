@@ -1025,19 +1025,6 @@ void RecoNNShowers() {
     // Print one dimensional plots //
     /////////////////////////////////
 
-    std::vector<int> Colors = {
-        kBlack,
-        kBlue,
-        kRed,
-        kGreen,
-        kOrange+1,
-        kMagenta,
-        kCyan+1,
-        kViolet+1,
-        kAzure+1,
-        kPink+6
-    };
-
     std::vector<std::vector<TH1*>> PlotGroups = {
         // Shower probability
         {hElectronShowerProb, hPionShowerProb, hMuonShowerProb},

@@ -227,11 +227,9 @@ void ReweightKE() {
     hMCFrontFaceRewTotalPre->SetDirectory(nullptr);
 
     // Species colours (same for original and reweighted breakdowns)
-    std::vector<int> speciesColors = {kAzure - 4, kOrange - 3, kGreen - 6};
     std::vector<TString> speciesLabels = {"Pion", "Muon", "Electron"};
 
     // Comparison colours: original (blue) vs reweighted (red)
-    std::vector<int> compColors  = {kAzure + 1, kRed - 4};
     std::vector<TString> compLabels = {"Original MC", "Reweighted MC"};
 
     // Plot 1 — comparison of totals
@@ -253,7 +251,7 @@ void ReweightKE() {
         hFrontFaceKE,
         {hMCFrontFaceKEPion, hMCFrontFaceKEMuon, hMCFrontFaceKEElectron},
         speciesLabels,
-        speciesColors,
+        Colors,
         "Front-Face KE: Original MC Breakdown",
         "Kinetic energy [MeV]", "Counts",
         fontStyle, textSize,
@@ -268,7 +266,7 @@ void ReweightKE() {
         hFrontFaceKE,
         {hMCFrontFaceKEPionRew, hMCFrontFaceKEMuonRew, hMCFrontFaceKEElectronRew},
         speciesLabels,
-        speciesColors,
+        Colors,
         "Front-Face KE: Reweighted MC Breakdown",
         "Kinetic energy [MeV]", "Counts",
         fontStyle, textSize,
@@ -294,7 +292,7 @@ void ReweightKE() {
         hFrontFaceKEPreMatch,
         {hMCFrontFaceKEPionPre, hMCFrontFaceKEMuonPre, hMCFrontFaceKEElectronPre},
         speciesLabels,
-        speciesColors,
+        Colors,
         "Front-Face KE: Original MC Breakdown",
         "Kinetic energy [MeV]", "Counts",
         fontStyle, textSize,
@@ -307,7 +305,7 @@ void ReweightKE() {
         hFrontFaceKEPreMatch,
         {hMCFrontFaceKEPionRewPre, hMCFrontFaceKEMuonRewPre, hMCFrontFaceKEElectronRewPre},
         speciesLabels,
-        speciesColors,
+        Colors,
         "Front-Face KE: Reweighted MC Breakdown",
         "Kinetic energy [MeV]", "Counts",
         fontStyle, textSize,

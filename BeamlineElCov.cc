@@ -1429,6 +1429,8 @@ void BeamlineElCov() {
         }
 
         if (totalTaggedProtons > 0) {
+            if (secondaryTaggedProton == 0 && otherTaggedProton > 0) continue;
+
             // Add weights to abs Np
             hPionAbsNpKENom->Fill(energyAtVertex, ev.weight);
 
