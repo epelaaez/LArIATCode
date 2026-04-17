@@ -2,14 +2,13 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <cmath>
 #include "TGraph.h"
 
 //////////////////////
 // Global constants //
 //////////////////////
-
-// Run through this many events
-int USE_NUM_EVENTS = 50000; 
 
 std::map<int, std::string> backgroundTypes = {
     {0, "Abs 0p"},
@@ -29,11 +28,50 @@ std::map<int, std::string> backgroundTypes = {
     {14, "Scattering Np"}
 };
 
+static const std::unordered_set<int> SKIP_INDICES = {
+    1402,
+    15345,
+    46200,
+    152596,
+    255737,
+    315186,
+    370495,
+};
+
+static const std::unordered_set<int> SKIP_INDICES_DATA = {
+    311635
+};
+
+// Loading products
+const int kMaxTrack          = 10000; // 10000
+const int kMaxWCTracks       = 1;     // 1000
+const int kMaxTrackHits      = 1000;  // 1000
+const int kMaxTrajHits       = 1000;  // 1000
+const int kMaxPrimaries      = 20000; // 20000
+const int kMaxPrimaryPart    = 50;    // 50
+const int kMaxTruePrimaryPts = 5000;  // 5000
+const int kMaxHits           = 20000; // 20000
+const int kMaxIDE            = 5000;  // 5000
+
+// Loading products (data)
+const int kMaxTrackData     = 10000; // 10000
+const int kMaxWCTracksData  = 1000;  // 1000
+const int kMaxTrackHitsData = 1000;  // 1000
+const int kMaxTrajHitsData  = 1000;  // 1000
+const int kMaxHitsData      = 20000; // 20000
+const int kMaxTOFData       = 100;   // 100
+
 // Background types
 int NUM_BACKGROUND_TYPES = backgroundTypes.size();
 
 // Signal types
 int NUM_SIGNAL_TYPES = 2; // abs, scattering
+
+// Run through this many events
+int USE_NUM_EVENTS = 100000;
+
+// Test threshold for TG tracks
+int N_TG_TRACKS = 3;
 
 // Number of events at each data quality cut
 double TG0_MC_EVENTS = 118999;
@@ -51,6 +89,23 @@ double TOTAL_MC_EVENTS        = 493581;
 double NUM_DATA_EVENTS        = TG1_DATA_EVENTS * (TOTAL_DATA_EVENTS / RESTRICTED_DATA_EVENTS);
 double NUM_MC_EVENTS          = TG1_MC_EVENTS * (TOTAL_DATA_EVENTS / TOTAL_MC_EVENTS);
 double MC_SCALING             = NUM_DATA_EVENTS / NUM_MC_EVENTS;
+
+// File with weights
+extern TFile* fWeights;
+const TString WEIGHTS_NAME = "hWeightsFrontFacePre";
+
+// Sampling rate
+double SAMPLING_RATE = 0.128;
+
+// Drift velocity
+double DRIFT_VELOCITY = 0.14732; // cm / \mu s
+
+// Track pitch
+const double TRACK_PITCH = 0.47;
+
+// Wire-chamber quality
+double MAX_RAD_DIST_WC4   = 8.0; // original 8.0
+double MAX_MID_PLANE_DIST = 3.0; // original 3.0
 
 struct EventInfo {
     int run; int subrun; int event; bool isData;
@@ -110,17 +165,19 @@ const double maxZ = 87.0;
 const double MUON_COMP_UNC     = 0.26;
 const double ELECTRON_COMP_UNC = 1.00;
 
-// Values for chi^2 secondary fits
-double PION_CHI2_PION_VALUE     = 1.125;
-double PION_CHI2_PROTON_VALUE   = 1.125;
-double PROTON_CHI2_PION_VALUE   = 1.375;
-double PROTON_CHI2_PROTON_VALUE = 0.125;
+// Classify pions 
+double PION_CHI2_PION_VALUE     = 0.750; // 1.125
+double PROTON_CHI2_PION_VALUE   = 1.375; // 1.375
+
+// Classify protons
+double PION_CHI2_PROTON_VALUE   = 1.375; // 1.125
+double PROTON_CHI2_PROTON_VALUE = 0.750; // 0.125
 
 // Mean dE/dx threshold
 double MEAN_DEDX_THRESHOLD = 4.0;
 
 // Vertex radius
-double VERTEX_RADIUS = 5.0;
+double VERTEX_RADIUS = 10.0;
 
 // Number of points to use in mean dE/dx calculation
 int MEAN_DEDX_NUM_TRAJ_POINTS = 5;
@@ -154,11 +211,13 @@ double MAX_IN_CLUSTER_SEPARATION   = 2.5;
 int MINIMUM_HITS_FOR_CLUSTER = 5;
 
 int    NUM_CLUSTERS_THRESHOLD  = 2;
-double LARGE_CLUSTER_THRESHOLD = 10.0;
+double LARGE_CLUSTER_THRESHOLD = 2.0;
 
 // Cluster cut thresholds
 int MAX_NUM_CLUSTERS_INDUCTION        = 1;
 int MAX_NUM_CLUSTERS_COLLECTION       = 1;
+int MAX_NUM_LARGE_CLUSTERS_INDUCTION  = 1;
+int MAX_NUM_LARGE_CLUSTERS_COLLECTION = 1;
 double MAX_LARGEST_CLUSTER_INDUCTION  = 2.;
 double MAX_LARGEST_CLUSTER_COLLECTION = 2.;
 
@@ -181,8 +240,25 @@ double SCATTERING_ANGLE_THRESHOLD = 5.0 * (TMath::Pi() / 180);
 double PION_SCATTERING_ENERGY_THRESHOLD = 0.05; // in GeV / c
 
 // Bins for energy bins
-static const std::vector<double> ARRAY_KE_BINS = {0., 100., 200., 300., 400., 600.};
+static const std::vector<double> ARRAY_KE_BINS = {0., 100., 200., 300., 400., 500.};
 static const int                   NUM_BINS_KE = static_cast<int>(ARRAY_KE_BINS.size()) - 1;
+
+// Bins for energy bins (finer)
+static const std::vector<double> ARRAY_KE_FINE_BINS = {
+      0., 10.,   20.,  30.,  40., 50.,
+     60., 70.,   80.,  90., 100.,
+    110., 120., 130., 140., 150.,
+    160., 170., 180., 190., 200.,
+    210., 220., 230., 240., 250.,
+    260., 270., 280., 290., 300.,
+    310., 320., 330., 340., 350.,
+    360., 370., 380., 390., 400.,
+    410., 420., 430., 440., 450.,
+    460., 470., 480., 490., 500.,
+    510., 520., 530., 540., 550.,
+    560., 570., 580., 590., 600.
+};
+static const int NUM_BINS_KE_FINE = static_cast<int>(ARRAY_KE_FINE_BINS.size()) - 1;
 
 // TOF mass cut
 double PI_MU_EL_MASS_CUTOFF = 350.;
@@ -201,7 +277,7 @@ double SLICED_CONE_SMALL_TRACK          = 5.0;
 int    SLICED_CONE_ALLOWED_SMALL_TRACKS = 0;
 
 // Number of allowed TG tracks
-int MAX_NUM_TG_TRACKS = 1;
+int MAX_NUM_TG_TRACKS = 2;
 
 // Parameters for BDT model
 int BDT_NUM_RECO_TRKS = 5;
@@ -231,6 +307,185 @@ double yboundDSCol[4] = {-15.70, 14.91, -15.53, 15.08};
 double zcentMagnet1[2] = { (-501.95-494.98)/2, (-449.49-456.46)/2};
 double zcentMagnet2[2] = { (-432.04-427.50)/2, (-381.27-385.81)/2};
 double zcentDSCol[2]   = { (-296.67-297.36)/2, (-205.94-206.63)/2};
+
+/////////////////////
+// Event variables //
+/////////////////////
+
+struct EventVariables {
+    // Weight
+    double weight = 1.0;
+
+    // WC match calorimetry
+    std::vector<double> wcMatchResR;
+    std::vector<double> wcMatchDEDX;
+    std::vector<double> wcMatchEDep;
+    std::vector<double> wcMatchXPos;
+    std::vector<double> wcMatchYPos;
+    std::vector<double> wcMatchZPos;
+
+    // WC2TPC location
+    std::vector<double> WC2TPCLocationsX;
+    std::vector<double> WC2TPCLocationsY;
+    std::vector<double> WC2TPCLocationsZ;
+
+    // Reco track endpoints
+    std::vector<double> recoEndX;
+    std::vector<double> recoEndY;
+    std::vector<double> recoEndZ;
+    std::vector<double> recoBeginX;
+    std::vector<double> recoBeginY;
+    std::vector<double> recoBeginZ;
+    std::vector<bool>   isTrackInverted;
+
+    // Reco calorimetry
+    std::vector<std::vector<double>> recoResR;
+    std::vector<std::vector<double>> recoDEDX;
+
+    // Truth primary daughters
+    std::vector<int>         truthPrimaryDaughtersPDG;
+    std::vector<std::string> truthPrimaryDaughtersProcess;
+    std::vector<double>      truthPrimaryDaughtersKE;
+
+    // Truth primary trajectory
+    std::vector<double> truthPrimaryLocationX;
+    std::vector<double> truthPrimaryLocationY;
+    std::vector<double> truthPrimaryLocationZ;
+
+    // Truth primary scalars
+    int    truthPrimaryPDG        = -999;
+    double truthPrimaryVertexX    = -999;
+    double truthPrimaryVertexY    = -999;
+    double truthPrimaryVertexZ    = -999;
+    double truthPrimaryVertexKE   = -999;
+
+    // WC track scalars
+    int    WC2TPCsize          = 0;
+    bool   WC2TPCMatch         = false;
+    double WCTrackMomentum     = -999;
+    double WCTheta             = -999;
+    double WCPhi               = -999;
+    double WC4PrimaryX         = -999;
+    double WC2TPCPrimaryBeginX = -999;
+    double WC2TPCPrimaryBeginY = -999;
+    double WC2TPCPrimaryBeginZ = -999;
+    double WC2TPCPrimaryEndX   = -999;
+    double WC2TPCPrimaryEndY   = -999;
+    double WC2TPCPrimaryEndZ   = -999;
+
+    // Hit information
+    std::vector<int>   fHitPlane;
+    std::vector<int>   hitRecoAsTrackKey;
+    std::vector<int>   hitWC2TPCKey;
+    std::vector<float> fHitT;
+    std::vector<float> fHitX;
+    std::vector<float> fHitW;
+
+    // Trajectory interaction
+    bool        interactionInTrajectory    = false;
+    std::string trajectoryInteractionLabel = "";
+    double      trajectoryInteractionAngle = -999;
+    double      trajectoryInteractionKE    = -999;
+    double      trajectoryInitialMomentumX = -999;
+
+    // Reco track hits
+    std::vector<std::vector<int>>    recoTrackHitIndices;
+    std::vector<std::vector<double>> recoTrackHitX;
+    std::vector<std::vector<double>> recoTrackHitY;
+    std::vector<std::vector<double>> recoTrackHitZ;
+
+    // Scattering truth
+    double truthScatteringAngle = -999;
+    double truthScatteredPionKE = -999;
+
+    // Secondary interactions
+    std::vector<int>                 secondaryInteractionTypes;
+    std::vector<double>              secondaryInteractionInteractingKE;
+    std::vector<double>              secondaryInteractionAngle;
+    std::vector<double>              secondaryInteractionXPosition;
+    std::vector<double>              secondaryInteractionYPosition;
+    std::vector<double>              secondaryInteractionZPosition;
+    std::vector<std::vector<int>>    secondaryInteractionDaughtersPDG;
+    std::vector<std::vector<double>> secondaryInteractionDaughtersKE;
+    std::vector<std::vector<double>> secondaryIncidentKEContributions;
+
+    // Incident KE
+    bool                validTrueIncidentKE      = true;
+    std::vector<double> trueIncidentKEContributions;
+
+    // Classification
+    int backgroundType    = -1;
+    int numVisibleProtons = 0;
+};
+
+struct EventVariablesData {
+    // Picky track
+    int wcTrackPicky;
+
+    // WC match calorimetry
+    std::vector<double> wcMatchResR;
+    std::vector<double> wcMatchDEDX;
+    std::vector<double> wcMatchEDep;
+    std::vector<double> wcMatchXPos;
+    std::vector<double> wcMatchYPos;
+    std::vector<double> wcMatchZPos;
+
+    // WC2TPC location
+    std::vector<double> WC2TPCLocationsX;
+    std::vector<double> WC2TPCLocationsY;
+    std::vector<double> WC2TPCLocationsZ;
+
+    // Reco track endpoints
+    std::vector<double> recoEndX;
+    std::vector<double> recoEndY;
+    std::vector<double> recoEndZ;
+    std::vector<double> recoBeginX;
+    std::vector<double> recoBeginY;
+    std::vector<double> recoBeginZ;
+    std::vector<bool>   isTrackInverted;
+
+    // Reco calorimetry
+    std::vector<std::vector<double>> recoResR;
+    std::vector<std::vector<double>> recoDEDX;
+
+    // WC track scalars
+    int    WC2TPCsize          = 0;
+    bool   WC2TPCMatch         = false;
+    double WCTrackMomentum     = -999;
+    double WCTheta             = -999;
+    double WCPhi               = -999;
+    double WC4PrimaryX         = -999;
+    double WC2TPCPrimaryBeginX = -999;
+    double WC2TPCPrimaryBeginY = -999;
+    double WC2TPCPrimaryBeginZ = -999;
+    double WC2TPCPrimaryEndX   = -999;
+    double WC2TPCPrimaryEndY   = -999;
+    double WC2TPCPrimaryEndZ   = -999;
+
+    // WC quality data
+    std::vector<double> wcHit0;
+    std::vector<double> wcHit1;
+    std::vector<double> wcHit2;
+    std::vector<double> wcHit3;
+
+    // Hit information
+    std::vector<int>   fHitPlane;
+    std::vector<int>   hitRecoAsTrackKey;
+    std::vector<int>   hitWC2TPCKey;
+    std::vector<float> fHitT;
+    std::vector<float> fHitX;
+    std::vector<float> fHitW;
+
+    // Reco track hits
+    std::vector<std::vector<int>>    recoTrackHitIndices;
+    std::vector<std::vector<double>> recoTrackHitX;
+    std::vector<std::vector<double>> recoTrackHitY;
+    std::vector<std::vector<double>> recoTrackHitZ;
+
+    // TOF information
+    double TOFMass   = -999;
+    double tofObject = -999;
+};
 
 //////////////////////
 // Helper functions //
@@ -392,5 +647,20 @@ double FindQuantile(double frac, std::vector<double>& xs_in);
 void DrawHistosWithErrorBands(TH1D* RecoHisto, std::vector<TH1D*> UnivRecoHisto, const TString& dir, const TString& SystName, const TString& PlotName, double textSize, int fontStyle, const TString& title, const TString& xlabel, const TString& ylabel);
 void DrawErrorBand(TH1* nom, TGraphAsymmErrors* band, int bandCol, double alpha);
 void PrintTruthUnfoldedStatShapePlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* hUnfolded, TH1* hStat, TH1* hShape, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle = 132, double TextSize = 0.06);
+void PrintDataUnfoldedStatShapePlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* hUnfolded, TH1* hStat, TH1* hShape, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle = 132, double TextSize = 0.06);
 void PrintFDPlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* hNomTrue, TH1* hUnfolded, TH1* hSysts, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, std::pair<double, double> chi, std::pair<int, int> ndof, std::pair<double, double> pval, std::pair<double, double> sigma, int FontStyle = 132, double TextSize = 0.06);
 void CalcChiSquared(TH1D* h_model, TH1D* h_data, TH2D* cov, double &chi, int &ndof, double &pval, double &sigma);
+
+void PrintDataVsMCContribPlot(const TString& SaveDir, const TString& Name, TH1* hData, const std::vector<TH1*>& mcHists, const std::vector<TString>& mcLabels, const std::vector<int>& mcColors, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle, double TextSize, bool UsePoissonDataErrors = true, TH1* hMCAbsUnc = nullptr, bool DrawRatio = true);
+void PrintDataVsTwoMCPlot(const TString& SaveDir, const TString& Name, TH1* hData, TH1* hMC1, TH1* hMC2, const TString& label1, const TString& label2, int color1, int color2, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle, double TextSize);
+
+int fillSignalInformation(int pdg, double vx, double vy, double vz, bool interactionInTrajectory, std::string trajectoryInteractionLabel, std::vector<int> daughtersPDG, std::vector<std::string> daughtersProcess,  std::vector<double> daughtersKE, bool saveNumProtons, int& numVisibleProtons);
+int getBackgroundInteractionType(int pdg, double vx, double vy, double vz, bool interactionInTrajectory, std::string trajectoryInteractionLabel, std::vector<int> daughtersPDG, std::vector<std::string> daughtersProcess, std::vector<double> daughtersKE);
+std::string ProcessToString(int proc);
+
+void printEventVariables(const EventVariables& t, std::ofstream& out);
+
+// Reweighing
+void ApplyWeights(TH1* h, const TH1* weights);
+void ComputeReweightingWeights(const TH1* source, const TH1* target, TH1* weights);
+double GetKEWeight(TH1D* hWeights, double ke);
