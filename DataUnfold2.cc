@@ -274,7 +274,7 @@ void DataUnfold2() {
             if (signalBin == 0) {
                 hUncAbs_k->SetBinContent(energyBin + 1, sigma);
                 hFracAbs_k->SetBinContent(energyBin + 1, fracPct);
-            } else if (signalBin == 2) {
+            } else if (signalBin == 1) {
                 hUncScatter_k->SetBinContent(energyBin + 1, sigma);
                 hFracScatter_k->SetBinContent(energyBin + 1, fracPct);
             }
