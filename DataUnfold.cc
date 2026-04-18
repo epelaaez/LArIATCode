@@ -135,20 +135,20 @@ void DataUnfold() {
     // Organize covariance matrices
     std::vector<TH2D*> CovarianceMatrices = {
         StatCovariance,
-        // MCStatCovariance, 
-        // GeneratorCovariance,
-        // EnergyRecoCovariance,
-        // BeamlineMuCovariance,
-        // BeamlineElCovariance
+        MCStatCovariance, 
+        GeneratorCovariance,
+        EnergyRecoCovariance,
+        BeamlineMuCovariance,
+        BeamlineElCovariance
     };
 
     std::vector<std::string> CovarianceLabels = {
         "Stat",
-        // "MCStat",
-        // "Generator",
-        // "EnergyReco",
-        // "BeamlineMu",
-        // "BeamlineEl"
+        "MCStat",
+        "Generator",
+        "EnergyReco",
+        "BeamlineMu",
+        "BeamlineEl"
     };
 
     std::vector<TMatrixD> Covariances; Covariances.reserve(CovarianceMatrices.size());

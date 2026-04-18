@@ -277,7 +277,7 @@ static const std::vector<double> ARRAY_KE_FINE_BINS = {
 static const int NUM_BINS_KE_FINE = static_cast<int>(ARRAY_KE_FINE_BINS.size()) - 1;
 
 // Bins for abs + scattering measurement
-static const std::vector<double> ARRAY_KE_BINS_ABS_SCATT = {0., 100., 200., 300., 400., 500.};
+static const std::vector<double> ARRAY_KE_BINS_ABS_SCATT = {0., 100., 200., 300., 500.};
 static const int                   NUM_BINS_KE_ABS_SCATT = static_cast<int>(ARRAY_KE_BINS_ABS_SCATT.size()) - 1;
 
 // TOF mass cut

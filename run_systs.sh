@@ -8,5 +8,5 @@ root -l -b -q GeneratorCov.cc
 root -l -b -q EnergyRecoCov.cc
 root -l -b -q BeamlineMuCov.cc
 root -l -b -q BeamlineElCov.cc
-# root -l -b -q Unfold.cc
-# root -l -b -q UnfoldFD.cc
+root -l -b -q Unfold.cc
+root -l -b -q UnfoldFD.cc
