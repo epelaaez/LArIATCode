@@ -2438,19 +2438,6 @@ void RecoClassify3Cat() {
     // Create plots //
     //////////////////
 
-    std::vector<int> Colors = {
-        kBlack,
-        kBlue,
-        kRed,
-        kGreen,
-        kOrange+1,
-        kMagenta,
-        kCyan+1,
-        kViolet+1,
-        kAzure+1,
-        kPink+6
-    };
-
     std::vector<std::vector<TH1*>> PlotGroups = {
         // Incident KE
         {hIncidentKE, hIncidentKEPion, hIncidentKEMuon, hIncidentKEElectron},

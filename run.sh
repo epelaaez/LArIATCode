@@ -2,7 +2,7 @@
 
 # Run macros to compute systematics in batch mode (-b).
 
-# root -l -b -q RecoClassify3Cat.cc
+root -l -b -q RecoClassify3Cat.cc
 root -l -b -q MCStatCov.cc
 root -l -b -q GeneratorCov.cc
 root -l -b -q EnergyRecoCov.cc

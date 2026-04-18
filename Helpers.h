@@ -42,6 +42,19 @@ static const std::unordered_set<int> SKIP_INDICES_DATA = {
     311635
 };
 
+std::vector<int> Colors = {
+    TColor::GetColor(64,  64,  64),   // dark charcoal
+    TColor::GetColor(0,   114, 178),  // deep blue
+    TColor::GetColor(213, 94,  0),    // burnt orange
+    TColor::GetColor(0,   158, 115),  // teal green
+    TColor::GetColor(200, 185, 0),    // bright yellow
+    TColor::GetColor(86,  180, 233),  // sky blue
+    TColor::GetColor(204, 121, 167),  // mauve pink
+    TColor::GetColor(0,   158, 115),  // teal green
+    TColor::GetColor(86,  180, 233),  // sky blue
+    TColor::GetColor(204, 121, 167),  // mauve pink
+};
+
 // Loading products
 const int kMaxTrack          = 10000; // 10000
 const int kMaxWCTracks       = 1;     // 1000
@@ -240,7 +253,7 @@ double SCATTERING_ANGLE_THRESHOLD = 5.0 * (TMath::Pi() / 180);
 double PION_SCATTERING_ENERGY_THRESHOLD = 0.05; // in GeV / c
 
 // Bins for energy bins
-static const std::vector<double> ARRAY_KE_BINS = {0., 100., 200., 300., 400., 500.};
+static const std::vector<double> ARRAY_KE_BINS = {0., 100., 200., 300., 500.};
 static const int                   NUM_BINS_KE = static_cast<int>(ARRAY_KE_BINS.size()) - 1;
 
 // Bins for energy bins (finer)
