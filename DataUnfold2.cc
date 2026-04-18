@@ -29,7 +29,7 @@ void DataUnfold2() {
 
     // For this unfolding, we consider two signal types
     NUM_SIGNAL_TYPES = 2;
-    int N = NUM_SIGNAL_TYPES * NUM_BINS_KE;
+    int N = NUM_SIGNAL_TYPES * NUM_BINS_KE_ABS_SCATT;
 
     // Load data histograms
     std::unique_ptr<TFile> DataFile(TFile::Open("/exp/lariat/app/users/epelaez/histos/data/Reco.root"));
@@ -100,7 +100,7 @@ void DataUnfold2() {
     TMatrixD CovRotation(N, N);
 
     // Subtract background from measured
-    TVectorD MeasureMinusBackground = Measure;
+    TVectorD MeasureMinusBackground = Measure - Background;
 
     // Unfold using the total covariance matrix
     TVectorD Unfolded = WienerSVD(
@@ -151,24 +151,24 @@ void DataUnfold2() {
     std::vector<TH1D*> FracUncTotal; FracUncTotal.reserve(UnfCovSources.size());
 
     // Unfolded vector by interaction type
-    TH1D* hUnfAbs     = new TH1D("hUnfAbs", "hUnfAbs;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hUnfScatter = new TH1D("hUnfScatter", "hUnfScatter;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hUnfAbs     = new TH1D("hUnfAbs", "hUnfAbs;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
+    TH1D* hUnfScatter = new TH1D("hUnfScatter", "hUnfScatter;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
     std::vector<TH1D*> UnfPerInteraction = {hUnfAbs, hUnfScatter};
 
-    TH1D* AbsUncTotal     = new TH1D("AbsUncTotal", "AbsUncTotal;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* ScatterUncTotal = new TH1D("ScatterUncTotal", "ScatterUncTotal;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* AbsUncTotal     = new TH1D("AbsUncTotal", "AbsUncTotal;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
+    TH1D* ScatterUncTotal = new TH1D("ScatterUncTotal", "ScatterUncTotal;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
     std::vector<TH1D*> TotalUncPerInteraction = {AbsUncTotal, ScatterUncTotal};
 
-    TH1D* AbsUncStat     = new TH1D("AbsUncStat", "AbsUncStat;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* ScatterUncStat = new TH1D("ScatterUncStat", "ScatterUncStat;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* AbsUncStat     = new TH1D("AbsUncStat", "AbsUncStat;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
+    TH1D* ScatterUncStat = new TH1D("ScatterUncStat", "ScatterUncStat;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
     std::vector<TH1D*> StatUncPerInteraction = {AbsUncStat, ScatterUncStat};
 
-    TH1D* AbsUncShape     = new TH1D("AbsUncShape", "AbsUncShape;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* ScatterUncShape = new TH1D("ScatterUncShape", "ScatterUncShape;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* AbsUncShape     = new TH1D("AbsUncShape", "AbsUncShape;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
+    TH1D* ScatterUncShape = new TH1D("ScatterUncShape", "ScatterUncShape;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
     std::vector<TH1D*> ShapeUncPerInteraction = {AbsUncShape, ScatterUncShape};
 
-    TH1D* AbsFracUncTotal     = new TH1D("AbsFracUncTotal", "AbsFracUncTotal;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* ScatterFracUncTotal = new TH1D("ScatterFracUncTotal", "ScatterFracUncTotal;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* AbsFracUncTotal     = new TH1D("AbsFracUncTotal", "AbsFracUncTotal;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
+    TH1D* ScatterFracUncTotal = new TH1D("ScatterFracUncTotal", "ScatterFracUncTotal;Kinetic Energy [MeV];Cross section [barn] per 100 MeV", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
     std::vector<TH1D*> TotalFracUncPerInteraction = {AbsFracUncTotal, ScatterFracUncTotal};
 
     // Uncertainty per source and interaction type
@@ -177,7 +177,7 @@ void DataUnfold2() {
 
     // Populate histograms with total uncertainty
     for (int i = 0; i < N; ++i) {
-        auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE);
+        auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE_ABS_SCATT);
 
         const double x   = Unfolded(i);
         const double var = UnfoldCov(i,i);
@@ -239,27 +239,27 @@ void DataUnfold2() {
         TH1D* hUncAbs_k = new TH1D(
             Form("hUncAbs_%s", CovarianceLabels[k].c_str()),
             Form("Abs %s;Kinetic Energy [MeV];#sigma [barn] per 100 MeV", CovarianceLabels[k].c_str()),
-            NUM_BINS_KE, ARRAY_KE_BINS.data()
+            NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data()
         );
         TH1D* hFracAbs_k = new TH1D(
             Form("hFracUncAbs_%s", CovarianceLabels[k].c_str()),
             Form("Abs %s;Kinetic Energy [MeV];#sigma/x [%%]", CovarianceLabels[k].c_str()),
-            NUM_BINS_KE, ARRAY_KE_BINS.data()
+            NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data()
         );
 
         TH1D* hUncScatter_k = new TH1D(
             Form("hUncScatter_%s", CovarianceLabels[k].c_str()),
             Form("Scatter %s;Kinetic Energy [MeV];#sigma [barn] per 100 MeV", CovarianceLabels[k].c_str()),
-            NUM_BINS_KE, ARRAY_KE_BINS.data()
+            NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data()
         );
         TH1D* hFracScatter_k = new TH1D(
             Form("hFracUncScatter_%s", CovarianceLabels[k].c_str()),
             Form("Scatter %s;Kinetic Energy [MeV];#sigma/x [%%]", CovarianceLabels[k].c_str()),
-            NUM_BINS_KE, ARRAY_KE_BINS.data()
+            NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data()
         );
 
         for (int i = 0; i < N; ++i) {
-            auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE);
+            auto [signalBin, energyBin] = unflattenIndex(i, NUM_BINS_KE_ABS_SCATT);
 
             const double x   = Unfolded(i);
             const double var = UnfCovSources[k](i,i);
@@ -316,19 +316,6 @@ void DataUnfold2() {
     //////////////////
     // Create plots //
     //////////////////
-    
-    std::vector<int> Colors = {
-        kBlack,
-        kBlue,
-        kRed,
-        kGreen,
-        kOrange+1,
-        kMagenta,
-        kCyan+1,
-        kViolet+1,
-        kAzure+1,
-        kPink+6
-    };
 
     std::vector<std::vector<TH1*>> PlotGroups;
     std::vector<std::vector<TString>> PlotLabelGroups;
@@ -576,12 +563,12 @@ void DataUnfold2() {
         "Cross section [barn]"
     );
 
-    TH1D* hTrueAbs     = new TH1D("hTrueAbs_plot",   ";Kinetic Energy [MeV];Cross section [barn]", NUM_BINS_KE, ARRAY_KE_BINS.data());
-    TH1D* hTrueScatter = new TH1D("hTrueScatter_plot", ";Kinetic Energy [MeV];Cross section [barn]", NUM_BINS_KE, ARRAY_KE_BINS.data());
+    TH1D* hTrueAbs     = new TH1D("hTrueAbs_plot",   ";Kinetic Energy [MeV];Cross section [barn]", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
+    TH1D* hTrueScatter = new TH1D("hTrueScatter_plot", ";Kinetic Energy [MeV];Cross section [barn]", NUM_BINS_KE_ABS_SCATT, ARRAY_KE_BINS_ABS_SCATT.data());
     std::vector<TH1D*> TrueKE = {hTrueAbs, hTrueScatter};
 
     for (int idx = 0; idx < N; ++idx) {
-        auto [signalBin, energyBin] = unflattenIndex(idx, NUM_BINS_KE);
+        auto [signalBin, energyBin] = unflattenIndex(idx, NUM_BINS_KE_ABS_SCATT);
         TrueKE[signalBin]->SetBinContent(energyBin + 1, TrueSignal(idx));
     }
     for (int i = 0; i < NUM_SIGNAL_TYPES; ++i) reweightOneDHisto(TrueKE[i],  100.);

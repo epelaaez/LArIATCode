@@ -33,10 +33,10 @@ void RecoDataAnalysis() {
     double TextSize = 0.06;
     TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/RecoDataAnalysis/";
 
-    // Load file with NN data products
-    TString RootFilePath = "/exp/lariat/app/users/epelaez/files/DataNeg60_histo.root";
-    std::unique_ptr<TFile> File(TFile::Open(RootFilePath));
-    TDirectory* Directory = (TDirectory*)File->Get("RecoNNDataEval");
+    // Load files
+    TChain* Chain = new TChain("anatree/anatree");
+    Chain->Add("/exp/lariat/app/users/epelaez/files/anatree_60a_data/chunks/*.root");
+    std::cout << "Files:   " << Chain->GetListOfFiles()->GetEntries() << std::endl;
 
     // Load file with MC comparison histograms
     TString MCCompFilePath = "/exp/lariat/app/users/epelaez/files/DataMCComparisons.root";
@@ -46,136 +46,80 @@ void RecoDataAnalysis() {
     // Load branches //
     ///////////////////
 
-    // Load tree and branches
-    TTree* tree = (TTree*) Directory->Get<TTree>("RecoNNDataEvalTree");
+    int run, subrun, event; bool isData = true;
+    Chain->SetBranchAddress("run", &run);
+    Chain->SetBranchAddress("subrun", &subrun);
+    Chain->SetBranchAddress("event", &event);
 
-    int run, subrun, event; bool isData;
-    tree->SetBranchAddress("run", &run); 
-    tree->SetBranchAddress("subrun", &subrun); 
-    tree->SetBranchAddress("event", &event);
-    tree->SetBranchAddress("isData", &isData);
+    // Track information
+    int   ntracks_reco;                       Chain->SetBranchAddress("ntracks_reco",    &ntracks_reco);
+    static float trkvtxx[kMaxTrackData];                 Chain->SetBranchAddress("trkvtxx",          &trkvtxx);
+    static float trkvtxy[kMaxTrackData];                 Chain->SetBranchAddress("trkvtxy",          &trkvtxy);
+    static float trkvtxz[kMaxTrackData];                 Chain->SetBranchAddress("trkvtxz",          &trkvtxz);
+    static float trkendx[kMaxTrackData];                 Chain->SetBranchAddress("trkendx",          &trkendx);
+    static float trkendy[kMaxTrackData];                 Chain->SetBranchAddress("trkendy",          &trkendy);
+    static float trkendz[kMaxTrackData];                 Chain->SetBranchAddress("trkendz",          &trkendz);
+    static int   trkWCtoTPCMatch[kMaxTrackData];         Chain->SetBranchAddress("trkWCtoTPCMatch",  &trkWCtoTPCMatch);
 
-    // WC match information
-    int WC2TPCtrkID, WC2TPCsize;
-    double WCTrackMomentum, WCTheta, WCPhi, WC4PrimaryX;
-    double WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY, WC2TPCPrimaryBeginZ;
-    double WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ;
-    std::vector<double>* wcMatchResR = nullptr;
-    std::vector<double>* wcMatchDEDX = nullptr;
-    std::vector<double>* wcMatchEDep = nullptr;
-    std::vector<double>* wcMatchXPos = nullptr;
-    std::vector<double>* wcMatchYPos = nullptr;
-    std::vector<double>* wcMatchZPos = nullptr;
-    tree->SetBranchAddress("WC2TPCtrkID", &WC2TPCtrkID);
-    tree->SetBranchAddress("WC2TPCsize", &WC2TPCsize);
-    tree->SetBranchAddress("WCTrackMomentum", &WCTrackMomentum);
-    tree->SetBranchAddress("WCTheta", &WCTheta);
-    tree->SetBranchAddress("WCPhi", &WCPhi);
-    tree->SetBranchAddress("WC4PrimaryX", &WC4PrimaryX);
-    tree->SetBranchAddress("WC2TPCPrimaryBeginX", &WC2TPCPrimaryBeginX);
-    tree->SetBranchAddress("WC2TPCPrimaryBeginY", &WC2TPCPrimaryBeginY);
-    tree->SetBranchAddress("WC2TPCPrimaryBeginZ", &WC2TPCPrimaryBeginZ);
-    tree->SetBranchAddress("WC2TPCPrimaryEndX", &WC2TPCPrimaryEndX);
-    tree->SetBranchAddress("WC2TPCPrimaryEndY", &WC2TPCPrimaryEndY);
-    tree->SetBranchAddress("WC2TPCPrimaryEndZ", &WC2TPCPrimaryEndZ);
-    tree->SetBranchAddress("wcMatchResR", &wcMatchResR);
-    tree->SetBranchAddress("wcMatchDEDX", &wcMatchDEDX);
-    tree->SetBranchAddress("wcMatchEDep", &wcMatchEDep);
-    tree->SetBranchAddress("wcMatchXPos", &wcMatchXPos);
-    tree->SetBranchAddress("wcMatchYPos", &wcMatchYPos);
-    tree->SetBranchAddress("wcMatchZPos", &wcMatchZPos);
-
-    // WC match location information
-    std::vector<double>* WC2TPCLocationsX = nullptr;
-    std::vector<double>* WC2TPCLocationsY = nullptr;
-    std::vector<double>* WC2TPCLocationsZ = nullptr;
-    tree->SetBranchAddress("WC2TPCLocationsX", &WC2TPCLocationsX);
-    tree->SetBranchAddress("WC2TPCLocationsY", &WC2TPCLocationsY);
-    tree->SetBranchAddress("WC2TPCLocationsZ", &WC2TPCLocationsZ);
-
-    // WC quality data
-    int wcNumHits;
-    std::vector<double>* wcHit0 = nullptr;
-    std::vector<double>* wcHit1 = nullptr;
-    std::vector<double>* wcHit2 = nullptr;
-    std::vector<double>* wcHit3 = nullptr;
-    tree->SetBranchAddress("wcNumHits", &wcNumHits);
-    tree->SetBranchAddress("wcHit0", &wcHit0);
-    tree->SetBranchAddress("wcHit1", &wcHit1);
-    tree->SetBranchAddress("wcHit2", &wcHit2);
-    tree->SetBranchAddress("wcHit3", &wcHit3);
-
-    // Reco information
-    std::vector<double>* recoMeanDEDX      = nullptr;
-    std::vector<double>* recoEndX          = nullptr;
-    std::vector<double>* recoEndY          = nullptr;
-    std::vector<double>* recoEndZ          = nullptr;
-    std::vector<double>* recoBeginX        = nullptr;
-    std::vector<double>* recoBeginY        = nullptr;
-    std::vector<double>* recoBeginZ        = nullptr;
-    std::vector<int>*    recoTrkID         = nullptr;
-    std::vector<bool>*   isTrackNearVertex = nullptr;
-    std::vector<bool>*   isTrackInverted   = nullptr;
-    tree->SetBranchAddress("recoMeanDEDX", &recoMeanDEDX);
-    tree->SetBranchAddress("recoEndX", &recoEndX);
-    tree->SetBranchAddress("recoEndY", &recoEndY);
-    tree->SetBranchAddress("recoEndZ", &recoEndZ);
-    tree->SetBranchAddress("recoBeginX", &recoBeginX);
-    tree->SetBranchAddress("recoBeginY", &recoBeginY);
-    tree->SetBranchAddress("recoBeginZ", &recoBeginZ);
-    tree->SetBranchAddress("recoTrkID", &recoTrkID);
-    tree->SetBranchAddress("isTrackNearVertex", &isTrackNearVertex);
-    tree->SetBranchAddress("isTrackInverted", &isTrackInverted);
+    // Wire-chamber track information
+    float beamline_mass;                        Chain->SetBranchAddress("beamline_mass",     &beamline_mass);
+    int   nwctrks;                              Chain->SetBranchAddress("nwctrks",           &nwctrks);
+    static float wctrk_momentum[kMaxWCTracksData];         Chain->SetBranchAddress("wctrk_momentum",    &wctrk_momentum);
+    static float wctrk_theta[kMaxWCTracksData];            Chain->SetBranchAddress("wctrk_theta",        &wctrk_theta);
+    static float wctrk_phi[kMaxWCTracksData];              Chain->SetBranchAddress("wctrk_phi",          &wctrk_phi);
+    static int   wctrk_picky[kMaxWCTracksData];            Chain->SetBranchAddress("wctrk_picky",        &wctrk_picky);
+    static float WC1xPos[kMaxWCTracksData];                 Chain->SetBranchAddress("WC1xPos",            &WC1xPos);
+    static float WC1yPos[kMaxWCTracksData];                 Chain->SetBranchAddress("WC1yPos",            &WC1yPos);
+    static float WC1zPos[kMaxWCTracksData];                 Chain->SetBranchAddress("WC1zPos",            &WC1zPos);
+    static float WC2xPos[kMaxWCTracksData];                 Chain->SetBranchAddress("WC2xPos",            &WC2xPos);
+    static float WC2yPos[kMaxWCTracksData];                 Chain->SetBranchAddress("WC2yPos",            &WC2yPos);
+    static float WC2zPos[kMaxWCTracksData];                 Chain->SetBranchAddress("WC2zPos",            &WC2zPos);
+    static float WC3xPos[kMaxWCTracksData];                 Chain->SetBranchAddress("WC3xPos",            &WC3xPos);
+    static float WC3yPos[kMaxWCTracksData];                 Chain->SetBranchAddress("WC3yPos",            &WC3yPos);
+    static float WC3zPos[kMaxWCTracksData];                 Chain->SetBranchAddress("WC3zPos",            &WC3zPos);
+    static float WC4xPos[kMaxWCTracksData];                 Chain->SetBranchAddress("WC4xPos",            &WC4xPos);
+    static float WC4yPos[kMaxWCTracksData];                 Chain->SetBranchAddress("WC4yPos",            &WC4yPos);
+    static float WC4zPos[kMaxWCTracksData];                 Chain->SetBranchAddress("WC4zPos",            &WC4zPos);
 
     // Calorimetry information
-    std::vector<std::vector<double>>* recoResR = nullptr;
-    std::vector<std::vector<double>>* recoDEDX = nullptr;
-    tree->SetBranchAddress("recoResR", &recoResR);
-    tree->SetBranchAddress("recoDEDX", &recoDEDX);
+    static int   ntrkcalopts[kMaxTrackData][2];                    Chain->SetBranchAddress("ntrkcalopts", &ntrkcalopts);
+    static float trkdedx[kMaxTrackData][2][kMaxTrackHitsData];         Chain->SetBranchAddress("trkdedx",     &trkdedx);
+    static float trkrr[kMaxTrackData][2][kMaxTrackHitsData];           Chain->SetBranchAddress("trkrr",       &trkrr);
+    static float trkpitch[kMaxTrackData][2][kMaxTrackHitsData];        Chain->SetBranchAddress("trkpitch",    &trkpitch);
+    static float trkxyz[kMaxTrackData][2][kMaxTrackHitsData][3];       Chain->SetBranchAddress("trkxyz",      &trkxyz);
 
-    // Individual hit information
-    double primaryEndPointHitW, primaryEndPointHitX;
-    std::vector<int>*   fHitKey = nullptr;
-    std::vector<int>*   fHitPlane = nullptr;
-    std::vector<int>*   hitRecoAsTrackKey = nullptr;
-    std::vector<float>* fHitT = nullptr;
-    std::vector<float>* fHitX = nullptr;
-    std::vector<float>* fHitW = nullptr;
-    std::vector<float>* fHitCharge = nullptr;
-    std::vector<float>* fHitChargeCol = nullptr;
-    std::vector<int>*   hitWC2TPCKey = nullptr;
-    std::vector<int>*   hitThroughTrack = nullptr;
-    tree->SetBranchAddress("primaryEndPointHitW", &primaryEndPointHitW);
-    tree->SetBranchAddress("primaryEndPointHitX", &primaryEndPointHitX);
-    tree->SetBranchAddress("fHitKey", &fHitKey);
-    tree->SetBranchAddress("fHitPlane", &fHitPlane);
-    tree->SetBranchAddress("hitRecoAsTrackKey", &hitRecoAsTrackKey);
-    tree->SetBranchAddress("fHitT", &fHitT);
-    tree->SetBranchAddress("fHitX", &fHitX);
-    tree->SetBranchAddress("fHitW", &fHitW);
-    tree->SetBranchAddress("fHitCharge", &fHitCharge);
-    tree->SetBranchAddress("fHitChargeCol", &fHitChargeCol);
-    tree->SetBranchAddress("hitWC2TPCKey", &hitWC2TPCKey);
-    tree->SetBranchAddress("hitThroughTrack", &hitThroughTrack);
+    // Trajectory information for tracks
+    static int   nTrajPoint[kMaxTrackData];                  Chain->SetBranchAddress("nTrajPoint", &nTrajPoint);
+    static float trjPt_X[kMaxTrackData][kMaxTrajHitsData];       Chain->SetBranchAddress("trjPt_X",    &trjPt_X);
+    static float trjPt_Y[kMaxTrackData][kMaxTrajHitsData];       Chain->SetBranchAddress("trjPt_Y",    &trjPt_Y);
+    static float trjPt_Z[kMaxTrackData][kMaxTrajHitsData];       Chain->SetBranchAddress("trjPt_Z",    &trjPt_Z);
 
-    // Information about hits in tracks
-    std::vector<std::vector<int>>* recoTrackHitIndices  = nullptr;
-    std::vector<std::vector<double>>*     recoTrackHitX = nullptr; 
-    std::vector<std::vector<double>>*     recoTrackHitY = nullptr; 
-    std::vector<std::vector<double>>*     recoTrackHitZ = nullptr; 
-    tree->SetBranchAddress("recoTrackHitIndices", &recoTrackHitIndices);
-    tree->SetBranchAddress("recoTrackHitX", &recoTrackHitX);
-    tree->SetBranchAddress("recoTrackHitY", &recoTrackHitY);
-    tree->SetBranchAddress("recoTrackHitZ", &recoTrackHitZ);
+    // Primary track index
+    static int primarytrkkey; Chain->SetBranchAddress("primarytrkkey", &primarytrkkey);
 
-    // TOF information
-    double TOFMass, tofObject;
-    tree->SetBranchAddress("TOFMass", &TOFMass);
-    tree->SetBranchAddress("tofObject", &tofObject);
+    // Information about wire plane hits
+    int    nhits;                              Chain->SetBranchAddress("nhits",              &nhits);
+    static int    hit_plane[kMaxHitsData];         Chain->SetBranchAddress("hit_plane",           hit_plane);
+    static int    hit_channel[kMaxHitsData];       Chain->SetBranchAddress("hit_channel",         hit_channel);
+    static int    hit_trkid[kMaxHitsData];         Chain->SetBranchAddress("hit_trkid",           hit_trkid);
+    static float  hit_driftT[kMaxHitsData];        Chain->SetBranchAddress("hit_driftT",           hit_driftT);
+    static float  hit_x[kMaxHitsData];             Chain->SetBranchAddress("hit_x",                hit_x);
+    static float  hit_y[kMaxHitsData];             Chain->SetBranchAddress("hit_y",                hit_y);
+    static float  hit_z[kMaxHitsData];             Chain->SetBranchAddress("hit_z",                hit_z);
+
+    // TOF object
+    int ntof;                     Chain->SetBranchAddress("ntof",          &ntof);
+    static float tof[kMaxTOFData];           Chain->SetBranchAddress("tof",           tof);
+    static float tof_timestamp[kMaxTOFData]; Chain->SetBranchAddress("tof_timestamp", tof_timestamp);
 
     /////////////////////
     // Load histograms //
     /////////////////////
+
+    TH1D* hMCValidFrontFaceKE         = (TH1D*) MCFile->Get("hMCValidFrontFaceKE");
+    TH1D* hMCValidFrontFaceKEPion     = (TH1D*) MCFile->Get("hMCValidFrontFaceKEPion");
+    TH1D* hMCValidFrontFaceKEMuon     = (TH1D*) MCFile->Get("hMCValidFrontFaceKEMuon");
+    TH1D* hMCValidFrontFaceKEElectron = (TH1D*) MCFile->Get("hMCValidFrontFaceKEElectron");
 
     TH1D* hMCNumWC2TPCMatch             = (TH1D*) MCFile->Get("hMCNumWC2TPCMatch");
     TH1D* hMCTGTrackLengths             = (TH1D*) MCFile->Get("hMCTGTrackLengths");
@@ -186,42 +130,83 @@ void RecoDataAnalysis() {
     TH2D* hMCTGNumSmallTracksVsThresh   = (TH2D*) MCFile->Get("hMCTGNumSmallTracksVsThresh");
     TH2D* hMCPrimaryTrackPosition       = (TH2D*) MCFile->Get("hMCPrimaryTrackPosition");
 
+    TH1D* hMCNumTracksInCylinder    = (TH1D*) MCFile->Get("hMCNumTracksInCylinder");
     TH1D* hMCNumTracksInCylinder0TG = (TH1D*) MCFile->Get("hMCNumTracksInCylinder0TG");
     TH1D* hMCNumTracksInCylinder1TG = (TH1D*) MCFile->Get("hMCNumTracksInCylinder1TG");
     TH1D* hMCNumTracksInCylinder2TG = (TH1D*) MCFile->Get("hMCNumTracksInCylinder2TG");
+    TH1D* hMCNumTracksInCylinderNTG = (TH1D*) MCFile->Get("hMCNumTracksInCylinderNTG");
 
+    TH1D* hMCNumSmallTracksInCylinder    = (TH1D*) MCFile->Get("hMCNumSmallTracksInCylinder");
     TH1D* hMCNumSmallTracksInCylinder0TG = (TH1D*) MCFile->Get("hMCNumSmallTracksInCylinder0TG");
     TH1D* hMCNumSmallTracksInCylinder1TG = (TH1D*) MCFile->Get("hMCNumSmallTracksInCylinder1TG");
     TH1D* hMCNumSmallTracksInCylinder2TG = (TH1D*) MCFile->Get("hMCNumSmallTracksInCylinder2TG");
+    TH1D* hMCNumSmallTracksInCylinderNTG = (TH1D*) MCFile->Get("hMCNumSmallTracksInCylinderNTG");
 
     TH1D* hMCTGSmallTracks    = (TH1D*) MCFile->Get("hMCTGSmallTracks");
     TH1D* hMCTGSmallTracks0TG = (TH1D*) MCFile->Get("hMCTGSmallTracks0TG");
     TH1D* hMCTGSmallTracks1TG = (TH1D*) MCFile->Get("hMCTGSmallTracks1TG");
     TH1D* hMCTGSmallTracks2TG = (TH1D*) MCFile->Get("hMCTGSmallTracks2TG");
+    TH1D* hMCTGSmallTracksNTG = (TH1D*) MCFile->Get("hMCTGSmallTracksNTG");
 
+    TH1D* hMCTGUnreconstructedHitsInduction    = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsInduction");
     TH1D* hMCTGUnreconstructedHitsInduction0TG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsInduction0TG");
     TH1D* hMCTGUnreconstructedHitsInduction1TG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsInduction1TG");
     TH1D* hMCTGUnreconstructedHitsInduction2TG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsInduction2TG");
+    TH1D* hMCTGUnreconstructedHitsInductionNTG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsInductionNTG");
 
+    TH1D* hMCTGUnreconstructedHitsCollection    = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsCollection");
     TH1D* hMCTGUnreconstructedHitsCollection0TG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsCollection0TG");
     TH1D* hMCTGUnreconstructedHitsCollection1TG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsCollection1TG");
     TH1D* hMCTGUnreconstructedHitsCollection2TG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsCollection2TG");
+    TH1D* hMCTGUnreconstructedHitsCollectionNTG = (TH1D*) MCFile->Get("hMCTGUnreconstructedHitsCollectionNTG");
 
+    TH1D* hMCTGNumClustersInduction    = (TH1D*) MCFile->Get("hMCTGNumClustersInduction");
     TH1D* hMCTGNumClustersInduction0TG = (TH1D*) MCFile->Get("hMCTGNumClustersInduction0TG");
     TH1D* hMCTGNumClustersInduction1TG = (TH1D*) MCFile->Get("hMCTGNumClustersInduction1TG");
     TH1D* hMCTGNumClustersInduction2TG = (TH1D*) MCFile->Get("hMCTGNumClustersInduction2TG");
+    TH1D* hMCTGNumClustersInductionNTG = (TH1D*) MCFile->Get("hMCTGNumClustersInductionNTG");
 
+    TH1D* hMCTGLargestClusterInduction    = (TH1D*) MCFile->Get("hMCTGLargestClusterInduction");
+    TH1D* hMCTGLargestClusterInduction0TG = (TH1D*) MCFile->Get("hMCTGLargestClusterInduction0TG");
+    TH1D* hMCTGLargestClusterInduction1TG = (TH1D*) MCFile->Get("hMCTGLargestClusterInduction1TG");
+    TH1D* hMCTGLargestClusterInduction2TG = (TH1D*) MCFile->Get("hMCTGLargestClusterInduction2TG");
+    TH1D* hMCTGLargestClusterInductionNTG = (TH1D*) MCFile->Get("hMCTGLargestClusterInductionNTG");
+
+    TH1D* hMCTGLargestClusterCollection    = (TH1D*) MCFile->Get("hMCTGLargestClusterCollection");
+    TH1D* hMCTGLargestClusterCollection0TG = (TH1D*) MCFile->Get("hMCTGLargestClusterCollection0TG");
+    TH1D* hMCTGLargestClusterCollection1TG = (TH1D*) MCFile->Get("hMCTGLargestClusterCollection1TG");
+    TH1D* hMCTGLargestClusterCollection2TG = (TH1D*) MCFile->Get("hMCTGLargestClusterCollection2TG");
+    TH1D* hMCTGLargestClusterCollectionNTG = (TH1D*) MCFile->Get("hMCTGLargestClusterCollectionNTG");
+
+    TH1D* hMCTGNumLargeClustersInduction    = (TH1D*) MCFile->Get("hMCTGNumLargeClustersInduction");
+    TH1D* hMCTGNumLargeClustersInduction0TG = (TH1D*) MCFile->Get("hMCTGNumLargeClustersInduction0TG");
+    TH1D* hMCTGNumLargeClustersInduction1TG = (TH1D*) MCFile->Get("hMCTGNumLargeClustersInduction1TG");
+    TH1D* hMCTGNumLargeClustersInduction2TG = (TH1D*) MCFile->Get("hMCTGNumLargeClustersInduction2TG");
+    TH1D* hMCTGNumLargeClustersInductionNTG = (TH1D*) MCFile->Get("hMCTGNumLargeClustersInductionNTG");
+
+    TH1D* hMCTGNumLargeClustersCollection    = (TH1D*) MCFile->Get("hMCTGNumLargeClustersCollection");
+    TH1D* hMCTGNumLargeClustersCollection0TG = (TH1D*) MCFile->Get("hMCTGNumLargeClustersCollection0TG");
+    TH1D* hMCTGNumLargeClustersCollection1TG = (TH1D*) MCFile->Get("hMCTGNumLargeClustersCollection1TG");
+    TH1D* hMCTGNumLargeClustersCollection2TG = (TH1D*) MCFile->Get("hMCTGNumLargeClustersCollection2TG");
+    TH1D* hMCTGNumLargeClustersCollectionNTG = (TH1D*) MCFile->Get("hMCTGNumLargeClustersCollectionNTG");
+
+    TH1D* hMCTGClusterSizesInduction    = (TH1D*) MCFile->Get("hMCTGClusterSizesInduction");
     TH1D* hMCTGClusterSizesInduction0TG = (TH1D*) MCFile->Get("hMCTGClusterSizesInduction0TG");
     TH1D* hMCTGClusterSizesInduction1TG = (TH1D*) MCFile->Get("hMCTGClusterSizesInduction1TG");
     TH1D* hMCTGClusterSizesInduction2TG = (TH1D*) MCFile->Get("hMCTGClusterSizesInduction2TG");
+    TH1D* hMCTGClusterSizesInductionNTG = (TH1D*) MCFile->Get("hMCTGClusterSizesInductionNTG");
 
+    TH1D* hMCTGNumClustersCollection    = (TH1D*) MCFile->Get("hMCTGNumClustersCollection");
     TH1D* hMCTGNumClustersCollection0TG = (TH1D*) MCFile->Get("hMCTGNumClustersCollection0TG");
     TH1D* hMCTGNumClustersCollection1TG = (TH1D*) MCFile->Get("hMCTGNumClustersCollection1TG");
     TH1D* hMCTGNumClustersCollection2TG = (TH1D*) MCFile->Get("hMCTGNumClustersCollection2TG");
+    TH1D* hMCTGNumClustersCollectionNTG = (TH1D*) MCFile->Get("hMCTGNumClustersCollectionNTG");
 
+    TH1D* hMCTGClusterSizesCollection    = (TH1D*) MCFile->Get("hMCTGClusterSizesCollection");
     TH1D* hMCTGClusterSizesCollection0TG = (TH1D*) MCFile->Get("hMCTGClusterSizesCollection0TG");
     TH1D* hMCTGClusterSizesCollection1TG = (TH1D*) MCFile->Get("hMCTGClusterSizesCollection1TG");
     TH1D* hMCTGClusterSizesCollection2TG = (TH1D*) MCFile->Get("hMCTGClusterSizesCollection2TG");
+    TH1D* hMCTGClusterSizesCollectionNTG = (TH1D*) MCFile->Get("hMCTGClusterSizesCollectionNTG");
 
     TH1D* hMCNumCandidateProtons = (TH1D*) MCFile->Get("hMCNumCandidateProtons");
     TH1D* hMCLengthCandidateProtons = (TH1D*) MCFile->Get("hMCLengthCandidateProtons");
@@ -229,6 +214,9 @@ void RecoDataAnalysis() {
     ///////////////////////
     // Create histograms //
     ///////////////////////
+
+    // Front face KE
+    TH1D* hFrontFaceKE = new TH1D("hFrontFaceKE", "hFrontFaceKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
 
     // TOF
     TH1D* hTOFMass = new TH1D("hTOFMass", "TOF Mass Distribution", 50, 0, 1200);
@@ -238,46 +226,85 @@ void RecoDataAnalysis() {
     TH1D* hNumWC2TPCMatch = new TH1D("hNumWC2TPCMatch", "NumWC2TPCMatch", 10, 0, 10);
     TH1D* hNumWCHits      = new TH1D("hNumWCHits", "hNumWCHits", 10, 0, 10);
 
-    // With primary TG
-    TH1D* hNumTracksInCylinder = new TH1D("hNumTracksInCylinder", "NumTracksInCylinder", 10, 0, 10);
     TH1D* hTGTrackLengths      = new TH1D("hTGTrackLengths", "TGTrackLengths", 25, 0, 50);
-    TH1D* hTGSmallTracks       = new TH1D("hTGSmallTracks", "TGSmallTracks", 10, 0, 10);
 
-    TH1D* hNumTracksInCylinder0TG      = new TH1D("hNumTracksInCylinder0TG", "NumTracksInCylinder0TG", 10, 0, 10);
+    TH1D* hNumTracksInCylinder    = new TH1D("hNumTracksInCylinder", "NumTracksInCylinder", 10, 0, 10);
+    TH1D* hNumTracksInCylinder0TG = new TH1D("hNumTracksInCylinder0TG", "NumTracksInCylinder0TG", 10, 0, 10);
+    TH1D* hNumTracksInCylinder1TG = new TH1D("hNumTracksInCylinder1TG", "NumTracksInCylinder1TG", 10, 0, 10);
+    TH1D* hNumTracksInCylinder2TG = new TH1D("hNumTracksInCylinder2TG", "NumTracksInCylinder2TG", 10, 0, 10);
+    TH1D* hNumTracksInCylinderNTG = new TH1D("hNumTracksInCylinderNTG", "NumTracksInCylinderNTG", 10, 0, 10);
+    
+    TH1D* hTGSmallTracks    = new TH1D("hTGSmallTracks", "SmallTracks", 10, 0, 10);
+    TH1D* hTGSmallTracks0TG = new TH1D("hTGSmallTracks0TG", "SmallTracks0TG", 10, 0, 10);
+    TH1D* hTGSmallTracks1TG = new TH1D("hTGSmallTracks1TG", "SmallTracks1TG", 10, 0, 10);
+    TH1D* hTGSmallTracks2TG = new TH1D("hTGSmallTracks2TG", "SmallTracks2TG", 10, 0, 10);
+    TH1D* hTGSmallTracksNTG = new TH1D("hTGSmallTracksNTG", "SmallTracksNTG", 10, 0, 10);
+
+    TH1D* hNumSmallTracksInCylinder    = new TH1D("hNumSmallTracksInCylinder", "NumSmallTracksInCylinder", 10, 0, 10);
     TH1D* hNumSmallTracksInCylinder0TG = new TH1D("hNumSmallTracksInCylinder0TG", "NumSmallTracksInCylinder0TG", 10, 0, 10);
-    TH1D* hTGSmallTracks0TG            = new TH1D("hTGSmallTracks0TG", "TGSmallTracks0TG", 10, 0, 10);
-
-    TH1D* hNumTracksInCylinder1TG      = new TH1D("hNumTracksInCylinder1TG", "NumTracksInCylinder1TG", 10, 0, 10);
     TH1D* hNumSmallTracksInCylinder1TG = new TH1D("hNumSmallTracksInCylinder1TG", "NumSmallTracksInCylinder1TG", 10, 0, 10);
-    TH1D* hTGSmallTracks1TG            = new TH1D("hTGSmallTracks1TG", "TGSmallTracks1TG", 10, 0, 10);
-
-    TH1D* hNumTracksInCylinder2TG      = new TH1D("hNumTracksInCylinder2TG", "NumTracksInCylinder2TG", 10, 0, 10);
     TH1D* hNumSmallTracksInCylinder2TG = new TH1D("hNumSmallTracksInCylinder2TG", "NumSmallTracksInCylinder2TG", 10, 0, 10);
-    TH1D* hTGSmallTracks2TG            = new TH1D("hTGSmallTracks2TG", "TGSmallTracks2TG", 10, 0, 10);
+    TH1D* hNumSmallTracksInCylinderNTG = new TH1D("hNumSmallTracksInCylinderNTG", "NumSmallTracksInCylinderNTG", 10, 0, 10);
 
+    TH1D* hTGUnreconstructedHitsInduction    = new TH1D("hTGUnreconstructedHitsInduction", "UnreconstructedHitsInduction;;", 30, 0, 30);
     TH1D* hTGUnreconstructedHitsInduction0TG = new TH1D("hTGUnreconstructedHitsInduction0TG", "UnreconstructedInductionHits0TG;;", 30, 0, 30);
     TH1D* hTGUnreconstructedHitsInduction1TG = new TH1D("hTGUnreconstructedHitsInduction1TG", "UnreconstructedInductionHits1TG;;", 30, 0, 30);
     TH1D* hTGUnreconstructedHitsInduction2TG = new TH1D("hTGUnreconstructedHitsInduction2TG", "UnreconstructedInductionHits2TG;;", 30, 0, 30);
+    TH1D* hTGUnreconstructedHitsInductionNTG = new TH1D("hTGUnreconstructedHitsInductionNTG", "UnreconstructedHitsInductionNTG;;", 30, 0, 30);
 
+    TH1D* hTGUnreconstructedHitsCollection    = new TH1D("hTGUnreconstructedHitsCollection", "UnreconstructedHitsCollection;;", 30, 0, 30);
     TH1D* hTGUnreconstructedHitsCollection0TG = new TH1D("hTGUnreconstructedHitsCollection0TG", "UnreconstructedCollectionHits0TG;;", 30, 0, 30);
     TH1D* hTGUnreconstructedHitsCollection1TG = new TH1D("hTGUnreconstructedHitsCollection1TG", "UnreconstructedCollectionHits1TG;;", 30, 0, 30);
     TH1D* hTGUnreconstructedHitsCollection2TG = new TH1D("hTGUnreconstructedHitsCollection2TG", "UnreconstructedCollectionHits2TG;;", 30, 0, 30);
+    TH1D* hTGUnreconstructedHitsCollectionNTG = new TH1D("hTGUnreconstructedHitsCollectionNTG", "UnreconstructedHitsCollectionNTG;;", 30, 0, 30);
 
+    TH1D* hTGNumClustersInduction    = new TH1D("hTGNumClustersInduction", "NumClustersInduction;;", 10, 0, 10);
     TH1D* hTGNumClustersInduction0TG = new TH1D("hTGNumClustersInduction0TG", "NumClustersInduction0TG;;", 10, 0, 10);
     TH1D* hTGNumClustersInduction1TG = new TH1D("hTGNumClustersInduction1TG", "NumClustersInduction1TG;;", 10, 0, 10);
     TH1D* hTGNumClustersInduction2TG = new TH1D("hTGNumClustersInduction2TG", "NumClustersInduction2TG;;", 10, 0, 10);
+    TH1D* hTGNumClustersInductionNTG = new TH1D("hTGNumClustersInductionNTG", "NumClustersInductionNTG;;", 10, 0, 10);
 
+    TH1D* hTGNumClustersCollection    = new TH1D("hTGNumClustersCollection", "NumClustersCollection;;", 10, 0, 10);
     TH1D* hTGNumClustersCollection0TG = new TH1D("hTGNumClustersCollection0TG", "NumClustersCollection0TG;;", 10, 0, 10);
     TH1D* hTGNumClustersCollection1TG = new TH1D("hTGNumClustersCollection1TG", "NumClustersCollection1TG;;", 10, 0, 10);
     TH1D* hTGNumClustersCollection2TG = new TH1D("hTGNumClustersCollection2TG", "NumClustersCollection2TG;;", 10, 0, 10);
+    TH1D* hTGNumClustersCollectionNTG = new TH1D("hTGNumClustersCollectionNTG", "NumClustersCollectionNTG;;", 10, 0, 10);
 
+    TH1D* hTGLargestClusterCollection    = new TH1D("hTGLargestClusterCollection", "LargestClusterCollection;;", 40, 0, 20);
+    TH1D* hTGLargestClusterCollection0TG = new TH1D("hTGLargestClusterCollection0TG", "LargestClusterCollection0TG;;", 40, 0, 20);
+    TH1D* hTGLargestClusterCollection1TG = new TH1D("hTGLargestClusterCollection1TG", "LargestClusterCollection1TG;;", 40, 0, 20);
+    TH1D* hTGLargestClusterCollection2TG = new TH1D("hTGLargestClusterCollection2TG", "LargestClusterCollection2TG;;", 40, 0, 20);
+    TH1D* hTGLargestClusterCollectionNTG = new TH1D("hTGLargestClusterCollectionNTG", "LargestClusterCollectionNTG;;", 40, 0, 20);
+
+    TH1D* hTGLargestClusterInduction    = new TH1D("hTGLargestClusterInduction", "LargestClusterInduction;;", 40, 0, 20);
+    TH1D* hTGLargestClusterInduction0TG = new TH1D("hTGLargestClusterInduction0TG", "LargestClusterInduction0TG;;", 40, 0, 20);
+    TH1D* hTGLargestClusterInduction1TG = new TH1D("hTGLargestClusterInduction1TG", "LargestClusterInduction1TG;;", 40, 0, 20);
+    TH1D* hTGLargestClusterInduction2TG = new TH1D("hTGLargestClusterInduction2TG", "LargestClusterInduction2TG;;", 40, 0, 20);
+    TH1D* hTGLargestClusterInductionNTG = new TH1D("hTGLargestClusterInductionNTG", "LargestClusterInductionNTG;;", 40, 0, 20);
+
+    TH1D* hTGNumLargeClustersCollection    = new TH1D("hTGNumLargeClustersCollection", "NumLargeClustersCollection;;", 5, 0, 5);
+    TH1D* hTGNumLargeClustersCollection0TG = new TH1D("hTGNumLargeClustersCollection0TG", "NumLargeClustersCollection0TG;;", 5, 0, 5);
+    TH1D* hTGNumLargeClustersCollection1TG = new TH1D("hTGNumLargeClustersCollection1TG", "NumLargeClustersCollection1TG;;", 5, 0, 5);
+    TH1D* hTGNumLargeClustersCollection2TG = new TH1D("hTGNumLargeClustersCollection2TG", "NumLargeClustersCollection2TG;;", 5, 0, 5);
+    TH1D* hTGNumLargeClustersCollectionNTG = new TH1D("hTGNumLargeClustersCollectionNTG", "NumLargeClustersCollectionNTG;;", 5, 0, 5);
+
+    TH1D* hTGNumLargeClustersInduction    = new TH1D("hTGNumLargeClustersInduction", "NumLargeClustersInduction;;", 5, 0, 5);
+    TH1D* hTGNumLargeClustersInduction0TG = new TH1D("hTGNumLargeClustersInduction0TG", "NumLargeClustersInduction0TG;;", 5, 0, 5);
+    TH1D* hTGNumLargeClustersInduction1TG = new TH1D("hTGNumLargeClustersInduction1TG", "NumLargeClustersInduction1TG;;", 5, 0, 5);
+    TH1D* hTGNumLargeClustersInduction2TG = new TH1D("hTGNumLargeClustersInduction2TG", "NumLargeClustersInduction2TG;;", 5, 0, 5);
+    TH1D* hTGNumLargeClustersInductionNTG = new TH1D("hTGNumLargeClustersInductionNTG", "NumLargeClustersInductionNTG;;", 5, 0, 5);
+
+    TH1D* hTGClusterSizesInduction    = new TH1D("hTGClusterSizesInduction", "ClusterSizesInduction;;", 15, 0, 30);
     TH1D* hTGClusterSizesInduction0TG = new TH1D("hTGClusterSizesInduction0TG", "ClusterSizesInduction0TG;;", 15, 0, 30);
     TH1D* hTGClusterSizesInduction1TG = new TH1D("hTGClusterSizesInduction1TG", "ClusterSizesInduction1TG;;", 15, 0, 30);
     TH1D* hTGClusterSizesInduction2TG = new TH1D("hTGClusterSizesInduction2TG", "ClusterSizesInduction2TG;;", 15, 0, 30);
+    TH1D* hTGClusterSizesInductionNTG = new TH1D("hTGClusterSizesInductionNTG", "ClusterSizesInductionNTG;;", 15, 0, 30);
 
+    TH1D* hTGClusterSizesCollection    = new TH1D("hTGClusterSizesCollection", "ClusterSizesCollection;;", 15, 0, 30);
     TH1D* hTGClusterSizesCollection0TG = new TH1D("hTGClusterSizesCollection0TG", "ClusterSizesCollection0TG;;", 15, 0, 30);
     TH1D* hTGClusterSizesCollection1TG = new TH1D("hTGClusterSizesCollection1TG", "ClusterSizesCollection1TG;;", 15, 0, 30);
     TH1D* hTGClusterSizesCollection2TG = new TH1D("hTGClusterSizesCollection2TG", "ClusterSizesCollection2TG;;", 15, 0, 30);
+    TH1D* hTGClusterSizesCollectionNTG = new TH1D("hTGClusterSizesCollectionNTG", "ClusterSizesCollectionNTG;;", 15, 0, 30);
 
     // With primary interacting
     TH1D* hTracksNearVertex       = new TH1D("hTracksNearVertex", "TracksNearVertex", 10, 0, 10);
@@ -349,79 +376,308 @@ void RecoDataAnalysis() {
 
     int candidateInteractingEvents = 0;
 
-    Int_t NumEntries = (Int_t) tree->GetEntries();
-    std::cout << "Num entries: " << NumEntries << std::endl;
+    bool verbose = false;
 
     // Keep track of event counts for stat estimations
     int eventCount0TG = 0;
     int eventCount1TG = 0;
     int eventCount2TG = 0;
+    int eventCountNTG = 0;
 
     int numValidEvents = 0;
-    for (Int_t i = 0; i < NumEntries; ++i) {
-        tree->GetEntry(i);
+
+    int numEventsNoCollection = 0;
+    int numEventsNoInduction  = 0;
+    int numEventsNoEither     = 0;
+    
+    Long64_t i = 0;
+    while (true) {
+        if (SKIP_INDICES_DATA.count(i)) { i++; continue; }
+        if (Chain->GetEntry(i++) <= 0) break;
+
+        // Reset variables
+        if (verbose) std::cout << std::endl;
+        if (verbose) std::cout << "=================================" << std::endl;
+        if (verbose) std::cout << "Got tree entry: " << i << std::endl;
+        EventVariablesData ev;
+        if (verbose) std::cout << "Variables reset" << std::endl;
+        if (verbose) std::cout << "=================================" << std::endl;
 
         // Make script go faster
         // if (i > USE_NUM_EVENTS) break;
 
+        ////////////////////////////////
+        // Load variables of interest //
+        ////////////////////////////////
+
+        // Load track information
+        if (verbose) std::cout << std::endl;
+        if (verbose) std::cout << "=================================" << std::endl;
+        if (verbose) std::cout << "Event: " << event << std::endl;
+        
+        // First, we just want to grab WC to TPC match
+        int primaryTrackIdx = -1;
+        for (size_t trk_idx = 0; trk_idx < std::min(ntracks_reco, kMaxTrackData); ++trk_idx) {
+            if (trkWCtoTPCMatch[trk_idx] == 1) {
+                // Grab position information
+                ev.WC2TPCPrimaryBeginX = trkvtxx[trk_idx];
+                ev.WC2TPCPrimaryBeginY = trkvtxy[trk_idx];
+                ev.WC2TPCPrimaryBeginZ = trkvtxz[trk_idx];
+                ev.WC2TPCPrimaryEndX   = trkendx[trk_idx];
+                ev.WC2TPCPrimaryEndY   = trkendy[trk_idx];
+                ev.WC2TPCPrimaryEndZ   = trkendz[trk_idx];
+
+                if (verbose) std::cout << "Begin: " << ev.WC2TPCPrimaryBeginX << " " << ev.WC2TPCPrimaryBeginY << " " << ev.WC2TPCPrimaryBeginZ << std::endl;
+                if (verbose) std::cout << "End:   " << ev.WC2TPCPrimaryEndX << " " << ev.WC2TPCPrimaryEndY << " " << ev.WC2TPCPrimaryEndZ << std::endl;
+
+                // Grab calorimetry information (in collection plane)
+                int npts_dedx = std::min(ntrkcalopts[trk_idx][1], kMaxTrackHitsData);
+                ev.wcMatchResR.assign(trkrr[trk_idx][1], trkrr[trk_idx][1] + npts_dedx);
+                ev.wcMatchDEDX.assign(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + npts_dedx);
+
+                for (size_t dep_idx = 0; dep_idx < std::min(ntrkcalopts[trk_idx][1], kMaxTrackHitsData); ++dep_idx) {
+                    ev.wcMatchEDep.push_back(trkdedx[trk_idx][1][dep_idx] * trkpitch[trk_idx][1][dep_idx]);
+                    ev.wcMatchXPos.push_back(trkxyz[trk_idx][1][dep_idx][0]);
+                    ev.wcMatchYPos.push_back(trkxyz[trk_idx][1][dep_idx][1]);
+                    ev.wcMatchZPos.push_back(trkxyz[trk_idx][1][dep_idx][2]);
+                }
+
+                // Get location information
+                int npts_wc2tpc = std::min(nTrajPoint[trk_idx], kMaxTrajHitsData);
+                ev.WC2TPCLocationsX.assign(trjPt_X[trk_idx], trjPt_X[trk_idx] + npts_wc2tpc);
+                ev.WC2TPCLocationsY.assign(trjPt_Y[trk_idx], trjPt_Y[trk_idx] + npts_wc2tpc);
+                ev.WC2TPCLocationsZ.assign(trjPt_Z[trk_idx], trjPt_Z[trk_idx] + npts_wc2tpc);
+
+                if (verbose) std::cout << nTrajPoint[trk_idx] << "  " << kMaxTrajHitsData << std::endl;
+                if (verbose) std::cout << "(loc.) Begin: " << ev.WC2TPCLocationsX[0] << " " << ev.WC2TPCLocationsY[0] << " " << ev.WC2TPCLocationsZ[0] << std::endl;
+                if (verbose) std::cout << "(loc.) End:   " << ev.WC2TPCLocationsX[npts_wc2tpc - 1] << " " << ev.WC2TPCLocationsY[npts_wc2tpc - 1] << " " << ev.WC2TPCLocationsZ[npts_wc2tpc - 1] << std::endl;
+
+                // Set flag and index
+                primaryTrackIdx = trk_idx;
+                ev.WC2TPCMatch     = true;
+                ev.WC2TPCsize++;
+            }
+        }
+        if (verbose) std::cout << "Found WC2TPC match: " << ev.WC2TPCMatch  << std::endl;
+        if (verbose) std::cout << "Number of matches: " << ev.WC2TPCsize  << std::endl;
+        
+        // Set beamline information
+        ev.TOFMass = beamline_mass;
+        if (ntof == 1) ev.tofObject = tof[0];
+
+        if (verbose) std::cout << "Beamline mass: " << ev.TOFMass  << std::endl;
+        if (verbose) std::cout << "TOF: " << ev.tofObject  << std::endl;
+
+        // Copy vertex and end for all tracks
+        int npts_trk = std::min(ntracks_reco, kMaxTrackData);
+        ev.recoEndX.assign(trkendx,  trkendx  + npts_trk);
+        ev.recoEndY.assign(trkendy,  trkendy  + npts_trk);
+        ev.recoEndZ.assign(trkendz,  trkendz  + npts_trk);
+        ev.recoBeginX.assign(trkvtxx, trkvtxx + npts_trk);
+        ev.recoBeginY.assign(trkvtxy, trkvtxy + npts_trk);
+        ev.recoBeginZ.assign(trkvtxz, trkvtxz + npts_trk);
+
+        // Now, we want to loop through all tracks
+        for (size_t trk_idx = 0; trk_idx < std::min(ntracks_reco, kMaxTrackData); ++trk_idx) {
+            // Grab calorimetry information
+            ev.recoResR.push_back(std::vector<double>(trkrr[trk_idx][1], trkrr[trk_idx][1] + std::min(ntrkcalopts[trk_idx][1], kMaxTrackHitsData)));
+            ev.recoDEDX.push_back(std::vector<double>(trkdedx[trk_idx][1], trkdedx[trk_idx][1] + std::min(ntrkcalopts[trk_idx][1], kMaxTrackHitsData)));
+
+            // Check reversed
+            double startDistance = distance(trkvtxx[trk_idx], ev.WC2TPCPrimaryEndX, trkvtxy[trk_idx], ev.WC2TPCPrimaryEndY, trkvtxz[trk_idx], ev.WC2TPCPrimaryEndZ);
+            double endDistance   = distance(trkendx[trk_idx], ev.WC2TPCPrimaryEndX, trkendy[trk_idx], ev.WC2TPCPrimaryEndY, trkendz[trk_idx], ev.WC2TPCPrimaryEndZ);
+
+            if (startDistance > endDistance && !trkWCtoTPCMatch[trk_idx]) {
+                ev.isTrackInverted.push_back(true);
+
+                std::swap(ev.recoEndX[trk_idx], ev.recoBeginX[trk_idx]);
+                std::swap(ev.recoEndY[trk_idx], ev.recoBeginY[trk_idx]);
+                std::swap(ev.recoEndZ[trk_idx], ev.recoBeginZ[trk_idx]);
+
+                std::reverse(ev.recoResR[trk_idx].begin(), ev.recoResR[trk_idx].end());
+                std::reverse(ev.recoDEDX[trk_idx].begin(), ev.recoDEDX[trk_idx].end());
+            } else {
+                ev.isTrackInverted.push_back(false);
+            }
+        }
+
+        // Load wire-chamber track information
+        if (verbose) std::cout << "Number of WC tracks : " << nwctrks << std::endl;
+
+        if (nwctrks == 1) {
+            ev.wcTrackPicky = wctrk_picky[0];
+
+            ev.WCTrackMomentum = wctrk_momentum[0];
+            ev.WCTheta         = wctrk_theta[0];
+            ev.WCPhi           = wctrk_phi[0];
+            ev.WC4PrimaryX     = WC4xPos[0];
+
+            ev.wcHit0 = {WC1xPos[0], WC1yPos[0], WC1zPos[0]};
+            ev.wcHit1 = {WC2xPos[0], WC2yPos[0], WC2zPos[0]};
+            ev.wcHit2 = {WC3xPos[0], WC3yPos[0], WC3zPos[0]};
+            ev.wcHit3 = {WC4xPos[0], WC4yPos[0], WC4zPos[0]};
+        }
+        if (verbose) std::cout << "Is WC track picky? " << ev.wcTrackPicky  << std::endl;
+
+        // Get information about wire hits
+        std::map<int, std::vector<int>>    trackHitMap;
+        std::map<int, std::vector<double>> trackHitXMap;
+        std::map<int, std::vector<double>> trackHitYMap;
+        std::map<int, std::vector<double>> trackHitZMap;
+
+        for (size_t i_hit = 0; i_hit < std::min(nhits, kMaxHitsData); ++i_hit) {
+            ev.fHitPlane.push_back(hit_plane[i_hit]);
+            ev.fHitT.push_back(SAMPLING_RATE * hit_driftT[i_hit]);
+            ev.fHitX.push_back(SAMPLING_RATE * hit_driftT[i_hit] * DRIFT_VELOCITY);
+            if (hit_channel[i_hit] < 240) {
+                ev.fHitW.push_back(hit_channel[i_hit] * 0.4);
+            } else {
+                ev.fHitW.push_back((hit_channel[i_hit] - 240) * 0.4);
+            }
+
+            // If it is -9, no match to a track
+            if (hit_trkid[i_hit] != -9) {
+                ev.hitRecoAsTrackKey.push_back(i_hit);
+                if (hit_trkid[i_hit] == primaryTrackIdx) ev.hitWC2TPCKey.push_back(i_hit);
+
+                trackHitMap[hit_trkid[i_hit]].push_back(i_hit);
+                trackHitXMap[hit_trkid[i_hit]].push_back(hit_x[i_hit]);
+                trackHitYMap[hit_trkid[i_hit]].push_back(hit_y[i_hit]);
+                trackHitZMap[hit_trkid[i_hit]].push_back(hit_z[i_hit]);
+            }
+        }
+
+        // Fill out vectors
+        for (auto& [trkid, hits] : trackHitMap) {
+            if (trkid < 0 || trkid >= ntracks_reco) {
+                std::cerr << "WARNING: unexpected trkid=" << trkid << " for entry " << i << ", skipping\n";
+                continue;
+            }
+            if (trkid >= (int) ev.recoTrackHitIndices.size()) {
+                ev.recoTrackHitIndices.resize(trkid + 1);
+                ev.recoTrackHitX.resize(trkid + 1);
+                ev.recoTrackHitY.resize(trkid + 1);
+                ev.recoTrackHitZ.resize(trkid + 1);
+            }
+            ev.recoTrackHitIndices[trkid] = hits;
+            ev.recoTrackHitX[trkid]       = trackHitXMap[trkid];
+            ev.recoTrackHitY[trkid]       = trackHitYMap[trkid];
+            ev.recoTrackHitZ[trkid]       = trackHitZMap[trkid];
+        }
+
+        // Sanity check
+        // for (size_t i_trk = 0; i_trk < ev.recoTrackHitIndices.size(); ++i_trk) {
+        //     std::cout << "Track " << i_trk << ":" << std::endl;
+        //     for (int idx : ev.recoTrackHitIndices[i_trk]) {
+        //         if (hit_trkid[idx] == primaryTrackIdx) std::cout << "  hit index=" << idx << "  hit_trkid=" << hit_trkid[idx] << std::endl;
+        //     }
+        // }
+
         // Fill for all events
-        hTOFMass->Fill(std::abs(TOFMass));
-        hNumWC2TPCMatch->Fill(WC2TPCsize);
-        hNumWCHits->Fill(wcNumHits);
-        hTOF->Fill(tofObject);
-        hTOFVsTOFMass->Fill(tofObject, std::abs(TOFMass));
+        hTOFMass->Fill(std::abs(ev.TOFMass));
+        hNumWC2TPCMatch->Fill(ev.WC2TPCsize);
+        hTOF->Fill(ev.tofObject);
+        hTOFVsTOFMass->Fill(ev.tofObject, std::abs(ev.TOFMass));
 
-        /////////////////////////////////////////
-        // Wire-chamber and other initial cuts //
-        /////////////////////////////////////////
+        /////////////////////////////////////////////////
+        // Wire-chamber quality and other initial cuts //
+        /////////////////////////////////////////////////
 
-        if (wcNumHits != 8) continue;
+        // Candidate mass cut, keep pions, muons and electrons
+        if (std::abs(ev.TOFMass) > PI_MU_EL_MASS_CUTOFF) continue;
+
+        // If no track matched to wire-chamber, skip
+        if (!(ev.WC2TPCMatch && ev.WC2TPCsize == 1)) continue;
+
+        // If not picky track, skip
+        if (!ev.wcTrackPicky) continue;
 
         // Project downstream to midplane @ -437.97 (without angular corrections)
-        std::vector<double> midUp = projToZ(*wcHit0, *wcHit1, -437.97);
+        std::vector<double> midUp = projToZ(ev.wcHit0, ev.wcHit1, -437.97);
         // Use this point and WC3 to project up to WC4
-        std::vector<double> projDown = projToZ(midUp, *wcHit2, -95.0);
+        std::vector<double> projDown = projToZ(midUp, ev.wcHit2, -95.0);
         // Requires some corrections because magnets are not the same
         projDown[0] -= tan(1.32 * TMath::Pi() / 180.0) * (-95.0 - -437.97);
 
         // Compare x and y coordinate in projection and real hit for WC4
-        hProjVsRealWC4->Fill(projDown[0] - wcHit3->at(0), projDown[1] - wcHit3->at(1));
-        double radDistWC4 = TMath::Sqrt(pow(projDown[0] - wcHit3->at(0), 2.) + pow(projDown[1] - wcHit3->at(1), 2.));
+        hProjVsRealWC4->Fill(projDown[0] - ev.wcHit3.at(0), projDown[1] - ev.wcHit3.at(1));
+        double radDistWC4 = TMath::Sqrt(pow(projDown[0] - ev.wcHit3.at(0), 2.) + pow(projDown[1] - ev.wcHit3.at(1), 2.));
         hRadDistWC4->Fill(radDistWC4);
 
         // Project upstream to midplane @ -437.97
-        std::vector<double> midDown = projToZ(*wcHit2, *wcHit3, -437.97);
+        std::vector<double> midDown = projToZ(ev.wcHit2, ev.wcHit3, -437.97);
         midDown[0] -= tan(1.32 * TMath::Pi() / 180.0) * (-339.57 - -437.97);
 
         hMidPlaneCoinc->Fill(midUp[0] - midDown[0], midUp[1] - midDown[1]);
         double midPlaneDist = TMath::Sqrt(pow(midUp[0] - midDown[0] + 0.75, 2) + pow(midUp[1] - midDown[1], 2));
+        // double midPlaneDist = TMath::Sqrt(pow(midUp[0] - midDown[0], 2) + pow(midUp[1] - midDown[1], 2));
         hRadDistMidPlane->Fill(midPlaneDist);
 
-        if (radDistWC4 > 8.0) continue;
-        if (midPlaneDist > 3.0) continue;
+        if (radDistWC4 > MAX_RAD_DIST_WC4) continue;
+        if (midPlaneDist > MAX_MID_PLANE_DIST) continue;
 
         // Check projected tracks go through all apertures
-        bool Magnet1ApertureCheck = CheckUpstreamMagnetAperture(*wcHit0, *wcHit1);
-        bool Magnet2ApertureCheck = CheckDownstreamMagnetAperture(*wcHit2, *wcHit3);
-        bool DSColApertureCheck   = CheckDownstreamCollimatorAperture(*wcHit2, *wcHit3);
+        bool Magnet1ApertureCheck = CheckUpstreamMagnetAperture(ev.wcHit0, ev.wcHit1);
+        bool Magnet2ApertureCheck = CheckDownstreamMagnetAperture(ev.wcHit2, ev.wcHit3);
+        bool DSColApertureCheck   = CheckDownstreamCollimatorAperture(ev.wcHit2, ev.wcHit3);
 
         if (!Magnet1ApertureCheck || !Magnet2ApertureCheck || !DSColApertureCheck) continue;
-
-        // Candidate mass cut, keep pions, muons and electrons
-        if (std::abs(TOFMass) > PI_MU_EL_MASS_CUTOFF) continue;
-
-        // If no track matched to wire-chamber, skip
-        if (WC2TPCtrkID == -99999) continue;
 
         //////////////////////////
         // Analyze valid events //
         //////////////////////////
 
+        if (verbose) std::cout << "Valid event" << std::endl;
         numValidEvents++;
-        hPrimaryTrackPosition->Fill(WC2TPCPrimaryBeginX, WC2TPCPrimaryBeginY);
+        hPrimaryTrackPosition->Fill(ev.WC2TPCPrimaryBeginX, ev.WC2TPCPrimaryBeginY);
+
+        // Front face KE
+        double WCKE             = TMath::Sqrt(ev.WCTrackMomentum * ev.WCTrackMomentum + PionMass * PionMass) - PionMass;
+        double calculatedEnLoss = energyLossCalculation();
+        if (isData) {
+            double tanThetaCosPhi = TMath::Tan(ev.WCTheta) * TMath::Cos(ev.WCPhi);
+            double tanThetaSinPhi = TMath::Tan(ev.WCTheta) * TMath::Sin(ev.WCPhi);
+            double den            = TMath::Sqrt(1 + tanThetaCosPhi * tanThetaCosPhi);
+            double onTheFlyPz     = ev.WCTrackMomentum / den;
+            double onTheFlyPx     = onTheFlyPz * tanThetaSinPhi;
+            calculatedEnLoss      = energyLossCalculation(ev.WC4PrimaryX, onTheFlyPx, isData);
+        }
+        const double initialKE = WCKE - calculatedEnLoss;
 
         // Check if WC2TPC is through-going
-        bool isPrimaryTG = !isWithinReducedVolume(WC2TPCPrimaryEndX, WC2TPCPrimaryEndY, WC2TPCPrimaryEndZ);
+        bool isPrimaryTG = (
+            !isWithinReducedVolume(ev.WC2TPCPrimaryEndX, ev.WC2TPCPrimaryEndY, ev.WC2TPCPrimaryEndZ) &&
+            !isWithinReducedVolume(ev.WC2TPCPrimaryBeginX, ev.WC2TPCPrimaryBeginY, ev.WC2TPCPrimaryBeginZ) &&
+            ev.WC2TPCPrimaryEndZ > RmaxZ && ev.WC2TPCPrimaryBeginZ < RminZ
+        );
+        if (verbose) std::cout << "Is primary TG? " << isPrimaryTG << std::endl;
+
+        // Extend reco cylinder
+        removeRepeatedPoints(&ev.WC2TPCLocationsX, &ev.WC2TPCLocationsY, &ev.WC2TPCLocationsZ);
+        std::vector<double> wcX(ev.WC2TPCLocationsX);
+        std::vector<double> wcY(ev.WC2TPCLocationsY);
+        std::vector<double> wcZ(ev.WC2TPCLocationsZ);
+
+        // Get direction to end cylinder
+        int numPoints = wcX.size();
+        int numTail   = std::min(10, numPoints - 1);
+        std::vector<std::vector<double>> points;
+        for (int j = numPoints - numTail - 1; j < numPoints; ++j) {
+            points.push_back({
+                wcX.at(j),
+                wcY.at(j),
+                wcZ.at(j)
+            });
+        }
+        if (numTail > 0) {
+            std::vector<double> avgDir = getAverageDir(points);
+
+            // Extrapolate track to end
+            double scale = (maxZ - points.back()[2]) / avgDir[2];
+            wcX.push_back(points.back()[0] + scale * avgDir[0]);
+            wcY.push_back(points.back()[1] + scale * avgDir[1]);
+            wcZ.push_back(points.back()[2] + scale * avgDir[2]);
+        }
 
         // Loop over reconstructed tracks
         int numSmallTracks = 0;
@@ -431,61 +687,35 @@ void RecoDataAnalysis() {
         int numTracksInCylinder = 0;
         int numSmallTracksInCylinder = 0;
 
-        for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
-            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+        for (size_t trk_idx = 0; trk_idx < ev.recoBeginX.size(); ++trk_idx) {
+            if (trkWCtoTPCMatch[trk_idx]) continue;
 
             double distanceFromStart = distance(
-                recoBeginX->at(trk_idx), WC2TPCPrimaryEndX, 
-                recoBeginY->at(trk_idx), WC2TPCPrimaryEndY,
-                recoBeginZ->at(trk_idx), WC2TPCPrimaryEndZ
+                ev.recoBeginX.at(trk_idx), ev.WC2TPCPrimaryEndX, 
+                ev.recoBeginY.at(trk_idx), ev.WC2TPCPrimaryEndY,
+                ev.recoBeginZ.at(trk_idx), ev.WC2TPCPrimaryEndZ
             );
             double distanceFromEnd = distance(
-                recoEndX->at(trk_idx), WC2TPCPrimaryEndX, 
-                recoEndY->at(trk_idx), WC2TPCPrimaryEndY,
-                recoEndZ->at(trk_idx), WC2TPCPrimaryEndZ
+                ev.recoEndX.at(trk_idx), ev.WC2TPCPrimaryEndX, 
+                ev.recoEndY.at(trk_idx), ev.WC2TPCPrimaryEndY,
+                ev.recoEndZ.at(trk_idx), ev.WC2TPCPrimaryEndZ
             );
 
             double trackLength = sqrt(
-                pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
-                pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
-                pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+                pow(ev.recoEndX.at(trk_idx) - ev.recoBeginX.at(trk_idx), 2) +
+                pow(ev.recoEndY.at(trk_idx) - ev.recoBeginY.at(trk_idx), 2) +
+                pow(ev.recoEndZ.at(trk_idx) - ev.recoBeginZ.at(trk_idx), 2)
             );
-
-            // Copy WC2TPCLocations
-            std::vector<double>* wcX = new std::vector<double>(*WC2TPCLocationsX);
-            std::vector<double>* wcY = new std::vector<double>(*WC2TPCLocationsY);
-            std::vector<double>* wcZ = new std::vector<double>(*WC2TPCLocationsZ);
-
-            // Get direction to end cylinder
-            int numPoints = wcX->size();
-            int numTail   = std::min(10, numPoints - 1);
-            std::vector<std::vector<double>> points;
-            for (int j = numPoints - numTail; j < numPoints; ++j) {
-                points.push_back({
-                    wcX->at(j),
-                    wcY->at(j),
-                    wcZ->at(j)
-                });
-            }
-            if (numTail > 0) {
-                std::vector<double> avgDir = getAverageDir(points);
-
-                // Extrapolate track to end
-                double scale = (maxZ - points.back()[2]) / avgDir[2];
-                wcX->push_back(points.back()[0] + scale * avgDir[0]);
-                wcY->push_back(points.back()[1] + scale * avgDir[1]);
-                wcZ->push_back(points.back()[2] + scale * avgDir[2]);
-            }
 
             // Is track contained in 10 cm cylinder?
             bool startInCylinder = IsPointInsideTrackCylinder(
-                wcX, wcY, wcZ,
-                recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx),
+                &wcX, &wcY, &wcZ,
+                ev.recoBeginX.at(trk_idx), ev.recoBeginY.at(trk_idx), ev.recoBeginZ.at(trk_idx),
                 CYLINDER_RADIUS
             );
             bool endInCylinder = IsPointInsideTrackCylinder(
-                wcX, wcY, wcZ,
-                recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx),
+                &wcX, &wcY, &wcZ,
+                ev.recoEndX.at(trk_idx), ev.recoEndY.at(trk_idx), ev.recoEndZ.at(trk_idx),
                 CYLINDER_RADIUS
             );
             if (startInCylinder && endInCylinder) {
@@ -496,29 +726,29 @@ void RecoDataAnalysis() {
             if (isPrimaryTG) hTGTrackLengths->Fill(trackLength);
 
             if (
-                recoEndZ->at(trk_idx) < 30.0 && 
-                recoBeginZ->at(trk_idx) < 30.0
+                ev.recoEndZ.at(trk_idx) < 30.0 && 
+                ev.recoBeginZ.at(trk_idx) < 30.0
             ) {
                 if (trackLength < SMALL_TRACK_LENGTH_CHEX) smallTracksTPCStart++;
             }
 
             if (
-                !isWithinReducedVolume(recoBeginX->at(trk_idx), recoBeginY->at(trk_idx), recoBeginZ->at(trk_idx)) &&
-                !isWithinReducedVolume(recoEndX->at(trk_idx), recoEndY->at(trk_idx), recoEndZ->at(trk_idx))
+                !isWithinReducedVolume(ev.recoBeginX.at(trk_idx), ev.recoBeginY.at(trk_idx), ev.recoBeginZ.at(trk_idx)) &&
+                !isWithinReducedVolume(ev.recoEndX.at(trk_idx), ev.recoEndY.at(trk_idx), ev.recoEndZ.at(trk_idx))
             ) {
                 numTGTracks++;
 
                 if (isPrimaryTG) {
                     // Track information about background tracks
-                    bool isBeginTrue = recoBeginZ->at(trk_idx) < recoEndZ->at(trk_idx);
+                    bool isBeginTrue = ev.recoBeginZ.at(trk_idx) < ev.recoEndZ.at(trk_idx);
 
-                    const double xs = isBeginTrue ? recoBeginX->at(trk_idx) : recoEndX->at(trk_idx);
-                    const double ys = isBeginTrue ? recoBeginY->at(trk_idx) : recoEndY->at(trk_idx);
-                    const double zs = isBeginTrue ? recoBeginZ->at(trk_idx) : recoEndZ->at(trk_idx);
+                    const double xs = isBeginTrue ? ev.recoBeginX.at(trk_idx) : ev.recoEndX.at(trk_idx);
+                    const double ys = isBeginTrue ? ev.recoBeginY.at(trk_idx) : ev.recoEndY.at(trk_idx);
+                    const double zs = isBeginTrue ? ev.recoBeginZ.at(trk_idx) : ev.recoEndZ.at(trk_idx);
 
-                    const double xe = isBeginTrue ? recoEndX->at(trk_idx)   : recoBeginX->at(trk_idx);
-                    const double ye = isBeginTrue ? recoEndY->at(trk_idx)   : recoBeginY->at(trk_idx);
-                    const double ze = isBeginTrue ? recoEndZ->at(trk_idx)   : recoBeginZ->at(trk_idx);
+                    const double xe = isBeginTrue ? ev.recoEndX.at(trk_idx)   : ev.recoBeginX.at(trk_idx);
+                    const double ye = isBeginTrue ? ev.recoEndY.at(trk_idx)   : ev.recoBeginY.at(trk_idx);
+                    const double ze = isBeginTrue ? ev.recoEndZ.at(trk_idx)   : ev.recoBeginZ.at(trk_idx);
 
                     hBackgroundTracksPosition->Fill(xs, ys);
 
@@ -556,6 +786,11 @@ void RecoDataAnalysis() {
             hNumSmallTracksInCylinder2TG->Fill(numSmallTracksInCylinder);
             hTGSmallTracks2TG->Fill(numSmallTracks);
         }
+        if (numTGTracks <= N_TG_TRACKS && isPrimaryTG) {
+            hNumTracksInCylinderNTG->Fill(numTracksInCylinder);
+            hNumSmallTracksInCylinderNTG->Fill(numSmallTracksInCylinder);
+            hTGSmallTracksNTG->Fill(numSmallTracks);
+        }
 
         hNumTGTracks->Fill(numTGTracks);
 
@@ -563,20 +798,22 @@ void RecoDataAnalysis() {
 
         // Add to histogram of small tracks if primary is throughgoing
         if (isPrimaryTG) {
-            hTGSmallTracks->Fill(numSmallTracks);
             hSmallVsTGTracks->Fill(numSmallTracks, numTGTracks);
+
+            hTGSmallTracks->Fill(numSmallTracks);
             hNumTracksInCylinder->Fill(numTracksInCylinder);
+            hNumSmallTracksInCylinder->Fill(numSmallTracksInCylinder);
 
             // Scan over small track length thresholds and fill 2D histogram
             for (int threshBin = 1; threshBin <= hTGNumSmallTracksVsThresh->GetNbinsX(); ++threshBin) {
                 double threshold = hTGNumSmallTracksVsThresh->GetXaxis()->GetBinCenter(threshBin);
                 int nSmallTracks = 0;
-                for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
-                    if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+                for (size_t trk_idx = 0; trk_idx < ev.recoBeginX.size(); ++trk_idx) {
+                    if (trkWCtoTPCMatch[trk_idx]) continue;
                     double trackLength = sqrt(
-                        pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
-                        pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
-                        pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+                        pow(ev.recoEndX.at(trk_idx) - ev.recoBeginX.at(trk_idx), 2) +
+                        pow(ev.recoEndY.at(trk_idx) - ev.recoBeginY.at(trk_idx), 2) +
+                        pow(ev.recoEndZ.at(trk_idx) - ev.recoBeginZ.at(trk_idx), 2)
                     );
                     if (trackLength < threshold) nSmallTracks++;
                 }
@@ -589,23 +826,23 @@ void RecoDataAnalysis() {
         //////////////////////////
 
         // Look at unreconstructed hits
-        std::unordered_set<int> hitsInTracks(hitRecoAsTrackKey->begin(), hitRecoAsTrackKey->end());
+        std::unordered_set<int> hitsInTracks(ev.hitRecoAsTrackKey.begin(), ev.hitRecoAsTrackKey.end());
 
         // Reconstruct hit clusters
         std::vector<int> candidateHits;
-        for (size_t iHit = 0; iHit < fHitKey->size(); ++iHit) {
+        for (size_t iHit = 0; iHit < std::min(nhits, kMaxHitsData); ++iHit) {
             // Skip hits already in tracks
             if (hitsInTracks.count(iHit) > 0) continue;
 
-            double hitX     = fHitX->at(iHit);
-            double hitW     = fHitW->at(iHit);
-            int    hitPlane = fHitPlane->at(iHit);
+            double hitX     = ev.fHitX.at(iHit);
+            double hitW     = ev.fHitW.at(iHit);
+            int    hitPlane = ev.fHitPlane.at(iHit);
 
             if (isHitNearPrimary(
-                hitWC2TPCKey,
-                fHitX,
-                fHitW,
-                fHitPlane,
+                &ev.hitWC2TPCKey,
+                &ev.fHitX,
+                &ev.fHitW,
+                &ev.fHitPlane,
                 hitX,
                 hitW,
                 hitPlane,
@@ -626,13 +863,13 @@ void RecoDataAnalysis() {
             
             // First, check if we have already used this hit
             int   thisHitKey       = candidateHits.at(iHit);
-            int   thisHitPlane     = fHitPlane->at(thisHitKey);
-            float thisHitW         = fHitW->at(thisHitKey);
-            float thisHitX         = fHitX->at(thisHitKey);
-            float thisHitCharge    = fHitCharge->at(thisHitKey);
-            float thisHitChargeCol = fHitChargeCol->at(thisHitKey);
+            int   thisHitPlane     = ev.fHitPlane.at(thisHitKey);
+            float thisHitW         = ev.fHitW.at(thisHitKey);
+            float thisHitX         = ev.fHitX.at(thisHitKey);
+            float thisHitCharge    = -1;
+            float thisHitChargeCol = -1;
             
-            if (usedHits.count(thisHitKey)) continue;           
+            if (usedHits.count(thisHitKey)) continue;
             
             std::vector<int> clusterKeys;
             std::vector<float> clusterX;
@@ -646,15 +883,15 @@ void RecoDataAnalysis() {
             clusterCharge.push_back(thisHitCharge);
             clusterChargeCol.push_back(thisHitChargeCol);
             
-            for (int iAllHit = 0; iAllHit < fHitKey->size(); ++iAllHit) {
+            for (int iAllHit = 0; iAllHit < std::min(nhits, kMaxHitsData); ++iAllHit) {
                 // Skip already used hits, and those reconstructed in tracks
                 if (usedHits.count(iAllHit) || hitsInTracks.count(iAllHit)) continue;
 
                 // Clusters have to be in same plane
-                if (fHitPlane->at(iAllHit) != thisHitPlane) continue;
+                if (ev.fHitPlane.at(iAllHit) != thisHitPlane) continue;
 
-                float internalHitW  = fHitW->at(iAllHit);
-                float internalHitX  = fHitX->at(iAllHit);
+                float internalHitW  = ev.fHitW.at(iAllHit);
+                float internalHitX  = ev.fHitX.at(iAllHit);
                 float dW            = std::abs(internalHitW - thisHitW);
                 float dX            = std::abs(internalHitX - thisHitX);
                 float distance      = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
@@ -672,10 +909,10 @@ void RecoDataAnalysis() {
                 if (distance < MAX_IN_CLUSTER_SEPARATION) {
                     usedHits.insert(iAllHit);
                     clusterKeys.push_back(iAllHit);
-                    clusterX.push_back(fHitX->at(iAllHit));
-                    clusterW.push_back(fHitW->at(iAllHit));
-                    clusterCharge.push_back(fHitCharge->at(iAllHit));
-                    clusterChargeCol.push_back(fHitChargeCol->at(iAllHit));
+                    clusterX.push_back(ev.fHitX.at(iAllHit));
+                    clusterW.push_back(ev.fHitW.at(iAllHit));
+                    clusterCharge.push_back(-1);
+                    clusterChargeCol.push_back(-1);
                 }
             }
 
@@ -714,20 +951,31 @@ void RecoDataAnalysis() {
         std::vector<int> hitWC2TPCKeyInduction;
         std::vector<int> hitWC2TPCKeyCollection;
 
-        for (size_t i = 0; i < hitWC2TPCKey->size(); ++i) {
+        bool sawPrimaryInduction  = false; 
+        bool sawPrimaryCollection = false;
+
+        for (size_t i = 0; i < ev.hitWC2TPCKey.size(); ++i) {
             // Only care about hits inside the reduced volume
-            auto [i_hit, j_hit] = find_unique_position(recoTrackHitIndices, hitWC2TPCKey->at(i));
+            auto [i_hit, j_hit] = find_unique_position(&ev.recoTrackHitIndices, ev.hitWC2TPCKey.at(i));
+
+            if (ev.fHitPlane.at(ev.hitWC2TPCKey.at(i)) == 0) sawPrimaryInduction = true;
+            else if (ev.fHitPlane.at(ev.hitWC2TPCKey.at(i)) == 1) sawPrimaryCollection = true;
+
             if (!isWithinReducedVolume(
-                recoTrackHitX->at(i_hit)[j_hit],
-                recoTrackHitY->at(i_hit)[j_hit],
-                recoTrackHitZ->at(i_hit)[j_hit]
+                ev.recoTrackHitX.at(i_hit)[j_hit],
+                ev.recoTrackHitY.at(i_hit)[j_hit],
+                ev.recoTrackHitZ.at(i_hit)[j_hit]
             )) continue;
 
-            if (fHitPlane->at(hitWC2TPCKey->at(i)) == 0) hitWC2TPCKeyInduction.push_back(hitWC2TPCKey->at(i));
-            else if (fHitPlane->at(hitWC2TPCKey->at(i)) == 1) hitWC2TPCKeyCollection.push_back(hitWC2TPCKey->at(i));
+            if (ev.fHitPlane.at(ev.hitWC2TPCKey.at(i)) == 0) hitWC2TPCKeyInduction.push_back(ev.hitWC2TPCKey.at(i));
+            else if (ev.fHitPlane.at(ev.hitWC2TPCKey.at(i)) == 1) hitWC2TPCKeyCollection.push_back(ev.hitWC2TPCKey.at(i));
 
-            hTimePrimaryHits->Fill(fHitT->at(hitWC2TPCKey->at(i)));
+            hTimePrimaryHits->Fill(ev.fHitT.at(ev.hitWC2TPCKey.at(i)));
         }
+
+        if (!sawPrimaryCollection) numEventsNoCollection++;
+        if (!sawPrimaryInduction) numEventsNoInduction++;
+        if (!sawPrimaryCollection && !sawPrimaryInduction) numEventsNoEither++;
 
         // First, get a random point in the primary track
         std::vector<int> randomInduction; std::vector<int> randomCollection;
@@ -736,8 +984,8 @@ void RecoDataAnalysis() {
             randomInduction.push_back(0);
 
             for (int i = 1; i < (int) hitWC2TPCKeyInduction.size(); ++i) {
-                double dX = std::abs(fHitX->at(hitWC2TPCKeyInduction[randomInduction[randomInduction.size() - 1]]) - fHitX->at(hitWC2TPCKeyInduction[i]));
-                double dW = std::abs(fHitW->at(hitWC2TPCKeyInduction[randomInduction[randomInduction.size() - 1]]) - fHitW->at(hitWC2TPCKeyInduction[i]));
+                double dX = std::abs(ev.fHitX.at(hitWC2TPCKeyInduction[randomInduction[randomInduction.size() - 1]]) - ev.fHitX.at(hitWC2TPCKeyInduction[i]));
+                double dW = std::abs(ev.fHitW.at(hitWC2TPCKeyInduction[randomInduction[randomInduction.size() - 1]]) - ev.fHitW.at(hitWC2TPCKeyInduction[i]));
 
                 if (dX > MAX_IN_CLUSTER_X_SEPARATION && dW > MAX_IN_CLUSTER_W_SEPARATION) randomInduction.push_back(i);
             }
@@ -746,8 +994,8 @@ void RecoDataAnalysis() {
             randomCollection.push_back(0);
 
             for (int i = 1; i < (int) hitWC2TPCKeyCollection.size(); ++i) {
-                double dX = std::abs(fHitX->at(hitWC2TPCKeyCollection[randomCollection[randomCollection.size() - 1]]) - fHitX->at(hitWC2TPCKeyCollection[i]));
-                double dW = std::abs(fHitW->at(hitWC2TPCKeyCollection[randomCollection[randomCollection.size() - 1]]) - fHitW->at(hitWC2TPCKeyCollection[i]));
+                double dX = std::abs(ev.fHitX.at(hitWC2TPCKeyCollection[randomCollection[randomCollection.size() - 1]]) - ev.fHitX.at(hitWC2TPCKeyCollection[i]));
+                double dW = std::abs(ev.fHitW.at(hitWC2TPCKeyCollection[randomCollection[randomCollection.size() - 1]]) - ev.fHitW.at(hitWC2TPCKeyCollection[i]));
 
                 if (dX > MAX_IN_CLUSTER_X_SEPARATION && dW > MAX_IN_CLUSTER_W_SEPARATION) randomCollection.push_back(i);
             }
@@ -759,18 +1007,18 @@ void RecoDataAnalysis() {
         std::vector<int> candidateRandomHitsInduction;
         std::vector<int> candidateRandomHitsCollection;
 
-        for (size_t iHit = 0; iHit < fHitKey->size(); ++iHit) {
+        for (size_t iHit = 0; iHit < std::min(nhits, kMaxHitsData); ++iHit) {
             // Skip hits already in tracks
             if (hitsInTracks.count(iHit) > 0) continue;
 
-            double hitX     = fHitX->at(iHit);
-            double hitW     = fHitW->at(iHit);
-            int    hitPlane = fHitPlane->at(iHit);
+            double hitX     = ev.fHitX.at(iHit);
+            double hitW     = ev.fHitW.at(iHit);
+            int    hitPlane = ev.fHitPlane.at(iHit);
 
             if (hitPlane == 0 && hitWC2TPCKeyInduction.size() > 0) {
                 for (int idx : randomInduction) {
-                    double dW = (hitW - fHitW->at(hitWC2TPCKeyInduction[idx]));
-                    double dX = (hitX - fHitX->at(hitWC2TPCKeyInduction[idx]));
+                    double dW = (hitW - ev.fHitW.at(hitWC2TPCKeyInduction[idx]));
+                    double dX = (hitX - ev.fHitX.at(hitWC2TPCKeyInduction[idx]));
                     double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
                     if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
                         numUnrecoHitsInduction++;
@@ -779,8 +1027,8 @@ void RecoDataAnalysis() {
                 }
             } else if (hitPlane == 1 && hitWC2TPCKeyCollection.size() > 0) {
                 for (int idx : randomCollection) {
-                    double dW = (hitW - fHitW->at(hitWC2TPCKeyCollection[idx]));
-                    double dX = (hitX - fHitX->at(hitWC2TPCKeyCollection[idx]));
+                    double dW = (hitW - ev.fHitW.at(hitWC2TPCKeyCollection[idx]));
+                    double dX = (hitX - ev.fHitX.at(hitWC2TPCKeyCollection[idx]));
                     double d  = std::sqrt(std::pow(dW, 2) + std::pow(dX, 2));
                     if (d < DISTANCE_TO_PRIMARY_THRESHOLD) {
                         numUnrecoHitsCollection++;
@@ -792,44 +1040,88 @@ void RecoDataAnalysis() {
 
         // Loop through clusters and see which would be close to random point
         int numClustersInduction = 0; int numClustersCollection = 0;
+        int numLargeClustersInduction = 0; int numLargeClustersCollection = 0;
+
+        // Largest cluster
+        double largestClusterSizeInduction = 0; double largestClusterSizeCollection = 0;
+
+        // std::cout << "Got valid event!" << std::endl;
 
         for (size_t iCluster = 0; iCluster < hitClusters.size(); ++iCluster) {
             HitCluster thisCluster = hitClusters[iCluster];
+            double clusterSize = thisCluster.clusterSize;
 
-            for (size_t iHit = 0; iHit < thisCluster.hitKeys.size(); ++iHit) {
-                if (std::find(candidateRandomHitsInduction.begin(), candidateRandomHitsInduction.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsInduction.end()) {
-                    numClustersInduction++;
-                    if (numTGTracks == 0 && isPrimaryTG) hTGClusterSizesInduction0TG->Fill(thisCluster.clusterSize);
-                    else if (numTGTracks == 1 && isPrimaryTG) hTGClusterSizesInduction1TG->Fill(thisCluster.clusterSize);
-                    else if (numTGTracks == 2 && isPrimaryTG) hTGClusterSizesInduction2TG->Fill(thisCluster.clusterSize);
-                    break;
-                } else if (std::find(candidateRandomHitsCollection.begin(), candidateRandomHitsCollection.end(), thisCluster.hitKeys[iHit]) != candidateRandomHitsCollection.end()) {
-                    numClustersCollection++;
-                    if (numTGTracks == 0 && isPrimaryTG) hTGClusterSizesCollection0TG->Fill(thisCluster.clusterSize);
-                    else if (numTGTracks == 1 && isPrimaryTG) hTGClusterSizesCollection1TG->Fill(thisCluster.clusterSize);
-                    else if (numTGTracks == 2 && isPrimaryTG) hTGClusterSizesCollection2TG->Fill(thisCluster.clusterSize);
-                    break;
-                }
+            if (thisCluster.plane == 0) {
+                if (clusterSize > largestClusterSizeInduction) largestClusterSizeInduction = clusterSize;
+                numClustersInduction++;
+                if (isPrimaryTG) hTGClusterSizesInduction->Fill(clusterSize);
+                if (numTGTracks == 0 && isPrimaryTG) hTGClusterSizesInduction0TG->Fill(clusterSize);
+                if (numTGTracks <= 1 && isPrimaryTG) hTGClusterSizesInduction1TG->Fill(clusterSize);
+                if (numTGTracks <= 2 && isPrimaryTG) hTGClusterSizesInduction2TG->Fill(clusterSize);
+                if (numTGTracks <= N_TG_TRACKS && isPrimaryTG) hTGClusterSizesInductionNTG->Fill(clusterSize);
+                if (clusterSize > LARGE_CLUSTER_THRESHOLD) numLargeClustersInduction++;
+            }
+            else if (thisCluster.plane == 1) {
+                if (clusterSize > largestClusterSizeCollection) largestClusterSizeCollection = clusterSize;
+                numClustersCollection++;
+                if (isPrimaryTG) hTGClusterSizesCollection->Fill(clusterSize);
+                if (numTGTracks == 0 && isPrimaryTG) hTGClusterSizesCollection0TG->Fill(clusterSize);
+                if (numTGTracks <= 1 && isPrimaryTG) hTGClusterSizesCollection1TG->Fill(clusterSize);
+                if (numTGTracks <= 2 && isPrimaryTG) hTGClusterSizesCollection2TG->Fill(clusterSize);
+                if (numTGTracks <= N_TG_TRACKS && isPrimaryTG) hTGClusterSizesCollectionNTG->Fill(clusterSize);
+                if (clusterSize > LARGE_CLUSTER_THRESHOLD) numLargeClustersCollection++;
             }
         }
 
+        if (isPrimaryTG) {
+            hTGNumClustersInduction->Fill(numClustersInduction);
+            hTGNumClustersCollection->Fill(numClustersCollection);
+            hTGUnreconstructedHitsInduction->Fill(numUnrecoHitsInduction);
+            hTGUnreconstructedHitsCollection->Fill(numUnrecoHitsCollection);
+            hTGLargestClusterInduction->Fill(largestClusterSizeInduction);
+            hTGLargestClusterCollection->Fill(largestClusterSizeCollection);
+            hTGNumLargeClustersInduction->Fill(numLargeClustersInduction);
+            hTGNumLargeClustersCollection->Fill(numLargeClustersCollection);
+        }
         if (numTGTracks == 0 && isPrimaryTG) {
             hTGNumClustersInduction0TG->Fill(numClustersInduction);
             hTGNumClustersCollection0TG->Fill(numClustersCollection);
             hTGUnreconstructedHitsInduction0TG->Fill(numUnrecoHitsInduction);
             hTGUnreconstructedHitsCollection0TG->Fill(numUnrecoHitsCollection);
+            hTGLargestClusterInduction0TG->Fill(largestClusterSizeInduction);
+            hTGLargestClusterCollection0TG->Fill(largestClusterSizeCollection);
+            hTGNumLargeClustersInduction0TG->Fill(numLargeClustersInduction);
+            hTGNumLargeClustersCollection0TG->Fill(numLargeClustersCollection);
         }
         if (numTGTracks <= 1 && isPrimaryTG) {
             hTGNumClustersInduction1TG->Fill(numClustersInduction);
             hTGNumClustersCollection1TG->Fill(numClustersCollection);
             hTGUnreconstructedHitsInduction1TG->Fill(numUnrecoHitsInduction);
             hTGUnreconstructedHitsCollection1TG->Fill(numUnrecoHitsCollection);
+            hTGLargestClusterInduction1TG->Fill(largestClusterSizeInduction);
+            hTGLargestClusterCollection1TG->Fill(largestClusterSizeCollection);
+            hTGNumLargeClustersInduction1TG->Fill(numLargeClustersInduction);
+            hTGNumLargeClustersCollection1TG->Fill(numLargeClustersCollection);
         }
         if (numTGTracks <= 2 && isPrimaryTG) {
             hTGNumClustersInduction2TG->Fill(numClustersInduction);
             hTGNumClustersCollection2TG->Fill(numClustersCollection);
             hTGUnreconstructedHitsInduction2TG->Fill(numUnrecoHitsInduction);
             hTGUnreconstructedHitsCollection2TG->Fill(numUnrecoHitsCollection);
+            hTGLargestClusterInduction2TG->Fill(largestClusterSizeInduction);
+            hTGLargestClusterCollection2TG->Fill(largestClusterSizeCollection);
+            hTGNumLargeClustersInduction2TG->Fill(numLargeClustersInduction);
+            hTGNumLargeClustersCollection2TG->Fill(numLargeClustersCollection);
+        }
+        if (numTGTracks <= N_TG_TRACKS && isPrimaryTG) {
+            hTGNumClustersInductionNTG->Fill(numClustersInduction);
+            hTGNumClustersCollectionNTG->Fill(numClustersCollection);
+            hTGUnreconstructedHitsInductionNTG->Fill(numUnrecoHitsInduction);
+            hTGUnreconstructedHitsCollectionNTG->Fill(numUnrecoHitsCollection);
+            hTGLargestClusterInductionNTG->Fill(largestClusterSizeInduction);
+            hTGLargestClusterCollectionNTG->Fill(largestClusterSizeCollection);
+            hTGNumLargeClustersInductionNTG->Fill(numLargeClustersInduction);
+            hTGNumLargeClustersCollectionNTG->Fill(numLargeClustersCollection);
         }
 
         //////////////////
@@ -840,6 +1132,7 @@ void RecoDataAnalysis() {
         if (numTGTracks <= 0) eventCount0TG++;
         if (numTGTracks <= 1) eventCount1TG++;
         if (numTGTracks <= 2) eventCount2TG++;
+        if (numTGTracks <= N_TG_TRACKS) eventCountNTG++;
 
         if (numTGTracks > MAX_NUM_TG_TRACKS) continue;
         
@@ -848,6 +1141,9 @@ void RecoDataAnalysis() {
         //////////////////
 
         if (numSmallTracksInCylinder > ALLOWED_CYLINDER_SMALL_TRACKS) continue;
+
+        // Check front face KE at this point
+        hFrontFaceKE->Fill(initialKE);
         
         ////////////////////////
         // Reduced volume cut //
@@ -855,7 +1151,7 @@ void RecoDataAnalysis() {
 
         candidateInteractingEvents++;
 
-        if (isPrimaryTG) continue;
+        if (!isWithinReducedVolume(ev.WC2TPCPrimaryEndX, ev.WC2TPCPrimaryEndY, ev.WC2TPCPrimaryEndZ)) continue;
 
         ///////////////////////////////////
         // Secondary particle kinematics //
@@ -863,24 +1159,24 @@ void RecoDataAnalysis() {
 
         int numCandidateProtons = 0;
 
-        for (size_t trk_idx = 0; trk_idx < recoBeginX->size(); ++trk_idx) {
-            if (recoTrkID->at(trk_idx) == WC2TPCtrkID) continue;
+        for (size_t trk_idx = 0; trk_idx < ev.recoBeginX.size(); ++trk_idx) {
+            if (trkWCtoTPCMatch[trk_idx]) continue;
 
             double distanceFromStart = distance(
-                recoBeginX->at(trk_idx), WC2TPCPrimaryEndX, 
-                recoBeginY->at(trk_idx), WC2TPCPrimaryEndY,
-                recoBeginZ->at(trk_idx), WC2TPCPrimaryEndZ
+                ev.recoBeginX.at(trk_idx), ev.WC2TPCPrimaryEndX, 
+                ev.recoBeginY.at(trk_idx), ev.WC2TPCPrimaryEndY,
+                ev.recoBeginZ.at(trk_idx), ev.WC2TPCPrimaryEndZ
             );
             double distanceFromEnd = distance(
-                recoEndX->at(trk_idx), WC2TPCPrimaryEndX, 
-                recoEndY->at(trk_idx), WC2TPCPrimaryEndY,
-                recoEndZ->at(trk_idx), WC2TPCPrimaryEndZ
+                ev.recoEndX.at(trk_idx), ev.WC2TPCPrimaryEndX, 
+                ev.recoEndY.at(trk_idx), ev.WC2TPCPrimaryEndY,
+                ev.recoEndZ.at(trk_idx), ev.WC2TPCPrimaryEndZ
             );
 
             double trackLength = sqrt(
-                pow(recoEndX->at(trk_idx) - recoBeginX->at(trk_idx), 2) +
-                pow(recoEndY->at(trk_idx) - recoBeginY->at(trk_idx), 2) +
-                pow(recoEndZ->at(trk_idx) - recoBeginZ->at(trk_idx), 2)
+                pow(ev.recoEndX.at(trk_idx) - ev.recoBeginX.at(trk_idx), 2) +
+                pow(ev.recoEndY.at(trk_idx) - ev.recoBeginY.at(trk_idx), 2) +
+                pow(ev.recoEndZ.at(trk_idx) - ev.recoBeginZ.at(trk_idx), 2)
             );
 
             if (distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS) {
@@ -892,9 +1188,15 @@ void RecoDataAnalysis() {
     }
 
     std::cout << std::endl;
+    std::cout << "Events with no primary hits in induction: " << numEventsNoInduction << std::endl;
+    std::cout << "Events with no primary hits in collection: " << numEventsNoCollection << std::endl;
+    std::cout << "Events with no primary hits in either: " << numEventsNoEither << std::endl;
+    std::cout << std::endl;
+
     std::cout << "Number of events with at most 0 TG tracks: " << eventCount0TG << std::endl;
     std::cout << "Number of events with at most 1 TG tracks: " << eventCount1TG << std::endl;
     std::cout << "Number of events with at most 2 TG tracks: " << eventCount2TG << std::endl;
+    std::cout << "Number of events with at most " << N_TG_TRACKS << " TG tracks: " << eventCountNTG << std::endl;
     std::cout << std::endl;
 
     std::cout << "Number of events before RV cut: " << candidateInteractingEvents << std::endl;
@@ -932,13 +1234,21 @@ void RecoDataAnalysis() {
     double scaling0TG = hNumTracksInCylinder0TG->Integral() / hMCNumTracksInCylinder0TG->Integral();
     double scaling1TG = hNumTracksInCylinder1TG->Integral() / hMCNumTracksInCylinder1TG->Integral();
     double scaling2TG = hNumTracksInCylinder2TG->Integral() / hMCNumTracksInCylinder2TG->Integral();
+    double scalingNTG = hNumTracksInCylinderNTG->Integral() / hMCNumTracksInCylinderNTG->Integral();
     double scalingKin = hNumCandidateProtons->Integral() / hMCNumCandidateProtons->Integral();
 
     std::cout << "Scaling 0 TG: " << scaling0TG << std::endl;
     std::cout << "Scaling 1 TG: " << scaling1TG << std::endl;
     std::cout << "Scaling 2 TG: " << scaling2TG << std::endl;
+    std::cout << "Scaling N TG: " << scalingNTG << std::endl;
     std::cout << "Scaling Kin: " << scalingKin << std::endl;
     std::cout << std::endl;
+
+    double scalingFFKE = hFrontFaceKE->Integral() / hMCValidFrontFaceKE->Integral();
+    hMCValidFrontFaceKE->Scale(scalingFFKE);
+    hMCValidFrontFaceKEPion->Scale(scalingFFKE);
+    hMCValidFrontFaceKEMuon->Scale(scalingFFKE);
+    hMCValidFrontFaceKEElectron->Scale(scalingFFKE);
 
     // Scale MC histograms to data histograms using event counts
     hMCNumWC2TPCMatch->Scale(hNumWC2TPCMatch->Integral() / hMCNumWC2TPCMatch->Integral());
@@ -951,44 +1261,85 @@ void RecoDataAnalysis() {
     hMCTrackLengthsNearVertex->Scale(scalingNoTG);
 
     // primary TG
-    hMCTGSmallTracks->Scale(scalingTG);
     hMCTGTrackLengths->Scale(scalingTG);
 
+    hMCTGSmallTracks->Scale(scalingTG);
     hMCTGSmallTracks0TG->Scale(scaling0TG);
     hMCTGSmallTracks1TG->Scale(scaling1TG);
     hMCTGSmallTracks2TG->Scale(scaling2TG);
+    hMCTGSmallTracksNTG->Scale(scalingNTG);
 
+    hMCNumTracksInCylinder->Scale(scaling);
     hMCNumTracksInCylinder0TG->Scale(scaling0TG);
     hMCNumTracksInCylinder1TG->Scale(scaling1TG);
     hMCNumTracksInCylinder2TG->Scale(scaling2TG);
+    hMCNumTracksInCylinderNTG->Scale(scalingNTG);
 
+    hMCNumSmallTracksInCylinder->Scale(scaling);
     hMCNumSmallTracksInCylinder0TG->Scale(scaling0TG);
     hMCNumSmallTracksInCylinder1TG->Scale(scaling1TG);
     hMCNumSmallTracksInCylinder2TG->Scale(scaling2TG);
+    hMCNumSmallTracksInCylinderNTG->Scale(scalingNTG);
 
+    hMCTGUnreconstructedHitsInduction->Scale(scalingTG);
     hMCTGUnreconstructedHitsInduction0TG->Scale(scaling0TG);
     hMCTGUnreconstructedHitsInduction1TG->Scale(scaling1TG);
     hMCTGUnreconstructedHitsInduction2TG->Scale(scaling2TG);
+    hMCTGUnreconstructedHitsInductionNTG->Scale(scalingNTG);
 
+    hMCTGUnreconstructedHitsCollection->Scale(scalingTG);
     hMCTGUnreconstructedHitsCollection0TG->Scale(scaling0TG);
     hMCTGUnreconstructedHitsCollection1TG->Scale(scaling1TG);
     hMCTGUnreconstructedHitsCollection2TG->Scale(scaling2TG);
+    hMCTGUnreconstructedHitsCollectionNTG->Scale(scalingNTG);
 
+    hMCTGClusterSizesInduction->Scale(scalingTG);
     hMCTGClusterSizesInduction0TG->Scale(scaling0TG);
     hMCTGClusterSizesInduction1TG->Scale(scaling1TG);
     hMCTGClusterSizesInduction2TG->Scale(scaling2TG);
+    hMCTGClusterSizesInductionNTG->Scale(scalingNTG);
 
+    hMCTGClusterSizesCollection->Scale(scalingTG);
     hMCTGClusterSizesCollection0TG->Scale(scaling0TG);
     hMCTGClusterSizesCollection1TG->Scale(scaling1TG);
     hMCTGClusterSizesCollection2TG->Scale(scaling2TG);
+    hMCTGClusterSizesCollectionNTG->Scale(scalingNTG);
 
+    hMCTGNumClustersCollection->Scale(scalingTG);
     hMCTGNumClustersCollection0TG->Scale(scaling0TG);
     hMCTGNumClustersCollection1TG->Scale(scaling1TG);
     hMCTGNumClustersCollection2TG->Scale(scaling2TG);
+    hMCTGNumClustersCollectionNTG->Scale(scalingNTG);
 
+    hMCTGNumClustersInduction->Scale(scalingTG);
     hMCTGNumClustersInduction0TG->Scale(scaling0TG);
     hMCTGNumClustersInduction1TG->Scale(scaling1TG);
     hMCTGNumClustersInduction2TG->Scale(scaling2TG);
+    hMCTGNumClustersInductionNTG->Scale(scalingNTG);
+
+    hMCTGLargestClusterCollection->Scale(scalingTG);
+    hMCTGLargestClusterCollection0TG->Scale(scaling0TG);
+    hMCTGLargestClusterCollection1TG->Scale(scaling1TG);
+    hMCTGLargestClusterCollection2TG->Scale(scaling2TG);
+    hMCTGLargestClusterCollectionNTG->Scale(scalingNTG);
+
+    hMCTGLargestClusterInduction->Scale(scalingTG);
+    hMCTGLargestClusterInduction0TG->Scale(scaling0TG);
+    hMCTGLargestClusterInduction1TG->Scale(scaling1TG);
+    hMCTGLargestClusterInduction2TG->Scale(scaling2TG);
+    hMCTGLargestClusterInductionNTG->Scale(scalingNTG);
+
+    hMCTGNumLargeClustersCollection->Scale(scalingTG);
+    hMCTGNumLargeClustersCollection0TG->Scale(scaling0TG);
+    hMCTGNumLargeClustersCollection1TG->Scale(scaling1TG);
+    hMCTGNumLargeClustersCollection2TG->Scale(scaling2TG);
+    hMCTGNumLargeClustersCollectionNTG->Scale(scalingNTG);
+
+    hMCTGNumLargeClustersInduction->Scale(scalingTG);
+    hMCTGNumLargeClustersInduction0TG->Scale(scaling0TG);
+    hMCTGNumLargeClustersInduction1TG->Scale(scaling1TG);
+    hMCTGNumLargeClustersInduction2TG->Scale(scaling2TG);
+    hMCTGNumLargeClustersInductionNTG->Scale(scalingNTG);
 
     // Secondary particle kinematics
     hMCNumCandidateProtons->Scale(scalingKin);
@@ -997,19 +1348,6 @@ void RecoDataAnalysis() {
     //////////////////
     // Create plots //
     //////////////////
-
-    std::vector<int> Colors = {
-        kBlack,
-        kBlue,
-        kRed,
-        kGreen,
-        kOrange+1,
-        kMagenta,
-        kCyan+1,
-        kViolet+1,
-        kAzure+1,
-        kPink+6
-    };
 
     std::vector<std::vector<TH1*>> PlotGroups = {
         // TOF
@@ -1023,13 +1361,17 @@ void RecoDataAnalysis() {
         {hRadDistMidPlane},
 
         // Cylinder
+        {hNumTracksInCylinder, hMCNumTracksInCylinder},
         {hNumTracksInCylinder0TG, hMCNumTracksInCylinder0TG},
         {hNumTracksInCylinder1TG, hMCNumTracksInCylinder1TG},
         {hNumTracksInCylinder2TG, hMCNumTracksInCylinder2TG},
+        {hNumTracksInCylinderNTG, hMCNumTracksInCylinderNTG},
 
+        {hNumSmallTracksInCylinder, hMCNumSmallTracksInCylinder},
         {hNumSmallTracksInCylinder0TG, hMCNumSmallTracksInCylinder0TG},
         {hNumSmallTracksInCylinder1TG, hMCNumSmallTracksInCylinder1TG},
         {hNumSmallTracksInCylinder2TG, hMCNumSmallTracksInCylinder2TG},
+        {hNumSmallTracksInCylinderNTG, hMCNumSmallTracksInCylinderNTG},
 
         // Hits in primary
         {hTimePrimaryHits},
@@ -1041,34 +1383,72 @@ void RecoDataAnalysis() {
         {hTGTrackLengths, hMCTGTrackLengths},
 
         // Comparing TG threshold
+        {hTGSmallTracks, hMCTGSmallTracks},
         {hTGSmallTracks0TG, hMCTGSmallTracks0TG},
         {hTGSmallTracks1TG, hMCTGSmallTracks1TG},
         {hTGSmallTracks2TG, hMCTGSmallTracks2TG},
+        {hTGSmallTracksNTG, hMCTGSmallTracksNTG},
 
         // Unreconstructed hits
+        {hTGUnreconstructedHitsInduction, hMCTGUnreconstructedHitsInduction},
         {hTGUnreconstructedHitsInduction0TG, hMCTGUnreconstructedHitsInduction0TG},
         {hTGUnreconstructedHitsInduction1TG, hMCTGUnreconstructedHitsInduction1TG},
         {hTGUnreconstructedHitsInduction2TG, hMCTGUnreconstructedHitsInduction2TG},
+        {hTGUnreconstructedHitsInductionNTG, hMCTGUnreconstructedHitsInductionNTG},
 
+        {hTGUnreconstructedHitsCollection, hMCTGUnreconstructedHitsCollection},
         {hTGUnreconstructedHitsCollection0TG, hMCTGUnreconstructedHitsCollection0TG},
         {hTGUnreconstructedHitsCollection1TG, hMCTGUnreconstructedHitsCollection1TG},
         {hTGUnreconstructedHitsCollection2TG, hMCTGUnreconstructedHitsCollection2TG},
+        {hTGUnreconstructedHitsCollectionNTG, hMCTGUnreconstructedHitsCollectionNTG},
 
+        {hTGClusterSizesCollection, hMCTGClusterSizesCollection},
         {hTGClusterSizesCollection0TG, hMCTGClusterSizesCollection0TG},
         {hTGClusterSizesCollection1TG, hMCTGClusterSizesCollection1TG},
         {hTGClusterSizesCollection2TG, hMCTGClusterSizesCollection2TG},
+        {hTGClusterSizesCollectionNTG, hMCTGClusterSizesCollectionNTG},
 
+        {hTGClusterSizesInduction, hMCTGClusterSizesInduction},
         {hTGClusterSizesInduction0TG, hMCTGClusterSizesInduction0TG},
         {hTGClusterSizesInduction1TG, hMCTGClusterSizesInduction1TG},
         {hTGClusterSizesInduction2TG, hMCTGClusterSizesInduction2TG},
+        {hTGClusterSizesInductionNTG, hMCTGClusterSizesInductionNTG},
 
+        {hTGNumClustersCollection, hMCTGNumClustersCollection},
         {hTGNumClustersCollection0TG, hMCTGNumClustersCollection0TG},
         {hTGNumClustersCollection1TG, hMCTGNumClustersCollection1TG},
         {hTGNumClustersCollection2TG, hMCTGNumClustersCollection2TG},
+        {hTGNumClustersCollectionNTG, hMCTGNumClustersCollectionNTG},
 
+        {hTGNumClustersInduction, hMCTGNumClustersInduction},
         {hTGNumClustersInduction0TG, hMCTGNumClustersInduction0TG},
         {hTGNumClustersInduction1TG, hMCTGNumClustersInduction1TG},
         {hTGNumClustersInduction2TG, hMCTGNumClustersInduction2TG},
+        {hTGNumClustersInductionNTG, hMCTGNumClustersInductionNTG},
+
+        {hTGLargestClusterCollection, hMCTGLargestClusterCollection},
+        {hTGLargestClusterCollection0TG, hMCTGLargestClusterCollection0TG},
+        {hTGLargestClusterCollection1TG, hMCTGLargestClusterCollection1TG},
+        {hTGLargestClusterCollection2TG, hMCTGLargestClusterCollection2TG},
+        {hTGLargestClusterCollectionNTG, hMCTGLargestClusterCollectionNTG},
+
+        {hTGLargestClusterInduction, hMCTGLargestClusterInduction},
+        {hTGLargestClusterInduction0TG, hMCTGLargestClusterInduction0TG},
+        {hTGLargestClusterInduction1TG, hMCTGLargestClusterInduction1TG},
+        {hTGLargestClusterInduction2TG, hMCTGLargestClusterInduction2TG},
+        {hTGLargestClusterInductionNTG, hMCTGLargestClusterInductionNTG},
+
+        {hTGNumLargeClustersCollection, hMCTGNumLargeClustersCollection},
+        {hTGNumLargeClustersCollection0TG, hMCTGNumLargeClustersCollection0TG},
+        {hTGNumLargeClustersCollection1TG, hMCTGNumLargeClustersCollection1TG},
+        {hTGNumLargeClustersCollection2TG, hMCTGNumLargeClustersCollection2TG},
+        {hTGNumLargeClustersCollectionNTG, hMCTGNumLargeClustersCollectionNTG},
+
+        {hTGNumLargeClustersInduction, hMCTGNumLargeClustersInduction},
+        {hTGNumLargeClustersInduction0TG, hMCTGNumLargeClustersInduction0TG},
+        {hTGNumLargeClustersInduction1TG, hMCTGNumLargeClustersInduction1TG},
+        {hTGNumLargeClustersInduction2TG, hMCTGNumLargeClustersInduction2TG},
+        {hTGNumLargeClustersInductionNTG, hMCTGNumLargeClustersInductionNTG},
 
         // Secondary particle kinematics
         {hNumCandidateProtons, hMCNumCandidateProtons},
@@ -1090,7 +1470,11 @@ void RecoDataAnalysis() {
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
 
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
@@ -1110,28 +1494,66 @@ void RecoDataAnalysis() {
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
 
         // Unreconstructed hits
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
-
-        {"Data", "MC (scaled)"},
-        {"Data", "MC (scaled)"},
-        {"Data", "MC (scaled)"},
-
-        {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
 
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
 
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
 
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
+
+        {"Data", "MC (scaled)"},
+        {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
         {"Data", "MC (scaled)"},
@@ -1153,13 +1575,17 @@ void RecoDataAnalysis() {
         "WCQuality/RadDistMidPlane",
 
         // Cylinder
-        "Cylinder/NumTracksInCylinder0TG",
-        "Cylinder/NumTracksInCylinder1TG",
-        "Cylinder/NumTracksInCylinder2TG",
+        "Cylinder/NumTracksInCylinder",
+        "Cylinder/0TG/NumTracksInCylinder0TG",
+        "Cylinder/1TG/NumTracksInCylinder1TG",
+        "Cylinder/2TG/NumTracksInCylinder2TG",
+        "Cylinder/NTG/NumTracksInCylinderNTG",
 
-        "Cylinder/NumSmallTracksInCylinder0TG",
-        "Cylinder/NumSmallTracksInCylinder1TG",
-        "Cylinder/NumSmallTracksInCylinder2TG",
+        "Cylinder/NumSmallTracksInCylinder",
+        "Cylinder/0TG/NumSmallTracksInCylinder0TG",
+        "Cylinder/1TG/NumSmallTracksInCylinder1TG",
+        "Cylinder/2TG/NumSmallTracksInCylinder2TG",
+        "Cylinder/NTG/NumSmallTracksInCylinderNTG",
 
         // Hits in primary
         "Primary/HitTime",
@@ -1171,34 +1597,72 @@ void RecoDataAnalysis() {
         "Primary/TGTrackLengths",
 
         // Small tracks when primary is TG
-        "Primary/TGSmallTracks0TG",
-        "Primary/TGSmallTracks1TG",
-        "Primary/TGSmallTracks2TG",
+        "Primary/TGSmallTracks",
+        "Primary/0TG/TGSmallTracks0TG",
+        "Primary/1TG/TGSmallTracks1TG",
+        "Primary/2TG/TGSmallTracks2TG",
+        "Primary/NTG/TGSmallTracksNTG",
 
         // Unreconstructed hits
-        "UnrecoHits/UnreconstructedInductionHits0TG",
-        "UnrecoHits/UnreconstructedInductionHits1TG",
-        "UnrecoHits/UnreconstructedInductionHits2TG",
+        "UnrecoHits/UnreconstructedInductionHits",
+        "UnrecoHits/0TG/UnreconstructedInductionHits0TG",
+        "UnrecoHits/1TG/UnreconstructedInductionHits1TG",
+        "UnrecoHits/2TG/UnreconstructedInductionHits2TG",
+        "UnrecoHits/NTG/UnreconstructedInductionHitsNTG",
 
-        "UnrecoHits/UnreconstructedCollectionHits0TG",
-        "UnrecoHits/UnreconstructedCollectionHits1TG",
-        "UnrecoHits/UnreconstructedCollectionHits2TG",
+        "UnrecoHits/UnreconstructedCollectionHits",
+        "UnrecoHits/0TG/UnreconstructedCollectionHits0TG",
+        "UnrecoHits/1TG/UnreconstructedCollectionHits1TG",
+        "UnrecoHits/2TG/UnreconstructedCollectionHits2TG",
+        "UnrecoHits/NTG/UnreconstructedCollectionHitsNTG",
 
-        "UnrecoHits/ClusterSizesCollection0TG",
-        "UnrecoHits/ClusterSizesCollection1TG",
-        "UnrecoHits/ClusterSizesCollection2TG",
+        "UnrecoHits/ClusterSizesCollection",
+        "UnrecoHits/0TG/ClusterSizesCollection0TG",
+        "UnrecoHits/1TG/ClusterSizesCollection1TG",
+        "UnrecoHits/2TG/ClusterSizesCollection2TG",
+        "UnrecoHits/NTG/ClusterSizesCollectionNTG",
 
-        "UnrecoHits/ClusterSizesInduction0TG",
-        "UnrecoHits/ClusterSizesInduction1TG",
-        "UnrecoHits/ClusterSizesInduction2TG",
+        "UnrecoHits/ClusterSizesInduction",
+        "UnrecoHits/0TG/ClusterSizesInduction0TG",
+        "UnrecoHits/1TG/ClusterSizesInduction1TG",
+        "UnrecoHits/2TG/ClusterSizesInduction2TG",
+        "UnrecoHits/NTG/ClusterSizesInductionNTG",
 
-        "UnrecoHits/NumClustersCollection0TG",
-        "UnrecoHits/NumClustersCollection1TG",
-        "UnrecoHits/NumClustersCollection2TG",
+        "UnrecoHits/NumClustersCollection",
+        "UnrecoHits/0TG/NumClustersCollection0TG",
+        "UnrecoHits/1TG/NumClustersCollection1TG",
+        "UnrecoHits/2TG/NumClustersCollection2TG",
+        "UnrecoHits/NTG/NumClustersCollectionNTG",
 
-        "UnrecoHits/NumClustersInduction0TG",
-        "UnrecoHits/NumClustersInduction1TG",
-        "UnrecoHits/NumClustersInduction2TG",
+        "UnrecoHits/NumClustersInduction",
+        "UnrecoHits/0TG/NumClustersInduction0TG",
+        "UnrecoHits/1TG/NumClustersInduction1TG",
+        "UnrecoHits/2TG/NumClustersInduction2TG",
+        "UnrecoHits/NTG/NumClustersInductionNTG",
+
+        "UnrecoHits/LargestClusterCollection",
+        "UnrecoHits/0TG/LargestClusterCollection0TG",
+        "UnrecoHits/1TG/LargestClusterCollection1TG",
+        "UnrecoHits/2TG/LargestClusterCollection2TG",
+        "UnrecoHits/NTG/LargestClusterCollectionNTG",
+
+        "UnrecoHits/LargestClusterInduction",
+        "UnrecoHits/0TG/LargestClusterInduction0TG",
+        "UnrecoHits/1TG/LargestClusterInduction1TG",
+        "UnrecoHits/2TG/LargestClusterInduction2TG",
+        "UnrecoHits/NTG/LargestClusterInductionNTG",
+
+        "UnrecoHits/NumLargeClustersCollection",
+        "UnrecoHits/0TG/NumLargeClustersCollection0TG",
+        "UnrecoHits/1TG/NumLargeClustersCollection1TG",
+        "UnrecoHits/2TG/NumLargeClustersCollection2TG",
+        "UnrecoHits/NTG/NumLargeClustersCollectionNTG",
+
+        "UnrecoHits/NumLargeClustersInduction",
+        "UnrecoHits/0TG/NumLargeClustersInduction0TG",
+        "UnrecoHits/1TG/NumLargeClustersInduction1TG",
+        "UnrecoHits/2TG/NumLargeClustersInduction2TG",
+        "UnrecoHits/NTG/NumLargeClustersInductionNTG",
 
         // Secondary particle kinematics
         "Kinematics/NumCandidateProtons",
@@ -1220,7 +1684,11 @@ void RecoDataAnalysis() {
         "# of tracks",
         "# of tracks",
         "# of tracks",
+        "# of tracks",
+        "# of tracks",
 
+        "# of small tracks",
+        "# of small tracks",
         "# of small tracks",
         "# of small tracks",
         "# of small tracks",
@@ -1238,31 +1706,69 @@ void RecoDataAnalysis() {
         "# of small tracks",
         "# of small tracks",
         "# of small tracks",
+        "# of small tracks",
+        "# of small tracks",
 
         // Unreconstructed hits
         "# of unreconstructed hits",
         "# of unreconstructed hits",
         "# of unreconstructed hits",
+        "# of unreconstructed hits",
+        "# of unreconstructed hits",
 
         "# of unreconstructed hits",
         "# of unreconstructed hits",
         "# of unreconstructed hits",
+        "# of unreconstructed hits",
+        "# of unreconstructed hits",
 
         "Cluster size [cm]",
         "Cluster size [cm]",
         "Cluster size [cm]",
+        "Cluster size [cm]",
+        "Cluster size [cm]",
 
         "Cluster size [cm]",
         "Cluster size [cm]",
         "Cluster size [cm]",
+        "Cluster size [cm]",
+        "Cluster size [cm]",
 
         "Number of clusters",
         "Number of clusters",
         "Number of clusters",
+        "Number of clusters",
+        "Number of clusters",
 
         "Number of clusters",
         "Number of clusters",
         "Number of clusters",
+        "Number of clusters",
+        "Number of clusters",
+
+        "Largest cluster size [cm]",
+        "Largest cluster size [cm]",
+        "Largest cluster size [cm]",
+        "Largest cluster size [cm]",
+        "Largest cluster size [cm]",
+
+        "Largest cluster size [cm]",
+        "Largest cluster size [cm]",
+        "Largest cluster size [cm]",
+        "Largest cluster size [cm]",
+        "Largest cluster size [cm]",
+
+        "Number of large clusters",
+        "Number of large clusters",
+        "Number of large clusters",
+        "Number of large clusters",
+        "Number of large clusters",
+
+        "Number of large clusters",
+        "Number of large clusters",
+        "Number of large clusters",
+        "Number of large clusters",
+        "Number of large clusters",
 
         // Secondary particle kinematics
         "# of candidate proton",
@@ -1284,7 +1790,11 @@ void RecoDataAnalysis() {
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
+        "Counts",
 
+        "Counts",
+        "Counts",
         "Counts",
         "Counts",
         "Counts",
@@ -1303,28 +1813,66 @@ void RecoDataAnalysis() {
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
+        "Counts",
 
         // Unreconstructed hits
         "Counts",
         "Counts",
         "Counts",
-
-        "Counts",
-        "Counts",
-        "Counts",
-
-        "Counts",
         "Counts",
         "Counts",
 
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
+        "Counts",
 
         "Counts",
         "Counts",
         "Counts",
+        "Counts",
+        "Counts",
 
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+
+        "Counts",
+        "Counts",
         "Counts",
         "Counts",
         "Counts",
@@ -1349,7 +1897,11 @@ void RecoDataAnalysis() {
         false,
         false,
         false,
+        false,
+        false,
 
+        false,
+        false,
         false,
         false,
         false,
@@ -1367,28 +1919,66 @@ void RecoDataAnalysis() {
         false,
         false,
         false,
+        false,
+        false,
 
         // Unreconstructed hits
         false,
         false,
         false,
-
-        false,
-        false,
-        false,
-
-        false,
         false,
         false,
 
         false,
         false,
         false,
+        false,
+        false,
 
         false,
         false,
         false,
+        false,
+        false,
 
+        false,
+        false,
+        false,
+        false,
+        false,
+
+        false,
+        false,
+        false,
+        false,
+        false,
+
+        false,
+        false,
+        false,
+        false,
+        false,
+
+        false,
+        false,
+        false,
+        false,
+        false,
+
+        false,
+        false,
+        false,
+        false,
+        false,
+
+        false,
+        false,
+        false,
+        false,
+        false,
+
+        false,
+        false,
         false,
         false,
         false,
@@ -1413,7 +2003,11 @@ void RecoDataAnalysis() {
         {true, false},
         {true, false},
         {true, false},
+        {true, false},
+        {true, false},
 
+        {true, false},
+        {true, false},
         {true, false},
         {true, false},
         {true, false},
@@ -1431,28 +2025,66 @@ void RecoDataAnalysis() {
         {true, false},
         {true, false},
         {true, false},
+        {true, false},
+        {true, false},
 
         // Unreconstructed hits
         {true, false},
         {true, false},
         {true, false},
-
-        {true, false},
-        {true, false},
-        {true, false},
-
-        {true, false},
         {true, false},
         {true, false},
 
         {true, false},
         {true, false},
         {true, false},
+        {true, false},
+        {true, false},
 
         {true, false},
         {true, false},
         {true, false},
+        {true, false},
+        {true, false},
 
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+        {true, false},
+
+        {true, false},
+        {true, false},
         {true, false},
         {true, false},
         {true, false},
@@ -1468,19 +2100,25 @@ void RecoDataAnalysis() {
     
     std::vector<std::pair<TH1*,TH1*>> PlotGroupsFracDiff = {
         // Primary
+        {hTGSmallTracks, hMCTGSmallTracks},
         {hTGSmallTracks0TG, hMCTGSmallTracks0TG},
         {hTGSmallTracks1TG, hMCTGSmallTracks1TG},
         {hTGSmallTracks2TG, hMCTGSmallTracks2TG},
+        {hTGSmallTracksNTG, hMCTGSmallTracksNTG},
         {hTGTrackLengths, hMCTGTrackLengths},
 
         // Cylinder
+        {hNumTracksInCylinder, hMCNumTracksInCylinder},
         {hNumTracksInCylinder0TG, hMCNumTracksInCylinder0TG},
         {hNumTracksInCylinder1TG, hMCNumTracksInCylinder1TG},
         {hNumTracksInCylinder2TG, hMCNumTracksInCylinder2TG},
+        {hNumTracksInCylinderNTG, hMCNumTracksInCylinderNTG},
 
+        {hNumSmallTracksInCylinder, hMCNumSmallTracksInCylinder},
         {hNumSmallTracksInCylinder0TG, hMCNumSmallTracksInCylinder0TG},
         {hNumSmallTracksInCylinder1TG, hMCNumSmallTracksInCylinder1TG},
         {hNumSmallTracksInCylinder2TG, hMCNumSmallTracksInCylinder2TG},
+        {hNumSmallTracksInCylinderNTG, hMCNumSmallTracksInCylinderNTG},
 
         // Near vertex
         {hTracksNearVertex, hMCTracksNearVertex},
@@ -1490,29 +2128,65 @@ void RecoDataAnalysis() {
         {hNumTGTracks, hMCNumTGTracks},
 
         // Unreconstruced hits
+        {hTGUnreconstructedHitsInduction, hMCTGUnreconstructedHitsInduction},
         {hTGUnreconstructedHitsInduction0TG, hMCTGUnreconstructedHitsInduction0TG},
         {hTGUnreconstructedHitsInduction1TG, hMCTGUnreconstructedHitsInduction1TG},
         {hTGUnreconstructedHitsInduction2TG, hMCTGUnreconstructedHitsInduction2TG},
+        {hTGUnreconstructedHitsInductionNTG, hMCTGUnreconstructedHitsInductionNTG},
 
+        {hTGUnreconstructedHitsCollection, hMCTGUnreconstructedHitsCollection},
         {hTGUnreconstructedHitsCollection0TG, hMCTGUnreconstructedHitsCollection0TG},
         {hTGUnreconstructedHitsCollection1TG, hMCTGUnreconstructedHitsCollection1TG},
         {hTGUnreconstructedHitsCollection2TG, hMCTGUnreconstructedHitsCollection2TG},
+        {hTGUnreconstructedHitsCollectionNTG, hMCTGUnreconstructedHitsCollectionNTG},
 
+        {hTGClusterSizesCollection, hMCTGClusterSizesCollection},
         {hTGClusterSizesCollection0TG, hMCTGClusterSizesCollection0TG},
         {hTGClusterSizesCollection1TG, hMCTGClusterSizesCollection1TG},
         {hTGClusterSizesCollection2TG, hMCTGClusterSizesCollection2TG},
+        {hTGClusterSizesCollectionNTG, hMCTGClusterSizesCollectionNTG},
 
+        {hTGClusterSizesInduction, hMCTGClusterSizesInduction},
         {hTGClusterSizesInduction0TG, hMCTGClusterSizesInduction0TG},
         {hTGClusterSizesInduction1TG, hMCTGClusterSizesInduction1TG},
         {hTGClusterSizesInduction2TG, hMCTGClusterSizesInduction2TG},
+        {hTGClusterSizesInductionNTG, hMCTGClusterSizesInductionNTG},
 
+        {hTGNumClustersCollection, hMCTGNumClustersCollection},
         {hTGNumClustersCollection0TG, hMCTGNumClustersCollection0TG},
         {hTGNumClustersCollection1TG, hMCTGNumClustersCollection1TG},
         {hTGNumClustersCollection2TG, hMCTGNumClustersCollection2TG},
+        {hTGNumClustersCollectionNTG, hMCTGNumClustersCollectionNTG},
 
+        {hTGNumClustersInduction, hMCTGNumClustersInduction},
         {hTGNumClustersInduction0TG, hMCTGNumClustersInduction0TG},
         {hTGNumClustersInduction1TG, hMCTGNumClustersInduction1TG},
         {hTGNumClustersInduction2TG, hMCTGNumClustersInduction2TG},
+        {hTGNumClustersInductionNTG, hMCTGNumClustersInductionNTG},
+
+        {hTGLargestClusterCollection, hMCTGLargestClusterCollection},
+        {hTGLargestClusterCollection0TG, hMCTGLargestClusterCollection0TG},
+        {hTGLargestClusterCollection1TG, hMCTGLargestClusterCollection1TG},
+        {hTGLargestClusterCollection2TG, hMCTGLargestClusterCollection2TG},
+        {hTGLargestClusterCollectionNTG, hMCTGLargestClusterCollectionNTG},
+
+        {hTGLargestClusterInduction, hMCTGLargestClusterInduction},
+        {hTGLargestClusterInduction0TG, hMCTGLargestClusterInduction0TG},
+        {hTGLargestClusterInduction1TG, hMCTGLargestClusterInduction1TG},
+        {hTGLargestClusterInduction2TG, hMCTGLargestClusterInduction2TG},
+        {hTGLargestClusterInductionNTG, hMCTGLargestClusterInductionNTG},
+
+        {hTGNumLargeClustersCollection, hMCTGNumLargeClustersCollection},
+        {hTGNumLargeClustersCollection0TG, hMCTGNumLargeClustersCollection0TG},
+        {hTGNumLargeClustersCollection1TG, hMCTGNumLargeClustersCollection1TG},
+        {hTGNumLargeClustersCollection2TG, hMCTGNumLargeClustersCollection2TG},
+        {hTGNumLargeClustersCollectionNTG, hMCTGNumLargeClustersCollectionNTG},
+
+        {hTGNumLargeClustersInduction, hMCTGNumLargeClustersInduction},
+        {hTGNumLargeClustersInduction0TG, hMCTGNumLargeClustersInduction0TG},
+        {hTGNumLargeClustersInduction1TG, hMCTGNumLargeClustersInduction1TG},
+        {hTGNumLargeClustersInduction2TG, hMCTGNumLargeClustersInduction2TG},
+        {hTGNumLargeClustersInductionNTG, hMCTGNumLargeClustersInductionNTG},
 
         // Secondary particle kinematics
         {hNumCandidateProtons, hMCNumCandidateProtons},
@@ -1521,17 +2195,23 @@ void RecoDataAnalysis() {
 
     std::vector<std::string> FracDiffDirectory = {
         "Primary",
-        "Primary",
-        "Primary",
+        "Primary/0TG",
+        "Primary/1TG",
+        "Primary/2TG",
+        "Primary/NTG",
         "Primary",
 
         "Cylinder",
-        "Cylinder",
-        "Cylinder",
+        "Cylinder/0TG",
+        "Cylinder/1TG",
+        "Cylinder/2TG",
+        "Cylinder/NTG",
 
         "Cylinder",
-        "Cylinder",
-        "Cylinder",
+        "Cylinder/0TG",
+        "Cylinder/1TG",
+        "Cylinder/2TG",
+        "Cylinder/NTG",
 
         "NearVertex",
         "NearVertex",
@@ -1539,28 +2219,64 @@ void RecoDataAnalysis() {
         "TGTracks",
 
         "UnrecoHits",
-        "UnrecoHits",
-        "UnrecoHits",
+        "UnrecoHits/0TG",
+        "UnrecoHits/1TG",
+        "UnrecoHits/2TG",
+        "UnrecoHits/NTG",
 
         "UnrecoHits",
-        "UnrecoHits",
-        "UnrecoHits",
+        "UnrecoHits/0TG",
+        "UnrecoHits/1TG",
+        "UnrecoHits/2TG",
+        "UnrecoHits/NTG",
 
         "UnrecoHits",
-        "UnrecoHits",
-        "UnrecoHits",
+        "UnrecoHits/0TG",
+        "UnrecoHits/1TG",
+        "UnrecoHits/2TG",
+        "UnrecoHits/NTG",
 
         "UnrecoHits",
-        "UnrecoHits",
-        "UnrecoHits",
+        "UnrecoHits/0TG",
+        "UnrecoHits/1TG",
+        "UnrecoHits/2TG",
+        "UnrecoHits/NTG",
 
         "UnrecoHits",
-        "UnrecoHits",
-        "UnrecoHits",
+        "UnrecoHits/0TG",
+        "UnrecoHits/1TG",
+        "UnrecoHits/2TG",
+        "UnrecoHits/NTG",
 
         "UnrecoHits",
+        "UnrecoHits/0TG",
+        "UnrecoHits/1TG",
+        "UnrecoHits/2TG",
+        "UnrecoHits/NTG",
+
         "UnrecoHits",
+        "UnrecoHits/0TG",
+        "UnrecoHits/1TG",
+        "UnrecoHits/2TG",
+        "UnrecoHits/NTG",
+
         "UnrecoHits",
+        "UnrecoHits/0TG",
+        "UnrecoHits/1TG",
+        "UnrecoHits/2TG",
+        "UnrecoHits/NTG",
+
+        "UnrecoHits",
+        "UnrecoHits/0TG",
+        "UnrecoHits/1TG",
+        "UnrecoHits/2TG",
+        "UnrecoHits/NTG",
+
+        "UnrecoHits",
+        "UnrecoHits/0TG",
+        "UnrecoHits/1TG",
+        "UnrecoHits/2TG",
+        "UnrecoHits/NTG",
 
         "Kinematics",
         "Kinematics"
@@ -1664,6 +2380,7 @@ void RecoDataAnalysis() {
         {0, 0},
         {0, 0},
         {0, 0},
+        {0, 0},
         {0, 0}
     };
 
@@ -1677,8 +2394,27 @@ void RecoDataAnalysis() {
         false,
         false,
         false,
+        false,
         false
     };
 
     printTwoDPlots(SaveDir, TwoDPlots, TwoDTitles, TwoDRanges, TwoDDisplayNumbers);
+
+    // Comparisons
+    std::vector<TString> speciesLabels = {"Pion", "Muon", "Electron"};
+
+    PrintDataVsMCContribPlot(
+        SaveDir, 
+        "ValidEventsFrontFaceKEBreakdown",
+        hFrontFaceKE,
+        {hMCValidFrontFaceKEPion, hMCValidFrontFaceKEMuon, hMCValidFrontFaceKEElectron},
+        speciesLabels,
+        Colors,
+        "Front-Face KE After Electron Cut",
+        "Kinetic energy [MeV]", "Counts",
+        FontStyle, TextSize,
+        /*UsePoissonErrors=*/ true,
+        /*hMCAbsUnc=*/        nullptr,
+        /*DrawRatio=*/        true
+    );
 }
