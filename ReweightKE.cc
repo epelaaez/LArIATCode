@@ -320,6 +320,7 @@ void ReweightKE() {
     outFile.cd();
     hWeightsFrontFace->Write("hWeightsFrontFace", TObject::kOverwrite);
     hWeightsFrontFacePre->Write("hWeightsFrontFacePre", TObject::kOverwrite);
+    hFrontFaceKEPreMatch->Write("hFrontFaceKEPreMatch", TObject::kOverwrite);
 
     TH1D* hWeightsFrontFaceDummy = (TH1D*) hWeightsFrontFace->Clone("hWeightsFrontFaceDummy");
     for (int b = 1; b <= hWeightsFrontFaceDummy->GetNbinsX(); ++b) {
