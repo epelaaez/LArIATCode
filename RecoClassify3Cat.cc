@@ -383,10 +383,10 @@ void RecoClassify3Cat() {
     // Mean dE/dx secondary tracks //
     /////////////////////////////////
 
-    TH1D* hMeandEdxSecondaryTracks = new TH1D("hMeandEdxSecondaryTracks", "hMeandEdxSecondaryTracks", 20, 0, 10);
-    TH1D* hMeandEdxSecondaryPions  = new TH1D("hMeandEdxSecondaryPions", "hMeandEdxSecondaryPions", 20, 0, 10);
-    TH1D* hMeandEdxSecondaryProton = new TH1D("hMeandEdxSecondaryProton", "hMeandEdxSecondaryProton", 20, 0, 10);
-    TH1D* hMeandEdxSecondaryOther  = new TH1D("hMeandEdxSecondaryOther", "hMeandEdxSecondaryOther", 20, 0, 10);
+    TH1D* hMeandEdxSecondaryTracks = new TH1D("hMeandEdxSecondaryTracks", "hMeandEdxSecondaryTracks", 40, 0, 10);
+    TH1D* hMeandEdxSecondaryPions  = new TH1D("hMeandEdxSecondaryPions", "hMeandEdxSecondaryPions", 40, 0, 10);
+    TH1D* hMeandEdxSecondaryProton = new TH1D("hMeandEdxSecondaryProton", "hMeandEdxSecondaryProton", 40, 0, 10);
+    TH1D* hMeandEdxSecondaryOther  = new TH1D("hMeandEdxSecondaryOther", "hMeandEdxSecondaryOther", 40, 0, 10);
 
     ///////////////////////////
     // Track pitch and dE/dx //

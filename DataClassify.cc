@@ -150,6 +150,11 @@ void DataClassify() {
     TH1D* hMCTrackdEdxMuon = dynamic_cast<TH1D*>(fNom->Get("hTrackdEdxMuon"));
     TH1D* hMCTrackdEdxElectron = dynamic_cast<TH1D*>(fNom->Get("hTrackdEdxElectron"));
 
+    // Secondary track mean dE/dx
+    TH1D* hMCMeandEdxSecondaryPions   = dynamic_cast<TH1D*>(fNom->Get("hMeandEdxSecondaryPions"));
+    TH1D* hMCMeandEdxSecondaryProtons = dynamic_cast<TH1D*>(fNom->Get("hMeandEdxSecondaryProton"));
+    TH1D* hMCMeandEdxSecondaryOther   = dynamic_cast<TH1D*>(fNom->Get("hMeandEdxSecondaryOther"));
+
     ///////////////////
     // Load branches //
     ///////////////////
@@ -252,6 +257,9 @@ void DataClassify() {
     // Pitch and dE/dx
     TH1D* hTrackPitch = new TH1D("hTrackPitch", "hTrackPitch;;", 40, 0.2, 0.8);
     TH1D* hTrackdEdx  = new TH1D("hTrackdEdx", "hTrackdEdx;;", 48, 0, 6);
+
+    // Mean dE/dx for secondary tracks
+    TH1D* hMeanSecondarydEdx = new TH1D("hMeanSecondarydEdx", "hMeanSecondarydEdx;;", 40, 0, 10);
 
     // Wire chamber kinetic energy (before energy loss correction)
     TH1D* hWCKE = new TH1D("hWCKE", "hWCKE;;", NUM_BINS_KE_FINE, ARRAY_KE_FINE_BINS.data());
@@ -704,7 +712,7 @@ void DataClassify() {
         int numberOfSecondary           = 0;
         int numberOfSecondaryNearVertex = 0;
 
-        std::cout << "Break point: (" << breakPointX << ", " << breakPointY << ", " << breakPointZ << ")" << std::endl;
+        // std::cout << "Break point: (" << breakPointX << ", " << breakPointY << ", " << breakPointZ << ")" << std::endl;
         for (size_t trk_idx = 0; trk_idx < ev.recoBeginX.size(); ++trk_idx) {
             if (trkWCtoTPCMatch[trk_idx]) continue;
 
@@ -728,7 +736,7 @@ void DataClassify() {
                 pow(ev.recoBeginZ.at(trk_idx) - ev.recoEndZ.at(trk_idx), 2)
             );
 
-            std::cout << "    " << "Secondary track " << trk_idx << ": length = " << thisTrackLength << ", distance from start = " << distanceFromStart << ", distance from end = " << distanceFromEnd << std::endl;
+            // std::cout << "    " << "Secondary track " << trk_idx << ": length = " << thisTrackLength << ", distance from start = " << distanceFromStart << ", distance from end = " << distanceFromEnd << std::endl;
 
             if ((distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS)) {
                 numberOfSecondaryNearVertex++;
@@ -746,7 +754,7 @@ void DataClassify() {
                 double protonChi2        = computeReducedChi2(gProton, secondaryResR, secondaryDEDX, secondaryReversed, secondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
                 double secondaryMeanDEDX = meanDEDX(secondaryDEDX, secondaryReversed, MEAN_DEDX_NUM_TRAJ_POINTS);
 
-                std::cout << "        Pion chi^2: " << pionChi2 << ", Proton chi^2: " << protonChi2 << ", Mean dE/dx: " << secondaryMeanDEDX << std::endl;
+                // std::cout << "        Pion chi^2: " << pionChi2 << ", Proton chi^2: " << protonChi2 << ", Mean dE/dx: " << secondaryMeanDEDX << std::endl;
 
                 // First, try classifying track using chi^2 fits
                 if ((pionChi2 < PION_CHI2_PION_VALUE) && (protonChi2 > PROTON_CHI2_PION_VALUE)) {
@@ -763,15 +771,16 @@ void DataClassify() {
                     } else {
                         otherTaggedProton++;
                     }
+                    hMeanSecondarydEdx->Fill(secondaryMeanDEDX);
                 }
             }
         }
 
-        std::cout << "Number of secondary tracks: " << numberOfSecondary << std::endl;
-        std::cout << "Number of secondary tracks near vertex: " << numberOfSecondaryNearVertex << std::endl;
-        std::cout << "Classified as pion: " << secondaryTaggedPion << ", Classified as proton: " << secondaryTaggedProton << ", Not classified with chi^2: " << secondaryTaggedOther << std::endl;
-        std::cout << "Of those not classified with chi^2, classified as pion with mean dE/dx: " << otherTaggedPion << ", classified as proton with mean dE/dx: " << otherTaggedProton << std::endl;
-        std::cout << std::endl;
+        // std::cout << "Number of secondary tracks: " << numberOfSecondary << std::endl;
+        // std::cout << "Number of secondary tracks near vertex: " << numberOfSecondaryNearVertex << std::endl;
+        // std::cout << "Classified as pion: " << secondaryTaggedPion << ", Classified as proton: " << secondaryTaggedProton << ", Not classified with chi^2: " << secondaryTaggedOther << std::endl;
+        // std::cout << "Of those not classified with chi^2, classified as pion with mean dE/dx: " << otherTaggedPion << ", classified as proton with mean dE/dx: " << otherTaggedProton << std::endl;
+        // std::cout << std::endl;
 
         // For particles where we stitched, we also need to analyze the second part of the primary track
         bool newSecondaryPion = false;
@@ -1058,6 +1067,20 @@ void DataClassify() {
         hMCTotalInteracting
     };
 
+    std::vector<TH1*> scaleByPre = {
+        hMCFrontFaceKEPion, hMCFrontFaceKEElectron, hMCFrontFaceKEMuon,
+        hMCWCKEPion, hMCWCKEMuon, hMCWCKEElectron
+    };
+
+    auto scaleAll = [](const std::vector<TH1*>& hists, double factor) {
+        for (auto* h : hists) {
+            h->Scale(factor);
+        }
+    };
+
+    scaleAll(scaleByNormal, SCALING_FACTOR);
+    scaleAll(scaleByPre, SCALING_FACTOR_PRE);
+
     // Area normalize these
     double mcPitchTotal = hMCTrackPitchPion->Integral() + hMCTrackPitchMuon->Integral() + hMCTrackPitchElectron->Integral();
     double scalePitch   = hTrackPitch->Integral() / mcPitchTotal;
@@ -1073,19 +1096,13 @@ void DataClassify() {
     hMCTrackdEdxMuon->Scale(scaleDedx);
     hMCTrackdEdxElectron->Scale(scaleDedx);
 
-    std::vector<TH1*> scaleByPre = {
-        hMCFrontFaceKEPion, hMCFrontFaceKEElectron, hMCFrontFaceKEMuon,
-        hMCWCKEPion, hMCWCKEMuon, hMCWCKEElectron
-    };
+    // Area normalize these as well
+    double mcMeanDedxTotal = hMCMeandEdxSecondaryPions->Integral() + hMCMeandEdxSecondaryProtons->Integral() + hMCMeandEdxSecondaryOther->Integral();
+    double scaleMeanDedx   = hMeanSecondarydEdx->Integral() / mcMeanDedxTotal;
 
-    auto scaleAll = [](const std::vector<TH1*>& hists, double factor) {
-        for (auto* h : hists) {
-            h->Scale(factor);
-        }
-    };
-
-    scaleAll(scaleByNormal, SCALING_FACTOR);
-    scaleAll(scaleByPre, SCALING_FACTOR_PRE);
+    hMCMeandEdxSecondaryPions->Scale(scaleMeanDedx);
+    hMCMeandEdxSecondaryProtons->Scale(scaleMeanDedx);
+    hMCMeandEdxSecondaryOther->Scale(scaleMeanDedx);
 
     ///////////////////////////////////
     // Save histograms for unfolding //
@@ -1205,7 +1222,10 @@ void DataClassify() {
 
         // Track calorimetry
         hTrackPitch,
-        hTrackdEdx
+        hTrackdEdx,
+
+        // Secondary track mean dE/dx
+        hMeanSecondarydEdx
     };
 
     std::vector<std::vector<TH1*>> PlotMCGroups = {
@@ -1233,7 +1253,10 @@ void DataClassify() {
 
         // Track calorimetry
         {hMCTrackPitchPion, hMCTrackPitchMuon, hMCTrackPitchElectron},
-        {hMCTrackdEdxPion, hMCTrackdEdxMuon, hMCTrackdEdxElectron}
+        {hMCTrackdEdxPion, hMCTrackdEdxMuon, hMCTrackdEdxElectron},
+
+        // Secondary track mean dE/dx
+        {hMCMeandEdxSecondaryPions, hMCMeandEdxSecondaryProtons, hMCMeandEdxSecondaryOther}
     };
 
     std::vector<std::vector<TString>> PlotMCLabelGroups = {
@@ -1261,7 +1284,10 @@ void DataClassify() {
 
         // Track calorimetry
         {"Pion", "Muon", "Electron"},
-        {"Pion", "Muon", "Electron"}
+        {"Pion", "Muon", "Electron"},
+
+        // Secondary track mean dE/dx
+        {"Pions", "Protons", "Others"}
     };
 
     std::vector<TString> PlotName = {
@@ -1289,7 +1315,10 @@ void DataClassify() {
 
         // Track calorimetry
         "Calorimetry/TrackPitch",
-        "Calorimetry/TrackdEdx"
+        "Calorimetry/TrackdEdx",
+
+        // Secondary track mean dE/dx
+        "Calorimetry/MeanSecondarydEdx"
     };
 
     std::vector<TString> PlotTitle = {
@@ -1317,7 +1346,10 @@ void DataClassify() {
 
         // Track calorimetry
         "Track Pitch",
-        "Track dE/dx"
+        "Track dE/dx",
+
+        // Secondary track mean dE/dx
+        "Mean dE/dx of Secondary Tracks"
     };
 
     std::vector<TString> XLabels = {
@@ -1345,7 +1377,10 @@ void DataClassify() {
 
         // Track calorimetry
         "Pitch [cm]",
-        "dE/dx [MeV/cm]"
+        "dE/dx [MeV/cm]",
+
+        // Secondary track mean dE/dx
+        "Mean dE/dx [MeV/cm]"
     };
 
     std::vector<TString> YLabels = {
@@ -1373,6 +1408,9 @@ void DataClassify() {
 
         // Track calorimetry
         "Counts",
+        "Counts",
+
+        // Secondary track mean dE/dx
         "Counts"
     };
 
