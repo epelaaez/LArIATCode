@@ -52,7 +52,7 @@ void GeneratorCov() {
     fWeights->Close();
 
     // Get file with weights
-    TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/WeightsAll_histo.root";
+    TString RootWeightsFilePath = "/exp/lariat/app/users/epelaez/files/Weights20_histo.root";
     std::unique_ptr<TFile> WeightsFile(TFile::Open(RootWeightsFilePath));
     TDirectory* WeightsDirectory = (TDirectory*)WeightsFile->Get("CalculateWeights");
     TTree* w_tree = (TTree*) WeightsDirectory->Get<TTree>("WeightsTree");
