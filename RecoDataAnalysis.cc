@@ -2417,4 +2417,32 @@ void RecoDataAnalysis() {
         /*hMCAbsUnc=*/        nullptr,
         /*DrawRatio=*/        true
     );
+
+    ////////////////////////////////////
+    // Save everything for later use //
+    ////////////////////////////////////
+
+    TString outPath = "/exp/lariat/app/users/epelaez/histos/data/Comparison.root";
+    TFile outAll(outPath, "RECREATE");
+    outAll.cd();
+
+    std::unordered_set<std::string> written;
+
+    // Helper lambda: write once by name
+    auto writeOnce = [&](TObject* obj) {
+        if (!obj) return;
+        const std::string name = obj->GetName();
+        if (name.empty()) return;
+        if (written.insert(name).second) {
+            obj->Write(name.c_str(), TObject::kOverwrite);
+        }
+    };
+
+    for (auto* h : TwoDPlots) writeOnce(h);
+    for (auto& h : PlotGroups) writeOnce(h.at(0));
+
+    outAll.Write();
+    outAll.Close();
+
+    std::cout << "\nWrote " << written.size() << " objects to " << outPath << std::endl;
 }
