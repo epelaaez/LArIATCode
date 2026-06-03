@@ -379,6 +379,16 @@ void RecoClassify3Cat() {
     TH1D* hNumTGTracksPrimaryPion     = new TH1D("hNumTGTracksPrimaryPion", "hNumTGTracksPrimaryPion", 10, 0, 10);
     TH1D* hNumTGTracksPrimaryElectron = new TH1D("hNumTGTracksPrimaryElectron", "hNumTGTracksPrimaryElectron", 10, 0, 10);
 
+    ////////////////////
+    // Reconstruction //
+    ////////////////////
+
+    TH1D* hAllSecondaryPions  = new TH1D("hAllSecondaryPions", "hAllSecondaryPions;;", 25, 0, 0.5);
+    TH1D* hRecoSecondaryPions = new TH1D("hRecoSecondaryPions", "hRecoSecondaryPions;;", 25, 0, 0.5);
+
+    TH1D* hAllSecondaryProtons  = new TH1D("hAllSecondaryProtons", "hAllSecondaryProtons;;", 25, 0, 0.5);
+    TH1D* hRecoSecondaryProtons = new TH1D("hRecoSecondaryProtons", "hRecoSecondaryProtons", 25, 0, 0.5); 
+
     /////////////////////////////////
     // Mean dE/dx secondary tracks //
     /////////////////////////////////
@@ -1999,6 +2009,18 @@ void RecoClassify3Cat() {
             hFrontFaceKEElectronNoWeight->Fill(initialKE);
         }
 
+        /////////////////////
+        // Reco efficiency //
+        /////////////////////
+
+        for (size_t i = 0; i < ev.truthPrimaryDaughtersPDG.size(); ++i) {
+            if (ev.truthPrimaryDaughtersPDG.at(i) == 2212) {
+                hAllSecondaryProtons->Fill(ev.truthPrimaryDaughtersKE.at(i), ev.weight);
+            } else if (ev.truthPrimaryDaughtersPDG.at(i) == -211) {
+                hAllSecondaryPions->Fill(ev.truthPrimaryDaughtersKE.at(i), ev.weight);
+            }
+        }
+
         //////////////////////////////////////
         // Back to classification algorithm //
         //////////////////////////////////////
@@ -2060,6 +2082,41 @@ void RecoClassify3Cat() {
             breakPointX = ev.wcMatchXPos.at(bestBreakPoint);
             breakPointY = ev.wcMatchYPos.at(bestBreakPoint);
             breakPointZ = ev.wcMatchZPos.at(bestBreakPoint);
+        }
+
+        // Check reco efficiency
+        for (size_t trk_idx = 0; trk_idx < ev.recoBeginX.size(); ++trk_idx) {
+            if (trkWCtoTPCMatch[trk_idx]) continue;
+
+            // Find out track PDG
+            int trackPDG = 0; double trackKE = 0.0;
+            for (size_t true_idx = 0; true_idx < geant_list_size; ++true_idx) {
+                if (trkg4id[trk_idx] == TrackId[true_idx]) {
+                    trackPDG = pdg[true_idx];
+                    trackKE  = Eng[true_idx] - Mass[true_idx];
+                    break;
+                }
+            }
+
+            // Have to re-check track ordering for stitched case
+            double distanceFromStart = distance(
+                ev.recoBeginX.at(trk_idx), breakPointX, 
+                ev.recoBeginY.at(trk_idx), breakPointY,
+                ev.recoBeginZ.at(trk_idx), breakPointZ
+            );
+            double distanceFromEnd = distance(
+                ev.recoEndX.at(trk_idx), breakPointX, 
+                ev.recoEndY.at(trk_idx), breakPointY,
+                ev.recoEndZ.at(trk_idx), breakPointZ
+            );
+
+            if (distanceFromStart < VERTEX_RADIUS || distanceFromEnd < VERTEX_RADIUS) {
+                if (trackPDG == 2212) {
+                    hRecoSecondaryProtons->Fill(trackKE, ev.weight);
+                } else if (trackPDG == -211) {
+                    hRecoSecondaryPions->Fill(trackKE, ev.weight);
+                }
+            }
         }
 
         ////////////////////////////////
@@ -3309,7 +3366,11 @@ void RecoClassify3Cat() {
         {hTrackPitch},
         {hTrackPitchPion, hTrackPitchMuon, hTrackPitchElectron},
         {hTrackdEdx},
-        {hTrackdEdxPion, hTrackdEdxMuon, hTrackdEdxElectron}
+        {hTrackdEdxPion, hTrackdEdxMuon, hTrackdEdxElectron},
+
+        // Reconstruction efficiency
+        {hAllSecondaryPions, hRecoSecondaryPions},
+        {hAllSecondaryProtons, hRecoSecondaryProtons}
     };
 
     std::vector<std::vector<TString>> PlotLabelGroups = {
@@ -3388,7 +3449,11 @@ void RecoClassify3Cat() {
         {"All"},
         {"Pions", "Muons", "Electrons"},
         {"All"},
-        {"Pions", "Muons", "Electrons"}
+        {"Pions", "Muons", "Electrons"},
+
+        // Reconstruction efficiency
+        {"All", "Reco"},
+        {"All", "Reco"}
     };
 
     std::vector<TString> PlotTitles = {
@@ -3467,7 +3532,11 @@ void RecoClassify3Cat() {
         "Calorimetry/TrackPitch",
         "Calorimetry/TrackPitchBreakdown",
         "Calorimetry/TrackdEdx",
-        "Calorimetry/TrackdEdxBreakdown"
+        "Calorimetry/TrackdEdxBreakdown",
+
+        // Reconstruction efficiency
+        "Efficiency/SecondaryPions",
+        "Efficiency/SecondaryProtons"        
     };
 
     std::vector<TString> XLabels = {
@@ -3546,7 +3615,11 @@ void RecoClassify3Cat() {
         "Pitch [cm]",
         "Pitch [cm]",
         "dE/dx [MeV/cm]",
-        "dE/dx [MeV/cm]"
+        "dE/dx [MeV/cm]",
+
+        // Reconstruction efficiency
+        "Kinetic energy [MeV]",
+        "Kinetic energy [MeV]"
     };
 
     std::vector<TString> YLabels = {
@@ -3624,6 +3697,10 @@ void RecoClassify3Cat() {
         // Primary calorimetry
         "Counts",
         "Counts",
+        "Counts",
+        "Counts",
+
+        // Reconstruction efficiency
         "Counts",
         "Counts"
     };
@@ -3704,7 +3781,11 @@ void RecoClassify3Cat() {
         true,
         true,
         true,
-        true
+        true,
+
+        // Reconstruction efficiency
+        false,
+        false
     };
 
     std::vector<std::vector<bool>> PlotsAsPoints = {
@@ -3783,7 +3864,11 @@ void RecoClassify3Cat() {
         {false},
         {false, false, false},
         {false},
-        {false, false, false}
+        {false, false, false},
+
+        // Reconstruction efficiency
+        {false, true},
+        {false, true}
     };
 
     printOneDPlots(
