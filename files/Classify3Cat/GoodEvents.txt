@@ -1,0 +1,286 @@
+True scatter as scatter: 1 0 77
+True abs 0p as abs 0p: 1 0 109
+True scatter as scatter: 1 0 144
+True scatter as scatter: 1 0 201
+True scatter as scatter: 1 0 218
+True scatter as scatter: 1 0 246
+True scatter as scatter: 1 0 251
+True abs np as abs np: 1 0 299
+True abs np as abs np: 1 0 368
+True abs np as abs np: 1 0 419
+True abs np as abs np: 1 0 436
+True abs 0p as abs 0p: 1 0 437
+True scatter as scatter: 1 0 473
+True abs 0p as abs 0p: 1 0 483
+True scatter as scatter: 1 0 485
+True abs np as abs np: 1 0 512
+True scatter as scatter: 1 0 522
+True scatter as scatter: 1 0 536
+True scatter as scatter: 1 0 565
+True abs np as abs np: 1 0 578
+True scatter as scatter: 1 0 618
+True abs 0p as abs 0p: 1 0 636
+True scatter as scatter: 1 0 648
+True abs 0p as abs 0p: 1 0 650
+True scatter as scatter: 1 0 651
+True scatter as scatter: 1 0 722
+True scatter as scatter: 1 0 724
+True abs np as abs np: 1 0 740
+True abs np as abs np: 1 0 758
+True scatter as scatter: 1 0 761
+True scatter as scatter: 1 0 772
+True abs 0p as abs 0p: 1 0 814
+True scatter as scatter: 1 0 835
+True abs 0p as abs 0p: 1 0 855
+True scatter as scatter: 1 0 862
+True scatter as scatter: 1 0 863
+True scatter as scatter: 1 0 867
+True scatter as scatter: 1 0 883
+True scatter as scatter: 1 0 915
+True scatter as scatter: 1 0 951
+True scatter as scatter: 1 0 956
+True scatter as scatter: 1 0 1010
+True scatter as scatter: 1 0 1055
+True scatter as scatter: 1 0 1137
+True scatter as scatter: 1 0 1163
+True scatter as scatter: 1 0 1166
+True abs 0p as abs 0p: 1 0 1170
+True abs np as abs np: 1 0 1227
+True scatter as scatter: 1 0 1228
+True abs np as abs np: 1 0 1312
+True scatter as scatter: 1 0 1444
+True scatter as scatter: 1 0 1489
+True abs np as abs np: 1 0 1499
+True scatter as scatter: 1 0 1506
+True scatter as scatter: 1 0 1612
+True scatter as scatter: 1 0 1618
+True scatter as scatter: 1 0 1638
+True scatter as scatter: 1 0 1672
+True scatter as scatter: 1 0 1681
+True abs np as abs np: 1 0 1779
+True scatter as scatter: 1 0 1783
+True abs np as abs np: 1 0 1786
+True scatter as scatter: 1 0 1845
+True scatter as scatter: 1 0 1850
+True scatter as scatter: 1 0 1856
+True scatter as scatter: 1 0 1892
+True scatter as scatter: 1 0 1924
+True abs np as abs np: 1 0 1937
+True scatter as scatter: 1 0 1968
+True abs np as abs np: 1 0 2016
+True scatter as scatter: 1 0 2053
+True scatter as scatter: 1 0 2129
+True scatter as scatter: 1 0 2138
+True abs np as abs np: 1 0 2182
+True scatter as scatter: 1 0 2289
+True abs np as abs np: 1 0 2300
+True scatter as scatter: 1 0 2329
+True scatter as scatter: 1 0 2348
+True scatter as scatter: 1 0 2360
+True scatter as scatter: 1 0 2392
+True scatter as scatter: 1 0 2400
+True abs np as abs np: 1 0 2419
+True scatter as scatter: 1 0 2452
+True scatter as scatter: 1 0 2457
+True scatter as scatter: 1 0 2525
+True scatter as scatter: 1 0 2594
+True scatter as scatter: 1 0 2595
+True abs np as abs np: 1 0 2657
+True scatter as scatter: 1 0 2666
+True scatter as scatter: 1 0 2668
+True scatter as scatter: 1 0 2825
+True scatter as scatter: 1 0 2828
+True scatter as scatter: 1 0 2967
+True scatter as scatter: 1 0 3034
+True abs np as abs np: 1 0 3049
+True abs np as abs np: 1 0 3057
+True scatter as scatter: 1 0 3132
+True scatter as scatter: 1 0 3192
+True abs np as abs np: 1 0 3226
+True abs np as abs np: 1 0 3302
+True scatter as scatter: 1 0 3323
+True scatter as scatter: 1 0 3339
+True scatter as scatter: 1 0 3354
+True scatter as scatter: 1 0 3391
+True abs 0p as abs 0p: 1 0 3393
+True abs 0p as abs 0p: 1 0 3413
+True scatter as scatter: 1 0 3436
+True scatter as scatter: 1 0 3506
+True abs np as abs np: 1 0 3635
+True abs np as abs np: 1 0 3647
+True abs 0p as abs 0p: 1 0 3926
+True abs np as abs np: 1 0 3958
+True scatter as scatter: 1 0 3966
+True scatter as scatter: 1 0 3987
+True scatter as scatter: 1 0 4048
+True abs np as abs np: 1 0 4080
+True scatter as scatter: 1 0 4083
+True scatter as scatter: 1 0 4113
+True scatter as scatter: 1 0 4230
+True scatter as scatter: 1 0 4235
+True scatter as scatter: 1 0 4276
+True abs np as abs np: 1 0 4287
+True scatter as scatter: 1 0 4293
+True scatter as scatter: 1 0 4425
+True abs 0p as abs 0p: 1 0 4445
+True scatter as scatter: 1 0 4452
+True scatter as scatter: 1 0 4464
+True scatter as scatter: 1 0 4561
+True abs np as abs np: 1 0 4570
+True abs 0p as abs 0p: 1 0 4585
+True abs np as abs np: 1 0 4589
+True abs np as abs np: 1 0 4604
+True abs np as abs np: 1 0 4619
+True abs np as abs np: 1 0 4648
+True scatter as scatter: 1 0 4708
+True scatter as scatter: 1 0 4751
+True abs np as abs np: 1 0 4779
+True scatter as scatter: 1 0 4808
+True abs np as abs np: 1 0 4847
+True scatter as scatter: 1 0 4900
+True abs np as abs np: 1 0 4951
+True scatter as scatter: 1 0 4963
+True abs np as abs np: 1 0 4999
+True abs 0p as abs 0p: 1 0 5015
+True scatter as scatter: 1 0 5045
+True abs np as abs np: 1 0 5126
+True abs np as abs np: 1 0 5252
+True scatter as scatter: 1 0 5256
+True abs np as abs np: 1 0 5317
+True abs np as abs np: 1 0 5321
+True scatter as scatter: 1 0 5335
+True scatter as scatter: 1 0 5365
+True scatter as scatter: 1 0 5398
+True abs 0p as abs 0p: 1 0 5428
+True abs np as abs np: 1 0 5466
+True abs 0p as abs 0p: 1 0 5490
+True abs np as abs np: 1 0 5512
+True scatter as scatter: 1 0 5539
+True scatter as scatter: 1 0 5554
+True scatter as scatter: 1 0 5559
+True scatter as scatter: 1 0 5607
+True abs np as abs np: 1 0 5705
+True scatter as scatter: 1 0 5756
+True abs 0p as abs 0p: 1 0 5780
+True abs np as abs np: 1 0 5781
+True abs 0p as abs 0p: 1 0 5829
+True scatter as scatter: 1 0 5840
+True scatter as scatter: 1 0 5897
+True abs 0p as abs 0p: 1 0 5922
+True scatter as scatter: 1 0 5927
+True abs np as abs np: 1 0 5961
+True abs 0p as abs 0p: 1 0 5965
+True abs np as abs np: 1 0 5975
+True abs np as abs np: 1 0 5998
+True abs np as abs np: 1 0 6001
+True scatter as scatter: 1 0 6055
+True scatter as scatter: 1 0 6078
+True abs 0p as abs 0p: 1 0 6095
+True scatter as scatter: 1 0 6107
+True abs np as abs np: 1 0 6110
+True scatter as scatter: 1 0 6124
+True scatter as scatter: 1 0 6182
+True scatter as scatter: 1 0 6190
+True abs np as abs np: 1 0 6201
+True scatter as scatter: 1 0 6269
+True abs 0p as abs 0p: 1 0 6330
+True scatter as scatter: 1 0 6435
+True scatter as scatter: 1 0 6484
+True scatter as scatter: 1 0 6505
+True abs np as abs np: 1 0 6535
+True abs np as abs np: 1 0 6595
+True scatter as scatter: 1 0 6606
+True scatter as scatter: 1 0 6629
+True abs np as abs np: 1 0 6639
+True abs np as abs np: 1 0 6679
+True scatter as scatter: 1 0 6694
+True scatter as scatter: 1 0 6725
+True scatter as scatter: 1 0 6798
+True abs np as abs np: 1 0 6805
+True scatter as scatter: 1 0 6927
+True scatter as scatter: 1 0 6934
+True abs np as abs np: 1 0 6954
+True scatter as scatter: 1 0 6968
+True abs 0p as abs 0p: 1 0 6998
+True scatter as scatter: 1 0 7066
+True scatter as scatter: 1 0 7092
+True abs np as abs np: 1 0 7108
+True scatter as scatter: 1 0 7157
+True scatter as scatter: 1 0 7313
+True abs 0p as abs 0p: 1 0 7316
+True scatter as scatter: 1 0 7340
+True scatter as scatter: 1 0 7342
+True abs np as abs np: 1 0 7550
+True abs 0p as abs 0p: 1 0 7588
+True scatter as scatter: 1 0 7612
+True abs 0p as abs 0p: 1 0 7621
+True abs np as abs np: 1 0 7633
+True abs np as abs np: 1 0 7649
+True abs 0p as abs 0p: 1 0 7656
+True abs np as abs np: 1 0 7718
+True scatter as scatter: 1 0 7865
+True scatter as scatter: 1 0 7877
+True scatter as scatter: 1 0 7882
+True scatter as scatter: 1 0 7938
+True scatter as scatter: 1 0 7978
+True scatter as scatter: 1 0 7979
+True abs np as abs np: 1 0 8020
+True abs np as abs np: 1 0 8070
+True scatter as scatter: 1 0 8081
+True scatter as scatter: 1 0 8083
+True scatter as scatter: 1 0 8084
+True scatter as scatter: 1 0 8358
+True scatter as scatter: 1 0 8400
+True abs 0p as abs 0p: 1 0 8409
+True abs np as abs np: 1 0 8480
+True abs 0p as abs 0p: 1 0 8504
+True abs np as abs np: 1 0 8514
+True scatter as scatter: 1 0 8541
+True scatter as scatter: 1 0 8569
+True scatter as scatter: 1 0 8607
+True scatter as scatter: 1 0 8640
+True scatter as scatter: 1 0 8699
+True abs 0p as abs 0p: 1 0 8746
+True scatter as scatter: 1 0 8775
+True abs 0p as abs 0p: 1 0 8785
+True scatter as scatter: 1 0 8846
+True scatter as scatter: 1 0 8983
+True abs 0p as abs 0p: 1 0 9002
+True scatter as scatter: 1 0 9080
+True scatter as scatter: 1 0 9094
+True abs np as abs np: 1 0 9102
+True scatter as scatter: 1 0 9115
+True abs np as abs np: 1 0 9117
+True scatter as scatter: 1 0 9135
+True scatter as scatter: 1 0 9145
+True scatter as scatter: 1 0 9166
+True abs np as abs np: 1 0 9294
+True scatter as scatter: 1 0 9349
+True scatter as scatter: 1 0 9353
+True abs np as abs np: 1 0 9368
+True scatter as scatter: 1 0 9391
+True abs np as abs np: 1 0 9410
+True abs np as abs np: 1 0 9429
+True abs 0p as abs 0p: 1 0 9452
+True scatter as scatter: 1 0 9461
+True scatter as scatter: 1 0 9491
+True abs 0p as abs 0p: 1 0 9551
+True scatter as scatter: 1 0 9627
+True scatter as scatter: 1 0 9671
+True abs 0p as abs 0p: 1 0 9673
+True scatter as scatter: 1 0 9684
+True scatter as scatter: 1 0 9694
+True scatter as scatter: 1 0 9752
+True scatter as scatter: 1 0 9774
+True scatter as scatter: 1 0 9776
+True scatter as scatter: 1 0 9818
+True scatter as scatter: 1 0 9819
+True scatter as scatter: 1 0 9860
+True abs 0p as abs 0p: 1 0 9877
+True abs 0p as abs 0p: 1 0 9878
+True scatter as scatter: 1 0 9887
+True scatter as scatter: 1 0 9890
+True abs np as abs np: 1 0 9899
+True scatter as scatter: 1 0 9925
+True abs np as abs np: 1 0 9949
+True abs np as abs np: 1 0 9959
