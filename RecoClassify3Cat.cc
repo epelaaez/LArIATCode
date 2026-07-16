@@ -363,6 +363,22 @@ void RecoClassify3Cat() {
     TH1D* hTrueChExchKEAsScatter = new TH1D("hTrueChExchKEAsScatter", "hTrueChExchKEAsScatter;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
     TH1D* hTrueChExchKERejected  = new TH1D("hTrueChExchKERejected", "hTrueChExchKERejected;;", NUM_BINS_KE, ARRAY_KE_BINS.data());
 
+    /////////////////////////
+    // Secondary proton KE //
+    /////////////////////////
+
+    // Proton true KE for absorption events
+    TH1D* hTrueAbs0pProtonKE = new TH1D("hTrueAbs0pProtonKE", "hTrueAbs0pProtonKE;;", 25, 0, 0.35);
+    TH1D* hTrueAbsNpProtonKE = new TH1D("hTrueAbsNpProtonKE", "hTrueAbsNpProtonKE;;", 25, 0, 0.35);
+
+    // Proton true KE for absorption events that we reconstruct correctly
+    TH1D* hRecoAbs0pProtonKE = new TH1D("hRecoAbs0pProtonKE", "hRecoAbs0pProtonKE;;", 25, 0, 0.35);
+    TH1D* hRecoAbsNpProtonKE = new TH1D("hRecoAbsNpProtonKE", "hRecoAbsNpProtonKE;;", 25, 0, 0.35);
+
+    // Proton true KE for absorption events that we reconstruct incorrectly
+    TH1D* hTrueAbs0pRecoAbsNpProtonKE = new TH1D("hTrueAbs0pRecoAbsNpProtonKE", "hTrueAbs0pRecoAbsNpProtonKE;;", 25, 0, 0.35);
+    TH1D* hTrueAbsNpRecoAbs0pProtonKE = new TH1D("hTrueAbsNpRecoAbs0pProtonKE", "hTrueAbsNpRecoAbs0pProtonKE;;", 25, 0, 0.35);
+
     //////////////////////////
     // Through-going tracks //
     //////////////////////////
@@ -1961,6 +1977,16 @@ void RecoClassify3Cat() {
         }
         hTotalEvents->Fill(ev.backgroundType, ev.weight);
 
+        for (size_t i = 0; i < ev.truthPrimaryDaughtersPDG.size(); ++i) {
+            if (ev.truthPrimaryDaughtersPDG.at(i) != 2212) continue;
+
+            if (ev.backgroundType == 0) {
+                hTrueAbs0pProtonKE->Fill(ev.truthPrimaryDaughtersKE.at(i), ev.weight);
+            } else if (ev.backgroundType == 1) {
+                hTrueAbsNpProtonKE->Fill(ev.truthPrimaryDaughtersKE.at(i), ev.weight);
+            }
+        }
+
         //////////////////////
         // WC2TPC match cut //
         //////////////////////
@@ -2556,9 +2582,20 @@ void RecoClassify3Cat() {
             hPionAbsNpKE->Fill(energyAtVertex, ev.weight);
             if (ev.backgroundType == 0) {
                 hPionAbsNpKEAbs0p->Fill(energyAtVertex, ev.weight);
+
+                for (size_t i = 0; i < ev.truthPrimaryDaughtersPDG.size(); ++i) {
+                    if (ev.truthPrimaryDaughtersPDG.at(i) != 2212) continue;
+                    hTrueAbs0pRecoAbsNpProtonKE->Fill(ev.truthPrimaryDaughtersKE.at(i), ev.weight);
+                }
             } else if (ev.backgroundType == 1) {
                 hPionAbsNpKETrue->Fill(energyAtVertex, ev.weight);
                 outFileEvents << "True abs np as abs np: " << run << " " << subrun << " " << event << std::endl;
+
+                // Save info about secondary protons
+                for (size_t i = 0; i < ev.truthPrimaryDaughtersPDG.size(); ++i) {
+                    if (ev.truthPrimaryDaughtersPDG.at(i) != 2212) continue;
+                    hRecoAbsNpProtonKE->Fill(ev.truthPrimaryDaughtersKE.at(i), ev.weight);
+                }
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
                 hPionAbsNpKEScatter->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 2) {
@@ -2712,8 +2749,19 @@ void RecoClassify3Cat() {
             if (ev.backgroundType == 0) {
                 hPionAbs0pKETrue->Fill(energyAtVertex, ev.weight);
                 outFileEvents << "True abs 0p as abs 0p: " << run << " " << subrun << " " << event << std::endl;
+
+                // Save info about secondary protons
+                for (size_t i = 0; i < ev.truthPrimaryDaughtersPDG.size(); ++i) {
+                    if (ev.truthPrimaryDaughtersPDG.at(i) != 2212) continue;
+                    hRecoAbs0pProtonKE->Fill(ev.truthPrimaryDaughtersKE.at(i), ev.weight);
+                }
             } else if (ev.backgroundType == 1) {
                 hPionAbs0pKEAbsNp->Fill(energyAtVertex, ev.weight);
+
+                for (size_t i = 0; i < ev.truthPrimaryDaughtersPDG.size(); ++i) {
+                    if (ev.truthPrimaryDaughtersPDG.at(i) != 2212) continue;
+                    hTrueAbsNpRecoAbs0pProtonKE->Fill(ev.truthPrimaryDaughtersKE.at(i), ev.weight);
+                }
             } else if (ev.backgroundType == 7) {
                 hPionAbs0pKEChExch->Fill(energyAtVertex, ev.weight);
             } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
@@ -3316,6 +3364,14 @@ void RecoClassify3Cat() {
         {hTrueScatterKEAsAbs0p, hTrueScatterKEAsAbsNp, hTrueScatterKEAsScatter, hTrueScatterKERejected},
         {hTrueChExchKEAsAbs0p, hTrueChExchKEAsAbsNp, hTrueChExchKEAsScatter, hTrueChExchKERejected},
 
+        // True absorption proton KE
+        {hTrueAbs0pProtonKE, hTrueAbsNpProtonKE},
+
+        // Reco absorption proton KE
+        {hRecoAbs0pProtonKE, hRecoAbsNpProtonKE},
+        {hTrueAbs0pRecoAbsNpProtonKE},
+        {hTrueAbsNpRecoAbs0pProtonKE},
+
         // Rejected events
         {hTrueAbs0pKERejDataProds, hTrueAbs0pKERejElectron, hTrueAbs0pKERejRedVol, hTrueAbs0pKERejPID, hTrueAbs0pKERejManyPions, hTrueAbs0pKERejProtonDEDX, hTrueAbs0pKERejClusters},
         {hTrueAbsNpKERejDataProds, hTrueAbsNpKERejElectron, hTrueAbsNpKERejRedVol, hTrueAbsNpKERejPID, hTrueAbsNpKERejManyPions, hTrueAbsNpKERejProtonDEDX, hTrueAbsNpKERejClusters},
@@ -3401,6 +3457,14 @@ void RecoClassify3Cat() {
         {"Abs 0p", "Abs Np", "Scatter", "Rejected"},
         {"Abs 0p", "Abs Np", "Scatter", "Rejected"},
 
+        // True absorption proton KE
+        {"Abs 0p", "Abs Np"},
+
+        // Reco absorption proton KE
+        {"Abs 0p", "Abs Np"},
+        {"True 0p as Np"},
+        {"True Np as 0p"},
+
         // Rejected events
         {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Proton dE/dx", "Hit clusters"},
         {"Data-prods", "Shower-like", "Red. vol.", "PID reject", "> 1 pion", "Proton dE/dx", "Hit clusters"},
@@ -3483,6 +3547,14 @@ void RecoClassify3Cat() {
         "TrueInteracting/TrueAbsNpBreakdown",
         "TrueInteracting/TrueScatterBreakdown",
         "TrueInteracting/TrueChExchBreakdown",
+
+        // True absorption proton KE
+        "TrueInteracting/AbsProtonKE",
+
+        // Reco absorption proton KE
+        "RecoInteracting/AbsProtonKE",
+        "RecoInteracting/TrueAbs0pRecoAbsNp",
+        "RecoInteracting/TrueAbsNpRecoAbs0p",
 
         // Rejected events
         "Rejected/TrueAbs0pRej",
@@ -3567,6 +3639,14 @@ void RecoClassify3Cat() {
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
 
+        // True absorption proton KE
+        "Kinetic energy [GeV]",
+
+        // Reco absorption proton KE
+        "True kinetic energy [GeV]",
+        "True kinetic energy [GeV]",
+        "True kinetic energy [GeV]",
+
         // Rejected events
         "Kinetic energy [MeV]",
         "Kinetic energy [MeV]",
@@ -3646,6 +3726,14 @@ void RecoClassify3Cat() {
 
         // True events classified breakdown
         "Counts",
+        "Counts",
+        "Counts",
+        "Counts",
+
+        // True absorption proton KE
+        "Counts",
+
+        // Reco absorption proton KE
         "Counts",
         "Counts",
         "Counts",
@@ -3733,6 +3821,14 @@ void RecoClassify3Cat() {
         true,
         true,
 
+        // True absorption proton KE
+        false,
+
+        // Reco absorption proton KE
+        false,
+        false,
+        false,
+
         // Rejected events
         true,
         true,
@@ -3815,6 +3911,14 @@ void RecoClassify3Cat() {
         {false, false, false, false, false},
         {false, false, false, false, false},
         {false, false, false, false, false},
+
+        // True absorption proton KE
+        {false, false},
+
+        // Reco absorption proton KE
+        {false, false},
+        {false, false},
+        {false, false},
 
         // Rejected events
         {false, false, false, false, false, false, false},

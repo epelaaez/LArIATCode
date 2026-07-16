@@ -583,8 +583,8 @@ void RecoAllAnalysis() {
     std::vector<double> BackgroundNpInelasticScatteringVertexKE;
     std::vector<double> BackgroundNpInelasticScatteringOutgoingKE;
 
-    TH1D *hAllScatteringTotal         = new TH1D("hAllScatteringReconstructionTotal", "hAllScatteringReconstructionTotal;;", 50, 0, 0.4);
-    TH1D *hAllScatteringReconstructed = new TH1D("hAllScatteringReconstructionEfficiency", "hAllScatteringReconstructionEfficiency;;", 50, 0, 0.4);
+    TH1D *hAllScatteringTotal         = new TH1D("hAllScatteringReconstructionTotal", "hAllScatteringReconstructionTotal;;", 25, 0, 0.4);
+    TH1D *hAllScatteringReconstructed = new TH1D("hAllScatteringReconstructionEfficiency", "hAllScatteringReconstructionEfficiency;;", 25, 0, 0.4);
 
     TH1D *hInelasticScatteringReconstructed = new TH1D("hInelasticScatteringReconstructionEfficiency", "hInelasticScatteringReconstructionEfficiency;;", 20, 0, 0.4);
     TH1D *hInelasticScatteringTotal         = new TH1D("hInelasticScatteringTotal", "hInelasticScatteringTotal;;", 20, 0, 0.4);
@@ -1067,7 +1067,6 @@ void RecoAllAnalysis() {
 
             // If pion above threshold but angle not large enough, go to next interaction and check there
             if (scatteringAngle < SCATTERING_ANGLE_THRESHOLD) {
-                scatteringsModified++;
 
                 // Use secondary interaction
                 for (int iInteraction = 0; iInteraction < secondaryInteractionTypes->size(); ++iInteraction) {
@@ -1086,9 +1085,9 @@ void RecoAllAnalysis() {
                     }
 
                     // Add incident slices true contributions
-                    for (int iContribution = 0; iContribution < secondaryIncidentKEContributions->at(iInteraction).size(); ++iContribution) {
-                        trueIncidentKEContributions->push_back(secondaryIncidentKEContributions->at(iInteraction)[iContribution]);
-                    }
+                    // for (int iContribution = 0; iContribution < secondaryIncidentKEContributions->at(iInteraction).size(); ++iContribution) {
+                    //     trueIncidentKEContributions->push_back(secondaryIncidentKEContributions->at(iInteraction)[iContribution]);
+                    // }
 
                     // If scattering but outgoing below threshold, absorption
                     if (
@@ -3931,4 +3930,34 @@ void RecoAllAnalysis() {
     gNpVertexVSOutgoingKE->SetMarkerColor(kBlack);
     gNpVertexVSOutgoingKE->Draw("AP");
     c->SaveAs(SaveDir + "Scattering/BackgroundNpInelasticScatteringVertexVSOutgoingKE.png");
+
+    ////////////////////////////////////
+    // Save everything from later use //
+    ////////////////////////////////////
+
+    TString outPath = "/exp/lariat/app/users/epelaez/histos/nominal/RecoAllAnalysis_histos.root";
+    TFile outAll(outPath, "RECREATE");
+    outAll.cd();
+
+    std::unordered_set<std::string> written;
+
+    // Helper lambda: write once by name
+    auto writeOnce = [&](TObject* obj) {
+        if (!obj) return;
+        const std::string name = obj->GetName();
+        if (name.empty()) return;
+        if (written.insert(name).second) {
+            obj->Write(name.c_str(), TObject::kOverwrite);
+        }
+    };
+
+    // 1D groups
+    for (auto& group : PlotGroups) {
+        for (auto* h : group) writeOnce(h);
+    }
+
+    for (auto* h2 : TwoDPlots) writeOnce(h2);
+
+    outAll.Write();
+    outAll.Close();
 }
