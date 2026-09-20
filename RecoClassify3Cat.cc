@@ -34,7 +34,8 @@ void RecoClassify3Cat() {
 
     int FontStyle = 132;
     double TextSize = 0.06;
-    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Classify3Cat/";
+    //TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Classify3Cat/";
+    TString SaveDir = "/exp/lariat/app/users/mking/abs4/analysis/LArIATCode/figs/Classify3Cat/";
 
     // Load files
     TChain* Chain = new TChain("anatree/anatree");
@@ -146,8 +147,11 @@ void RecoClassify3Cat() {
 
     std::ofstream outFileEvents("files/Classify3Cat/GoodEvents.txt");
 
-    TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "RECREATE");
-    TFile* nominalFile     = new TFile("/exp/lariat/app/users/epelaez/histos/nominal/Reco.root", "RECREATE");
+    //TFile* comparisonsFile = new TFile("/exp/lariat/app/users/epelaez/files/DataMCComparisons.root", "RECREATE");
+    //TFile* nominalFile     = new TFile("/exp/lariat/app/users/epelaez/histos/nominal/Reco.root", "RECREATE");
+
+    TFile* comparisonsFile = new TFile("/exp/lariat/app/users/mking/abs4/analysis/LArIATCode/files/DataMCComparisons.root", "RECREATE");
+    TFile* nominalFile     = new TFile("/exp/lariat/app/users/mking/abs4/analysis/LArIATCode/histos/nominal/Reco.root", "RECREATE");
 
     ///////////////////////
     // Create histograms //
@@ -659,6 +663,7 @@ void RecoClassify3Cat() {
 
     Long64_t i = 0;
     while (true) {
+	if (i % 1000 == 0) {    std::cout << "Processed " << i << " events" << std::endl;}
         if (SKIP_INDICES.count(i)) { i++; continue; }
         if (Chain->GetEntry(i++) <= 0) break;
 
@@ -2786,7 +2791,7 @@ void RecoClassify3Cat() {
         } else if (ev.backgroundType == 7) {
             hTrueChExchKERejected->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
         }
-    }
+    }//end of event loop
 
     std::cout << std::endl;
     std::cout << "Events with reconstructed primary track: " << numEventsPrimaryReco << std::endl;
@@ -2816,6 +2821,123 @@ void RecoClassify3Cat() {
     std::cout << "Number of events with at most 0 TG tracks: " << eventCount0TG << std::endl;
     std::cout << "Number of events with at most 1 TG tracks: " << eventCount1TG << std::endl;
     std::cout << "Number of events with at most 2 TG tracks: " << eventCount2TG << std::endl;
+
+    ////////////////////////////////////////////
+    // Efficiency / Purity plot for each step //
+    ////////////////////////////////////////////
+
+	auto signalContent = [](TH1D* h, int signalType) -> double {
+
+	    if (signalType == 0) {
+		// True Abs 0p: backgroundType == 0
+		return h->GetBinContent(1);
+	    }
+
+	    if (signalType == 1) {
+		// True Abs Np: backgroundType == 1
+		return h->GetBinContent(2);
+	    }
+
+	    // True scatter: backgroundType == 6 or 12
+	    return h->GetBinContent(7) + h->GetBinContent(13);
+	};
+
+	std::vector<TH1D*> commonSelectionStages = {
+	    hTotalEvents,
+	    hDataProdsAndWC2TPC,
+	    hNotManyTGTracks,
+	    hNotAnElectron,
+	    hPrimaryInRedVol,
+	    hPrimaryPID
+	};
+
+	std::vector<TString> selectionStageLabels = {
+	    "All",
+	    "WC-TPC",
+	    "TG tracks",
+	    "Shower veto",
+	    "Red. volume",
+	    "#pi PID",
+	    "Final"
+	};
+
+	std::vector<TH1D*> finalSelectionHistos = {
+	    hPionAbs0p,
+	    hPionAbsNp,
+	    hPionScatter
+	};
+
+	std::vector<TString> signalNames = {
+	    "Abs0p",
+	    "AbsNp",
+	    "Scatter"
+	};
+
+	std::vector<TH1D*> hSelectionEfficiency(3, nullptr);
+	std::vector<TH1D*> hSelectionPurity(3, nullptr);
+
+	for (int iSignal = 0; iSignal < 3; ++iSignal) {
+
+	    const int nStages = selectionStageLabels.size();
+
+	    hSelectionEfficiency[iSignal] = new TH1D(
+		Form("h%sSelectionEfficiency", signalNames[iSignal].Data()),
+		"",
+		nStages, 0, nStages
+	    );
+
+	    hSelectionPurity[iSignal] = new TH1D(
+		Form("h%sSelectionPurity", signalNames[iSignal].Data()),
+		"",
+		nStages, 0, nStages
+	    );
+
+	    const double initialSignal =
+		signalContent(hTotalEvents, iSignal);
+
+	    for (int iStage = 0; iStage < nStages; ++iStage) {
+
+		TH1D* hStage =
+		    (iStage < (int)commonSelectionStages.size())
+		    ? commonSelectionStages[iStage]
+		    : finalSelectionHistos[iSignal];
+
+		const double nSignal =
+		    signalContent(hStage, iSignal);
+
+		const double nTotal =
+		    hStage->Integral();
+
+		// Use percentages directly for plotting
+		const double efficiency =
+		    (initialSignal > 0.)
+		    ? 100. * nSignal / initialSignal
+		    : 0.;
+
+		const double purity =
+		    (nTotal > 0.)
+		    ? 100. * nSignal / nTotal
+		    : 0.;
+
+		hSelectionEfficiency[iSignal]
+		    ->SetBinContent(iStage + 1, efficiency);
+
+		hSelectionPurity[iSignal]
+		    ->SetBinContent(iStage + 1, purity);
+
+		hSelectionEfficiency[iSignal]
+		    ->GetXaxis()->SetBinLabel(
+			iStage + 1,
+			selectionStageLabels[iStage]
+		    );
+
+		hSelectionPurity[iSignal]
+		    ->GetXaxis()->SetBinLabel(
+			iStage + 1,
+			selectionStageLabels[iStage]
+		    );
+	    }
+	}
 
     //////////////////////////////////
     // Breakdown of rejected events //
@@ -3281,8 +3403,12 @@ void RecoClassify3Cat() {
     // Save histograms to text files //
     ///////////////////////////////////
 
-    histoToText(hTrueAllKE, "/exp/lariat/app/users/epelaez/analysis/files/Flux/InteractingFlux.txt");
-    histoToText(hTrueIncidentKE, "/exp/lariat/app/users/epelaez/analysis/files/Flux/IncidentFlux.txt");
+    //histoToText(hTrueAllKE, "/exp/lariat/app/users/epelaez/analysis/files/Flux/InteractingFlux.txt");
+    //histoToText(hTrueIncidentKE, "/exp/lariat/app/users/epelaez/analysis/files/Flux/IncidentFlux.txt");
+
+    histoToText(hTrueAllKE, "/exp/lariat/app/users/mking/abs4/analysis/LArIATCode/files/Flux/InteractingFlux.txt");
+    histoToText(hTrueIncidentKE, "/exp/lariat/app/users/mking/abs4/analysis/LArIATCode/files/Flux/IncidentFlux.txt");
+
 
     //////////////////
     // Create plots //
@@ -3871,6 +3997,43 @@ void RecoClassify3Cat() {
         {false, true}
     };
 
+    ///////////////////////////////////////
+    // Add efficiency / purity plots     //
+    ///////////////////////////////////////
+
+	for (int iSignal = 0; iSignal < 3; ++iSignal) {
+
+	    // Histograms to draw together
+	    PlotGroups.push_back({
+		hSelectionEfficiency[iSignal],
+		hSelectionPurity[iSignal]
+	    });
+
+	    PlotLabelGroups.push_back({
+		"Efficiency",
+		"Purity"
+	    });
+
+	    PlotTitles.push_back(
+		Form(
+		    "RecoInteracting/%sEfficiencyPurity",
+		    signalNames[iSignal].Data()
+		)
+	    );
+
+	    XLabels.push_back("Selection step");
+	    YLabels.push_back("Efficiency / purity [%]");
+
+	    // Do not stack efficiency and purity
+	    PlotStacked.push_back(false);
+
+	    // Draw both as points
+	    PlotsAsPoints.push_back({
+		true,
+		true
+	    });
+	}
+
     printOneDPlots(
         SaveDir, FontStyle, TextSize,
         PlotGroups,
@@ -3998,7 +4161,8 @@ void RecoClassify3Cat() {
     // Save everything from later use //
     ////////////////////////////////////
 
-    TString outPath = "/exp/lariat/app/users/epelaez/histos/nominal/RecoClassify3Cat_AllHists.root";
+    //TString outPath = "/exp/lariat/app/users/epelaez/histos/nominal/RecoClassify3Cat_AllHists.root";
+    TString outPath = "/exp/lariat/app/users/mking/abs4/analysis/LArIATCode/histos/RecoClassify3Cat_AllHists.root";
     TFile outAll(outPath, "RECREATE");
     outAll.cd();
 

@@ -38,12 +38,22 @@ void EnergyRecoCov() {
 
     int FontStyle = 132;
     double TextSize = 0.06;
-    TString SaveDir = "/exp/lariat/app/users/epelaez/analysis/figs/Systematics/";
+    TString SaveDir = "/exp/lariat/app/users/mking/abs4/analysis/LArIATCode/figs/Systematics/";
 
     // Load files
     TChain* Chain = new TChain("anatree/anatree");
     Chain->Add("/exp/lariat/app/users/epelaez/files/anatree_60a/chunks/*.root");
     std::cout << "Files:   " << Chain->GetListOfFiles()->GetEntries() << std::endl;
+
+    Long64_t nEntries = Chain->GetEntries();
+
+	std::cout << "Files:         "
+		  << Chain->GetListOfFiles()->GetEntries()
+		  << std::endl;
+
+	std::cout << "Total events:  "
+		  << nEntries
+		  << std::endl;
 
     // Load weights
     TH1D* hWeightsFrontFace = dynamic_cast<TH1D*>(fWeights->Get(WEIGHTS_NAME));
@@ -281,15 +291,107 @@ void EnergyRecoCov() {
     std::vector<std::vector<std::vector<TH1D*>>> TrueRecoAsByBinNom = {
         TrueAbs0pAsByBinNom, TrueAbsNpAsByBinNom, TrueScatterAsByBinNom
     };
+    //
+    //Per-syst univ background histos
+    // Diagnostic breakdown of reconstructed interacting samples by true event type
+	enum TruthComponent {
+	    kTrueAbs0p = 0,
+	    kTrueAbsNp,
+	    kTrueScatter,
+	    kTrueChExch,
+	    kTrueMuon,
+	    kTrueElectron,
+	    kTrueOther,
+	    kNTruthComponents
+	};
+
+	const int kRecoAbs0p   = 0;
+	const int kRecoAbsNp   = 1;
+	const int kRecoScatter = 2;
+
+	std::vector<TString> recoNames = {
+	    "Abs0p", "AbsNp", "Scatter"
+	};
+
+	std::vector<TString> truthNames = {
+	    "Abs0p", "AbsNp", "Scatter", "ChExch",
+	    "Muon", "Electron", "Other"
+	};
+
+	std::vector<TString> truthLabels = {
+	    "True Abs 0p", "True Abs Np", "True Scatter", "Charge exchange",
+	    "Muon", "Electron", "Other"
+	};
+
+	// [reco category][universe][truth component]
+	std::vector<std::vector<std::vector<TH1D*>>> InteractingBreakdown(
+	    NUM_SIGNAL_TYPES,
+	    std::vector<std::vector<TH1D*>>(
+		NUM_UNIVERSES,
+		std::vector<TH1D*>(kNTruthComponents, nullptr)
+	    )
+	);
+
+	// Central-value interacting breakdown:
+	// [reco category][truth component]
+	std::vector<std::vector<TH1D*>> InteractingBreakdownCV(
+	    NUM_SIGNAL_TYPES,
+	    std::vector<TH1D*>(kNTruthComponents, nullptr)
+	);
+
+	for (int iReco = 0; iReco < NUM_SIGNAL_TYPES; ++iReco) {
+	    for (int iTruth = 0; iTruth < kNTruthComponents; ++iTruth) {
+
+		InteractingBreakdownCV[iReco][iTruth] = new TH1D(
+		    Form("h%sBreakdown_%s_CV",
+			 recoNames[iReco].Data(),
+			 truthNames[iTruth].Data()),
+		    "",
+		    NUM_BINS_KE,
+		    ARRAY_KE_BINS.data()
+		);
+	    }
+	}	
+
+	for (int iReco = 0; iReco < NUM_SIGNAL_TYPES; ++iReco) {
+	    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+		for (int iTruth = 0; iTruth < kNTruthComponents; ++iTruth) {
+		    InteractingBreakdown[iReco][iUniv][iTruth] = new TH1D(
+			Form("h%sBreakdown_%s_Univ%d",
+			     recoNames[iReco].Data(),
+			     truthNames[iTruth].Data(),
+			     iUniv),
+			"",
+			NUM_BINS_KE,
+			ARRAY_KE_BINS.data()
+		    );
+		}
+	    }
+	}
+
+    auto getTruthComponent = [](int backgroundType) {
+	    if      (backgroundType == 0)                          return kTrueAbs0p;
+	    else if (backgroundType == 1)                          return kTrueAbsNp;
+	    else if (backgroundType == 6 || backgroundType == 12) return kTrueScatter;
+	    else if (backgroundType == 7)                          return kTrueChExch;
+	    else if (backgroundType == 2)                          return kTrueMuon;
+	    else if (backgroundType == 3)                          return kTrueElectron;
+	    else                                                   return kTrueOther;
+	};
 
     //////////////////////
     // Loop over events //
     //////////////////////
 
     bool verbose = false;
+    const Long64_t USE_NUM_EVENTS = 100;
+    const Long64_t NUM_ENTRIES = Chain->GetEntries();
+    //const Long64_t NUM_TO_RUN = std::min(USE_NUM_EVENTS, NUM_ENTRIES);
+    const Long64_t NUM_TO_RUN = NUM_ENTRIES;    
 
     Long64_t i = 0;
-    while (true) {
+    while (i < NUM_TO_RUN) {
+	if (i%1000 == 0) std::cout<<i<<std::endl;
         if (SKIP_INDICES.count(i)) { i++; continue; }
         if (Chain->GetEntry(i++) <= 0) break;
 
@@ -1317,6 +1419,14 @@ void EnergyRecoCov() {
             ((validDeposition - 1) * e_dep_unc) * ((validDeposition - 1) * e_dep_unc)
         );
 
+        //per-universe info
+	double interactingKEUniv[2] = {
+	    energyAtVertex + energyAtVertex_unc,
+	    energyAtVertex - energyAtVertex_unc
+	};
+
+	int truthComponent = getTruthComponent(ev.backgroundType);
+
         // Reject if vertex outside reduced volume
         if (!isWithinReducedVolume(breakPointX, breakPointY, breakPointZ)) continue;
 
@@ -1425,8 +1535,18 @@ void EnergyRecoCov() {
 
             // Add weights to scatter
             hPionScatterKENom->Fill(energyAtVertex, ev.weight);
+	    InteractingBreakdownCV[kRecoScatter][truthComponent]
+    		->Fill(energyAtVertex, ev.weight);
+
             PionScatterKEUnivs[0]->Fill(energyAtVertex + energyAtVertex_unc, ev.weight); 
             PionScatterKEUnivs[1]->Fill(energyAtVertex - energyAtVertex_unc, ev.weight);
+
+	    // Reco scatter
+	    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+	        InteractingBreakdown[kRecoScatter][iUniv][truthComponent]
+	     	    ->Fill(interactingKEUniv[iUniv], ev.weight);
+	    }
+
             if (ev.backgroundType == 0) {
                 if (TrueEnergyBin != -1) {
                     TrueAbs0pAsByBinNom.at(TrueEnergyBin).at(2)->Fill(energyAtVertex, ev.weight);
@@ -1459,8 +1579,18 @@ void EnergyRecoCov() {
 
             // Add weights to abs Np
             hPionAbsNpKENom->Fill(energyAtVertex, ev.weight);
+	    InteractingBreakdownCV[kRecoAbsNp][truthComponent]
+    		->Fill(energyAtVertex, ev.weight);
+
             PionAbsNpKEUnivs[0]->Fill(energyAtVertex + energyAtVertex_unc, ev.weight);
             PionAbsNpKEUnivs[1]->Fill(energyAtVertex - energyAtVertex_unc, ev.weight);
+
+	    // Reco Abs Np
+	    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+    	        InteractingBreakdown[kRecoAbsNp][iUniv][truthComponent]
+        	    ->Fill(interactingKEUniv[iUniv], ev.weight);
+	    }
+
             if (ev.backgroundType == 0) {
                 if (TrueEnergyBin != -1) {
                     TrueAbs0pAsByBinNom.at(TrueEnergyBin).at(1)->Fill(energyAtVertex, ev.weight);
@@ -1526,8 +1656,18 @@ void EnergyRecoCov() {
         ) {
             // Add weights to abs 0p
             hPionAbs0pKENom->Fill(energyAtVertex, ev.weight);
+	    InteractingBreakdownCV[kRecoAbs0p][truthComponent]
+	        ->Fill(energyAtVertex, ev.weight);
+
             PionAbs0pKEUnivs[0]->Fill(energyAtVertex + energyAtVertex_unc, ev.weight);
             PionAbs0pKEUnivs[1]->Fill(energyAtVertex - energyAtVertex_unc, ev.weight);
+
+	    // Reco Abs 0p
+	    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+    	        InteractingBreakdown[kRecoAbs0p][iUniv][truthComponent]
+        	    ->Fill(interactingKEUniv[iUniv], ev.weight);
+ 	    }
+
             if (ev.backgroundType == 0) {
                 if (TrueEnergyBin != -1) {
                     TrueAbs0pAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex, ev.weight);
@@ -1555,6 +1695,152 @@ void EnergyRecoCov() {
             continue;
         }
     }
+
+    //Plots for systematic universes
+    std::vector<TH1*> totalRecoHists = {
+	    PionAbs0pKEUnivs[0],
+	    PionAbsNpKEUnivs[0],
+	    PionScatterKEUnivs[0],
+	    PionAbs0pKEUnivs[1],
+	    PionAbsNpKEUnivs[1],
+	    PionScatterKEUnivs[1]
+	};
+
+        std::vector<std::vector<TH1*>> BreakdownPlotGroups;
+        std::vector<std::vector<TString>> BreakdownLabels;
+        std::vector<TString> BreakdownTitles;
+        std::vector<TString> BreakdownXLabels;
+        std::vector<TString> BreakdownYLabels;
+        std::vector<bool> BreakdownStacked;
+        std::vector<std::vector<bool>> BreakdownAsPoints;
+
+    // First make the CV breakdown plots
+	for (int iReco = 0; iReco < NUM_SIGNAL_TYPES; ++iReco) {
+
+	    std::vector<TH1*> thisGroup;
+
+	    TH1D* hTotalCV = nullptr;
+
+	    if (iReco == kRecoAbs0p)
+		hTotalCV = hPionAbs0pKENom;
+	    else if (iReco == kRecoAbsNp)
+		hTotalCV = hPionAbsNpKENom;
+	    else
+		hTotalCV = hPionScatterKENom;
+
+	    // Nominal selected count as points
+	    thisGroup.push_back(hTotalCV);
+
+	    // Truth components as stack
+	    for (int iTruth = 0; iTruth < kNTruthComponents; ++iTruth) {
+		thisGroup.push_back(
+		    InteractingBreakdownCV[iReco][iTruth]
+		);
+	    }
+
+	    BreakdownPlotGroups.push_back(thisGroup);
+
+	    BreakdownLabels.push_back({
+		"All",
+		"True Abs 0p",
+		"True Abs Np",
+		"True Scatter",
+		"Charge exchange",
+		"Muon",
+		"Electron",
+		"Other"
+	    });
+
+	    BreakdownTitles.push_back(
+		Form(
+		    "EnergyReco/%sInteractingBreakdown_CV",
+		    recoNames[iReco].Data()
+		)
+	    );
+
+	    BreakdownXLabels.push_back("Kinetic energy [MeV]");
+	    BreakdownYLabels.push_back("Counts");
+	    BreakdownStacked.push_back(true);
+
+	    BreakdownAsPoints.push_back({
+		true,
+		false, false, false, false,
+		false, false, false
+	    });
+	}
+
+	for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+	    TString sigmaLabel = (iUniv == 0) ? "Minus1Sigma" : "Plus1Sigma";
+
+	    for (int iReco = 0; iReco < NUM_SIGNAL_TYPES; ++iReco) {
+
+		std::vector<TH1*> thisGroup;
+
+		// Total selected interacting count as points
+		TH1D* hTotal = nullptr;
+		if (iReco == kRecoAbs0p)
+		    hTotal = PionAbs0pKEUnivs[iUniv];
+		else if (iReco == kRecoAbsNp)
+		    hTotal = PionAbsNpKEUnivs[iUniv];
+		else
+		    hTotal = PionScatterKEUnivs[iUniv];
+
+		thisGroup.push_back(hTotal);
+
+		// Truth components make up the stack
+		for (int iTruth = 0; iTruth < kNTruthComponents; ++iTruth) {
+		    thisGroup.push_back(
+			InteractingBreakdown[iReco][iUniv][iTruth]
+		    );
+		}
+
+		BreakdownPlotGroups.push_back(thisGroup);
+
+		BreakdownLabels.push_back({
+		    "All",
+		    "True Abs 0p",
+		    "True Abs Np",
+		    "True Scatter",
+		    "Charge exchange",
+		    "Muon",
+		    "Electron",
+		    "Other"
+		});
+
+		BreakdownTitles.push_back(
+		    Form(
+			"EnergyReco/%sInteractingBreakdown_%s",
+			recoNames[iReco].Data(),
+			sigmaLabel.Data()
+		    )
+		);
+
+		BreakdownXLabels.push_back("Kinetic energy [MeV]");
+		BreakdownYLabels.push_back("Counts");
+		BreakdownStacked.push_back(true);
+
+		// Total is overlaid as points, components are stacked
+		BreakdownAsPoints.push_back({
+		    true,
+		    false, false, false, false,
+		    false, false, false
+		});
+	    }
+	}
+
+	printOneDPlots(
+	    SaveDir,
+	    FontStyle,
+	    TextSize,
+	    BreakdownPlotGroups,
+	    Colors,
+	    BreakdownLabels,
+	    BreakdownTitles,
+	    BreakdownXLabels,
+	    BreakdownYLabels,
+	    BreakdownStacked,
+	    BreakdownAsPoints
+	);
 
     //////////////////////////////
     // Cross-section extraction //
@@ -1961,7 +2247,7 @@ void EnergyRecoCov() {
     // Save covariance matrix //
     ////////////////////////////
 
-    TFile* saveFile = new TFile("/exp/lariat/app/users/epelaez/histos/energyreco/Measure.root", "RECREATE");
+    TFile* saveFile = new TFile("/exp/lariat/app/users/mking/abs4/analysis/LArIATCode/histos/energyreco/Measure.root", "RECREATE");
     saveFile->cd();
     hMeasureCovMatrix->Write("", TObject::kOverwrite);
     saveFile->Close();
