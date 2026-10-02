@@ -31,6 +31,56 @@ void BeamlineMuCov() {
     // Number of universes for this systematic
     int NUM_UNIVERSES = 2; // +/- mu unc
 
+	// Nominal beam composition after the common selection and
+	// front-face KE reweighting, restricted to pion + muon. (does not include electron)
+	const double MUON_FRAC_NOM = 0.312074;
+	const double PION_FRAC_NOM = 0.687926;
+
+	// Relative pion variation required to keep N_pi + N_mu fixed
+	const double PION_COMP_UNC =
+	    MUON_COMP_UNC * MUON_FRAC_NOM / PION_FRAC_NOM;
+
+	const int kMinusSigma = 0;
+	const int kPlusSigma  = 1;
+
+	double muonScale[2] = {
+	    1.0 - MUON_COMP_UNC,
+	    1.0 + MUON_COMP_UNC
+	};
+
+	double pionScale[2] = {
+	    1.0 + PION_COMP_UNC,
+	    1.0 - PION_COMP_UNC
+	};
+
+	auto beamCompositionWeight = [&](int primaryPDG, int iUniv) {
+
+	    if (primaryPDG == 13)
+		return muonScale[iUniv];
+
+	    if (primaryPDG == -211)
+		return pionScale[iUniv];
+
+	    // Electron contribution is not varied by this systematic.
+	    return 1.0;
+	};
+
+    std::cout << "\nBeam composition scales:\n";
+
+	for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+
+	    double closure =
+		PION_FRAC_NOM * pionScale[iUniv]
+		+ MUON_FRAC_NOM * muonScale[iUniv];
+
+	    std::cout
+		<< "Universe " << iUniv
+		<< ": pion scale = " << pionScale[iUniv]
+		<< ", muon scale = " << muonScale[iUniv]
+		<< ", pi+mu closure = " << closure
+		<< std::endl;
+	}
+
     // Initialize points
     initializeProtonPoints(gProton);
     initializePionPoints(gPion);
@@ -1228,20 +1278,20 @@ void BeamlineMuCov() {
                 // Add to universes. For generator systematics, we do not vary the 
                 // incident flux, just the interacting flux
                 for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
-                    TrueIncidentKEUnivs[iUniv]->Fill(x, ev.weight);
+                    TrueIncidentKEUnivs[iUniv]->Fill(x, ev.weight*pionScale[iUniv]);
                 }
             }
         }
 
         if (ev.backgroundType == 0) {
             hTruePionAbs0pKENom->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
-            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionAbs0pKEUnivs[iUniv]->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionAbs0pKEUnivs[iUniv]->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight*pionScale[iUniv]);
         } else if (ev.backgroundType == 1) {
             hTruePionAbsNpKENom->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
-            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionAbsNpKEUnivs[iUniv]->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionAbsNpKEUnivs[iUniv]->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight*pionScale[iUniv]);
         } else if (ev.backgroundType == 6 || ev.backgroundType == 12) {
             hTruePionScatterKENom->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
-            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionScatterKEUnivs[iUniv]->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight);
+            for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) TruePionScatterKEUnivs[iUniv]->Fill(ev.truthPrimaryVertexKE * 1000, ev.weight*pionScale[iUniv]);
         }
 
         //////////////////////////////
@@ -1377,35 +1427,31 @@ void BeamlineMuCov() {
             energyDeposited += ev.wcMatchEDep.at(iDep);
 
             // Add to incident KE if inside reduced volume
+            // Require the pion flux to change with the muon flux, keeping total flux fixed.
             if (isWithinReducedVolume(ev.wcMatchXPos.at(iDep), ev.wcMatchYPos.at(iDep), ev.wcMatchZPos.at(iDep))) {
                 hPionIncidentKENom->Fill(initialKE - energyDeposited, ev.weight);
-                PionIncidentKEUnivs[0]->Fill(initialKE - energyDeposited, ev.weight);
-                PionIncidentKEUnivs[1]->Fill(initialKE - energyDeposited, ev.weight);
-
-                if (ev.truthPrimaryPDG == 13) {
-                    PionIncidentKEUnivs[0]->Fill(initialKE - energyDeposited, -MUON_COMP_UNC * ev.weight);
-                    PionIncidentKEUnivs[1]->Fill(initialKE - energyDeposited, +MUON_COMP_UNC * ev.weight);
-                }
+		
+		for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+		    double w = ev.weight * beamCompositionWeight(ev.truthPrimaryPDG, iUniv);
+		    PionIncidentKEUnivs[iUniv]->Fill(initialKE - energyDeposited,w);
+		}	
 
                 if (ev.truthPrimaryPDG == -211) {
                     hPionIncidentKETrueNom->Fill(initialKE - energyDeposited, ev.weight);
-                    PionIncidentKETrueUnivs[0]->Fill(initialKE - energyDeposited, ev.weight);
-                    PionIncidentKETrueUnivs[1]->Fill(initialKE - energyDeposited, ev.weight);
-                }
+               	        for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+			    PionIncidentKETrueUnivs[iUniv]->Fill(initialKE - energyDeposited,ev.weight * pionScale[iUniv]);
+			} 
+		}
             }
         }
 
         double energyAtVertex = initialKE - energyDeposited;
 
-	double interactingWeightUniv[2] = {
-            ev.weight,
-            ev.weight
-        };
+	double interactingWeightUniv[2];
 
-        if (ev.truthPrimaryPDG == 13) {
-            interactingWeightUniv[0] *= (1.0 - MUON_COMP_UNC);
-            interactingWeightUniv[1] *= (1.0 + MUON_COMP_UNC);
-        }
+	for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+	    interactingWeightUniv[iUniv] = ev.weight * beamCompositionWeight(ev.truthPrimaryPDG, iUniv);
+	}
 
         int truthComponent = getTruthComponent(ev.backgroundType);
 
@@ -1521,12 +1567,12 @@ void BeamlineMuCov() {
 	    InteractingBreakdownCV[kRecoScatter][truthComponent]
     		->Fill(energyAtVertex, ev.weight);
 
-            PionScatterKEUnivs[0]->Fill(energyAtVertex, ev.weight);
-            PionScatterKEUnivs[1]->Fill(energyAtVertex, ev.weight);
-            if (ev.truthPrimaryPDG == 13) {
-                PionScatterKEUnivs[0]->Fill(energyAtVertex, -MUON_COMP_UNC * ev.weight); 
-                PionScatterKEUnivs[1]->Fill(energyAtVertex, +MUON_COMP_UNC * ev.weight);
-            }
+	    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+		    PionScatterKEUnivs[iUniv]->Fill(
+			energyAtVertex,
+			interactingWeightUniv[iUniv]
+		    );
+		}
 
 	    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
     		InteractingBreakdown[kRecoScatter][iUniv][truthComponent]
@@ -1542,12 +1588,9 @@ void BeamlineMuCov() {
             } else {
                 hPionScatterKEBkgNom->Fill(energyAtVertex, ev.weight);
 
-                PionScatterKEBkgUnivs[0]->Fill(energyAtVertex, ev.weight);
-                PionScatterKEBkgUnivs[1]->Fill(energyAtVertex, ev.weight);
-                if (ev.truthPrimaryPDG == 13) {
-                    PionScatterKEBkgUnivs[0]->Fill(energyAtVertex, -MUON_COMP_UNC * ev.weight);
-                    PionScatterKEBkgUnivs[1]->Fill(energyAtVertex, +MUON_COMP_UNC * ev.weight);
-                }
+		for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+			PionScatterKEBkgUnivs[iUniv]->Fill(energyAtVertex,interactingWeightUniv[iUniv]);
+		}
             }
 
             continue;
@@ -1561,12 +1604,9 @@ void BeamlineMuCov() {
 	    InteractingBreakdownCV[kRecoAbsNp][truthComponent]
     	        ->Fill(energyAtVertex, ev.weight);
 
-            PionAbsNpKEUnivs[0]->Fill(energyAtVertex, ev.weight);
-            PionAbsNpKEUnivs[1]->Fill(energyAtVertex, ev.weight);
-            if (ev.truthPrimaryPDG == 13) {
-                PionAbsNpKEUnivs[0]->Fill(energyAtVertex, -MUON_COMP_UNC * ev.weight); 
-                PionAbsNpKEUnivs[1]->Fill(energyAtVertex, +MUON_COMP_UNC * ev.weight);
-            }
+	    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+                        PionAbsNpKEUnivs[iUniv]->Fill(energyAtVertex,interactingWeightUniv[iUniv]);
+                }
 
 	    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
    		 InteractingBreakdown[kRecoAbsNp][iUniv][truthComponent]
@@ -1582,11 +1622,8 @@ void BeamlineMuCov() {
             } else {
                 hPionAbsNpKEBkgNom->Fill(energyAtVertex, ev.weight);
 
-                PionAbsNpKEBkgUnivs[0]->Fill(energyAtVertex, ev.weight);
-                PionAbsNpKEBkgUnivs[1]->Fill(energyAtVertex, ev.weight);
-                if (ev.truthPrimaryPDG == 13) {
-                    PionAbsNpKEBkgUnivs[0]->Fill(energyAtVertex, -MUON_COMP_UNC * ev.weight);
-                    PionAbsNpKEBkgUnivs[1]->Fill(energyAtVertex, +MUON_COMP_UNC * ev.weight);
+		for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+                        PionAbsNpKEBkgUnivs[iUniv]->Fill(energyAtVertex,interactingWeightUniv[iUniv]);
                 }
             }
             
@@ -1633,12 +1670,9 @@ void BeamlineMuCov() {
 	    InteractingBreakdownCV[kRecoAbs0p][truthComponent]
 	        ->Fill(energyAtVertex, ev.weight);
 
-            PionAbs0pKEUnivs[0]->Fill(energyAtVertex, ev.weight);
-            PionAbs0pKEUnivs[1]->Fill(energyAtVertex, ev.weight);
-            if (ev.truthPrimaryPDG == 13) {
-                PionAbs0pKEUnivs[0]->Fill(energyAtVertex, -MUON_COMP_UNC * ev.weight); 
-                PionAbs0pKEUnivs[1]->Fill(energyAtVertex, +MUON_COMP_UNC * ev.weight);
-            }
+	    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+                        PionAbs0pKEUnivs[iUniv]->Fill(energyAtVertex,interactingWeightUniv[iUniv]);
+                }
 
 	    for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
  		   InteractingBreakdown[kRecoAbs0p][iUniv][truthComponent]
@@ -1653,18 +1687,15 @@ void BeamlineMuCov() {
                 if (TrueEnergyBin != -1) TrueScatterAsByBinNom.at(TrueEnergyBin).at(0)->Fill(energyAtVertex, ev.weight);
             } else {
                 hPionAbs0pKEBkgNom->Fill(energyAtVertex, ev.weight);
-
-                PionAbs0pKEBkgUnivs[0]->Fill(energyAtVertex, ev.weight);
-                PionAbs0pKEBkgUnivs[1]->Fill(energyAtVertex, ev.weight);
-                if (ev.truthPrimaryPDG == 13) {
-                    PionAbs0pKEBkgUnivs[0]->Fill(energyAtVertex, -MUON_COMP_UNC * ev.weight);
-                    PionAbs0pKEBkgUnivs[1]->Fill(energyAtVertex, +MUON_COMP_UNC * ev.weight);
+		
+		for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+                        PionAbs0pKEBkgUnivs[iUniv]->Fill(energyAtVertex,interactingWeightUniv[iUniv]);
                 }
             }
 
             continue;
         }
-    }
+    } //EventLoop
 
     //Draw Beamline Muon background breakdown for each selected sample in the two syst universes
 	    std::vector<TH1*> totalRecoHists = {
@@ -1812,6 +1843,331 @@ void BeamlineMuCov() {
 	    BreakdownAsPoints
 	);
 
+	//////////////////////////////////////////////////////////////
+	// Diagnostic: truth composition counts and percentages     //
+	//////////////////////////////////////////////////////////////
+
+	std::vector<TString> compositionLabels = {
+	    "True Abs 0p",
+	    "True Abs Np",
+	    "True Scatter",
+	    "Charge exchange",
+	    "Muon",
+	    "Electron",
+	    "Other"
+	};
+
+	// Helper to get the total selected histogram for a reco category
+	auto getTotalRecoHist = [&](int iReco, int universeCode) -> TH1D* {
+
+	    // universeCode:
+	    //   -1 = CV
+	    //    0 = -1 sigma
+	    //    1 = +1 sigma
+
+	    if (universeCode == -1) {
+
+		if (iReco == kRecoAbs0p)
+		    return hPionAbs0pKENom;
+
+		if (iReco == kRecoAbsNp)
+		    return hPionAbsNpKENom;
+
+		return hPionScatterKENom;
+	    }
+
+	    if (iReco == kRecoAbs0p)
+		return PionAbs0pKEUnivs[universeCode];
+
+	    if (iReco == kRecoAbsNp)
+		return PionAbsNpKEUnivs[universeCode];
+
+	    return PionScatterKEUnivs[universeCode];
+	};
+
+
+	// Helper to get one component histogram
+	auto getCompositionHist =
+	    [&](int iReco, int universeCode, int iTruth) -> TH1D* {
+
+		if (universeCode == -1)
+		    return InteractingBreakdownCV[iReco][iTruth];
+
+		return InteractingBreakdown[iReco][universeCode][iTruth];
+	    };
+
+	std::vector<std::vector<TH1*>> CompositionCountPlotGroups;
+	std::vector<std::vector<TString>> CompositionCountLabels;
+	std::vector<TString> CompositionCountTitles;
+	std::vector<TString> CompositionCountXLabels;
+	std::vector<TString> CompositionCountYLabels;
+	std::vector<bool> CompositionCountStacked;
+	std::vector<std::vector<bool>> CompositionCountAsPoints;
+
+	std::vector<std::vector<TH1*>> CompositionPercentPlotGroups;
+	std::vector<std::vector<TString>> CompositionPercentLabels;
+	std::vector<TString> CompositionPercentTitles;
+	std::vector<TString> CompositionPercentXLabels;
+	std::vector<TString> CompositionPercentYLabels;
+	std::vector<bool> CompositionPercentStacked;
+	std::vector<std::vector<bool>> CompositionPercentAsPoints;
+
+	// -1 means CV, 0 means -1 sigma, 1 means +1 sigma
+	std::vector<int> universeCodes = {-1, 0, 1};
+
+	for (int universeCode : universeCodes) {
+
+	    TString universeLabel;
+
+	    if (universeCode == -1)
+		universeLabel = "CV";
+	    else if (universeCode == 0)
+		universeLabel = "Minus1Sigma";
+	    else
+		universeLabel = "Plus1Sigma";
+
+
+	    for (int iReco = 0; iReco < NUM_SIGNAL_TYPES; ++iReco) {
+
+		TH1D* hTotal =
+		    getTotalRecoHist(iReco, universeCode);
+
+		//////////////////////////
+		// Absolute count plots //
+		//////////////////////////
+
+		std::vector<TH1*> countGroup;
+
+		for (int iTruth = 0;
+		     iTruth < kNTruthComponents;
+		     ++iTruth) {
+
+		    countGroup.push_back(
+			getCompositionHist(
+			    iReco,
+			    universeCode,
+			    iTruth
+			)
+		    );
+		}
+
+		CompositionCountPlotGroups.push_back(
+		    countGroup
+		);
+
+		CompositionCountLabels.push_back(
+		    compositionLabels
+		);
+
+		CompositionCountTitles.push_back(
+		    Form(
+			"BeamlineMu/CompositionCounts_%s_%s",
+			recoNames[iReco].Data(),
+			universeLabel.Data()
+		    )
+		);
+
+		CompositionCountXLabels.push_back(
+		    "Kinetic energy [MeV]"
+		);
+
+		CompositionCountYLabels.push_back(
+		    "Counts"
+		);
+
+		// Keep these unstacked so the individual components
+		// can be compared directly.
+		CompositionCountStacked.push_back(false);
+
+		CompositionCountAsPoints.push_back(
+		    std::vector<bool>(
+			kNTruthComponents,
+			false
+		    )
+		);
+
+
+		//////////////////////////////
+		// Percentage composition   //
+		//////////////////////////////
+
+		std::vector<TH1*> percentGroup;
+
+		for (int iTruth = 0;
+		     iTruth < kNTruthComponents;
+		     ++iTruth) {
+
+		    TH1D* hComponent =
+			getCompositionHist(
+			    iReco,
+			    universeCode,
+			    iTruth
+			);
+
+		    TH1D* hPercent =
+			(TH1D*)hComponent->Clone(
+			    Form(
+				"h%s_%s_%s_Percent",
+				recoNames[iReco].Data(),
+				truthNames[iTruth].Data(),
+				universeLabel.Data()
+			    )
+			);
+
+		    hPercent->Reset("ICES");
+
+		    for (int iBin = 1;
+			 iBin <= NUM_BINS_KE;
+			 ++iBin) {
+
+			double total =
+			    hTotal->GetBinContent(iBin);
+
+			double component =
+			    hComponent->GetBinContent(iBin);
+
+			double percent =
+			    (total > 0.0)
+			    ? 100.0 * component / total
+			    : 0.0;
+
+			hPercent->SetBinContent(
+			    iBin,
+			    percent
+			);
+
+			hPercent->SetBinError(
+			    iBin,
+			    0.0
+			);
+		    }
+
+		    percentGroup.push_back(
+			hPercent
+		    );
+		}
+
+		CompositionPercentPlotGroups.push_back(
+		    percentGroup
+		);
+
+		CompositionPercentLabels.push_back(
+		    compositionLabels
+		);
+
+		CompositionPercentTitles.push_back(
+		    Form(
+			"BeamlineMu/CompositionPercent_%s_%s",
+			recoNames[iReco].Data(),
+			universeLabel.Data()
+		    )
+		);
+
+		CompositionPercentXLabels.push_back(
+		    "Kinetic energy [MeV]"
+		);
+
+		CompositionPercentYLabels.push_back(
+		    "Fraction of selected sample [%]"
+		);
+
+		CompositionPercentStacked.push_back(false);
+
+		CompositionPercentAsPoints.push_back(
+		    std::vector<bool>(
+			kNTruthComponents,
+			false
+		    )
+		);
+
+		std::cout
+		    << "\n=====================================\n"
+		    << recoNames[iReco]
+		    << " -- "
+		    << universeLabel
+		    << "\n=====================================\n";
+
+		for (int iBin = 1;
+		     iBin <= NUM_BINS_KE;
+		     ++iBin) {
+
+		    double total =
+			hTotal->GetBinContent(iBin);
+
+		    double low =
+			hTotal->GetXaxis()->GetBinLowEdge(iBin);
+
+		    double high =
+			hTotal->GetXaxis()->GetBinUpEdge(iBin);
+
+		    std::cout
+			<< "\nKE "
+			<< low << " - "
+			<< high << " MeV"
+			<< "  total = "
+			<< total
+			<< "\n";
+
+		    for (int iTruth = 0;
+			 iTruth < kNTruthComponents;
+			 ++iTruth) {
+
+			TH1D* hComp =
+			    getCompositionHist(
+				iReco,
+				universeCode,
+				iTruth
+			    );
+
+			double count =
+			    hComp->GetBinContent(iBin);
+
+			double percent =
+			    (total > 0.0)
+			    ? 100.0 * count / total
+			    : 0.0;
+
+			std::cout
+			    << "  "
+			    << compositionLabels[iTruth]
+			    << ": "
+			    << count
+			    << "  ("
+			    << percent
+			    << "%)\n";
+		    }
+		}
+	    }//reco
+	}//univ
+
+	printOneDPlots(
+	    SaveDir,
+	    FontStyle,
+	    TextSize,
+	    CompositionCountPlotGroups,
+	    Colors,
+	    CompositionCountLabels,
+	    CompositionCountTitles,
+	    CompositionCountXLabels,
+	    CompositionCountYLabels,
+	    CompositionCountStacked,
+	    CompositionCountAsPoints
+	);
+
+	printOneDPlots(
+	    SaveDir,
+	    FontStyle,
+	    TextSize,
+	    CompositionPercentPlotGroups,
+	    Colors,
+	    CompositionPercentLabels,
+	    CompositionPercentTitles,
+	    CompositionPercentXLabels,
+	    CompositionPercentYLabels,
+	    CompositionPercentStacked,
+	    CompositionPercentAsPoints
+	);
+
     //////////////////////////////
     // Cross-section extraction //
     //////////////////////////////
@@ -1839,6 +2195,149 @@ void BeamlineMuCov() {
             PionIncidentCorrectedKEUnivs[iUniv]->SetBinContent(iBin + 1, (c / psi) * PionIncidentKEUnivs[iUniv]->GetBinContent(iBin + 1));
         }
     }
+
+    ///////////////////////////////////////
+    // Fractional shift for each channel //
+    ///////////////////////////////////////
+
+   auto makeFracShift = [](
+	    TH1D* hUniv,
+	    TH1D* hCV,
+	    TString name
+	) {
+
+	    TH1D* h = (TH1D*)hCV->Clone(name);
+	    h->Reset("ICES");
+
+	    for (int iBin = 1;
+		 iBin <= hCV->GetNbinsX();
+		 ++iBin) {
+
+		double cv = hCV->GetBinContent(iBin);
+		double uv = hUniv->GetBinContent(iBin);
+
+		double shift =
+		    (cv != 0.0)
+		    ? 100.0 * (uv - cv) / cv
+		    : 0.0;
+
+		h->SetBinContent(iBin, shift);
+		h->SetBinError(iBin, 0.0);
+	    }
+
+	    return h;
+	};
+    
+	std::vector<TH1D*> IncidentFracShiftUnivs;
+	std::vector<TH1D*> Abs0pFracShiftUnivs;
+	std::vector<TH1D*> AbsNpFracShiftUnivs;
+	std::vector<TH1D*> ScatterFracShiftUnivs;
+
+	for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+
+	    IncidentFracShiftUnivs.push_back(
+		makeFracShift(
+		    PionIncidentCorrectedKEUnivs[iUniv],
+		    hPionIncidentCorrectedKENom,
+		    Form("hIncidentFracShift_Univ%d", iUniv)
+		)
+	    );
+
+	    Abs0pFracShiftUnivs.push_back(
+		makeFracShift(
+		    PionAbs0pKEUnivs[iUniv],
+		    hPionAbs0pKENom,
+		    Form("hAbs0pFracShift_Univ%d", iUniv)
+		)
+	    );
+
+	    AbsNpFracShiftUnivs.push_back(
+		makeFracShift(
+		    PionAbsNpKEUnivs[iUniv],
+		    hPionAbsNpKENom,
+		    Form("hAbsNpFracShift_Univ%d", iUniv)
+		)
+	    );
+
+	    ScatterFracShiftUnivs.push_back(
+		makeFracShift(
+		    PionScatterKEUnivs[iUniv],
+		    hPionScatterKENom,
+		    Form("hScatterFracShift_Univ%d", iUniv)
+		)
+	    );
+	}
+
+	///////////////////////////////////////////////
+	// Plot fractional shifts for each universe //
+	///////////////////////////////////////////////
+
+	std::vector<std::vector<TH1*>> FracShiftPlotGroups;
+	std::vector<std::vector<TString>> FracShiftLabels;
+	std::vector<TString> FracShiftTitles;
+	std::vector<TString> FracShiftXLabels;
+	std::vector<TString> FracShiftYLabels;
+	std::vector<bool> FracShiftStacked;
+	std::vector<std::vector<bool>> FracShiftAsPoints;
+
+	for (int iUniv = 0; iUniv < NUM_UNIVERSES; ++iUniv) {
+
+	    TString sigmaLabel =
+		(iUniv == 0) ? "Minus1Sigma" : "Plus1Sigma";
+
+	    FracShiftPlotGroups.push_back({
+		IncidentFracShiftUnivs[iUniv],
+		Abs0pFracShiftUnivs[iUniv],
+		AbsNpFracShiftUnivs[iUniv],
+		ScatterFracShiftUnivs[iUniv]
+	    });
+
+	    FracShiftLabels.push_back({
+		"Incident pion flux",
+		"Abs 0p",
+		"Abs Np",
+		"Scatter"
+	    });
+
+	    FracShiftTitles.push_back(
+		Form(
+		    "BeamlineMu/FractionalShift_%s",
+		    sigmaLabel.Data()
+		)
+	    );
+
+	    FracShiftXLabels.push_back(
+		"Kinetic energy [MeV]"
+	    );
+
+	    FracShiftYLabels.push_back(
+		"Fractional shift from CV [%]"
+	    );
+
+	    FracShiftStacked.push_back(false);
+
+	    // Draw all four as ordinary histograms/lines
+	    FracShiftAsPoints.push_back({
+		false,
+		false,
+		false,
+		false
+	    });
+	}
+
+	printOneDPlots(
+	    SaveDir,
+	    FontStyle,
+	    TextSize,
+	    FracShiftPlotGroups,
+	    Colors,
+	    FracShiftLabels,
+	    FracShiftTitles,
+	    FracShiftXLabels,
+	    FracShiftYLabels,
+	    FracShiftStacked,
+	    FracShiftAsPoints
+	);
 
     ///////////////////////
     // Response matrices //
@@ -1870,7 +2369,7 @@ void BeamlineMuCov() {
         std::vector<TH1D*> TotalEventsUniv = {hTruePionAbs0pKENom, hTruePionAbsNpKENom, hTruePionScatterKENom};
         std::vector<std::vector<std::vector<TH1D*>>> TrueRecoAsByBinUniv = {TrueAbs0pAsByBinNom, TrueAbsNpAsByBinNom, TrueScatterAsByBinNom};
         TH1D* RecoIncidentFluxUniv = PionIncidentKEUnivs[iUniv];
-        TH1D* TrueIncidentFluxUniv = hTrueIncidentKENom;
+        TH1D* TrueIncidentFluxUniv = TrueIncidentKEUnivs[iUniv];
         
         GetResponseMatrix(
             NUM_SIGNAL_TYPES, NUM_BINS_KE,
@@ -2029,6 +2528,41 @@ void BeamlineMuCov() {
             std::cout << std::endl;
         }
     }
+
+	/*TMatrixD RUniv(
+	    NUM_SIGNAL_TYPES * NUM_BINS_KE,
+	    NUM_SIGNAL_TYPES * NUM_BINS_KE
+	);
+
+	H2M(
+	    static_cast<const TH2D*>(
+		ResponseMatricesUnivs[iUniv]
+	    ),
+	    RUniv,
+	    kTRUE
+	);
+
+	TVectorD BUniv(
+	    NUM_SIGNAL_TYPES * NUM_BINS_KE
+	);
+
+	H2V(
+	    BackgroundVectorUnivs[iUniv],
+	    BUniv
+	);
+
+	// Full systematic
+	TVectorD MFull =
+	    (RUniv * SignalNom) + BUniv;
+
+	// Vary only incident-flux/response term
+	TVectorD MIncidentOnly =
+	    (RUniv * SignalNom) + BackgroundNom;
+
+	// Vary only interacting backgrounds
+	TVectorD MBackgroundOnly =
+	    (ResponseNom * SignalNom) + BUniv;
+	*/
 
     /////////////////////
     // Get covariances //
