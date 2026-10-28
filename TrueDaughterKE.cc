@@ -4,7 +4,6 @@
 #include "TCanvas.h"
 #include "TPad.h"
 #include "TLegend.h"
-#include "TLine.h"
 #include "TStyle.h"
 #include "TColor.h"
 
@@ -95,12 +94,6 @@ void TrueDaughterKE(
             ax->CenterTitle();
         }
     };
-    auto drawLine200 = [&](double ymin, double ymax) {
-        TLine* l = new TLine(200, ymin, 200, ymax);
-        l->SetLineStyle(2); l->SetLineWidth(2); l->SetLineColor(kGray + 2);
-        l->Draw();
-        return l;
-    };
 
     // Full-sample spectra on their own
     std::vector<std::pair<TH1D*, TString>> fine = {{hProtonFine, "Proton"}, {hPionFine, "Pion"}};
@@ -113,7 +106,6 @@ void TrueDaughterKE(
         h->SetLineColor(kBlack); h->SetMarkerColor(kBlack); h->SetMarkerStyle(20); h->SetMarkerSize(0.9);
         h->SetMinimum(0);
         h->Draw("E1P");
-        drawLine200(0, h->GetMaximum() * 1.05);
         c->SaveAs(SaveDir + "TrueKEAllEvents" + name + ".png");
         delete c;
     }
@@ -147,7 +139,6 @@ void TrueDaughterKE(
         hAllN->Draw("HIST E");
         hSel->SetLineColor(colOrange); hSel->SetMarkerColor(colOrange); hSel->SetMarkerStyle(20);
         hSel->Draw("E1P SAME");
-        drawLine200(0, hAllN->GetMaximum());
         TLegend* leg = new TLegend(0.45, 0.70, 0.93, 0.88);
         leg->SetTextFont(FontStyle); leg->SetTextSize(TextSize * 0.8); leg->SetBorderSize(0);
         leg->AddEntry(hAllN, "All MC events (no selection)", "l");
@@ -165,9 +156,6 @@ void TrueDaughterKE(
         hRatio->GetXaxis()->SetTitleOffset(1.0);
         hRatio->GetYaxis()->SetRangeUser(0, 2);
         hRatio->Draw("E1P");
-        TLine* one = new TLine(hRatio->GetXaxis()->GetXmin(), 1, hRatio->GetXaxis()->GetXmax(), 1);
-        one->SetLineStyle(2); one->Draw();
-        drawLine200(0, 2);
 
         c->SaveAs(SaveDir + "TrueKESelectedVsAll" + name + ".png");
         delete c;
