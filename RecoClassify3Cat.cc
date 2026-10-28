@@ -393,6 +393,159 @@ void RecoClassify3Cat() {
     TH1D* hAllSecondaryProtons  = new TH1D("hAllSecondaryProtons", "hAllSecondaryProtons;;", 25, 0, 0.5);
     TH1D* hRecoSecondaryProtons = new TH1D("hRecoSecondaryProtons", "hRecoSecondaryProtons", 25, 0, 0.5); 
 
+    ///////////////////////////////////////////////////
+    // Secondary studies (thresholds, data/MC 0p/Np) //
+    ///////////////////////////////////////////////////
+
+    // All histograms below are filled for events reaching the secondary track PID stage
+
+    // Number of events reaching secondary PID (used to normalize MC to data)
+    TH1D* hSecStudyNumEvents = new TH1D("hSecStudyNumEvents", "hSecStudyNumEvents", 1, 0, 1);
+
+    // Fine-binned efficiency for true daughters of the primary pion
+    TH1D* hEffProtonAll     = new TH1D("hEffProtonAll", ";True KE [MeV];", 60, 0, 300);
+    TH1D* hEffProtonReco    = new TH1D("hEffProtonReco", ";True KE [MeV];", 60, 0, 300);
+    TH1D* hEffProtonTagChi2 = new TH1D("hEffProtonTagChi2", ";True KE [MeV];", 60, 0, 300);
+    TH1D* hEffProtonTagAny  = new TH1D("hEffProtonTagAny", ";True KE [MeV];", 60, 0, 300);
+
+    TH1D* hEffPionAll     = new TH1D("hEffPionAll", ";True KE [MeV];", 30, 0, 300);
+    TH1D* hEffPionReco    = new TH1D("hEffPionReco", ";True KE [MeV];", 30, 0, 300);
+    TH1D* hEffPionTagChi2 = new TH1D("hEffPionTagChi2", ";True KE [MeV];", 30, 0, 300);
+    TH1D* hEffPionTagAny  = new TH1D("hEffPionTagAny", ";True KE [MeV];", 30, 0, 300);
+
+    // Reco (calorimetric) KE of secondary tracks near the vertex, split by true particle
+    // Protons and pions are split by whether their true KE is above or below the signal threshold
+    std::vector<TString> secTrueNames = {"ProtonAbove", "ProtonBelow", "PionAbove", "PionBelow", "Muon", "EM", "Other"};
+    std::vector<TH1D*> hSecRecoKE, hSecRecoKEProtonChi2, hSecRecoKEProtonDEDX, hSecProtonChi2Value, hSecLength;
+    std::vector<TH1D*> hSecCosZ, hSecCosZProtonTag, hSecLeadProtonCosZ, hSecLeadProtonRecoKE;
+    std::vector<TH1D*> hSecRecoKEPionChi2, hSecRecoKEPionDEDX;
+    std::vector<TH1D*> hSecLengthProtonChi2, hSecLengthProtonDEDX, hSecLengthPionChi2, hSecLengthPionDEDX;
+    for (const TString& name : secTrueNames) {
+        hSecRecoKE.push_back(new TH1D("hSecRecoKE" + name, ";Reco KE [MeV];", 40, 0, 400));
+        hSecRecoKEProtonChi2.push_back(new TH1D("hSecRecoKEProtonChi2" + name, ";Reco KE [MeV];", 40, 0, 400));
+        hSecRecoKEProtonDEDX.push_back(new TH1D("hSecRecoKEProtonDEDX" + name, ";Reco KE [MeV];", 40, 0, 400));
+        hSecProtonChi2Value.push_back(new TH1D("hSecProtonChi2Value" + name, ";Proton #chi^{2};", 50, 0, 10));
+        hSecLength.push_back(new TH1D("hSecLength" + name, ";Track length [cm];", 50, 0, 50));
+        hSecCosZ.push_back(new TH1D("hSecCosZ" + name, ";cos#theta_{z};", 20, -1, 1));
+        hSecCosZProtonTag.push_back(new TH1D("hSecCosZProtonTag" + name, ";cos#theta_{z};", 20, -1, 1));
+        hSecLeadProtonCosZ.push_back(new TH1D("hSecLeadProtonCosZ" + name, ";cos#theta_{z};", 20, -1, 1));
+        hSecLeadProtonRecoKE.push_back(new TH1D("hSecLeadProtonRecoKE" + name, ";Reco KE [MeV];", 40, 0, 400));
+        hSecRecoKEPionChi2.push_back(new TH1D("hSecRecoKEPionChi2" + name, ";Reco KE [MeV];", 40, 0, 400));
+        hSecRecoKEPionDEDX.push_back(new TH1D("hSecRecoKEPionDEDX" + name, ";Reco KE [MeV];", 40, 0, 400));
+        hSecLengthProtonChi2.push_back(new TH1D("hSecLengthProtonChi2" + name, ";Track length [cm];", 50, 0, 50));
+        hSecLengthProtonDEDX.push_back(new TH1D("hSecLengthProtonDEDX" + name, ";Track length [cm];", 50, 0, 50));
+        hSecLengthPionChi2.push_back(new TH1D("hSecLengthPionChi2" + name, ";Track length [cm];", 50, 0, 50));
+        hSecLengthPionDEDX.push_back(new TH1D("hSecLengthPionDEDX" + name, ";Track length [cm];", 50, 0, 50));
+    }
+    auto secTrueCategory = [](int trackPDG, double trueKE) {
+        if (trackPDG == 2212)                           return (trueKE >= PROTON_ENERGY_LOWER_BOUND) ? 0 : 1;
+        if (std::abs(trackPDG) == 211)                  return (trueKE >= PION_SCATTERING_ENERGY_THRESHOLD) ? 2 : 3;
+        if (std::abs(trackPDG) == 13)                   return 4;
+        if (std::abs(trackPDG) == 11 || trackPDG == 22) return 5;
+        return 6;
+    };
+
+    // True vs reco KE for secondary tracks near the vertex, by true species
+    std::vector<TString> secSpeciesNames = {"Proton", "Pion", "Muon", "EM", "Other"};
+    std::vector<TH2D*> hSecTrueVsRecoKE, hSecDEDXvsResR;
+    for (const TString& name : secSpeciesNames) {
+        hSecTrueVsRecoKE.push_back(new TH2D("hSecTrueVsRecoKE" + name, ";True KE [MeV];Reco calorimetric KE [MeV]", 40, 0, 400, 40, 0, 400));
+        hSecDEDXvsResR.push_back(new TH2D("hSecDEDXvsResR" + name, ";Residual range [cm];dE/dx [MeV/cm]", 60, 0, 30, 60, 0, 30));
+    }
+    auto secSpecies = [](int trackPDG) {
+        if (trackPDG == 2212)                           return 0;
+        if (std::abs(trackPDG) == 211)                  return 1;
+        if (std::abs(trackPDG) == 13)                   return 2;
+        if (std::abs(trackPDG) == 11 || trackPDG == 22) return 3;
+        return 4;
+    };
+
+    // Efficiency vs true angle for true daughter protons above threshold
+    TH1D* hEffProtonCosAll     = new TH1D("hEffProtonCosAll", ";True cos#theta_{z};", 20, -1, 1);
+    TH1D* hEffProtonCosReco    = new TH1D("hEffProtonCosReco", ";True cos#theta_{z};", 20, -1, 1);
+    TH1D* hEffProtonCosTagChi2 = new TH1D("hEffProtonCosTagChi2", ";True cos#theta_{z};", 20, -1, 1);
+    TH1D* hEffProtonCosTagAny  = new TH1D("hEffProtonCosTagAny", ";True cos#theta_{z};", 20, -1, 1);
+
+    // Number of proton-tagged secondaries per event
+    TH1D* hSecNumProtonTagged = new TH1D("hSecNumProtonTagged", ";Number of proton-tagged tracks;", 5, 0, 5);
+
+    // True KE of the outgoing pion that decided scatter vs absorption, by reco outcome
+    std::vector<TString> outcomeNames = {"All", "RecoScatter", "RecoNp", "Reco0pCandidate", "Rejected"};
+    std::vector<TH1D*> hDecidingPionKE;
+    for (const TString& name : outcomeNames) {
+        hDecidingPionKE.push_back(new TH1D("hDecidingPionKE" + name, ";True outgoing #pi^{-} KE [MeV];", 30, 0, 300));
+    }
+
+    // True absorption events: leading true proton KE / angle by reco outcome (bin [-10, 0) holds events with no proton)
+    std::vector<TH1D*> hLeadingProtonKE, hLeadingProtonCos;
+    for (const TString& name : outcomeNames) {
+        hLeadingProtonKE.push_back(new TH1D("hLeadingProtonKE" + name, ";True leading proton KE [MeV];", 31, -10, 300));
+        hLeadingProtonCos.push_back(new TH1D("hLeadingProtonCos" + name, ";True leading proton cos#theta_{z};", 10, -1, 1));
+    }
+
+    // Selected events (for event displays)
+    TTree* tSelected = new TTree("SelectedEvents", "SelectedEvents");
+    tSelected->SetDirectory(nullptr);
+    int selCategory, selRun, selSubrun, selEvent, selBackground; Long64_t selEntry;
+    double selWeight, selVertexX, selVertexY, selVertexZ, selKE;
+    std::string selFile, selTracks;
+    tSelected->Branch("category", &selCategory); // 0 = abs 0p, 1 = abs Np, 2 = scatter
+    tSelected->Branch("file", &selFile);
+    tSelected->Branch("entry", &selEntry);
+    tSelected->Branch("run", &selRun);
+    tSelected->Branch("subrun", &selSubrun);
+    tSelected->Branch("event", &selEvent);
+    tSelected->Branch("background", &selBackground);
+    tSelected->Branch("weight", &selWeight);
+    tSelected->Branch("vertexX", &selVertexX);
+    tSelected->Branch("vertexY", &selVertexY);
+    tSelected->Branch("vertexZ", &selVertexZ);
+    tSelected->Branch("energyAtVertex", &selKE);
+    tSelected->Branch("tracks", &selTracks);
+    int selStitched;
+    tSelected->Branch("stitched", &selStitched);
+
+    // Stitched-primary outcome at the secondary PID stage, and for selected Np events
+    TH1D* hSecStitched   = new TH1D("hSecStitched", ";Stitched segment tag;", 5, 0, 5);
+    TH1D* hSecStitchedNp = new TH1D("hSecStitchedNp", ";Stitched segment tag;", 5, 0, 5);
+
+    // Containment of secondaries near the vertex (bin 0 = exiting, bin 1 = contained), for all / proton-tagged / pion-tagged tracks
+    std::vector<TString> secContainedTags = {"", "ProtonTag", "PionTag"};
+    std::vector<std::vector<TH1D*>> hSecContained(secContainedTags.size());
+    for (size_t iTag = 0; iTag < secContainedTags.size(); ++iTag) {
+        for (const TString& name : secTrueNames) {
+            hSecContained[iTag].push_back(new TH1D("hSecContained" + secContainedTags[iTag] + name, ";;", 2, 0, 2));
+        }
+    }
+
+    // True vs reco KE for secondaries near the vertex, split by containment
+    std::vector<TH2D*> hSecTrueVsRecoKEContained, hSecTrueVsRecoKEExiting;
+    for (const TString& name : secSpeciesNames) {
+        hSecTrueVsRecoKEContained.push_back(new TH2D("hSecTrueVsRecoKEContained" + name, ";True KE [MeV];Reco calorimetric KE [MeV]", 40, 0, 400, 40, 0, 400));
+        hSecTrueVsRecoKEExiting.push_back(new TH2D("hSecTrueVsRecoKEExiting" + name, ";True KE [MeV];Reco calorimetric KE [MeV]", 40, 0, 400, 40, 0, 400));
+    }
+
+    // Mean dE/dx of secondaries near the vertex, for all tracks and by the PID tag used in the selection
+    std::vector<TString> secMeanDEDXTags = {"", "PionChi2", "ProtonChi2", "NoChi2"};
+    std::vector<std::vector<TH1D*>> hSecMeanDEDX(secMeanDEDXTags.size());
+    for (size_t iTag = 0; iTag < secMeanDEDXTags.size(); ++iTag) {
+        for (const TString& name : secTrueNames) {
+            hSecMeanDEDX[iTag].push_back(new TH1D("hSecMeanDEDX" + secMeanDEDXTags[iTag] + name, ";Mean dE/dx [MeV/cm];", 40, 0, 10));
+        }
+    }
+
+    // Length vs opening angle (w.r.t. the incident direction) of secondaries near the vertex
+    // Before = vertex at the end of the primary track, After = vertex at the stitching break point (stitched segment included)
+    // The Stitched versions only include events where the primary track was stitched
+    std::vector<TString> secLenAngleNames = {"Before", "After", "BeforeStitched", "AfterStitched"};
+    std::vector<TString> secLenAngleCats  = secTrueNames; secLenAngleCats.push_back("StitchedSegment");
+    std::vector<std::vector<TH2D*>> hSecLenAngle(secLenAngleNames.size());
+    for (size_t iVtx = 0; iVtx < secLenAngleNames.size(); ++iVtx) {
+        for (const TString& name : secLenAngleCats) {
+            hSecLenAngle[iVtx].push_back(new TH2D("hSecLenAngle" + secLenAngleNames[iVtx] + name, ";Opening angle [deg];Track length [cm]", 36, 0, 180, 50, 0, 50));
+        }
+    }
+
     /////////////////////////////////
     // Mean dE/dx secondary tracks //
     /////////////////////////////////
@@ -777,11 +930,13 @@ void RecoClassify3Cat() {
 
         // Get information about Geant4 primary particles
         int iPrimary = 0;
+        int primaryTrackID = -1;
         TVector3 vtxPion, outPion;
         float lastTPCX = -999, lastTPCY = -999, lastTPCZ = -999;
         for (size_t true_idx = 0; true_idx < geant_list_size; ++true_idx) {
             // Get truth primary
             if (process_primary[true_idx] && StartPointz[true_idx] == -100.) {
+                primaryTrackID            = TrackId[true_idx];
                 ev.truthPrimaryPDG        = pdg[true_idx];
                 ev.truthPrimaryVertexKE   = EndEng[true_idx] - Mass[true_idx];
                 vtxPion                   = TVector3(EndPx[true_idx], EndPy[true_idx], EndPz[true_idx]);
@@ -1785,6 +1940,9 @@ void RecoClassify3Cat() {
         // Scattering only if degree > THRESHOLD and energy > THRESHOLD
         double scatteringAngle  = -9999;
         double scatteringEnergy = -9999;
+
+        // Outgoing pion KE [GeV] of the interaction that decided scatter vs absorption (-1 if not a scatter candidate)
+        double decidingPionKE = -1;
         
         // Modify scatterings
         if (ev.backgroundType == 12 || ev.backgroundType == 6) {
@@ -1800,7 +1958,9 @@ void RecoClassify3Cat() {
             if (verbose) std::cout << "Checking if elastic scattering is above threshold, with angle " << scatteringAngle << " and KE " << scatteringEnergy << std::endl;
 
             // If outgoing pion below threshold, absorption
+            if (scatteringEnergy >= PION_SCATTERING_ENERGY_THRESHOLD && scatteringAngle >= SCATTERING_ANGLE_THRESHOLD) decidingPionKE = scatteringEnergy;
             if (scatteringEnergy < PION_SCATTERING_ENERGY_THRESHOLD) {
+                decidingPionKE = scatteringEnergy;
                 if (ev.backgroundType == 12) ev.backgroundType = 0;
                 else if (ev.backgroundType == 6) {
                     int tempNumVisibleProtons = 0;
@@ -1848,6 +2008,7 @@ void RecoClassify3Cat() {
                         (currentInteraction == 6 || currentInteraction == 12) &&
                         scatteringEnergy < PION_SCATTERING_ENERGY_THRESHOLD
                     ) {
+                        decidingPionKE = scatteringEnergy;
                         if (currentInteraction == 12) ev.backgroundType = 0;
                         else if (currentInteraction == 6) {
                             int tempNumVisibleProtons = 0;
@@ -1879,6 +2040,7 @@ void RecoClassify3Cat() {
                         continue;
                     } else {
                         // We found non-scattering interaction or scattering interaction with angle and energy above our threshold value
+                        if (currentInteraction == 6 || currentInteraction == 12) decidingPionKE = scatteringEnergy;
                         ev.backgroundType       = currentInteraction;
                         ev.truthPrimaryVertexKE = ev.secondaryInteractionInteractingKE.at(iInteraction);
                         ev.truthPrimaryVertexX  = ev.secondaryInteractionXPosition.at(iInteraction);
@@ -2367,6 +2529,13 @@ void RecoClassify3Cat() {
         int otherTaggedPion   = 0;
         int otherTaggedProton = 0;
 
+        // Secondary studies: PID outcome of reco tracks matched to each true particle
+        std::map<int, std::array<bool, 5>> secMatchedTags; // g4 id -> {reco, pion chi2, pion any, proton chi2, proton any}
+
+        // Secondary studies: leading proton-tagged track and per-track summary for event displays
+        double secLeadProtonKE = -1, secLeadProtonCos = -2; int secLeadProtonCat = -1;
+        std::string secTrackSummary;
+
         for (size_t trk_idx = 0; trk_idx < ev.recoBeginX.size(); ++trk_idx) {
             if (trkWCtoTPCMatch[trk_idx]) continue;
 
@@ -2412,6 +2581,79 @@ void RecoClassify3Cat() {
                 double protonChi2        = computeReducedChi2(gProton, secondaryResR, secondaryDEDX, secondaryReversed, secondaryDEDX.size(), nRemoveOutliers, nRemoveEnds);
                 double secondaryMeanDEDX = meanDEDX(secondaryDEDX, secondaryReversed, MEAN_DEDX_NUM_TRAJ_POINTS);
 
+                // Secondary studies
+                {
+                    bool tagPionChi2   = (pionChi2 < PION_CHI2_PION_VALUE) && (protonChi2 > PROTON_CHI2_PION_VALUE);
+                    bool tagProtonChi2 = !tagPionChi2 && (pionChi2 > PION_CHI2_PROTON_VALUE) && (protonChi2 < PROTON_CHI2_PROTON_VALUE);
+                    bool tagByDEDX     = !tagPionChi2 && !tagProtonChi2;
+                    bool tagPionDEDX   = tagByDEDX && (secondaryMeanDEDX <= MEAN_DEDX_THRESHOLD);
+                    bool tagProtonDEDX = tagByDEDX && (secondaryMeanDEDX > MEAN_DEDX_THRESHOLD);
+
+                    int nCalo     = std::min(ntrkcalopts[trk_idx][1], kMaxTrackHits);
+                    double recoKE = calorimetricKE(trkdedx[trk_idx][1], trkpitch[trk_idx][1], nCalo);
+                    int cat       = secTrueCategory(trackPDG, trackKE);
+
+                    // Direction pointing away from the vertex
+                    double dirX = ev.recoEndX.at(trk_idx) - ev.recoBeginX.at(trk_idx);
+                    double dirY = ev.recoEndY.at(trk_idx) - ev.recoBeginY.at(trk_idx);
+                    double dirZ = ev.recoEndZ.at(trk_idx) - ev.recoBeginZ.at(trk_idx);
+                    if (distanceFromEnd < distanceFromStart) { dirX = -dirX; dirY = -dirY; dirZ = -dirZ; }
+                    double cosZ = (thisTrackLength > 0) ? dirZ / thisTrackLength : 1.0;
+
+                    hSecRecoKE[cat]->Fill(recoKE, ev.weight);
+                    hSecLength[cat]->Fill(thisTrackLength, ev.weight);
+                    hSecProtonChi2Value[cat]->Fill(protonChi2, ev.weight);
+                    hSecCosZ[cat]->Fill(cosZ, ev.weight);
+                    hSecTrueVsRecoKE[secSpecies(trackPDG)]->Fill(1000 * trackKE, recoKE, ev.weight);
+
+                    // Containment of the far end of the track
+                    bool contained = (distanceFromEnd < distanceFromStart) ?
+                        isSecondaryContained(ev.recoBeginX.at(trk_idx), ev.recoBeginY.at(trk_idx), ev.recoBeginZ.at(trk_idx)) :
+                        isSecondaryContained(ev.recoEndX.at(trk_idx), ev.recoEndY.at(trk_idx), ev.recoEndZ.at(trk_idx));
+                    hSecContained[0][cat]->Fill(contained, ev.weight);
+                    if (tagProtonChi2 || tagProtonDEDX) hSecContained[1][cat]->Fill(contained, ev.weight);
+                    if (tagPionChi2 || tagPionDEDX)     hSecContained[2][cat]->Fill(contained, ev.weight);
+                    if (contained) hSecTrueVsRecoKEContained[secSpecies(trackPDG)]->Fill(1000 * trackKE, recoKE, ev.weight);
+                    else           hSecTrueVsRecoKEExiting[secSpecies(trackPDG)]->Fill(1000 * trackKE, recoKE, ev.weight);
+
+                    hSecMeanDEDX[0][cat]->Fill(secondaryMeanDEDX, ev.weight);
+                    if (tagPionChi2)   hSecMeanDEDX[1][cat]->Fill(secondaryMeanDEDX, ev.weight);
+                    if (tagProtonChi2) hSecMeanDEDX[2][cat]->Fill(secondaryMeanDEDX, ev.weight);
+                    if (tagByDEDX)     hSecMeanDEDX[3][cat]->Fill(secondaryMeanDEDX, ev.weight);
+
+                    // dE/dx vs residual range, ordered as in the chi^2 fit
+                    std::vector<double> orderedDEDX = secondaryDEDX;
+                    if (secondaryReversed) std::reverse(orderedDEDX.begin(), orderedDEDX.end());
+                    for (size_t iPt = 0; iPt < std::min(orderedDEDX.size(), secondaryResR.size()); ++iPt) {
+                        hSecDEDXvsResR[secSpecies(trackPDG)]->Fill(secondaryResR[iPt], orderedDEDX[iPt], ev.weight);
+                    }
+                    if (tagProtonChi2) hSecRecoKEProtonChi2[cat]->Fill(recoKE, ev.weight);
+                    if (tagProtonDEDX) hSecRecoKEProtonDEDX[cat]->Fill(recoKE, ev.weight);
+                    if (tagPionChi2)   hSecRecoKEPionChi2[cat]->Fill(recoKE, ev.weight);
+                    if (tagPionDEDX)   hSecRecoKEPionDEDX[cat]->Fill(recoKE, ev.weight);
+                    if (tagProtonChi2) hSecLengthProtonChi2[cat]->Fill(thisTrackLength, ev.weight);
+                    if (tagProtonDEDX) hSecLengthProtonDEDX[cat]->Fill(thisTrackLength, ev.weight);
+                    if (tagPionChi2)   hSecLengthPionChi2[cat]->Fill(thisTrackLength, ev.weight);
+                    if (tagPionDEDX)   hSecLengthPionDEDX[cat]->Fill(thisTrackLength, ev.weight);
+                    if (tagProtonChi2 || tagProtonDEDX) {
+                        hSecCosZProtonTag[cat]->Fill(cosZ, ev.weight);
+                        if (recoKE > secLeadProtonKE) { secLeadProtonKE = recoKE; secLeadProtonCos = cosZ; secLeadProtonCat = cat; }
+                    }
+
+                    TString tagLabel = tagPionChi2 ? "pi(chi2)" : tagProtonChi2 ? "p(chi2)" : tagPionDEDX ? "pi(dEdx)" : "p(dEdx)";
+                    secTrackSummary += Form(
+                        "trk %zu: L=%.1f cm, KEreco=%.0f MeV, cosZ=%.2f, chi2p=%.2f, chi2pi=%.2f, <dEdx>=%.2f, tag=%s, true pdg=%d KE=%.0f MeV\n",
+                        trk_idx, thisTrackLength, recoKE, cosZ, protonChi2, pionChi2, secondaryMeanDEDX, tagLabel.Data(), trackPDG, 1000 * trackKE
+                    );
+
+                    auto& tags = secMatchedTags[trkg4id[trk_idx]];
+                    tags[0] = true;
+                    tags[1] = tags[1] || tagPionChi2;
+                    tags[2] = tags[2] || tagPionChi2 || tagPionDEDX;
+                    tags[3] = tags[3] || tagProtonChi2;
+                    tags[4] = tags[4] || tagProtonChi2 || tagProtonDEDX;
+                }
+
                 // First, try classifying track using chi^2 fits
                 if ((pionChi2 < PION_CHI2_PION_VALUE) && (protonChi2 > PROTON_CHI2_PION_VALUE)) {
                     // Tagged as pion
@@ -2444,6 +2686,7 @@ void RecoClassify3Cat() {
         // For particles where we stitched, we also need to analyze the second part of the primary track
         // If the new secondary track looks like a pion, the stitching is non-sensical, and we should revert
         bool newSecondaryPion = false;
+        int stitchedTag = 0; // 0 = not stitched, 1 = pi(chi2), 2 = p(chi2), 3 = pi(dEdx), 4 = p(dEdx)
         if (minChi2 == minStitchedChi2) {
             std::vector<double> newSecondaryResR(ev.wcMatchResR.begin(), ev.wcMatchResR.begin() + bestBreakPoint);
             std::vector<double> newSecondaryDEDX(ev.wcMatchDEDX.begin(), ev.wcMatchDEDX.begin() + bestBreakPoint);
@@ -2456,23 +2699,163 @@ void RecoClassify3Cat() {
                 // Tagged as pion
                 newSecondaryPion = true;
                 secondaryTaggedPion++;
+                stitchedTag = 1;
             } else if ((newPionChi2 > PION_CHI2_PROTON_VALUE) && (newProtonChi2 < PROTON_CHI2_PROTON_VALUE)) {
                 // Tagged as proton
                 secondaryTaggedProton++;
+                stitchedTag = 2;
             } else {
                 // Not tagged with chi^2, use mean dE/dx
                 secondaryTaggedOther++;
                 if (newMeanDEDX <= MEAN_DEDX_THRESHOLD) {
                     newSecondaryPion = true;
                     otherTaggedPion++;
+                    stitchedTag = 3;
                 } else {
                     otherTaggedProton++;
+                    stitchedTag = 4;
                 }
             }
+
+            // Secondary studies: describe the stitched segment (part of the primary track past the break point)
+            const char* stitchedLabels[] = {"", "pi(chi2)", "p(chi2)", "pi(dEdx)", "p(dEdx)"};
+            secTrackSummary += Form(
+                "stitched primary segment: %zu pts, chi2p=%.2f, chi2pi=%.2f, <dEdx>=%.2f, tag=%s\n",
+                newSecondaryDEDX.size(), newProtonChi2, newPionChi2, newMeanDEDX, stitchedLabels[stitchedTag]
+            );
         }
 
         int totalTaggedPions   = secondaryTaggedPion + otherTaggedPion;
         int totalTaggedProtons = secondaryTaggedProton + otherTaggedProton;
+
+        // Secondary studies: event-level information
+        {
+            hSecStudyNumEvents->Fill(0.5, ev.weight);
+            hSecNumProtonTagged->Fill(std::min(totalTaggedProtons, 4), ev.weight);
+        hSecStitched->Fill(stitchedTag, ev.weight);
+
+            // Length vs opening angle of secondaries near a vertex, incident direction = primary start -> vertex
+            auto fillLengthAngle = [&](double vx, double vy, double vz, int iVtx) {
+                double incX = vx - ev.WC2TPCPrimaryBeginX, incY = vy - ev.WC2TPCPrimaryBeginY, incZ = vz - ev.WC2TPCPrimaryBeginZ;
+                for (size_t trk_idx = 0; trk_idx < ev.recoBeginX.size(); ++trk_idx) {
+                    if (trkWCtoTPCMatch[trk_idx]) continue;
+                    double dStart = distance(ev.recoBeginX.at(trk_idx), vx, ev.recoBeginY.at(trk_idx), vy, ev.recoBeginZ.at(trk_idx), vz);
+                    double dEnd   = distance(ev.recoEndX.at(trk_idx), vx, ev.recoEndY.at(trk_idx), vy, ev.recoEndZ.at(trk_idx), vz);
+                    if (dStart >= VERTEX_RADIUS && dEnd >= VERTEX_RADIUS) continue;
+
+                    double dirX = ev.recoEndX.at(trk_idx) - ev.recoBeginX.at(trk_idx);
+                    double dirY = ev.recoEndY.at(trk_idx) - ev.recoBeginY.at(trk_idx);
+                    double dirZ = ev.recoEndZ.at(trk_idx) - ev.recoBeginZ.at(trk_idx);
+                    if (dEnd < dStart) { dirX = -dirX; dirY = -dirY; dirZ = -dirZ; }
+                    double length = std::sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+
+                    int trackPDG = 0; double trackKE = 0.0;
+                    for (size_t true_idx = 0; true_idx < geant_list_size; ++true_idx) {
+                        if (trkg4id[trk_idx] == TrackId[true_idx]) {
+                            trackPDG = pdg[true_idx];
+                            trackKE  = Eng[true_idx] - Mass[true_idx];
+                            break;
+                        }
+                    }
+                    hSecLenAngle[iVtx][secTrueCategory(trackPDG, trackKE)]->Fill(openingAngleDeg(incX, incY, incZ, dirX, dirY, dirZ), length, ev.weight);
+                }
+            };
+            fillLengthAngle(ev.WC2TPCPrimaryEndX, ev.WC2TPCPrimaryEndY, ev.WC2TPCPrimaryEndZ, 0);
+            fillLengthAngle(breakPointX, breakPointY, breakPointZ, 1);
+            if (stitchedTag != 0) {
+                fillLengthAngle(ev.WC2TPCPrimaryEndX, ev.WC2TPCPrimaryEndY, ev.WC2TPCPrimaryEndZ, 2);
+                fillLengthAngle(breakPointX, breakPointY, breakPointZ, 3);
+
+                // The stitched segment (break point -> end of primary track) is also a secondary after stitching
+                double segX = ev.WC2TPCPrimaryEndX - breakPointX, segY = ev.WC2TPCPrimaryEndY - breakPointY, segZ = ev.WC2TPCPrimaryEndZ - breakPointZ;
+                double segAngle  = openingAngleDeg(breakPointX - ev.WC2TPCPrimaryBeginX, breakPointY - ev.WC2TPCPrimaryBeginY, breakPointZ - ev.WC2TPCPrimaryBeginZ, segX, segY, segZ);
+                double segLength = std::sqrt(segX * segX + segY * segY + segZ * segZ);
+                hSecLenAngle[1].back()->Fill(segAngle, segLength, ev.weight);
+                hSecLenAngle[3].back()->Fill(segAngle, segLength, ev.weight);
+            }
+
+            // Reco outcome (0p candidate is before the cluster cut)
+            int outcome;
+            if (totalTaggedPions > 0) outcome = (totalTaggedPions > 1 || newSecondaryPion) ? 4 : 1;
+            else if (totalTaggedProtons > 0) outcome = (secondaryTaggedProton == 0 && otherTaggedProton > 0) ? 4 : 2;
+            else outcome = 3;
+
+            if (decidingPionKE >= 0) {
+                hDecidingPionKE[0]->Fill(decidingPionKE * 1000, ev.weight);
+                hDecidingPionKE[outcome]->Fill(decidingPionKE * 1000, ev.weight);
+            }
+
+            if (secLeadProtonCat >= 0) {
+                hSecLeadProtonCosZ[secLeadProtonCat]->Fill(secLeadProtonCos, ev.weight);
+                hSecLeadProtonRecoKE[secLeadProtonCat]->Fill(secLeadProtonKE, ev.weight);
+            }
+
+            // True absorption: reco outcome vs leading true proton (daughter of the primary)
+            if (ev.backgroundType == 0 || ev.backgroundType == 1) {
+                double leadKE = -1, leadCos = -2;
+                for (size_t true_idx = 0; true_idx < geant_list_size; ++true_idx) {
+                    if (Mother[true_idx] != primaryTrackID || pdg[true_idx] != 2212) continue;
+                    double ke = 1000 * (Eng[true_idx] - Mass[true_idx]);
+                    double p  = std::sqrt(Px[true_idx] * Px[true_idx] + Py[true_idx] * Py[true_idx] + Pz[true_idx] * Pz[true_idx]);
+                    if (ke > leadKE) { leadKE = ke; leadCos = (p > 0) ? Pz[true_idx] / p : 1.0; }
+                }
+                double fillKE = (leadKE < 0) ? -5 : leadKE;
+                hLeadingProtonKE[0]->Fill(fillKE, ev.weight);
+                hLeadingProtonKE[outcome]->Fill(fillKE, ev.weight);
+                if (leadKE >= 1000 * PROTON_ENERGY_LOWER_BOUND) {
+                    hLeadingProtonCos[0]->Fill(leadCos, ev.weight);
+                    hLeadingProtonCos[outcome]->Fill(leadCos, ev.weight);
+                }
+            }
+
+            // Efficiencies for true daughters of the primary pion
+            if (ev.truthPrimaryPDG == -211) {
+                for (size_t true_idx = 0; true_idx < geant_list_size; ++true_idx) {
+                    if (Mother[true_idx] != primaryTrackID) continue;
+                    double trueKE = 1000 * (Eng[true_idx] - Mass[true_idx]);
+
+                    std::array<bool, 5> tags = {false, false, false, false, false};
+                    auto it = secMatchedTags.find(TrackId[true_idx]);
+                    if (it != secMatchedTags.end()) tags = it->second;
+
+                    if (pdg[true_idx] == 2212) {
+                        hEffProtonAll->Fill(trueKE, ev.weight);
+                        if (tags[0]) hEffProtonReco->Fill(trueKE, ev.weight);
+                        if (tags[3]) hEffProtonTagChi2->Fill(trueKE, ev.weight);
+                        if (tags[4]) hEffProtonTagAny->Fill(trueKE, ev.weight);
+
+                        if (trueKE >= 1000 * PROTON_ENERGY_LOWER_BOUND) {
+                            double p    = std::sqrt(Px[true_idx] * Px[true_idx] + Py[true_idx] * Py[true_idx] + Pz[true_idx] * Pz[true_idx]);
+                            double cosZ = (p > 0) ? Pz[true_idx] / p : 1.0;
+                            hEffProtonCosAll->Fill(cosZ, ev.weight);
+                            if (tags[0]) hEffProtonCosReco->Fill(cosZ, ev.weight);
+                            if (tags[3]) hEffProtonCosTagChi2->Fill(cosZ, ev.weight);
+                            if (tags[4]) hEffProtonCosTagAny->Fill(cosZ, ev.weight);
+                        }
+                    } else if (pdg[true_idx] == -211) {
+                        hEffPionAll->Fill(trueKE, ev.weight);
+                        if (tags[0]) hEffPionReco->Fill(trueKE, ev.weight);
+                        if (tags[1]) hEffPionTagChi2->Fill(trueKE, ev.weight);
+                        if (tags[2]) hEffPionTagAny->Fill(trueKE, ev.weight);
+                    }
+                }
+            }
+        }
+
+        // Secondary studies: save selected events for event displays
+        auto fillSelected = [&](int category) {
+            selCategory   = category;
+            selFile       = Chain->GetCurrentFile()->GetName();
+            selEntry      = Chain->GetTree()->GetReadEntry();
+            selRun        = run; selSubrun = subrun; selEvent = event;
+            selBackground = ev.backgroundType;
+            selWeight     = ev.weight;
+            selVertexX    = breakPointX; selVertexY = breakPointY; selVertexZ = breakPointZ;
+            selKE         = energyAtVertex;
+            selTracks     = secTrackSummary;
+            selStitched   = stitchedTag;
+            tSelected->Fill();
+        };
 
         if (totalTaggedPions > 0) {
             if (totalTaggedPions > 1 || newSecondaryPion) {
@@ -2494,6 +2877,7 @@ void RecoClassify3Cat() {
 
             // Select as scatter
             hPionScatter->Fill(ev.backgroundType, ev.weight);
+            fillSelected(2);
 
             hPionScatterKE->Fill(energyAtVertex, ev.weight);
             if (ev.backgroundType == 0) {
@@ -2557,6 +2941,8 @@ void RecoClassify3Cat() {
 
             // Select as Np absorption
             hPionAbsNp->Fill(ev.backgroundType, ev.weight);
+            fillSelected(1);
+            hSecStitchedNp->Fill(stitchedTag, ev.weight);
 
             hPionAbsNpKE->Fill(energyAtVertex, ev.weight);
             if (ev.backgroundType == 0) {
@@ -2712,6 +3098,7 @@ void RecoClassify3Cat() {
             numLargeClustersInduction < MAX_NUM_LARGE_CLUSTERS_INDUCTION
         ) {
             hPionAbs0p->Fill(ev.backgroundType, ev.weight);
+            fillSelected(0);
 
             hPionAbs0pKE->Fill(energyAtVertex, ev.weight);
             if (ev.backgroundType == 0) {
@@ -3110,6 +3497,32 @@ void RecoClassify3Cat() {
     hMCLengthCandidateProtons->Write("", TObject::kOverwrite);
 
     comparisonsFile->Close();
+
+    // Secondary studies output
+    TFile* secStudiesFile = new TFile("/exp/lariat/app/users/epelaez/analysis_matt/files/SecondaryStudies_MC.root", "RECREATE");
+    secStudiesFile->cd();
+    hSecStudyNumEvents->Write("", TObject::kOverwrite);
+    hSecNumProtonTagged->Write("", TObject::kOverwrite);
+    for (TH1D* h : {hEffProtonAll, hEffProtonReco, hEffProtonTagChi2, hEffProtonTagAny, hEffPionAll, hEffPionReco, hEffPionTagChi2, hEffPionTagAny}) h->Write("", TObject::kOverwrite);
+    for (TH1D* h : {hEffProtonCosAll, hEffProtonCosReco, hEffProtonCosTagChi2, hEffProtonCosTagAny}) h->Write("", TObject::kOverwrite);
+    for (auto* hs : {
+        &hSecRecoKE, &hSecRecoKEProtonChi2, &hSecRecoKEProtonDEDX, &hSecProtonChi2Value, &hSecLength, &hDecidingPionKE,
+        &hSecCosZ, &hSecCosZProtonTag, &hSecLeadProtonCosZ, &hSecLeadProtonRecoKE, &hLeadingProtonKE, &hLeadingProtonCos,
+        &hSecRecoKEPionChi2, &hSecRecoKEPionDEDX, &hSecLengthProtonChi2, &hSecLengthProtonDEDX, &hSecLengthPionChi2, &hSecLengthPionDEDX
+    }) {
+        for (TH1D* h : *hs) h->Write("", TObject::kOverwrite);
+    }
+    for (TH2D* h : hSecTrueVsRecoKE) h->Write("", TObject::kOverwrite);
+    for (TH2D* h : hSecDEDXvsResR) h->Write("", TObject::kOverwrite);
+    for (TH2D* h : hSecTrueVsRecoKEContained) h->Write("", TObject::kOverwrite);
+    for (TH2D* h : hSecTrueVsRecoKEExiting) h->Write("", TObject::kOverwrite);
+    for (auto& hs : hSecContained) for (TH1D* h : hs) h->Write("", TObject::kOverwrite);
+    for (auto& hs : hSecMeanDEDX) for (TH1D* h : hs) h->Write("", TObject::kOverwrite);
+    for (auto& hs : hSecLenAngle) for (TH2D* h : hs) h->Write("", TObject::kOverwrite);
+    hSecStitched->Write("", TObject::kOverwrite);
+    hSecStitchedNp->Write("", TObject::kOverwrite);
+    tSelected->Write("", TObject::kOverwrite);
+    secStudiesFile->Close();
 
     ///////////////////////////////////
     // Corrections for incident flux //

@@ -195,6 +195,9 @@ double MEAN_DEDX_THRESHOLD = 4.0;
 // Vertex radius
 double VERTEX_RADIUS = 10.0;
 
+// Distance from the TPC walls (in x and y) for a secondary track end to count as contained
+double CONTAINMENT_MARGIN = 2.0;
+
 // Number of points to use in mean dE/dx calculation
 int MEAN_DEDX_NUM_TRAJ_POINTS = 5;
 
@@ -526,6 +529,8 @@ void reweightOneDHisto(TH1D* histo, double weight);
 
 bool isWithinReducedVolume(double x, double y, double z);
 bool isWithinActiveVolume(double x, double y, double z);
+bool isSecondaryContained(double x, double y, double z);
+double openingAngleDeg(double ax, double ay, double az, double bx, double by, double bz);
 bool isHitNearPrimary(
     std::vector<int>* primaryKey, 
     std::vector<float>* hitX, 
@@ -668,6 +673,8 @@ void GetFracCovAndCorrMatrix(TH1* RecoHisto, TH2* CovMatrix, TH2* FracCovMatrix,
 double FindQuantile(double frac, std::vector<double>& xs_in);
 void DrawHistosWithErrorBands(TH1D* RecoHisto, std::vector<TH1D*> UnivRecoHisto, const TString& dir, const TString& SystName, const TString& PlotName, double textSize, int fontStyle, const TString& title, const TString& xlabel, const TString& ylabel);
 void DrawErrorBand(TH1* nom, TGraphAsymmErrors* band, int bandCol, double alpha);
+double calorimetricKE(const float* dedx, const float* pitch, int nPoints);
+void PrintUniverseComparisonPlot(const TString& SaveDir, const TString& Name, TH1* hCV, TH1* hPlus, TH1* hMinus, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle = 132, double TextSize = 0.06);
 void PrintTruthUnfoldedStatShapePlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* hUnfolded, TH1* hStat, TH1* hShape, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle = 132, double TextSize = 0.06);
 void PrintDataUnfoldedStatShapePlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* hUnfolded, TH1* hStat, TH1* hShape, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, int FontStyle = 132, double TextSize = 0.06);
 void PrintFDPlot(const TString& SaveDir, const TString& Name, TH1* hTrue, TH1* hNomTrue, TH1* hUnfolded, TH1* hSysts, const TString& PlotTitle, const TString& XTitle, const TString& YTitle, std::pair<double, double> chi, std::pair<int, int> ndof, std::pair<double, double> pval, std::pair<double, double> sigma, int FontStyle = 132, double TextSize = 0.06);

@@ -469,6 +469,16 @@ double getClusterWidth(HitCluster cluster) {
     return (lambda2 > 0.0) ? std::sqrt(lambda2) : 0.0;
 }
 
+double calorimetricKE(const float* dedx, const float* pitch, int nPoints) {
+    // Same recipe as the primary track energy loss: sum dE/dx * pitch, skipping hits above HIT_DEDX_THRESHOLD
+    double energy = 0.0;
+    for (int iPt = 0; iPt < nPoints; ++iPt) {
+        if (dedx[iPt] > HIT_DEDX_THRESHOLD) continue;
+        energy += dedx[iPt] * pitch[iPt];
+    }
+    return energy; // MeV
+}
+
 double distance(double x1, double x2, double y1, double y2, double z1, double z2) {
     return sqrt(
         pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(z1 - z2, 2)
@@ -489,6 +499,21 @@ bool isWithinActiveVolume(double x, double y, double z) {
         (y > minY) && (y < maxY) && 
         (z > minZ) && (z < maxZ)
     );
+}
+
+bool isSecondaryContained(double x, double y, double z) {
+    return (
+        (x > minX + CONTAINMENT_MARGIN) && (x < maxX - CONTAINMENT_MARGIN) &&
+        (y > minY + CONTAINMENT_MARGIN) && (y < maxY - CONTAINMENT_MARGIN) &&
+        (z > minZ) && (z < maxZ)
+    );
+}
+
+double openingAngleDeg(double ax, double ay, double az, double bx, double by, double bz) {
+    double norm = std::sqrt((ax * ax + ay * ay + az * az) * (bx * bx + by * by + bz * bz));
+    if (norm <= 0) return -1;
+    double cosAngle = std::max(-1.0, std::min(1.0, (ax * bx + ay * by + az * bz) / norm));
+    return std::acos(cosAngle) * 180. / TMath::Pi();
 }
 
 void printEfficiencyPlots(
@@ -2038,6 +2063,162 @@ void DrawErrorBand(TH1* nom, TGraphAsymmErrors* band, int bandCol, double alpha)
     nom->GetYaxis()->SetRangeUser(1e-10, 1.1 * maxY);
     }
     gPad->RedrawAxis();
+}
+
+void PrintUniverseComparisonPlot(
+    const TString& SaveDir,
+    const TString& Name,
+    TH1* hCV,
+    TH1* hPlus,
+    TH1* hMinus,
+    const TString& PlotTitle,
+    const TString& XTitle,
+    const TString& YTitle,
+    int FontStyle,
+    double TextSize
+) {
+    // Overlays CV, +1 sigma and -1 sigma universes on one plot, with a ratio-to-CV panel below
+    if (!hCV || !hPlus || !hMinus) return;
+
+    TH1* cv    = (TH1*) hCV->Clone(Name + "_cv");
+    TH1* plus  = (TH1*) hPlus->Clone(Name + "_plus");
+    TH1* minus = (TH1*) hMinus->Clone(Name + "_minus");
+
+    const int colCV    = TColor::GetColor(64,  64,  64);  // dark charcoal
+    const int colPlus  = TColor::GetColor(213, 94,  0);   // burnt orange
+    const int colMinus = TColor::GetColor(0,   114, 178); // deep blue
+
+    auto styleHist = [&](TH1* h, int color, int lineStyle) {
+        h->SetLineColor(color);
+        h->SetMarkerColor(color);
+        h->SetLineWidth(3);
+        h->SetLineStyle(lineStyle);
+        h->SetFillStyle(0);
+        h->SetMarkerStyle(20);
+        h->SetMarkerSize(0);
+    };
+    styleHist(cv, colCV, 1);
+    styleHist(plus, colPlus, 1);
+    styleHist(minus, colMinus, 1);
+
+    TCanvas* c = new TCanvas("c_" + Name, "", 1300, 1000);
+
+    TPad* top = new TPad("top_" + Name, "", 0.0, 0.32, 1.0, 1.0);
+    top->SetLeftMargin(0.13); top->SetRightMargin(0.05);
+    top->SetBottomMargin(0.02); top->SetTopMargin(0.08);
+    top->Draw();
+
+    TPad* bot = new TPad("bot_" + Name, "", 0.0, 0.0, 1.0, 0.32);
+    bot->SetLeftMargin(0.13); bot->SetRightMargin(0.05);
+    bot->SetTopMargin(0.03); bot->SetBottomMargin(0.35);
+    bot->SetGridy();
+    bot->Draw();
+
+    // Top panel: absolute counts
+    top->cd();
+    double ymax = std::max({cv->GetMaximum(), plus->GetMaximum(), minus->GetMaximum()});
+    cv->SetTitle(PlotTitle);
+    cv->GetYaxis()->SetRangeUser(0.0, 1.30 * (ymax > 0 ? ymax : 1.0));
+    cv->GetYaxis()->SetTitle(YTitle);
+    cv->GetYaxis()->SetTitleFont(FontStyle); cv->GetYaxis()->SetLabelFont(FontStyle);
+    cv->GetYaxis()->SetTitleSize(TextSize);  cv->GetYaxis()->SetLabelSize(TextSize);
+    cv->GetYaxis()->SetTitleOffset(1.0);     cv->GetYaxis()->CenterTitle();
+    cv->GetYaxis()->SetNdivisions(6);
+    cv->GetYaxis()->SetMaxDigits(4);
+    cv->GetXaxis()->SetLabelSize(0);
+    cv->GetXaxis()->SetTitleSize(0);
+    cv->GetXaxis()->SetNdivisions(8);
+
+    cv->Draw("HIST");
+    plus->Draw("HIST SAME");
+    minus->Draw("HIST SAME");
+    cv->Draw("E1 SAME"); // CV statistical uncertainty
+
+    TLegend* leg = new TLegend(0.60, 0.68, 0.94, 0.90);
+    leg->SetTextFont(FontStyle);
+    leg->SetTextSize(TextSize * 0.85);
+    leg->SetBorderSize(0);
+    leg->SetFillStyle(0);
+    leg->AddEntry(cv,    "CV (stat. unc.)", "le");
+    leg->AddEntry(plus,  "+1#sigma",        "l");
+    leg->AddEntry(minus, "#minus1#sigma",   "l");
+    leg->Draw();
+
+    // Bottom panel: ratio to CV
+    bot->cd();
+    TH1* rPlus  = (TH1*) plus->Clone(Name + "_rplus");
+    TH1* rMinus = (TH1*) minus->Clone(Name + "_rminus");
+    for (TH1* r : {rPlus, rMinus}) {
+        for (int b = 1; b <= r->GetNbinsX(); ++b) {
+            double nom = cv->GetBinContent(b);
+            r->SetBinContent(b, nom > 0 ? r->GetBinContent(b) / nom : 0.0);
+            r->SetBinError(b, 0.0);
+        }
+    }
+
+    double rmax = 0.0;
+    for (TH1* r : {rPlus, rMinus}) {
+        for (int b = 1; b <= r->GetNbinsX(); ++b) {
+            if (cv->GetBinContent(b) > 0) rmax = std::max(rmax, std::abs(r->GetBinContent(b) - 1.0));
+        }
+    }
+    double rRange = std::max(0.05, 1.5 * rmax);
+
+    TH1* frame = (TH1*) cv->Clone(Name + "_rframe");
+    frame->Reset();
+    frame->SetTitle("");
+    frame->GetYaxis()->SetRangeUser(1.0 - rRange, 1.0 + rRange);
+    frame->GetYaxis()->SetTitle("Univ. / CV");
+    frame->GetYaxis()->SetNdivisions(505);
+    frame->GetYaxis()->SetTitleFont(FontStyle); frame->GetYaxis()->SetLabelFont(FontStyle);
+    frame->GetYaxis()->SetTitleSize(TextSize * 2.1); frame->GetYaxis()->SetLabelSize(TextSize * 2.1);
+    frame->GetYaxis()->SetTitleOffset(0.47); frame->GetYaxis()->CenterTitle();
+    frame->GetXaxis()->SetTitle(XTitle);
+    frame->GetXaxis()->SetTitleFont(FontStyle); frame->GetXaxis()->SetLabelFont(FontStyle);
+    frame->GetXaxis()->SetTitleSize(TextSize * 2.1); frame->GetXaxis()->SetLabelSize(TextSize * 2.1);
+    frame->GetXaxis()->SetTitleOffset(1.0); frame->GetXaxis()->CenterTitle();
+    frame->GetXaxis()->SetNdivisions(8);
+    frame->Draw("AXIS");
+
+    TLine* one = new TLine(frame->GetXaxis()->GetXmin(), 1.0, frame->GetXaxis()->GetXmax(), 1.0);
+    one->SetLineColor(colCV); one->SetLineStyle(2); one->SetLineWidth(2);
+    one->Draw();
+
+    rPlus->Draw("HIST SAME");
+    rMinus->Draw("HIST SAME");
+
+    // Percent shift labels next to each universe's line
+    TLatex lat;
+    lat.SetTextFont(FontStyle);
+    lat.SetTextSize(TextSize * 1.6);
+    lat.SetTextAlign(22);
+    for (int b = 1; b <= cv->GetNbinsX(); ++b) {
+        if (cv->GetBinContent(b) <= 0) continue;
+        double x = cv->GetXaxis()->GetBinCenter(b);
+        for (TH1* r : {rPlus, rMinus}) {
+            double v = r->GetBinContent(b);
+            double offset = (v >= 1.0 ? 1 : -1) * 0.22 * rRange;
+            lat.SetTextColor(r->GetLineColor());
+            lat.DrawLatex(x, v + offset, Form("%+.1f%%", 100.0 * (v - 1.0)));
+        }
+    }
+    gPad->RedrawAxis();
+
+    c->SaveAs(SaveDir + Name + ".png");
+
+    // Also print the numbers for quick inspection
+    std::cout << std::endl << "=== " << Name << " ===" << std::endl;
+    std::cout << Form("%-14s %12s %12s %12s %10s %10s", "Bin", "CV", "+1sigma", "-1sigma", "+1s/CV", "-1s/CV") << std::endl;
+    for (int b = 1; b <= cv->GetNbinsX(); ++b) {
+        double nom = cv->GetBinContent(b);
+        std::cout << Form("[%4.0f, %4.0f]   %12.2f %12.2f %12.2f %10.3f %10.3f",
+            cv->GetXaxis()->GetBinLowEdge(b), cv->GetXaxis()->GetBinUpEdge(b),
+            nom, plus->GetBinContent(b), minus->GetBinContent(b),
+            nom > 0 ? plus->GetBinContent(b) / nom : 0.0,
+            nom > 0 ? minus->GetBinContent(b) / nom : 0.0) << std::endl;
+    }
+
+    delete c;
 }
 
 void PrintTruthUnfoldedStatShapePlot(
